@@ -3,8 +3,8 @@ import com.microsoft.azure.services.serviceBus.model.*;
 
 public interface ServiceBusClient {
 	void sendMessage(String path, BrokeredMessage message);
-	BrokeredMessage receiveMessage(String queuePath, int timeout, RECEIVE_MODE receiveMode);
-	BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, RECEIVE_MODE receiveMode);
+	BrokeredMessage receiveMessage(String queuePath, int timeout, ReceiveMode receiveMode);
+	BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode);
 	void abandonMessage(BrokeredMessage message);
 	void completeMessage(BrokeredMessage message);
 
