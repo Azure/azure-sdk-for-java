@@ -5,4 +5,23 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Microsoft Azure Client API</name>
   <description>API for Microsoft Azure Clients</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>0.8.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               jaxb:version="2.0">
+  <jaxb:bindings schemaLocation="schemas.microsoft.com.netservices.2010.10.servicebus.connect.xsd"  node="/xsd:schema">
+    <jaxb:schemaBindings>
+      <jaxb:package name="com.microsoft.azure.services.serviceBus.model"/>
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+</jaxb:bindings>
