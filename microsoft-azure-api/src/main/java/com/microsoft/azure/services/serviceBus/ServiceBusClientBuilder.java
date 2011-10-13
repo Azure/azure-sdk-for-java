@@ -1,11 +1,12 @@
 package com.microsoft.azure.services.serviceBus;
 
-import com.microsoft.azure.http.ClientFactory;
+import com.microsoft.azure.http.ClientBuilderBase;
 
-public class ServiceBusClientFactory extends ClientFactory {
+
+public class ServiceBusClientBuilder extends ClientBuilderBase {
 	public ServiceBusClient createClient() {
-		return null;
-	}	
+		return new ServiceBusClientImpl(this.client, this.getUrl());
+	}
 	public MessageTranceiver openQueue(String queuePath) {
 		return null;
 	}
