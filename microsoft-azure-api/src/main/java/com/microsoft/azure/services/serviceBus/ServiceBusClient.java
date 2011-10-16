@@ -1,31 +1,44 @@
 package com.microsoft.azure.services.serviceBus;
-import com.microsoft.azure.services.serviceBus.model.*;
 
-public interface ServiceBusClient {
-	void sendMessage(String path, BrokeredMessage message);
-	BrokeredMessage receiveMessage(String queuePath, int timeout, ReceiveMode receiveMode);
-	BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode);
-	void abandonMessage(BrokeredMessage message);
-	void completeMessage(BrokeredMessage message);
+import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
+import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 
-	void createQueue(String queuePath, QueueDescription description);
-	void deleteQueue(String queuePath);
-	QueueDescription getQueue(String queuePath);
-	QueueDescription[] getQueues();
+public class ServiceBusClient  {
 
-	void createTopic(String topicPath, TopicDescription description);
-	void deleteTopic(String topicPath);
-	TopicDescription getTopic(String topicPath);
-	TopicDescription[] getTopics();
+	ServiceBusContract contract;
 
-	void addSubscription(String topicPath, String subscriptionName, SubscriptionDescription description);
-	void removeSubscription(String topicPath, String subscriptionName);
-	SubscriptionDescription getSubscription(String topicPath, String subscriptionName);
-	SubscriptionDescription[] getSubscriptions(String topicPath);
+	public ServiceBusClient(ServiceBusContract contract) {
+		this.contract = contract;
+	}
 
-	void addRule(String topicPath, String subscriptionName, String ruleName, RuleDescription description);
-	void removeRule(String topicPath, String subscriptionName, String ruleName);
-	RuleDescription getRule(String topicPath, String subscriptionName, String ruleName);
-	RuleDescription [] getRules(String topicPath, String subscriptionName);
+	public ServiceBusContract getContract() {
+		return contract;
+	}
+
+	public void setContract(ServiceBusContract contract) {
+		this.contract = contract;
+	}
+
+	public Queue[] getQueues() {
+		QueueDescription[] descriptions = contract.getQueues();
+		Queue[] queues = new Queue[descriptions.length];
+		for (int i = 0; i != queues.length; ++i) {
+			queues[i] = new Queue(this, descriptions[i]);
+		}
+		return queues;
+	}
+
+	public Queue getQueue(String path) {
+		return new Queue(this, path);
+	}
+
+	public Queue createQueue(String path) {
+		Queue queue = new Queue(this, path);
+		queue.create();
+		return queue;
+	}
+
+	public Topic[] getTopics() {
+		return null;
+	}
 }
-

@@ -1,19 +1,9 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.contract;
 
-import java.net.URI;
-
-import com.microsoft.azure.http.ClientBase;
-import com.microsoft.azure.services.serviceBus.model.QueueDescription;
-import com.microsoft.azure.services.serviceBus.model.RuleDescription;
-import com.microsoft.azure.services.serviceBus.model.SubscriptionDescription;
-import com.microsoft.azure.services.serviceBus.model.TopicDescription;
 import com.sun.jersey.api.client.Client;
 
-class ServiceBusClientImpl extends ClientBase implements ServiceBusClient  {
+public class ServiceBusContractImpl implements ServiceBusContract  {
 
-	public ServiceBusClientImpl(Client client, URI url)  {
-		super(client, url);
-	}
 
 	public void sendMessage(String path, BrokeredMessage message) {
 		// TODO Auto-generated method stub
@@ -21,13 +11,13 @@ class ServiceBusClientImpl extends ClientBase implements ServiceBusClient  {
 	}
 
 	public BrokeredMessage receiveMessage(String queuePath, int timeout,
-			RECEIVE_MODE receiveMode) {
+			ReceiveMode receiveMode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public BrokeredMessage receiveMessage(String topicPath,
-			String subscriptionName, int timeout, RECEIVE_MODE receiveMode) {
+			String subscriptionName, int timeout, ReceiveMode receiveMode) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -43,11 +33,11 @@ class ServiceBusClientImpl extends ClientBase implements ServiceBusClient  {
 	}
 
 	public void createQueue(String queuePath, QueueDescription description) {
-		resource().path(queuePath).put(description);
+		
 	}
 
 	public void deleteQueue(String queuePath) {
-		resource().path(queuePath).delete();
+		
 	}
 
 	public QueueDescription getQueue(String queuePath) {

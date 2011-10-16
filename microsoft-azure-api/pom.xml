@@ -31,9 +31,10 @@
   		<version>1.10-b02</version>
   	</dependency>
   	<dependency>
-  		<groupId>com.sun.jersey</groupId>
-  		<artifactId>jersey-atom</artifactId>
-  		<version>1.10-b02</version>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.8</version>
+  		<scope>test</scope>
   	</dependency>
   </dependencies>
 </project>
