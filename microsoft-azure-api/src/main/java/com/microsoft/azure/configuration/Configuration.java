@@ -5,15 +5,11 @@ import java.util.ServiceLoader;
 import javax.inject.Provider;
 
 import com.microsoft.azure.configuration.builder.Builder;
-import com.microsoft.azure.configuration.builder.BuilderModule;
 import com.microsoft.azure.configuration.builder.DefaultBuilder;
-import com.microsoft.azure.services.serviceBus.ServiceBusClient;
 import com.microsoft.azure.services.serviceBus.contract.EntryModelProvider;
-import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.spi.service.ServiceFinder;
 
 
 public class Configuration implements Builder {
@@ -43,8 +39,8 @@ public class Configuration implements Builder {
 		
 		final DefaultBuilder builder = new DefaultBuilder();
 		
-		for(BuilderModule module : ServiceLoader.load(BuilderModule.class)){
-			module.register(builder);
+		for(Builder.Exports exports : ServiceLoader.load(Builder.Exports.class)){
+			exports.register(builder);
 		}
 		
 		final Configuration self = this;

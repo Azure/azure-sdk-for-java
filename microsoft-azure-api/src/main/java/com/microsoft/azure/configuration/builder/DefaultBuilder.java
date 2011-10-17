@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 
-public class DefaultBuilder implements Builder, BuilderRegistry {
+public class DefaultBuilder implements Builder, Builder.Registry {
 	public DefaultBuilder() {
 		factories = new HashMap<Class<?>, Provider<?>>();
 	}
@@ -23,7 +23,7 @@ public class DefaultBuilder implements Builder, BuilderRegistry {
 	}
 	
 
-	public <T, TImpl> BuilderRegistry add(Class<T> service, final Class<TImpl> implementation) {
+	public <T, TImpl> Builder.Registry add(Class<T> service, final Class<TImpl> implementation) {
 		Constructor<?>[] ctors = implementation.getConstructors();
 		for(final Constructor<?> ctor : ctors) {
 			if (ctor.getAnnotation(Inject.class) != null) {
@@ -51,11 +51,11 @@ public class DefaultBuilder implements Builder, BuilderRegistry {
 		return this;
 	}
 		
-	public <T> BuilderRegistry add(Class<T> service) {
+	public <T> Builder.Registry add(Class<T> service) {
 		return add(service, service);		
 	}
 		
-	public <T> BuilderRegistry add(Class<T> service, Provider<T> provider) {		
+	public <T> Builder.Registry add(Class<T> service, Provider<T> provider) {		
 		addFactory(service, provider);
 		return this;
 	}

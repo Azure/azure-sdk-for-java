@@ -2,11 +2,7 @@ package com.microsoft.azure.services.serviceBus;
 
 import javax.xml.datatype.Duration;
 
-import com.microsoft.azure.services.serviceBus.contract.BrokeredMessage;
-import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
-import com.microsoft.azure.services.serviceBus.contract.ReceiveMode;
-import com.sun.syndication.feed.atom.Entry;
 
 public class Queue extends Entity<QueueDescription> implements MessageSender, MessageReceiver {
 	public Queue(ServiceBusClient client, String path) {
@@ -36,27 +32,42 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 		getContract().createQueue(getEntryModel());
 	}
 
-	public void send(BrokeredMessage message) {
+
+
+	public void send(Message message) {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
 	
-	public BrokeredMessage receive(int timeout, ReceiveMode receiveMode) {
+	public Message receive(int timeout) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void abandon(BrokeredMessage message) {
+
+
+	public Message peekLock(int timeout) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public void abandon(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void complete(BrokeredMessage message) {
+
+
+	public void complete(Message message) {
 		// TODO Auto-generated method stub
+		
 	}
+
+
 	
-
-
+	
 	// public object data
 
 	public String getPath() {
@@ -89,9 +100,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 
 
 
-    //public void setMessageCount(Long value) {
-    //	getDescription().setMessageCount(value);
-    //}
+
 
 
 }

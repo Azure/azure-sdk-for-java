@@ -31,9 +31,9 @@ public class ServiceBusClient  {
 		this.contract = contract;
 	}
 
-	public Entity[] getQueues() {
+	public Queue[] getQueues() {
 		EntryModel<QueueDescription>[] descriptions = contract.getQueues();
-		Entity[] queues = new Entity[descriptions.length];
+		Queue[] queues = new Queue[descriptions.length];
 		for (int i = 0; i != queues.length; ++i) {
 			queues[i] = new Queue(this, null);
 			queues[i].setEntryModel(descriptions[i]);
