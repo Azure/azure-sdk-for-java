@@ -1,0 +1,27 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+	<id>https://lodejard.servicebus.windows.net/Hello</id>
+	<title type="text">Hello</title>
+	<published>2011-10-04T23:09:57Z</published>
+	<updated>2011-10-04T23:09:57Z</updated>
+	<author>
+		<name>lodejard</name>
+	</author>
+	<link rel="self" href="https://lodejard.servicebus.windows.net/Hello" />
+	<content type="application/xml">
+		<QueueDescription
+			xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+			xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+			<LockDuration>PT1M</LockDuration>
+			<MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+			<RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+			<RequiresSession>false</RequiresSession>
+			<DefaultMessageTimeToLive>P10675199DT2H48M5S</DefaultMessageTimeToLive>
+			<DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+			<DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+			<MaxDeliveryCount>10</MaxDeliveryCount>
+			<EnableBatchedOperations>true</EnableBatchedOperations>
+			<SizeInBytes>0</SizeInBytes>
+			<MessageCount>0</MessageCount>
+		</QueueDescription>
+	</content>
+</entry>

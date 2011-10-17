@@ -1,5 +1,5 @@
 package com.microsoft.azure.services.serviceBus;
 
-public class BrokeredMessage {
+public class Message {
 
 }

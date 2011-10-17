@@ -1,36 +1,40 @@
 package com.microsoft.azure.services.serviceBus;
 
+import javax.xml.datatype.Duration;
+
 import com.microsoft.azure.services.serviceBus.contract.BrokeredMessage;
+import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ReceiveMode;
+import com.sun.syndication.feed.atom.Entry;
 
-public class Queue implements MessageSender, MessageReceiver {
-	private ServiceBusClient client;
-	private String path;
-	private QueueDescription description;
-
+public class Queue extends Entity<QueueDescription> implements MessageSender, MessageReceiver {
 	public Queue(ServiceBusClient client, String path) {
-		this.client = client;
-		this.path = path;
-	}
-
-	public Queue(ServiceBusClient client, QueueDescription queueDescription) {
-		this.client = client;
+		super(client);
+		setModel(new QueueDescription());
 		
+		setPath(path);
 	}
 
+	
+	
+	// public object verbs
+	
 	public void create() {
-		client.getContract().createQueue(path, description);
+		getContract().createQueue(getEntryModel());
 	}
 
 	public void delete() {
-		client.getContract().deleteQueue(path);
+		getContract().deleteQueue(getPath());
+	}
+	
+	public void get() {
+		setEntryModel(getContract().getQueue(getPath()));
 	}
 	
 	public void commit() {
-		//TODO protocol operation to put data?
+		getContract().createQueue(getEntryModel());
 	}
-
 
 	public void send(BrokeredMessage message) {
 		// TODO Auto-generated method stub
@@ -49,7 +53,45 @@ public class Queue implements MessageSender, MessageReceiver {
 
 	public void complete(BrokeredMessage message) {
 		// TODO Auto-generated method stub
-		
 	}
+	
+
+
+	// public object data
+
+	public String getPath() {
+		return getEntry().getTitle();
+	}
+
+	public void setPath(String value) {
+		getEntry().setTitle(value);
+	}
+	
+    public Duration getLockDuration() {
+    	return getModel().getLockDuration();
+    }
+
+    public void setLockDuration(Duration value) {
+    	getModel().setLockDuration(value);
+    }
+
+    public Long getMaxSizeInMegabytes() {
+        return getModel().getMaxSizeInMegabytes();
+    }
+
+    public void setMaxSizeInMegabytes(Long value) {
+        getModel().setMaxSizeInMegabytes(value);
+    }
+
+    public Long getMessageCount() {
+        return getModel().getMessageCount();
+    }
+
+
+
+    //public void setMessageCount(Long value) {
+    //	getDescription().setMessageCount(value);
+    //}
+
 
 }

@@ -1,4 +1,4 @@
-package com.microsoft.azure.configuration;
+package com.microsoft.azure.configuration.builder;
 
 public interface Builder {
 

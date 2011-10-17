@@ -4,7 +4,21 @@
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
 	elementFormDefault="qualified" 
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+  jaxb:version="1.0"
+  xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+  jaxb:extensionBindingPrefixes="xjc">
+	 
+	<xs:annotation>
+    <xs:appinfo>
+      <jaxb:globalBindings>
+        <xjc:simple />
+      </jaxb:globalBindings>
+    </xs:appinfo>
+  </xs:annotation>
+	
   <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
@@ -14,7 +28,7 @@
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
           </xs:appinfo>
         </xs:annotation>
-      </xs:element>
+      </xs:element> 
       <xs:element minOccurs="0" name="MaxSizeInMegabytes" type="xs:long">
         <xs:annotation>
           <xs:appinfo>

@@ -6,6 +6,42 @@
   <name>Microsoft Azure Client API</name>
   <description>API for Microsoft Azure Clients</description>
 
+  <dependencies>
+  	<dependency>
+  		<groupId>com.sun.jersey</groupId>
+  		<artifactId>jersey-client</artifactId>
+  		<version>1.10-b02</version>
+  	</dependency>
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.1</version>
+        <scope>provided</scope>
+    </dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.8</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-all</artifactId>
+  		<scope>test</scope>
+  		<version>1.9.0-rc1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>javax.inject</groupId>
+  		<artifactId>javax.inject</artifactId>
+  		<version>1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.sun.jersey</groupId>
+  		<artifactId>jersey-atom</artifactId>
+  		<version>1.10-b03</version>
+  	</dependency>
+  </dependencies>
+  
   <build>
     <plugins>
       <plugin>
@@ -20,21 +56,23 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+			<extension>true</extension>
+			<plugins>
+                <plugin>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>jaxb2-basics</artifactId>
+                  <version>0.6.0</version>
+                </plugin>
+                <plugin>
+                  <groupId>org.jvnet.jaxb2_commons</groupId>
+                  <artifactId>jaxb2-basics-annotate</artifactId>
+                  <version>0.6.0</version>
+                </plugin>
+              </plugins>
+			
+        </configuration>
       </plugin>
     </plugins>
   </build>
-
-  <dependencies>
-  	<dependency>
-  		<groupId>com.sun.jersey</groupId>
-  		<artifactId>jersey-client</artifactId>
-  		<version>1.10-b02</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.8</version>
-  		<scope>test</scope>
-  	</dependency>
-  </dependencies>
 </project>
