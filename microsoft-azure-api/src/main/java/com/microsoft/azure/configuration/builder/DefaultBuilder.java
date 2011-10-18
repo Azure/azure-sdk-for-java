@@ -11,13 +11,13 @@ import javax.inject.Provider;
 
 public class DefaultBuilder implements Builder, Builder.Registry {
 	public DefaultBuilder() {
-		factories = new HashMap<Class<?>, Provider<?>>();
+		factories = new HashMap<Class<?>, Factory<?>>();
 	}
 	
 	
-	Map<Class<?>, Provider<?>> factories;
+	Map<Class<?>, Factory<?>> factories;
 	
-	public Builder addFactory(Class<?> service, Provider<?> factory) {
+	public Builder addFactory(Class<?> service, Factory<?> factory) {
 		factories.put(service, factory);
 		return this;
 	}
@@ -28,23 +28,15 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		for(final Constructor<?> ctor : ctors) {
 			if (ctor.getAnnotation(Inject.class) != null) {
 				final Class<?>[] parameterTypes = ctor.getParameterTypes();
-				addFactory(service, new Provider<T>() {
+				addFactory(service, new Builder.Factory<T>() {
 					@SuppressWarnings("unchecked")
-					public T get() throws RuntimeException {
+					public T create(Builder builder, Map<String,Object> properties) throws Exception {
 						Object[] initargs = new Object[parameterTypes.length];
 						for(int i = 0; i != parameterTypes.length; ++i) {
-							initargs[i] = build(parameterTypes[i]);
+							initargs[i] = builder.build(parameterTypes[i], properties);
 						}
 						
-						try {
-							return (T) ctor.newInstance(initargs);
-						} catch (InvocationTargetException e) {
-							throw new RuntimeException(e);
-						} catch (InstantiationException e) {
-							throw new RuntimeException(e);
-						} catch (IllegalAccessException e) {
-							throw new RuntimeException(e);
-						}
+						return (T) ctor.newInstance(initargs);
 				}});
 			}
 		}
@@ -55,18 +47,18 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		return add(service, service);		
 	}
 		
-	public <T> Builder.Registry add(Class<T> service, Provider<T> provider) {		
+	public <T> Builder.Registry add(Class<T> service, Factory<T> provider) {		
 		addFactory(service, provider);
 		return this;
 	}
     
-	public <T> T build(Class<T> c) throws RuntimeException {
+	public <T> T build(Class<T> service, Map<String,Object> properties) throws Exception {
 		@SuppressWarnings("unchecked")
-		Provider<T> factory = (Provider<T>) factories.get(c);
+		Factory<T> factory = (Factory<T>) factories.get(service);
 		if (factory == null) {
 			return null;
 		}
-    	return factory.get();
+    	return factory.create(this, properties);
     }
 
 

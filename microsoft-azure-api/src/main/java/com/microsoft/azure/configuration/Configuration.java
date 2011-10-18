@@ -1,5 +1,7 @@
 package com.microsoft.azure.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
 
 import javax.inject.Provider;
@@ -12,56 +14,42 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 
-public class Configuration implements Builder {
+public class Configuration  {
 
 	private Builder builder;
-	protected ClientConfig clientConfig;
+	Map<String, Object> properties;
+
 
 	public Configuration()  {
-		this.clientConfig = createDefaultClientConfig();
-		try {
-			this.builder = createDefaultBuilder();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.properties = new HashMap<String, Object>();
+		this.builder = createDefaultBuilder();
+		setProperty("ClientConfig", createDefaultClientConfig());
 	}
 
 	public Configuration(Builder builder)  {
+		this.properties = new HashMap<String, Object>();
 		this.builder = builder;
+		setProperty("ClientConfig", createDefaultClientConfig());
 	}
 
 	public static ClientConfig createDefaultClientConfig() { 
 		return new DefaultClientConfig(EntryModelProvider.class);
 	}
 
-	Builder createDefaultBuilder() throws Exception {
+	Builder createDefaultBuilder() {
 		
 		final DefaultBuilder builder = new DefaultBuilder();
 		
-		for(Builder.Exports exports : ServiceLoader.load(Builder.Exports.class)){
+		for(Builder.Exports exports : ServiceLoader.load(Builder.Exports.class)) {
 			exports.register(builder);
 		}
-		
-		final Configuration self = this;
 				
-		builder.add(ClientConfig.class, new Provider<ClientConfig>(){
-			public ClientConfig get() {
-				return self.clientConfig;
-			}});
-
-		builder.add(Client.class, new Provider<Client>(){
-			public Client get() {
-				ClientConfig clientConfig = builder.build(ClientConfig.class);
-				return Client.create(clientConfig);
-			}});
-		
 		return builder;
 	}
 	
 
 	public <T> T build(Class<T> c) throws Exception {
-		return builder.build(c);
+		return builder.build(c, getProperties());
 	}
 	
 	public Builder getBuilder() {
@@ -71,5 +59,20 @@ public class Configuration implements Builder {
 	public void setBuilder(Builder builder) {
 		this.builder = builder;
 	}
-    
+
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, Object> properties) {
+		this.properties = properties;
+	}
+
+	public Object getProperty(String name) {
+		return getProperties().get(name);
+	}
+
+	public void setProperty(String name, Object value) {
+		getProperties().put(name, value);
+	}
 }
