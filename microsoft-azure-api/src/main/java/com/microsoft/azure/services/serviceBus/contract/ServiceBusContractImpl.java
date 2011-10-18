@@ -1,9 +1,6 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
 import javax.inject.Inject;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;

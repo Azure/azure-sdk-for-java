@@ -16,7 +16,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Providers;
 
-import com.sun.jersey.core.impl.provider.entity.StringProvider;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;

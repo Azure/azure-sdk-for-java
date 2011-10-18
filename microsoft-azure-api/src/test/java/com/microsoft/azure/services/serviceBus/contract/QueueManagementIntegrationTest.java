@@ -18,7 +18,7 @@ public class QueueManagementIntegrationTest {
 	public void queueCanBeCreatedAndDeleted() throws Exception {
 		// Arrange
 		ServiceBusClient client = new Configuration()
-			.build(ServiceBusClient.class);
+			.create(ServiceBusClient.class);
 		ServiceBusContractImpl contract = (ServiceBusContractImpl) client.getContract();
 		contract.getChannel().addFilter(new LoggingFilter());
 		
@@ -34,7 +34,7 @@ public class QueueManagementIntegrationTest {
 		// Arrange
 		Configuration cfg = new Configuration();
 
-		ServiceBusClient client = cfg.build(ServiceBusClient.class);
+		ServiceBusClient client = cfg.create(ServiceBusClient.class);
 		
 		
 		ServiceBusContractImpl contract = (ServiceBusContractImpl) client.getContract();
@@ -52,7 +52,7 @@ public class QueueManagementIntegrationTest {
 	public void existingQueuePathDoesNotReturnNull() throws Exception {
 		// Arrange
 		ServiceBusClient client = new Configuration()
-			.build(ServiceBusClient.class);
+			.create(ServiceBusClient.class);
 		
 		ServiceBusContractImpl contract = (ServiceBusContractImpl) client.getContract();
 		contract.getChannel().addFilter(new LoggingFilter());

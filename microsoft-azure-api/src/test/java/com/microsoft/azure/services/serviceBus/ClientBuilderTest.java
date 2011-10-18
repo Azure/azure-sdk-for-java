@@ -1,10 +1,7 @@
 package com.microsoft.azure.services.serviceBus;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -20,7 +17,7 @@ public class ClientBuilderTest {
 		Configuration config = new Configuration();
 
 		// Act
-		ServiceBusClient client = config.build(ServiceBusClient.class);
+		ServiceBusClient client = config.create(ServiceBusClient.class);
 		ServiceBusClient client2 = new ServiceBusClient(config);
 		
 		// Assert

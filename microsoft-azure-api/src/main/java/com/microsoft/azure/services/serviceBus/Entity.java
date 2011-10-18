@@ -1,7 +1,6 @@
 package com.microsoft.azure.services.serviceBus;
 
 import com.microsoft.azure.services.serviceBus.contract.EntryModel;
-import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 import com.sun.syndication.feed.atom.Entry;
 

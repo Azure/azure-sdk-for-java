@@ -10,7 +10,7 @@ public class ContractBuilderTest  {
 	@Test
 	public void testDefaultBuilderCreatesContractImpl() throws Exception {
 		Configuration config = new Configuration();
-		ServiceBusContract contract = config.build(ServiceBusContract.class);
+		ServiceBusContract contract = config.create(ServiceBusContract.class);
 		
 		assertNotNull(contract);
 	}

@@ -1,26 +1,41 @@
 package com.microsoft.azure.configuration.builder;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
+
 
 
 public class DefaultBuilder implements Builder, Builder.Registry {
+	Map<Class<?>, Factory<?>> factories;
+
 	public DefaultBuilder() {
 		factories = new HashMap<Class<?>, Factory<?>>();
 	}
 	
-	
-	Map<Class<?>, Factory<?>> factories;
-	
-	public Builder addFactory(Class<?> service, Factory<?> factory) {
-		factories.put(service, factory);
-		return this;
+	public static DefaultBuilder create() {
+		DefaultBuilder builder = new DefaultBuilder();
+		
+		for(Builder.Exports exports : ServiceLoader.load(Builder.Exports.class)) {
+			exports.register(builder);
+		}
+				
+		return builder;
 	}
+
+	void addFactory(Class<?> service, Factory<?> factory) {
+		factories.put(service, factory);
+	}
+
+	public <T> Builder.Registry add(Class<T> service) {
+		return add(service, service);		
+	}
+
 	
 
 	public <T, TImpl> Builder.Registry add(Class<T> service, final Class<TImpl> implementation) {
@@ -42,15 +57,20 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		}
 		return this;
 	}
-		
-	public <T> Builder.Registry add(Class<T> service) {
-		return add(service, service);		
-	}
-		
-	public <T> Builder.Registry add(Class<T> service, Factory<T> provider) {		
-		addFactory(service, provider);
+
+	
+	public <T> Registry add(Factory<T> factory) {
+		for(Type genericInterface : factory.getClass().getGenericInterfaces())
+		{
+			ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+			if (parameterizedType.getRawType().equals(Builder.Factory.class)) {
+				Type typeArgument = parameterizedType.getActualTypeArguments()[0];
+				addFactory((Class<?>)typeArgument, factory);
+			}
+		}
 		return this;
 	}
+		
     
 	public <T> T build(Class<T> service, Map<String,Object> properties) throws Exception {
 		@SuppressWarnings("unchecked")
@@ -60,6 +80,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		}
     	return factory.create(this, properties);
     }
+
 
 
 }

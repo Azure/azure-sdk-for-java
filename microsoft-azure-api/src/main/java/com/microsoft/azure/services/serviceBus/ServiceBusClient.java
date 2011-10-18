@@ -15,7 +15,7 @@ public class ServiceBusClient  {
 	}
 	
 	public ServiceBusClient(Configuration configuration) throws Exception {
-		this.contract = configuration.build(ServiceBusContract.class);
+		this.contract = configuration.create(ServiceBusContract.class);
 	}
 	
 	@Inject
