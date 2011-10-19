@@ -23,7 +23,7 @@ public class QueueManagementIntegrationTest {
 		contract.getChannel().addFilter(new LoggingFilter());
 		
 		// Act
-		Queue queue = client.createQueue("TestQueue01");
+		Queue queue = client.getQueue("TestQueue01");
 		queue.delete();
 		
 		// Assert

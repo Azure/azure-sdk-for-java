@@ -29,6 +29,7 @@ public class QueueManagementTest {
 		// Act
 		ServiceBusClient client = new ServiceBusClient(contract);
 		Queue helloQueue = client.getQueue("Hello");
+		helloQueue.fetch();
 		
 		// Assert
 		assertEquals(73, helloQueue.getMessageCount().longValue());
@@ -44,7 +45,7 @@ public class QueueManagementTest {
 		Queue helloQueue = new Queue(client, "MyNewQueue");
 		helloQueue.setLockDuration(DatatypeFactory.newInstance().newDuration(60 * 1000L));
 		helloQueue.setMaxSizeInMegabytes(42L);
-		helloQueue.commit();
+		helloQueue.save();
 		
 		// Assert
 		ArgumentCaptor<EntryModel> createArg = ArgumentCaptor.forClass(EntryModel.class);

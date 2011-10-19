@@ -16,7 +16,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	
 	// public object verbs
 	
-	public void create() {
+	public void save() {
 		getContract().createQueue(getEntryModel());
 	}
 
@@ -24,12 +24,8 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 		getContract().deleteQueue(getPath());
 	}
 	
-	public void get() {
+	public void fetch() {
 		setEntryModel(getContract().getQueue(getPath()));
-	}
-	
-	public void commit() {
-		getContract().createQueue(getEntryModel());
 	}
 
 
@@ -44,22 +40,19 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 		return null;
 	}
 
-
-
+	
 	public Message peekLockMessage(int timeout) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
+	
 	public void abandonMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
+	
 	public void completeMessage(Message message) {
 		// TODO Auto-generated method stub
 		
@@ -68,7 +61,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 
 	
 	
-	// public object data
+	// entity state properties
 
 	public String getPath() {
 		return getEntry().getTitle();
