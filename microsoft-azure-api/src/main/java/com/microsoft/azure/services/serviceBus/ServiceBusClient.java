@@ -11,11 +11,12 @@ public class ServiceBusClient  {
 
 	ServiceBusContract contract;
 
-	public ServiceBusClient() {
+	public ServiceBusClient() throws Exception {
+		this(Configuration.getInstance());
 	}
 	
-	public ServiceBusClient(Configuration configuration) throws Exception {
-		this.contract = configuration.create(ServiceBusContract.class);
+	public ServiceBusClient(Configuration config) throws Exception {
+		this(config.create(ServiceBusContract.class));
 	}
 	
 	@Inject

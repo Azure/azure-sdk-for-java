@@ -10,6 +10,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class Configuration  {
 
+	private static Configuration instance;
 	Map<String, Object> properties;
 	Builder builder;
 
@@ -28,7 +29,23 @@ public class Configuration  {
 	private void init() {
 		setProperty("ClientConfig", new DefaultClientConfig(EntryModelProvider.class));
 	}
-
+	
+	public static Configuration getInstance() {
+		if (instance == null) {
+			setInstance(load());
+		}
+		return instance;
+	}
+	
+	public static void setInstance(Configuration instance) {
+		Configuration.instance = instance;
+	}
+	
+	public static Configuration load() {
+		// TODO - load from somewhere
+		return new Configuration();
+	}
+	
 	public <T> T create(Class<T> service) throws Exception {
 		return builder.build(service, properties);
 	}
