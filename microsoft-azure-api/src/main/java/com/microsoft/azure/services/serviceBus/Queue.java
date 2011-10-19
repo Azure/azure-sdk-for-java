@@ -5,7 +5,7 @@ import javax.xml.datatype.Duration;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 
 public class Queue extends Entity<QueueDescription> implements MessageSender, MessageReceiver {
-	public Queue(ServiceBusClient client, String path) {
+	Queue(ServiceBusClient client, String path) {
 		super(client);
 		setModel(new QueueDescription());
 		
@@ -34,33 +34,33 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 
 
 
-	public void send(Message message) {
+	public void sendMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	public Message receive(int timeout) {
+	public Message receiveMessage(int timeout) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 
-	public Message peekLock(int timeout) {
+	public Message peekLockMessage(int timeout) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 
-	public void abandon(Message message) {
+	public void abandonMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 
-	public void complete(Message message) {
+	public void completeMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}

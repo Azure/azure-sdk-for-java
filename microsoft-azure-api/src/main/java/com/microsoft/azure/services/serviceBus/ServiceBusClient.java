@@ -1,5 +1,8 @@
 package com.microsoft.azure.services.serviceBus;
 
+
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import com.microsoft.azure.configuration.Configuration;
@@ -32,29 +35,21 @@ public class ServiceBusClient  {
 		this.contract = contract;
 	}
 
-	public Queue[] getQueues() {
+	public Iterable<Queue> listQueues() {
 		EntryModel<QueueDescription>[] descriptions = contract.getQueues();
-		Queue[] queues = new Queue[descriptions.length];
-		for (int i = 0; i != queues.length; ++i) {
-			queues[i] = new Queue(this, null);
-			queues[i].setEntryModel(descriptions[i]);
+		ArrayList<Queue> queues = new ArrayList<Queue>();
+		for (int i = 0; i != descriptions.length; ++i) {
+			queues.set(i, new Queue(this, null));
+			queues.get(i).setEntryModel(descriptions[i]);
 		}
 		return queues;
 	}
 
 	public Queue getQueue(String path) {
-		Queue queue = new Queue(this, path);
-		queue.setEntryModel(contract.getQueue(path));
-		return queue;
+		return new Queue(this, path);
 	}
 
-	public Queue createQueue(String path) {
-		Queue queue = new Queue(this, path);
-		queue.create();
-		return queue;
-	}
-
-	public Topic[] getTopics() {
+	public Iterable<Topic> listTopics() {
 		return null;
 	}
 }

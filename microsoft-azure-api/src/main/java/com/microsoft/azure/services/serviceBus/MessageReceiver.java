@@ -2,8 +2,8 @@ package com.microsoft.azure.services.serviceBus;
 
 
 public interface MessageReceiver {
-	Message receive(int timeout);
-	Message peekLock(int timeout);
-	void abandon(Message message);
-	void complete(Message message);
+	Message receiveMessage(int timeout);
+	Message peekLockMessage(int timeout);
+	void abandonMessage(Message message);
+	void completeMessage(Message message);
 }
