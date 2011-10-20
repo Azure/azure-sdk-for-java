@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import org.w3._2005.atom.Feed;
+
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
@@ -36,11 +38,11 @@ public class ServiceBusClient  {
 	}
 
 	public Iterable<Queue> listQueues() {
-		EntryModel<QueueDescription>[] descriptions = contract.getQueues();
+		Feed descriptions = contract.getQueues();
 		ArrayList<Queue> queues = new ArrayList<Queue>();
-		for (int i = 0; i != descriptions.length; ++i) {
+		for (int i = 0; i != descriptions.getEntries().size(); ++i) {
 			queues.set(i, new Queue(this, null));
-			queues.get(i).setEntryModel(descriptions[i]);
+			queues.get(i).setEntryModel(descriptions.getEntries().get(i));
 		}
 		return queues;
 	}

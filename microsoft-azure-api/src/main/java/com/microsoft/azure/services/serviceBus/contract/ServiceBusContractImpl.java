@@ -1,6 +1,10 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
 import javax.inject.Inject;
+
+import org.w3._2005.atom.Entry;
+import org.w3._2005.atom.Feed;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
@@ -8,7 +12,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.representation.Form;
-import com.sun.syndication.feed.atom.Entry;
 
 public class ServiceBusContractImpl implements ServiceBusContract  {
 
@@ -70,7 +73,7 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 
 	}
 
-	public void createQueue(EntryModel<QueueDescription> entryModel) {
+	public void createQueue(Entry entry) {
 		Form form = new Form();
 		form.add("wrap_name", "owner");
 		form.add("wrap_password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
@@ -81,9 +84,8 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 			.post(Form.class, form);
 		String accessToken = wrapResponse.get("wrap_access_token").get(0);
 		
-		Entry entry = new Entry();
 		getChannel().resource("https://lodejard.servicebus.windows.net/")
-			.path(entryModel.getEntry().getTitle())
+			.path(entry.getTitle())
 			.header("Authorization", "WRAP access_token=\"" + accessToken + "\"")
 			.type("application/atom+xml")
 			.put(entry);
@@ -93,7 +95,7 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 		
 	}
 
-	public EntryModel<QueueDescription> getQueue(String queuePath) {
+	public Entry getQueue(String queuePath) {
 		Form form = new Form();
 		form.add("wrap_name", "owner");
 		form.add("wrap_password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
@@ -104,12 +106,12 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 			.post(Form.class, form);
 		String accessToken = wrapResponse.get("wrap_access_token").get(0);
 		
-		GenericType<EntryModel<QueueDescription>> genericType = new GenericType<EntryModel<QueueDescription>>() { };
+		//GenericType<EntryModel<QueueDescription>> genericType = new GenericType<EntryModel<QueueDescription>>() { };
 			
 		return getChannel().resource("https://lodejard.servicebus.windows.net/")
 			.path(queuePath)
 			.header("Authorization", "WRAP access_token=\"" + accessToken + "\"")
-			.get(genericType);
+			.get(Entry.class);
 	}
 
 
@@ -172,7 +174,7 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 	}
 
 
-	public EntryModel<QueueDescription>[] getQueues() {
+	public Feed getQueues() {
 		// TODO Auto-generated method stub
 		return null;
 	}

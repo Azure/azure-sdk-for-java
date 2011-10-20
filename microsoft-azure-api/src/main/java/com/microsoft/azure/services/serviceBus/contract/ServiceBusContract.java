@@ -1,5 +1,8 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
+import org.w3._2005.atom.Entry;
+import org.w3._2005.atom.Feed;
+
 
 public interface ServiceBusContract {
 	void sendMessage(String path, BrokeredMessage message);
@@ -8,10 +11,10 @@ public interface ServiceBusContract {
 	void abandonMessage(BrokeredMessage message);
 	void completeMessage(BrokeredMessage message);
 
-	void createQueue(EntryModel<QueueDescription> queue);
+	void createQueue(Entry queue);
 	void deleteQueue(String queuePath);
-	EntryModel<QueueDescription> getQueue(String queuePath);
-	EntryModel<QueueDescription>[] getQueues();
+	Entry getQueue(String queuePath);
+	Feed getQueues();
 
 	void createTopic(EntryModel<TopicDescription> topic);
 	void deleteTopic(String topicPath);

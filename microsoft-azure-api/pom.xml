@@ -35,11 +35,6 @@
   		<artifactId>javax.inject</artifactId>
   		<version>1</version>
   	</dependency>
-  	<dependency>
-  		<groupId>com.sun.jersey</groupId>
-  		<artifactId>jersey-atom</artifactId>
-  		<version>1.10-b03</version>
-  	</dependency>
   </dependencies>
   
   <build>

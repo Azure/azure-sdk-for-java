@@ -2,11 +2,17 @@ package com.microsoft.azure.services.serviceBus;
 
 import javax.xml.datatype.Duration;
 
+import org.w3._2005.atom.Content;
+
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 
 public class Queue extends Entity<QueueDescription> implements MessageSender, MessageReceiver {
 	Queue(ServiceBusClient client, String path) {
 		super(client);
+		
+		Content content = new Content();
+		content.setQueueDescription(new QueueDescription());
+		getEntry().setContent(content);
 		setModel(new QueueDescription());
 		
 		setPath(path);
@@ -17,7 +23,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	// public object verbs
 	
 	public void save() {
-		getContract().createQueue(getEntryModel());
+//		getContract().createQueue(getEntryModel());
 	}
 
 	public void delete() {
@@ -25,7 +31,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	}
 	
 	public void fetch() {
-		setEntryModel(getContract().getQueue(getPath()));
+//		setEntryModel(getContract().getQueue(getPath()));
 	}
 
 

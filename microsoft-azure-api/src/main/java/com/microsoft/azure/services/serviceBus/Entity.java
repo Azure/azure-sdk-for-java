@@ -1,23 +1,23 @@
 package com.microsoft.azure.services.serviceBus;
 
+import org.w3._2005.atom.Entry;
+
 import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
-import com.sun.syndication.feed.atom.Entry;
 
 public class Entity<T> {
 
 	protected ServiceBusClient client;
-	private EntryModel<T> entryModel;
+	private Entry entry;
 
 	public Entity(ServiceBusClient client) {
 		this.client = client;
-		this.entryModel = new EntryModel<T>();
-		setEntry(new Entry());
+		setEntry(new org.w3._2005.atom.Entry());
 	}
 	
-	public Entity(ServiceBusClient client, EntryModel<T> entryModel) {
+	public Entity(ServiceBusClient client, Entry entry) {
 		this.client = client;
-		this.entryModel = entryModel;
+		this.entry = entry;
 	}
 	
 	protected ServiceBusClient getClient() {
@@ -28,28 +28,14 @@ public class Entity<T> {
 		return getClient().getContract();
 	}
 
-	protected EntryModel<T> getEntryModel() {
-		return entryModel;
-	}
-
-	protected void setEntryModel(EntryModel<T> entryModel) {
-		this.entryModel = entryModel;
-	}
 
 	protected Entry getEntry() {
-		return getEntryModel().getEntry();
+		return entry;
 	}
 
 	protected void setEntry(Entry entry) {
-		getEntryModel().setEntry(entry);
+		this.entry = entry;
 	}
 
-	protected T getModel() {
-		return getEntryModel().getModel();
-	}
-
-	protected void setModel(T model) {
-		getEntryModel().setModel(model);
-	}
 
 }
