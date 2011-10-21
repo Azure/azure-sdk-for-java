@@ -1,8 +1,8 @@
 package com.microsoft.azure.services.serviceBus;
 
+import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
-import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 
 public class Entity<T> {
@@ -13,6 +13,7 @@ public class Entity<T> {
 	public Entity(ServiceBusClient client) {
 		this.client = client;
 		setEntry(new org.w3._2005.atom.Entry());
+		getEntry().setContent(new Content());
 	}
 	
 	public Entity(ServiceBusClient client, Entry entry) {

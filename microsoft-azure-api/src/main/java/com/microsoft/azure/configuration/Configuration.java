@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import com.microsoft.azure.configuration.builder.Builder;
 import com.microsoft.azure.configuration.builder.DefaultBuilder;
-import com.microsoft.azure.services.serviceBus.contract.EntryModelProvider;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 
@@ -27,7 +26,7 @@ public class Configuration  {
 	}
 
 	private void init() {
-		setProperty("ClientConfig", new DefaultClientConfig(EntryModelProvider.class));
+		setProperty("ClientConfig", new DefaultClientConfig());
 	}
 	
 	public static Configuration getInstance() {

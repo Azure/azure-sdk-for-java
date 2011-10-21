@@ -16,19 +16,19 @@ public interface ServiceBusContract {
 	Entry getQueue(String queuePath);
 	Feed getQueues();
 
-	void createTopic(EntryModel<TopicDescription> topic);
+	void createTopic(Entry topic);
 	void deleteTopic(String topicPath);
-	EntryModel<TopicDescription> getTopic(String topicPath);
-	EntryModel<TopicDescription>[] getTopics();
+	Entry getTopic(String topicPath);
+	Feed getTopics();
 
-	void addSubscription(String topicPath, String subscriptionName, EntryModel<SubscriptionDescription> subscription);
+	void addSubscription(String topicPath, String subscriptionName, Entry subscription);
 	void removeSubscription(String topicPath, String subscriptionName);
-	EntryModel<SubscriptionDescription> getSubscription(String topicPath, String subscriptionName);
-	EntryModel<SubscriptionDescription>[] getSubscriptions(String topicPath);
+	Entry getSubscription(String topicPath, String subscriptionName);
+	Feed getSubscriptions(String topicPath);
 
-	void addRule(String topicPath, String subscriptionName, String ruleName, EntryModel<RuleDescription> rule);
+	void addRule(String topicPath, String subscriptionName, String ruleName, Entry rule);
 	void removeRule(String topicPath, String subscriptionName, String ruleName);
-	EntryModel<RuleDescription> getRule(String topicPath, String subscriptionName, String ruleName);
-	EntryModel<RuleDescription> [] getRules(String topicPath, String subscriptionName);
+	Entry getRule(String topicPath, String subscriptionName, String ruleName);
+	Feed getRules(String topicPath, String subscriptionName);
 }
 

@@ -8,11 +8,11 @@ import javax.xml.datatype.DatatypeFactory;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.w3._2005.atom.Content;
+import org.w3._2005.atom.Entry;
 
-import com.microsoft.azure.services.serviceBus.contract.EntryModel;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
-import com.sun.syndication.feed.atom.Entry;
 
 
 public class QueueManagementTest {
@@ -21,10 +21,12 @@ public class QueueManagementTest {
 		// Arrange
 		ServiceBusContract contract = mock(ServiceBusContract.class);
 
-		EntryModel<QueueDescription> entryModel = new EntryModel<QueueDescription>(new Entry(), new QueueDescription());
-		when(contract.getQueue("Hello")).thenReturn(entryModel);
+		Entry entry = new Entry();
+		when(contract.getQueue("Hello")).thenReturn(entry);
 
-		entryModel.getModel().setMessageCount(73L);
+		entry.setContent(new Content());
+		entry.getContent().setQueueDescription(new QueueDescription());
+		entry.getContent().getQueueDescription().setMessageCount(73L);
 		
 		// Act
 		ServiceBusClient client = new ServiceBusClient(contract);
@@ -39,19 +41,19 @@ public class QueueManagementTest {
 	public void queueCreateSendsCreateQueueDescriptionMessage() throws DatatypeConfigurationException {
 		// Arrange
 		ServiceBusContract contract = mock(ServiceBusContract.class);
-
+		
 		// Act
 		ServiceBusClient client = new ServiceBusClient(contract);
-		Queue helloQueue = new Queue(client, "MyNewQueue");
+		Queue helloQueue = client.getQueue("MyNewQueue");
 		helloQueue.setLockDuration(DatatypeFactory.newInstance().newDuration(60 * 1000L));
 		helloQueue.setMaxSizeInMegabytes(42L);
 		helloQueue.save();
 		
 		// Assert
-		ArgumentCaptor<EntryModel> createArg = ArgumentCaptor.forClass(EntryModel.class);
-		verify(contract).createQueue(createArg.capture());
-		Entry entry = createArg.getValue().getEntry();
-		QueueDescription model = (QueueDescription) createArg.getValue().getModel();
+		ArgumentCaptor<Entry> argument = ArgumentCaptor.forClass(Entry.class);
+		verify(contract).createQueue(argument.capture());
+		Entry entry = argument.getValue();
+		QueueDescription model = entry.getContent().getQueueDescription();
 		
 		assertEquals("MyNewQueue", entry.getTitle());
 		assertEquals(DatatypeFactory.newInstance().newDuration(60 * 1000L), model.getLockDuration());

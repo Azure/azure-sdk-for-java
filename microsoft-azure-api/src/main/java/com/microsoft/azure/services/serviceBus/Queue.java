@@ -3,6 +3,7 @@ package com.microsoft.azure.services.serviceBus;
 import javax.xml.datatype.Duration;
 
 import org.w3._2005.atom.Content;
+import org.w3._2005.atom.Entry;
 
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 
@@ -11,19 +12,26 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 		super(client);
 		
 		Content content = new Content();
+		content.setType("application/xml");
 		content.setQueueDescription(new QueueDescription());
 		getEntry().setContent(content);
-		setModel(new QueueDescription());
 		
 		setPath(path);
 	}
 
+	public Queue(ServiceBusClient client, Entry entry) {
+		super(client, entry);
+	}
+
+	QueueDescription getQueueDescription(){
+		return getEntry().getContent().getQueueDescription();
+	}
 	
 	
 	// public object verbs
 	
 	public void save() {
-//		getContract().createQueue(getEntryModel());
+		getContract().createQueue(getEntry());
 	}
 
 	public void delete() {
@@ -31,7 +39,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	}
 	
 	public void fetch() {
-//		setEntryModel(getContract().getQueue(getPath()));
+		setEntry(getContract().getQueue(getPath()));
 	}
 
 
@@ -78,23 +86,23 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	}
 	
     public Duration getLockDuration() {
-    	return getModel().getLockDuration();
+    	return getQueueDescription().getLockDuration();
     }
 
     public void setLockDuration(Duration value) {
-    	getModel().setLockDuration(value);
+    	getQueueDescription().setLockDuration(value);
     }
 
     public Long getMaxSizeInMegabytes() {
-        return getModel().getMaxSizeInMegabytes();
+        return getQueueDescription().getMaxSizeInMegabytes();
     }
 
     public void setMaxSizeInMegabytes(Long value) {
-        getModel().setMaxSizeInMegabytes(value);
+    	getQueueDescription().setMaxSizeInMegabytes(value);
     }
 
     public Long getMessageCount() {
-        return getModel().getMessageCount();
+        return getQueueDescription().getMessageCount();
     }
 
 

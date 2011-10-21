@@ -87,7 +87,7 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 		getChannel().resource("https://lodejard.servicebus.windows.net/")
 			.path(entry.getTitle())
 			.header("Authorization", "WRAP access_token=\"" + accessToken + "\"")
-			.type("application/atom+xml")
+			.type("application/atom+xml;type=entry;charset=utf-8")
 			.put(entry);
 	}
 
@@ -115,108 +115,92 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 	}
 
 
-	public void createTopic(String topicPath, TopicDescription description) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void deleteTopic(String topicPath) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	public void addSubscription(String topicPath, String subscriptionName,
-			SubscriptionDescription description) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void removeSubscription(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	public void addRule(String topicPath, String subscriptionName,
-			String ruleName, RuleDescription description) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void removeRule(String topicPath, String subscriptionName,
-			String ruleName) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
-
-
-	public void createTopic(EntryModel<TopicDescription> topic) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public void addSubscription(String topicPath, String subscriptionName,
-			EntryModel<SubscriptionDescription> subscription) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public void addRule(String topicPath, String subscriptionName,
-			String ruleName, EntryModel<RuleDescription> rule) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	public Feed getQueues() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<TopicDescription> getTopic(String topicPath) {
+	public void createTopic(Entry topic) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void deleteTopic(String topicPath) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public Entry getTopic(String topicPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<TopicDescription>[] getTopics() {
+	public Feed getTopics() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<SubscriptionDescription> getSubscription(
-			String topicPath, String subscriptionName) {
+	public void addSubscription(String topicPath, String subscriptionName,
+			Entry subscription) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void removeSubscription(String topicPath, String subscriptionName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public Entry getSubscription(String topicPath, String subscriptionName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<SubscriptionDescription>[] getSubscriptions(
-			String topicPath) {
+	public Feed getSubscriptions(String topicPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<RuleDescription> getRule(String topicPath,
-			String subscriptionName, String ruleName) {
+	public void addRule(String topicPath, String subscriptionName,
+			String ruleName, Entry rule) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void removeRule(String topicPath, String subscriptionName,
+			String ruleName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public Entry getRule(String topicPath, String subscriptionName,
+			String ruleName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public EntryModel<RuleDescription>[] getRules(String topicPath,
-			String subscriptionName) {
+	public Feed getRules(String topicPath, String subscriptionName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
+
+
+
 
 }
