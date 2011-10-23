@@ -1,188 +1,156 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
+import java.rmi.UnexpectedException;
+
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.w3._2005.atom.Entry;
 import org.w3._2005.atom.Feed;
 
+import com.microsoft.azure.auth.wrap.WrapFilter;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.filter.ClientFilter;
-import com.sun.jersey.api.representation.Form;
+import com.sun.jersey.api.client.WebResource;
 
-public class ServiceBusContractImpl implements ServiceBusContract  {
-
-	public class AtomFilter extends ClientFilter {
-
-		@Override
-		public ClientResponse handle(ClientRequest cr)
-				throws ClientHandlerException {
-			
-			return getNext().handle(cr);
-		}
-
-	}
+public class ServiceBusContractImpl implements ServiceBusContract {
 
 	private Client channel;
+	private String uri;
+	private BrokerPropertiesMapper mapper;
 
 	@Inject
-	public ServiceBusContractImpl(Client channel) {
-		channel.addFilter(new AtomFilter());
-		this.setChannel(channel);
+	public ServiceBusContractImpl(
+			Client channel, WrapFilter authFilter,
+			@Named("serviceBus.uri") String uri,
+			BrokerPropertiesMapper mapper) {
+
+		this.channel = channel;
+		this.uri = uri;
+		this.mapper = mapper;
+		channel.addFilter(authFilter);
 	}
-	
 
 	public Client getChannel() {
 		return channel;
 	}
 
-
-
 	public void setChannel(Client channel) {
 		this.channel = channel;
 	}
 
-
-	public void sendMessage(String path, BrokeredMessage message) {
-		// TODO Auto-generated method stub
-
+	public void sendMessage(String path, BrokerProperties properties) {
+		getResource()
+			.path(path)
+			.path("messages")
+			.header("BrokerProperties", mapper.toString(properties))
+			.post("Hello world");
 	}
 
-	public BrokeredMessage receiveMessage(String queuePath, int timeout,
+	public MessageResult receiveMessage(String queuePath, int timeout,
 			ReceiveMode receiveMode) {
-		// TODO Auto-generated method stub
-		return null;
+		MessageResult result = new MessageResult();
+		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+			ClientResponse clientResult = getResource()
+				.path(queuePath)
+				.path("messages")
+				.path("head")
+				.queryParam("timeout", Integer.toString(timeout))
+				.delete(ClientResponse.class);
+			
+			result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
+			result.setBody(clientResult.getEntityInputStream());
+			return result;
+		}
+		throw new RuntimeException("Unknown ReceiveMode");
 	}
 
-	public BrokeredMessage receiveMessage(String topicPath,
-			String subscriptionName, int timeout, ReceiveMode receiveMode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public void abandonMessage(BrokeredMessage message) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void completeMessage(BrokeredMessage message) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void createQueue(Entry entry) {
-		Form form = new Form();
-		form.add("wrap_name", "owner");
-		form.add("wrap_password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-		form.add("wrap_scope", "http://lodejard.servicebus.windows.net/");
-		
-		Form wrapResponse = getChannel().resource("https://lodejard-sb.accesscontrol.windows.net/")
-			.path("WRAPv0.9")
-			.post(Form.class, form);
-		String accessToken = wrapResponse.get("wrap_access_token").get(0);
-		
-		getChannel().resource("https://lodejard.servicebus.windows.net/")
+	public Entry createQueue(Entry entry) {
+		return getResource()
 			.path(entry.getTitle())
-			.header("Authorization", "WRAP access_token=\"" + accessToken + "\"")
-			.type("application/atom+xml;type=entry;charset=utf-8")
-			.put(entry);
+			.type("application/atom+xml")//;type=entry;charset=utf-8")
+			.put(Entry.class, entry);
 	}
 
 	public void deleteQueue(String queuePath) {
-		
+		getResource()
+			.path(queuePath)
+			.delete();
+	}
+
+	private WebResource getResource() {
+		return getChannel()
+			.resource(uri);
 	}
 
 	public Entry getQueue(String queuePath) {
-		Form form = new Form();
-		form.add("wrap_name", "owner");
-		form.add("wrap_password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-		form.add("wrap_scope", "http://lodejard.servicebus.windows.net/");
-		
-		Form wrapResponse = getChannel().resource("https://lodejard-sb.accesscontrol.windows.net/")
-			.path("WRAPv0.9")
-			.post(Form.class, form);
-		String accessToken = wrapResponse.get("wrap_access_token").get(0);
-		
-		//GenericType<EntryModel<QueueDescription>> genericType = new GenericType<EntryModel<QueueDescription>>() { };
-			
-		return getChannel().resource("https://lodejard.servicebus.windows.net/")
-			.path(queuePath)
-			.header("Authorization", "WRAP access_token=\"" + accessToken + "\"")
-			.get(Entry.class);
+		return getResource()
+				.path(queuePath)
+				.get(Entry.class);
 	}
-
 
 	public Feed getQueues() {
-		// TODO Auto-generated method stub
-		return null;
+		return getResource()
+				.path("$Resources/Queues")
+				.get(Feed.class);
 	}
 
-
-	public void createTopic(Entry topic) {
-		// TODO Auto-generated method stub
-		
+	public Entry createTopic(Entry entry) {
+		return getResource()
+			.path(entry.getTitle())
+			.type("application/atom+xml")//;type=entry;charset=utf-8")
+			.put(Entry.class, entry);
 	}
-
 
 	public void deleteTopic(String topicPath) {
-		// TODO Auto-generated method stub
-		
+		getResource()
+			.path(topicPath)
+			.delete();
 	}
-
 
 	public Entry getTopic(String topicPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public Feed getTopics() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public void addSubscription(String topicPath, String subscriptionName,
 			Entry subscription) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public void removeSubscription(String topicPath, String subscriptionName) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public Entry getSubscription(String topicPath, String subscriptionName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public Feed getSubscriptions(String topicPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public void addRule(String topicPath, String subscriptionName,
 			String ruleName, Entry rule) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public void removeRule(String topicPath, String subscriptionName,
 			String ruleName) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public Entry getRule(String topicPath, String subscriptionName,
 			String ruleName) {
@@ -190,17 +158,10 @@ public class ServiceBusContractImpl implements ServiceBusContract  {
 		return null;
 	}
 
-
 	public Feed getRules(String topicPath, String subscriptionName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-
-
-
 
 
 }

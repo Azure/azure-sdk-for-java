@@ -1,21 +1,27 @@
 package com.microsoft.azure.configuration.builder;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 
 
 public class DefaultBuilder implements Builder, Builder.Registry {
 	Map<Class<?>, Factory<?>> factories;
+	Map<Class<?>, List<Alteration<?>>> alterations;
 
 	public DefaultBuilder() {
 		factories = new HashMap<Class<?>, Factory<?>>();
+		alterations = new HashMap<Class<?>, List<Alteration<?>>>();
 	}
 	
 	public static DefaultBuilder create() {
@@ -24,7 +30,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		for(Builder.Exports exports : ServiceLoader.load(Builder.Exports.class)) {
 			exports.register(builder);
 		}
-				
+
 		return builder;
 	}
 
@@ -36,25 +42,66 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 		return add(service, service);		
 	}
 
-	
+	Constructor<?> findInjectConstructor(Class<?> implementation) {
 
-	public <T, TImpl> Builder.Registry add(Class<T> service, final Class<TImpl> implementation) {
-		Constructor<?>[] ctors = implementation.getConstructors();
-		for(final Constructor<?> ctor : ctors) {
+		Constructor<?> withInject = null;
+		Constructor<?> withoutInject = null;
+		int count = 0;
+		
+		for (Constructor<?> ctor : implementation.getConstructors()) {
 			if (ctor.getAnnotation(Inject.class) != null) {
-				final Class<?>[] parameterTypes = ctor.getParameterTypes();
-				addFactory(service, new Builder.Factory<T>() {
-					@SuppressWarnings("unchecked")
-					public T create(Builder builder, Map<String,Object> properties) throws Exception {
-						Object[] initargs = new Object[parameterTypes.length];
-						for(int i = 0; i != parameterTypes.length; ++i) {
-							initargs[i] = builder.build(parameterTypes[i], properties);
-						}
-						
-						return (T) ctor.newInstance(initargs);
-				}});
+				if (withInject != null){
+					throw new RuntimeException("Class must not have multple @Inject annotations: " + implementation.getName());
+				}
+				withInject = ctor;
+			}
+			else {
+				++count;
+				withoutInject = ctor;
 			}
 		}
+		if (withInject != null) {
+			return withInject;
+		}
+		if (count != 1) {
+			throw new RuntimeException("Class without @Inject annotation must have one constructor: " + implementation.getName());
+		}
+		return withoutInject;
+	}
+
+	public <T, TImpl> Builder.Registry add(Class<T> service, final Class<TImpl> implementation) {
+		final Constructor<?> ctor = findInjectConstructor(implementation);
+		final Class<?>[] parameterTypes = ctor.getParameterTypes();
+		final Annotation[][] parameterAnnotations = ctor.getParameterAnnotations();
+		
+		addFactory(service, new Builder.Factory<T>() {
+			@SuppressWarnings("unchecked")
+			public T create(Builder builder, Map<String,Object> properties) throws Exception {
+				Object[] initargs = new Object[parameterTypes.length];
+				for(int i = 0; i != parameterTypes.length; ++i) {
+					boolean located = false;
+					
+					Annotation[] annotations = parameterAnnotations[i];
+					for(int ii = 0; ii != annotations.length && !located; ++ii){
+						if (Named.class.isAssignableFrom(annotations[ii].getClass())) {
+							located = true;
+
+							Named named = (Named)annotations[ii];
+							if (!properties.containsKey(named.value())) {
+								throw new RuntimeException("Configuration missing required property: " + named.value());
+							}
+							initargs[i] = properties.get(named.value());
+						}
+					}
+					
+					if (!located) {
+						initargs[i] = builder.build(parameterTypes[i], properties);
+					}
+				}
+				
+				return (T) ctor.newInstance(initargs);
+			}
+		});
 		return this;
 	}
 
@@ -72,15 +119,28 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 	}
 		
     
+	@SuppressWarnings("unchecked")
 	public <T> T build(Class<T> service, Map<String,Object> properties) throws Exception {
-		@SuppressWarnings("unchecked")
 		Factory<T> factory = (Factory<T>) factories.get(service);
 		if (factory == null) {
-			return null;
+			throw new RuntimeException("Service not registered: " + service.getName());
 		}
-    	return factory.create(this, properties);
+    	T instance = factory.create(this, properties);
+    	List<Alteration<?>> alterationList = alterations.get(service);
+    	if (alterationList != null){
+    		for(Alteration<?> alteration : alterationList){
+    			instance = ((Alteration<T>)alteration).alter(instance, this, properties);
+    		}
+    	}
+    	return instance;
     }
 
+	public <T> void alter(Class<T> service, Alteration<T> alteration) {
+		if (!this.alterations.containsKey(service)) {
+			this.alterations.put(service, new ArrayList<Alteration<?>>());
+		}
+		this.alterations.get(service).add(alteration);
+	}
 
 
 }

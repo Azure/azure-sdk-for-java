@@ -1,34 +1,36 @@
 package com.microsoft.azure.services.serviceBus;
 
+import javax.ws.rs.core.MediaType;
+
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 
-public class Entity<T> {
+abstract class AbstractEntity {
 
-	protected ServiceBusClient client;
-	private Entry entry;
+	ServiceBusClient client;
+	Entry entry;
 
-	public Entity(ServiceBusClient client) {
+	AbstractEntity(ServiceBusClient client) {
 		this.client = client;
 		setEntry(new org.w3._2005.atom.Entry());
 		getEntry().setContent(new Content());
+		getEntry().getContent().setType(MediaType.APPLICATION_XML);
 	}
-	
-	public Entity(ServiceBusClient client, Entry entry) {
+
+	AbstractEntity(ServiceBusClient client, Entry entry) {
 		this.client = client;
 		this.entry = entry;
 	}
-	
+
 	protected ServiceBusClient getClient() {
 		return client;
 	}
-	
+
 	protected ServiceBusContract getContract() {
 		return getClient().getContract();
 	}
-
 
 	protected Entry getEntry() {
 		return entry;
@@ -37,6 +39,4 @@ public class Entity<T> {
 	protected void setEntry(Entry entry) {
 		this.entry = entry;
 	}
-
-
 }

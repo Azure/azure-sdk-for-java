@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import com.microsoft.azure.configuration.builder.Builder;
 import com.microsoft.azure.configuration.builder.DefaultBuilder;
+import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 
 public class Configuration  {
@@ -26,18 +28,14 @@ public class Configuration  {
 	}
 
 	private void init() {
-		setProperty("ClientConfig", new DefaultClientConfig());
-	}
-	
-	public static Configuration getInstance() {
-		if (instance == null) {
-			setInstance(load());
+//		DefaultClientConfig clientConfig = new DefaultClientConfig();
+//		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
+		try {
+			setProperty("ClientConfig", builder.build(ClientConfig.class, properties));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return instance;
-	}
-	
-	public static void setInstance(Configuration instance) {
-		Configuration.instance = instance;
 	}
 	
 	public static Configuration load() {

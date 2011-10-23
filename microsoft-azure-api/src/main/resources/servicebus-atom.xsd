@@ -26,9 +26,10 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:complexType name="content">
-		<xs:choice>
-			<xs:element ref="sb:QueueDescription"></xs:element>
-		</xs:choice>
+		<xs:sequence>
+			<xs:element ref="sb:QueueDescription" minOccurs="0" />
+			<xs:element ref="sb:TopicDescription" minOccurs="0" />
+		</xs:sequence>
 		<xs:attribute name="type" type="xs:string" />
 	</xs:complexType>
 </xs:schema>

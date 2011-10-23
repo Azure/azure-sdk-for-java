@@ -15,7 +15,7 @@ public class ServiceBusClient  {
 	ServiceBusContract contract;
 
 	public ServiceBusClient() throws Exception {
-		this(Configuration.getInstance());
+		this(Configuration.load());
 	}
 	
 	public ServiceBusClient(Configuration config) throws Exception {

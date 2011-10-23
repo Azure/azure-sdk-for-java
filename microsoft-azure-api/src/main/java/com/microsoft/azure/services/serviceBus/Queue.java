@@ -1,25 +1,26 @@
 package com.microsoft.azure.services.serviceBus;
 
 import javax.xml.datatype.Duration;
-
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
+import com.microsoft.azure.services.serviceBus.contract.ReceiveMode;
 
-public class Queue extends Entity<QueueDescription> implements MessageSender, MessageReceiver {
+public class Queue extends AbstractEntity implements MessageSender, MessageReceiver {
 	Queue(ServiceBusClient client, String path) {
 		super(client);
 		
 		Content content = new Content();
+
+		getEntry().setContent(content);
 		content.setType("application/xml");
 		content.setQueueDescription(new QueueDescription());
-		getEntry().setContent(content);
 		
 		setPath(path);
 	}
 
-	public Queue(ServiceBusClient client, Entry entry) {
+	Queue(ServiceBusClient client, Entry entry) {
 		super(client, entry);
 	}
 
@@ -28,10 +29,10 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	}
 	
 	
-	// public object verbs
+	// API methods
 	
 	public void save() {
-		getContract().createQueue(getEntry());
+		setEntry(getContract().createQueue(getEntry()));
 	}
 
 	public void delete() {
@@ -50,6 +51,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 	}
 	
 	public Message receiveMessage(int timeout) {
+		getContract().receiveMessage(getPath(), timeout, ReceiveMode.RECEIVE_AND_DELETE);
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -75,7 +77,7 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
 
 	
 	
-	// entity state properties
+	// API properties
 
 	public String getPath() {
 		return getEntry().getTitle();
@@ -104,10 +106,4 @@ public class Queue extends Entity<QueueDescription> implements MessageSender, Me
     public Long getMessageCount() {
         return getQueueDescription().getMessageCount();
     }
-
-
-
-
-
-
 }

@@ -5,18 +5,18 @@ import org.w3._2005.atom.Feed;
 
 
 public interface ServiceBusContract {
-	void sendMessage(String path, BrokeredMessage message);
-	BrokeredMessage receiveMessage(String queuePath, int timeout, ReceiveMode receiveMode);
-	BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode);
-	void abandonMessage(BrokeredMessage message);
-	void completeMessage(BrokeredMessage message);
+	void sendMessage(String path, BrokerProperties properties);
+	MessageResult receiveMessage(String queuePath, int timeout, ReceiveMode receiveMode);
+	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode);
+	//void abandonMessage(BrokeredMessage message);
+	//void completeMessage(BrokeredMessage message);
 
-	void createQueue(Entry queue);
+	Entry createQueue(Entry queue);
 	void deleteQueue(String queuePath);
 	Entry getQueue(String queuePath);
 	Feed getQueues();
 
-	void createTopic(Entry topic);
+	Entry createTopic(Entry topic);
 	void deleteTopic(String topicPath);
 	Entry getTopic(String topicPath);
 	Feed getTopics();

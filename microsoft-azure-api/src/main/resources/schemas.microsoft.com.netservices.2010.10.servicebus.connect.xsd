@@ -101,7 +101,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="QueueDescription" nillable="true" type="tns:QueueDescription" />
+  <xs:element name="QueueDescription" type="tns:QueueDescription" />
   <xs:complexType name="SubscriptionDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
@@ -169,7 +169,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="SubscriptionDescription" nillable="true" type="tns:SubscriptionDescription" />
+  <xs:element name="SubscriptionDescription" type="tns:SubscriptionDescription" />
   <xs:complexType name="RuleDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="Filter" type="tns:Filter">
@@ -299,5 +299,5 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="TopicDescription" nillable="true" type="tns:TopicDescription" />
+  <xs:element name="TopicDescription" type="tns:TopicDescription" />
 </xs:schema>
