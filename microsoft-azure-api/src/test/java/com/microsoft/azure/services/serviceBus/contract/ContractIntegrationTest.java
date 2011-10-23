@@ -6,18 +6,11 @@ import org.w3._2005.atom.Entry;
 import org.w3._2005.atom.Feed;
 
 import com.microsoft.azure.configuration.Configuration;
+import com.microsoft.azure.services.serviceBus.IntegrationTestBase;
+
 import static org.junit.Assert.*;
 
-public class ContractIntegrationTest {
-	private Configuration createConfiguration() {
-		Configuration config = new Configuration();
-		config.setProperty("serviceBus.uri", "https://lodejard.servicebus.windows.net");
-		config.setProperty("wrapClient.uri", "https://lodejard-sb.accesscontrol.windows.net/WRAPv0.9");
-		config.setProperty("wrapClient.name", "owner");
-		config.setProperty("wrapClient.password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-		config.setProperty("wrapClient.scope", "http://lodejard.servicebus.windows.net/");
-		return config;
-	}
+public class ContractIntegrationTest extends IntegrationTestBase {
 
 	@Test
 	public void fetchQueueAndListQueuesWorks() throws Exception {
@@ -45,7 +38,7 @@ public class ContractIntegrationTest {
 		Content content = new Content();
 		QueueDescription description = new QueueDescription();
 		
-		entry.setTitle("createQueueWorks");
+		entry.setTitle("TestCreateQueueWorks");
 		entry.setContent(content);
 		content.setType("application/xml");
 		content.setQueueDescription(description);
@@ -63,8 +56,7 @@ public class ContractIntegrationTest {
 		ServiceBusContract contract = config.create(ServiceBusContract.class);
 
 		// Act
-		assertTrue("won't do this - can't recreate it yet", false);
-		contract.deleteQueue("Hello");
+		contract.deleteQueue("TestAlpha");
 		
 		// Assert
 	}
@@ -78,7 +70,7 @@ public class ContractIntegrationTest {
 		BrokerProperties props = new BrokerProperties();
 
 		// Act
-		contract.sendMessage("Hello", props);
+		contract.sendMessage("TestAlpha", props);
 
 		// Assert
 	}
@@ -92,8 +84,8 @@ public class ContractIntegrationTest {
 		BrokerProperties props = new BrokerProperties();
 
 		// Act
-		contract.sendMessage("Hello", props);
-		contract.receiveMessage("Hello", 500, ReceiveMode.RECEIVE_AND_DELETE);
+		contract.sendMessage("TestAlpha", props);
+		contract.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
 
 		// Assert
 	}

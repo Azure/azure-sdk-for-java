@@ -44,6 +44,7 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 			.path(path)
 			.path("messages")
 			.header("BrokerProperties", mapper.toString(properties))
+			.header("Content-Length", 11)
 			.post("Hello world");
 	}
 

@@ -9,7 +9,6 @@ import com.microsoft.azure.configuration.Configuration;
 public class WrapClientIntegrationTest {
 	private Configuration createConfiguration() {
 		Configuration config = new Configuration();
-		config.setProperty("serviceBus.uri", "https://lodejard.servicebus.windows.net");
 		config.setProperty("wrapClient.uri", "https://lodejard-sb.accesscontrol.windows.net/WRAPv0.9");
 		config.setProperty("wrapClient.scope", "http://lodejard.servicebus.windows.net/");
 		config.setProperty("wrapClient.name", "owner");

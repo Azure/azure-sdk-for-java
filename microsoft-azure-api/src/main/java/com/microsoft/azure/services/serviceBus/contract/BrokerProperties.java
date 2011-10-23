@@ -1,37 +1,45 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
+import org.codehaus.jackson.annotate.JsonGetter;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonWriteNullProperties(false)
 public class BrokerProperties {
 	@JsonProperty("DeliveryCount")
-	int deliveryCount;
+	Integer deliveryCount;
 
 	@JsonProperty("MessageId")
 	String messageId;
 	
 	@JsonProperty("SequenceNumber")
-	int sequenceNumber;
+	Long sequenceNumber;
 	
 	@JsonProperty("TimeToLive")
-	long timeToLive;
+	Long timeToLive;
 
 	/**
 	 * @return the deliveryCount
 	 */
-	public int getDeliveryCount() {
+	@JsonIgnore
+	public Integer getDeliveryCount() {
 		return deliveryCount;
 	}
 
 	/**
 	 * @param deliveryCount the deliveryCount to set
 	 */
-	public void setDeliveryCount(int deliveryCount) {
+	public void setDeliveryCount(Integer deliveryCount) {
 		this.deliveryCount = deliveryCount;
 	}
 
 	/**
 	 * @return the messageId
 	 */
+	@JsonIgnore
 	public String getMessageId() {
 		return messageId;
 	}
@@ -46,28 +54,30 @@ public class BrokerProperties {
 	/**
 	 * @return the sequenceNumber
 	 */
-	public int getSequenceNumber() {
+	@JsonIgnore
+	public Long getSequenceNumber() {
 		return sequenceNumber;
 	}
 
 	/**
 	 * @param sequenceNumber the sequenceNumber to set
 	 */
-	public void setSequenceNumber(int sequenceNumber) {
+	public void setSequenceNumber(Long sequenceNumber) {
 		this.sequenceNumber = sequenceNumber;
 	}
 
 	/**
 	 * @return the timeToLive
 	 */
-	public long getTimeToLive() {
+	@JsonIgnore
+	public Long getTimeToLive() {
 		return timeToLive;
 	}
 
 	/**
 	 * @param timeToLive the timeToLive to set
 	 */
-	public void setTimeToLive(long timeToLive) {
+	public void setTimeToLive(Long timeToLive) {
 		this.timeToLive = timeToLive;
 	}
 

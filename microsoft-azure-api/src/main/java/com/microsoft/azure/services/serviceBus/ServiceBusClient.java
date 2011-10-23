@@ -39,7 +39,7 @@ public class ServiceBusClient  {
 		Feed descriptions = contract.getQueues();
 		ArrayList<Queue> queues = new ArrayList<Queue>();
 		for (int i = 0; i != descriptions.getEntries().size(); ++i) {
-			queues.set(i, new Queue(this, descriptions.getEntries().get(i)));
+			queues.add(new Queue(this, descriptions.getEntries().get(i)));
 		}
 		return queues;
 	}
