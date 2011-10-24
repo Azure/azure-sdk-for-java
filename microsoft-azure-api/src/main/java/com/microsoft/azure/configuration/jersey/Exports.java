@@ -13,13 +13,13 @@ public class Exports implements Builder.Exports {
 
 	public void register(Registry registry) {
 		registry.add(new Builder.Factory<ClientConfig>() {
-			public ClientConfig create(Builder builder, Map<String, Object> properties) {
+			public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
 				return new DefaultClientConfig();
 			}
 		});
 		
 		registry.add(new Builder.Factory<Client>() {
-			public Client create(Builder builder, Map<String, Object> properties) {
+			public Client create(String profile, Builder builder, Map<String, Object> properties) {
 				ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
 				Client client = Client.create(clientConfig);
 				client.addFilter(new LoggingFilter());

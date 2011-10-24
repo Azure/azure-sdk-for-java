@@ -31,7 +31,7 @@ public class Configuration  {
 //		DefaultClientConfig clientConfig = new DefaultClientConfig();
 //		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
 		try {
-			setProperty("ClientConfig", builder.build(ClientConfig.class, properties));
+			setProperty("ClientConfig", builder.build("", ClientConfig.class, properties));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,9 +44,13 @@ public class Configuration  {
 	}
 	
 	public <T> T create(Class<T> service) throws Exception {
-		return builder.build(service, properties);
+		return builder.build("", service, properties);
 	}
-	
+
+	public <T> T create(String profile, Class<T> service) throws Exception {
+		return builder.build(profile, service, properties);
+	}
+
 	public Builder getBuilder() {
 		return builder;
 	}

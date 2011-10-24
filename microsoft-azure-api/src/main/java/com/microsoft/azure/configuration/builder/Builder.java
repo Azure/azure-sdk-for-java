@@ -5,10 +5,10 @@ import java.util.Map;
 
 public interface Builder {
 
-	public abstract <T> T build(Class<T> service, Map<String,Object> properties) throws Exception;
+	public abstract <T> T build(String profile, Class<T> service, Map<String,Object> properties) throws Exception;
 
 	public interface Factory<T> {
-		T create(Builder builder, Map<String,Object> properties) throws Exception;
+		T create(String profile, Builder builder, Map<String,Object> properties) throws Exception;
 	}
 	
 	public interface Alteration<T> {

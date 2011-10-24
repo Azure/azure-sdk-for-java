@@ -5,25 +5,34 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class DefaultBuilderTest {
 
+	Map<String, Object> properties;
+	DefaultBuilder builder;
+
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
+	@Before
+	public void init() {
+		properties = new HashMap<String, Object>();
+		builder = new DefaultBuilder();
+	}
+	
 	@Test
 	public void namedAnnotationsComeFromBuildProperties() throws Exception {
 		// Arrange
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithNamedParameter.class);
 
 		// Act
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put("Foo", "world");
-		ClassWithNamedParameter cwnp = builder.build(
+		ClassWithNamedParameter cwnp = builder.build("",
 				ClassWithNamedParameter.class, properties);
 
 		// Assert
@@ -35,12 +44,10 @@ public class DefaultBuilderTest {
 		// Arrange
 		thrown.expect(RuntimeException.class);
 
-		Map<String, Object> properties = new HashMap<String, Object>();
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithNamedParameter.class);
 
 		// Act
-		ClassWithNamedParameter cwnp = builder.build(
+		ClassWithNamedParameter cwnp = builder.build("",
 				ClassWithNamedParameter.class, properties);
 
 		// Assert
@@ -50,12 +57,10 @@ public class DefaultBuilderTest {
 	@Test
 	public void singleCtorWithNoInjectShouldBeUsed() throws Exception {
 		// Arrange
-		Map<String, Object> properties = new HashMap<String, Object>();
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithSingleCtorNoInject.class);
 
 		// Act
-		ClassWithSingleCtorNoInject result = builder.build(
+		ClassWithSingleCtorNoInject result = builder.build("",
 				ClassWithSingleCtorNoInject.class, properties);
 
 		// Assert
@@ -67,12 +72,10 @@ public class DefaultBuilderTest {
 		// Arrange
 		thrown.expect(RuntimeException.class);
 
-		Map<String, Object> properties = new HashMap<String, Object>();
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithMultipleCtorNoInject.class);
 
 		// Act
-		ClassWithMultipleCtorNoInject result = builder.build(
+		ClassWithMultipleCtorNoInject result = builder.build("",
 				ClassWithMultipleCtorNoInject.class, properties);
 
 		// Assert
@@ -84,12 +87,10 @@ public class DefaultBuilderTest {
 		// Arrange
 		thrown.expect(RuntimeException.class);
 
-		Map<String, Object> properties = new HashMap<String, Object>();
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithMultipleCtorMultipleInject.class);
 
 		// Act
-		ClassWithMultipleCtorMultipleInject result = builder.build(
+		ClassWithMultipleCtorMultipleInject result = builder.build("",
 				ClassWithMultipleCtorMultipleInject.class, properties);
 
 		// Assert
@@ -99,15 +100,64 @@ public class DefaultBuilderTest {
 	@Test 
 	public void alterationExecutesWhenInstanceCreated() throws Exception {
 		// Arrange
-		Map<String, Object> properties = new HashMap<String, Object>();
-		DefaultBuilder builder = new DefaultBuilder();
 		builder.add(ClassWithProperties.class);
 		builder.alter(ClassWithProperties.class, new AlterClassWithProperties());
 
 		// Act
-		ClassWithProperties result = builder.build(ClassWithProperties.class, properties);
+		ClassWithProperties result = builder.build("",ClassWithProperties.class, properties);
 		
 		// Assert
 		Assert.assertEquals("one - changed", result.getFoo());
+	}
+	
+	@Test
+	public void namedParametersUseProfileBasedKeysFirst() throws Exception {
+		// Arrange
+		builder.add(ClassWithNamedParameter.class);
+		properties.put("Foo", "fallback");
+		properties.put("testing.Foo", "Profile foo value");
+
+		// Act
+		ClassWithNamedParameter result = builder.build("testing", ClassWithNamedParameter.class, properties);
+		
+		// Assert
+		Assert.assertEquals("Profile foo value", result.getHello());
+	}
+	
+	@Test
+	public void namedParametersFallBackToNonProfileBasedKeys() throws Exception {
+		// Arrange
+		builder.add(ClassWithNamedParameter.class);
+		properties.put("Foo", "fallback");
+		properties.put("testing.Foo", "Profile foo value");
+
+		// Act
+		ClassWithNamedParameter result1 = builder.build("", ClassWithNamedParameter.class, properties);
+		ClassWithNamedParameter result2 = builder.build("production", ClassWithNamedParameter.class, properties);
+		ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class, properties);
+		
+		// Assert
+		Assert.assertEquals("fallback", result1.getHello());
+		Assert.assertEquals("fallback", result2.getHello());
+		Assert.assertEquals("fallback", result2.getHello());
+	}
+
+	@Test
+	public void namedParamatersFallBackFromLeftToRight() throws Exception {
+		// Arrange
+		builder.add(ClassWithNamedParameter.class);
+		properties.put("Foo", "fallback");
+		properties.put("custom.Foo", "custom.Foo value");
+		properties.put("testing.custom.Foo", "testing.custom.Foo value");
+
+		// Act
+		ClassWithNamedParameter result1 = builder.build("custom", ClassWithNamedParameter.class, properties);
+		ClassWithNamedParameter result2 = builder.build("production.custom", ClassWithNamedParameter.class, properties);
+		ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class, properties);
+		
+		// Assert
+		Assert.assertEquals("custom.Foo value", result1.getHello());
+		Assert.assertEquals("custom.Foo value", result2.getHello());
+		Assert.assertEquals("testing.custom.Foo value", result3.getHello());
 	}
 }

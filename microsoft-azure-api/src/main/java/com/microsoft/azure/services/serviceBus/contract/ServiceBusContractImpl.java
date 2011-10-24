@@ -21,7 +21,8 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 
 	@Inject
 	public ServiceBusContractImpl(
-			Client channel, WrapFilter authFilter,
+			Client channel, 
+			@Named("serviceBus") WrapFilter authFilter,
 			@Named("serviceBus.uri") String uri,
 			BrokerPropertiesMapper mapper) {
 

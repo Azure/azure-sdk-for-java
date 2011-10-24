@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 
 public class ContractIntegrationTest extends IntegrationTestBase {
 
+	
 	@Test
 	public void fetchQueueAndListQueuesWorks() throws Exception {
 		// Arrange
@@ -19,7 +20,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		ServiceBusContract contract = config.create(ServiceBusContract.class);
 
 		// Act
-		Entry entry = contract.getQueue("Hello");
+		Entry entry = contract.getQueue("TestAlpha");
 		Feed feed = contract.getQueues();
 		
 		// Assert
@@ -44,7 +45,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		content.setQueueDescription(description);
 		description.setMaxSizeInMegabytes(1024L);
 		
-		contract.createQueue(entry);
+		Entry entry2 = contract.createQueue(entry);
 		
 		// Assert
 	}

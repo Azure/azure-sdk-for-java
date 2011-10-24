@@ -15,10 +15,10 @@ public class WrapClient {
 	@Inject
 	public WrapClient(
 			WrapContract contract, 
-			@Named("wrapClient.uri") String uri,
-			@Named("wrapClient.scope") String scope,
-			@Named("wrapClient.name") String name,
-			@Named("wrapClient.password") String password) {
+			@Named("wrap.uri") String uri,
+			@Named("wrap.scope") String scope,
+			@Named("wrap.name") String name,
+			@Named("wrap.password") String password) {
 		this.contract = contract;
 		this.uri = uri;
 		this.scope = scope;
