@@ -30,7 +30,7 @@ public abstract class IntegrationTestBase {
 		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);
 		for(Queue queue : client.listQueues()){
 			if (queue.getPath().startsWith("Test") || queue.getPath().startsWith("test")) {
-				if (queue.getPath() == "testalpha") {
+				if (queue.getPath().equalsIgnoreCase("TestAlpha")) {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
 					for(long i = 0; i != count; ++i) {
