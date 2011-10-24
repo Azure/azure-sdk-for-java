@@ -22,14 +22,27 @@ public abstract class IntegrationTestBase {
 
 	@Before
 	public void initialize() throws Exception {
-		
+		System.setProperty("http.proxyHost", "157.54.119.101");
+		System.setProperty("http.proxyPort", "80");
 		System.setProperty("http.keepAlive", "false");
 		
+		boolean testAlphaExists = false;
 		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);
 		for(Queue queue : client.listQueues()){
-			if (queue.getPath().startsWith("Test") || queue.getPath().startsWith("test"))
-				queue.delete();
+			if (queue.getPath().startsWith("Test") || queue.getPath().startsWith("test")) {
+				if (queue.getPath() == "testalpha") {
+					testAlphaExists = true;
+					long count = queue.getMessageCount();
+					for(long i = 0; i != count; ++i) {
+						queue.receiveMessage(2000);
+					}
+				} else {
+					queue.delete();
+				}
+			}
 		}
-		client.getQueue("TestAlpha").save();
+		if (!testAlphaExists) {
+			client.getQueue("TestAlpha").save();
+		}
 	}
 }

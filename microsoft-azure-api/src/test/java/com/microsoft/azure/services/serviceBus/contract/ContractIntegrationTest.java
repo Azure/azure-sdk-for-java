@@ -57,7 +57,17 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		ServiceBusContract contract = config.create(ServiceBusContract.class);
 
 		// Act
-		contract.deleteQueue("TestAlpha");
+		Entry entry = new Entry();
+		Content content = new Content();
+		QueueDescription description = new QueueDescription();
+		
+		entry.setTitle("TestDeleteQueueWorks");
+		entry.setContent(content);
+		content.setType("application/xml");
+		content.setQueueDescription(description);
+		contract.createQueue(entry);
+
+		contract.deleteQueue("TestDeleteQueueWorks");
 		
 		// Assert
 	}
