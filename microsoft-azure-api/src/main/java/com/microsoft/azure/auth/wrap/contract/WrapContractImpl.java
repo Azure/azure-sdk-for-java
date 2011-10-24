@@ -26,8 +26,12 @@ public class WrapContractImpl implements WrapContract {
 			.post(Form.class, requestForm);
 		
 		WrapResponse response = new WrapResponse();
+				
 		response.setAccessToken(responseForm.getFirst("wrap_access_token"));
-		response.setExpiresIn(responseForm.getFirst("wrap_access_token_expires_in"));
+		
+		String expiresIn = responseForm.getFirst("wrap_access_token_expires_in");
+		response.setExpiresIn(Long.parseLong(expiresIn));
+		
 		return response;
 	}
 }

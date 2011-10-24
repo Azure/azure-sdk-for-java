@@ -2,7 +2,7 @@ package com.microsoft.azure.auth.wrap.contract;
 
 public class WrapResponse {
 	String accessToken;
-	String expiresIn;
+	long expiresIn;
 	
 	/**
 	 * @return the accessToken
@@ -19,13 +19,13 @@ public class WrapResponse {
 	/**
 	 * @return the expiresIn
 	 */
-	public String getExpiresIn() {
+	public long getExpiresIn() {
 		return expiresIn;
 	}
 	/**
 	 * @param expiresIn the expiresIn to set
 	 */
-	public void setExpiresIn(String expiresIn) {
+	public void setExpiresIn(long expiresIn) {
 		this.expiresIn = expiresIn;
 	}
 }
