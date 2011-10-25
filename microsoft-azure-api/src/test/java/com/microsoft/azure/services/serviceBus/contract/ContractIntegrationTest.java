@@ -95,11 +95,34 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		ServiceBusContract contract = config.create(ServiceBusContract.class);
 
 		BrokerProperties props = new BrokerProperties();
+		contract.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
 
 		// Act
-		contract.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
 		MessageResult message = contract.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
 
 		// Assert
+		byte[] data = new byte[100];
+		int size = message.getBody().read(data);
+		assertEquals(11, size);
+		assertArrayEquals("Hello World".getBytes(), data);
+	}
+	
+	@Test
+	public void peekLockMessageWorks() throws Exception {
+		// Arrange
+		Configuration config = createConfiguration();
+		ServiceBusContract contract = config.create(ServiceBusContract.class);
+
+		BrokerProperties props = new BrokerProperties();
+
+		// Act
+		contract.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
+		MessageResult message = contract.receiveMessage("TestAlpha", 500, ReceiveMode.PEEK_LOCK);
+
+		// Assert
+		byte[] data = new byte[100];
+		int size = message.getBody().read(data);
+		assertEquals(11, size);
+		assertEquals("Hello World", new String(data, 0, size));
 	}
 }

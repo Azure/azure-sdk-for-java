@@ -51,24 +51,31 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 
 	public MessageResult receiveMessage(String queuePath, Integer timeout,
 			ReceiveMode receiveMode) {
-		MessageResult result = new MessageResult();
-		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
 
-			WebResource resource = getResource()
-				.path(queuePath)
-				.path("messages")
-				.path("head");
-			if (timeout != null) {
-				resource = resource.queryParam("timeout", Integer.toString(timeout));
-			}
-			ClientResponse clientResult = resource
-				.delete(ClientResponse.class);
-			
-			result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
-			result.setBody(clientResult.getEntityInputStream());
-			return result;
+		WebResource resource = getResource()
+			.path(queuePath)
+			.path("messages")
+			.path("head");
+
+		if (timeout != null) {
+			resource = resource.queryParam("timeout", Integer.toString(timeout));
 		}
-		throw new RuntimeException("Unknown ReceiveMode");
+
+		ClientResponse clientResult;
+		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+			clientResult = resource.delete(ClientResponse.class);
+		}
+		else if (receiveMode == ReceiveMode.PEEK_LOCK) {
+			clientResult = resource.post(ClientResponse.class, "");
+		}
+		else {
+			throw new RuntimeException("Unknown ReceiveMode");
+		}
+
+		MessageResult result = new MessageResult();
+		result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
+		result.setBody(clientResult.getEntityInputStream());
+		return result;
 	}
 
 
