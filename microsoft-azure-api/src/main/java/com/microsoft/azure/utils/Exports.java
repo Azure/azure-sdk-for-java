@@ -1,13 +1,9 @@
 package com.microsoft.azure.utils;
 
-import com.microsoft.azure.configuration.builder.Builder.Registry;
+import com.microsoft.azure.configuration.builder.Builder;
 
-public class Exports implements
-		com.microsoft.azure.configuration.builder.Builder.Exports {
-
-	public void register(Registry registry) {
+public class Exports implements Builder.Exports {
+	public void register(Builder.Registry registry) {
 		registry.add(Clock.class, DefaultClock.class);
-
 	}
-
 }

@@ -29,12 +29,12 @@ public abstract class IntegrationTestBase {
 		boolean testAlphaExists = false;
 		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);
 		for(Queue queue : client.listQueues()){
-			if (queue.getPath().startsWith("Test") || queue.getPath().startsWith("test")) {
-				if (queue.getPath().equalsIgnoreCase("TestAlpha")) {
+			if (queue.getName().startsWith("Test") || queue.getName().startsWith("test")) {
+				if (queue.getName().equalsIgnoreCase("TestAlpha")) {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
 					for(long i = 0; i != count; ++i) {
-						queue.receiveMessage(2000);
+						queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2000));
 					}
 				} else {
 					queue.delete();

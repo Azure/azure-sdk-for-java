@@ -2,6 +2,8 @@ package com.microsoft.azure.services.serviceBus;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -62,14 +64,29 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		ServiceBusClient client = createClient();
 
-		// client.createQueue("TestQueue02");
-
 		// Act
 		Queue queue = client.getQueue("Hello");
 		queue.fetch();
 
 		// Assert
 		Assert.assertNotNull(queue);
-		Assert.assertEquals("Hello", queue.getPath());
+		Assert.assertEquals("Hello", queue.getName());
+	}
+	
+	@Test
+	public void createQueueAndSendAndReceiveMessage() throws Exception {
+		// Arrange
+		ServiceBusClient client = createClient();
+
+		// Act
+		Queue queue = client.getQueue("TestCreateQueueAndSendAndReceiveMessage");
+		queue.save();
+		
+		queue.sendMessage(new Message("Hello World").setTimeToLive(25L));
+		Message received = queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2500));
+		
+		// Assert
+		Assert.assertNotNull(received);
+		Assert.assertEquals(1, (int)received.getDeliveryCount());
 	}
 }

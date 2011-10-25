@@ -1,5 +1,6 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
+import java.io.InputStream;
 import java.rmi.UnexpectedException;
 
 import javax.inject.Inject;
@@ -40,24 +41,27 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 		this.channel = channel;
 	}
 
-	public void sendMessage(String path, BrokerProperties properties) {
+	public void sendMessage(String path, BrokerProperties properties, InputStream body) {
 		getResource()
 			.path(path)
 			.path("messages")
 			.header("BrokerProperties", mapper.toString(properties))
-			.header("Content-Length", 11)
-			.post("Hello world");
+			.post(body);
 	}
 
-	public MessageResult receiveMessage(String queuePath, int timeout,
+	public MessageResult receiveMessage(String queuePath, Integer timeout,
 			ReceiveMode receiveMode) {
 		MessageResult result = new MessageResult();
 		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-			ClientResponse clientResult = getResource()
+
+			WebResource resource = getResource()
 				.path(queuePath)
 				.path("messages")
-				.path("head")
-				.queryParam("timeout", Integer.toString(timeout))
+				.path("head");
+			if (timeout != null) {
+				resource = resource.queryParam("timeout", Integer.toString(timeout));
+			}
+			ClientResponse clientResult = resource
 				.delete(ClientResponse.class);
 			
 			result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));

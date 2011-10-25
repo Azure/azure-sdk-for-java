@@ -4,11 +4,12 @@ import javax.xml.datatype.Duration;
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
+import com.microsoft.azure.services.serviceBus.contract.MessageResult;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ReceiveMode;
 
-public class Queue extends AbstractEntity implements MessageSender, MessageReceiver {
-	Queue(ServiceBusClient client, String path) {
+public class Queue extends AbstractEntity implements MessageSender, MessageReceiver, MessageTransceiver {
+	Queue(ServiceBusClient client, String name) {
 		super(client);
 		
 		Content content = new Content();
@@ -17,7 +18,7 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
 		content.setType("application/xml");
 		content.setQueueDescription(new QueueDescription());
 		
-		setPath(path);
+		setName(name);
 	}
 
 	Queue(ServiceBusClient client, Entry entry) {
@@ -36,42 +37,45 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
 	}
 
 	public void delete() {
-		getContract().deleteQueue(getPath());
+		getContract().deleteQueue(getName());
 	}
 	
 	public void fetch() {
-		setEntry(getContract().getQueue(getPath()));
+		setEntry(getContract().getQueue(getName()));
 	}
-
-
 
 	public void sendMessage(Message message) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public Message receiveMessage(int timeout) {
-		getContract().receiveMessage(getPath(), timeout, ReceiveMode.RECEIVE_AND_DELETE);
-		// TODO Auto-generated method stub
-		return null;
+		sendMessage(message, SendMessageOptions.DEFAULT);
 	}
 
-	
-	public Message peekLockMessage(int timeout) {
-		// TODO Auto-generated method stub
-		return null;
+	public void sendMessage(Message message, SendMessageOptions options) {
+		getContract().sendMessage(getName(), message.getProperties(), message.getBody());
 	}
 
+	public Message receiveMessage() {
+		return receiveMessage(ReceiveMessageOptions.DEFAULT);
+	}
+	
+	public Message receiveMessage(ReceiveMessageOptions options) {
+		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.RECEIVE_AND_DELETE);
+		return new Message(result.getBrokerProperties(), result.getBody());
+	}
+
+	public Message peekLockMessage() {
+		return peekLockMessage(ReceiveMessageOptions.DEFAULT);
+	}
+
+	public Message peekLockMessage(ReceiveMessageOptions options) {
+		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.PEEK_LOCK);
+		return new Message(result.getBrokerProperties(), result.getBody());
+	}
 	
 	public void abandonMessage(Message message) {
 		// TODO Auto-generated method stub
-		
 	}
-
 	
 	public void completeMessage(Message message) {
 		// TODO Auto-generated method stub
-		
 	}
 
 
@@ -79,11 +83,11 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
 	
 	// API properties
 
-	public String getPath() {
+	public String getName() {
 		return getEntry().getTitle();
 	}
 
-	public void setPath(String value) {
+	public void setName(String value) {
 		getEntry().setTitle(value);
 	}
 	
@@ -106,4 +110,5 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
     public Long getMessageCount() {
         return getQueueDescription().getMessageCount();
     }
+
 }

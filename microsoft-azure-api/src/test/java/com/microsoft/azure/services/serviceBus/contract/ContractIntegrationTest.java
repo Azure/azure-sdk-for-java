@@ -1,5 +1,7 @@
 package com.microsoft.azure.services.serviceBus.contract;
 
+import java.io.ByteArrayInputStream;
+
 import org.junit.Test;
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
@@ -81,7 +83,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		BrokerProperties props = new BrokerProperties();
 
 		// Act
-		contract.sendMessage("TestAlpha", props);
+		contract.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
 
 		// Assert
 	}
@@ -95,8 +97,8 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		BrokerProperties props = new BrokerProperties();
 
 		// Act
-		contract.sendMessage("TestAlpha", props);
-		contract.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
+		contract.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
+		MessageResult message = contract.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
 
 		// Assert
 	}
