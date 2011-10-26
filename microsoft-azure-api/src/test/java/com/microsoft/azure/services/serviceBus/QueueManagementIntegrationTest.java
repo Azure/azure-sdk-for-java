@@ -13,7 +13,7 @@ import com.microsoft.azure.services.serviceBus.ServiceBusClient;
 public class QueueManagementIntegrationTest extends IntegrationTestBase {
 
 	private ServiceBusClient createClient() throws Exception {
-		return createConfiguration().create(ServiceBusClient.class);
+		return new ServiceBusClient(createConfiguration());
 	}
 
 	@Test

@@ -44,6 +44,11 @@ public class ServiceBusClient  {
 	}
 
 	public Iterable<Queue> listQueues() {
+		return listQueues(ListQueuesOptions.DEFAULT);
+	}
+	
+	// REVIEW: what is the generalized strategy for paginated, client-roundtrippable iteration
+	public Iterable<Queue> listQueues(ListQueuesOptions options) {
 		Feed descriptions = contract.getQueues();
 		ArrayList<Queue> queues = new ArrayList<Queue>();
 		for (int i = 0; i != descriptions.getEntries().size(); ++i) {

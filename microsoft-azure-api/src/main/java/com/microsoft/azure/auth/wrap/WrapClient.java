@@ -8,12 +8,12 @@ import javax.management.timer.Timer;
 
 import com.microsoft.azure.auth.wrap.contract.WrapContract;
 import com.microsoft.azure.auth.wrap.contract.WrapResponse;
-import com.microsoft.azure.utils.Clock;
+import com.microsoft.azure.utils.DateFactory;
 
 public class WrapClient {
 
 	WrapContract contract;
-	private Clock clock;
+	private DateFactory dateFactory;
 	private String uri;
 	private String name;
 	private String password;
@@ -25,13 +25,13 @@ public class WrapClient {
 	@Inject
 	public WrapClient(
 			WrapContract contract, 
-			Clock clock,
+			DateFactory dateFactory,
 			@Named("wrap.uri") String uri,
 			@Named("wrap.scope") String scope,
 			@Named("wrap.name") String name,
 			@Named("wrap.password") String password) {
 		this.contract = contract;
-		this.clock = clock;
+		this.dateFactory = dateFactory;
 		this.uri = uri;
 		this.scope = scope;
 		this.name = name;
@@ -54,7 +54,7 @@ public class WrapClient {
 	}
 
 	public String getAccessToken() {
-		Date now = clock.getNow();
+		Date now = dateFactory.getDate();
 		ActiveToken active = this.activeToken;
 		
 		if (active != null && now.before(active.getExpiresUtc()) ) {

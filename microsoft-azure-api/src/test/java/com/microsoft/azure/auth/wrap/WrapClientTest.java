@@ -14,29 +14,29 @@ import static org.mockito.Mockito.*;
 
 import com.microsoft.azure.auth.wrap.contract.WrapContract;
 import com.microsoft.azure.auth.wrap.contract.WrapResponse;
-import com.microsoft.azure.utils.Clock;
+import com.microsoft.azure.utils.DateFactory;
 
 public class WrapClientTest {
 	private WrapContract contract;
 	private WrapClient client;
-	private Clock clock;
+	private DateFactory dateFactory;
 	private Calendar calendar;
 
 	@Before
 	public void init() {
 		calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		
-		clock = mock(Clock.class);
+		dateFactory = mock(DateFactory.class);
 		contract = mock(WrapContract.class);		
 		client = new WrapClient(
 				contract,
-				clock,
+				dateFactory,
 				"testurl",
 				"testscope",
 				"testname",
 				"testpassword");
 		
-		when(clock.getNow()).thenAnswer(new Answer<Date>() {
+		when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
 			public Date answer(InvocationOnMock invocation) throws Throwable {
 				return calendar.getTime();
 			}

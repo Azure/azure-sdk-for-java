@@ -41,6 +41,12 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 		this.channel = channel;
 	}
 
+	private WebResource getResource() {
+		return getChannel()
+			.resource(uri);
+	}
+
+	// REVIEW: contentType will be needed
 	public void sendMessage(String path, BrokerProperties properties, InputStream body) {
 		getResource()
 			.path(path)
@@ -90,11 +96,6 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 		getResource()
 			.path(queuePath)
 			.delete();
-	}
-
-	private WebResource getResource() {
-		return getChannel()
-			.resource(uri);
 	}
 
 	public Entry getQueue(String queuePath) {
