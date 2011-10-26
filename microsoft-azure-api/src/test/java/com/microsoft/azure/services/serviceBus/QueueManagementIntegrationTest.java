@@ -4,12 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.ServiceBusClient;
+
 
 public class QueueManagementIntegrationTest extends IntegrationTestBase {
 
@@ -56,7 +55,7 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		Queue queue = client.getQueue("NoSuchQueueName");
 
 		// Assert
-		Assert.assertNull(queue);
+		assertNull(queue);
 	}
 
 	@Test
@@ -69,8 +68,8 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		queue.fetch();
 
 		// Assert
-		Assert.assertNotNull(queue);
-		Assert.assertEquals("Hello", queue.getName());
+		assertNotNull(queue);
+		assertEquals("Hello", queue.getName());
 	}
 	
 	@Test
@@ -82,11 +81,30 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		Queue queue = client.getQueue("TestCreateQueueAndSendAndReceiveMessage");
 		queue.save();
 		
-		queue.sendMessage(new Message("Hello World").setTimeToLive(25L));
-		Message received = queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2500));
+		queue.sendMessage(new Message("Hello World"));
+		Message received = queue.receiveMessage();
 		
 		// Assert
-		Assert.assertNotNull(received);
-		Assert.assertEquals(1, (int)received.getDeliveryCount());
+		assertNotNull(received);
+		assertEquals(1, (int)received.getDeliveryCount());
+	}
+
+	
+	@Test
+	public void peekLockedMessageHasLockTokenAndLockedUntilUtc() throws Exception {
+		// Arrange
+		ServiceBusClient client = createClient();
+
+		// Act
+		Queue queue = client.getQueue("TestCreateQueueAndSendAndReceiveMessage");
+		queue.save();
+		
+		queue.sendMessage(new Message("Hello World"));
+		Message received = queue.peekLockMessage();
+		
+		// Assert
+		assertNotNull(received);
+		assertNotNull(received.getLockToken());
+		assertNotNull(received.getLockedUntilUtc());
 	}
 }

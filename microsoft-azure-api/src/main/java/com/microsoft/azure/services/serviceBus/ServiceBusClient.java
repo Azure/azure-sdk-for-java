@@ -15,13 +15,21 @@ public class ServiceBusClient  {
 	ServiceBusContract contract;
 
 	public ServiceBusClient() throws Exception {
-		this(Configuration.load());
+		this("", Configuration.load());
 	}
 	
 	public ServiceBusClient(Configuration config) throws Exception {
-		this(config.create(ServiceBusContract.class));
+		this("", config);
+	}
+
+	public ServiceBusClient(String profile) throws Exception {
+		this(profile, Configuration.load());
 	}
 	
+	public ServiceBusClient(String profile, Configuration config) throws Exception {
+		this(config.create(profile, ServiceBusContract.class));
+	}
+
 	@Inject
 	public ServiceBusClient(ServiceBusContract contract) {
 		this.contract = contract;

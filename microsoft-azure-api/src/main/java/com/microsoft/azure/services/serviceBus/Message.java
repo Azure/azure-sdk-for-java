@@ -10,6 +10,22 @@ public class Message {
 	BrokerProperties properties;
 	InputStream body;
 
+	public String getLockToken() {
+		return properties.getLockToken();
+	}
+
+	public void setLockToken(String lockToken) {
+		properties.setLockToken(lockToken);
+	}
+
+	public String getLockedUntilUtc() {
+		return properties.getLockedUntilUtc();
+	}
+
+	public void setLockedUntilUtc(String lockedUntilUtc) {
+		properties.setLockedUntilUtc(lockedUntilUtc);
+	}
+
 	public Message() {
 		this(new BrokerProperties(), null);
 	}

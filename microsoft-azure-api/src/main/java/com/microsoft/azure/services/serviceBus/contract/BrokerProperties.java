@@ -21,64 +21,65 @@ public class BrokerProperties {
 	@JsonProperty("TimeToLive")
 	Long timeToLive;
 
-	/**
-	 * @return the deliveryCount
-	 */
+	@JsonProperty("LockToken")
+	String lockToken;
+	
+	@JsonProperty("LockedUntilUtc")
+	String lockedUntilUtc;
+	
+	
 	@JsonIgnore
 	public Integer getDeliveryCount() {
 		return deliveryCount;
 	}
 
-	/**
-	 * @param deliveryCount the deliveryCount to set
-	 */
 	public void setDeliveryCount(Integer deliveryCount) {
 		this.deliveryCount = deliveryCount;
 	}
 
-	/**
-	 * @return the messageId
-	 */
 	@JsonIgnore
 	public String getMessageId() {
 		return messageId;
 	}
 
-	/**
-	 * @param messageId the messageId to set
-	 */
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
 	}
 
-	/**
-	 * @return the sequenceNumber
-	 */
 	@JsonIgnore
 	public Long getSequenceNumber() {
 		return sequenceNumber;
 	}
 
-	/**
-	 * @param sequenceNumber the sequenceNumber to set
-	 */
 	public void setSequenceNumber(Long sequenceNumber) {
 		this.sequenceNumber = sequenceNumber;
 	}
 
-	/**
-	 * @return the timeToLive
-	 */
 	@JsonIgnore
 	public Long getTimeToLive() {
 		return timeToLive;
 	}
 
-	/**
-	 * @param timeToLive the timeToLive to set
-	 */
 	public void setTimeToLive(Long timeToLive) {
 		this.timeToLive = timeToLive;
+	}
+
+	@JsonIgnore
+	public String getLockToken() {
+		return lockToken;
+	}
+
+	public void setLockToken(String lockToken) {
+		this.lockToken = lockToken;
+	}
+
+	@JsonIgnore
+	public String getLockedUntilUtc() {
+		return lockedUntilUtc;
+	}
+
+	public void setLockedUntilUtc(String lockedUntilUtc) {
+		this.lockedUntilUtc = lockedUntilUtc;
 	}
 
 	
