@@ -4,6 +4,7 @@ import javax.xml.datatype.Duration;
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.contract.MessageResult;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ReceiveMode;
@@ -32,40 +33,40 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
 	
 	// API methods
 	
-	public void save() {
+	public void save() throws ServiceException {
 		setEntry(getContract().createQueue(getEntry()));
 	}
 
-	public void delete() {
+	public void delete() throws ServiceException {
 		getContract().deleteQueue(getName());
 	}
 	
-	public void fetch() {
+	public void fetch() throws ServiceException {
 		setEntry(getContract().getQueue(getName()));
 	}
 
-	public void sendMessage(Message message) {
+	public void sendMessage(Message message) throws ServiceException {
 		sendMessage(message, SendMessageOptions.DEFAULT);
 	}
 
-	public void sendMessage(Message message, SendMessageOptions options) {
+	public void sendMessage(Message message, SendMessageOptions options) throws ServiceException {
 		getContract().sendMessage(getName(), message.getProperties(), message.getBody());
 	}
 
-	public Message receiveMessage() {
+	public Message receiveMessage() throws ServiceException {
 		return receiveMessage(ReceiveMessageOptions.DEFAULT);
 	}
 	
-	public Message receiveMessage(ReceiveMessageOptions options) {
+	public Message receiveMessage(ReceiveMessageOptions options) throws ServiceException {
 		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.RECEIVE_AND_DELETE);
 		return new Message(result.getBrokerProperties(), result.getBody());
 	}
 
-	public Message peekLockMessage() {
+	public Message peekLockMessage() throws ServiceException {
 		return peekLockMessage(ReceiveMessageOptions.DEFAULT);
 	}
 
-	public Message peekLockMessage(ReceiveMessageOptions options) {
+	public Message peekLockMessage(ReceiveMessageOptions options) throws ServiceException {
 		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.PEEK_LOCK);
 		return new Message(result.getBrokerProperties(), result.getBody());
 	}

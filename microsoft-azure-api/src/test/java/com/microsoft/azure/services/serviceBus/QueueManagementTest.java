@@ -11,13 +11,14 @@ import org.mockito.ArgumentCaptor;
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 
 
 public class QueueManagementTest {
 	@Test
-	public void testGetQueueAcquiresDescriptionFromServer() {
+	public void testGetQueueAcquiresDescriptionFromServer() throws ServiceException {
 		// Arrange
 		ServiceBusContract contract = mock(ServiceBusContract.class);
 
@@ -38,7 +39,7 @@ public class QueueManagementTest {
 	}
 	
 	@Test
-	public void queueCreateSendsCreateQueueDescriptionMessage() throws DatatypeConfigurationException {
+	public void queueCreateSendsCreateQueueDescriptionMessage() throws DatatypeConfigurationException, ServiceException {
 		// Arrange
 		ServiceBusContract contract = mock(ServiceBusContract.class);
 		

@@ -64,12 +64,12 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		ServiceBusClient client = createClient();
 
 		// Act
-		Queue queue = client.getQueue("Hello");
+		Queue queue = client.getQueue("TestAlpha");
 		queue.fetch();
 
 		// Assert
 		assertNotNull(queue);
-		assertEquals("Hello", queue.getName());
+		assertEquals("TestAlpha", queue.getName());
 	}
 	
 	@Test

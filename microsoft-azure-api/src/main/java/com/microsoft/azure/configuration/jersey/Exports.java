@@ -1,6 +1,7 @@
 package com.microsoft.azure.configuration.jersey;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.microsoft.azure.configuration.builder.Builder;
 import com.microsoft.azure.configuration.builder.Builder.Registry;
@@ -14,7 +15,11 @@ public class Exports implements Builder.Exports {
 	public void register(Registry registry) {
 		registry.add(new Builder.Factory<ClientConfig>() {
 			public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
-				return new DefaultClientConfig();
+				ClientConfig clientConfig = new DefaultClientConfig();
+				for(Entry<String, Object> entry : properties.entrySet()) {
+					clientConfig.getProperties().put(entry.getKey(), entry.getValue());
+				}
+				return clientConfig;
 			}
 		});
 		

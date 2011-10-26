@@ -6,12 +6,18 @@ import java.rmi.UnexpectedException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3._2005.atom.Entry;
 import org.w3._2005.atom.Feed;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;
+import com.microsoft.azure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 public class ServiceBusContractImpl implements ServiceBusContract {
@@ -19,6 +25,7 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 	private Client channel;
 	private String uri;
 	private BrokerPropertiesMapper mapper;
+	static Log log = LogFactory.getLog(ServiceBusContract.class);
 
 	@Inject
 	public ServiceBusContractImpl(
@@ -47,16 +54,26 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 	}
 
 	// REVIEW: contentType will be needed
-	public void sendMessage(String path, BrokerProperties properties, InputStream body) {
-		getResource()
-			.path(path)
-			.path("messages")
-			.header("BrokerProperties", mapper.toString(properties))
-			.post(body);
+	public void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException {
+		try {
+			getResource()
+				.path(path)
+				.path("messages")
+				.header("BrokerProperties", mapper.toString(properties))
+				.post(body);
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
 	public MessageResult receiveMessage(String queuePath, Integer timeout,
-			ReceiveMode receiveMode) {
+			ReceiveMode receiveMode) throws ServiceException {
 
 		WebResource resource = getResource()
 			.path(queuePath)
@@ -69,10 +86,30 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 
 		ClientResponse clientResult;
 		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-			clientResult = resource.delete(ClientResponse.class);
+			try {
+				clientResult = resource.delete(ClientResponse.class);
+			}
+			catch(UniformInterfaceException e) {
+				log.warn(e);
+				throw ServiceExceptionFactory.create("serviceBus", e);
+			}
+			catch(ClientHandlerException e) {
+				log.warn(e);
+				throw ServiceExceptionFactory.create("serviceBus", e);
+			}
 		}
 		else if (receiveMode == ReceiveMode.PEEK_LOCK) {
-			clientResult = resource.post(ClientResponse.class, "");
+			try {
+				clientResult = resource.post(ClientResponse.class, "");
+			}
+			catch(UniformInterfaceException e) {
+				log.warn(e);
+				throw ServiceExceptionFactory.create("serviceBus", e);
+			}
+			catch(ClientHandlerException e) {
+				log.warn(e);
+				throw ServiceExceptionFactory.create("serviceBus", e);
+			}
 		}
 		else {
 			throw new RuntimeException("Unknown ReceiveMode");
@@ -85,42 +122,102 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 	}
 
 
-	public Entry createQueue(Entry entry) {
-		return getResource()
-			.path(entry.getTitle())
-			.type("application/atom+xml")//;type=entry;charset=utf-8")
-			.put(Entry.class, entry);
+	public Entry createQueue(Entry entry) throws ServiceException {
+		try {
+			return getResource()
+				.path(entry.getTitle())
+				.type("application/atom+xml")//;type=entry;charset=utf-8")
+				.put(Entry.class, entry);
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
-	public void deleteQueue(String queuePath) {
-		getResource()
-			.path(queuePath)
-			.delete();
-	}
-
-	public Entry getQueue(String queuePath) {
-		return getResource()
+	public void deleteQueue(String queuePath) throws ServiceException {
+		try {
+			getResource()
 				.path(queuePath)
-				.get(Entry.class);
+				.delete();
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
-	public Feed getQueues() {
-		return getResource()
-				.path("$Resources/Queues")
-				.get(Feed.class);
+	public Entry getQueue(String queuePath) throws ServiceException {
+		try {
+			return getResource()
+					.path(queuePath)
+					.get(Entry.class);
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
-	public Entry createTopic(Entry entry) {
-		return getResource()
-			.path(entry.getTitle())
-			.type("application/atom+xml")//;type=entry;charset=utf-8")
-			.put(Entry.class, entry);
+	public Feed getQueues() throws ServiceException {
+		try {
+			return getResource()
+					.path("$Resources/Queues")
+					.get(Feed.class);
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
-	public void deleteTopic(String topicPath) {
-		getResource()
-			.path(topicPath)
-			.delete();
+	public Entry createTopic(Entry entry) throws ServiceException {
+		try {
+			return getResource()
+				.path(entry.getTitle())
+				.type("application/atom+xml")//;type=entry;charset=utf-8")
+				.put(Entry.class, entry);
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+	}
+
+	public void deleteTopic(String topicPath) throws ServiceException {
+		try {
+			getResource()
+				.path(topicPath)
+				.delete();
+		}
+		catch(UniformInterfaceException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
+		catch(ClientHandlerException e) {
+			log.warn(e);
+			throw ServiceExceptionFactory.create("serviceBus", e);
+		}
 	}
 
 	public Entry getTopic(String topicPath) {

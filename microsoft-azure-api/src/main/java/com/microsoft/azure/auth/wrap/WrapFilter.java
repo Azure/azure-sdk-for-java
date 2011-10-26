@@ -1,5 +1,6 @@
 package com.microsoft.azure.auth.wrap;
 
+import com.microsoft.azure.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -16,7 +17,13 @@ public class WrapFilter extends ClientFilter {
 	public ClientResponse handle(ClientRequest cr)
 			throws ClientHandlerException {
 
-		String accessToken = client.getAccessToken();
+		String accessToken;
+		try {
+			accessToken = client.getAccessToken();
+		} catch (ServiceException e) {
+			// must wrap exception because of base class signature
+			throw new ClientHandlerException(e);
+		}
 
 		cr.getHeaders().add("Authorization",
 				"WRAP access_token=\"" + accessToken + "\"");

@@ -12,6 +12,7 @@ import org.mockito.stubbing.Answer;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.contract.WrapContract;
 import com.microsoft.azure.auth.wrap.contract.WrapResponse;
 import com.microsoft.azure.utils.DateFactory;
@@ -45,7 +46,7 @@ public class WrapClientTest {
 	}
 
 	@Test
-	public void clientUsesContractToGetToken(){
+	public void clientUsesContractToGetToken() throws ServiceException{
 		// Arrange
 		WrapResponse wrapResponse = new WrapResponse();
 		wrapResponse.setAccessToken("testaccesstoken");
@@ -63,7 +64,7 @@ public class WrapClientTest {
 
 	
 	@Test
-	public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid(){
+	public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid() throws ServiceException{
 		// Arrange
 		WrapResponse wrapResponse = new WrapResponse();
 		wrapResponse.setAccessToken("testaccesstoken");
@@ -86,7 +87,7 @@ public class WrapClientTest {
 	}
 
 	@Test
-	public void clientWillBeCalledWhenTokenIsHalfwayToExpiring(){
+	public void clientWillBeCalledWhenTokenIsHalfwayToExpiring() throws ServiceException{
 		// Arrange
 		doAnswer(new Answer<WrapResponse>() {
 			int count = 0;

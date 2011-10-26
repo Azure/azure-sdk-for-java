@@ -1,6 +1,9 @@
 package com.microsoft.azure.services.serviceBus;
 
+import java.io.Console;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import com.microsoft.azure.configuration.Configuration;
 
@@ -19,12 +22,17 @@ public abstract class IntegrationTestBase {
 		
 		return config;
 	}
+	
+	@BeforeClass
+	public static void initializeSystem() {
+		System.out.println("initialize");
+		System.setProperty("http.proxyHost", "itgproxy");
+		System.setProperty("http.proxyPort", "80");
+		System.setProperty("http.keepAlive", "false");
+	}
 
 	@Before
 	public void initialize() throws Exception {
-		System.setProperty("http.proxyHost", "157.54.119.101");
-		System.setProperty("http.proxyPort", "80");
-		System.setProperty("http.keepAlive", "false");
 		
 		boolean testAlphaExists = false;
 		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);

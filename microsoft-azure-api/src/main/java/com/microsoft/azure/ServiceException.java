@@ -9,6 +9,7 @@ public class ServiceException extends Exception {
 
 	int httpStatusCode;
 	String httpReasonPhrase;
+	String serviceName;
 	
 	String errorCode;
 	String errorMessage;
@@ -74,4 +75,11 @@ public class ServiceException extends Exception {
 	public void setErrorValue(String name, String value) {
 		this.errorValues.put(name, value);
 	}
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
 }

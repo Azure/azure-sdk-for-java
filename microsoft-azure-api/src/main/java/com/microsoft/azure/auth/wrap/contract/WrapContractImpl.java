@@ -3,27 +3,42 @@ package com.microsoft.azure.auth.wrap.contract;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
 
 public class WrapContractImpl implements WrapContract {
 	Client channel;
+	
+	static Log log = LogFactory.getLog(WrapContract.class);
 	
 	@Inject
 	public WrapContractImpl(Client channel) {
 		this.channel = channel;
 	}
 
-	public WrapResponse post(String uri, String name, String password, String scope) {
+	public WrapResponse post(String uri, String name, String password, String scope) throws ServiceException {
 		Form requestForm = new Form();
 		requestForm.add("wrap_name", name);
 		requestForm.add("wrap_password", password);
 		requestForm.add("wrap_scope", scope);
 		
-		Form responseForm = channel.resource(uri)
-			.accept(MediaType.APPLICATION_FORM_URLENCODED)
-			.type(MediaType.APPLICATION_FORM_URLENCODED)
-			.post(Form.class, requestForm);
+		Form responseForm;
+		try {
+			responseForm = channel.resource(uri)
+				.accept(MediaType.APPLICATION_FORM_URLENCODED)
+				.type(MediaType.APPLICATION_FORM_URLENCODED)
+				.post(Form.class, requestForm);
+		}
+		catch (UniformInterfaceException e) {
+			log.warn("Failed WrapContract.post operation", e);
+			throw ServiceExceptionFactory.create("WRAP", "Failed WrapContract.post operation", e);
+		}
 		
 		WrapResponse response = new WrapResponse();
 				

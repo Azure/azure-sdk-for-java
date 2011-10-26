@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.management.timer.Timer;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.contract.WrapContract;
 import com.microsoft.azure.auth.wrap.contract.WrapResponse;
 import com.microsoft.azure.utils.DateFactory;
@@ -53,7 +54,7 @@ public class WrapClient {
 		this.contract = contract;
 	}
 
-	public String getAccessToken() {
+	public String getAccessToken() throws ServiceException {
 		Date now = dateFactory.getDate();
 		ActiveToken active = this.activeToken;
 		

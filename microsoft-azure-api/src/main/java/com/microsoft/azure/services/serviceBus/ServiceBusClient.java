@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.w3._2005.atom.Feed;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
 
@@ -43,12 +44,12 @@ public class ServiceBusClient  {
 		this.contract = contract;
 	}
 
-	public Iterable<Queue> listQueues() {
+	public Iterable<Queue> listQueues() throws ServiceException {
 		return listQueues(ListQueuesOptions.DEFAULT);
 	}
 	
 	// REVIEW: what is the generalized strategy for paginated, client-roundtrippable iteration
-	public Iterable<Queue> listQueues(ListQueuesOptions options) {
+	public Iterable<Queue> listQueues(ListQueuesOptions options) throws ServiceException {
 		Feed descriptions = contract.getQueues();
 		ArrayList<Queue> queues = new ArrayList<Queue>();
 		for (int i = 0; i != descriptions.getEntries().size(); ++i) {

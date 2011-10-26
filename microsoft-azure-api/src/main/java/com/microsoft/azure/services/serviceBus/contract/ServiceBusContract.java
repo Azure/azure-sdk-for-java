@@ -5,32 +5,34 @@ import java.io.InputStream;
 import org.w3._2005.atom.Entry;
 import org.w3._2005.atom.Feed;
 
+import com.microsoft.azure.ServiceException;
+
 
 public interface ServiceBusContract {
-	void sendMessage(String path, BrokerProperties properties, InputStream body);
-	MessageResult receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode);
-	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode);
-	//void abandonMessage(BrokeredMessage message);
-	//void completeMessage(BrokeredMessage message);
+	void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException;
+	MessageResult receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
+	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode) throws ServiceException;
+	//void abandonMessage(BrokeredMessage message) throws ServiceException;
+	//void completeMessage(BrokeredMessage message) throws ServiceException;
 
-	Entry createQueue(Entry queue);
-	void deleteQueue(String queuePath);
-	Entry getQueue(String queuePath);
-	Feed getQueues();
+	Entry createQueue(Entry queue) throws ServiceException;
+	void deleteQueue(String queuePath) throws ServiceException;
+	Entry getQueue(String queuePath) throws ServiceException;
+	Feed getQueues() throws ServiceException;
 
-	Entry createTopic(Entry topic);
-	void deleteTopic(String topicPath);
-	Entry getTopic(String topicPath);
-	Feed getTopics();
+	Entry createTopic(Entry topic) throws ServiceException;
+	void deleteTopic(String topicPath) throws ServiceException;
+	Entry getTopic(String topicPath) throws ServiceException;
+	Feed getTopics() throws ServiceException;
 
-	void addSubscription(String topicPath, String subscriptionName, Entry subscription);
-	void removeSubscription(String topicPath, String subscriptionName);
-	Entry getSubscription(String topicPath, String subscriptionName);
-	Feed getSubscriptions(String topicPath);
+	void addSubscription(String topicPath, String subscriptionName, Entry subscription) throws ServiceException;
+	void removeSubscription(String topicPath, String subscriptionName) throws ServiceException;
+	Entry getSubscription(String topicPath, String subscriptionName) throws ServiceException;
+	Feed getSubscriptions(String topicPath) throws ServiceException;
 
-	void addRule(String topicPath, String subscriptionName, String ruleName, Entry rule);
-	void removeRule(String topicPath, String subscriptionName, String ruleName);
-	Entry getRule(String topicPath, String subscriptionName, String ruleName);
-	Feed getRules(String topicPath, String subscriptionName);
+	void addRule(String topicPath, String subscriptionName, String ruleName, Entry rule) throws ServiceException;
+	void removeRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
+	Entry getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
+	Feed getRules(String topicPath, String subscriptionName) throws ServiceException;
 }
 
