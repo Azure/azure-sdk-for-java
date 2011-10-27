@@ -28,11 +28,15 @@ public abstract class IntegrationTestBase {
 		System.out.println("initialize");
 		System.setProperty("http.proxyHost", "itgproxy");
 		System.setProperty("http.proxyPort", "80");
-		System.setProperty("http.keepAlive", "false");
+		//System.setProperty("http.keepAlive", "false");
 	}
 
 	@Before
 	public void initialize() throws Exception {
+		System.out.println("initialize");
+		System.setProperty("http.proxyHost", "itgproxy");
+		System.setProperty("http.proxyPort", "80");
+		//System.setProperty("http.keepAlive", "false");
 		
 		boolean testAlphaExists = false;
 		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);

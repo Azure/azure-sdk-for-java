@@ -46,17 +46,6 @@ public class QueueManagementIntegrationTest extends IntegrationTestBase {
 		assertNotNull(maxSizeAfter);
 	}
 
-	@Test
-	public void notFoundQueuePathReturnsNull() throws Exception {
-		// Arrange
-		ServiceBusClient client = createClient();
-
-		// Act
-		Queue queue = client.getQueue("NoSuchQueueName");
-
-		// Assert
-		assertNull(queue);
-	}
 
 	@Test
 	public void existingQueuePathDoesNotReturnNull() throws Exception {

@@ -20,8 +20,7 @@ public class ServiceExceptionFactoryTest {
 				response);
 		
 		// Act
-		ServiceException exception = ServiceExceptionFactory.create("testing",
-				"this is a test", cause);
+		ServiceException exception = ServiceExceptionFactory.process("testing", new ServiceException("this is a test", cause));
 		
 		// Assert
 		assertNotNull(exception);
@@ -38,8 +37,7 @@ public class ServiceExceptionFactoryTest {
 				response);
 		
 		// Act
-		ServiceException exception = ServiceExceptionFactory.create("testing",
-				"this is a test", cause);
+		ServiceException exception = ServiceExceptionFactory.process("testing", new ServiceException("this is a test", cause));
 		
 		// Assert
 		assertNotNull(exception);
@@ -52,11 +50,11 @@ public class ServiceExceptionFactoryTest {
 		// Arrange
 		ClientResponse response = new ClientResponse(503, null, new ByteArrayInputStream(new byte[0]), null);
 		UniformInterfaceException rootCause = new UniformInterfaceException(response);
-		ServiceException originalDescription = ServiceExceptionFactory.create("underlying", rootCause);
+		ServiceException originalDescription = ServiceExceptionFactory.process("underlying", new ServiceException(rootCause));
 		ClientHandlerException wrappingException = new ClientHandlerException(originalDescription);
 
 		// Act 
-		ServiceException exception = ServiceExceptionFactory.create("actual", wrappingException);
+		ServiceException exception = ServiceExceptionFactory.process("actual", new ServiceException(wrappingException));
 		
 		// Assert
 		assertEquals(503, exception.getHttpStatusCode());

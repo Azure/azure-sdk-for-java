@@ -53,6 +53,11 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 			.resource(uri);
 	}
 
+	private ServiceException processCatch(ServiceException e) {
+		log.warn(e.getMessage(), e.getCause());
+		return ServiceExceptionFactory.process("serviceBus", e);
+	}
+
 	// REVIEW: contentType will be needed
 	public void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException {
 		try {
@@ -63,12 +68,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				.post(body);
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -90,12 +93,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				clientResult = resource.delete(ClientResponse.class);
 			}
 			catch(UniformInterfaceException e) {
-				log.warn(e);
-				throw ServiceExceptionFactory.create("serviceBus", e);
+				throw processCatch(new ServiceException(e));
 			}
 			catch(ClientHandlerException e) {
-				log.warn(e);
-				throw ServiceExceptionFactory.create("serviceBus", e);
+				throw processCatch(new ServiceException(e));
 			}
 		}
 		else if (receiveMode == ReceiveMode.PEEK_LOCK) {
@@ -103,18 +104,17 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				clientResult = resource.post(ClientResponse.class, "");
 			}
 			catch(UniformInterfaceException e) {
-				log.warn(e);
-				throw ServiceExceptionFactory.create("serviceBus", e);
+				throw processCatch(new ServiceException(e));
 			}
 			catch(ClientHandlerException e) {
-				log.warn(e);
-				throw ServiceExceptionFactory.create("serviceBus", e);
+				throw processCatch(new ServiceException(e));
 			}
 		}
 		else {
 			throw new RuntimeException("Unknown ReceiveMode");
 		}
 
+		// REVIEW: harden this - it's much too brittle. throws null exceptions very easily
 		MessageResult result = new MessageResult();
 		result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
 		result.setBody(clientResult.getEntityInputStream());
@@ -130,12 +130,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				.put(Entry.class, entry);
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -146,12 +144,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				.delete();
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -162,12 +158,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 					.get(Entry.class);
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -178,12 +172,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 					.get(Feed.class);
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -195,12 +187,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				.put(Entry.class, entry);
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 
@@ -211,12 +201,10 @@ public class ServiceBusContractImpl implements ServiceBusContract {
 				.delete();
 		}
 		catch(UniformInterfaceException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 		catch(ClientHandlerException e) {
-			log.warn(e);
-			throw ServiceExceptionFactory.create("serviceBus", e);
+			throw processCatch(new ServiceException(e));
 		}
 	}
 

@@ -7,49 +7,26 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 public class ServiceExceptionFactory {
-	public static ServiceException create(String serviceName, String message, UniformInterfaceException cause){
-		ServiceException exception = new ServiceException(message, cause);
-		populate(exception, serviceName, cause);
-		return exception;
-	}
 
-	public static ServiceException create(String serviceName, UniformInterfaceException cause) {
-		ServiceException exception = new ServiceException(cause);
-		populate(exception, serviceName, cause);
-		return exception;
-	}
-
-	public static ServiceException create(String serviceName, String message, ClientHandlerException cause) {
-		ServiceException exception = new ServiceException(message, cause);
+	public static ServiceException process(String serviceName, ServiceException exception) {
+		Throwable cause = exception.getCause();
+		
 		for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
 			if (ServiceException.class.isAssignableFrom(scan.getClass())) {
-				populate(exception, serviceName, (ServiceException)scan);
-				break;
+				return populate(exception, serviceName, (ServiceException)scan);
 			}
 			else if (UniformInterfaceException.class.isAssignableFrom(scan.getClass())) {
-				populate(exception, serviceName, (UniformInterfaceException)scan);
-				break;
+				return populate(exception, serviceName, (UniformInterfaceException)scan);
 			}
 		}
+		
+		exception.setServiceName(serviceName);
+
 		return exception;
 	}
+	
 
-	public static ServiceException create(String serviceName, ClientHandlerException cause) {
-		ServiceException exception = new ServiceException(cause);
-		for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
-			if (ServiceException.class.isAssignableFrom(scan.getClass())) {
-				populate(exception, serviceName, (ServiceException)scan);
-				break;
-			}
-			else if (UniformInterfaceException.class.isAssignableFrom(scan.getClass())) {
-				populate(exception, serviceName, (UniformInterfaceException)scan);
-				break;
-			}
-		}
-		return exception;
-	}
-
-	static void populate(ServiceException exception, String serviceName,
+	static ServiceException populate(ServiceException exception, String serviceName,
 			UniformInterfaceException cause) {
 		exception.setServiceName(serviceName);
 
@@ -69,9 +46,10 @@ public class ServiceExceptionFactory {
 				}
 			}
 		}
+		return exception;
 	}
 	
-	static void populate(ServiceException exception, String serviceName,
+	static ServiceException populate(ServiceException exception, String serviceName,
 			ServiceException cause) {
 		exception.setServiceName(cause.getServiceName());
 		exception.setHttpStatusCode(cause.getHttpStatusCode());
@@ -79,6 +57,7 @@ public class ServiceExceptionFactory {
 		exception.setErrorCode(cause.getErrorCode());
 		exception.setErrorMessage(cause.getErrorMessage());
 		exception.setErrorValues(cause.getErrorValues());
+		return exception;
 	}
 
 }

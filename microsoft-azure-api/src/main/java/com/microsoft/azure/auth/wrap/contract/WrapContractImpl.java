@@ -36,8 +36,8 @@ public class WrapContractImpl implements WrapContract {
 				.post(Form.class, requestForm);
 		}
 		catch (UniformInterfaceException e) {
-			log.warn("Failed WrapContract.post operation", e);
-			throw ServiceExceptionFactory.create("WRAP", "Failed WrapContract.post operation", e);
+			log.warn("WRAP server returned error acquiring access_token", e);
+			throw ServiceExceptionFactory.process("WRAP", new ServiceException("WRAP server returned error acquiring access_token", e));
 		}
 		
 		WrapResponse response = new WrapResponse();
