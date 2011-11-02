@@ -125,7 +125,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	public Queue createQueue(Queue entry) throws ServiceException {
 		try {
 			return getResource()
-				.path(entry.getTitle())
+				.path(entry.getName())
 				.type("application/atom+xml")//;type=entry;charset=utf-8")
 				.put(Queue.class, entry);
 		}

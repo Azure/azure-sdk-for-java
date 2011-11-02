@@ -25,11 +25,11 @@ public class Queue extends EntryModel<QueueDescription> {
 		super(entry, model);
 	}
 
-	public String getTitle() {
+	public String getName() {
 		return entry.getTitle();
 	}
 
-	public Queue setTitle(String value) {
+	public Queue setName(String value) {
 		entry.setTitle(value);
 		return this;
 	}
@@ -38,71 +38,82 @@ public class Queue extends EntryModel<QueueDescription> {
 		return model.getLockDuration();
 	}
 
-	public void setLockDuration(Duration value) {
+	public Queue setLockDuration(Duration value) {
 		model.setLockDuration(value);
+		return this;
 	}
 
 	public Long getMaxSizeInMegabytes() {
 		return model.getMaxSizeInMegabytes();
 	}
 
-	public void setMaxSizeInMegabytes(Long value) {
+	public Queue setMaxSizeInMegabytes(Long value) {
 		model.setMaxSizeInMegabytes(value);
+		return this;
 	}
 
-	public void setRequiresDuplicateDetection(Boolean value) {
+	public Queue setRequiresDuplicateDetection(Boolean value) {
 		model.setRequiresDuplicateDetection(value);
+		return this;
 	}
 
-	public void setRequiresSession(Boolean value) {
+	public Queue setRequiresSession(Boolean value) {
 		model.setRequiresSession(value);
+		return this;
 	}
 
 	public Duration getDefaultMessageTimeToLive() {
 		return model.getDefaultMessageTimeToLive();
 	}
 
-	public void setDefaultMessageTimeToLive(Duration value) {
+	public Queue setDefaultMessageTimeToLive(Duration value) {
 		model.setDefaultMessageTimeToLive(value);
+		return this;
 	}
 
-	public void setDeadLetteringOnMessageExpiration(Boolean value) {
+	public Queue setDeadLetteringOnMessageExpiration(Boolean value) {
 		model.setDeadLetteringOnMessageExpiration(value);
+		return this;
 	}
 
 	public Duration getDuplicateDetectionHistoryTimeWindow() {
 		return model.getDuplicateDetectionHistoryTimeWindow();
 	}
 
-	public void setDuplicateDetectionHistoryTimeWindow(Duration value) {
+	public Queue setDuplicateDetectionHistoryTimeWindow(Duration value) {
 		model.setDuplicateDetectionHistoryTimeWindow(value);
+		return this;
 	}
 
 	public Integer getMaxDeliveryCount() {
 		return model.getMaxDeliveryCount();
 	}
 
-	public void setMaxDeliveryCount(Integer value) {
+	public Queue setMaxDeliveryCount(Integer value) {
 		model.setMaxDeliveryCount(value);
+		return this;
 	}
 
-	public void setEnableBatchedOperations(Boolean value) {
+	public Queue setEnableBatchedOperations(Boolean value) {
 		model.setEnableBatchedOperations(value);
+		return this;
 	}
 
 	public Long getSizeInBytes() {
 		return model.getSizeInBytes();
 	}
 
-	public void setSizeInBytes(Long value) {
+	public Queue setSizeInBytes(Long value) {
 		model.setSizeInBytes(value);
+		return this;
 	}
 
 	public Long getMessageCount() {
 		return model.getMessageCount();
 	}
 
-	public void setMessageCount(Long value) {
+	public Queue setMessageCount(Long value) {
 		model.setMessageCount(value);
+		return this;
 	}
 }

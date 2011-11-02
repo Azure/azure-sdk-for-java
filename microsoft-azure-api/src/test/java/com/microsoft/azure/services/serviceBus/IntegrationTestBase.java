@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.messaging;
+package com.microsoft.azure.services.serviceBus;
 
 import java.io.Console;
 
@@ -45,20 +45,21 @@ public abstract class IntegrationTestBase {
 		boolean testAlphaExists = false;
 		ServiceBusService service = createConfiguration().create(ServiceBusService.class);
 		for(Queue queue : service.iterateQueues()) {
-			if (queue.getTitle().startsWith("Test") || queue.getTitle().startsWith("test")) {
-				if (queue.getTitle().equalsIgnoreCase("TestAlpha")) {
+			String queueName = queue.getName();
+			if (queueName.startsWith("Test") || queueName.startsWith("test")) {
+				if (queueName.equalsIgnoreCase("TestAlpha")) {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
-//					for(long i = 0; i != count; ++i) {
-//						queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2000));
-//					}
+					for(long i = 0; i != count; ++i) {
+						service.receiveMessage(queueName, 2000, ReceiveMode.RECEIVE_AND_DELETE);
+					}
 				} else {
-//					queue.delete();
+					service.deleteQueue(queueName);
 				}
 			}
 		}
 		if (!testAlphaExists) {
-			service.createQueue(new Queue().setTitle("TestAlpha"));
+			service.createQueue(new Queue().setName("TestAlpha"));
 		}
 	}
 }

@@ -14,7 +14,6 @@ import com.microsoft.azure.services.serviceBus.MessageResult;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
-import com.microsoft.azure.services.serviceBus.messaging.IntegrationTestBase;
 
 import static org.junit.Assert.*;
 
@@ -50,7 +49,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		// Act
 		Queue queue = new Queue();
 		
-		queue.setTitle("TestCreateQueueWorks");
+		queue.setName("TestCreateQueueWorks");
 		queue.setMaxSizeInMegabytes(1024L);
 		
 		Queue saved = service.createQueue(queue);
@@ -58,7 +57,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		// Assert
 		assertNotNull(saved);
 		assertNotSame(queue, saved);
-		assertEquals("TestCreateQueueWorks", saved.getTitle());
+		assertEquals("TestCreateQueueWorks", saved.getName());
 	}
 	
 	@Test
