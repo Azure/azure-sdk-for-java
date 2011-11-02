@@ -24,6 +24,9 @@ public class Exports implements Builder.Exports {
 				// need to avoid certain element prefixes, which the service does not ignore
 				instance.getSingletons().add(new MarshallerProvider());
 				
+				// add body reader/writer for EntryModel<?> descendant classes
+				instance.getClasses().add(EntryModelProvider.class);
+				
 				return instance;
 			}
 		});

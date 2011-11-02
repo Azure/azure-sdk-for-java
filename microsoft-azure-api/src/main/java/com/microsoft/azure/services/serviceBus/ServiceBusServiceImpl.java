@@ -2,6 +2,7 @@ package com.microsoft.azure.services.serviceBus;
 
 import java.io.InputStream;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -166,32 +167,29 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 	public Iterable<Queue> iterateQueues() throws ServiceException {
-		return null;
-//		try {
-//			return getResource()
-//					.path("$Resources/Queues")
-//					.get(Feed.class);
-//		}
-//		catch(UniformInterfaceException e) {
-//			throw processCatch(new ServiceException(e));
-//		}
-//		catch(ClientHandlerException e) {
-//			throw processCatch(new ServiceException(e));
-//		}
+		//TODO: iterate over link rel=next pagination
+		return getQueueList().getQueues();
 	}
+	
 	public QueueList getQueueList() throws ServiceException {
-		return null;
-//		try {
-//			return getResource()
-//					.path("$Resources/Queues")
-//					.get(Feed.class);
-//		}
-//		catch(UniformInterfaceException e) {
-//			throw processCatch(new ServiceException(e));
-//		}
-//		catch(ClientHandlerException e) {
-//			throw processCatch(new ServiceException(e));
-//		}
+		try {
+			Feed feed = getResource()
+					.path("$Resources/Queues")
+					.get(Feed.class);
+			ArrayList<Queue> queues = new ArrayList<Queue>();
+			for(Entry entry : feed.getEntries()){
+				queues.add(new Queue(entry));
+			}
+			QueueList result = new QueueList();
+			result.setQueues(queues);
+			return result;
+		}
+		catch(UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		}
+		catch(ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
 	}
 	public Entry createTopic(Entry entry) throws ServiceException {
 		try {

@@ -17,7 +17,7 @@ import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 
 import static org.junit.Assert.*;
 
-public class ContractIntegrationTest extends IntegrationTestBase {
+public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
 	private Configuration config;
 	private ServiceBusService service;

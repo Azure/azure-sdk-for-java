@@ -21,9 +21,6 @@ public class Queue extends EntryModel<QueueDescription> {
 		super(entry, entry.getContent().getQueueDescription());
 	}
 
-	public Queue(Entry entry, QueueDescription model) {
-		super(entry, model);
-	}
 
 	public String getName() {
 		return entry.getTitle();
