@@ -56,7 +56,6 @@ public class Message {
 		properties.setLockedUntilUtc(lockedUntilUtc);
 	}
 
-
 	public Integer getDeliveryCount() {
 		return properties.getDeliveryCount();
 	}

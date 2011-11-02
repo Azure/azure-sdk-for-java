@@ -9,6 +9,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
+
 public class BrokerPropertiesMapper  {
 
 	public BrokerProperties fromString(String value)

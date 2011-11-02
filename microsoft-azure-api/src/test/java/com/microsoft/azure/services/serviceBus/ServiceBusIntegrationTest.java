@@ -5,13 +5,14 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
 import com.microsoft.azure.services.serviceBus.schema.Content;
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.microsoft.azure.services.serviceBus.schema.Feed;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.BrokerProperties;
-import com.microsoft.azure.services.serviceBus.MessageResult;
+import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
@@ -75,11 +76,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void sendMessageWorks() throws Exception {
 		// Arrange
-
-		BrokerProperties props = new BrokerProperties();
+		Message message = new Message("sendMessageWorks");
 
 		// Act
-		service.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
+		service.sendMessage("TestAlpha", message);
 
 		// Assert
 	}
@@ -87,12 +87,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void receiveMessageWorks() throws Exception {
 		// Arrange
-
-		BrokerProperties props = new BrokerProperties();
-		service.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
+		service.sendMessage("TestAlpha", new Message("Hello World"));
 
 		// Act
-		MessageResult message = service.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
+		Message message = service.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 
@@ -104,17 +102,15 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockMessageWorks() throws Exception {
 		// Arrange
-
-		BrokerProperties props = new BrokerProperties();
+		service.sendMessage("TestAlpha", new Message("Hello Again"));
 
 		// Act
-		service.sendMessage("TestAlpha", props, new ByteArrayInputStream("Hello World".getBytes()));
-		MessageResult message = service.receiveMessage("TestAlpha", 500, ReceiveMode.PEEK_LOCK);
+		Message message = service.receiveMessage("TestAlpha", 500, ReceiveMode.PEEK_LOCK);
 
 		// Assert
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 		assertEquals(11, size);
-		assertEquals("Hello World", new String(data, 0, size));
+		assertEquals("Hello Again", new String(data, 0, size));
 	}
 }

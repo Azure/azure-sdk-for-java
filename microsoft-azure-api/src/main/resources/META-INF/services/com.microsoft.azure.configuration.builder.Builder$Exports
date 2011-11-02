@@ -1,5 +1,4 @@
 com.microsoft.azure.auth.wrap.Exports
 com.microsoft.azure.configuration.jersey.Exports
 com.microsoft.azure.services.serviceBus.Exports
-com.microsoft.azure.services.serviceBus.messaging.Exports
 com.microsoft.azure.utils.Exports

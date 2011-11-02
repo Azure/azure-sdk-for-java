@@ -1,7 +1,5 @@
 package com.microsoft.azure.services.serviceBus;
 
-import java.io.InputStream;
-
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.microsoft.azure.services.serviceBus.schema.Feed;
 
@@ -9,8 +7,8 @@ import com.microsoft.azure.ServiceException;
 
 
 public interface ServiceBusService {
-	void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException;
-	MessageResult receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
+	void sendMessage(String path, Message message) throws ServiceException;
+	Message receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
 	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode) throws ServiceException;
 	//void abandonMessage(BrokeredMessage message) throws ServiceException;
 	//void completeMessage(BrokeredMessage message) throws ServiceException;

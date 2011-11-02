@@ -9,6 +9,8 @@ import javax.inject.Named;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.microsoft.azure.services.serviceBus.schema.Feed;
 
@@ -60,13 +62,13 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 	// REVIEW: contentType will be needed
-	public void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException {
+	public void sendMessage(String path, Message message) throws ServiceException {
 		try {
 			getResource()
 				.path(path)
 				.path("messages")
-				.header("BrokerProperties", mapper.toString(properties))
-				.post(body);
+				.header("BrokerProperties", mapper.toString(message.getProperties()))
+				.post(message.getBody());
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
@@ -76,7 +78,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public MessageResult receiveMessage(String queuePath, Integer timeout,
+	public Message receiveMessage(String queuePath, Integer timeout,
 			ReceiveMode receiveMode) throws ServiceException {
 
 		WebResource resource = getResource()
@@ -116,8 +118,8 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 
 		// REVIEW: harden this - it's much too brittle. throws null exceptions very easily
-		MessageResult result = new MessageResult();
-		result.setBrokerProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
+		Message result = new Message();
+		result.setProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
 		result.setBody(clientResult.getEntityInputStream());
 		return result;
 	}
