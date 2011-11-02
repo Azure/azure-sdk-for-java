@@ -63,18 +63,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void deleteQueueWorks() throws Exception {
 		// Arrange
+		service.createQueue(new Queue().setName("TestDeleteQueueWorks"));
 
 		// Act
-		Entry entry = new Entry();
-		Content content = new Content();
-		QueueDescription description = new QueueDescription();
-		
-		entry.setTitle("TestDeleteQueueWorks");
-		entry.setContent(content);
-		content.setType("application/xml");
-		content.setQueueDescription(description);
-//		service.createQueue(entry);
-
 		service.deleteQueue("TestDeleteQueueWorks");
 		
 		// Assert
