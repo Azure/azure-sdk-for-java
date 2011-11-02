@@ -32,7 +32,7 @@ public abstract class IntegrationTestBase {
 		System.out.println("initialize");
 		System.setProperty("http.proxyHost", "itgproxy");
 		System.setProperty("http.proxyPort", "80");
-		//System.setProperty("http.keepAlive", "false");
+		System.setProperty("http.keepAlive", "false");
 	}
 
 	@Before
@@ -40,7 +40,7 @@ public abstract class IntegrationTestBase {
 		System.out.println("initialize");
 		System.setProperty("http.proxyHost", "itgproxy");
 		System.setProperty("http.proxyPort", "80");
-		//System.setProperty("http.keepAlive", "false");
+		System.setProperty("http.keepAlive", "false");
 		
 		boolean testAlphaExists = false;
 		ServiceBusService service = createConfiguration().create(ServiceBusService.class);

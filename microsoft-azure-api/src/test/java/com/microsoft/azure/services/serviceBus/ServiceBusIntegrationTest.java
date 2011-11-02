@@ -1,6 +1,7 @@
 package com.microsoft.azure.services.serviceBus;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -92,12 +93,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
 		// Act
 		MessageResult message = service.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
-
-		// Assert
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
+
+		// Assert
 		assertEquals(11, size);
-		assertArrayEquals("Hello World".getBytes(), data);
+		assertArrayEquals("Hello World".getBytes(), Arrays.copyOf(data, size));
 	}
 	
 	@Test
