@@ -8,10 +8,10 @@ import com.microsoft.azure.ServiceException;
 
 public interface ServiceBusService {
 	void sendMessage(String path, Message message) throws ServiceException;
-	Message receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
-	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode) throws ServiceException;
-	//void abandonMessage(BrokeredMessage message) throws ServiceException;
-	//void completeMessage(BrokeredMessage message) throws ServiceException;
+	Message receiveMessage(String queueName, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
+	Message receiveMessage(String topicName, String subscriptionName, int timeout, ReceiveMode receiveMode) throws ServiceException;
+	void abandonMessage(Message message) throws ServiceException;
+	void completeMessage(Message message) throws ServiceException;
 
 	Queue createQueue(Queue queue) throws ServiceException;
 	void deleteQueue(String queuePath) throws ServiceException;

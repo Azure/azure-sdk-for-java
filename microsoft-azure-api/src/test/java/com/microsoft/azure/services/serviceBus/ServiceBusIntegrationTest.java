@@ -1,22 +1,14 @@
 package com.microsoft.azure.services.serviceBus;
 
-import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
-import com.microsoft.azure.services.serviceBus.schema.Content;
-import com.microsoft.azure.services.serviceBus.schema.Entry;
-import com.microsoft.azure.services.serviceBus.schema.Feed;
-
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
-import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
-
 import static org.junit.Assert.*;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {

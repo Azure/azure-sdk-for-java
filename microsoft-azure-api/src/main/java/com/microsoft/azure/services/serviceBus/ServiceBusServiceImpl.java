@@ -124,6 +124,21 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		return result;
 	}
 
+	public Message receiveMessage(String topicPath, String subscriptionName,
+			int timeout, ReceiveMode receiveMode) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void abandonMessage(Message message) throws ServiceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void completeMessage(Message message) throws ServiceException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public Queue createQueue(Queue entry) throws ServiceException {
 		try {
@@ -275,6 +290,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 
 }
