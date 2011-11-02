@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.messaging.ReceiveMessageOptions;
+import com.microsoft.azure.services.serviceBus.client.ReceiveMessageOptions;
 
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {

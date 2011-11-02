@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.messaging;
+package com.microsoft.azure.services.serviceBus.client;
 
 public class SendMessageOptions {
 

@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.messaging;
+package com.microsoft.azure.services.serviceBus.client;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.Message;

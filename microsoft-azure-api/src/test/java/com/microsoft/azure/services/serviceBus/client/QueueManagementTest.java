@@ -1,3 +1,4 @@
+package com.microsoft.azure.services.serviceBus.client;
 //package com.microsoft.azure.services.serviceBus.messaging;
 //
 //import static org.junit.Assert.*;
