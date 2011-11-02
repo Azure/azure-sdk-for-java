@@ -1,6 +1,7 @@
 package com.microsoft.azure.services.serviceBus.messaging;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.services.serviceBus.Message;
 
 
 public interface MessageSender {
