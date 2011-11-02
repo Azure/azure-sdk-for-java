@@ -1,8 +1,11 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.microsoft.azure.services.serviceBus.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.BrokerPropertiesMapper;
 
 public class BrokerPropertiesMapperTest {
 	@Test

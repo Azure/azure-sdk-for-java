@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,9 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
-import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.ServiceBusClient;
+import com.microsoft.azure.services.serviceBus.messaging.Message;
+import com.microsoft.azure.services.serviceBus.messaging.Queue;
+import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
 
 public class QueueManagementIntegrationTest extends IntegrationTestBase {

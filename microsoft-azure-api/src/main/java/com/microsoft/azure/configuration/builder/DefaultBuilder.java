@@ -150,7 +150,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 	public <T> T build(String profile, Class<T> service, Map<String,Object> properties) throws Exception {
 		Factory<T> factory = (Factory<T>) factories.get(service);
 		if (factory == null) {
-			throw new RuntimeException("Service not registered: " + profile + " " + service.getName());
+			throw new RuntimeException("Service or property not registered: " + profile + " " + service.getName());
 		}
     	T instance = factory.create(profile, this, properties);
     	List<Alteration<?>> alterationList = alterations.get(service);

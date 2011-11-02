@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import org.codehaus.jackson.annotate.JsonGetter;
 import org.codehaus.jackson.annotate.JsonIgnore;

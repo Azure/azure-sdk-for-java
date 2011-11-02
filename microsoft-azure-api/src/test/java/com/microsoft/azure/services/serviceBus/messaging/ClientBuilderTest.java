@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -7,7 +7,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.contract.ServiceBusContractImpl;
+import com.microsoft.azure.services.serviceBus.ServiceBusServiceImpl;
+import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
 
 public class ClientBuilderTest {
@@ -23,11 +24,11 @@ public class ClientBuilderTest {
 		// Assert
 		assertNotNull(client);
 		assertNotNull(client.getContract());
-		assertEquals(ServiceBusContractImpl.class, client.getContract().getClass());
+		assertEquals(ServiceBusServiceImpl.class, client.getContract().getClass());
 
 		assertNotNull(client2);
 		assertNotNull(client2.getContract());
-		assertEquals(ServiceBusContractImpl.class, client2.getContract().getClass());
+		assertEquals(ServiceBusServiceImpl.class, client2.getContract().getClass());
 	}
 	
 	@Test

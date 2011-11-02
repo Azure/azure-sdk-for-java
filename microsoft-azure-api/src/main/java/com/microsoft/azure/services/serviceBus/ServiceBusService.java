@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import java.io.InputStream;
 
@@ -8,7 +8,7 @@ import org.w3._2005.atom.Feed;
 import com.microsoft.azure.ServiceException;
 
 
-public interface ServiceBusContract {
+public interface ServiceBusService {
 	void sendMessage(String path, BrokerProperties properties, InputStream body) throws ServiceException;
 	MessageResult receiveMessage(String queuePath, Integer timeout, ReceiveMode receiveMode) throws ServiceException;
 	//BrokeredMessage receiveMessage(String topicPath, String subscriptionName, int timeout, ReceiveMode receiveMode) throws ServiceException;

@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import java.io.InputStream;
 import java.rmi.UnexpectedException;
@@ -20,15 +20,15 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
-public class ServiceBusContractImpl implements ServiceBusContract {
+public class ServiceBusServiceImpl implements ServiceBusService {
 
 	private Client channel;
 	private String uri;
 	private BrokerPropertiesMapper mapper;
-	static Log log = LogFactory.getLog(ServiceBusContract.class);
+	static Log log = LogFactory.getLog(ServiceBusService.class);
 
 	@Inject
-	public ServiceBusContractImpl(
+	public ServiceBusServiceImpl(
 			Client channel, 
 			@Named("serviceBus") WrapFilter authFilter,
 			@Named("serviceBus.uri") String uri,

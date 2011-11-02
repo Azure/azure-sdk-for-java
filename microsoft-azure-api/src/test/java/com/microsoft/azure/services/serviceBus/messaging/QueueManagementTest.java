@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -12,15 +12,17 @@ import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
-import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
+import com.microsoft.azure.services.serviceBus.messaging.Queue;
+import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
 
 public class QueueManagementTest {
 	@Test
 	public void testGetQueueAcquiresDescriptionFromServer() throws ServiceException {
 		// Arrange
-		ServiceBusContract contract = mock(ServiceBusContract.class);
+		ServiceBusService contract = mock(ServiceBusService.class);
 
 		Entry entry = new Entry();
 		when(contract.getQueue("Hello")).thenReturn(entry);
@@ -41,7 +43,7 @@ public class QueueManagementTest {
 	@Test
 	public void queueCreateSendsCreateQueueDescriptionMessage() throws DatatypeConfigurationException, ServiceException {
 		// Arrange
-		ServiceBusContract contract = mock(ServiceBusContract.class);
+		ServiceBusService contract = mock(ServiceBusService.class);
 		
 		// Act
 		ServiceBusClient client = new ServiceBusClient(contract);

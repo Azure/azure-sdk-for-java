@@ -1,9 +1,9 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.microsoft.azure.services.serviceBus.contract.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.BrokerProperties;
 
 
 public class Message {

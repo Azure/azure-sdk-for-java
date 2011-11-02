@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import java.io.IOException;
 import java.io.StringWriter;

@@ -1,11 +1,11 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import javax.ws.rs.core.MediaType;
 
 import org.w3._2005.atom.Content;
 import org.w3._2005.atom.Entry;
 
-import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
+import com.microsoft.azure.services.serviceBus.ServiceBusService;
 
 abstract class AbstractEntity {
 
@@ -28,7 +28,7 @@ abstract class AbstractEntity {
 		return client;
 	}
 
-	protected ServiceBusContract getContract() {
+	protected ServiceBusService getContract() {
 		return getClient().getContract();
 	}
 

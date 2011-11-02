@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus.contract;
+package com.microsoft.azure.services.serviceBus;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;

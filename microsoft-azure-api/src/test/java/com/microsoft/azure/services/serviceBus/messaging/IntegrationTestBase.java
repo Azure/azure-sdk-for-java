@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 import java.io.Console;
 
@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.microsoft.azure.configuration.Configuration;
+import com.microsoft.azure.services.serviceBus.messaging.Queue;
+import com.microsoft.azure.services.serviceBus.messaging.ReceiveMessageOptions;
+import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {

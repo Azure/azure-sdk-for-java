@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.messaging;
 
 
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ import org.w3._2005.atom.Feed;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.contract.ServiceBusContract;
+import com.microsoft.azure.services.serviceBus.ServiceBusService;
 
 public class ServiceBusClient  {
 
-	ServiceBusContract contract;
+	ServiceBusService contract;
 
 	public ServiceBusClient() throws Exception {
 		this("", Configuration.load());
@@ -28,19 +28,19 @@ public class ServiceBusClient  {
 	}
 	
 	public ServiceBusClient(String profile, Configuration config) throws Exception {
-		this(config.create(profile, ServiceBusContract.class));
+		this(config.create(profile, ServiceBusService.class));
 	}
 
 	@Inject
-	public ServiceBusClient(ServiceBusContract contract) {
+	public ServiceBusClient(ServiceBusService contract) {
 		this.contract = contract;
 	}
 
-	public ServiceBusContract getContract() {
+	public ServiceBusService getContract() {
 		return contract;
 	}
 
-	public void setContract(ServiceBusContract contract) {
+	public void setContract(ServiceBusService contract) {
 		this.contract = contract;
 	}
 
