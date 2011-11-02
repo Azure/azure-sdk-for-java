@@ -34,8 +34,8 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		// Arrange
 
 		// Act
-		Entry entry = service.getQueue("TestAlpha");
-		Feed feed = service.getQueues();
+		Queue entry = service.getQueue("TestAlpha");
+		QueueList feed = service.getQueueList();
 		
 		// Assert
 		assertNotNull(entry);
@@ -48,19 +48,17 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		// Arrange
 
 		// Act
-		Entry entry = new Entry();
-		Content content = new Content();
-		QueueDescription description = new QueueDescription();
+		Queue queue = new Queue();
 		
-		entry.setTitle("TestCreateQueueWorks");
-		entry.setContent(content);
-		content.setType("application/xml");
-		content.setQueueDescription(description);
-		description.setMaxSizeInMegabytes(1024L);
+		queue.setTitle("TestCreateQueueWorks");
+		queue.setMaxSizeInMegabytes(1024L);
 		
-		Entry entry2 = service.createQueue(entry);
+		Queue saved = service.createQueue(queue);
 		
 		// Assert
+		assertNotNull(saved);
+		assertNotSame(queue, saved);
+		assertEquals("TestCreateQueueWorks", saved.getTitle());
 	}
 	
 	@Test
@@ -76,7 +74,7 @@ public class ContractIntegrationTest extends IntegrationTestBase {
 		entry.setContent(content);
 		content.setType("application/xml");
 		content.setQueueDescription(description);
-		service.createQueue(entry);
+//		service.createQueue(entry);
 
 		service.deleteQueue("TestDeleteQueueWorks");
 		

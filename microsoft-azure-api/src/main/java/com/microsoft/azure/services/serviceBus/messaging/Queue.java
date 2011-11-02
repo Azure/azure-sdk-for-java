@@ -32,44 +32,44 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
 	
 	
 	// API methods
-	
-	public void save() throws ServiceException {
-		setEntry(getContract().createQueue(getEntry()));
-	}
-
-	public void delete() throws ServiceException {
-		getContract().deleteQueue(getName());
-	}
-	
-	public void fetch() throws ServiceException {
-		setEntry(getContract().getQueue(getName()));
-	}
-
-	public void sendMessage(Message message) throws ServiceException {
-		sendMessage(message, SendMessageOptions.DEFAULT);
-	}
-
-	public void sendMessage(Message message, SendMessageOptions options) throws ServiceException {
-		getContract().sendMessage(getName(), message.getProperties(), message.getBody());
-	}
-
-	public Message receiveMessage() throws ServiceException {
-		return receiveMessage(ReceiveMessageOptions.DEFAULT);
-	}
-	
-	public Message receiveMessage(ReceiveMessageOptions options) throws ServiceException {
-		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.RECEIVE_AND_DELETE);
-		return new Message(result.getBrokerProperties(), result.getBody());
-	}
-
-	public Message peekLockMessage() throws ServiceException {
-		return peekLockMessage(ReceiveMessageOptions.DEFAULT);
-	}
-
-	public Message peekLockMessage(ReceiveMessageOptions options) throws ServiceException {
-		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.PEEK_LOCK);
-		return new Message(result.getBrokerProperties(), result.getBody());
-	}
+//	
+//	public void save() throws ServiceException {
+//		setEntry(getContract().createQueue(getEntry()));
+//	}
+//
+//	public void delete() throws ServiceException {
+//		getContract().deleteQueue(getName());
+//	}
+//	
+//	public void fetch() throws ServiceException {
+//		setEntry(getContract().getQueue(getName()));
+//	}
+//
+//	public void sendMessage(Message message) throws ServiceException {
+//		sendMessage(message, SendMessageOptions.DEFAULT);
+//	}
+//
+//	public void sendMessage(Message message, SendMessageOptions options) throws ServiceException {
+//		getContract().sendMessage(getName(), message.getProperties(), message.getBody());
+//	}
+//
+//	public Message receiveMessage() throws ServiceException {
+//		return receiveMessage(ReceiveMessageOptions.DEFAULT);
+//	}
+//	
+//	public Message receiveMessage(ReceiveMessageOptions options) throws ServiceException {
+//		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.RECEIVE_AND_DELETE);
+//		return new Message(result.getBrokerProperties(), result.getBody());
+//	}
+//
+//	public Message peekLockMessage() throws ServiceException {
+//		return peekLockMessage(ReceiveMessageOptions.DEFAULT);
+//	}
+//
+//	public Message peekLockMessage(ReceiveMessageOptions options) throws ServiceException {
+//		MessageResult result = getContract().receiveMessage(getName(), options.getTimeout(), ReceiveMode.PEEK_LOCK);
+//		return new Message(result.getBrokerProperties(), result.getBody());
+//	}
 	
 	public void abandonMessage(Message message) {
 		// TODO Auto-generated method stub
@@ -111,5 +111,38 @@ public class Queue extends AbstractEntity implements MessageSender, MessageRecei
     public Long getMessageCount() {
         return getQueueDescription().getMessageCount();
     }
+
+	public Message receiveMessage() throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Message receiveMessage(ReceiveMessageOptions options)
+			throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Message peekLockMessage() throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Message peekLockMessage(ReceiveMessageOptions options)
+			throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void sendMessage(Message message) throws ServiceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendMessage(Message message, SendMessageOptions options)
+			throws ServiceException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

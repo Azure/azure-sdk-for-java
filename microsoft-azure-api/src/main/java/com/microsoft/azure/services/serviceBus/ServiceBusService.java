@@ -15,10 +15,11 @@ public interface ServiceBusService {
 	//void abandonMessage(BrokeredMessage message) throws ServiceException;
 	//void completeMessage(BrokeredMessage message) throws ServiceException;
 
-	Entry createQueue(Entry queue) throws ServiceException;
+	Queue createQueue(Queue queue) throws ServiceException;
 	void deleteQueue(String queuePath) throws ServiceException;
-	Entry getQueue(String queuePath) throws ServiceException;
-	Feed getQueues() throws ServiceException;
+	Queue getQueue(String queuePath) throws ServiceException;
+	QueueList getQueueList() throws ServiceException;
+	Iterable<Queue> iterateQueues() throws ServiceException;
 
 	Entry createTopic(Entry topic) throws ServiceException;
 	void deleteTopic(String topicPath) throws ServiceException;

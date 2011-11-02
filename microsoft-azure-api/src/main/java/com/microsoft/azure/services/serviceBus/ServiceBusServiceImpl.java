@@ -122,12 +122,12 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 
-	public Entry createQueue(Entry entry) throws ServiceException {
+	public Queue createQueue(Queue entry) throws ServiceException {
 		try {
 			return getResource()
 				.path(entry.getTitle())
 				.type("application/atom+xml")//;type=entry;charset=utf-8")
-				.put(Entry.class, entry);
+				.put(Queue.class, entry);
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
@@ -151,11 +151,11 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public Entry getQueue(String queuePath) throws ServiceException {
+	public Queue getQueue(String queuePath) throws ServiceException {
 		try {
 			return getResource()
 					.path(queuePath)
-					.get(Entry.class);
+					.get(Queue.class);
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
@@ -165,20 +165,34 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public Feed getQueues() throws ServiceException {
-		try {
-			return getResource()
-					.path("$Resources/Queues")
-					.get(Feed.class);
-		}
-		catch(UniformInterfaceException e) {
-			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
-			throw processCatch(new ServiceException(e));
-		}
+	public Iterable<Queue> iterateQueues() throws ServiceException {
+		return null;
+//		try {
+//			return getResource()
+//					.path("$Resources/Queues")
+//					.get(Feed.class);
+//		}
+//		catch(UniformInterfaceException e) {
+//			throw processCatch(new ServiceException(e));
+//		}
+//		catch(ClientHandlerException e) {
+//			throw processCatch(new ServiceException(e));
+//		}
 	}
-
+	public QueueList getQueueList() throws ServiceException {
+		return null;
+//		try {
+//			return getResource()
+//					.path("$Resources/Queues")
+//					.get(Feed.class);
+//		}
+//		catch(UniformInterfaceException e) {
+//			throw processCatch(new ServiceException(e));
+//		}
+//		catch(ClientHandlerException e) {
+//			throw processCatch(new ServiceException(e));
+//		}
+	}
 	public Entry createTopic(Entry entry) throws ServiceException {
 		try {
 			return getResource()

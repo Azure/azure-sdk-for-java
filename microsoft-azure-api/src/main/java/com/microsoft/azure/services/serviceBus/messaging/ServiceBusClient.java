@@ -44,19 +44,19 @@ public class ServiceBusClient  {
 		this.contract = contract;
 	}
 
-	public Iterable<Queue> listQueues() throws ServiceException {
-		return listQueues(ListQueuesOptions.DEFAULT);
-	}
+//	public Iterable<Queue> listQueues() throws ServiceException {
+//		return listQueues(ListQueuesOptions.DEFAULT);
+//	}
 	
-	// REVIEW: what is the generalized strategy for paginated, client-roundtrippable iteration
-	public Iterable<Queue> listQueues(ListQueuesOptions options) throws ServiceException {
-		Feed descriptions = contract.getQueues();
-		ArrayList<Queue> queues = new ArrayList<Queue>();
-		for (int i = 0; i != descriptions.getEntries().size(); ++i) {
-			queues.add(new Queue(this, descriptions.getEntries().get(i)));
-		}
-		return queues;
-	}
+//	// REVIEW: what is the generalized strategy for paginated, client-roundtrippable iteration
+//	public Iterable<Queue> listQueues(ListQueuesOptions options) throws ServiceException {
+//		Feed descriptions = contract.getQueueList()();
+//		ArrayList<Queue> queues = new ArrayList<Queue>();
+//		for (int i = 0; i != descriptions.getEntries().size(); ++i) {
+//			queues.add(new Queue(this, descriptions.getEntries().get(i)));
+//		}
+//		return queues;
+//	}
 
 	public Queue getQueue(String path) {
 		return new Queue(this, path);

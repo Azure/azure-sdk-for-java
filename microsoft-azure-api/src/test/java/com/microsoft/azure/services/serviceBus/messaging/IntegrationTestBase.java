@@ -6,7 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.messaging.Queue;
+import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.messaging.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
@@ -42,22 +43,22 @@ public abstract class IntegrationTestBase {
 		//System.setProperty("http.keepAlive", "false");
 		
 		boolean testAlphaExists = false;
-		ServiceBusClient client = createConfiguration().create(ServiceBusClient.class);
-		for(Queue queue : client.listQueues()){
-			if (queue.getName().startsWith("Test") || queue.getName().startsWith("test")) {
-				if (queue.getName().equalsIgnoreCase("TestAlpha")) {
+		ServiceBusService service = createConfiguration().create(ServiceBusService.class);
+		for(Queue queue : service.iterateQueues()) {
+			if (queue.getTitle().startsWith("Test") || queue.getTitle().startsWith("test")) {
+				if (queue.getTitle().equalsIgnoreCase("TestAlpha")) {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
-					for(long i = 0; i != count; ++i) {
-						queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2000));
-					}
+//					for(long i = 0; i != count; ++i) {
+//						queue.receiveMessage(new ReceiveMessageOptions().setTimeout(2000));
+//					}
 				} else {
-					queue.delete();
+//					queue.delete();
 				}
 			}
 		}
 		if (!testAlphaExists) {
-			client.getQueue("TestAlpha").save();
+			service.createQueue(new Queue().setTitle("TestAlpha"));
 		}
 	}
 }
