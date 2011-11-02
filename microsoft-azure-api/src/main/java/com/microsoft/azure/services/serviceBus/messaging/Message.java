@@ -3,28 +3,12 @@ package com.microsoft.azure.services.serviceBus.messaging;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.microsoft.azure.services.serviceBus.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
 
 
 public class Message {
 	BrokerProperties properties;
 	InputStream body;
-
-	public String getLockToken() {
-		return properties.getLockToken();
-	}
-
-	public void setLockToken(String lockToken) {
-		properties.setLockToken(lockToken);
-	}
-
-	public String getLockedUntilUtc() {
-		return properties.getLockedUntilUtc();
-	}
-
-	public void setLockedUntilUtc(String lockedUntilUtc) {
-		properties.setLockedUntilUtc(lockedUntilUtc);
-	}
 
 	public Message() {
 		this(new BrokerProperties(), null);
@@ -55,6 +39,23 @@ public class Message {
 		this.body = body;
 		return this;
 	}
+
+	public String getLockToken() {
+		return properties.getLockToken();
+	}
+
+	public void setLockToken(String lockToken) {
+		properties.setLockToken(lockToken);
+	}
+
+	public String getLockedUntilUtc() {
+		return properties.getLockedUntilUtc();
+	}
+
+	public void setLockedUntilUtc(String lockedUntilUtc) {
+		properties.setLockedUntilUtc(lockedUntilUtc);
+	}
+
 
 	public Integer getDeliveryCount() {
 		return properties.getDeliveryCount();

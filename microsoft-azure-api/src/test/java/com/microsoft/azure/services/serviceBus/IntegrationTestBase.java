@@ -9,7 +9,6 @@ import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.messaging.ReceiveMessageOptions;
-import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {
