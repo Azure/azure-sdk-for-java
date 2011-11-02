@@ -8,12 +8,12 @@ import javax.xml.datatype.DatatypeFactory;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.w3._2005.atom.Content;
-import org.w3._2005.atom.Entry;
+import com.microsoft.azure.services.serviceBus.schema.Content;
+import com.microsoft.azure.services.serviceBus.schema.Entry;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
-import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
+import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 import com.microsoft.azure.services.serviceBus.messaging.Queue;
 import com.microsoft.azure.services.serviceBus.messaging.ServiceBusClient;
 

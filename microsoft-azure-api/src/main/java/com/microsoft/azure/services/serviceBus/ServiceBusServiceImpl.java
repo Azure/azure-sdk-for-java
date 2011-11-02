@@ -8,8 +8,8 @@ import javax.inject.Named;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3._2005.atom.Entry;
-import org.w3._2005.atom.Feed;
+import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.schema.Feed;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;

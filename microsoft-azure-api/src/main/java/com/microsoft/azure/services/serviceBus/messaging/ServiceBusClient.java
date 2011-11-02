@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import org.w3._2005.atom.Feed;
+import com.microsoft.azure.services.serviceBus.schema.Feed;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;

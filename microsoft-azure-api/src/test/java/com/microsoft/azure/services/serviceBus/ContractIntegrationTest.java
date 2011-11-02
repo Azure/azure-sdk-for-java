@@ -4,16 +4,16 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3._2005.atom.Content;
-import org.w3._2005.atom.Entry;
-import org.w3._2005.atom.Feed;
+import com.microsoft.azure.services.serviceBus.schema.Content;
+import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.schema.Feed;
 
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.BrokerProperties;
 import com.microsoft.azure.services.serviceBus.MessageResult;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
-import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
+import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 import com.microsoft.azure.services.serviceBus.messaging.IntegrationTestBase;
 
 import static org.junit.Assert.*;

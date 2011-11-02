@@ -1,13 +1,13 @@
 package com.microsoft.azure.services.serviceBus.messaging;
 
 import javax.xml.datatype.Duration;
-import org.w3._2005.atom.Content;
-import org.w3._2005.atom.Entry;
+import com.microsoft.azure.services.serviceBus.schema.Content;
+import com.microsoft.azure.services.serviceBus.schema.Entry;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.MessageResult;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
-import com.microsoft.azure.services.serviceBus.contract.QueueDescription;
+import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 
 public class Queue extends AbstractEntity implements MessageSender, MessageReceiver, MessageTransceiver {
 	Queue(ServiceBusClient client, String name) {

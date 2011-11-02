@@ -2,8 +2,8 @@ package com.microsoft.azure.services.serviceBus.messaging;
 
 import javax.ws.rs.core.MediaType;
 
-import org.w3._2005.atom.Content;
-import org.w3._2005.atom.Entry;
+import com.microsoft.azure.services.serviceBus.schema.Content;
+import com.microsoft.azure.services.serviceBus.schema.Entry;
 
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 
@@ -14,7 +14,7 @@ abstract class AbstractEntity {
 
 	AbstractEntity(ServiceBusClient client) {
 		this.client = client;
-		setEntry(new org.w3._2005.atom.Entry());
+		setEntry(new Entry());
 		getEntry().setContent(new Content());
 		getEntry().getContent().setType(MediaType.APPLICATION_XML);
 	}
