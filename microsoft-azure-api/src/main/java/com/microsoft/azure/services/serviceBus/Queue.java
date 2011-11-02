@@ -15,6 +15,7 @@ public class Queue extends EntryModel<QueueDescription> {
 		super(new Entry(), new QueueDescription());
 		entry.setContent(new Content());
 		entry.getContent().setType(MediaType.APPLICATION_XML);
+		entry.getContent().setQueueDescription(getModel());
 	}
 
 	public Queue(Entry entry) {

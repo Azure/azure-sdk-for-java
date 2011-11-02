@@ -11,6 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.MessageBodyWriter;
+
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.jersey.spi.MessageBodyWorkers;
@@ -45,8 +47,7 @@ public class EntryModelProvider extends
 
 	public boolean isWriteable(Class<?> type, Type genericType,
 			Annotation[] annotations, MediaType mediaType) {
-		// TODO Auto-generated method stub
-		return false;
+		return EntryModel.class.isAssignableFrom(type);
 	}
 
 	public void writeTo(EntryModel<?> t, Class<?> type, Type genericType,
@@ -54,8 +55,13 @@ public class EntryModelProvider extends
 			MultivaluedMap<String, Object> httpHeaders,
 			OutputStream entityStream) throws IOException,
 			WebApplicationException {
-		// TODO Auto-generated method stub
+		
+		Entry entry = t.getEntry();
+		
+		MessageBodyWriter<Entry> writer = workers.getMessageBodyWriter(
+				Entry.class, Entry.class, annotations, mediaType);
 
+		writer.writeTo(entry, Entry.class, genericType, annotations, mediaType, httpHeaders, entityStream);
 	}
 
 }
