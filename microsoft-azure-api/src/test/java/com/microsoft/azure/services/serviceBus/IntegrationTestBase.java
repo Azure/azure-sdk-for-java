@@ -13,11 +13,7 @@ import static com.microsoft.azure.services.serviceBus.Util.*;
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {
 		Configuration config = new Configuration();
-		config.setProperty("serviceBus.uri", "https://lodejard.servicebus.windows.net");
-		config.setProperty("serviceBus.wrap.uri", "https://lodejard-sb.accesscontrol.windows.net/WRAPv0.9");
-		config.setProperty("serviceBus.wrap.name", "owner");
-		config.setProperty("serviceBus.wrap.password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-		config.setProperty("serviceBus.wrap.scope", "http://lodejard.servicebus.windows.net/");
+		ServiceBusConfiguration.configure(config, "lodejard", "owner", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
 
 		// when mock running
 		//config.setProperty("serviceBus.uri", "http://localhost:8086");
