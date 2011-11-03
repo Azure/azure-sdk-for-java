@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import java.io.InputStream;
 import java.rmi.UnexpectedException;
@@ -10,7 +10,11 @@ import javax.inject.Named;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.Message;
+import com.microsoft.azure.services.serviceBus.Queue;
+import com.microsoft.azure.services.serviceBus.QueueList;
+import com.microsoft.azure.services.serviceBus.ReceiveMode;
+import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.microsoft.azure.services.serviceBus.schema.Feed;
 

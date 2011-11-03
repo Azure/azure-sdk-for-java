@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusServiceImpl;
 
 public class ContractBuilderTest  {
 	@Test

@@ -3,7 +3,7 @@ package com.microsoft.azure.services.serviceBus;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.implementation.BrokerProperties;
 
 public class Message {
 	BrokerProperties properties;
@@ -36,14 +36,14 @@ public class Message {
 	/**
 	 * @return the brokerProperties
 	 */
-	BrokerProperties getProperties() {
+	public BrokerProperties getProperties() {
 		return properties;
 	}
 	
 	/**
 	 * @param properties the brokerProperties to set
 	 */
-	void setProperties(BrokerProperties properties) {
+	public void setProperties(BrokerProperties properties) {
 		this.properties = properties;
 	}
 	/**

@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.azure.services.serviceBus.BrokerPropertiesMapper;
-import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.implementation.BrokerProperties;
+import com.microsoft.azure.services.serviceBus.implementation.BrokerPropertiesMapper;
 
 public class BrokerPropertiesMapperTest {
 	@Test

@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +13,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
+import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.schema.Entry;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.jersey.spi.MessageBodyWorkers;

@@ -4,6 +4,10 @@ import java.util.Map;
 
 import com.microsoft.azure.configuration.builder.Builder;
 import com.microsoft.azure.services.serviceBus.client.MessagingClient;
+import com.microsoft.azure.services.serviceBus.implementation.BrokerPropertiesMapper;
+import com.microsoft.azure.services.serviceBus.implementation.EntryModelProvider;
+import com.microsoft.azure.services.serviceBus.implementation.MarshallerProvider;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusServiceImpl;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 

@@ -10,7 +10,7 @@ public class QueueList {
 		return queues;
 	}
 
-	void setQueues(List<Queue> queues) {
+	public void setQueues(List<Queue> queues) {
 		this.queues = queues;
 	}
 
