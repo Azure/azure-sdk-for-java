@@ -4,11 +4,11 @@ package com.microsoft.azure.services.serviceBus;
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
+import com.microsoft.azure.services.serviceBus.implementation.Content;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.microsoft.azure.services.serviceBus.implementation.EntryModel;
-import com.microsoft.azure.services.serviceBus.schema.Content;
-import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.QueueDescription;
 
-import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 
 public class Queue extends EntryModel<QueueDescription> {
 

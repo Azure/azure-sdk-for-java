@@ -15,8 +15,8 @@ import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.QueueList;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
-import com.microsoft.azure.services.serviceBus.schema.Entry;
-import com.microsoft.azure.services.serviceBus.schema.Feed;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.Feed;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;

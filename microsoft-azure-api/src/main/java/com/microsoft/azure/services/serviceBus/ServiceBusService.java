@@ -1,7 +1,7 @@
 package com.microsoft.azure.services.serviceBus;
 
-import com.microsoft.azure.services.serviceBus.schema.Entry;
-import com.microsoft.azure.services.serviceBus.schema.Feed;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.Feed;
 
 import com.microsoft.azure.ServiceException;
 
