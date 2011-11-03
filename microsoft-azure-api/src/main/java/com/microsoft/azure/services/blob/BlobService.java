@@ -37,4 +37,7 @@ public interface BlobService {
 
     BlobProperties getBlobProperties(String container, String blob);
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
+
+    Blob getBlob(String container, String blob);
+    Blob getBlob(String container, String blob, GetBlobOptions options);
 }

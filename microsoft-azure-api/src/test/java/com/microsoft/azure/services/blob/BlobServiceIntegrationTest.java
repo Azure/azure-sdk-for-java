@@ -5,7 +5,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -245,20 +253,17 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService contract = config.create(BlobService.class);
 
         // Act
-        contract.putPageBlob(
-                "mycontainer1",
-                "test",
-                512,
-                new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF8").setBlobContentLanguage("en-us")
-                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF8")
-                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+        contract.putPageBlob("mycontainer1", "test", 512, new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+                .setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         BlobProperties props = contract.getBlobProperties("mycontainer1", "test");
 
         // Assert
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
-        assertEquals("UTF8", props.getContentEncoding());
+        assertEquals("UTF-8", props.getContentEncoding());
         assertEquals("en-us", props.getContentLanguage());
         assertEquals("text/plain", props.getContentType());
         assertEquals(512, props.getContentLength());
@@ -291,23 +296,21 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService contract = config.create(BlobService.class);
 
         // Act
-        contract.putBlockBlob(
-                "mycontainer1",
-                "test2",
-                new ByteArrayInputStream("some content".getBytes()),
-                new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF8").setBlobContentLanguage("en-us")
-                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF8")
-                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+        String content = "some content";
+        contract.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new PutBlobOptions().setBlobCacheControl("test")
+                .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         BlobProperties props = contract.getBlobProperties("mycontainer1", "test2");
 
         // Assert
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
-        assertEquals("UTF8", props.getContentEncoding());
+        assertEquals("UTF-8", props.getContentEncoding());
         assertEquals("en-us", props.getContentLanguage());
         assertEquals("text/plain", props.getContentType());
-        assertEquals(512, props.getContentLength());
+        assertEquals(content.length(), props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
         assertNotNull(props.getMetadata());
@@ -316,5 +319,109 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("BlockBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
+    }
+
+    @Test
+    public void getBlockBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        String content = "some content";
+        contract.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new PutBlobOptions().setBlobCacheControl("test")
+                .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
+
+        Blob blob = contract.getBlob("mycontainer1", "test2");
+        BlobProperties props = blob.getProperties();
+
+        // Assert
+        assertNotNull(props);
+        assertEquals("test", props.getCacheControl());
+        assertEquals("UTF-8", props.getContentEncoding());
+        assertEquals("en-us", props.getContentLanguage());
+        assertEquals("text/plain", props.getContentType());
+        assertEquals(content.length(), props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("BlockBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
+        assertEquals(content, inputStreamToString(blob.getContentStream(), "UTF-8"));
+    }
+
+    @Test
+    public void getPageBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.putPageBlob("mycontainer1", "test", 4096, new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+                .setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
+
+        Blob blob = contract.getBlob("mycontainer1", "test");
+        BlobProperties props = blob.getProperties();
+
+        // Assert
+        assertNotNull(props);
+        assertEquals("test", props.getCacheControl());
+        assertEquals("UTF-8", props.getContentEncoding());
+        assertEquals("en-us", props.getContentLanguage());
+        assertEquals("text/plain", props.getContentType());
+        assertEquals(4096, props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("PageBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
+        assertEquals(4096, inputStreamToByteArray(blob.getContentStream()).length);
+    }
+
+    private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[1024];
+        try {
+            while (true) {
+                int n = inputStream.read(buffer);
+                if (n == -1)
+                    break;
+                outputStream.write(buffer, 0, n);
+            }
+        }
+        finally {
+            inputStream.close();
+        }
+        return outputStream.toByteArray();
+    }
+
+    public String inputStreamToString(InputStream inputStream, String encoding) throws IOException {
+        Writer writer = new StringWriter();
+
+        char[] buffer = new char[1024];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
+            while (true) {
+                int n = reader.read(buffer);
+                if (n == -1)
+                    break;
+                writer.write(buffer, 0, n);
+            }
+        }
+        finally {
+            inputStream.close();
+        }
+        return writer.toString();
     }
 }

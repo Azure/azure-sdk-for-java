@@ -364,6 +364,43 @@ public class BlobServiceImpl implements BlobService {
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
 
+        return getBlobPropertiesFromResponse(response);
+    }
+
+    public Blob getBlob(String container, String blob) {
+        return getBlob(container, blob, new GetBlobOptions());
+    }
+
+    public Blob getBlob(String container, String blob, GetBlobOptions options) {
+        WebResource webResource = getResource().path(container).path(blob);
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+
+        if (options.getSnapshot() != null) {
+            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+        }
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        if (options.getRangeStart() != null) {
+            String range = options.getRangeStart().toString() + "-";
+            if (options.getRangeEnd() != null) {
+                range += options.getRangeEnd().toString();
+            }
+            builder = addOptionalHeader(builder, "Range", range);
+        }
+
+        ClientResponse response = builder.get(ClientResponse.class);
+
+        BlobProperties properties = getBlobPropertiesFromResponse(response);
+        Blob blobResult = new Blob();
+        blobResult.setProperties(properties);
+        blobResult.setContentStream(response.getEntityInputStream());
+        return blobResult;
+    }
+
+    private BlobProperties getBlobPropertiesFromResponse(ClientResponse response) {
         BlobProperties properties = new BlobProperties();
 
         // Last-Modified
@@ -401,7 +438,6 @@ public class BlobServiceImpl implements BlobService {
         if (response.getHeaders().containsKey("x-ms-blob-sequence-number")) {
             properties.setSequenceNUmber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
         }
-
         return properties;
     }
 }
