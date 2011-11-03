@@ -96,7 +96,9 @@ public class ContainerACL {
     }
 
     public static class AccessPolicy {
+        //TODO: Make it a date?
         private String start;
+        //TODO: Make it a date?
         private String expiry;
         private String permission;
 

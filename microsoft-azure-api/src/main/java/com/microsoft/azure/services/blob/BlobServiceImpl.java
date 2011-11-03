@@ -1,5 +1,6 @@
 package com.microsoft.azure.services.blob;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -49,9 +50,16 @@ public class BlobServiceImpl implements BlobService {
         return wr;
     }
 
-    private Builder addOptionalHeader(Builder builder, String name, String value) {
+    private Builder addOptionalHeader(Builder builder, String name, Object value) {
         if (value != null) {
             builder = builder.header(name, value);
+        }
+        return builder;
+    }
+
+    private Builder addOptionalHeader(Builder builder, String name, int value, int defaultValue) {
+        if (value != defaultValue) {
+            builder = builder.header(name, Integer.toString(value));
         }
         return builder;
     }
@@ -253,7 +261,6 @@ public class BlobServiceImpl implements BlobService {
 
     public ListBlobsResults listBlobs(String container, ListBlobsOptions options) {
         WebResource webResource = getResource().path(container).queryParam("comp", "list").queryParam("resType", "container");
-
         webResource = setCanonicalizedResource(webResource, container, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
@@ -270,5 +277,71 @@ public class BlobServiceImpl implements BlobService {
         }
 
         return webResource.header(X_MS_VERSION, API_VERSION).get(ListBlobsResults.class);
+    }
+
+    public void putPageBlob(String container, String blob, int length) {
+        putPageBlob(container, blob, length, new PutBlobOptions());
+    }
+
+    public void putPageBlob(String container, String blob, int length, PutBlobOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob);
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = builder.header("x-ms-blob-type", "PageBlob");
+        builder = addPutBlobHeaders(options, builder);
+
+        builder = builder.header("Content-Length", 0);
+        builder = builder.header("x-ms-blob-content-length", length);
+        builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
+        // TODO: We need the following 2 to make sure that "Content-Length:0" header
+        // is sent to the server (IIS doesn't accept PUT without a content length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        builder.type("text/plain").put("");
+    }
+
+    public void putBlockBlob(String container, String blob, InputStream content) {
+        putBlockBlob(container, blob, content, new PutBlobOptions());
+    }
+
+    public void putBlockBlob(String container, String blob, InputStream content, PutBlobOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob);
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = builder.header("x-ms-blob-type", "BlockBlob");
+        builder = addPutBlobHeaders(options, builder);
+
+        builder.put(content);
+    }
+
+    private Builder addPutBlobHeaders(PutBlobOptions options, Builder builder) {
+        builder = addOptionalHeader(builder, "Content-Type", options.getContentType());
+        if (options.getContentType() == null) {
+            // This is technically the default, but we explicitly add here to allow proper
+            // signing of the request headers.
+            builder = builder.type("application/octet-stream");
+        }
+        builder = addOptionalHeader(builder, "Content-Encoding", options.getContentEncoding());
+        builder = addOptionalHeader(builder, "Content-Language", options.getContentLanguage());
+        builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
+        builder = addOptionalHeader(builder, "Cache-Control", options.getCacheControl());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getBlobContentType());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-encoding", options.getBlobContentEncoding());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getBlobContentLanguage());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
+        builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        // Metadata
+        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        //TODO: Conditional headers (If Match, etc.)
+
+        return builder;
     }
 }

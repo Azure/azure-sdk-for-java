@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -224,5 +225,29 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(results);
         assertEquals(2, results.getBlobs().size());
+    }
+
+    @Test
+    public void putPageBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.putPageBlob("mycontainer1", "test", 512);
+
+        // Assert
+    }
+
+    @Test
+    public void putBlockBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream("some content".getBytes()));
+
+        // Assert
     }
 }

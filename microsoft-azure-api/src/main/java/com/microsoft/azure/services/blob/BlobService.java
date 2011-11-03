@@ -1,7 +1,9 @@
 package com.microsoft.azure.services.blob;
 
+import java.io.InputStream;
 import java.util.HashMap;
 
+//TODO: ServiceException annotation and handling in implementation
 public interface BlobService {
     ListContainersResults listContainers();
 
@@ -26,4 +28,10 @@ public interface BlobService {
     ListBlobsResults listBlobs(String container);
 
     ListBlobsResults listBlobs(String container, ListBlobsOptions options);
+
+    void putPageBlob(String container, String blob, int length);
+    void putPageBlob(String container, String blob, int length, PutBlobOptions options);
+
+    void putBlockBlob(String container, String blob, InputStream content);
+    void putBlockBlob(String container, String blob, InputStream content, PutBlobOptions options);
 }
