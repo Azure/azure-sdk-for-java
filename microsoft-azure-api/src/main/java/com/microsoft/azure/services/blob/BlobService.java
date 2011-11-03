@@ -17,6 +17,10 @@ public interface BlobService {
 
     ContainerProperties getContainerMetadata(String container);
 
+    ContainerACL getContainerACL(String container);
+
+    void setContainerACL(String container, ContainerACL acl);
+
     void setContainerMetadata(String container, HashMap<String, String> metadata);
 
     ListBlobsResults listBlobs(String container);

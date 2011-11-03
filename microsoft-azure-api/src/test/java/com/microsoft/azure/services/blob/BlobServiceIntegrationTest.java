@@ -37,6 +37,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         ContainerProperties prop = contract.getContainerMetadata("foo2");
         ContainerProperties prop2 = contract.getContainerProperties("foo2");
+        ContainerACL acl = contract.getContainerACL("foo2");
 
         ListContainersResults results2 = contract.listContainers(new ListContainersOptions().setPrefix("foo2").setListingDetails(
                 EnumSet.of(ContainerListingDetails.METADATA)));
@@ -70,6 +71,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertTrue(results2.getContainers().get(0).getMetadata().containsValue("bar"));
         assertTrue(results2.getContainers().get(0).getMetadata().containsKey("blah"));
         assertTrue(results2.getContainers().get(0).getMetadata().containsValue("bleah"));
+
+        assertNotNull(acl);
+
     }
 
     @Test
@@ -99,6 +103,37 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertTrue(prop.getMetadata().containsValue("bar"));
         assertTrue(prop.getMetadata().containsKey("blah"));
         assertTrue(prop.getMetadata().containsValue("bleah"));
+    }
+
+    @Test
+    public void setContainerACLWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.createContainer("foo4");
+
+
+        ContainerACL acl = new ContainerACL();
+        acl.setPublicAccess("blob");
+        acl.AddSignedIdentifier("test", "2010-01-01", "2020-01-01", "rwd");
+        contract.setContainerACL("foo4", acl);
+
+        ContainerACL acl2 = contract.getContainerACL("foo4");
+        contract.deleteContainer("foo4");
+
+        // Assert
+        assertNotNull(acl2);
+        assertNotNull(acl2.getEtag());
+        assertNotNull(acl2.getLastModified());
+        assertNotNull(acl2.getPublicAccess());
+        assertEquals("blob", acl2.getPublicAccess());
+        assertEquals(1, acl2.getSignedIdentifiers().size());
+        assertEquals("test", acl2.getSignedIdentifiers().get(0).getId());
+        assertEquals("2010-01-01T00:00:00.0000000Z", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getStart());
+        assertEquals("2020-01-01T00:00:00.0000000Z", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getExpiry());
+        assertEquals("rwd", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getPermission());
     }
 
 
