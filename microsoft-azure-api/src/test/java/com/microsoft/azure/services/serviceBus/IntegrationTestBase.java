@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.client.ReceiveMessageOptions;
+import static com.microsoft.azure.services.serviceBus.Util.*;
 
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {
@@ -43,7 +43,7 @@ public abstract class IntegrationTestBase {
 		
 		boolean testAlphaExists = false;
 		ServiceBusService service = createConfiguration().create(ServiceBusService.class);
-		for(Queue queue : service.iterateQueues()) {
+		for(Queue queue : iterateQueues(service)) {
 			String queueName = queue.getName();
 			if (queueName.startsWith("Test") || queueName.startsWith("test")) {
 				if (queueName.equalsIgnoreCase("TestAlpha")) {

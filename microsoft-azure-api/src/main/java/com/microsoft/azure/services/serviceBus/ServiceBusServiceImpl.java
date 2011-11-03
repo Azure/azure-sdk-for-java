@@ -183,10 +183,6 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public Iterable<Queue> iterateQueues() throws ServiceException {
-		//TODO: iterate over link rel=next pagination
-		return getQueueList().getQueues();
-	}
 	
 	public QueueList getQueueList() throws ServiceException {
 		try {

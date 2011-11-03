@@ -17,7 +17,6 @@ public interface ServiceBusService {
 	void deleteQueue(String queuePath) throws ServiceException;
 	Queue getQueue(String queuePath) throws ServiceException;
 	QueueList getQueueList() throws ServiceException;
-	Iterable<Queue> iterateQueues() throws ServiceException;
 
 	Entry createTopic(Entry topic) throws ServiceException;
 	void deleteTopic(String topicPath) throws ServiceException;
