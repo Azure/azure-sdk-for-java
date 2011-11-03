@@ -1,11 +1,11 @@
 package com.microsoft.azure.services.blob;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class ContainerProperties {
     private String etag;
-    // TODO: Should this be a Date?
-    private String lastModified;
+    private Date lastModified;
     private HashMap<String, String> metadata;
 
     public String getEtag() {
@@ -16,11 +16,11 @@ public class ContainerProperties {
         this.etag = etag;
     }
 
-    public String getLastModified() {
+    public Date getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(String lastModified) {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 

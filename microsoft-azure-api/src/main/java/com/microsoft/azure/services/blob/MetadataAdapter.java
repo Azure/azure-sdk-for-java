@@ -15,7 +15,7 @@ public class MetadataAdapter extends XmlAdapter<MetadataHashMapType, HashMap<Str
     @Override
     public HashMap<String, String> unmarshal(MetadataHashMapType arg0) throws Exception {
         HashMap<String, String> result = new HashMap<String, String>();
-        for (Element entry : arg0.entries) {
+        for (Element entry : arg0.getEntries()) {
             result.put(entry.getLocalName(), entry.getFirstChild().getNodeValue());
         }
         return result;

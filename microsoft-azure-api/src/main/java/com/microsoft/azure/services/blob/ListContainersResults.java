@@ -1,5 +1,6 @@
 package com.microsoft.azure.services.blob;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class ListContainersResults {
     public static class Container {
         private String name;
         private String url;
-        private HashMap<String, String> metadata;
+        private HashMap<String, String> metadata = new HashMap<String, String>();
         private ContainerProperties properties;
 
         @XmlElement(name = "Name")
@@ -117,25 +118,26 @@ public class ListContainersResults {
         }
 
         public static class ContainerProperties {
-            private String LastModified;
-            private String Etag;
+            private Date lastModified;
+            private String etag;
 
             @XmlElement(name = "Last-Modified")
-            public String getLastModified() {
-                return LastModified;
+            @XmlJavaTypeAdapter(DateAdapter.class)
+            public Date getLastModified() {
+                return lastModified;
             }
 
-            public void setLastModified(String lastModified) {
-                LastModified = lastModified;
+            public void setLastModified(Date lastModified) {
+                this.lastModified = lastModified;
             }
 
             @XmlElement(name = "Etag")
             public String getEtag() {
-                return Etag;
+                return etag;
             }
 
             public void setEtag(String etag) {
-                Etag = etag;
+                this.etag = etag;
             }
         }
     }

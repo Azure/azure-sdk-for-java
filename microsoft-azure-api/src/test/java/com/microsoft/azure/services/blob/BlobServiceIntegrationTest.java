@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -72,6 +73,36 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void setContainerMetadataWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.createContainer("foo3");
+
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        metadata.put("test", "bar");
+        metadata.put("blah", "bleah");
+        contract.setContainerMetadata("foo3", metadata);
+        ContainerProperties prop = contract.getContainerMetadata("foo3");
+
+        contract.deleteContainer("foo3");
+
+        // Assert
+        assertNotNull(prop);
+        assertNotNull(prop.getEtag());
+        assertNotNull(prop.getLastModified());
+        assertNotNull(prop.getMetadata());
+        assertEquals(2, prop.getMetadata().size());
+        assertTrue(prop.getMetadata().containsKey("test"));
+        assertTrue(prop.getMetadata().containsValue("bar"));
+        assertTrue(prop.getMetadata().containsKey("blah"));
+        assertTrue(prop.getMetadata().containsValue("bleah"));
+    }
+
+
+    @Test
     public void listContainersWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -83,6 +114,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(results);
         assertEquals(8, results.getContainers().size());
+        assertNotNull(results.getContainers().get(0).getName());
+        assertNotNull(results.getContainers().get(0).getMetadata());
+        assertNotNull(results.getContainers().get(0).getProperties());
+        assertNotNull(results.getContainers().get(0).getProperties().getEtag());
+        assertNotNull(results.getContainers().get(0).getProperties().getLastModified());
+        assertNotNull(results.getContainers().get(0).getUrl());
     }
 
     @Test

@@ -1,13 +1,10 @@
 package com.microsoft.azure.services.blob;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Named;
 
@@ -36,7 +33,6 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
         return this.getNext().handle(cr);
     }
 
-    private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
 
     private String nullEmpty(String value) {
         return value != null ? value : "";
@@ -54,9 +50,7 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
         String date = getHeader(cr, "Date");
 
         if (date == "") {
-            DateFormat rfc1123Format = new SimpleDateFormat(RFC1123_PATTERN, Locale.US);
-            rfc1123Format.setTimeZone(TimeZone.getTimeZone("GMT"));
-            date = rfc1123Format.format(new Date());
+            date = new DateMapper().format(new Date());
             cr.getHeaders().add("Date", date);
         }
 
