@@ -89,11 +89,11 @@ public class Message {
 		return properties.getSequenceNumber();
 	}
 
-	public Long getTimeToLive() {
+	public Double getTimeToLive() {
 		return properties.getTimeToLive();
 	}
 
-	public Message setTimeToLive(Long timeToLive) {
+	public Message setTimeToLive(Double timeToLive) {
 		properties.setTimeToLive(timeToLive);
 		return this;
 	}

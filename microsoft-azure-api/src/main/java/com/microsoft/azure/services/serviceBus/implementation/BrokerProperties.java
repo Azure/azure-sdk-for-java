@@ -27,7 +27,7 @@ public class BrokerProperties {
 	@JsonProperty("DeliveryCount")
 	Integer deliveryCount;
 
-	@JsonProperty("LockedUntil")
+	@JsonProperty("LockedUntilUtc")
 	Date lockedUntilUtc;
 
 	@JsonProperty("LockToken")
@@ -46,7 +46,7 @@ public class BrokerProperties {
 	Long sequenceNumber;
 
 	@JsonProperty("TimeToLive")
-	Long timeToLive;
+	Double timeToLive;
 
 	@JsonProperty("To")
 	String to;
@@ -93,11 +93,11 @@ public class BrokerProperties {
 	}
 
 	@JsonIgnore
-	public Long getTimeToLive() {
+	public Double getTimeToLive() {
 		return timeToLive;
 	}
 
-	public void setTimeToLive(Long timeToLive) {
+	public void setTimeToLive(Double timeToLive) {
 		this.timeToLive = timeToLive;
 	}
 

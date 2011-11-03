@@ -23,7 +23,6 @@ public class Queue extends EntryModel<QueueDescription> {
 		super(entry, entry.getContent().getQueueDescription());
 	}
 
-
 	public String getName() {
 		return getEntry().getTitle();
 	}
@@ -51,9 +50,17 @@ public class Queue extends EntryModel<QueueDescription> {
 		return this;
 	}
 
+	public Boolean isRequiresDuplicateDetection() {
+		return getModel().isRequiresDuplicateDetection();
+	}
+
 	public Queue setRequiresDuplicateDetection(Boolean value) {
 		getModel().setRequiresDuplicateDetection(value);
 		return this;
+	}
+
+	public Boolean isRequiresSession() {
+		return getModel().isRequiresSession();
 	}
 
 	public Queue setRequiresSession(Boolean value) {
@@ -68,6 +75,10 @@ public class Queue extends EntryModel<QueueDescription> {
 	public Queue setDefaultMessageTimeToLive(Duration value) {
 		getModel().setDefaultMessageTimeToLive(value);
 		return this;
+	}
+
+	public Boolean isDeadLetteringOnMessageExpiration() {
+		return getModel().isDeadLetteringOnMessageExpiration();
 	}
 
 	public Queue setDeadLetteringOnMessageExpiration(Boolean value) {
@@ -93,6 +104,10 @@ public class Queue extends EntryModel<QueueDescription> {
 		return this;
 	}
 
+	public Boolean isEnableBatchedOperations() {
+		return getModel().isEnableBatchedOperations();
+	}
+
 	public Queue setEnableBatchedOperations(Boolean value) {
 		getModel().setEnableBatchedOperations(value);
 		return this;
@@ -102,17 +117,8 @@ public class Queue extends EntryModel<QueueDescription> {
 		return getModel().getSizeInBytes();
 	}
 
-	public Queue setSizeInBytes(Long value) {
-		getModel().setSizeInBytes(value);
-		return this;
-	}
-
 	public Long getMessageCount() {
 		return getModel().getMessageCount();
 	}
 
-	public Queue setMessageCount(Long value) {
-		getModel().setMessageCount(value);
-		return this;
-	}
 }

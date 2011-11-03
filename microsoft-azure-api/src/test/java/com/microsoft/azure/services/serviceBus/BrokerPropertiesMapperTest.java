@@ -62,13 +62,13 @@ public class BrokerPropertiesMapperTest {
 			"\"CorrelationId\": \"corid\","+
 			"\"SessionId\": \"sesid\","+
 			"\"DeliveryCount\": 5,"+
-			"\"LockedUntil\": \" Fri, 14 Oct 2011 12:34:56 GMT\","+
+			"\"LockedUntilUtc\": \" Fri, 14 Oct 2011 12:34:56 GMT\","+
 			"\"LockToken\": \"loctok\","+
 			"\"MessageId\": \"mesid\","+
 			"\"Label\": \"lab\","+
 			"\"ReplyTo\": \"repto\","+
 			"\"SequenceNumber\": 7,"+
-			"\"TimeToLive\": 8,"+
+			"\"TimeToLive\": 8.123,"+
 			"\"To\": \"to\","+
 			"\"ScheduledEnqueueTimeUtc\": \" Sun, 06 Nov 1994 08:49:37 GMT\","+
 			"\"ReplyToSessionId\": \"reptosesid\","+
@@ -93,7 +93,7 @@ public class BrokerPropertiesMapperTest {
 		assertEquals("lab", properties.getLabel());
 		assertEquals("repto", properties.getReplyTo());
 		assertEquals(7, (long)properties.getSequenceNumber());
-		assertEquals(8, (long)properties.getTimeToLive());
+		assertEquals(8.123, properties.getTimeToLive(), .001);
 		assertEquals("to", properties.getTo());
 		assertTrue(Math.abs(schedTimeDelta) < 500);
 		assertEquals("reptosesid", properties.getReplyToSessionId());
