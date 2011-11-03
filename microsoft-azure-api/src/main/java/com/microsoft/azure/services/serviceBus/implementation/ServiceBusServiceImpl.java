@@ -135,8 +135,17 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 	public void abandonMessage(Message message) throws ServiceException {
-		// TODO Auto-generated method stub
-		
+		try {
+			getChannel()
+				.resource(message.getLockLocation())
+				.delete();
+		}
+		catch(UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		}
+		catch(ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
 	}
 
 	public void completeMessage(Message message) throws ServiceException {
