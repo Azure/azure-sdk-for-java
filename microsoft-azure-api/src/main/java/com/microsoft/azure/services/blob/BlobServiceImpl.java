@@ -1,5 +1,6 @@
 package com.microsoft.azure.services.blob;
 
+import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +126,13 @@ public class BlobServiceImpl implements BlobService {
 
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
-        properties.setLastModified(response.getHeaders().getFirst("Last-Modified"));
+        try {
+            properties.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
+        }
+        catch (ParseException e) {
+            // Server returned an invalid/unsupported date format
+            throw new IllegalArgumentException(e);
+        }
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
@@ -138,6 +145,30 @@ public class BlobServiceImpl implements BlobService {
         properties.setMetadata(metadata);
         return properties;
     }
+
+    public void setContainerMetadata(String container, HashMap<String, String> metadata) {
+        WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "metadata");
+
+        webResource = setCanonicalizedResource(webResource, container, "metadata");
+
+        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        // Metadata
+        for (Entry<String, String> entry : metadata.entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        builder
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        .header("Content-Type", "text/plain").put("");
+    }
+
 
     public ListContainersResults listContainers() {
         return listContainers(new ListContainersOptions());

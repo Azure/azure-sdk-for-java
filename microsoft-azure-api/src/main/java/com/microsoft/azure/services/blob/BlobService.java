@@ -1,5 +1,7 @@
 package com.microsoft.azure.services.blob;
 
+import java.util.HashMap;
+
 public interface BlobService {
     ListContainersResults listContainers();
 
@@ -14,6 +16,8 @@ public interface BlobService {
     ContainerProperties getContainerProperties(String container);
 
     ContainerProperties getContainerMetadata(String container);
+
+    void setContainerMetadata(String container, HashMap<String, String> metadata);
 
     ListBlobsResults listBlobs(String container);
 
