@@ -12,7 +12,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-public class BlobContractImpl implements BlobContract {
+public class BlobServiceImpl implements BlobService {
 
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String X_MS_BLOB_PUBLIC_ACCESS = "x-ms-blob-public-access";
@@ -23,7 +23,7 @@ public class BlobContractImpl implements BlobContract {
     private final String url;
 
     @Inject
-    public BlobContractImpl(Client channel, @Named(BlobConfig.CONFIG_ACCOUNT_NAME) String accountName, @Named(BlobConfig.CONFIG_URL) String url,
+    public BlobServiceImpl(Client channel, @Named(BlobConfig.CONFIG_ACCOUNT_NAME) String accountName, @Named(BlobConfig.CONFIG_URL) String url,
     // TODO: How to make this configurable though code?
             BlobSharedKeyLiteFilter filter) {
 

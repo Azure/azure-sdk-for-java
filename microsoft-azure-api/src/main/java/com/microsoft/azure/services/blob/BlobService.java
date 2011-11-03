@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public interface BlobContract {
+public interface BlobService {
     ListContainersResults listContainers();
 
     ListContainersResults listContainers(ListContainersOptions options);

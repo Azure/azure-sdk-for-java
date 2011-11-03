@@ -9,22 +9,14 @@ import java.util.EnumSet;
 import org.junit.Test;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.blob.BlobContract;
-import com.microsoft.azure.services.blob.ContainerListingDetails;
-import com.microsoft.azure.services.blob.ContainerProperties;
-import com.microsoft.azure.services.blob.CreateContainerOptions;
-import com.microsoft.azure.services.blob.ListBlobsOptions;
-import com.microsoft.azure.services.blob.ListBlobsResults;
-import com.microsoft.azure.services.blob.ListContainersOptions;
-import com.microsoft.azure.services.blob.ListContainersResults;
 
-public class BlobContractIntegrationTest extends IntegrationTestBase {
+public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void createContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
         contract.createContainer("foo");
@@ -37,20 +29,16 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
     public void createContainerWithMetadataWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
-        contract.createContainer("foo2", new CreateContainerOptions()
-                .setPublicAccess("blob").addMetadata("test", "bar")
-                .addMetadata("blah", "bleah"));
+        contract.createContainer("foo2", new CreateContainerOptions().setPublicAccess("blob").addMetadata("test", "bar").addMetadata("blah", "bleah"));
 
         ContainerProperties prop = contract.getContainerMetadata("foo2");
         ContainerProperties prop2 = contract.getContainerProperties("foo2");
 
-        ListContainersResults results2 = contract
-                .listContainers(new ListContainersOptions().setPrefix("foo2")
-                        .setListingDetails(
-                                EnumSet.of(ContainerListingDetails.METADATA)));
+        ListContainersResults results2 = contract.listContainers(new ListContainersOptions().setPrefix("foo2").setListingDetails(
+                EnumSet.of(ContainerListingDetails.METADATA)));
 
         contract.deleteContainer("foo2");
 
@@ -77,21 +65,17 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(results2);
         assertEquals(1, results2.getContainers().size());
-        assertTrue(results2.getContainers().get(0).getMetadata()
-                .containsKey("test"));
-        assertTrue(results2.getContainers().get(0).getMetadata()
-                .containsValue("bar"));
-        assertTrue(results2.getContainers().get(0).getMetadata()
-                .containsKey("blah"));
-        assertTrue(results2.getContainers().get(0).getMetadata()
-                .containsValue("bleah"));
+        assertTrue(results2.getContainers().get(0).getMetadata().containsKey("test"));
+        assertTrue(results2.getContainers().get(0).getMetadata().containsValue("bar"));
+        assertTrue(results2.getContainers().get(0).getMetadata().containsKey("blah"));
+        assertTrue(results2.getContainers().get(0).getMetadata().containsValue("bleah"));
     }
 
     @Test
     public void listContainersWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
         ListContainersResults results = contract.listContainers();
@@ -105,11 +89,10 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
     public void listContainersWithPaginationWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
-        ListContainersResults results = contract
-                .listContainers(new ListContainersOptions().setMaxResults(3));
+        ListContainersResults results = contract.listContainers(new ListContainersOptions().setMaxResults(3));
 
         // Assert
         assertNotNull(results);
@@ -118,9 +101,7 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
         assertEquals(3, results.getMaxResults());
 
         // Act
-        ListContainersResults results2 = contract
-                .listContainers(new ListContainersOptions().setMarker(results
-                        .getNextMarker()));
+        ListContainersResults results2 = contract.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
 
         // Assert
         assertNotNull(results2);
@@ -133,12 +114,10 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
     public void listContainersWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
-        ListContainersResults results = contract
-                .listContainers(new ListContainersOptions()
-                        .setPrefix("mycontainer1"));
+        ListContainersResults results = contract.listContainers(new ListContainersOptions().setPrefix("mycontainer1"));
 
         // Assert
         assertNotNull(results);
@@ -151,7 +130,7 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
     public void listBlobsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
         ListBlobsResults results = contract.listBlobs("mycontainer11");
@@ -165,11 +144,10 @@ public class BlobContractIntegrationTest extends IntegrationTestBase {
     public void listBlobsWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract contract = config.create(BlobContract.class);
+        BlobService contract = config.create(BlobService.class);
 
         // Act
-        ListBlobsResults results = contract.listBlobs("mycontainer11",
-                new ListBlobsOptions().setPrefix("Create"));
+        ListBlobsResults results = contract.listBlobs("mycontainer11", new ListBlobsOptions().setPrefix("Create"));
 
         // Assert
         assertNotNull(results);
