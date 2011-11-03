@@ -176,7 +176,7 @@ public class BlobServiceImpl implements BlobService {
             acl.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
         }
         catch (ParseException e) {
-            //TODO: Is this the right way to handle this?
+            // TODO: Is this the right way to handle this?
             throw new IllegalArgumentException(e);
         }
         return acl;
@@ -187,8 +187,8 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container, "acl");
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
-        //Note: Add content type here to enable proper HMAC signing
-        //builder = builder.header("Content-Type", "application/xml");
+        // Note: Add content type here to enable proper HMAC signing
+        // builder = builder.header("Content-Type", "application/xml");
         builder = addOptionalHeader(builder, X_MS_BLOB_PUBLIC_ACCESS, acl.getPublicAccess());
 
         ContainerACL.SignedIdentifiers si = new ContainerACL.SignedIdentifiers();
@@ -217,7 +217,6 @@ public class BlobServiceImpl implements BlobService {
         // producing the authorization hmac.
         builder.header("Content-Type", "text/plain").put("");
     }
-
 
     public ListContainersResults listContainers() {
         return listContainers(new ListContainersOptions());
@@ -294,8 +293,10 @@ public class BlobServiceImpl implements BlobService {
         builder = builder.header("Content-Length", 0);
         builder = builder.header("x-ms-blob-content-length", length);
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
-        // TODO: We need the following 2 to make sure that "Content-Length:0" header
-        // is sent to the server (IIS doesn't accept PUT without a content length).
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
         // Since we are sending a "dummy" string, we also need to set the
         // "Content-Type" header so that the hmac filter will see it when
         // producing the authorization hmac.
@@ -320,7 +321,8 @@ public class BlobServiceImpl implements BlobService {
     private Builder addPutBlobHeaders(PutBlobOptions options, Builder builder) {
         builder = addOptionalHeader(builder, "Content-Type", options.getContentType());
         if (options.getContentType() == null) {
-            // This is technically the default, but we explicitly add here to allow proper
+            // This is technically the default, but we explicitly add here to
+            // allow proper
             // signing of the request headers.
             builder = builder.type("application/octet-stream");
         }
@@ -340,8 +342,66 @@ public class BlobServiceImpl implements BlobService {
             builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
         }
 
-        //TODO: Conditional headers (If Match, etc.)
+        // TODO: Conditional headers (If Match, etc.)
 
         return builder;
+    }
+
+    public BlobProperties getBlobProperties(String container, String blob) {
+        return getBlobProperties(container, blob, new GetBlobPropertiesOptions());
+    }
+
+    public BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) {
+        WebResource webResource = getResource().path(container).path(blob);
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+
+        if (options.getSnapshot() != null) {
+            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+        }
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        ClientResponse response = builder.method("HEAD", ClientResponse.class);
+
+        BlobProperties properties = new BlobProperties();
+
+        // Last-Modified
+        try {
+            properties.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
+        }
+        catch (ParseException e) {
+            // Server returned an invalid/unsupported date format
+            throw new IllegalArgumentException(e);
+        }
+
+        // Metadata
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
+            if (entry.getKey().startsWith(X_MS_META_PREFIX)) {
+                String name = entry.getKey().substring(X_MS_META_PREFIX.length());
+                String value = entry.getValue().get(0);
+                metadata.put(name, value);
+            }
+        }
+        properties.setMetadata(metadata);
+
+        //
+        properties.setBlobType(response.getHeaders().getFirst("x-ms-blob-type"));
+        properties.setLeaseStatus(response.getHeaders().getFirst("x-ms-lease-status"));
+
+        properties.setContentLength(Long.parseLong(response.getHeaders().getFirst("Content-Length")));
+        properties.setContentType(response.getHeaders().getFirst("Content-Type"));
+        properties.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
+        properties.setContentEncoding(response.getHeaders().getFirst("Content-Encoding"));
+        properties.setContentLanguage(response.getHeaders().getFirst("Content-Language"));
+        properties.setCacheControl(response.getHeaders().getFirst("Cache-Control"));
+
+        properties.setEtag(response.getHeaders().getFirst("Etag"));
+        if (response.getHeaders().containsKey("x-ms-blob-sequence-number")) {
+            properties.setSequenceNUmber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
+        }
+
+        return properties;
     }
 }

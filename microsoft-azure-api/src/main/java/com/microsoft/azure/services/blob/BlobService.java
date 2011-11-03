@@ -34,4 +34,7 @@ public interface BlobService {
 
     void putBlockBlob(String container, String blob, InputStream content);
     void putBlockBlob(String container, String blob, InputStream content, PutBlobOptions options);
+
+    BlobProperties getBlobProperties(String container, String blob);
+    BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
 }

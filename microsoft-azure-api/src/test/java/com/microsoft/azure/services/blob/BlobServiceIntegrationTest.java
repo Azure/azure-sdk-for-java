@@ -2,6 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -115,7 +116,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Act
         contract.createContainer("foo4");
 
-
         ContainerACL acl = new ContainerACL();
         acl.setPublicAccess("blob");
         acl.AddSignedIdentifier("test", "2010-01-01", "2020-01-01", "rwd");
@@ -136,7 +136,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("2020-01-01T00:00:00.0000000Z", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getExpiry());
         assertEquals("rwd", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getPermission());
     }
-
 
     @Test
     public void listContainersWorks() throws Exception {
@@ -240,6 +239,40 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void putPageBlobWithOptionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.putPageBlob(
+                "mycontainer1",
+                "test",
+                512,
+                new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF8").setBlobContentLanguage("en-us")
+                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF8")
+                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+
+        BlobProperties props = contract.getBlobProperties("mycontainer1", "test");
+
+        // Assert
+        assertNotNull(props);
+        assertEquals("test", props.getCacheControl());
+        assertEquals("UTF8", props.getContentEncoding());
+        assertEquals("en-us", props.getContentLanguage());
+        assertEquals("text/plain", props.getContentType());
+        assertEquals(512, props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("PageBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
+    }
+
+    @Test
     public void putBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -249,5 +282,39 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         contract.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream("some content".getBytes()));
 
         // Assert
+    }
+
+    @Test
+    public void putBlockBlobWithOptionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        contract.putBlockBlob(
+                "mycontainer1",
+                "test2",
+                new ByteArrayInputStream("some content".getBytes()),
+                new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF8").setBlobContentLanguage("en-us")
+                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF8")
+                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+
+        BlobProperties props = contract.getBlobProperties("mycontainer1", "test2");
+
+        // Assert
+        assertNotNull(props);
+        assertEquals("test", props.getCacheControl());
+        assertEquals("UTF8", props.getContentEncoding());
+        assertEquals("en-us", props.getContentLanguage());
+        assertEquals("text/plain", props.getContentType());
+        assertEquals(512, props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("BlockBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
     }
 }
