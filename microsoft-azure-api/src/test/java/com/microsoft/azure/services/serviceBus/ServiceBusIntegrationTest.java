@@ -156,6 +156,18 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	
 	@Test
 	public void contentTypePassesThrough() throws Exception {
-		assertTrue(false);
+		// Arrange
+		service.createQueue(new Queue().setName("TestContentTypePassesThrough"));
+
+		// Act
+		service.sendMessage("TestContentTypePassesThrough", 
+				new Message("<data>Hello Again</data>").setContentType("text/xml"));
+
+		Message message = service.receiveMessage("TestContentTypePassesThrough", 1500, ReceiveMode.RECEIVE_AND_DELETE);
+		
+
+		// Assert
+		assertNotNull(message);
+		assertEquals("text/xml", message.getContentType());
 	}
 }

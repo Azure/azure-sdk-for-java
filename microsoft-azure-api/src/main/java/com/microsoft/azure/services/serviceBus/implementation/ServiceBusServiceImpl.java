@@ -28,6 +28,7 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 
 public class ServiceBusServiceImpl implements ServiceBusService {
 
@@ -69,17 +70,18 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 
 	public void sendMessage(String path, Message message) throws ServiceException {
 		try {
-			WebResource resource = getResource()
+			Builder request = getResource()
 				.path(path)
-				.path("messages");
+				.path("messages")
+				.getRequestBuilder();
 			
 			if (message.getContentType() != null)
-				resource.type(message.getContentType());
+				request = request.type(message.getContentType());
 
 			if (message.getProperties() != null)
-				resource.header("BrokerProperties", mapper.toString(message.getProperties()));
+				request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
 
-			resource.post(message.getBody());
+			request.post(message.getBody());
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
@@ -141,7 +143,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 		if (contentType != null)
 		{
-			result.setContentType(clientResult.toString());
+			result.setContentType(contentType.toString());
 		}
 		if (location != null)
 		{
