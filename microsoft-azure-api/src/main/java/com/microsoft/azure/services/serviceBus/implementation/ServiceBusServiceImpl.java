@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.QueueList;
+import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.implementation.Entry;
@@ -91,20 +92,25 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public Message receiveMessage(String queuePath, Integer timeout,
-			ReceiveMode receiveMode) throws ServiceException {
+
+	public Message receiveQueueMessage(String queueName)
+			throws ServiceException {
+		return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
+	}
+	
+	public Message receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
 
 		WebResource resource = getResource()
 			.path(queuePath)
 			.path("messages")
 			.path("head");
 
-		if (timeout != null) {
-			resource = resource.queryParam("timeout", Integer.toString(timeout));
+		if (options.getTimeout() != null) {
+			resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
 		}
 
 		ClientResponse clientResult;
-		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+		if (options.isReceiveAndDelete()) {
 			try {
 				clientResult = resource.delete(ClientResponse.class);
 			}
@@ -115,7 +121,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 				throw processCatch(new ServiceException(e));
 			}
 		}
-		else if (receiveMode == ReceiveMode.PEEK_LOCK) {
+		else if (options.isPeekLock()) {
 			try {
 				clientResult = resource.post(ClientResponse.class, "");
 			}
@@ -154,13 +160,21 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		return result;
 	}
 
-	public Message receiveMessage(String topicPath, String subscriptionName,
-			int timeout, ReceiveMode receiveMode) throws ServiceException {
+	public Message receiveSubscriptionMessage(String topicName,
+			String subscriptionName) throws ServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void abandonMessage(Message message) throws ServiceException {
+	public Message receiveSubscriptionMessage(String topicName,
+			String subscriptionName, ReceiveMessageOptions options)
+			throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public void unlockMessage(Message message) throws ServiceException {
 		try {
 			getChannel()
 				.resource(message.getLockLocation())
@@ -174,7 +188,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
-	public void completeMessage(Message message) throws ServiceException {
+	public void deleteMessage(Message message) throws ServiceException {
 		try {
 			getChannel()
 				.resource(message.getLockLocation())
@@ -334,6 +348,8 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 
 

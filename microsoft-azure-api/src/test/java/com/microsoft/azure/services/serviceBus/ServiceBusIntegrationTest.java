@@ -19,6 +19,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	private Configuration config;
 	private ServiceBusService service;
 
+	static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete().setTimeout(5);
+	static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
+	
 	@Before
 	public void createService() throws Exception {
 		config = createConfiguration();
@@ -82,11 +85,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void receiveMessageWorks() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestReceiveMessageWorks"));
-		service.sendMessage("TestReceiveMessageWorks", new Message("Hello World"));
+		String queueName = "TestReceiveMessageWorks";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendMessage(queueName, new Message("Hello World"));
 
 		// Act
-		Message message = service.receiveMessage("TestReceiveMessageWorks", 5, ReceiveMode.RECEIVE_AND_DELETE);
+		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 
@@ -98,11 +102,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockMessageWorks() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestPeekLockMessageWorks"));
-		service.sendMessage("TestPeekLockMessageWorks", new Message("Hello Again"));
+		String queueName = "TestPeekLockMessageWorks";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendMessage(queueName, new Message("Hello Again"));
 
 		// Act
-		Message message = service.receiveMessage("TestPeekLockMessageWorks", 5, ReceiveMode.PEEK_LOCK);
+		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Assert
 		byte[] data = new byte[100];
@@ -114,16 +119,17 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockedMessageCanBeCompleted() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeCompleted"));
-		service.sendMessage("TestPeekLockedMessageCanBeCompleted", new Message("Hello Again"));
-		Message message = service.receiveMessage("TestPeekLockedMessageCanBeCompleted", 5, ReceiveMode.PEEK_LOCK);
+		String queueName = "TestPeekLockedMessageCanBeCompleted";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendMessage(queueName, new Message("Hello Again"));
+		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
 		String lockToken = message.getLockToken();
 		Date lockedUntil = message.getLockedUntilUtc();
 		String lockLocation = message.getLockLocation();
 		
-		service.completeMessage(message);
+		service.deleteMessage(message);
 
 		// Assert
 		assertNotNull(lockToken);
@@ -134,16 +140,17 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockedMessageCanBeUnlocked() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeUnlocked"));
-		service.sendMessage("TestPeekLockedMessageCanBeAbandoned", new Message("Hello Again"));
-		Message peekedMessage = service.receiveMessage("TestPeekLockedMessageCanBeUnlocked", 5, ReceiveMode.PEEK_LOCK);
+		String queueName = "TestPeekLockedMessageCanBeUnlocked";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendMessage(queueName, new Message("Hello Again"));
+		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
 		String lockToken = peekedMessage.getLockToken();
 		Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
-		service.abandonMessage(peekedMessage);
-		Message receivedMessage = service.receiveMessage("TestPeekLockedMessageCanBeUnlocked", 5, ReceiveMode.RECEIVE_AND_DELETE);
+		service.unlockMessage(peekedMessage);
+		Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 		
 
 		// Assert
@@ -157,16 +164,17 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockedMessageCanBeDeleted() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeDeleted"));
-		service.sendMessage("TestPeekLockedMessageCanBeDeleted", new Message("Hello Again"));
-		Message peekedMessage = service.receiveMessage("TestPeekLockedMessageCanBeDeleted", 5, ReceiveMode.PEEK_LOCK);
+		String queueName = "TestPeekLockedMessageCanBeDeleted";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendMessage(queueName, new Message("Hello Again"));
+		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
 		String lockToken = peekedMessage.getLockToken();
 		Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
-		service.completeMessage(peekedMessage);
-		Message receivedMessage = service.receiveMessage("TestPeekLockedMessageCanBeDeleted", 5, ReceiveMode.RECEIVE_AND_DELETE);
+		service.deleteMessage(peekedMessage);
+		Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 		
 		// Assert
 		assertNotNull(lockToken);
@@ -178,13 +186,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void contentTypePassesThrough() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestContentTypePassesThrough"));
+		String queueName = "TestContentTypePassesThrough";
+		service.createQueue(new Queue().setName(queueName));
 
 		// Act
-		service.sendMessage("TestContentTypePassesThrough", 
+		service.sendMessage(queueName, 
 				new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
-		Message message = service.receiveMessage("TestContentTypePassesThrough", 5, ReceiveMode.RECEIVE_AND_DELETE);
+		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 
 		// Assert
 		assertNotNull(message);
