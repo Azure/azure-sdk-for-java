@@ -153,4 +153,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		assertNull(receivedMessage.getLockedUntilUtc());
 		
 	}
+	
+	@Test
+	public void contentTypePassesThrough() throws Exception {
+		assertTrue(false);
+	}
 }

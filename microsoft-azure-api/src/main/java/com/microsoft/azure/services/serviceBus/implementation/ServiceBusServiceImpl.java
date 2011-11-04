@@ -3,9 +3,11 @@ package com.microsoft.azure.services.serviceBus.implementation;
 import java.io.InputStream;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,12 +67,12 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		return ServiceExceptionFactory.process("serviceBus", e);
 	}
 
-	// REVIEW: contentType will be needed
 	public void sendMessage(String path, Message message) throws ServiceException {
 		try {
 			getResource()
 				.path(path)
 				.path("messages")
+				.type(message.getContentType())
 				.header("BrokerProperties", mapper.toString(message.getProperties()))
 				.post(message.getBody());
 		}
@@ -121,9 +123,26 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 			throw new RuntimeException("Unknown ReceiveMode");
 		}
 
-		// REVIEW: harden this - it's much too brittle. throws null exceptions very easily
+		String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
+		String location = clientResult.getHeaders().getFirst("Location");
+		MediaType contentType = clientResult.getType();
+		Date date = clientResult.getResponseDate();
+
+
 		Message result = new Message();
-		result.setProperties(mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties")));
+		if (brokerProperties != null)
+		{
+			result.setProperties(mapper.fromString(brokerProperties));
+		}
+		if (contentType != null)
+		{
+			result.setContentType(clientResult.toString());
+		}
+		if (location != null)
+		{
+			result.getProperties().setLockLocation(location);
+		}
+		result.setDate(date);
 		result.setBody(clientResult.getEntityInputStream());
 		return result;
 	}
