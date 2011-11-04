@@ -19,7 +19,7 @@ public class BlobServiceImpl implements BlobService {
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String X_MS_BLOB_PUBLIC_ACCESS = "x-ms-blob-public-access";
     private static final String X_MS_META_PREFIX = "x-ms-meta-";
-    private static final String API_VERSION = "2009-09-19";
+    private static final String API_VERSION = "2011-08-18";
     private final Client channel;
     private final String accountName;
     private final String url;
@@ -56,13 +56,6 @@ public class BlobServiceImpl implements BlobService {
         return builder;
     }
 
-    private Builder addOptionalHeader(Builder builder, String name, int value, int defaultValue) {
-        if (value != defaultValue) {
-            builder = builder.header(name, Integer.toString(value));
-        }
-        return builder;
-    }
-
     private WebResource getResource() {
         WebResource res = channel.resource(url).path("/");
 
@@ -81,6 +74,22 @@ public class BlobServiceImpl implements BlobService {
 
         wr.setProperty("canonicalizedResource", value);
         return wr;
+    }
+
+    public ServiceProperties getServiceProperties() {
+        //TODO: timeout
+        WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
+        webResource = setCanonicalizedResource(webResource, null, "properties");
+
+        return webResource.header(X_MS_VERSION, API_VERSION).get(ServiceProperties.class);
+    }
+
+    public void setServiceProperties(ServiceProperties serviceProperties) {
+        //TODO: timeout
+        WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
+        webResource = setCanonicalizedResource(webResource, null, "properties");
+
+        webResource.header(X_MS_VERSION, API_VERSION).type("application/xml").put(serviceProperties);
     }
 
     public void createContainer(String container) {
@@ -545,7 +554,7 @@ public class BlobServiceImpl implements BlobService {
         putLeaseImpl("break", container, blob, leaseId);
     }
 
-    private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId){
+    private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId) {
         WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);

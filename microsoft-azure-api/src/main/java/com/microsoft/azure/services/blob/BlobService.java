@@ -5,6 +5,9 @@ import java.util.HashMap;
 
 //TODO: ServiceException annotation and handling in implementation
 public interface BlobService {
+    ServiceProperties getServiceProperties();
+    void setServiceProperties(ServiceProperties serviceProperties);
+
     ListContainersResults listContainers();
 
     ListContainersResults listContainers(ListContainersOptions options);

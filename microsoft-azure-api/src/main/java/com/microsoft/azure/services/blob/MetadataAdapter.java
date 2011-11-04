@@ -1,8 +1,11 @@
 package com.microsoft.azure.services.blob;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.w3c.dom.Element;
@@ -10,7 +13,7 @@ import org.w3c.dom.Element;
 /*
  * JAXB adapter for <Metadata> element
  */
-public class MetadataAdapter extends XmlAdapter<MetadataHashMapType, HashMap<String, String>> {
+public class MetadataAdapter extends XmlAdapter<MetadataAdapter.MetadataHashMapType, HashMap<String, String>> {
 
     @Override
     public HashMap<String, String> unmarshal(MetadataHashMapType arg0) throws Exception {
@@ -25,5 +28,19 @@ public class MetadataAdapter extends XmlAdapter<MetadataHashMapType, HashMap<Str
     public MetadataHashMapType marshal(HashMap<String, String> arg0) throws Exception {
         // We don't need marshaling for blob/container metadata
         throw new OperationNotSupportedException();
+    }
+
+
+    public static class MetadataHashMapType {
+        private List<Element> entries = new ArrayList<Element>();
+
+        @XmlAnyElement
+        public List<Element> getEntries() {
+            return entries;
+        }
+
+        public void setEntries(List<Element> entries) {
+            this.entries = entries;
+        }
     }
 }

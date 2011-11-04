@@ -24,6 +24,51 @@ import com.microsoft.azure.configuration.Configuration;
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
+    public void getServiceProppertiesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        ServiceProperties props = service.getServiceProperties();
+
+        // Assert
+        assertNotNull(props);
+        assertNotNull(props.getLogging());
+        assertNotNull(props.getLogging().getRetentionPolicy());
+        assertNotNull(props.getLogging().getVersion());
+        assertNotNull(props.getMetrics().getRetentionPolicy());
+        assertNotNull(props.getMetrics().getVersion());
+    }
+
+    @Test
+    public void setServiceProppertiesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        ServiceProperties props = service.getServiceProperties();
+
+        props.setDefaultServiceVersion("2009-09-19");
+        props.getLogging().setRead(true);
+        service.setServiceProperties(props);
+
+        props = service.getServiceProperties();
+
+        // Assert
+        assertNotNull(props);
+        assertEquals("2009-09-19", props.getDefaultServiceVersion());
+        assertNotNull(props.getLogging());
+        assertNotNull(props.getLogging().getRetentionPolicy());
+        assertNotNull(props.getLogging().getVersion());
+        assertTrue(props.getLogging().isRead());
+        assertNotNull(props.getMetrics().getRetentionPolicy());
+        assertNotNull(props.getMetrics().getVersion());
+    }
+
+
+    @Test
     public void createContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
