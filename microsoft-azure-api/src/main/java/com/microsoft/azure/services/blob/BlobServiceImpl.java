@@ -266,11 +266,11 @@ public class BlobServiceImpl implements BlobService {
         return webResource.header(X_MS_VERSION, API_VERSION).get(ListBlobsResults.class);
     }
 
-    public void putPageBlob(String container, String blob, int length) {
-        putPageBlob(container, blob, length, new PutBlobOptions());
+    public void createPageBlob(String container, String blob, int length) {
+        createPageBlob(container, blob, length, new CreateBlobOptions());
     }
 
-    public void putPageBlob(String container, String blob, int length, PutBlobOptions options) {
+    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -291,11 +291,11 @@ public class BlobServiceImpl implements BlobService {
         builder.type("text/plain").put("");
     }
 
-    public void putBlockBlob(String container, String blob, InputStream content) {
-        putBlockBlob(container, blob, content, new PutBlobOptions());
+    public void createBlockBlob(String container, String blob, InputStream content) {
+        createBlockBlob(container, blob, content, new CreateBlobOptions());
     }
 
-    public void putBlockBlob(String container, String blob, InputStream content, PutBlobOptions options) {
+    public void createBlockBlob(String container, String blob, InputStream content, CreateBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -306,7 +306,7 @@ public class BlobServiceImpl implements BlobService {
         builder.put(content);
     }
 
-    private Builder addPutBlobHeaders(PutBlobOptions options, Builder builder) {
+    private Builder addPutBlobHeaders(CreateBlobOptions options, Builder builder) {
         builder = addOptionalHeader(builder, "Content-Type", options.getContentType());
         if (options.getContentType() == null) {
             // This is technically the default, but we explicitly add here to

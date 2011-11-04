@@ -235,25 +235,25 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void putPageBlobWorks() throws Exception {
+    public void createPageBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.putPageBlob("mycontainer1", "test", 512);
+        service.createPageBlob("mycontainer1", "test", 512);
 
         // Assert
     }
 
     @Test
-    public void putPageBlobWithOptionsWorks() throws Exception {
+    public void createPageBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.putPageBlob("mycontainer1", "test", 512, new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+        service.createPageBlob("mycontainer1", "test", 512, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
                 .setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
@@ -278,26 +278,26 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void putBlockBlobWorks() throws Exception {
+    public void createBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream("some content".getBytes()));
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream("some content".getBytes()));
 
         // Assert
     }
 
     @Test
-    public void putBlockBlobWithOptionsWorks() throws Exception {
+    public void createBlockBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
         // Act
         String content = "some content";
-        service.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new PutBlobOptions().setBlobCacheControl("test")
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions().setBlobCacheControl("test")
                 .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
@@ -330,7 +330,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Act
         String container = "mycontainer1";
         String blob = "test3";
-        service.putBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
+        service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
         BlobSnapshot snapshot = service.createBlobSnapshot(container, blob);
 
         // Assert
@@ -349,7 +349,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Act
         String container = "mycontainer1";
         String blob = "test3";
-        service.putBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
+        service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
         BlobSnapshot snapshot = service.createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
 
         BlobProperties props = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions().setSnapshot(snapshot.getSnapshot()));
@@ -373,7 +373,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new PutBlobOptions().setBlobCacheControl("test")
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions().setBlobCacheControl("test")
                 .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
@@ -406,7 +406,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.putPageBlob("mycontainer1", "test", 4096, new PutBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+        service.createPageBlob("mycontainer1", "test", 4096, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
                 .setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
@@ -440,7 +440,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")));
 
         service.deleteBlob("mycontainer1", "test2");
 

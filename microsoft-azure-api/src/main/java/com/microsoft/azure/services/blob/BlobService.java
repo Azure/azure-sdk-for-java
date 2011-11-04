@@ -29,22 +29,28 @@ public interface BlobService {
 
     ListBlobsResults listBlobs(String container, ListBlobsOptions options);
 
-    void putPageBlob(String container, String blob, int length);
-    void putPageBlob(String container, String blob, int length, PutBlobOptions options);
+    void createPageBlob(String container, String blob, int length);
 
-    void putBlockBlob(String container, String blob, InputStream content);
-    void putBlockBlob(String container, String blob, InputStream content, PutBlobOptions options);
+    void createPageBlob(String container, String blob, int length, CreateBlobOptions options);
+
+    void createBlockBlob(String container, String blob, InputStream content);
+
+    void createBlockBlob(String container, String blob, InputStream content, CreateBlobOptions options);
 
     BlobProperties getBlobProperties(String container, String blob);
+
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
 
     Blob getBlob(String container, String blob);
+
     Blob getBlob(String container, String blob, GetBlobOptions options);
 
     void deleteBlob(String container, String blob);
+
     void deleteBlob(String container, String blob, DeleteBlobOptions options);
 
     BlobSnapshot createBlobSnapshot(String container, String blob);
+
     BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options);
 
     void setBlobProperties(BlobProperties properties);

@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.HashMap;
 
-public class PutBlobOptions {
+public class CreateBlobOptions {
     private String contentType;
     private String contentEncoding;
     private String contentLanguage;
@@ -21,7 +21,7 @@ public class PutBlobOptions {
         return contentType;
     }
 
-    public PutBlobOptions setContentType(String contentType) {
+    public CreateBlobOptions setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -30,7 +30,7 @@ public class PutBlobOptions {
         return contentEncoding;
     }
 
-    public PutBlobOptions setContentEncoding(String contentEncoding) {
+    public CreateBlobOptions setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -39,7 +39,7 @@ public class PutBlobOptions {
         return contentLanguage;
     }
 
-    public PutBlobOptions setContentLanguage(String contentLanguage) {
+    public CreateBlobOptions setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -48,7 +48,7 @@ public class PutBlobOptions {
         return contentMD5;
     }
 
-    public PutBlobOptions setContentMD5(String contentMD5) {
+    public CreateBlobOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -57,7 +57,7 @@ public class PutBlobOptions {
         return cacheControl;
     }
 
-    public PutBlobOptions setCacheControl(String cacheControl) {
+    public CreateBlobOptions setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -66,7 +66,7 @@ public class PutBlobOptions {
         return blobContentType;
     }
 
-    public PutBlobOptions setBlobContentType(String blobContentType) {
+    public CreateBlobOptions setBlobContentType(String blobContentType) {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -75,7 +75,7 @@ public class PutBlobOptions {
         return blobContentEncoding;
     }
 
-    public PutBlobOptions setBlobContentEncoding(String blobContentEncoding) {
+    public CreateBlobOptions setBlobContentEncoding(String blobContentEncoding) {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -84,7 +84,7 @@ public class PutBlobOptions {
         return blobContentLanguage;
     }
 
-    public PutBlobOptions setBlobContentLanguage(String blobContentLanguage) {
+    public CreateBlobOptions setBlobContentLanguage(String blobContentLanguage) {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -93,7 +93,7 @@ public class PutBlobOptions {
         return blobContentMD5;
     }
 
-    public PutBlobOptions setBlobContentMD5(String blobContentMD5) {
+    public CreateBlobOptions setBlobContentMD5(String blobContentMD5) {
         this.blobContentMD5 = blobContentMD5;
         return this;
     }
@@ -102,7 +102,7 @@ public class PutBlobOptions {
         return blobCacheControl;
     }
 
-    public PutBlobOptions setBlobCacheControl(String blobCacheControl) {
+    public CreateBlobOptions setBlobCacheControl(String blobCacheControl) {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -111,7 +111,7 @@ public class PutBlobOptions {
         return metadata;
     }
 
-    public PutBlobOptions setMetadata(HashMap<String, String> metadata) {
+    public CreateBlobOptions setMetadata(HashMap<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -120,7 +120,7 @@ public class PutBlobOptions {
         return leaseId;
     }
 
-    public PutBlobOptions setLeaseId(String leaseId) {
+    public CreateBlobOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -129,7 +129,7 @@ public class PutBlobOptions {
         return sequenceNumber;
     }
 
-    public PutBlobOptions setSequenceNumber(Long sequenceNumber) {
+    public CreateBlobOptions setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }
