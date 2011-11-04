@@ -53,5 +53,9 @@ public interface BlobService {
 
     BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options);
 
+    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob);
+
+    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options);
+
     void setBlobProperties(BlobProperties properties);
 }

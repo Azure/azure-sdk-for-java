@@ -472,4 +472,53 @@ public class BlobServiceImpl implements BlobService {
 
         return blobSnapshot;
     }
+
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) {
+        copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
+    }
+
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options) {
+        WebResource webResource = getResource().path(destinationContainer + "/" + destinationBlob);
+        webResource = setCanonicalizedResource(webResource, destinationContainer + "/" + destinationBlob, null);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-source-lease-id", options.getSourceLeaseId());
+
+        // Specifies the name of the source blob, in one of the following
+        // formats:
+        // Blob in named container: /accountName/containerName/blobName
+        //
+        // Snapshot in named container:
+        // /accountName/containerName/blobName?snapshot=<DateTime>
+        //
+        // Blob in root container: /accountName/blobName
+        //
+        // Snapshot in root container: /accountName/blobName?snapshot=<DateTime>
+        String sourceName = "/" + this.accountName;
+        if (sourceContainer != null) {
+            sourceName += "/" + sourceContainer;
+        }
+        sourceName += "/" + sourceBlob;
+        if (options.getSourceSnapshot() != null) {
+            sourceName += "?snapshot=" + options.getSourceSnapshot();
+        }
+        builder = addOptionalHeader(builder, "x-ms-copy-source", sourceName);
+
+        // Metadata
+        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        // TODO: Conditional headers (If Match, etc.)
+
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        builder.type("text/plain").put("");
+    }
 }

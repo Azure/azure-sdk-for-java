@@ -297,8 +297,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions().setBlobCacheControl("test")
-                .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
+                new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
@@ -350,7 +350,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = "mycontainer1";
         String blob = "test3";
         service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
-        BlobSnapshot snapshot = service.createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
+        BlobSnapshot snapshot = service.createBlobSnapshot(container, blob,
+                new CreateBlobSnapshotOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
 
         BlobProperties props = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions().setSnapshot(snapshot.getSnapshot()));
 
@@ -364,7 +365,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertTrue(props.getMetadata().containsValue("bleah"));
     }
 
-
     @Test
     public void getBlockBlobWorks() throws Exception {
         // Arrange
@@ -373,8 +373,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions().setBlobCacheControl("test")
-                .setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
+                new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
@@ -445,6 +445,34 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.deleteBlob("mycontainer1", "test2");
 
         // Assert
+    }
+
+    @Test
+    public void copyBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String content = "some content2";
+        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.copyBlob("mycontainer1", "test5", "mycontainer2", "test6");
+
+        Blob blob = service.getBlob("mycontainer1", "test5");
+        BlobProperties props = blob.getProperties();
+
+        // Assert
+        assertNotNull(props);
+        assertEquals(content.length(), props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("BlockBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
+        assertEquals(content, inputStreamToString(blob.getContentStream(), "UTF-8"));
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
