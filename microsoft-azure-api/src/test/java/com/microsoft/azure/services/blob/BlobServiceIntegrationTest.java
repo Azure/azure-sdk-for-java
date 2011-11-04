@@ -67,7 +67,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(props.getMetrics().getVersion());
     }
 
-
     @Test
     public void createContainerWorks() throws Exception {
         // Arrange
@@ -475,6 +474,44 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
         assertEquals(4096, inputStreamToByteArray(blob.getContentStream()).length);
+    }
+
+    @Test
+    public void setBlobPropertiesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test10";
+        service.createPageBlob(container, blob, 4096);
+        SetBlobPropertiesResult result = service.setBlobProperties(container, blob, new SetBlobPropertiesOptions().setCacheControl("test")
+                .setContentEncoding("UTF-8").setContentLanguage("en-us").setContentLength(512L).setContentMD5(null).setContentType("text/plain")
+                .setSequenceNumberAction("increment"));
+
+        BlobProperties props = service.getBlobProperties(container, blob);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEtag());
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getSequenceNumber());
+        assertEquals(1, result.getSequenceNumber().longValue());
+
+        assertNotNull(props);
+        assertEquals("test", props.getCacheControl());
+        assertEquals("UTF-8", props.getContentEncoding());
+        assertEquals("en-us", props.getContentLanguage());
+        assertEquals("text/plain", props.getContentType());
+        assertEquals(512, props.getContentLength());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("PageBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(1, props.getSequenceNumber());
     }
 
     @Test

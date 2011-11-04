@@ -72,12 +72,13 @@ public class BlobServiceImpl implements BlobService {
             value += "?comp=" + operation;
         }
 
+        // TODO: Is this the best way to pass a parameter to a filter?
         wr.setProperty("canonicalizedResource", value);
         return wr;
     }
 
     public ServiceProperties getServiceProperties() {
-        //TODO: timeout
+        // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 
@@ -85,7 +86,7 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void setServiceProperties(ServiceProperties serviceProperties) {
-        //TODO: timeout
+        // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 
@@ -364,6 +365,42 @@ public class BlobServiceImpl implements BlobService {
         return getBlobPropertiesFromResponse(response);
     }
 
+    public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) {
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "properties");
+
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "properties");
+
+        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getCacheControl());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getContentType());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getContentMD5());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-encoding", options.getContentEncoding());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getContentLanguage());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-length", options.getContentLength());
+        builder = addOptionalHeader(builder, "x-ms-sequence-number-action", options.getSequenceNumberAction());
+        builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+
+        SetBlobPropertiesResult result = new SetBlobPropertiesResult();
+
+        result.setEtag(response.getHeaders().getFirst("ETag"));
+        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        if (response.getHeaders().getFirst("x-ms-blob-sequence-number") != null) {
+            result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
+        }
+
+        return result;
+    }
+
     public Blob getBlob(String container, String blob) {
         return getBlob(container, blob, new GetBlobOptions());
     }
@@ -449,10 +486,6 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
 
         builder.delete();
-    }
-
-    public void setBlobProperties(BlobProperties properties) {
-        // TODO Auto-generated method stub
     }
 
     public BlobSnapshot createBlobSnapshot(String container, String blob) {

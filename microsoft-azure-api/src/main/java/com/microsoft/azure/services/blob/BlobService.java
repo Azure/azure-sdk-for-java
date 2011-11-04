@@ -6,6 +6,7 @@ import java.util.HashMap;
 //TODO: ServiceException annotation and handling in implementation
 public interface BlobService {
     ServiceProperties getServiceProperties();
+
     void setServiceProperties(ServiceProperties serviceProperties);
 
     ListContainersResults listContainers();
@@ -44,6 +45,8 @@ public interface BlobService {
 
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
 
+    SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options);
+
     Blob getBlob(String container, String blob);
 
     Blob getBlob(String container, String blob, GetBlobOptions options);
@@ -68,5 +71,4 @@ public interface BlobService {
 
     void breakLease(String container, String blob, String leaseId);
 
-    void setBlobProperties(BlobProperties properties);
 }
