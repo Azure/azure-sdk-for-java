@@ -53,6 +53,12 @@ public abstract class IntegrationTestBase {
 				}
 			}
 		}
+		for(Topic topic : iterateTopics(service)) {
+			String topicName = topic.getName();
+			if (topicName.startsWith("Test") || topicName.startsWith("test")) {
+				service.deleteQueue(topicName);
+			}
+		}
 		if (!testAlphaExists) {
 			service.createQueue(new Queue().setName("TestAlpha"));
 		}

@@ -6,7 +6,7 @@ public class ListQueuesResult {
 	
 	private List<Queue> items;
 
-	List<Queue> getQueues() {
+	List<Queue> getItems() {
 		return items;
 	}
 
