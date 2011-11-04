@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ListQueuesResult {
 	
-	private List<Queue> queues;
+	private List<Queue> items;
 
 	List<Queue> getQueues() {
-		return queues;
+		return items;
 	}
 
-	public void setQueues(List<Queue> queues) {
-		this.queues = queues;
+	public void setItems(List<Queue> items) {
+		this.items = items;
 	}
 }

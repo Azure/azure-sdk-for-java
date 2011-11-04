@@ -8,6 +8,7 @@ import javax.sound.sampled.ReverbType;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
@@ -198,5 +199,26 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Assert
 		assertNotNull(message);
 		assertEquals("text/xml", message.getContentType());
+	}
+	
+	@Test
+	public void topicCanBeCreatedListedFetchedAndDeleted() throws ServiceException{
+		// Arrange
+		String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
+		
+		// Act
+		Topic created = service.createTopic(new Topic().setName(topicName));
+		ListTopicsResult listed = service.listTopics();
+		Topic fetched = service.getTopic(topicName);
+		service.deleteTopic(topicName);
+		ListTopicsResult listed2 = service.listTopics();
+		
+		// Assert
+		assertNotNull(created);
+		assertNotNull(listed);
+		assertNotNull(fetched);
+		assertNotNull(listed2);
+		
+		assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
 	}
 }
