@@ -1,7 +1,6 @@
 package com.microsoft.azure.services.blob;
 
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -141,13 +140,8 @@ public class BlobServiceImpl implements BlobService {
 
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
-        try {
-            properties.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
-        }
-        catch (ParseException e) {
-            // Server returned an invalid/unsupported date format
-            throw new IllegalArgumentException(e);
-        }
+        properties.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
@@ -172,13 +166,7 @@ public class BlobServiceImpl implements BlobService {
         acl.setSignedIdentifiers(si.getSignedIdentifiers());
         acl.setPublicAccess(response.getHeaders().getFirst(X_MS_BLOB_PUBLIC_ACCESS));
         acl.setEtag(response.getHeaders().getFirst("ETag"));
-        try {
-            acl.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
-        }
-        catch (ParseException e) {
-            // TODO: Is this the right way to handle this?
-            throw new IllegalArgumentException(e);
-        }
+        acl.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         return acl;
     }
 
@@ -356,7 +344,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
         if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         }
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -376,7 +364,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
         if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         }
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -404,13 +392,7 @@ public class BlobServiceImpl implements BlobService {
         BlobProperties properties = new BlobProperties();
 
         // Last-Modified
-        try {
-            properties.setLastModified(new DateMapper().parse(response.getHeaders().getFirst("Last-Modified")));
-        }
-        catch (ParseException e) {
-            // Server returned an invalid/unsupported date format
-            throw new IllegalArgumentException(e);
-        }
+        properties.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
@@ -448,7 +430,7 @@ public class BlobServiceImpl implements BlobService {
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
         if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         }
 
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
@@ -458,5 +440,36 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
 
         builder.delete();
+    }
+
+    public void setBlobProperties(BlobProperties properties) {
+        // TODO Auto-generated method stub
+    }
+
+    public BlobSnapshot createBlobSnapshot(String container, String blob) {
+        return createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions());
+    }
+
+    public BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "snapshot");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "snapshot");
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        // Metadata
+        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        // TODO: Conditional headers (If Match, etc.)
+
+        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+
+        BlobSnapshot blobSnapshot = new BlobSnapshot();
+        blobSnapshot.setEtag(response.getHeaders().getFirst("ETag"));
+        blobSnapshot.setSnapshot(response.getHeaders().getFirst("x-ms-snapshot"));
+        blobSnapshot.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+
+        return blobSnapshot;
     }
 }

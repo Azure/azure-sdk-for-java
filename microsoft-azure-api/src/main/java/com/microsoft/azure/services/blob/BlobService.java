@@ -43,4 +43,9 @@ public interface BlobService {
 
     void deleteBlob(String container, String blob);
     void deleteBlob(String container, String blob, DeleteBlobOptions options);
+
+    BlobSnapshot createBlobSnapshot(String container, String blob);
+    BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options);
+
+    void setBlobProperties(BlobProperties properties);
 }

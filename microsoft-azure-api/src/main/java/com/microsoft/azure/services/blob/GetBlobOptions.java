@@ -1,19 +1,18 @@
 package com.microsoft.azure.services.blob;
 
-import java.util.Date;
 
 public class GetBlobOptions {
-    private Date snapshot;
+    private String snapshot;
     private String leaseId;
     private boolean computeRangeMD5;
     private Long rangeStart;
     private Long rangeEnd;
 
-    public Date getSnapshot() {
+    public String getSnapshot() {
         return snapshot;
     }
 
-    public GetBlobOptions setSnapshot(Date snapshot) {
+    public GetBlobOptions setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
