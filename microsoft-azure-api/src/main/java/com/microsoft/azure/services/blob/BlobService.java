@@ -47,6 +47,10 @@ public interface BlobService {
 
     SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options);
 
+    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata);
+
+    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options);
+
     Blob getBlob(String container, String blob);
 
     Blob getBlob(String container, String blob, GetBlobOptions options);

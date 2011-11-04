@@ -515,6 +515,37 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void setBlobMetadataWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test11";
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        metadata.put("test", "bar");
+        metadata.put("blah", "bleah");
+
+        service.createPageBlob(container, blob, 4096);
+        SetBlobMetadataResult result = service.setBlobMetadata(container, blob, metadata);
+        BlobProperties props = service.getBlobProperties(container, blob);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEtag());
+        assertNotNull(result.getLastModified());
+
+        assertNotNull(props);
+        assertNotNull(props.getMetadata());
+        assertEquals(2, props.getMetadata().size());
+        assertTrue(props.getMetadata().containsKey("test"));
+        assertTrue(props.getMetadata().containsValue("bar"));
+        assertTrue(props.getMetadata().containsKey("blah"));
+        assertTrue(props.getMetadata().containsValue("bleah"));
+    }
+
+    @Test
     public void deleteBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();

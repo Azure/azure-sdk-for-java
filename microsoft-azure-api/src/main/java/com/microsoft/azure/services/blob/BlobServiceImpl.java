@@ -401,6 +401,38 @@ public class BlobServiceImpl implements BlobService {
         return result;
     }
 
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) {
+        return setBlobMetadata(container, blob, metadata, new SetBlobMetadataOptions());
+    }
+
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options) {
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "metadata");
+
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
+
+        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        // Metadata
+        for (Entry<String, String> entry : metadata.entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+
+        SetBlobMetadataResult result = new SetBlobMetadataResult();
+        result.setEtag(response.getHeaders().getFirst("ETag"));
+        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        return result;
+    }
+
     public Blob getBlob(String container, String blob) {
         return getBlob(container, blob, new GetBlobOptions());
     }
