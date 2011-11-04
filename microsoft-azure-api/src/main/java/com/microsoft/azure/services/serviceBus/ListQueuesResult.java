@@ -2,7 +2,7 @@ package com.microsoft.azure.services.serviceBus;
 
 import java.util.List;
 
-public class QueueList {
+public class ListQueuesResult {
 	
 	private List<Queue> queues;
 
@@ -13,7 +13,4 @@ public class QueueList {
 	public void setQueues(List<Queue> queues) {
 		this.queues = queues;
 	}
-
-
-
 }

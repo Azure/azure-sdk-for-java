@@ -21,12 +21,12 @@ public interface ServiceBusService {
 	Queue createQueue(Queue queue) throws ServiceException;
 	void deleteQueue(String queuePath) throws ServiceException;
 	Queue getQueue(String queuePath) throws ServiceException;
-	QueueList getQueueList() throws ServiceException;
+	ListQueuesResult listQueues() throws ServiceException;
 
 	Entry createTopic(Entry topic) throws ServiceException;
 	void deleteTopic(String topicPath) throws ServiceException;
 	Entry getTopic(String topicPath) throws ServiceException;
-	Feed getTopics() throws ServiceException;
+	Feed getTopicList() throws ServiceException;
 
 	void addSubscription(String topicPath, String subscriptionName, Entry subscription) throws ServiceException;
 	void removeSubscription(String topicPath, String subscriptionName) throws ServiceException;

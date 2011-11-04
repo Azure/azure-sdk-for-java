@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.QueueList;
+import com.microsoft.azure.services.serviceBus.ListQueuesResult;
 import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
@@ -246,7 +246,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 	
-	public QueueList getQueueList() throws ServiceException {
+	public ListQueuesResult listQueues() throws ServiceException {
 		try {
 			Feed feed = getResource()
 					.path("$Resources/Queues")
@@ -255,7 +255,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 			for(Entry entry : feed.getEntries()){
 				queues.add(new Queue(entry));
 			}
-			QueueList result = new QueueList();
+			ListQueuesResult result = new ListQueuesResult();
 			result.setQueues(queues);
 			return result;
 		}
@@ -300,7 +300,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		return null;
 	}
 
-	public Feed getTopics() {
+	public Feed getTopicList() throws ServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -348,6 +348,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 
 

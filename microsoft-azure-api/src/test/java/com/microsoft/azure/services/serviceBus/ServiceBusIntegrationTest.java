@@ -34,7 +34,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
 		// Act
 		Queue entry = service.getQueue("TestAlpha");
-		QueueList feed = service.getQueueList();
+		ListQueuesResult feed = service.listQueues();
 		
 		// Assert
 		assertNotNull(entry);
