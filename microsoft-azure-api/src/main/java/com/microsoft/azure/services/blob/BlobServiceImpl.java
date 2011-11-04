@@ -463,6 +463,13 @@ public class BlobServiceImpl implements BlobService {
 
         // TODO: Conditional headers (If Match, etc.)
 
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         BlobSnapshot blobSnapshot = new BlobSnapshot();
@@ -520,5 +527,41 @@ public class BlobServiceImpl implements BlobService {
         // "Content-Type" header so that the hmac filter will see it when
         // producing the authorization hmac.
         builder.type("text/plain").put("");
+    }
+
+    public String acquireLease(String container, String blob) {
+        return putLeaseImpl("acquire", container, blob, null);
+    }
+
+    public String renewLease(String container, String blob, String leaseId) {
+        return putLeaseImpl("renew", container, blob, leaseId);
+    }
+
+    public void releaseLease(String container, String blob, String leaseId) {
+        putLeaseImpl("release", container, blob, leaseId);
+    }
+
+    public void breakLease(String container, String blob, String leaseId) {
+        putLeaseImpl("break", container, blob, leaseId);
+    }
+
+    private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId){
+        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "lease");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
+        builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
+
+        // TODO: We need the following 2 to make sure that "Content-Length:0"
+        // header
+        // is sent to the server (IIS doesn't accept PUT without a content
+        // length).
+        // Since we are sending a "dummy" string, we also need to set the
+        // "Content-Type" header so that the hmac filter will see it when
+        // producing the authorization hmac.
+        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+
+        return response.getHeaders().getFirst("x-ms-lease-id");
     }
 }

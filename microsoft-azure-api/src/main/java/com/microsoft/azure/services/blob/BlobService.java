@@ -57,5 +57,13 @@ public interface BlobService {
 
     void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options);
 
+    String acquireLease(String container, String blob);
+
+    String renewLease(String container, String blob, String leaseId);
+
+    void releaseLease(String container, String blob, String leaseId);
+
+    void breakLease(String container, String blob, String leaseId);
+
     void setBlobProperties(BlobProperties properties);
 }

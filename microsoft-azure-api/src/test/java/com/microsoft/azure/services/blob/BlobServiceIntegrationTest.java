@@ -475,6 +475,57 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(content, inputStreamToString(blob.getContentStream(), "UTF-8"));
     }
 
+    @Test
+    public void acquireLeaseWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String content = "some content2";
+        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease("mycontainer2", "test6");
+        service.releaseLease("mycontainer2", "test6", leaseId);
+
+        // Assert
+        assertNotNull(leaseId);
+    }
+
+    @Test
+    public void renewLeaseWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String content = "some content2";
+        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease("mycontainer2", "test6");
+        String leaseId2 = service.renewLease("mycontainer2", "test6", leaseId);
+        service.releaseLease("mycontainer2", "test6", leaseId);
+
+        // Assert
+        assertNotNull(leaseId);
+        assertNotNull(leaseId2);
+    }
+
+    @Test
+    public void breakLeaseWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String content = "some content2";
+        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease("mycontainer2", "test6");
+        service.breakLease("mycontainer2", "test6", leaseId);
+        service.releaseLease("mycontainer2", "test6", leaseId);
+
+        // Assert
+        assertNotNull(leaseId);
+    }
+
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
