@@ -164,7 +164,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		try {
 			getChannel()
 				.resource(message.getLockLocation())
-				.delete();
+				.put("");
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
@@ -175,8 +175,17 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 	public void completeMessage(Message message) throws ServiceException {
-		// TODO Auto-generated method stub
-		
+		try {
+			getChannel()
+				.resource(message.getLockLocation())
+				.delete();
+		}
+		catch(UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		}
+		catch(ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
 	}
 
 	public Queue createQueue(Queue entry) throws ServiceException {

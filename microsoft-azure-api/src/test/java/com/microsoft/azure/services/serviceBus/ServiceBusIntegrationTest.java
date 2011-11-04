@@ -86,7 +86,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		service.sendMessage("TestReceiveMessageWorks", new Message("Hello World"));
 
 		// Act
-		Message message = service.receiveMessage("TestReceiveMessageWorks", 500, ReceiveMode.RECEIVE_AND_DELETE);
+		Message message = service.receiveMessage("TestReceiveMessageWorks", 5, ReceiveMode.RECEIVE_AND_DELETE);
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 
@@ -102,7 +102,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		service.sendMessage("TestPeekLockMessageWorks", new Message("Hello Again"));
 
 		// Act
-		Message message = service.receiveMessage("TestPeekLockMessageWorks", 500, ReceiveMode.PEEK_LOCK);
+		Message message = service.receiveMessage("TestPeekLockMessageWorks", 5, ReceiveMode.PEEK_LOCK);
 
 		// Assert
 		byte[] data = new byte[100];
@@ -116,7 +116,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeCompleted"));
 		service.sendMessage("TestPeekLockedMessageCanBeCompleted", new Message("Hello Again"));
-		Message message = service.receiveMessage("TestPeekLockedMessageCanBeCompleted", 1500, ReceiveMode.PEEK_LOCK);
+		Message message = service.receiveMessage("TestPeekLockedMessageCanBeCompleted", 5, ReceiveMode.PEEK_LOCK);
 
 		// Act
 		String lockToken = message.getLockToken();
@@ -132,18 +132,18 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	}
 
 	@Test
-	public void peekLockedMessageCanBeAbandoned() throws Exception {
+	public void peekLockedMessageCanBeUnlocked() throws Exception {
 		// Arrange
-		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeAbandoned"));
+		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeUnlocked"));
 		service.sendMessage("TestPeekLockedMessageCanBeAbandoned", new Message("Hello Again"));
-		Message peekedMessage = service.receiveMessage("TestPeekLockedMessageCanBeAbandoned", 1500, ReceiveMode.PEEK_LOCK);
+		Message peekedMessage = service.receiveMessage("TestPeekLockedMessageCanBeUnlocked", 5, ReceiveMode.PEEK_LOCK);
 
 		// Act
 		String lockToken = peekedMessage.getLockToken();
 		Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
 		service.abandonMessage(peekedMessage);
-		Message receivedMessage = service.receiveMessage("TestPeekLockedMessageCanBeAbandoned", 1500, ReceiveMode.RECEIVE_AND_DELETE);
+		Message receivedMessage = service.receiveMessage("TestPeekLockedMessageCanBeUnlocked", 5, ReceiveMode.RECEIVE_AND_DELETE);
 		
 
 		// Assert
@@ -151,9 +151,30 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		assertNotNull(lockedUntil);
 		assertNull(receivedMessage.getLockToken());
 		assertNull(receivedMessage.getLockedUntilUtc());
-		
 	}
-	
+
+
+	@Test
+	public void peekLockedMessageCanBeDeleted() throws Exception {
+		// Arrange
+		service.createQueue(new Queue().setName("TestPeekLockedMessageCanBeDeleted"));
+		service.sendMessage("TestPeekLockedMessageCanBeDeleted", new Message("Hello Again"));
+		Message peekedMessage = service.receiveMessage("TestPeekLockedMessageCanBeDeleted", 5, ReceiveMode.PEEK_LOCK);
+
+		// Act
+		String lockToken = peekedMessage.getLockToken();
+		Date lockedUntil = peekedMessage.getLockedUntilUtc();
+
+		service.completeMessage(peekedMessage);
+		Message receivedMessage = service.receiveMessage("TestPeekLockedMessageCanBeDeleted", 5, ReceiveMode.RECEIVE_AND_DELETE);
+		
+		// Assert
+		assertNotNull(lockToken);
+		assertNotNull(lockedUntil);
+		assertNull(receivedMessage.getLockToken());
+		assertNull(receivedMessage.getLockedUntilUtc());
+	}
+
 	@Test
 	public void contentTypePassesThrough() throws Exception {
 		// Arrange
@@ -163,8 +184,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		service.sendMessage("TestContentTypePassesThrough", 
 				new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
-		Message message = service.receiveMessage("TestContentTypePassesThrough", 1500, ReceiveMode.RECEIVE_AND_DELETE);
-		
+		Message message = service.receiveMessage("TestContentTypePassesThrough", 5, ReceiveMode.RECEIVE_AND_DELETE);
 
 		// Assert
 		assertNotNull(message);
