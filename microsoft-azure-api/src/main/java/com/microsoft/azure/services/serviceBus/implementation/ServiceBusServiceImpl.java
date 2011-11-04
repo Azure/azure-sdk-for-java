@@ -69,12 +69,17 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 
 	public void sendMessage(String path, Message message) throws ServiceException {
 		try {
-			getResource()
+			WebResource resource = getResource()
 				.path(path)
-				.path("messages")
-				.type(message.getContentType())
-				.header("BrokerProperties", mapper.toString(message.getProperties()))
-				.post(message.getBody());
+				.path("messages");
+			
+			if (message.getContentType() != null)
+				resource.type(message.getContentType());
+
+			if (message.getProperties() != null)
+				resource.header("BrokerProperties", mapper.toString(message.getProperties()));
+
+			resource.post(message.getBody());
 		}
 		catch(UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
