@@ -18,7 +18,7 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
     private final String accountName;
     private final HmacSHA256Sign signer;
 
-    public BlobSharedKeyLiteFilter(@Named(BlobConfig.CONFIG_ACCOUNT_NAME) String accountName, @Named(BlobConfig.CONFIG_ACCOUNT_KEY) String accountKey) {
+    public BlobSharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
 
         this.accountName = accountName;
         // TODO: How to make this configurable?

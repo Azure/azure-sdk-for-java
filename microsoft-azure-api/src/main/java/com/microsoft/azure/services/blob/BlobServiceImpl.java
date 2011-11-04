@@ -26,7 +26,7 @@ public class BlobServiceImpl implements BlobService {
     private final String url;
 
     @Inject
-    public BlobServiceImpl(Client channel, @Named(BlobConfig.CONFIG_ACCOUNT_NAME) String accountName, @Named(BlobConfig.CONFIG_URL) String url,
+    public BlobServiceImpl(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
     // TODO: How to make this configurable though code?
             BlobSharedKeyLiteFilter filter) {
 

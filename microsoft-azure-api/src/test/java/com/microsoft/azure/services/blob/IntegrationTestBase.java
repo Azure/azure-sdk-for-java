@@ -8,9 +8,9 @@ import com.microsoft.azure.configuration.Configuration;
 public abstract class IntegrationTestBase {
     protected Configuration createConfiguration() {
         Configuration config = new Configuration();
-        config.setProperty(BlobConfig.CONFIG_ACCOUNT_NAME, "xxx");
-        config.setProperty(BlobConfig.CONFIG_ACCOUNT_KEY, "xxx");
-        config.setProperty(BlobConfig.CONFIG_URL, "http://azuresdkdev.blob.core.windows.net");
+        config.setProperty(BlobConfiguration.ACCOUNT_NAME, "xxx");
+        config.setProperty(BlobConfiguration.ACCOUNT_KEY, "xxx");
+        config.setProperty(BlobConfiguration.URL, "http://xxx.blob.core.windows.net");
 
         // when mock running
         // config.setProperty("serviceBus.uri", "http://localhost:8086");
