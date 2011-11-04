@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "EnumerationResults")
-public class ListContainersResults {
+public class ListContainersResult {
     private List<Container> containers;
     private String accountName;
     private String prefix;

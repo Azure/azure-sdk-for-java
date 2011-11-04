@@ -227,11 +227,11 @@ public class BlobServiceImpl implements BlobService {
         builder.header("Content-Type", "text/plain").put("");
     }
 
-    public ListContainersResults listContainers() {
+    public ListContainersResult listContainers() {
         return listContainers(new ListContainersOptions());
     }
 
-    public ListContainersResults listContainers(ListContainersOptions options) {
+    public ListContainersResult listContainers(ListContainersOptions options) {
         WebResource webResource = getResource().path("/").queryParam("comp", "list");
 
         webResource = setCanonicalizedResource(webResource, null, "list");
@@ -242,32 +242,14 @@ public class BlobServiceImpl implements BlobService {
             webResource = webResource.queryParam("include", "metadata");
         }
 
-        return webResource.header(X_MS_VERSION, API_VERSION).get(ListContainersResults.class);
+        return webResource.header(X_MS_VERSION, API_VERSION).get(ListContainersResult.class);
     }
 
-    public ListBlobsResults listBlobs(String container) {
+    public ListBlobsResult listBlobs(String container) {
         return listBlobs(container, new ListBlobsOptions());
     }
 
-    private class EnumCommaStringBuilder<E extends Enum<E>> {
-        private final StringBuilder sb = new StringBuilder();
-
-        public void addValue(EnumSet<E> enumSet, E value, String representation) {
-            if (enumSet.contains(value)) {
-                if (sb.length() >= 0) {
-                    sb.append(",");
-                }
-                sb.append(representation);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return sb.toString();
-        }
-    }
-
-    public ListBlobsResults listBlobs(String container, ListBlobsOptions options) {
+    public ListBlobsResult listBlobs(String container, ListBlobsOptions options) {
         WebResource webResource = getResource().path(container).queryParam("comp", "list").queryParam("resType", "container");
         webResource = setCanonicalizedResource(webResource, container, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
@@ -284,7 +266,7 @@ public class BlobServiceImpl implements BlobService {
             webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         }
 
-        return webResource.header(X_MS_VERSION, API_VERSION).get(ListBlobsResults.class);
+        return webResource.header(X_MS_VERSION, API_VERSION).get(ListBlobsResult.class);
     }
 
     public void createPageBlob(String container, String blob, int length) {
@@ -672,8 +654,6 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
 
-        builder = builder.header("x-ms-blob-type", "BlockBlob");
-
         Object content = (contentStream == null ? "" : contentStream);
         ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
         UpdatePageBlobPagesResult result = new UpdatePageBlobPagesResult();
@@ -683,4 +663,41 @@ public class BlobServiceImpl implements BlobService {
         result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
         return result;
     }
-}
+
+    public ListPageBlobRegionsResult listPageBlobRegions(String container, String blob) {
+        return listPageBlobRegions(container, blob, new ListPageBlobRegionsOptions());
+    }
+
+    public ListPageBlobRegionsResult listPageBlobRegions(String container, String blob, ListPageBlobRegionsOptions options) {
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "pagelist");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "pagelist");
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ListPageBlobRegionsResult result = response.getEntity(ListPageBlobRegionsResult.class);
+        result.setEtag(response.getHeaders().getFirst("ETag"));
+        result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
+        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        return result;
+    }
+
+    private class EnumCommaStringBuilder<E extends Enum<E>> {
+        private final StringBuilder sb = new StringBuilder();
+
+        public void addValue(EnumSet<E> enumSet, E value, String representation) {
+            if (enumSet.contains(value)) {
+                if (sb.length() >= 0) {
+                    sb.append(",");
+                }
+                sb.append(representation);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return sb.toString();
+        }
+    }}

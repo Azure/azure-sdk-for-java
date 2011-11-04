@@ -9,9 +9,9 @@ public interface BlobService {
 
     void setServiceProperties(ServiceProperties serviceProperties);
 
-    ListContainersResults listContainers();
+    ListContainersResult listContainers();
 
-    ListContainersResults listContainers(ListContainersOptions options);
+    ListContainersResult listContainers(ListContainersOptions options);
 
     void createContainer(String container);
 
@@ -29,9 +29,9 @@ public interface BlobService {
 
     void setContainerMetadata(String container, HashMap<String, String> metadata);
 
-    ListBlobsResults listBlobs(String container);
+    ListBlobsResult listBlobs(String container);
 
-    ListBlobsResults listBlobs(String container, ListBlobsOptions options);
+    ListBlobsResult listBlobs(String container, ListBlobsOptions options);
 
     void createPageBlob(String container, String blob, int length);
 
@@ -53,6 +53,10 @@ public interface BlobService {
     BlobProperties getBlobProperties(String container, String blob);
 
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
+
+    ListPageBlobRegionsResult listPageBlobRegions(String container, String blob);
+
+    ListPageBlobRegionsResult listPageBlobRegions(String container, String blob, ListPageBlobRegionsOptions options);
 
     SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options);
 

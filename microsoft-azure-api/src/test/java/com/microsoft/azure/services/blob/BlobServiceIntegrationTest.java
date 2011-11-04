@@ -93,7 +93,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         ContainerProperties prop2 = service.getContainerProperties("foo2");
         ContainerACL acl = service.getContainerACL("foo2");
 
-        ListContainersResults results2 = service.listContainers(new ListContainersOptions().setPrefix("foo2").setListingDetails(
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix("foo2").setListingDetails(
                 EnumSet.of(ContainerListingDetails.METADATA)));
 
         service.deleteContainer("foo2");
@@ -196,7 +196,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListContainersResults results = service.listContainers();
+        ListContainersResult results = service.listContainers();
 
         // Assert
         assertNotNull(results);
@@ -216,7 +216,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListContainersResults results = service.listContainers(new ListContainersOptions().setMaxResults(3));
+        ListContainersResult results = service.listContainers(new ListContainersOptions().setMaxResults(3));
 
         // Assert
         assertNotNull(results);
@@ -225,7 +225,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(3, results.getMaxResults());
 
         // Act
-        ListContainersResults results2 = service.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
 
         // Assert
         assertNotNull(results2);
@@ -241,7 +241,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListContainersResults results = service.listContainers(new ListContainersOptions().setPrefix("mycontainer1"));
+        ListContainersResult results = service.listContainers(new ListContainersOptions().setPrefix("mycontainer1"));
 
         // Assert
         assertNotNull(results);
@@ -257,7 +257,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListBlobsResults results = service.listBlobs("mycontainer11");
+        ListBlobsResult results = service.listBlobs("mycontainer11");
 
         // Assert
         assertNotNull(results);
@@ -271,7 +271,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListBlobsResults results = service.listBlobs("mycontainer11", new ListBlobsOptions().setPrefix("Create"));
+        ListBlobsResult results = service.listBlobs("mycontainer11", new ListBlobsOptions().setPrefix("Create"));
 
         // Assert
         assertNotNull(results);
@@ -352,10 +352,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = "mycontainer1";
         String blob = "test";
         String content = new String(new char[512]);
-        ByteArrayInputStream contentStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
         service.createPageBlob(container, blob, 512);
 
-        UpdatePageBlobPagesResult result = service.updatePageBlobPages(container, blob, 0, 511, content.length(), contentStream);
+        UpdatePageBlobPagesResult result = service.updatePageBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
 
         // Assert
         assertNotNull(result);
@@ -363,6 +362,42 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result.getLastModified());
         assertNotNull(result.getEtag());
         assertEquals(0, result.getSequenceNumber());
+    }
+
+    @Test
+    public void listPageBlobRegionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        String content = new String(new char[512]);
+        service.createPageBlob(container, blob, 16384 + 512);
+
+        service.updatePageBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.updatePageBlobPages(container, blob, 1024, 1024 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.updatePageBlobPages(container, blob, 8192, 8192 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.updatePageBlobPages(container, blob, 16384, 16384 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+
+        ListPageBlobRegionsResult result = service.listPageBlobRegions(container, blob);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(16384 + 512, result.getContentLength());
+        assertNotNull(result.getPageRanges());
+        assertEquals(4, result.getPageRanges().size());
+        assertEquals(0, result.getPageRanges().get(0).getStart());
+        assertEquals(511, result.getPageRanges().get(0).getEnd());
+        assertEquals(1024, result.getPageRanges().get(1).getStart());
+        assertEquals(1024 + 511, result.getPageRanges().get(1).getEnd());
+        assertEquals(8192, result.getPageRanges().get(2).getStart());
+        assertEquals(8192 + 511, result.getPageRanges().get(2).getEnd());
+        assertEquals(16384, result.getPageRanges().get(3).getStart());
+        assertEquals(16384 + 511, result.getPageRanges().get(3).getEnd());
     }
 
     @Test
