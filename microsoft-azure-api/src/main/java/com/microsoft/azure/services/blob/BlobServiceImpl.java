@@ -56,6 +56,17 @@ public class BlobServiceImpl implements BlobService {
         return builder;
     }
 
+    private Builder addOptionalRangeHeader(Builder builder, Long rangeStart, Long rangeEnd) {
+        if (rangeStart != null) {
+            String range = rangeStart.toString() + "-";
+            if (rangeEnd != null) {
+                range += rangeEnd.toString();
+            }
+            builder = addOptionalHeader(builder, "Range", "bytes=" + range);
+        }
+        return builder;
+    }
+
     private WebResource getResource() {
         WebResource res = channel.resource(url).path("/");
 
@@ -449,13 +460,7 @@ public class BlobServiceImpl implements BlobService {
 
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
-        if (options.getRangeStart() != null) {
-            String range = options.getRangeStart().toString() + "-";
-            if (options.getRangeEnd() != null) {
-                range += options.getRangeEnd().toString();
-            }
-            builder = addOptionalHeader(builder, "Range", range);
-        }
+        builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
 
         ClientResponse response = builder.get(ClientResponse.class);
 
@@ -637,5 +642,45 @@ public class BlobServiceImpl implements BlobService {
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         return response.getHeaders().getFirst("x-ms-lease-id");
+    }
+
+    public UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd) {
+        return clearPageBlobPages(container, blob, rangeStart, rangeEnd, new UpdatePageBlobPagesOptions());
+    }
+
+    public UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd, UpdatePageBlobPagesOptions options) {
+        return updatePageBlobPagesImpl("clear", container, blob, rangeStart, rangeEnd, 0, null, options);
+    }
+
+    public UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream) {
+        return updatePageBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream, new UpdatePageBlobPagesOptions());
+    }
+
+    public UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+            UpdatePageBlobPagesOptions options) {
+        return updatePageBlobPagesImpl("update", container, blob, rangeStart, rangeEnd, length, contentStream, options);
+    }
+
+    private UpdatePageBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
+            InputStream contentStream, UpdatePageBlobPagesOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "page");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "page");
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalRangeHeader(builder, rangeStart, rangeEnd);
+        builder = addOptionalHeader(builder, "Content-Length", length);
+        builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-page-write", action);
+
+        builder = builder.header("x-ms-blob-type", "BlockBlob");
+
+        Object content = (contentStream == null ? "" : contentStream);
+        ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
+        UpdatePageBlobPagesResult result = new UpdatePageBlobPagesResult();
+        result.setEtag(response.getHeaders().getFirst("ETag"));
+        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
+        result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
+        return result;
     }
 }

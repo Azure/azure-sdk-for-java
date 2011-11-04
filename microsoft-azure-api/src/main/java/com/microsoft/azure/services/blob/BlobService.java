@@ -37,6 +37,15 @@ public interface BlobService {
 
     void createPageBlob(String container, String blob, int length, CreateBlobOptions options);
 
+    UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd);
+
+    UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd, UpdatePageBlobPagesOptions options);
+
+    UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream);
+
+    UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+            UpdatePageBlobPagesOptions options);
+
     void createBlockBlob(String container, String blob, InputStream content);
 
     void createBlockBlob(String container, String blob, InputStream content, CreateBlobOptions options);

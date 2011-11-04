@@ -322,6 +322,50 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void clearPageBlobPagesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        service.createPageBlob(container, blob, 512);
+
+        UpdatePageBlobPagesResult result = service.clearPageBlobPages(container, blob, 0, 511);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getContentMD5());
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(0, result.getSequenceNumber());
+    }
+
+    @Test
+    public void updatePageBlobPagesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        String content = new String(new char[512]);
+        ByteArrayInputStream contentStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
+        service.createPageBlob(container, blob, 512);
+
+        UpdatePageBlobPagesResult result = service.updatePageBlobPages(container, blob, 0, 511, content.length(), contentStream);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getContentMD5());
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(0, result.getSequenceNumber());
+    }
+
+    @Test
     public void createBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -486,9 +530,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = "mycontainer1";
         String blob = "test10";
         service.createPageBlob(container, blob, 4096);
-        SetBlobPropertiesResult result = service.setBlobProperties(container, blob, new SetBlobPropertiesOptions().setCacheControl("test")
-                .setContentEncoding("UTF-8").setContentLanguage("en-us").setContentLength(512L).setContentMD5(null).setContentType("text/plain")
-                .setSequenceNumberAction("increment"));
+        SetBlobPropertiesResult result = service.setBlobProperties(container, blob,
+                new SetBlobPropertiesOptions().setCacheControl("test").setContentEncoding("UTF-8").setContentLanguage("en-us").setContentLength(512L)
+                        .setContentMD5(null).setContentType("text/plain").setSequenceNumberAction("increment"));
 
         BlobProperties props = service.getBlobProperties(container, blob);
 
