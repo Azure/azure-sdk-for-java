@@ -13,39 +13,44 @@ public class GetBlobOptions {
         return snapshot;
     }
 
-    public void setSnapshot(Date snapshot) {
+    public GetBlobOptions setSnapshot(Date snapshot) {
         this.snapshot = snapshot;
+        return this;
     }
 
     public String getLeaseId() {
         return leaseId;
     }
 
-    public void setLeaseId(String leaseId) {
+    public GetBlobOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
     }
 
     public boolean isComputeRangeMD5() {
         return computeRangeMD5;
     }
 
-    public void setComputeRangeMD5(boolean computeRangeMD5) {
+    public GetBlobOptions setComputeRangeMD5(boolean computeRangeMD5) {
         this.computeRangeMD5 = computeRangeMD5;
+        return this;
     }
 
     public Long getRangeStart() {
         return rangeStart;
     }
 
-    public void setRangeStart(Long rangeStart) {
+    public GetBlobOptions setRangeStart(Long rangeStart) {
         this.rangeStart = rangeStart;
+        return this;
     }
 
     public Long getRangeEnd() {
         return rangeEnd;
     }
 
-    public void setRangeEnd(Long rangeEnd) {
+    public GetBlobOptions setRangeEnd(Long rangeEnd) {
         this.rangeEnd = rangeEnd;
+        return this;
     }
 }

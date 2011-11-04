@@ -40,4 +40,7 @@ public interface BlobService {
 
     Blob getBlob(String container, String blob);
     Blob getBlob(String container, String blob, GetBlobOptions options);
+
+    void deleteBlob(String container, String blob);
+    void deleteBlob(String container, String blob, DeleteBlobOptions options);
 }

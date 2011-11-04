@@ -10,15 +10,17 @@ public class GetBlobPropertiesOptions {
         return snapshot;
     }
 
-    public void setSnapshot(Date snapshot) {
+    public GetBlobPropertiesOptions setSnapshot(Date snapshot) {
         this.snapshot = snapshot;
+        return this;
     }
 
     public String getLeaseId() {
         return leaseId;
     }
 
-    public void setLeaseId(String leaseId) {
+    public GetBlobPropertiesOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
     }
 }

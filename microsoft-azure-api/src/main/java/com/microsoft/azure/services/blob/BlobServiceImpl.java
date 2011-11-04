@@ -440,4 +440,23 @@ public class BlobServiceImpl implements BlobService {
         }
         return properties;
     }
+
+    public void deleteBlob(String container, String blob) {
+        deleteBlob(container, blob, new DeleteBlobOptions());
+    }
+
+    public void deleteBlob(String container, String blob, DeleteBlobOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob);
+        if (options.getSnapshot() != null) {
+            webResource = addOptionalQueryParam(webResource, "snapshot", new DateMapper().format(options.getSnapshot()));
+        }
+
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
+
+        builder.delete();
+    }
 }

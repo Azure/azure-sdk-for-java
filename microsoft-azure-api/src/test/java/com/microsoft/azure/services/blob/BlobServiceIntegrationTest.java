@@ -388,6 +388,21 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(4096, inputStreamToByteArray(blob.getContentStream()).length);
     }
 
+    @Test
+    public void deleteBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService contract = config.create(BlobService.class);
+
+        // Act
+        String content = "some content";
+        contract.putBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")));
+
+        contract.deleteBlob("mycontainer1", "test2");
+
+        // Assert
+    }
+
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -406,7 +421,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         return outputStream.toByteArray();
     }
 
-    public String inputStreamToString(InputStream inputStream, String encoding) throws IOException {
+    private String inputStreamToString(InputStream inputStream, String encoding) throws IOException {
         Writer writer = new StringWriter();
 
         char[] buffer = new char[1024];
