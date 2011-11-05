@@ -78,7 +78,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		Message message = new Message("sendMessageWorks");
 
 		// Act
-		service.sendMessage("TestAlpha", message);
+		service.sendQueueMessage("TestAlpha", message);
 
 		// Assert
 	}
@@ -88,7 +88,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		String queueName = "TestReceiveMessageWorks";
 		service.createQueue(new Queue().setName(queueName));
-		service.sendMessage(queueName, new Message("Hello World"));
+		service.sendQueueMessage(queueName, new Message("Hello World"));
 
 		// Act
 		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
@@ -105,7 +105,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		String queueName = "TestPeekLockMessageWorks";
 		service.createQueue(new Queue().setName(queueName));
-		service.sendMessage(queueName, new Message("Hello Again"));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
 
 		// Act
 		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
@@ -122,7 +122,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		String queueName = "TestPeekLockedMessageCanBeCompleted";
 		service.createQueue(new Queue().setName(queueName));
-		service.sendMessage(queueName, new Message("Hello Again"));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
 		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
@@ -143,7 +143,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		String queueName = "TestPeekLockedMessageCanBeUnlocked";
 		service.createQueue(new Queue().setName(queueName));
-		service.sendMessage(queueName, new Message("Hello Again"));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
 		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
@@ -167,7 +167,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		// Arrange
 		String queueName = "TestPeekLockedMessageCanBeDeleted";
 		service.createQueue(new Queue().setName(queueName));
-		service.sendMessage(queueName, new Message("Hello Again"));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
 		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Act
@@ -191,7 +191,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		service.createQueue(new Queue().setName(queueName));
 
 		// Act
-		service.sendMessage(queueName, 
+		service.sendQueueMessage(queueName, 
 				new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
 		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);

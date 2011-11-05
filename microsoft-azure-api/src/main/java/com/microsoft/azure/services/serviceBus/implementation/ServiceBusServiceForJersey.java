@@ -66,8 +66,7 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 			.resource(uri);
 	}
 
-
-	public void sendMessage(String path, Message message) throws ServiceException {
+	void sendMessage(String path, Message message) {
 		Builder request = getResource()
 			.path(path)
 			.path("messages")
@@ -82,6 +81,9 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 		request.post(message.getBody());
 	}
 
+	public void sendQueueMessage(String path, Message message) throws ServiceException {
+		sendMessage(path, message);
+	}
 
 	public Message receiveQueueMessage(String queueName)
 			throws ServiceException {
@@ -134,6 +136,11 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 		return result;
 	}
 
+	public void sendTopicMessage(String topicName, Message message) throws ServiceException
+	{
+		sendMessage(topicName, message);
+	}
+	
 	public Message receiveSubscriptionMessage(String topicName,
 			String subscriptionName) throws ServiceException {
 		// TODO Auto-generated method stub

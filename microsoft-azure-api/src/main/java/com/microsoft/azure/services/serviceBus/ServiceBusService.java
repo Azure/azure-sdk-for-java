@@ -7,11 +7,11 @@ import com.microsoft.azure.ServiceException;
 
 
 public interface ServiceBusService {
-	void sendMessage(String queueOrTopicName, Message message) throws ServiceException;
-	
+	void sendQueueMessage(String queueName, Message message) throws ServiceException;	
 	Message receiveQueueMessage(String queueName) throws ServiceException;
 	Message receiveQueueMessage(String queueName, ReceiveMessageOptions options) throws ServiceException;
 
+	void sendTopicMessage(String topicName, Message message) throws ServiceException;	
 	Message receiveSubscriptionMessage(String topicName, String subscriptionName) throws ServiceException;
 	Message receiveSubscriptionMessage(String topicName, String subscriptionName, ReceiveMessageOptions options) throws ServiceException;
 

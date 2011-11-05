@@ -47,7 +47,7 @@ public class MessagingClient {
 		return new MessageTransceiver() {
 
 			public void sendMessage(Message message) throws ServiceException {
-				service.sendMessage(queue, message);
+				service.sendQueueMessage(queue, message);
 			}
 
 			public Message receiveMessage() throws ServiceException {
@@ -74,7 +74,7 @@ public class MessagingClient {
 		final String topic = topicName;
 		return new MessageSender() {
 			public void sendMessage(Message message) throws ServiceException {
-				service.sendMessage(topic, message);
+				service.sendQueueMessage(topic, message);
 			}
 		};
 	}

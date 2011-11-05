@@ -32,10 +32,10 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	}
 
 
-	public void sendMessage(String path, Message message)
+	public void sendQueueMessage(String path, Message message)
 			throws ServiceException {
 		try {
-			service.sendMessage(path, message);
+			service.sendQueueMessage(path, message);
 		} catch (UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
 		} catch (ClientHandlerException e) {
@@ -67,6 +67,17 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 		}
 	}
 
+
+	public void sendTopicMessage(String path, Message message)
+			throws ServiceException {
+		try {
+			service.sendTopicMessage(path, message);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
 
 	public Message receiveSubscriptionMessage(String topicName,
 			String subscriptionName) throws ServiceException {
