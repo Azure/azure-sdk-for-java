@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class UpdatePageBlobPagesOptions {
+public class CreateBlobPagesOptions {
     private String leaseId;
     private String contentMD5;
 
@@ -11,15 +11,17 @@ public class UpdatePageBlobPagesOptions {
         return leaseId;
     }
 
-    public void setLeaseId(String leaseId) {
+    public CreateBlobPagesOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
     }
 
     public String getContentMD5() {
         return contentMD5;
     }
 
-    public void setContentMD5(String contentMD5) {
+    public CreateBlobPagesOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
+        return this;
     }
 }

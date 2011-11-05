@@ -322,7 +322,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void clearPageBlobPagesWorks() throws Exception {
+    public void clearBlobPagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
@@ -332,7 +332,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String blob = "test";
         service.createPageBlob(container, blob, 512);
 
-        UpdatePageBlobPagesResult result = service.clearPageBlobPages(container, blob, 0, 511);
+        CreateBlobPagesResult result = service.clearBlobPages(container, blob, 0, 511);
 
         // Assert
         assertNotNull(result);
@@ -343,7 +343,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void updatePageBlobPagesWorks() throws Exception {
+    public void createBlobPagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
@@ -354,7 +354,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 512);
 
-        UpdatePageBlobPagesResult result = service.updatePageBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        CreateBlobPagesResult result = service.createBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
 
         // Assert
         assertNotNull(result);
@@ -365,7 +365,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listPageBlobRegionsWorks() throws Exception {
+    public void listBlobRegionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
@@ -376,12 +376,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 16384 + 512);
 
-        service.updatePageBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.updatePageBlobPages(container, blob, 1024, 1024 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.updatePageBlobPages(container, blob, 8192, 8192 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.updatePageBlobPages(container, blob, 16384, 16384 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, 1024, 1024 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, 8192, 8192 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, 16384, 16384 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
 
-        ListPageBlobRegionsResult result = service.listPageBlobRegions(container, blob);
+        ListBlobRegionsResult result = service.listBlobRegions(container, blob);
 
         // Assert
         assertNotNull(result);
@@ -398,6 +398,123 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(8192 + 511, result.getPageRanges().get(2).getEnd());
         assertEquals(16384, result.getPageRanges().get(3).getStart());
         assertEquals(16384 + 511, result.getPageRanges().get(3).getEnd());
+    }
+
+    @Test
+    public void listBlobBlocksOnEmptyBlobWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test13";
+        String content = new String(new char[512]);
+        service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
+
+        ListBlobBlocksResult result = service.listBlobBlocks(container, blob);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(512, result.getContentLength());
+        assertNotNull(result.getCommittedBlocks());
+        assertEquals(0, result.getCommittedBlocks().size());
+        //assertNotNull(result.getCommittedBlocks().get(0).getBlockId());
+        //assertEquals(512, result.getCommittedBlocks().get(0).getBlockLength());
+        assertNotNull(result.getUncommittedBlocks());
+        assertEquals(0, result.getUncommittedBlocks().size());
+    }
+
+    @Test
+    public void listBlobBlocksWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test14";
+        service.createBlockBlob(container, blob, null);
+        service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(new byte[256]));
+        service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(new byte[512]));
+        service.createBlobBlock(container, blob, "125", new ByteArrayInputStream(new byte[195]));
+
+        ListBlobBlocksResult result = service.listBlobBlocks(container, blob, new ListBlobBlocksOptions().setListType("all"));
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(0, result.getContentLength());
+        assertNotNull(result.getCommittedBlocks());
+        assertEquals(0, result.getCommittedBlocks().size());
+        assertNotNull(result.getUncommittedBlocks());
+        assertEquals(3, result.getUncommittedBlocks().size());
+        assertEquals("123", result.getUncommittedBlocks().get(0).getBlockId());
+        assertEquals(256, result.getUncommittedBlocks().get(0).getBlockLength());
+        assertEquals("124", result.getUncommittedBlocks().get(1).getBlockId());
+        assertEquals(512, result.getUncommittedBlocks().get(1).getBlockLength());
+        assertEquals("125", result.getUncommittedBlocks().get(2).getBlockId());
+        assertEquals(195, result.getUncommittedBlocks().get(2).getBlockLength());
+    }
+
+    @Test
+    public void commitBlobBlocksWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test14";
+        String blockId1 = "1fedcba";
+        String blockId2 = "2abcdef";
+        String blockId3 = "3zzzzzz";
+        service.createBlockBlob(container, blob, null);
+        service.createBlobBlock(container, blob, blockId1, new ByteArrayInputStream(new byte[256]));
+        service.createBlobBlock(container, blob, blockId2, new ByteArrayInputStream(new byte[512]));
+        service.createBlobBlock(container, blob, blockId3, new ByteArrayInputStream(new byte[195]));
+
+        BlockList blockList = new BlockList();
+        blockList.addUncommittedEntry(blockId1).addLatestEntry(blockId3);
+        service.commitBlobBlocks(container, blob, blockList);
+
+        ListBlobBlocksResult result = service.listBlobBlocks(container, blob, new ListBlobBlocksOptions().setListType("all"));
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getLastModified());
+        assertNotNull(result.getEtag());
+        assertEquals(256 + 195, result.getContentLength());
+
+        assertNotNull(result.getCommittedBlocks());
+        assertEquals(2, result.getCommittedBlocks().size());
+        assertEquals(blockId1, result.getCommittedBlocks().get(0).getBlockId());
+        assertEquals(256, result.getCommittedBlocks().get(0).getBlockLength());
+        assertEquals(blockId3, result.getCommittedBlocks().get(1).getBlockId());
+        assertEquals(195, result.getCommittedBlocks().get(1).getBlockLength());
+
+        assertNotNull(result.getUncommittedBlocks());
+        assertEquals(0, result.getUncommittedBlocks().size());
+    }
+
+    @Test
+    public void createBlobBlockWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test13";
+        String content = new String(new char[512]);
+        service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(content.getBytes("UTF-8")));
+
+        // Assert
     }
 
     @Test

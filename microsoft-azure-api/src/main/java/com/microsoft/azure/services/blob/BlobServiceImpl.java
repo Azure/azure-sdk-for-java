@@ -13,6 +13,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.core.util.Base64;
 
 public class BlobServiceImpl implements BlobService {
 
@@ -306,7 +307,8 @@ public class BlobServiceImpl implements BlobService {
         builder = builder.header("x-ms-blob-type", "BlockBlob");
         builder = addPutBlobHeaders(options, builder);
 
-        builder.put(content);
+        Object contentObject = (content == null ? new byte[0] : content);
+        builder.put(contentObject);
     }
 
     private Builder addPutBlobHeaders(CreateBlobOptions options, Builder builder) {
@@ -626,25 +628,25 @@ public class BlobServiceImpl implements BlobService {
         return response.getHeaders().getFirst("x-ms-lease-id");
     }
 
-    public UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd) {
-        return clearPageBlobPages(container, blob, rangeStart, rangeEnd, new UpdatePageBlobPagesOptions());
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) {
+        return clearBlobPages(container, blob, rangeStart, rangeEnd, new CreateBlobPagesOptions());
     }
 
-    public UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd, UpdatePageBlobPagesOptions options) {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) {
         return updatePageBlobPagesImpl("clear", container, blob, rangeStart, rangeEnd, 0, null, options);
     }
 
-    public UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream) {
-        return updatePageBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream, new UpdatePageBlobPagesOptions());
+    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream) {
+        return createBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream, new CreateBlobPagesOptions());
     }
 
-    public UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
-            UpdatePageBlobPagesOptions options) {
+    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+            CreateBlobPagesOptions options) {
         return updatePageBlobPagesImpl("update", container, blob, rangeStart, rangeEnd, length, contentStream, options);
     }
 
-    private UpdatePageBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
-            InputStream contentStream, UpdatePageBlobPagesOptions options) {
+    private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
+            InputStream contentStream, CreateBlobPagesOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "page");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "page");
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -656,7 +658,7 @@ public class BlobServiceImpl implements BlobService {
 
         Object content = (contentStream == null ? "" : contentStream);
         ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
-        UpdatePageBlobPagesResult result = new UpdatePageBlobPagesResult();
+        CreateBlobPagesResult result = new CreateBlobPagesResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         result.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
@@ -664,11 +666,11 @@ public class BlobServiceImpl implements BlobService {
         return result;
     }
 
-    public ListPageBlobRegionsResult listPageBlobRegions(String container, String blob) {
-        return listPageBlobRegions(container, blob, new ListPageBlobRegionsOptions());
+    public ListBlobRegionsResult listBlobRegions(String container, String blob) {
+        return listBlobRegions(container, blob, new ListBlobRegionsOptions());
     }
 
-    public ListPageBlobRegionsResult listPageBlobRegions(String container, String blob, ListPageBlobRegionsOptions options) {
+    public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "pagelist");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "pagelist");
 
@@ -677,7 +679,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ListPageBlobRegionsResult result = response.getEntity(ListPageBlobRegionsResult.class);
+        ListBlobRegionsResult result = response.getEntity(ListBlobRegionsResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
         result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
@@ -700,4 +702,75 @@ public class BlobServiceImpl implements BlobService {
         public String toString() {
             return sb.toString();
         }
-    }}
+    }
+
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) {
+        createBlobBlock(container, blob, blockId, contentStream, new CreateBlobBlockOptions());
+    }
+
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "block");
+        webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
+
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "block");
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
+        builder = builder.type("application/octet-stream");
+
+        builder.put(contentStream);
+    }
+
+    public void commitBlobBlocks(String container, String blob, BlockList blockList) {
+        commitBlobBlocks(container, blob, blockList, new CommitBlobBlocksOptions());
+    }
+
+    public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) {
+        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "blocklist");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-encoding", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getLeaseId());
+
+        // Metadata
+        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+        }
+
+        builder.type("application/xml").put(blockList);
+    }
+
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob) {
+        return listBlobBlocks(container, blob, new ListBlobBlocksOptions());
+    }
+
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) {
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "blocklist");
+        webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
+        webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
+
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
+
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ListBlobBlocksResult result = response.getEntity(ListBlobBlocksResult.class);
+        result.setEtag(response.getHeaders().getFirst("ETag"));
+        result.setContentType(response.getHeaders().getFirst("Content-Type"));
+        result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
+        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+//        for (ListBlobBlocksResult.Entry entry : result.getCommittedBlocks()) {
+//            entry.setBlockId(Base64.base64Decode(entry.getBlockId()));
+//        }
+//        for (ListBlobBlocksResult.Entry entry : result.getUncommittedBlocks()) {
+//            entry.setBlockId(Base64.base64Decode(entry.getBlockId()));
+//        }
+        return result;
+    }
+}

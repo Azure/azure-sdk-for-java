@@ -116,6 +116,11 @@ public class CreateBlobOptions {
         return this;
     }
 
+    public CreateBlobOptions addMetadata(String key, String value) {
+        this.getMetadata().put(key, value);
+        return this;
+    }
+
     public String getLeaseId() {
         return leaseId;
     }

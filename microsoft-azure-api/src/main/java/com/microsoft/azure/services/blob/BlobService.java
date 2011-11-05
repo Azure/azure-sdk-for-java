@@ -37,26 +37,38 @@ public interface BlobService {
 
     void createPageBlob(String container, String blob, int length, CreateBlobOptions options);
 
-    UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd);
-
-    UpdatePageBlobPagesResult clearPageBlobPages(String container, String blob, long rangeStart, long rangeEnd, UpdatePageBlobPagesOptions options);
-
-    UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream);
-
-    UpdatePageBlobPagesResult updatePageBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
-            UpdatePageBlobPagesOptions options);
-
     void createBlockBlob(String container, String blob, InputStream content);
 
     void createBlockBlob(String container, String blob, InputStream content, CreateBlobOptions options);
+
+    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd);
+
+    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options);
+
+    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream);
+
+    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+            CreateBlobPagesOptions options);
+
+    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream);
+
+    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options);
+
+    void commitBlobBlocks(String container, String blob, BlockList blockList);
+
+    void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options);
+
+    ListBlobBlocksResult listBlobBlocks(String container, String blob);
+
+    ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options);
 
     BlobProperties getBlobProperties(String container, String blob);
 
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
 
-    ListPageBlobRegionsResult listPageBlobRegions(String container, String blob);
+    ListBlobRegionsResult listBlobRegions(String container, String blob);
 
-    ListPageBlobRegionsResult listPageBlobRegions(String container, String blob, ListPageBlobRegionsOptions options);
+    ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options);
 
     SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options);
 

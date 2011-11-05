@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.Date;
 
-public class UpdatePageBlobPagesResult {
+public class CreateBlobPagesResult {
     private String etag;
     private Date lastModified;
     private String contentMD5;

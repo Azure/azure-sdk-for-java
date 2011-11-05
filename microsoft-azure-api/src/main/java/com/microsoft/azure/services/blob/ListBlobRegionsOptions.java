@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class ListPageBlobRegionsOptions {
+public class ListBlobRegionsOptions {
     private String leaseId;
     private String snapshot;
     private Long rangeStart;
@@ -10,7 +10,7 @@ public class ListPageBlobRegionsOptions {
         return leaseId;
     }
 
-    public ListPageBlobRegionsOptions setLeaseId(String leaseId) {
+    public ListBlobRegionsOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -19,7 +19,7 @@ public class ListPageBlobRegionsOptions {
         return snapshot;
     }
 
-    public ListPageBlobRegionsOptions setSnapshot(String snapshot) {
+    public ListBlobRegionsOptions setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -28,7 +28,7 @@ public class ListPageBlobRegionsOptions {
         return rangeStart;
     }
 
-    public ListPageBlobRegionsOptions setRangeStart(Long rangeStart) {
+    public ListBlobRegionsOptions setRangeStart(Long rangeStart) {
         this.rangeStart = rangeStart;
         return this;
     }
@@ -37,7 +37,7 @@ public class ListPageBlobRegionsOptions {
         return rangeEnd;
     }
 
-    public ListPageBlobRegionsOptions setRangeEnd(Long rangeEnd) {
+    public ListBlobRegionsOptions setRangeEnd(Long rangeEnd) {
         this.rangeEnd = rangeEnd;
         return this;
     }
