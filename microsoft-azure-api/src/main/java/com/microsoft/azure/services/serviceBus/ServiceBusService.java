@@ -7,7 +7,7 @@ import com.microsoft.azure.ServiceException;
 
 
 public interface ServiceBusService {
-	void sendMessage(String path, Message message) throws ServiceException;
+	void sendMessage(String queueOrTopicName, Message message) throws ServiceException;
 	
 	Message receiveQueueMessage(String queueName) throws ServiceException;
 	Message receiveQueueMessage(String queueName, ReceiveMessageOptions options) throws ServiceException;
@@ -19,23 +19,23 @@ public interface ServiceBusService {
 	void deleteMessage(Message message) throws ServiceException;
 
 	Queue createQueue(Queue queue) throws ServiceException;
-	void deleteQueue(String queuePath) throws ServiceException;
-	Queue getQueue(String queuePath) throws ServiceException;
+	void deleteQueue(String queueName) throws ServiceException;
+	Queue getQueue(String queueName) throws ServiceException;
 	ListQueuesResult listQueues() throws ServiceException;
 
 	Topic createTopic(Topic topic) throws ServiceException;
-	void deleteTopic(String topicPath) throws ServiceException;
-	Topic getTopic(String topicPath) throws ServiceException;
+	void deleteTopic(String topicName) throws ServiceException;
+	Topic getTopic(String topicName) throws ServiceException;
 	ListTopicsResult listTopics() throws ServiceException;
 
-	void addSubscription(String topicPath, String subscriptionName, Entry subscription) throws ServiceException;
-	void removeSubscription(String topicPath, String subscriptionName) throws ServiceException;
-	Entry getSubscription(String topicPath, String subscriptionName) throws ServiceException;
-	Feed getSubscriptions(String topicPath) throws ServiceException;
+	void addSubscription(String topicName, String subscriptionName, Entry subscription) throws ServiceException;
+	void removeSubscription(String topicName, String subscriptionName) throws ServiceException;
+	Entry getSubscription(String topicName, String subscriptionName) throws ServiceException;
+	Feed getSubscriptions(String topicName) throws ServiceException;
 
-	void addRule(String topicPath, String subscriptionName, String ruleName, Entry rule) throws ServiceException;
-	void removeRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
-	Entry getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
-	Feed getRules(String topicPath, String subscriptionName) throws ServiceException;
+	void addRule(String topicName, String subscriptionName, String ruleName, Entry rule) throws ServiceException;
+	void removeRule(String topicName, String subscriptionName, String ruleName) throws ServiceException;
+	Entry getRule(String topicName, String subscriptionName, String ruleName) throws ServiceException;
+	Feed getRules(String topicName, String subscriptionName) throws ServiceException;
 }
 
