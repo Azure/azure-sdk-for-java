@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class CreateBlobSnapshotOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private String leaseId;
-    //TODO: Add Ifxxx headers
+    private AccessCondition accessCondition;
 
     public HashMap<String, String> getMetadata() {
         return metadata;
@@ -27,6 +27,15 @@ public class CreateBlobSnapshotOptions {
 
     public CreateBlobSnapshotOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public CreateBlobSnapshotOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }

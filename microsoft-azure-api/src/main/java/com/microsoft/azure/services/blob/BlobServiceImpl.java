@@ -586,8 +586,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-
-        // TODO: Conditional headers (If Match, etc.)
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
