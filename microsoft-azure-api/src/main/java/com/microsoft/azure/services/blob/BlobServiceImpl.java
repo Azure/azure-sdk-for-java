@@ -18,9 +18,6 @@ import com.sun.jersey.core.util.Base64;
 
 public class BlobServiceImpl implements BlobService {
 
-    private static final String X_MS_VERSION = "x-ms-version";
-    private static final String X_MS_BLOB_PUBLIC_ACCESS = "x-ms-blob-public-access";
-    private static final String X_MS_META_PREFIX = "x-ms-meta-";
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
     private final String accountName;
@@ -78,7 +75,7 @@ public class BlobServiceImpl implements BlobService {
 
     private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
         for (Entry<String, String> entry : metadata.entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
+            builder = builder.header("x-ms-meta-" + entry.getKey(), entry.getValue());
         }
         return builder;
     }
@@ -143,7 +140,9 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 
-        return webResource.header(X_MS_VERSION, API_VERSION).get(ServiceProperties.class);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        return builder.get(ServiceProperties.class);
     }
 
     public void setServiceProperties(ServiceProperties serviceProperties) {
@@ -151,7 +150,10 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 
-        webResource.header(X_MS_VERSION, API_VERSION).type("application/xml").put(serviceProperties);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("application/xml").put(serviceProperties);
     }
 
     public void createContainer(String container) {
@@ -162,9 +164,9 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container");
         webResource = setCanonicalizedResource(webResource, container, null);
 
-        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalHeader(builder, X_MS_BLOB_PUBLIC_ACCESS, options.getPublicAccess());
+        builder = addOptionalHeader(builder, "x-ms-blob-public-access", options.getPublicAccess());
 
         // Note: Add content type here to enable proper HMAC signing
         builder.type("text/plain").put("");
@@ -174,7 +176,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container");
         webResource = setCanonicalizedResource(webResource, container, null);
 
-        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         builder.delete();
     }
@@ -192,7 +194,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = addOptionalQueryParam(webResource, "comp", operation);
         webResource = setCanonicalizedResource(webResource, container, operation);
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         ClientResponse response = builder.get(ClientResponse.class);
 
@@ -203,8 +205,8 @@ public class BlobServiceImpl implements BlobService {
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().startsWith(X_MS_META_PREFIX)) {
-                String name = entry.getKey().substring(X_MS_META_PREFIX.length());
+            if (entry.getKey().startsWith("x-ms-meta-")) {
+                String name = entry.getKey().substring("x-ms-meta-".length());
                 String value = entry.getValue().get(0);
                 metadata.put(name, value);
             }
@@ -217,14 +219,14 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "acl");
         webResource = setCanonicalizedResource(webResource, container, "acl");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         ClientResponse response = builder.get(ClientResponse.class);
 
         ContainerACL.SignedIdentifiers si = response.getEntity(ContainerACL.SignedIdentifiers.class);
         ContainerACL acl = new ContainerACL();
         acl.setSignedIdentifiers(si.getSignedIdentifiers());
-        acl.setPublicAccess(response.getHeaders().getFirst(X_MS_BLOB_PUBLIC_ACCESS));
+        acl.setPublicAccess(response.getHeaders().getFirst("x-ms-blob-public-access"));
         acl.setEtag(response.getHeaders().getFirst("ETag"));
         acl.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         return acl;
@@ -234,8 +236,8 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "acl");
         webResource = setCanonicalizedResource(webResource, container, "acl");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
-        builder = addOptionalHeader(builder, X_MS_BLOB_PUBLIC_ACCESS, acl.getPublicAccess());
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-blob-public-access", acl.getPublicAccess());
 
         ContainerACL.SignedIdentifiers si = new ContainerACL.SignedIdentifiers();
         si.setSignedIdentifiers(acl.getSignedIdentifiers());
@@ -247,7 +249,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "metadata");
         webResource = setCanonicalizedResource(webResource, container, "metadata");
 
-        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
 
         // Note: Add content type here to enable proper HMAC signing
@@ -268,7 +270,7 @@ public class BlobServiceImpl implements BlobService {
             webResource = webResource.queryParam("include", "metadata");
         }
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         return builder.get(ListContainersResult.class);
     }
@@ -294,7 +296,7 @@ public class BlobServiceImpl implements BlobService {
             webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         }
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         return builder.get(ListBlobsResult.class);
     }
@@ -307,7 +309,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-type", "PageBlob");
         builder = addOptionalHeader(builder, "Content-Length", 0);
         builder = addOptionalHeader(builder, "x-ms-blob-content-length", length);
@@ -326,7 +328,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         builder = builder.header("x-ms-blob-type", "BlockBlob");
         builder = addPutBlobHeaders(options, builder);
@@ -367,7 +369,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
@@ -379,7 +381,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "properties");
 
-        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getCacheControl());
         builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getContentType());
         builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getContentMD5());
@@ -412,7 +414,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "metadata");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
 
-        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, metadata);
 
@@ -434,7 +436,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
 
@@ -456,8 +458,8 @@ public class BlobServiceImpl implements BlobService {
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().startsWith(X_MS_META_PREFIX)) {
-                String name = entry.getKey().substring(X_MS_META_PREFIX.length());
+            if (entry.getKey().startsWith("x-ms-meta-")) {
+                String name = entry.getKey().substring("x-ms-meta-".length());
                 String value = entry.getValue().get(0);
                 metadata.put(name, value);
             }
@@ -491,7 +493,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
 
@@ -506,7 +508,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "snapshot");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "snapshot");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
@@ -531,7 +533,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(destinationContainer).path(destinationBlob);
         webResource = setCanonicalizedResource(webResource, destinationContainer + "/" + destinationBlob, null);
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-source-lease-id", options.getSourceLeaseId());
         builder = addOptionalHeader(builder, "x-ms-copy-source", getCopyBlobSourceName(sourceContainer, sourceBlob, options));
@@ -563,7 +565,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
 
@@ -595,7 +597,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "page");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "page");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, rangeStart, rangeEnd);
         builder = addOptionalHeader(builder, "Content-Length", length);
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
@@ -623,7 +625,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "pagelist");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "pagelist");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
@@ -646,7 +648,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "block");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
 
@@ -662,7 +664,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "blocklist");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
         builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getBlobContentType());
@@ -685,7 +687,7 @@ public class BlobServiceImpl implements BlobService {
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
 
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
