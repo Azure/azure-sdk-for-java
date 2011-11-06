@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.Base64;
@@ -32,6 +33,12 @@ public class BlobServiceImpl implements BlobService {
         this.url = url;
         this.channel = channel;
         channel.addFilter(filter);
+    }
+
+    private void ThrowIfError(ClientResponse r) {
+        if (r.getStatus() >= 300) {
+            throw new UniformInterfaceException(r);
+        }
     }
 
     private class EnumCommaStringBuilder<E extends Enum<E>> {
@@ -134,7 +141,6 @@ public class BlobServiceImpl implements BlobService {
         return sourceName;
     }
 
-
     public ServiceProperties getServiceProperties() {
         // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
@@ -197,6 +203,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
 
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
@@ -222,6 +229,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
 
         ContainerACL.SignedIdentifiers si = response.getEntity(ContainerACL.SignedIdentifiers.class);
         ContainerACL acl = new ContainerACL();
@@ -373,6 +381,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
+        ThrowIfError(response);
 
         return getBlobPropertiesFromResponse(response);
     }
@@ -394,6 +403,7 @@ public class BlobServiceImpl implements BlobService {
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ThrowIfError(response);
 
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
 
@@ -420,6 +430,7 @@ public class BlobServiceImpl implements BlobService {
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ThrowIfError(response);
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
@@ -441,6 +452,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
 
         ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
 
         BlobProperties properties = getBlobPropertiesFromResponse(response);
         Blob blobResult = new Blob();
@@ -516,6 +528,7 @@ public class BlobServiceImpl implements BlobService {
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ThrowIfError(response);
 
         BlobSnapshot blobSnapshot = new BlobSnapshot();
         blobSnapshot.setEtag(response.getHeaders().getFirst("ETag"));
@@ -571,6 +584,7 @@ public class BlobServiceImpl implements BlobService {
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ThrowIfError(response);
 
         return response.getHeaders().getFirst("x-ms-lease-id");
     }
@@ -607,6 +621,7 @@ public class BlobServiceImpl implements BlobService {
         // Note: Add content type here to enable proper HMAC signing
         Object content = (contentStream == null ? new byte[0] : contentStream);
         ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
+        ThrowIfError(response);
 
         CreateBlobPagesResult result = new CreateBlobPagesResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
@@ -630,6 +645,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
 
         ListBlobRegionsResult result = response.getEntity(ListBlobRegionsResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
@@ -691,6 +707,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
 
         ListBlobBlocksResult result = response.getEntity(ListBlobBlocksResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
