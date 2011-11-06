@@ -682,7 +682,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Act
         service.createPageBlob("mycontainer1", "test", 4096);
         try {
-            Blob blob = service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
+            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
             Assert.fail("getBlob should throw an exception");
         }
         catch (Exception e) {
@@ -701,7 +701,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createPageBlob("mycontainer1", "test", 4096);
         BlobProperties props = service.getBlobProperties("mycontainer1", "test");
         try {
-            Blob blob = service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
+            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (Exception e) {
@@ -720,8 +720,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createPageBlob("mycontainer1", "test", 4096);
         BlobProperties props = service.getBlobProperties("mycontainer1", "test");
         try {
-            Blob blob = service.getBlob("mycontainer1", "test",
-                    new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
+            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (Exception e) {
@@ -757,13 +756,68 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 break;
         }
         try {
-            Blob blobInstance = service.getBlob(container, blob, new GetBlobOptions().setAccessCondition(AccessCondition.ifNotModifiedSince(lastModifiedBase)));
+            service.getBlob(container, blob, new GetBlobOptions().setAccessCondition(AccessCondition.ifNotModifiedSince(lastModifiedBase)));
             Assert.fail("getBlob should throw an exception");
         }
         catch (Exception e) {
         }
 
         // Assert
+    }
+
+    @Test
+    public void getBlobPropertiesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+        BlobProperties props = service.getBlobProperties(container, blob);
+
+        // Assert
+        // Assert
+        assertNotNull(props);
+        assertNull(props.getCacheControl());
+        assertNull(props.getContentEncoding());
+        assertNull(props.getContentLanguage());
+        assertEquals("application/octet-stream", props.getContentType());
+        assertEquals(4096, props.getContentLength());
+        assertNotNull(props.getEtag());
+        assertNull(props.getContentMD5());
+        assertNotNull(props.getMetadata());
+        assertEquals(0, props.getMetadata().size());
+        assertNotNull(props.getLastModified());
+        assertEquals("PageBlob", props.getBlobType());
+        assertEquals("unlocked", props.getLeaseStatus());
+        assertEquals(0, props.getSequenceNumber());
+    }
+
+    @Test
+    public void getBlobMetadataWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096, new CreateBlobOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
+        GetBlobMetadataResult props = service.getBlobMetadata(container, blob);
+
+        // Assert
+        // Assert
+        assertNotNull(props);
+        assertNotNull(props.getEtag());
+        assertNotNull(props.getMetadata());
+        assertEquals(2, props.getMetadata().size());
+        assertTrue(props.getMetadata().containsKey("test"));
+        assertTrue(props.getMetadata().containsValue("bar"));
+        assertTrue(props.getMetadata().containsKey("blah"));
+        assertTrue(props.getMetadata().containsValue("bleah"));
+        assertNotNull(props.getLastModified());
     }
 
     @Test

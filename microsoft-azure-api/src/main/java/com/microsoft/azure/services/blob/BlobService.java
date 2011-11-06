@@ -66,6 +66,10 @@ public interface BlobService {
 
     BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
 
+    GetBlobMetadataResult getBlobMetadata(String container, String blob);
+
+    GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options);
+
     ListBlobRegionsResult listBlobRegions(String container, String blob);
 
     ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options);

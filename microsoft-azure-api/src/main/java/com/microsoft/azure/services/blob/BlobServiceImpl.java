@@ -113,6 +113,18 @@ public class BlobServiceImpl implements BlobService {
         return builder;
     }
 
+    private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
+            if (entry.getKey().startsWith("x-ms-meta-")) {
+                String name = entry.getKey().substring("x-ms-meta-".length());
+                String value = entry.getValue().get(0);
+                metadata.put(name, value);
+            }
+        }
+        return metadata;
+    }
+
     private WebResource getResource() {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", this.timeout);
@@ -224,17 +236,8 @@ public class BlobServiceImpl implements BlobService {
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
         properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setMetadata(getMetadataFromHeaders(response));
 
-        // Metadata
-        HashMap<String, String> metadata = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().startsWith("x-ms-meta-")) {
-                String name = entry.getKey().substring("x-ms-meta-".length());
-                String value = entry.getValue().get(0);
-                metadata.put(name, value);
-            }
-        }
-        properties.setMetadata(metadata);
         return properties;
     }
 
@@ -341,7 +344,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addPutBlobHeaders(options, builder);
 
         // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.type("application/octet-stream").put(new byte[0]);
     }
 
     public void createBlockBlob(String container, String blob, InputStream contentStream) {
@@ -402,6 +405,31 @@ public class BlobServiceImpl implements BlobService {
         ThrowIfError(response);
 
         return getBlobPropertiesFromResponse(response);
+    }
+
+
+    public GetBlobMetadataResult getBlobMetadata(String container, String blob) {
+        return getBlobMetadata(container, blob, new GetBlobMetadataOptions());
+    }
+
+    public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options) {
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "metadata");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
+        webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
+
+        GetBlobMetadataResult properties = new GetBlobMetadataResult();
+        properties.setEtag(response.getHeaders().getFirst("ETag"));
+        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setMetadata(getMetadataFromHeaders(response));
+
+        return properties;
     }
 
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) {
@@ -487,15 +515,7 @@ public class BlobServiceImpl implements BlobService {
         // Last-Modified
         properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
-        // Metadata
-        HashMap<String, String> metadata = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().startsWith("x-ms-meta-")) {
-                String name = entry.getKey().substring("x-ms-meta-".length());
-                String value = entry.getValue().get(0);
-                metadata.put(name, value);
-            }
-        }
+        HashMap<String, String> metadata = getMetadataFromHeaders(response);
         properties.setMetadata(metadata);
 
         //
