@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
@@ -36,6 +37,24 @@ public class BlobServiceImpl implements BlobService {
         channel.addFilter(filter);
     }
 
+    private class EnumCommaStringBuilder<E extends Enum<E>> {
+        private final StringBuilder sb = new StringBuilder();
+
+        public void addValue(EnumSet<E> enumSet, E value, String representation) {
+            if (enumSet.contains(value)) {
+                if (sb.length() >= 0) {
+                    sb.append(",");
+                }
+                sb.append(representation);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return sb.toString();
+        }
+    }
+
     private WebResource addOptionalQueryParam(WebResource wr, String key, String value) {
         if (value != null) {
             wr = wr.queryParam(key, value);
@@ -43,16 +62,23 @@ public class BlobServiceImpl implements BlobService {
         return wr;
     }
 
-    private WebResource addOptionalQueryParam(WebResource wr, String key, int value, int defaultValue) {
+    private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
         if (value != defaultValue) {
-            wr = wr.queryParam(key, Integer.toString(value));
+            webResource = webResource.queryParam(key, Integer.toString(value));
         }
-        return wr;
+        return webResource;
     }
 
     private Builder addOptionalHeader(Builder builder, String name, Object value) {
         if (value != null) {
             builder = builder.header(name, value);
+        }
+        return builder;
+    }
+
+    private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
+        for (Entry<String, String> entry : metadata.entrySet()) {
+            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
         }
         return builder;
     }
@@ -89,6 +115,29 @@ public class BlobServiceImpl implements BlobService {
         return wr;
     }
 
+    private String getCopyBlobSourceName(String sourceContainer, String sourceBlob, CopyBlobOptions options) {
+        // Specifies the name of the source blob, in one of the following
+        // formats:
+        // Blob in named container: /accountName/containerName/blobName
+        //
+        // Snapshot in named container:
+        // /accountName/containerName/blobName?snapshot=<DateTime>
+        //
+        // Blob in root container: /accountName/blobName
+        //
+        // Snapshot in root container: /accountName/blobName?snapshot=<DateTime>
+        String sourceName = "/" + this.accountName;
+        if (sourceContainer != null) {
+            sourceName += "/" + sourceContainer;
+        }
+        sourceName += "/" + sourceBlob;
+        if (options.getSourceSnapshot() != null) {
+            sourceName += "?snapshot=" + options.getSourceSnapshot();
+        }
+        return sourceName;
+    }
+
+
     public ServiceProperties getServiceProperties() {
         // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
@@ -111,35 +160,23 @@ public class BlobServiceImpl implements BlobService {
 
     public void createContainer(String container, CreateContainerOptions options) {
         WebResource webResource = getResource().path(container).queryParam("resType", "container");
+        webResource = setCanonicalizedResource(webResource, container, null);
 
+        WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
+        builder = addOptionalHeader(builder, X_MS_BLOB_PUBLIC_ACCESS, options.getPublicAccess());
+
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("text/plain").put("");
+    }
+
+    public void deleteContainer(String container) {
+        WebResource webResource = getResource().path(container).queryParam("resType", "container");
         webResource = setCanonicalizedResource(webResource, container, null);
 
         WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
-        // Metadata
-        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
-
-        // Public access
-        if (options.getPublicAccess() != null) {
-            builder = builder.header(X_MS_BLOB_PUBLIC_ACCESS, options.getPublicAccess());
-        }
-
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
-        builder.header("Content-Type", "text/plain").put("");
-    }
-
-    public void deleteContainer(String container) {
-        WebResource webResource = getResource();
-        webResource = setCanonicalizedResource(webResource, container, null);
-        webResource.path(container).queryParam("resType", "container").header(X_MS_VERSION, API_VERSION).delete();
+        builder.delete();
     }
 
     public ContainerProperties getContainerProperties(String container) {
@@ -152,13 +189,12 @@ public class BlobServiceImpl implements BlobService {
 
     private ContainerProperties getContainerPropertiesImpl(String container, String operation) {
         WebResource webResource = getResource().path(container).queryParam("resType", "container");
-        if (operation != null) {
-            webResource = webResource.queryParam("comp", operation);
-        }
-
+        webResource = addOptionalQueryParam(webResource, "comp", operation);
         webResource = setCanonicalizedResource(webResource, container, operation);
 
-        ClientResponse response = webResource.header(X_MS_VERSION, API_VERSION).get(ClientResponse.class);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        ClientResponse response = builder.get(ClientResponse.class);
 
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
@@ -181,7 +217,9 @@ public class BlobServiceImpl implements BlobService {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "acl");
         webResource = setCanonicalizedResource(webResource, container, "acl");
 
-        ClientResponse response = webResource.header(X_MS_VERSION, API_VERSION).get(ClientResponse.class);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        ClientResponse response = builder.get(ClientResponse.class);
 
         ContainerACL.SignedIdentifiers si = response.getEntity(ContainerACL.SignedIdentifiers.class);
         ContainerACL acl = new ContainerACL();
@@ -197,35 +235,23 @@ public class BlobServiceImpl implements BlobService {
         webResource = setCanonicalizedResource(webResource, container, "acl");
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
-        // Note: Add content type here to enable proper HMAC signing
-        // builder = builder.header("Content-Type", "application/xml");
         builder = addOptionalHeader(builder, X_MS_BLOB_PUBLIC_ACCESS, acl.getPublicAccess());
 
         ContainerACL.SignedIdentifiers si = new ContainerACL.SignedIdentifiers();
         si.setSignedIdentifiers(acl.getSignedIdentifiers());
+        // Note: Add content type here to enable proper HMAC signing
         builder.type("application/xml").put(si);
     }
 
     public void setContainerMetadata(String container, HashMap<String, String> metadata) {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "metadata");
-
         webResource = setCanonicalizedResource(webResource, container, "metadata");
 
         WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalMetadataHeader(builder, metadata);
 
-        // Metadata
-        for (Entry<String, String> entry : metadata.entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
-
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
-        builder.header("Content-Type", "text/plain").put("");
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("text/plain").put("");
     }
 
     public ListContainersResult listContainers() {
@@ -234,7 +260,6 @@ public class BlobServiceImpl implements BlobService {
 
     public ListContainersResult listContainers(ListContainersOptions options) {
         WebResource webResource = getResource().path("/").queryParam("comp", "list");
-
         webResource = setCanonicalizedResource(webResource, null, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
@@ -243,7 +268,9 @@ public class BlobServiceImpl implements BlobService {
             webResource = webResource.queryParam("include", "metadata");
         }
 
-        return webResource.header(X_MS_VERSION, API_VERSION).get(ListContainersResult.class);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        return builder.get(ListContainersResult.class);
     }
 
     public ListBlobsResult listBlobs(String container) {
@@ -267,7 +294,9 @@ public class BlobServiceImpl implements BlobService {
             webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         }
 
-        return webResource.header(X_MS_VERSION, API_VERSION).get(ListBlobsResult.class);
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+
+        return builder.get(ListBlobsResult.class);
     }
 
     public void createPageBlob(String container, String blob, int length) {
@@ -277,46 +306,39 @@ public class BlobServiceImpl implements BlobService {
     public void createPageBlob(String container, String blob, int length, CreateBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
-        builder = builder.header("x-ms-blob-type", "PageBlob");
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
+        builder = addOptionalHeader(builder, "x-ms-blob-type", "PageBlob");
+        builder = addOptionalHeader(builder, "Content-Length", 0);
+        builder = addOptionalHeader(builder, "x-ms-blob-content-length", length);
+        builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addPutBlobHeaders(options, builder);
 
-        builder = builder.header("Content-Length", 0);
-        builder = builder.header("x-ms-blob-content-length", length);
-        builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         builder.type("text/plain").put("");
     }
 
-    public void createBlockBlob(String container, String blob, InputStream content) {
-        createBlockBlob(container, blob, content, new CreateBlobOptions());
+    public void createBlockBlob(String container, String blob, InputStream contentStream) {
+        createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
     }
 
-    public void createBlockBlob(String container, String blob, InputStream content, CreateBlobOptions options) {
+    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
         builder = builder.header("x-ms-blob-type", "BlockBlob");
         builder = addPutBlobHeaders(options, builder);
 
-        Object contentObject = (content == null ? new byte[0] : content);
+        Object contentObject = (contentStream == null ? new byte[0] : contentStream);
         builder.put(contentObject);
     }
 
     private Builder addPutBlobHeaders(CreateBlobOptions options, Builder builder) {
         builder = addOptionalHeader(builder, "Content-Type", options.getContentType());
         if (options.getContentType() == null) {
-            // This is technically the default, but we explicitly add here to
-            // allow proper
-            // signing of the request headers.
+            // Note: Add content type here to enable proper HMAC signing
             builder = builder.type("application/octet-stream");
         }
         builder = addOptionalHeader(builder, "Content-Encoding", options.getContentEncoding());
@@ -329,11 +351,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-
-        // Metadata
-        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
         // TODO: Conditional headers (If Match, etc.)
 
@@ -347,10 +365,7 @@ public class BlobServiceImpl implements BlobService {
     public BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) {
         WebResource webResource = getResource().path(container).path(blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
-
-        if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        }
+        webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -362,7 +377,6 @@ public class BlobServiceImpl implements BlobService {
 
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "properties");
-
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "properties");
 
         WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -376,13 +390,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
@@ -402,24 +410,13 @@ public class BlobServiceImpl implements BlobService {
 
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options) {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "metadata");
-
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
 
         WebResource.Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalMetadataHeader(builder, metadata);
 
-        // Metadata
-        for (Entry<String, String> entry : metadata.entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
-
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
@@ -435,15 +432,10 @@ public class BlobServiceImpl implements BlobService {
     public Blob getBlob(String container, String blob, GetBlobOptions options) {
         WebResource webResource = getResource().path(container).path(blob);
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
-
-        if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        }
+        webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
-
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
 
         ClientResponse response = builder.get(ClientResponse.class);
@@ -496,10 +488,7 @@ public class BlobServiceImpl implements BlobService {
 
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob);
-        if (options.getSnapshot() != null) {
-            webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        }
-
+        webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
@@ -516,23 +505,14 @@ public class BlobServiceImpl implements BlobService {
     public BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) {
         WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "snapshot");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "snapshot");
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        // Metadata
-        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
         // TODO: Conditional headers (If Match, etc.)
 
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         BlobSnapshot blobSnapshot = new BlobSnapshot();
@@ -548,47 +528,18 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options) {
-        WebResource webResource = getResource().path(destinationContainer + "/" + destinationBlob);
+        WebResource webResource = getResource().path(destinationContainer).path(destinationBlob);
         webResource = setCanonicalizedResource(webResource, destinationContainer + "/" + destinationBlob, null);
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-source-lease-id", options.getSourceLeaseId());
-
-        // Specifies the name of the source blob, in one of the following
-        // formats:
-        // Blob in named container: /accountName/containerName/blobName
-        //
-        // Snapshot in named container:
-        // /accountName/containerName/blobName?snapshot=<DateTime>
-        //
-        // Blob in root container: /accountName/blobName
-        //
-        // Snapshot in root container: /accountName/blobName?snapshot=<DateTime>
-        String sourceName = "/" + this.accountName;
-        if (sourceContainer != null) {
-            sourceName += "/" + sourceContainer;
-        }
-        sourceName += "/" + sourceBlob;
-        if (options.getSourceSnapshot() != null) {
-            sourceName += "?snapshot=" + options.getSourceSnapshot();
-        }
-        builder = addOptionalHeader(builder, "x-ms-copy-source", sourceName);
-
-        // Metadata
-        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
+        builder = addOptionalHeader(builder, "x-ms-copy-source", getCopyBlobSourceName(sourceContainer, sourceBlob, options));
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
         // TODO: Conditional headers (If Match, etc.)
 
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         builder.type("text/plain").put("");
     }
 
@@ -609,20 +560,14 @@ public class BlobServiceImpl implements BlobService {
     }
 
     private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId) {
-        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "lease");
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
-        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
 
+        Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
 
-        // TODO: We need the following 2 to make sure that "Content-Length:0"
-        // header
-        // is sent to the server (IIS doesn't accept PUT without a content
-        // length).
-        // Since we are sending a "dummy" string, we also need to set the
-        // "Content-Type" header so that the hmac filter will see it when
-        // producing the authorization hmac.
+        // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
 
         return response.getHeaders().getFirst("x-ms-lease-id");
@@ -647,8 +592,9 @@ public class BlobServiceImpl implements BlobService {
 
     private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
             InputStream contentStream, CreateBlobPagesOptions options) {
-        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "page");
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "page");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "page");
+
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalRangeHeader(builder, rangeStart, rangeEnd);
         builder = addOptionalHeader(builder, "Content-Length", length);
@@ -656,13 +602,16 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
 
-        Object content = (contentStream == null ? "" : contentStream);
+        // Note: Add content type here to enable proper HMAC signing
+        Object content = (contentStream == null ? new byte[0] : contentStream);
         ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
+
         CreateBlobPagesResult result = new CreateBlobPagesResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         result.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
         result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
+
         return result;
     }
 
@@ -679,29 +628,13 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
+
         ListBlobRegionsResult result = response.getEntity(ListBlobRegionsResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
         result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+
         return result;
-    }
-
-    private class EnumCommaStringBuilder<E extends Enum<E>> {
-        private final StringBuilder sb = new StringBuilder();
-
-        public void addValue(EnumSet<E> enumSet, E value, String representation) {
-            if (enumSet.contains(value)) {
-                if (sb.length() >= 0) {
-                    sb.append(",");
-                }
-                sb.append(representation);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return sb.toString();
-        }
     }
 
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) {
@@ -709,17 +642,16 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options) {
-        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "block");
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "block");
         webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
-
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "block");
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
-        builder = builder.type("application/octet-stream");
 
-        builder.put(contentStream);
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("application/octet-stream").put(contentStream);
     }
 
     public void commitBlobBlocks(String container, String blob, BlockList blockList) {
@@ -727,21 +659,19 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) {
-        WebResource webResource = getResource().path(container + "/" + blob).queryParam("comp", "blocklist");
+        WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "blocklist");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
+
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-blob-content-encoding", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getLeaseId());
+        builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-type", options.getBlobContentType());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-encoding", options.getBlobContentEncoding());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getBlobContentLanguage());
+        builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
-        // Metadata
-        for (Entry<String, String> entry : options.getMetadata().entrySet()) {
-            builder = builder.header(X_MS_META_PREFIX + entry.getKey(), entry.getValue());
-        }
-
+        // Note: Add content type here to enable proper HMAC signing
         builder.type("application/xml").put(blockList);
     }
 
@@ -751,26 +681,21 @@ public class BlobServiceImpl implements BlobService {
 
     public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "blocklist");
+        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
-
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
 
         Builder builder = webResource.header(X_MS_VERSION, API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
+
         ListBlobBlocksResult result = response.getEntity(ListBlobBlocksResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentType(response.getHeaders().getFirst("Content-Type"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
         result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
-//        for (ListBlobBlocksResult.Entry entry : result.getCommittedBlocks()) {
-//            entry.setBlockId(Base64.base64Decode(entry.getBlockId()));
-//        }
-//        for (ListBlobBlocksResult.Entry entry : result.getUncommittedBlocks()) {
-//            entry.setBlockId(Base64.base64Decode(entry.getBlockId()));
-//        }
+
         return result;
     }
 }

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import com.sun.jersey.core.util.Base64;
 
 /*
- * JAXB adapter for <Metadata> element
+ * JAXB adapter for a Base64 encoded string element
  */
 public class Base64StringAdapter extends XmlAdapter<String, String> {
 
