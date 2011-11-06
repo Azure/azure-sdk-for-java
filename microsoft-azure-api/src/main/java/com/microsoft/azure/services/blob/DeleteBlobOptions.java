@@ -5,6 +5,7 @@ public class DeleteBlobOptions {
     private String leaseId;
     // TODO: Enum?
     private String deleteSnaphots;
+    private AccessCondition accessCondition;
 
     public String getSnapshot() {
         return snapshot;
@@ -30,6 +31,15 @@ public class DeleteBlobOptions {
 
     public DeleteBlobOptions setDeleteSnaphots(String deleteSnaphots) {
         this.deleteSnaphots = deleteSnaphots;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public DeleteBlobOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }

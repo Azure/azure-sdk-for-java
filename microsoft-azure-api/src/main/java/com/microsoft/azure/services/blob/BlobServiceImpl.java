@@ -548,6 +548,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
