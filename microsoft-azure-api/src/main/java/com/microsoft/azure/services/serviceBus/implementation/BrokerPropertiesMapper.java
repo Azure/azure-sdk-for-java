@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -9,7 +9,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.microsoft.azure.services.serviceBus.schema.BrokerProperties;
 
 public class BrokerPropertiesMapper  {
 

@@ -8,16 +8,12 @@ import org.junit.BeforeClass;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.client.ReceiveMessageOptions;
+import static com.microsoft.azure.services.serviceBus.Util.*;
 
 public abstract class IntegrationTestBase {
 	protected Configuration createConfiguration() {
 		Configuration config = new Configuration();
-		config.setProperty("serviceBus.uri", "https://lodejard.servicebus.windows.net");
-		config.setProperty("serviceBus.wrap.uri", "https://lodejard-sb.accesscontrol.windows.net/WRAPv0.9");
-		config.setProperty("serviceBus.wrap.name", "owner");
-		config.setProperty("serviceBus.wrap.password", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-		config.setProperty("serviceBus.wrap.scope", "http://lodejard.servicebus.windows.net/");
+		ServiceBusConfiguration.configure(config, "lodejard", "owner", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
 
 		// when mock running
 		//config.setProperty("serviceBus.uri", "http://localhost:8086");
@@ -43,18 +39,24 @@ public abstract class IntegrationTestBase {
 		
 		boolean testAlphaExists = false;
 		ServiceBusService service = createConfiguration().create(ServiceBusService.class);
-		for(Queue queue : service.iterateQueues()) {
+		for(Queue queue : iterateQueues(service)) {
 			String queueName = queue.getName();
 			if (queueName.startsWith("Test") || queueName.startsWith("test")) {
 				if (queueName.equalsIgnoreCase("TestAlpha")) {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
 					for(long i = 0; i != count; ++i) {
-						service.receiveMessage(queueName, 2000, ReceiveMode.RECEIVE_AND_DELETE);
+						service.receiveQueueMessage(queueName, new ReceiveMessageOptions().setTimeout(20));
 					}
 				} else {
 					service.deleteQueue(queueName);
 				}
+			}
+		}
+		for(Topic topic : iterateTopics(service)) {
+			String topicName = topic.getName();
+			if (topicName.startsWith("Test") || topicName.startsWith("test")) {
+				service.deleteQueue(topicName);
 			}
 		}
 		if (!testAlphaExists) {

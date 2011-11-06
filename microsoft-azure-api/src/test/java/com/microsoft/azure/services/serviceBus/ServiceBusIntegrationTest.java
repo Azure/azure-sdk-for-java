@@ -1,10 +1,14 @@
 package com.microsoft.azure.services.serviceBus;
 
 import java.util.Arrays;
+import java.util.Date;
+
+import javax.sound.sampled.ReverbType;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
@@ -16,6 +20,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	private Configuration config;
 	private ServiceBusService service;
 
+	static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete().setTimeout(5);
+	static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
+	
 	@Before
 	public void createService() throws Exception {
 		config = createConfiguration();
@@ -28,7 +35,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
 		// Act
 		Queue entry = service.getQueue("TestAlpha");
-		QueueList feed = service.getQueueList();
+		ListQueuesResult feed = service.listQueues();
 		
 		// Assert
 		assertNotNull(entry);
@@ -71,7 +78,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		Message message = new Message("sendMessageWorks");
 
 		// Act
-		service.sendMessage("TestAlpha", message);
+		service.sendQueueMessage("TestAlpha", message);
 
 		// Assert
 	}
@@ -79,10 +86,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void receiveMessageWorks() throws Exception {
 		// Arrange
-		service.sendMessage("TestAlpha", new Message("Hello World"));
+		String queueName = "TestReceiveMessageWorks";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendQueueMessage(queueName, new Message("Hello World"));
 
 		// Act
-		Message message = service.receiveMessage("TestAlpha", 500, ReceiveMode.RECEIVE_AND_DELETE);
+		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 
@@ -94,15 +103,122 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Test
 	public void peekLockMessageWorks() throws Exception {
 		// Arrange
-		service.sendMessage("TestAlpha", new Message("Hello Again"));
+		String queueName = "TestPeekLockMessageWorks";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
 
 		// Act
-		Message message = service.receiveMessage("TestAlpha", 500, ReceiveMode.PEEK_LOCK);
+		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
 
 		// Assert
 		byte[] data = new byte[100];
 		int size = message.getBody().read(data);
 		assertEquals(11, size);
 		assertEquals("Hello Again", new String(data, 0, size));
+	}
+	
+	@Test
+	public void peekLockedMessageCanBeCompleted() throws Exception {
+		// Arrange
+		String queueName = "TestPeekLockedMessageCanBeCompleted";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
+		Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+		// Act
+		String lockToken = message.getLockToken();
+		Date lockedUntil = message.getLockedUntilUtc();
+		String lockLocation = message.getLockLocation();
+		
+		service.deleteMessage(message);
+
+		// Assert
+		assertNotNull(lockToken);
+		assertNotNull(lockedUntil);
+		assertNotNull(lockLocation);
+	}
+
+	@Test
+	public void peekLockedMessageCanBeUnlocked() throws Exception {
+		// Arrange
+		String queueName = "TestPeekLockedMessageCanBeUnlocked";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
+		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+		// Act
+		String lockToken = peekedMessage.getLockToken();
+		Date lockedUntil = peekedMessage.getLockedUntilUtc();
+
+		service.unlockMessage(peekedMessage);
+		Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+		
+
+		// Assert
+		assertNotNull(lockToken);
+		assertNotNull(lockedUntil);
+		assertNull(receivedMessage.getLockToken());
+		assertNull(receivedMessage.getLockedUntilUtc());
+	}
+
+
+	@Test
+	public void peekLockedMessageCanBeDeleted() throws Exception {
+		// Arrange
+		String queueName = "TestPeekLockedMessageCanBeDeleted";
+		service.createQueue(new Queue().setName(queueName));
+		service.sendQueueMessage(queueName, new Message("Hello Again"));
+		Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+		// Act
+		String lockToken = peekedMessage.getLockToken();
+		Date lockedUntil = peekedMessage.getLockedUntilUtc();
+
+		service.deleteMessage(peekedMessage);
+		Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+		
+		// Assert
+		assertNotNull(lockToken);
+		assertNotNull(lockedUntil);
+		assertNull(receivedMessage.getLockToken());
+		assertNull(receivedMessage.getLockedUntilUtc());
+	}
+
+	@Test
+	public void contentTypePassesThrough() throws Exception {
+		// Arrange
+		String queueName = "TestContentTypePassesThrough";
+		service.createQueue(new Queue().setName(queueName));
+
+		// Act
+		service.sendQueueMessage(queueName, 
+				new Message("<data>Hello Again</data>").setContentType("text/xml"));
+
+		Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+
+		// Assert
+		assertNotNull(message);
+		assertEquals("text/xml", message.getContentType());
+	}
+	
+	@Test
+	public void topicCanBeCreatedListedFetchedAndDeleted() throws ServiceException{
+		// Arrange
+		String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
+		
+		// Act
+		Topic created = service.createTopic(new Topic().setName(topicName));
+		ListTopicsResult listed = service.listTopics();
+		Topic fetched = service.getTopic(topicName);
+		service.deleteTopic(topicName);
+		ListTopicsResult listed2 = service.listTopics();
+		
+		// Assert
+		assertNotNull(created);
+		assertNotNull(listed);
+		assertNotNull(fetched);
+		assertNotNull(listed2);
+		
+		assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
 	}
 }

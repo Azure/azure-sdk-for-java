@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
+
 
 @Provider
 @Produces("application/atom+xml")

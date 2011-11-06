@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusServiceForJersey;
 
 public class ContractBuilderTest  {
 	@Test
@@ -14,6 +15,6 @@ public class ContractBuilderTest  {
 		ServiceBusService service = config.create(ServiceBusService.class);
 		
 		assertNotNull(service);
-		assertEquals(ServiceBusServiceImpl.class, service.getClass());
+		assertEquals(ServiceBusServiceForJersey.class, service.getClass());
 	}
 }

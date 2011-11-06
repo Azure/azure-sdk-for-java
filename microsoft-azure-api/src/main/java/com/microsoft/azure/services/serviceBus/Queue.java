@@ -4,114 +4,121 @@ package com.microsoft.azure.services.serviceBus;
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
-import com.microsoft.azure.services.serviceBus.schema.Content;
-import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.Content;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.azure.services.serviceBus.implementation.QueueDescription;
 
-import com.microsoft.azure.services.serviceBus.schema.QueueDescription;
 
 public class Queue extends EntryModel<QueueDescription> {
 
 	public Queue() {
 		super(new Entry(), new QueueDescription());
-		entry.setContent(new Content());
-		entry.getContent().setType(MediaType.APPLICATION_XML);
-		entry.getContent().setQueueDescription(getModel());
+		getEntry().setContent(new Content());
+		getEntry().getContent().setType(MediaType.APPLICATION_XML);
+		getEntry().getContent().setQueueDescription(getModel());
 	}
 
 	public Queue(Entry entry) {
 		super(entry, entry.getContent().getQueueDescription());
 	}
 
-
 	public String getName() {
-		return entry.getTitle();
+		return getEntry().getTitle();
 	}
 
 	public Queue setName(String value) {
-		entry.setTitle(value);
+		getEntry().setTitle(value);
 		return this;
 	}
 
 	public Duration getLockDuration() {
-		return model.getLockDuration();
+		return getModel().getLockDuration();
 	}
 
 	public Queue setLockDuration(Duration value) {
-		model.setLockDuration(value);
+		getModel().setLockDuration(value);
 		return this;
 	}
 
 	public Long getMaxSizeInMegabytes() {
-		return model.getMaxSizeInMegabytes();
+		return getModel().getMaxSizeInMegabytes();
 	}
 
 	public Queue setMaxSizeInMegabytes(Long value) {
-		model.setMaxSizeInMegabytes(value);
+		getModel().setMaxSizeInMegabytes(value);
 		return this;
+	}
+
+	public Boolean isRequiresDuplicateDetection() {
+		return getModel().isRequiresDuplicateDetection();
 	}
 
 	public Queue setRequiresDuplicateDetection(Boolean value) {
-		model.setRequiresDuplicateDetection(value);
+		getModel().setRequiresDuplicateDetection(value);
 		return this;
 	}
 
+	public Boolean isRequiresSession() {
+		return getModel().isRequiresSession();
+	}
+
 	public Queue setRequiresSession(Boolean value) {
-		model.setRequiresSession(value);
+		getModel().setRequiresSession(value);
 		return this;
 	}
 
 	public Duration getDefaultMessageTimeToLive() {
-		return model.getDefaultMessageTimeToLive();
+		return getModel().getDefaultMessageTimeToLive();
 	}
 
 	public Queue setDefaultMessageTimeToLive(Duration value) {
-		model.setDefaultMessageTimeToLive(value);
+		getModel().setDefaultMessageTimeToLive(value);
 		return this;
 	}
 
+	public Boolean isDeadLetteringOnMessageExpiration() {
+		return getModel().isDeadLetteringOnMessageExpiration();
+	}
+
 	public Queue setDeadLetteringOnMessageExpiration(Boolean value) {
-		model.setDeadLetteringOnMessageExpiration(value);
+		getModel().setDeadLetteringOnMessageExpiration(value);
 		return this;
 	}
 
 	public Duration getDuplicateDetectionHistoryTimeWindow() {
-		return model.getDuplicateDetectionHistoryTimeWindow();
+		return getModel().getDuplicateDetectionHistoryTimeWindow();
 	}
 
 	public Queue setDuplicateDetectionHistoryTimeWindow(Duration value) {
-		model.setDuplicateDetectionHistoryTimeWindow(value);
+		getModel().setDuplicateDetectionHistoryTimeWindow(value);
 		return this;
 	}
 
 	public Integer getMaxDeliveryCount() {
-		return model.getMaxDeliveryCount();
+		return getModel().getMaxDeliveryCount();
 	}
 
 	public Queue setMaxDeliveryCount(Integer value) {
-		model.setMaxDeliveryCount(value);
+		getModel().setMaxDeliveryCount(value);
 		return this;
 	}
 
+	public Boolean isEnableBatchedOperations() {
+		return getModel().isEnableBatchedOperations();
+	}
+
 	public Queue setEnableBatchedOperations(Boolean value) {
-		model.setEnableBatchedOperations(value);
+		getModel().setEnableBatchedOperations(value);
 		return this;
 	}
 
 	public Long getSizeInBytes() {
-		return model.getSizeInBytes();
-	}
-
-	public Queue setSizeInBytes(Long value) {
-		model.setSizeInBytes(value);
-		return this;
+		return getModel().getSizeInBytes();
 	}
 
 	public Long getMessageCount() {
-		return model.getMessageCount();
+		return getModel().getMessageCount();
 	}
 
-	public Queue setMessageCount(Long value) {
-		model.setMessageCount(value);
-		return this;
-	}
 }

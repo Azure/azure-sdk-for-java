@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 

@@ -1,6 +1,6 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
-import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
 
 public class EntryModel<T> {
 	Entry entry;

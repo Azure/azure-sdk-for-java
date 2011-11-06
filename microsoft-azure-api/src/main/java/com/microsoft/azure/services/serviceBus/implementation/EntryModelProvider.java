@@ -1,9 +1,10 @@
-package com.microsoft.azure.services.serviceBus;
+package com.microsoft.azure.services.serviceBus.implementation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.WebApplicationException;
@@ -13,7 +14,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
-import com.microsoft.azure.services.serviceBus.schema.Entry;
+import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.jersey.spi.MessageBodyWorkers;
 
@@ -42,7 +43,19 @@ public class EntryModelProvider extends
 		Entry entry = reader.readFrom(Entry.class, Entry.class, annotations,
 				mediaType, httpHeaders, entityStream);
 
-		return new Queue(entry);
+		// these exceptions are masked as a RuntimeException because they cannot
+		// be thrown by this override
+			try {
+				return type.getConstructor(Entry.class).newInstance(entry);
+			} catch (NoSuchMethodException e) {
+				throw new RuntimeException(e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException(e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			} catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			}
 	}
 
 	public boolean isWriteable(Class<?> type, Type genericType,
