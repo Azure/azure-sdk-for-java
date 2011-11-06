@@ -3,6 +3,8 @@ package com.microsoft.azure.utils;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.sun.jersey.core.util.Base64;
+
 public class HmacSHA256Sign {
     private final String accessKey;
 
@@ -18,7 +20,7 @@ public class HmacSHA256Sign {
             Mac hmac = Mac.getInstance("hmacSHA256");
             hmac.init(new SecretKeySpec(Base64.decode(accessKey), "hmacSHA256"));
             byte[] digest = hmac.doFinal(stringToSign.getBytes("UTF8"));
-            return Base64.encode(digest);
+            return new String(Base64.encode(digest));
         }
         catch (Exception e) {
             throw new IllegalArgumentException("accessKey", e);
