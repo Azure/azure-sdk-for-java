@@ -418,6 +418,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-sequence-number-action", options.getSequenceNumberAction());
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");

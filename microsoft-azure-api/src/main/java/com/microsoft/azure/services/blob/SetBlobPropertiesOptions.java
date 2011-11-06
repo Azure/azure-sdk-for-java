@@ -11,6 +11,7 @@ public class SetBlobPropertiesOptions {
     private String cacheControl;
     private String sequenceNumberAction;
     private Long sequenceNumber;
+    private AccessCondition accessCondition;
 
     public String getContentType() {
         return contentType;
@@ -90,6 +91,15 @@ public class SetBlobPropertiesOptions {
 
     public SetBlobPropertiesOptions setSequenceNumberAction(String sequenceNumberAction) {
         this.sequenceNumberAction = sequenceNumberAction;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public SetBlobPropertiesOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }
