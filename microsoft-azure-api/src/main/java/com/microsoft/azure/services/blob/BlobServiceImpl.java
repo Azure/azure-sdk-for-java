@@ -113,6 +113,28 @@ public class BlobServiceImpl implements BlobService {
         return builder;
     }
 
+    private Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+        if (accessCondition != null) {
+            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
+                String headerName;
+                switch (accessCondition.getHeader()) {
+                case IF_MATCH:
+                    headerName = "x-ms-source-if-match";
+                case IF_UNMODIFIED_SINCE:
+                    headerName = "x-ms-source-if-unmodified-since";
+                case IF_MODIFIED_SINCE:
+                    headerName = "x-ms-source-if-modified-since";
+                case IF_NONE_MATCH:
+                    headerName = "x-ms-source-if-none-match";
+                default:
+                    headerName = "";
+                }
+                builder = addOptionalHeader(builder, headerName, accessCondition.getValue());
+            }
+        }
+        return builder;
+    }
+
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
@@ -592,6 +614,8 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-source-lease-id", options.getSourceLeaseId());
         builder = addOptionalHeader(builder, "x-ms-copy-source", getCopyBlobSourceName(sourceContainer, sourceBlob, options));
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
 
         // TODO: Conditional headers (If Match, etc.)
 

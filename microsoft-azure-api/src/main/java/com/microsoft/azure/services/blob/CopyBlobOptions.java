@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 public class CopyBlobOptions {
     private String leaseId;
+    private AccessCondition accessCondition;
     private String sourceLeaseId;
     private String sourceSnapshot;
     private HashMap<String, String> metadata = new HashMap<String, String>();
+    private AccessCondition sourceAccessCondition;
 
     // TODO: IfMatch options
 
@@ -48,6 +50,24 @@ public class CopyBlobOptions {
 
     public CopyBlobOptions setSourceLeaseId(String sourceLeaseId) {
         this.sourceLeaseId = sourceLeaseId;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public CopyBlobOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+        return this;
+    }
+
+    public AccessCondition getSourceAccessCondition() {
+        return sourceAccessCondition;
+    }
+
+    public CopyBlobOptions setSourceAccessCondition(AccessCondition sourceAccessCondition) {
+        this.sourceAccessCondition = sourceAccessCondition;
         return this;
     }
 }
