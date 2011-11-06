@@ -708,6 +708,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);

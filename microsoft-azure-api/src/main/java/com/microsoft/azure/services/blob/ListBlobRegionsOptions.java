@@ -5,6 +5,7 @@ public class ListBlobRegionsOptions {
     private String snapshot;
     private Long rangeStart;
     private Long rangeEnd;
+    private AccessCondition accessCondition;
 
     public String getLeaseId() {
         return leaseId;
@@ -39,6 +40,15 @@ public class ListBlobRegionsOptions {
 
     public ListBlobRegionsOptions setRangeEnd(Long rangeEnd) {
         this.rangeEnd = rangeEnd;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public ListBlobRegionsOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }
