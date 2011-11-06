@@ -14,8 +14,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
+
+import junit.framework.Assert;
 
 import org.junit.Test;
 
@@ -421,8 +424,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(512, result.getContentLength());
         assertNotNull(result.getCommittedBlocks());
         assertEquals(0, result.getCommittedBlocks().size());
-        //assertNotNull(result.getCommittedBlocks().get(0).getBlockId());
-        //assertEquals(512, result.getCommittedBlocks().get(0).getBlockLength());
         assertNotNull(result.getUncommittedBlocks());
         assertEquals(0, result.getUncommittedBlocks().size());
     }
@@ -670,6 +671,99 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
         assertEquals(4096, inputStreamToByteArray(blob.getContentStream()).length);
+    }
+
+    @Test
+    public void getBlobWithIfMatchETagAccessConditionWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        service.createPageBlob("mycontainer1", "test", 4096);
+        try {
+            Blob blob = service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
+            Assert.fail("getBlob should throw an exception");
+        }
+        catch (Exception e) {
+        }
+
+        // Assert
+    }
+
+    @Test
+    public void getBlobWithIfNoneMatchETagAccessConditionWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        service.createPageBlob("mycontainer1", "test", 4096);
+        BlobProperties props = service.getBlobProperties("mycontainer1", "test");
+        try {
+            Blob blob = service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
+            Assert.fail("getBlob should throw an exception");
+        }
+        catch (Exception e) {
+        }
+
+        // Assert
+    }
+
+    @Test
+    public void getBlobWithIfModifiedSinceAccessConditionWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        service.createPageBlob("mycontainer1", "test", 4096);
+        BlobProperties props = service.getBlobProperties("mycontainer1", "test");
+        try {
+            Blob blob = service.getBlob("mycontainer1", "test",
+                    new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
+            Assert.fail("getBlob should throw an exception");
+        }
+        catch (Exception e) {
+        }
+
+        // Assert
+    }
+
+    @Test
+    public void getBlobWithIfNotModifiedSinceAccessConditionWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        String container = "mycontainer1";
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+        BlobProperties props = service.getBlobProperties(container, blob);
+
+        // To test for "IfNotModifiedSince", we need to make updates to the blob
+        // until at least 1 second has passed since the blob creation
+        Date lastModifiedBase = (Date) props.getLastModified().clone();
+
+        // +1 second
+        Date lastModifiedNext = new Date(lastModifiedBase.getTime() + 1 * 1000);
+
+        while (true) {
+            HashMap<String, String> metadata = new HashMap<String, String>();
+            metadata.put("test", "test1");
+            SetBlobMetadataResult result = service.setBlobMetadata(container, blob, metadata);
+            if (result.getLastModified().compareTo(lastModifiedNext) >= 0)
+                break;
+        }
+        try {
+            Blob blobInstance = service.getBlob(container, blob, new GetBlobOptions().setAccessCondition(AccessCondition.ifNotModifiedSince(lastModifiedBase)));
+            Assert.fail("getBlob should throw an exception");
+        }
+        catch (Exception e) {
+        }
+
+        // Assert
     }
 
     @Test
