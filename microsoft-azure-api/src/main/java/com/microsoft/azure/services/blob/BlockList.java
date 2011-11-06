@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.microsoft.azure.utils.Base64StringAdapter;
+
 @XmlRootElement(name = "BlockList")
 public class BlockList {
     private List<Entry> entries = new ArrayList<Entry>();

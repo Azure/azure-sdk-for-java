@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.microsoft.azure.utils.RFC1123DateMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -105,14 +106,16 @@ public class BlobServiceImpl implements BlobService {
 
     private Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
-            builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
+            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
+                builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
+            }
         }
         return builder;
     }
 
     private WebResource getResource() {
         WebResource webResource = channel.resource(url).path("/");
-        webResource = addOptionalQueryParam(webResource, "timeout", timeout);
+        webResource = addOptionalQueryParam(webResource, "timeout", this.timeout);
 
         return webResource;
     }

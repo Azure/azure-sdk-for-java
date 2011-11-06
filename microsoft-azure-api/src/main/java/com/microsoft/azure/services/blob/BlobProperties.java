@@ -6,6 +6,8 @@ import java.util.HashMap;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.microsoft.azure.utils.RFC1123DateAdapter;
+
 //TODO: Unify this with ListBlobsResults.BlobProperties
 public class BlobProperties {
     private Date lastModified;

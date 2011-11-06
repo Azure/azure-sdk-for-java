@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.blob;
+package com.microsoft.azure.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;

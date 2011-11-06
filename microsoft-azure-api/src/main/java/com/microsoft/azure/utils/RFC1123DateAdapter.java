@@ -1,8 +1,9 @@
-package com.microsoft.azure.services.blob;
+package com.microsoft.azure.utils;
 
 import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 
 /*
  * JAXB adapter for <Metadata> element

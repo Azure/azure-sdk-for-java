@@ -2,6 +2,8 @@ package com.microsoft.azure.services.blob;
 
 import java.util.Date;
 
+import com.microsoft.azure.utils.RFC1123DateMapper;
+
 /**
  * TODO: Unify this with client layer
  *

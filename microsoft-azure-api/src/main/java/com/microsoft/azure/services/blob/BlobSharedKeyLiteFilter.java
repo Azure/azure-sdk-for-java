@@ -9,6 +9,7 @@ import java.util.Locale;
 import javax.inject.Named;
 
 import com.microsoft.azure.utils.HmacSHA256Sign;
+import com.microsoft.azure.utils.RFC1123DateMapper;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
