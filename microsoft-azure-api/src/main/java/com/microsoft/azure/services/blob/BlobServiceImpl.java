@@ -728,6 +728,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getBlobContentLanguage());
         builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         builder.type("application/xml").put(blockList);
