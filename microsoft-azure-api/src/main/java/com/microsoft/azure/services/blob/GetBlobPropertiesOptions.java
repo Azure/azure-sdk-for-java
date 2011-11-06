@@ -4,6 +4,7 @@ package com.microsoft.azure.services.blob;
 public class GetBlobPropertiesOptions {
     private String snapshot;
     private String leaseId;
+    private AccessCondition accessCondition;
 
     public String getSnapshot() {
         return snapshot;
@@ -20,6 +21,15 @@ public class GetBlobPropertiesOptions {
 
     public GetBlobPropertiesOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public GetBlobPropertiesOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }
