@@ -681,6 +681,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         Object content = (contentStream == null ? new byte[0] : contentStream);

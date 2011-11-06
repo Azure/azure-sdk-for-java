@@ -3,9 +3,7 @@ package com.microsoft.azure.services.blob;
 public class CreateBlobPagesOptions {
     private String leaseId;
     private String contentMD5;
-
-    // TODO: Add "if" from
-    // http://msdn.microsoft.com/en-us/library/windowsazure/ee691975.aspx
+    private AccessCondition accessCondition;
 
     public String getLeaseId() {
         return leaseId;
@@ -22,6 +20,15 @@ public class CreateBlobPagesOptions {
 
     public CreateBlobPagesOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public CreateBlobPagesOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }
