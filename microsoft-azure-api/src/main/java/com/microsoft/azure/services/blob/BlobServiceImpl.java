@@ -103,6 +103,13 @@ public class BlobServiceImpl implements BlobService {
         return builder;
     }
 
+    private Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+        if (accessCondition != null) {
+            builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
+        }
+        return builder;
+    }
+
     private WebResource getResource() {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", timeout);
@@ -456,6 +463,7 @@ public class BlobServiceImpl implements BlobService {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);

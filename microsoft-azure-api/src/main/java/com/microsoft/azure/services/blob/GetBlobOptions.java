@@ -7,6 +7,7 @@ public class GetBlobOptions {
     private boolean computeRangeMD5;
     private Long rangeStart;
     private Long rangeEnd;
+    private AccessCondition accessCondition;
 
     public String getSnapshot() {
         return snapshot;
@@ -50,6 +51,15 @@ public class GetBlobOptions {
 
     public GetBlobOptions setRangeEnd(Long rangeEnd) {
         this.rangeEnd = rangeEnd;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public GetBlobOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }
