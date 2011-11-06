@@ -23,15 +23,20 @@ public class BlobServiceImpl implements BlobService {
     private final Client channel;
     private final String accountName;
     private final String url;
+    private final Integer timeout;
+    private final RFC1123DateMapper dateMapper;
 
     @Inject
     public BlobServiceImpl(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-    // TODO: How to make this configurable though code?
+            @Named(BlobConfiguration.TIMEOUT) String timeout,
+            // TODO: How to make this configurable though code?
             BlobSharedKeyLiteFilter filter) {
 
         this.accountName = accountName;
         this.url = url;
         this.channel = channel;
+        this.timeout = (timeout == null ? null : Integer.parseInt(timeout));
+        this.dateMapper = new RFC1123DateMapper();
         channel.addFilter(filter);
     }
 
@@ -59,11 +64,11 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
-    private WebResource addOptionalQueryParam(WebResource wr, String key, String value) {
+    private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
         if (value != null) {
-            wr = wr.queryParam(key, value);
+            webResource = webResource.queryParam(key, value.toString());
         }
-        return wr;
+        return webResource;
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
@@ -99,12 +104,13 @@ public class BlobServiceImpl implements BlobService {
     }
 
     private WebResource getResource() {
-        WebResource res = channel.resource(url).path("/");
+        WebResource webResource = channel.resource(url).path("/");
+        webResource = addOptionalQueryParam(webResource, "timeout", timeout);
 
-        return res;
+        return webResource;
     }
 
-    private WebResource setCanonicalizedResource(WebResource wr, String resourceName, String operation) {
+    private WebResource setCanonicalizedResource(WebResource webResource, String resourceName, String operation) {
         String value = "/" + this.accountName + "/";
         if (resourceName != null) {
             value += resourceName;
@@ -115,8 +121,8 @@ public class BlobServiceImpl implements BlobService {
         }
 
         // TODO: Is this the best way to pass a parameter to a filter?
-        wr.setProperty("canonicalizedResource", value);
-        return wr;
+        webResource.setProperty("canonicalizedResource", value);
+        return webResource;
     }
 
     private String getCopyBlobSourceName(String sourceContainer, String sourceBlob, CopyBlobOptions options) {
@@ -207,7 +213,7 @@ public class BlobServiceImpl implements BlobService {
 
         ContainerProperties properties = new ContainerProperties();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
-        properties.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
@@ -236,7 +242,7 @@ public class BlobServiceImpl implements BlobService {
         acl.setSignedIdentifiers(si.getSignedIdentifiers());
         acl.setPublicAccess(response.getHeaders().getFirst("x-ms-blob-public-access"));
         acl.setEtag(response.getHeaders().getFirst("ETag"));
-        acl.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        acl.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         return acl;
     }
 
@@ -408,7 +414,7 @@ public class BlobServiceImpl implements BlobService {
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
 
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         if (response.getHeaders().getFirst("x-ms-blob-sequence-number") != null) {
             result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
         }
@@ -434,7 +440,7 @@ public class BlobServiceImpl implements BlobService {
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         return result;
     }
 
@@ -465,7 +471,7 @@ public class BlobServiceImpl implements BlobService {
         BlobProperties properties = new BlobProperties();
 
         // Last-Modified
-        properties.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         // Metadata
         HashMap<String, String> metadata = new HashMap<String, String>();
@@ -533,7 +539,7 @@ public class BlobServiceImpl implements BlobService {
         BlobSnapshot blobSnapshot = new BlobSnapshot();
         blobSnapshot.setEtag(response.getHeaders().getFirst("ETag"));
         blobSnapshot.setSnapshot(response.getHeaders().getFirst("x-ms-snapshot"));
-        blobSnapshot.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        blobSnapshot.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         return blobSnapshot;
     }
@@ -625,7 +631,7 @@ public class BlobServiceImpl implements BlobService {
 
         CreateBlobPagesResult result = new CreateBlobPagesResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
         result.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
         result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
 
@@ -650,7 +656,7 @@ public class BlobServiceImpl implements BlobService {
         ListBlobRegionsResult result = response.getEntity(ListBlobRegionsResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         return result;
     }
@@ -713,7 +719,7 @@ public class BlobServiceImpl implements BlobService {
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentType(response.getHeaders().getFirst("Content-Type"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(new DateMapper().parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
 
         return result;
     }

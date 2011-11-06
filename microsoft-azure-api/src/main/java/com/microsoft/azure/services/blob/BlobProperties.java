@@ -22,7 +22,7 @@ public class BlobProperties {
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
     @XmlElement(name = "Last-Modified")
-    @XmlJavaTypeAdapter(DateAdapter.class)
+    @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
     public Date getLastModified() {
         return lastModified;
     }

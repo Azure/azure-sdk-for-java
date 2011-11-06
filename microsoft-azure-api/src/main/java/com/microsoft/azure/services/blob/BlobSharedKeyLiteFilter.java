@@ -50,7 +50,7 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
         String date = getHeader(cr, "Date");
 
         if (date == "") {
-            date = new DateMapper().format(new Date());
+            date = new RFC1123DateMapper().format(new Date());
             cr.getHeaders().add("Date", date);
         }
 

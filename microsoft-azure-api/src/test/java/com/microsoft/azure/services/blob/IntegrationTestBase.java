@@ -11,6 +11,7 @@ public abstract class IntegrationTestBase {
         config.setProperty(BlobConfiguration.ACCOUNT_NAME, "xxx");
         config.setProperty(BlobConfiguration.ACCOUNT_KEY, "xxx");
         config.setProperty(BlobConfiguration.URL, "http://xxx.blob.core.windows.net");
+        config.setProperty(BlobConfiguration.TIMEOUT, "20");
 
         // when mock running
         // config.setProperty("serviceBus.uri", "http://localhost:8086");

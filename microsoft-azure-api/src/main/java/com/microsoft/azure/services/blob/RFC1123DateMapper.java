@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class DateMapper {
+public class RFC1123DateMapper {
     private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
 
     public String format(Date date) {
