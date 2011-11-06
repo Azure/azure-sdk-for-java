@@ -407,7 +407,6 @@ public class BlobServiceImpl implements BlobService {
         return getBlobPropertiesFromResponse(response);
     }
 
-
     public GetBlobMetadataResult getBlobMetadata(String container, String blob) {
         return getBlobMetadata(container, blob, new GetBlobMetadataOptions());
     }
@@ -474,6 +473,7 @@ public class BlobServiceImpl implements BlobService {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, metadata);
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
