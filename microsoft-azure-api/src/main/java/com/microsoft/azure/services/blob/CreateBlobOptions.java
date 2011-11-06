@@ -16,6 +16,7 @@ public class CreateBlobOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private String leaseId;
     private Long sequenceNumber;
+    private AccessCondition accessCondition;
 
     public String getContentType() {
         return contentType;
@@ -136,6 +137,15 @@ public class CreateBlobOptions {
 
     public CreateBlobOptions setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+        return this;
+    }
+
+    public AccessCondition getAccessCondition() {
+        return accessCondition;
+    }
+
+    public CreateBlobOptions setAccessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
         return this;
     }
 }

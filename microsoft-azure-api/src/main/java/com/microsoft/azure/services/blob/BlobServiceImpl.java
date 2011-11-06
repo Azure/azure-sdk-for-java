@@ -378,6 +378,7 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // TODO: Conditional headers (If Match, etc.)
 
