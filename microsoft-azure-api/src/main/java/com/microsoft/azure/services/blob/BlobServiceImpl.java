@@ -623,28 +623,33 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public String acquireLease(String container, String blob) {
-        return putLeaseImpl("acquire", container, blob, null);
+        return acquireLease(container, blob, new AcquireLeaseOptions());
+    }
+
+    public String acquireLease(String container, String blob, AcquireLeaseOptions options) {
+        return putLeaseImpl("acquire", container, blob, null, options);
     }
 
     public String renewLease(String container, String blob, String leaseId) {
-        return putLeaseImpl("renew", container, blob, leaseId);
+        return putLeaseImpl("renew", container, blob, leaseId, null/*options*/);
     }
 
     public void releaseLease(String container, String blob, String leaseId) {
-        putLeaseImpl("release", container, blob, leaseId);
+        putLeaseImpl("release", container, blob, leaseId, null/*options*/);
     }
 
     public void breakLease(String container, String blob, String leaseId) {
-        putLeaseImpl("break", container, blob, leaseId);
+        putLeaseImpl("break", container, blob, leaseId, null/*options*/);
     }
 
-    private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId) {
+    private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId, AcquireLeaseOptions options) {
         WebResource webResource = getResource().path(container).path(blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");

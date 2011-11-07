@@ -98,6 +98,8 @@ public interface BlobService {
 
     String acquireLease(String container, String blob);
 
+    String acquireLease(String container, String blob, AcquireLeaseOptions options);
+
     String renewLease(String container, String blob, String leaseId);
 
     void releaseLease(String container, String blob, String leaseId);
