@@ -3,13 +3,13 @@ package com.microsoft.azure.services.blob;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="StorageServiceProperties")
+@XmlRootElement(name = "StorageServiceProperties")
 public class ServiceProperties {
     private Logging logging;
     private Metrics metrics;
     private String defaultServiceVersion;
 
-    @XmlElement(name="Logging")
+    @XmlElement(name = "Logging")
     public Logging getLogging() {
         return logging;
     }
@@ -18,7 +18,7 @@ public class ServiceProperties {
         this.logging = logging;
     }
 
-    @XmlElement(name="Metrics")
+    @XmlElement(name = "Metrics")
     public Metrics getMetrics() {
         return metrics;
     }
@@ -27,7 +27,7 @@ public class ServiceProperties {
         this.metrics = metrics;
     }
 
-    @XmlElement(name="DefaultServiceVersion")
+    @XmlElement(name = "DefaultServiceVersion")
     public String getDefaultServiceVersion() {
         return defaultServiceVersion;
     }
@@ -43,7 +43,7 @@ public class ServiceProperties {
         private Boolean write;
         private RetentionPolicy retentionPolicy;
 
-        @XmlElement(name="RetentionPolicy")
+        @XmlElement(name = "RetentionPolicy")
         public RetentionPolicy getRetentionPolicy() {
             return retentionPolicy;
         }
@@ -52,7 +52,7 @@ public class ServiceProperties {
             this.retentionPolicy = retentionPolicy;
         }
 
-        @XmlElement(name="Write")
+        @XmlElement(name = "Write")
         public boolean isWrite() {
             return write;
         }
@@ -61,7 +61,7 @@ public class ServiceProperties {
             this.write = write;
         }
 
-        @XmlElement(name="Read")
+        @XmlElement(name = "Read")
         public boolean isRead() {
             return read;
         }
@@ -70,7 +70,7 @@ public class ServiceProperties {
             this.read = read;
         }
 
-        @XmlElement(name="Delete")
+        @XmlElement(name = "Delete")
         public boolean isDelete() {
             return delete;
         }
@@ -79,7 +79,7 @@ public class ServiceProperties {
             this.delete = delete;
         }
 
-        @XmlElement(name="Version")
+        @XmlElement(name = "Version")
         public String getVersion() {
             return version;
         }
@@ -87,7 +87,6 @@ public class ServiceProperties {
         public void setVersion(String version) {
             this.version = version;
         }
-
     }
 
     public static class Metrics {
@@ -96,7 +95,7 @@ public class ServiceProperties {
         private Boolean includeAPIs;
         private RetentionPolicy retentionPolicy;
 
-        @XmlElement(name="RetentionPolicy")
+        @XmlElement(name = "RetentionPolicy")
         public RetentionPolicy getRetentionPolicy() {
             return retentionPolicy;
         }
@@ -105,7 +104,7 @@ public class ServiceProperties {
             this.retentionPolicy = retentionPolicy;
         }
 
-        @XmlElement(name="IncludeAPIs")
+        @XmlElement(name = "IncludeAPIs")
         public Boolean isIncludeAPIs() {
             return includeAPIs;
         }
@@ -114,7 +113,7 @@ public class ServiceProperties {
             this.includeAPIs = includeAPIs;
         }
 
-        @XmlElement(name="Enabled")
+        @XmlElement(name = "Enabled")
         public boolean isEnabled() {
             return enabled;
         }
@@ -123,7 +122,7 @@ public class ServiceProperties {
             this.enabled = enabled;
         }
 
-        @XmlElement(name="Version")
+        @XmlElement(name = "Version")
         public String getVersion() {
             return version;
         }
@@ -137,7 +136,7 @@ public class ServiceProperties {
         private boolean enabled;
         private Integer days;
 
-        @XmlElement(name="Days")
+        @XmlElement(name = "Days")
         public Integer getDays() {
             return days;
         }
@@ -146,7 +145,7 @@ public class ServiceProperties {
             this.days = days;
         }
 
-        @XmlElement(name="Enabled")
+        @XmlElement(name = "Enabled")
         public boolean isEnabled() {
             return enabled;
         }

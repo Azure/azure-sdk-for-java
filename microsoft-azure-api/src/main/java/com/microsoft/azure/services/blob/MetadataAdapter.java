@@ -30,7 +30,6 @@ public class MetadataAdapter extends XmlAdapter<MetadataAdapter.MetadataHashMapT
         throw new OperationNotSupportedException();
     }
 
-
     public static class MetadataHashMapType {
         private List<Element> entries = new ArrayList<Element>();
 
