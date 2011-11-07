@@ -29,6 +29,8 @@ public interface BlobService {
 
     void setContainerMetadata(String container, HashMap<String, String> metadata);
 
+    void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options);
+
     ListBlobsResult listBlobs(String container);
 
     ListBlobsResult listBlobs(String container, ListBlobsOptions options);

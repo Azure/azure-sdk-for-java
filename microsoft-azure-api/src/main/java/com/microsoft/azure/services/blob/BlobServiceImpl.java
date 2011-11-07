@@ -295,11 +295,16 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void setContainerMetadata(String container, HashMap<String, String> metadata) {
+        setContainerMetadata(container, metadata, new SetContainerMetadataOptions());
+    }
+
+    public void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options) {
         WebResource webResource = getResource().path(container).queryParam("resType", "container").queryParam("comp", "metadata");
         webResource = setCanonicalizedResource(webResource, container, "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         // Note: Add content type here to enable proper HMAC signing
         builder.type("text/plain").put("");
