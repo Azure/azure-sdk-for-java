@@ -192,7 +192,6 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public ServiceProperties getServiceProperties() {
-        // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 
@@ -202,7 +201,6 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void setServiceProperties(ServiceProperties serviceProperties) {
-        // TODO: timeout
         WebResource webResource = getResource().path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, null, "properties");
 

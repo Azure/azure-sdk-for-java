@@ -10,8 +10,6 @@ public class CopyBlobOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private AccessCondition sourceAccessCondition;
 
-    // TODO: IfMatch options
-
     public String getSourceSnapshot() {
         return sourceSnapshot;
     }
