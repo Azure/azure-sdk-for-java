@@ -3,8 +3,7 @@ package com.microsoft.azure.services.blob;
 public class DeleteBlobOptions {
     private String snapshot;
     private String leaseId;
-    // TODO: Enum?
-    private String deleteSnaphots;
+    private boolean deleteSnaphotsOnly;
     private AccessCondition accessCondition;
 
     public String getSnapshot() {
@@ -25,12 +24,12 @@ public class DeleteBlobOptions {
         return this;
     }
 
-    public String getDeleteSnaphots() {
-        return deleteSnaphots;
+    public boolean getDeleteSnaphotsOnly() {
+        return deleteSnaphotsOnly;
     }
 
-    public DeleteBlobOptions setDeleteSnaphots(String deleteSnaphots) {
-        this.deleteSnaphots = deleteSnaphots;
+    public DeleteBlobOptions setDeleteSnaphotsOnly(boolean deleteSnaphotsOnly) {
+        this.deleteSnaphotsOnly = deleteSnaphotsOnly;
         return this;
     }
 

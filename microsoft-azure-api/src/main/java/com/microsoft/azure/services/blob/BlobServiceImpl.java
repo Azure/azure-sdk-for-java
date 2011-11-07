@@ -414,8 +414,6 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // TODO: Conditional headers (If Match, etc.)
-
         return builder;
     }
 
@@ -578,7 +576,7 @@ public class BlobServiceImpl implements BlobService {
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphots());
+        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only" : "include");
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         builder.delete();
@@ -624,8 +622,6 @@ public class BlobServiceImpl implements BlobService {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
         builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
-
-        // TODO: Conditional headers (If Match, etc.)
 
         // Note: Add content type here to enable proper HMAC signing
         builder.type("text/plain").put("");
