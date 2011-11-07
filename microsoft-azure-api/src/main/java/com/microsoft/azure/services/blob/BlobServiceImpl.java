@@ -631,15 +631,15 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public String renewLease(String container, String blob, String leaseId) {
-        return putLeaseImpl("renew", container, blob, leaseId, null/*options*/);
+        return putLeaseImpl("renew", container, blob, leaseId, new AcquireLeaseOptions());
     }
 
     public void releaseLease(String container, String blob, String leaseId) {
-        putLeaseImpl("release", container, blob, leaseId, null/*options*/);
+        putLeaseImpl("release", container, blob, leaseId, new AcquireLeaseOptions());
     }
 
     public void breakLease(String container, String blob, String leaseId) {
-        putLeaseImpl("break", container, blob, leaseId, null/*options*/);
+        putLeaseImpl("break", container, blob, leaseId, new AcquireLeaseOptions());
     }
 
     private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId, AcquireLeaseOptions options) {
