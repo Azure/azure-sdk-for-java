@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import junit.framework.Assert;
@@ -169,16 +170,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
+        String container = "foo4";
+        Date expiryStartDate = new GregorianCalendar(2010, 1, 1).getTime();
+        Date expiryEndDate = new GregorianCalendar(2020, 1, 1).getTime();
+
         // Act
-        service.createContainer("foo4");
+        service.createContainer(container);
 
         ContainerACL acl = new ContainerACL();
         acl.setPublicAccess("blob");
-        acl.AddSignedIdentifier("test", "2010-01-01", "2020-01-01", "rwd");
-        service.setContainerACL("foo4", acl);
+        acl.AddSignedIdentifier("test", expiryStartDate, expiryEndDate, "rwd");
+        service.setContainerACL(container, acl);
 
-        ContainerACL acl2 = service.getContainerACL("foo4");
-        service.deleteContainer("foo4");
+        ContainerACL acl2 = service.getContainerACL(container);
+        service.deleteContainer(container);
 
         // Assert
         assertNotNull(acl2);
@@ -188,8 +193,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("blob", acl2.getPublicAccess());
         assertEquals(1, acl2.getSignedIdentifiers().size());
         assertEquals("test", acl2.getSignedIdentifiers().get(0).getId());
-        assertEquals("2010-01-01T00:00:00.0000000Z", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getStart());
-        assertEquals("2020-01-01T00:00:00.0000000Z", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getExpiry());
+        assertEquals(expiryStartDate, acl2.getSignedIdentifiers().get(0).getAccessPolicy().getStart());
+        assertEquals(expiryEndDate, acl2.getSignedIdentifiers().get(0).getAccessPolicy().getExpiry());
         assertEquals("rwd", acl2.getSignedIdentifiers().get(0).getAccessPolicy().getPermission());
     }
 

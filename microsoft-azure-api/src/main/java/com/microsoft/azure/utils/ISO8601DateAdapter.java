@@ -6,17 +6,17 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
 /*
- * JAXB adapter for <Metadata> element
+ * JAXB adapter for an ISO 8601 date time element
  */
-public class  RFC1123DateAdapter extends XmlAdapter<String, Date> {
+public class  ISO8601DateAdapter extends XmlAdapter<String, Date> {
 
     @Override
     public Date unmarshal(String arg0) throws Exception {
-        return new RFC1123DateConverter().parse(arg0);
+        return new ISO8601DateConverter().parse(arg0);
     }
 
     @Override
     public String marshal(Date arg0) throws Exception {
-        return new RFC1123DateConverter().format(arg0);
+        return new ISO8601DateConverter().format(arg0);
     }
 }

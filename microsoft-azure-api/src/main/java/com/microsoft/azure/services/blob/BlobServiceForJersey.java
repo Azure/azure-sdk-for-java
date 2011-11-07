@@ -10,11 +10,8 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.microsoft.azure.ServiceException;
-import com.microsoft.azure.utils.RFC1123DateMapper;
+import com.microsoft.azure.utils.RFC1123DateConverter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -23,14 +20,14 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.Base64;
 
 public class BlobServiceForJersey implements BlobService {
-    private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
+    //private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
     private final String accountName;
     private final String url;
     private final Integer timeout;
-    private final RFC1123DateMapper dateMapper;
+    private final RFC1123DateConverter dateMapper;
 
     @Inject
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
@@ -42,7 +39,7 @@ public class BlobServiceForJersey implements BlobService {
         this.url = url;
         this.channel = channel;
         this.timeout = (timeout == null ? null : Integer.parseInt(timeout));
-        this.dateMapper = new RFC1123DateMapper();
+        this.dateMapper = new RFC1123DateConverter();
         channel.addFilter(filter);
     }
 

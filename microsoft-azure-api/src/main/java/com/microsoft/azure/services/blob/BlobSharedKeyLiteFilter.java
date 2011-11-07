@@ -9,7 +9,7 @@ import java.util.Locale;
 import javax.inject.Named;
 
 import com.microsoft.azure.utils.HmacSHA256Sign;
-import com.microsoft.azure.utils.RFC1123DateMapper;
+import com.microsoft.azure.utils.RFC1123DateConverter;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -51,7 +51,7 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
         String date = getHeader(cr, "Date");
 
         if (date == "") {
-            date = new RFC1123DateMapper().format(new Date());
+            date = new RFC1123DateConverter().format(new Date());
             cr.getHeaders().add("Date", date);
         }
 

@@ -6,10 +6,14 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.microsoft.azure.utils.ISO8601DateAdapter;
 
 public class ContainerACL {
     private String etag;
     private Date lastModified;
+    //TODO: Enum?
     private String publicAccess;
     private List<SignedIdentifier> signedIdentifiers = new ArrayList<SignedIdentifier>();
 
@@ -45,7 +49,7 @@ public class ContainerACL {
         this.signedIdentifiers = signedIdentifiers;
     }
 
-    public void AddSignedIdentifier(String id, String start, String expiry, String permission) {
+    public void AddSignedIdentifier(String id, Date start, Date expiry, String permission) {
         AccessPolicy accessPolicy = new AccessPolicy();
         accessPolicy.setStart(start);
         accessPolicy.setExpiry(expiry);
@@ -96,27 +100,27 @@ public class ContainerACL {
     }
 
     public static class AccessPolicy {
-        //TODO: Make it a date?
-        private String start;
-        //TODO: Make it a date?
-        private String expiry;
+        private Date start;
+        private Date expiry;
         private String permission;
 
         @XmlElement(name = "Start")
-        public String getStart() {
+        @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+        public Date getStart() {
             return start;
         }
 
-        public void setStart(String start) {
+        public void setStart(Date start) {
             this.start = start;
         }
 
         @XmlElement(name = "Expiry")
-        public String getExpiry() {
+        @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+        public Date getExpiry() {
             return expiry;
         }
 
-        public void setExpiry(String expiry) {
+        public void setExpiry(Date expiry) {
             this.expiry = expiry;
         }
 

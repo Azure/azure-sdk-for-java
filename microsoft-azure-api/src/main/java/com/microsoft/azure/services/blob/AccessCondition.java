@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.Date;
 
-import com.microsoft.azure.utils.RFC1123DateMapper;
+import com.microsoft.azure.utils.RFC1123DateConverter;
 
 /**
  * TODO: Unify this with client layer
@@ -55,7 +55,7 @@ public final class AccessCondition {
      * @return An <code>AccessCondition</code> object that represents the <i>If-Modified-Since</i> condition.
      */
     public static AccessCondition ifModifiedSince(Date lastMotified) {
-        return new AccessCondition(AccessConditionHeaderType.IF_MODIFIED_SINCE, new RFC1123DateMapper().format(lastMotified));
+        return new AccessCondition(AccessConditionHeaderType.IF_MODIFIED_SINCE, new RFC1123DateConverter().format(lastMotified));
     }
 
     /**
@@ -95,7 +95,7 @@ public final class AccessCondition {
      * @return An <code>AccessCondition</code> object that represents the <i>If-Unmodified-Since</i> condition.
      */
     public static AccessCondition ifNotModifiedSince(Date lastMotified) {
-        return new AccessCondition(AccessConditionHeaderType.IF_UNMODIFIED_SINCE, new RFC1123DateMapper().format(lastMotified));
+        return new AccessCondition(AccessConditionHeaderType.IF_UNMODIFIED_SINCE, new RFC1123DateConverter().format(lastMotified));
     }
 
     /**
