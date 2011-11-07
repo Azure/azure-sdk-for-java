@@ -19,6 +19,8 @@ public interface BlobService {
 
     void deleteContainer(String container);
 
+    void deleteContainer(String container, DeleteContainerOptions options);
+
     ContainerProperties getContainerProperties(String container);
 
     ContainerProperties getContainerMetadata(String container);

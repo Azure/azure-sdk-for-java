@@ -229,10 +229,14 @@ public class BlobServiceImpl implements BlobService {
     }
 
     public void deleteContainer(String container) {
+        deleteContainer(container, new DeleteContainerOptions());
+    }
+    public void deleteContainer(String container, DeleteContainerOptions options) {
         WebResource webResource = getResource().path(container).queryParam("resType", "container");
         webResource = setCanonicalizedResource(webResource, container, null);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
