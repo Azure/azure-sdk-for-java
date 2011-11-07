@@ -3,111 +3,115 @@ package com.microsoft.azure.services.blob;
 import java.io.InputStream;
 import java.util.HashMap;
 
-//TODO: ServiceException annotation and handling in implementation
+import com.microsoft.azure.ServiceException;
+
 public interface BlobService {
-    ServiceProperties getServiceProperties();
+    ServiceProperties getServiceProperties() throws ServiceException;
 
-    void setServiceProperties(ServiceProperties serviceProperties);
+    void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
-    ListContainersResult listContainers();
+    ListContainersResult listContainers() throws ServiceException;
 
-    ListContainersResult listContainers(ListContainersOptions options);
+    ListContainersResult listContainers(ListContainersOptions options) throws ServiceException;
 
-    void createContainer(String container);
+    void createContainer(String container) throws ServiceException;
 
-    void createContainer(String container, CreateContainerOptions options);
+    void createContainer(String container, CreateContainerOptions options) throws ServiceException;
 
-    void deleteContainer(String container);
+    void deleteContainer(String container) throws ServiceException;
 
-    void deleteContainer(String container, DeleteContainerOptions options);
+    void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException;
 
-    ContainerProperties getContainerProperties(String container);
+    ContainerProperties getContainerProperties(String container) throws ServiceException;
 
-    ContainerProperties getContainerMetadata(String container);
+    ContainerProperties getContainerMetadata(String container) throws ServiceException;
 
-    ContainerACL getContainerACL(String container);
+    ContainerACL getContainerACL(String container) throws ServiceException;
 
-    void setContainerACL(String container, ContainerACL acl);
+    void setContainerACL(String container, ContainerACL acl) throws ServiceException;
 
-    void setContainerMetadata(String container, HashMap<String, String> metadata);
+    void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException;
 
-    void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options);
+    void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options) throws ServiceException;
 
-    ListBlobsResult listBlobs(String container);
+    ListBlobsResult listBlobs(String container) throws ServiceException;
 
-    ListBlobsResult listBlobs(String container, ListBlobsOptions options);
+    ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException;
 
-    void createPageBlob(String container, String blob, int length);
+    void createPageBlob(String container, String blob, int length) throws ServiceException;
 
-    void createPageBlob(String container, String blob, int length, CreateBlobOptions options);
+    void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
 
-    void createBlockBlob(String container, String blob, InputStream contentStream);
+    void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException;
 
-    void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options);
+    void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException;
 
-    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd);
+    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException;
 
-    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options);
+    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) throws ServiceException;
 
-    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream);
+    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
+            throws ServiceException;
 
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
-            CreateBlobPagesOptions options);
+            CreateBlobPagesOptions options) throws ServiceException;
 
-    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream);
+    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException;
 
-    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options);
+    void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options) throws ServiceException;
 
-    void commitBlobBlocks(String container, String blob, BlockList blockList);
+    void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException;
 
-    void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options);
+    void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException;
 
-    ListBlobBlocksResult listBlobBlocks(String container, String blob);
+    ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException;
 
-    ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options);
+    ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) throws ServiceException;
 
-    BlobProperties getBlobProperties(String container, String blob);
+    BlobProperties getBlobProperties(String container, String blob) throws ServiceException;
 
-    BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options);
+    BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException;
 
-    GetBlobMetadataResult getBlobMetadata(String container, String blob);
+    GetBlobMetadataResult getBlobMetadata(String container, String blob) throws ServiceException;
 
-    GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options);
+    GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options) throws ServiceException;
 
-    ListBlobRegionsResult listBlobRegions(String container, String blob);
+    ListBlobRegionsResult listBlobRegions(String container, String blob) throws ServiceException;
 
-    ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options);
+    ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) throws ServiceException;
 
-    SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options);
+    SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) throws ServiceException;
 
-    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata);
+    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) throws ServiceException;
 
-    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options);
+    SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options)
+            throws ServiceException;
 
-    Blob getBlob(String container, String blob);
+    Blob getBlob(String container, String blob) throws ServiceException;
 
-    Blob getBlob(String container, String blob, GetBlobOptions options);
+    Blob getBlob(String container, String blob, GetBlobOptions options) throws ServiceException;
 
-    void deleteBlob(String container, String blob);
+    void deleteBlob(String container, String blob) throws ServiceException;
 
-    void deleteBlob(String container, String blob, DeleteBlobOptions options);
+    void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException;
 
-    BlobSnapshot createBlobSnapshot(String container, String blob);
+    BlobSnapshot createBlobSnapshot(String container, String blob) throws ServiceException;
 
-    BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options);
+    BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException;
 
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob);
+    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) throws ServiceException;
 
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options);
+    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options)
+            throws ServiceException;
 
-    String acquireLease(String container, String blob);
+    String acquireLease(String container, String blob) throws ServiceException;
 
-    String acquireLease(String container, String blob, AcquireLeaseOptions options);
+    String acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException;
 
-    String renewLease(String container, String blob, String leaseId);
+    String renewLease(String container, String blob, String leaseId) throws ServiceException;
 
-    void releaseLease(String container, String blob, String leaseId);
+    void releaseLease(String container, String blob, String leaseId) throws ServiceException;
 
-    void breakLease(String container, String blob, String leaseId);
+    void breakLease(String container, String blob, String leaseId) throws ServiceException;
 
 }

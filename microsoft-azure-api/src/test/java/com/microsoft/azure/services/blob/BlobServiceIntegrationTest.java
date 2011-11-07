@@ -22,6 +22,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
@@ -685,7 +686,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
             service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
             Assert.fail("getBlob should throw an exception");
         }
-        catch (Exception e) {
+        catch (ServiceException e) {
         }
 
         // Assert
@@ -704,7 +705,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
             service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
             Assert.fail("getBlob should throw an exception");
         }
-        catch (Exception e) {
+        catch (ServiceException e) {
         }
 
         // Assert
@@ -723,7 +724,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
             service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
             Assert.fail("getBlob should throw an exception");
         }
-        catch (Exception e) {
+        catch (ServiceException e) {
         }
 
         // Assert
@@ -759,7 +760,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
             service.getBlob(container, blob, new GetBlobOptions().setAccessCondition(AccessCondition.ifNotModifiedSince(lastModifiedBase)));
             Assert.fail("getBlob should throw an exception");
         }
-        catch (Exception e) {
+        catch (ServiceException e) {
         }
 
         // Assert
