@@ -1,4 +1,4 @@
-package com.microsoft.azure.utils;
+package com.microsoft.azure.services.blob.implementation;
 
 import java.util.Date;
 

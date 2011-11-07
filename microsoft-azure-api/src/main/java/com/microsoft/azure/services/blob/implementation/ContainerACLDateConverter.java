@@ -1,4 +1,4 @@
-package com.microsoft.azure.utils;
+package com.microsoft.azure.services.blob.implementation;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class ISO8601DateConverter {
-    private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'.0000000Z'";
+public class ContainerACLDateConverter {
+    private static final String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'.0000000Z'";
 
     public String format(Date date) {
         return getFormat().format(date);
@@ -29,7 +29,7 @@ public class ISO8601DateConverter {
     }
 
     private DateFormat getFormat() {
-        DateFormat iso8601Format = new SimpleDateFormat(ISO8601_PATTERN, Locale.US);
+        DateFormat iso8601Format = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format;
     }

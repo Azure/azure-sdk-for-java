@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.azure.utils.ISO8601DateAdapter;
+import com.microsoft.azure.services.blob.implementation.ContainerACLDateAdapter;
 
 public class ContainerACL {
     private String etag;
@@ -105,7 +105,7 @@ public class ContainerACL {
         private String permission;
 
         @XmlElement(name = "Start")
-        @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+        @XmlJavaTypeAdapter(ContainerACLDateAdapter.class)
         public Date getStart() {
             return start;
         }
@@ -115,7 +115,7 @@ public class ContainerACL {
         }
 
         @XmlElement(name = "Expiry")
-        @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+        @XmlJavaTypeAdapter(ContainerACLDateAdapter.class)
         public Date getExpiry() {
             return expiry;
         }

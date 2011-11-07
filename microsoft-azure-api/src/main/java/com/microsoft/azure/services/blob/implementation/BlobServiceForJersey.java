@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.blob;
+package com.microsoft.azure.services.blob.implementation;
 
 import java.io.InputStream;
 import java.util.EnumSet;
@@ -11,7 +11,48 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.microsoft.azure.ServiceException;
-import com.microsoft.azure.utils.RFC1123DateConverter;
+import com.microsoft.azure.services.blob.AccessCondition;
+import com.microsoft.azure.services.blob.AccessConditionHeaderType;
+import com.microsoft.azure.services.blob.AcquireLeaseOptions;
+import com.microsoft.azure.services.blob.Blob;
+import com.microsoft.azure.services.blob.BlobConfiguration;
+import com.microsoft.azure.services.blob.BlobListingDetails;
+import com.microsoft.azure.services.blob.BlobProperties;
+import com.microsoft.azure.services.blob.BlobService;
+import com.microsoft.azure.services.blob.BlobSharedKeyLiteFilter;
+import com.microsoft.azure.services.blob.BlobSnapshot;
+import com.microsoft.azure.services.blob.BlockList;
+import com.microsoft.azure.services.blob.CommitBlobBlocksOptions;
+import com.microsoft.azure.services.blob.ContainerACL;
+import com.microsoft.azure.services.blob.ContainerListingDetails;
+import com.microsoft.azure.services.blob.ContainerProperties;
+import com.microsoft.azure.services.blob.CopyBlobOptions;
+import com.microsoft.azure.services.blob.CreateBlobBlockOptions;
+import com.microsoft.azure.services.blob.CreateBlobOptions;
+import com.microsoft.azure.services.blob.CreateBlobPagesOptions;
+import com.microsoft.azure.services.blob.CreateBlobPagesResult;
+import com.microsoft.azure.services.blob.CreateBlobSnapshotOptions;
+import com.microsoft.azure.services.blob.CreateContainerOptions;
+import com.microsoft.azure.services.blob.DeleteBlobOptions;
+import com.microsoft.azure.services.blob.DeleteContainerOptions;
+import com.microsoft.azure.services.blob.GetBlobMetadataOptions;
+import com.microsoft.azure.services.blob.GetBlobMetadataResult;
+import com.microsoft.azure.services.blob.GetBlobOptions;
+import com.microsoft.azure.services.blob.GetBlobPropertiesOptions;
+import com.microsoft.azure.services.blob.ListBlobBlocksOptions;
+import com.microsoft.azure.services.blob.ListBlobBlocksResult;
+import com.microsoft.azure.services.blob.ListBlobRegionsOptions;
+import com.microsoft.azure.services.blob.ListBlobRegionsResult;
+import com.microsoft.azure.services.blob.ListBlobsOptions;
+import com.microsoft.azure.services.blob.ListBlobsResult;
+import com.microsoft.azure.services.blob.ListContainersOptions;
+import com.microsoft.azure.services.blob.ListContainersResult;
+import com.microsoft.azure.services.blob.ServiceProperties;
+import com.microsoft.azure.services.blob.SetBlobMetadataOptions;
+import com.microsoft.azure.services.blob.SetBlobMetadataResult;
+import com.microsoft.azure.services.blob.SetBlobPropertiesOptions;
+import com.microsoft.azure.services.blob.SetBlobPropertiesResult;
+import com.microsoft.azure.services.blob.SetContainerMetadataOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -20,7 +61,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.Base64;
 
 public class BlobServiceForJersey implements BlobService {
-    //private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
+    // private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;

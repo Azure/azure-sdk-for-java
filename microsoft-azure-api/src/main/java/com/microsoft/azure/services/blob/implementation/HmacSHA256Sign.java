@@ -1,4 +1,4 @@
-package com.microsoft.azure.utils;
+package com.microsoft.azure.services.blob.implementation;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

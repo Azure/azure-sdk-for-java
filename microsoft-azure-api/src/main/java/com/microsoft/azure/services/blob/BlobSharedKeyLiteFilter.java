@@ -8,8 +8,8 @@ import java.util.Locale;
 
 import javax.inject.Named;
 
-import com.microsoft.azure.utils.HmacSHA256Sign;
-import com.microsoft.azure.utils.RFC1123DateConverter;
+import com.microsoft.azure.services.blob.implementation.HmacSHA256Sign;
+import com.microsoft.azure.services.blob.implementation.RFC1123DateConverter;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

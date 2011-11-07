@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.azure.utils.RFC1123DateAdapter;
+import com.microsoft.azure.services.blob.implementation.RFC1123DateAdapter;
 
 @XmlRootElement(name = "EnumerationResults")
 public class ListBlobsResult {

@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.Date;
 
-import com.microsoft.azure.utils.RFC1123DateConverter;
+import com.microsoft.azure.services.blob.implementation.RFC1123DateConverter;
 
 /**
  * TODO: Unify this with client layer
