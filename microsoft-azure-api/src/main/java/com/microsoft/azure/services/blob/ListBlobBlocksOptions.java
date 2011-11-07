@@ -3,6 +3,7 @@ package com.microsoft.azure.services.blob;
 public class ListBlobBlocksOptions {
     private String leaseId;
     private String snapshot;
+    //TODO: Enum?
     private String listType; // "committed", "uncommitted", "all"
 
     public String getLeaseId() {

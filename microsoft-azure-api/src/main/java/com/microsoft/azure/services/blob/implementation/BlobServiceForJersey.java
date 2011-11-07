@@ -63,6 +63,7 @@ import com.sun.jersey.core.util.Base64;
 public class BlobServiceForJersey implements BlobService {
     // private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
 
+    // TODO: Should we make this a configuration options?
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
     private final String accountName;
@@ -70,11 +71,13 @@ public class BlobServiceForJersey implements BlobService {
     private final Integer timeout;
     private final RFC1123DateConverter dateMapper;
 
+    /*
+     * TODO: How can we make "timeout" optional? TODO: How to make "filter"
+     * configurable though code?
+     */
     @Inject
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-            @Named(BlobConfiguration.TIMEOUT) String timeout,
-            // TODO: How to make this configurable though code?
-            BlobSharedKeyLiteFilter filter) {
+            @Named(BlobConfiguration.TIMEOUT) String timeout, BlobSharedKeyLiteFilter filter) {
 
         this.accountName = accountName;
         this.url = url;

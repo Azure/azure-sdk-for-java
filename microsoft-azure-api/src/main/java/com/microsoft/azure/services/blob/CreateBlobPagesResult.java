@@ -3,6 +3,7 @@ package com.microsoft.azure.services.blob;
 import java.util.Date;
 
 public class CreateBlobPagesResult {
+    //TODO: For "Result" classes, should we include "Date", "x-ms-version" response headers?
     private String etag;
     private Date lastModified;
     private String contentMD5;

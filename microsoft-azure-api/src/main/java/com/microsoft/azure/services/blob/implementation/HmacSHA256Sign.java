@@ -5,6 +5,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.sun.jersey.core.util.Base64;
 
+/*
+ * TODO: Move to some other common package?
+ */
 public class HmacSHA256Sign {
     private final String accessKey;
 

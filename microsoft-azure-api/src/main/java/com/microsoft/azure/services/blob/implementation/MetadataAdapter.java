@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.blob;
+package com.microsoft.azure.services.blob.implementation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

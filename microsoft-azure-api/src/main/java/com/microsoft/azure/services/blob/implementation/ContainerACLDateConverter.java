@@ -7,7 +7,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/*
+ * TODO: Move to some other common package?
+ *
+ * "not quite" ISO 8601 date time conversion routines
+ */
 public class ContainerACLDateConverter {
+    // Note: because of the trailing "0000000", this is not quite ISO 8601 compatible
     private static final String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'.0000000Z'";
 
     public String format(Date date) {

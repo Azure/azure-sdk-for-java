@@ -46,6 +46,9 @@ public class ListBlobRegionsResult {
         this.pageRanges = pageRanges;
     }
 
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     public static class PageRange {
         private long start;
         private long end;

@@ -14,7 +14,7 @@ public class ContainerACL {
     private String etag;
     private Date lastModified;
     //TODO: Enum?
-    private String publicAccess;
+    private String publicAccess; // "blob", "container or null
     private List<SignedIdentifier> signedIdentifiers = new ArrayList<SignedIdentifier>();
 
     public String getEtag() {
@@ -62,6 +62,9 @@ public class ContainerACL {
         this.getSignedIdentifiers().add(signedIdentifier);
     }
 
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     @XmlRootElement(name = "SignedIdentifiers")
     public static class SignedIdentifiers {
         private List<SignedIdentifier> signedIdentifiers = new ArrayList<SignedIdentifier>();
@@ -76,6 +79,10 @@ public class ContainerACL {
         }
     }
 
+
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     public static class SignedIdentifier {
         private String id;
         private AccessPolicy accessPolicy;
@@ -99,6 +106,9 @@ public class ContainerACL {
         }
     }
 
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     public static class AccessPolicy {
         private Date start;
         private Date expiry;

@@ -72,6 +72,9 @@ public class ListBlobBlocksResult {
         this.uncommittedBlocks = uncommittedBlocks;
     }
 
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     public static class Entry {
         private String blockId;
         private long blockLength;

@@ -3,6 +3,9 @@ package com.microsoft.azure.services.blob;
 import java.util.Date;
 import java.util.HashMap;
 
+/*
+ * TODO: Rename to "GetContainerPropertiesResult"?
+ */
 public class ContainerProperties {
     private String etag;
     private Date lastModified;

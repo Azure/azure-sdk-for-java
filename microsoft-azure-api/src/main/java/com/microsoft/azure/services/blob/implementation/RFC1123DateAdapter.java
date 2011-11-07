@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
 /*
- * JAXB adapter for <Metadata> element
+ * TODO: Move to some other common package?
+ *
+ * JAXB adapter for RFC 1123 date element
  */
 public class  RFC1123DateAdapter extends XmlAdapter<String, Date> {
 

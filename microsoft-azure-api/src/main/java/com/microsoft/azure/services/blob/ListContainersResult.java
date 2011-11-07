@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.microsoft.azure.services.blob.implementation.MetadataAdapter;
 import com.microsoft.azure.services.blob.implementation.RFC1123DateAdapter;
 
 @XmlRootElement(name = "EnumerationResults")
@@ -76,6 +77,9 @@ public class ListContainersResult {
         this.maxResults = maxResults;
     }
 
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
     public static class Container {
         private String name;
         private String url;
@@ -118,29 +122,32 @@ public class ListContainersResult {
         public void setMetadata(HashMap<String, String> metadata) {
             this.metadata = metadata;
         }
+    }
 
-        public static class ContainerProperties {
-            private Date lastModified;
-            private String etag;
+    /*
+     * TODO: Are nested classes ok? (if not, we need to find a name for it)
+     */
+    public static class ContainerProperties {
+        private Date lastModified;
+        private String etag;
 
-            @XmlElement(name = "Last-Modified")
-            @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-            public Date getLastModified() {
-                return lastModified;
-            }
+        @XmlElement(name = "Last-Modified")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
+        public Date getLastModified() {
+            return lastModified;
+        }
 
-            public void setLastModified(Date lastModified) {
-                this.lastModified = lastModified;
-            }
+        public void setLastModified(Date lastModified) {
+            this.lastModified = lastModified;
+        }
 
-            @XmlElement(name = "Etag")
-            public String getEtag() {
-                return etag;
-            }
+        @XmlElement(name = "Etag")
+        public String getEtag() {
+            return etag;
+        }
 
-            public void setEtag(String etag) {
-                this.etag = etag;
-            }
+        public void setEtag(String etag) {
+            this.etag = etag;
         }
     }
 }

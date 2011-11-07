@@ -2,6 +2,9 @@ package com.microsoft.azure.services.blob;
 
 import java.util.Date;
 
+/*
+ * TODO: Rename to "CreateBlobSnapshotResult"?
+ */
 public class BlobSnapshot {
     private String snapshot;
     private String etag;

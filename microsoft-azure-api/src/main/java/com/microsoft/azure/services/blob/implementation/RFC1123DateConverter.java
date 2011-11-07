@@ -7,6 +7,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/*
+ * TODO: Move to some other common package?
+ *
+ *  RFC 1123 date to string conversion
+ */
 public class RFC1123DateConverter {
     private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";
 
@@ -23,7 +28,7 @@ public class RFC1123DateConverter {
             return parse(date);
         }
         catch (ParseException e) {
-            //TODO: Is it better to return null or throw a runtime exception?
+            // TODO: Is it better to return null or throw a runtime exception?
             return null;
         }
     }
