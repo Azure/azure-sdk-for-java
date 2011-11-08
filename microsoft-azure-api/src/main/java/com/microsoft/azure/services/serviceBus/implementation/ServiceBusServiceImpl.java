@@ -1,9 +1,12 @@
 package com.microsoft.azure.services.serviceBus.implementation;
 
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.serviceBus.ListQueuesResult;
 import com.microsoft.azure.services.serviceBus.ListTopicsResult;
 import com.microsoft.azure.services.serviceBus.Message;
@@ -20,12 +23,21 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 	private ServiceBusService service;
 	static Log log = LogFactory.getLog(ServiceBusService.class);
 
+	@Inject
 	public ServiceBusServiceImpl(ServiceBusServiceForJersey service)
 	{
 		this.service = service;
 	}
-	
 
+	public ServiceBusServiceImpl(ServiceBusService service) {
+		this.service = service;
+	}
+
+	public ServiceBusService withFilter(ServiceFilter filter) {
+		return new ServiceBusServiceImpl(service.withFilter(filter));
+	}
+	
+	
 	private ServiceException processCatch(ServiceException e) {
 		log.warn(e.getMessage(), e.getCause());
 		return ServiceExceptionFactory.process("serviceBus", e);
@@ -309,6 +321,7 @@ public class ServiceBusServiceImpl implements ServiceBusService {
 			throw processCatch(new ServiceException(e));
 		}
 	}
+
 	
 
 }
