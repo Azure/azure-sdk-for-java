@@ -1,7 +1,9 @@
 package com.microsoft.azure.services.serviceBus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.sound.sampled.ReverbType;
 
@@ -10,6 +12,9 @@ import org.junit.Test;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
+import com.microsoft.azure.http.ServiceFilter;
+import com.microsoft.azure.http.ServiceFilter.Request;
+import com.microsoft.azure.http.ServiceFilter.Response;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
@@ -220,5 +225,29 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		assertNotNull(listed2);
 		
 		assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
+	}
+	
+	@Test
+	public void filterCanSeeAndChangeRequestOrResponse() throws ServiceException {
+		// Arrange
+		final List<Request> requests = new ArrayList<Request>();
+		final List<Response> responses = new ArrayList<Response>();
+		
+		ServiceBusService filtered = service.withFilter(new ServiceFilter() {
+			public Response handle(Request request, Next next) {
+				requests.add(request);
+				Response response = next.handle(request);
+				responses.add(response);
+				return response;
+			}
+		});
+	
+		// Act 
+		Queue created = filtered.createQueue(new Queue().setName("TestFilterCanSeeAndChangeRequestOrResponse"));
+		
+		// Assert
+		assertNotNull(created);
+		assertEquals(1, requests.size());
+		assertEquals(1, responses.size());
 	}
 }

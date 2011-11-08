@@ -1,5 +1,6 @@
 package com.microsoft.azure.services.serviceBus;
 
+import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.microsoft.azure.services.serviceBus.implementation.Feed;
 
@@ -7,6 +8,8 @@ import com.microsoft.azure.ServiceException;
 
 
 public interface ServiceBusService {
+	ServiceBusService withFilter(ServiceFilter filter);
+	
 	void sendQueueMessage(String queueName, Message message) throws ServiceException;	
 	Message receiveQueueMessage(String queueName) throws ServiceException;
 	Message receiveQueueMessage(String queueName, ReceiveMessageOptions options) throws ServiceException;

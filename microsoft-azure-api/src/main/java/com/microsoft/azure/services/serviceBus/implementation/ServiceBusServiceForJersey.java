@@ -3,6 +3,7 @@ package com.microsoft.azure.services.serviceBus.implementation;
 import java.io.InputStream;
 import java.rmi.UnexpectedException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ import com.microsoft.azure.services.serviceBus.implementation.Feed;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;
+import com.microsoft.azure.http.ClientFilterAdapter;
+import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -40,6 +43,8 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 	private BrokerPropertiesMapper mapper;
 	static Log log = LogFactory.getLog(ServiceBusService.class);
 
+	ServiceFilter[] filters;
+
 	@Inject
 	public ServiceBusServiceForJersey(
 			Client channel, 
@@ -48,11 +53,30 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 			BrokerPropertiesMapper mapper) {
 
 		this.channel = channel;
+		this.filters = new ServiceFilter[0];
 		this.uri = uri;
 		this.mapper = mapper;
 		channel.addFilter(authFilter);
 	}
 
+	public ServiceBusServiceForJersey(
+			Client channel, 
+			ServiceFilter[] filters,
+			String uri,
+			BrokerPropertiesMapper mapper) {
+		this.channel = channel;
+		this.filters = filters;
+		this.uri = uri;
+		this.mapper = mapper;
+	}
+
+	public ServiceBusService withFilter(ServiceFilter filter) {
+		ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
+		newFilters[filters.length] = filter;
+		return new ServiceBusServiceForJersey(channel, newFilters, uri, mapper);
+	}
+
+	
 	public Client getChannel() {
 		return channel;
 	}
@@ -62,8 +86,12 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 	}
 
 	private WebResource getResource() {
-		return getChannel()
+		WebResource resource = getChannel()
 			.resource(uri);
+		for(ServiceFilter filter : filters) {	
+			resource.addFilter(new ClientFilterAdapter(filter));
+		}
+		return resource;
 	}
 
 	void sendMessage(String path, Message message) {
@@ -276,6 +304,7 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 
 
