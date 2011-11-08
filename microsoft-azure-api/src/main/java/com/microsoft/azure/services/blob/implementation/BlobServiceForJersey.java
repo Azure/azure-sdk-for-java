@@ -1,6 +1,7 @@
 package com.microsoft.azure.services.blob.implementation;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.blob.AccessCondition;
 import com.microsoft.azure.services.blob.AccessConditionHeaderType;
 import com.microsoft.azure.services.blob.AcquireLeaseOptions;
@@ -70,6 +72,8 @@ public class BlobServiceForJersey implements BlobService {
     private final String url;
     private final Integer timeout;
     private final RFC1123DateConverter dateMapper;
+    private final ServiceFilter[] filters;
+    private final BlobSharedKeyLiteFilter filter;
 
     /*
      * TODO: How can we make "timeout" optional? TODO: How to make "filter"
@@ -79,12 +83,31 @@ public class BlobServiceForJersey implements BlobService {
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
             @Named(BlobConfiguration.TIMEOUT) String timeout, BlobSharedKeyLiteFilter filter) {
 
+        this.channel = channel;
         this.accountName = accountName;
         this.url = url;
-        this.channel = channel;
+        this.filter = filter;
         this.timeout = (timeout == null ? null : Integer.parseInt(timeout));
         this.dateMapper = new RFC1123DateConverter();
+        this.filters = new ServiceFilter[0];
         channel.addFilter(filter);
+    }
+
+    public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName,
+            String url, Integer timeout, BlobSharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
+        this.channel = channel;
+        this.filters = filters;
+        this.accountName = accountName;
+        this.url = url;
+        this.filter = filter;
+        this.dateMapper = dateMapper;
+        this.timeout = timeout;
+    }
+
+    public BlobService withFilter(ServiceFilter filter) {
+        ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
+        newFilters[filters.length] = filter;
+        return new BlobServiceForJersey(this.channel, newFilters, this.accountName, this.url, this.timeout, this.filter, this.dateMapper);
     }
 
     private void ThrowIfError(ClientResponse r) {

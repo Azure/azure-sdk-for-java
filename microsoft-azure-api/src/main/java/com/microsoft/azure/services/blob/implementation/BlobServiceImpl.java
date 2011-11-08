@@ -3,10 +3,13 @@ package com.microsoft.azure.services.blob.implementation;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.blob.AcquireLeaseOptions;
 import com.microsoft.azure.services.blob.Blob;
 import com.microsoft.azure.services.blob.BlobProperties;
@@ -51,8 +54,17 @@ public class BlobServiceImpl implements BlobService {
     private static Log log = LogFactory.getLog(BlobServiceImpl.class);
     private final BlobService service;
 
+    @Inject
     public BlobServiceImpl(BlobServiceForJersey service) {
         this.service = service;
+    }
+
+    public BlobServiceImpl(BlobService service) {
+        this.service = service;
+    }
+
+    public BlobService withFilter(ServiceFilter filter) {
+        return new BlobServiceImpl(service.withFilter(filter));
     }
 
     private ServiceException processCatch(ServiceException e) {

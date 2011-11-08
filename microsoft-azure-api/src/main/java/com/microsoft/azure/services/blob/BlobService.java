@@ -4,8 +4,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ServiceFilter;
 
 public interface BlobService {
+    BlobService withFilter(ServiceFilter filter);
+
     ServiceProperties getServiceProperties() throws ServiceException;
 
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
