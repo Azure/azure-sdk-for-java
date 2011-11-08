@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "StorageServiceProperties")
 public class ServiceProperties {
+    //TODO: What should the default value be (null or new Logging())?
     private Logging logging;
     private Metrics metrics;
     private String defaultServiceVersion;
