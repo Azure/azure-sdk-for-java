@@ -38,6 +38,16 @@ public class Configuration  {
 		}
 	}
 	
+	public static Configuration getInstance() {
+		if (instance == null)
+			instance = Configuration.load();
+		return instance;
+	}
+
+	public static void setInstance(Configuration instance) {
+		Configuration.instance = instance;
+	}
+
 	public static Configuration load() {
 		// TODO - load from somewhere
 		return new Configuration();
@@ -62,4 +72,6 @@ public class Configuration  {
 	public void setProperty(String name, Object value) {
 		properties.put(name, value);
 	}
+	
+
 }
