@@ -1005,10 +1005,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
-
-        // Act
         RetryPolicyObserver observer = new RetryPolicyObserver();
         service = service.withFilter(observer);
+
+        // Act
         service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 3, new int[] { 400, 500, 503 }));
 
         ServiceException Error = null;
@@ -1023,6 +1023,32 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(Error);
         assertEquals(400, Error.getHttpStatusCode());
         assertEquals(4, observer.requestCount);
+    }
+
+    @Test
+    public void retryPolicyCompositionWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+        RetryPolicyObserver observer = new RetryPolicyObserver();
+        service = service.withFilter(observer);
+
+        // Act
+        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 3, new int[] { 400, 500, 503 }));
+        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 2, new int[] { 400, 500, 503 }));
+
+        ServiceException Error = null;
+        try {
+            service.createPageBlob("mycontainer1", "test", 12);
+        }
+        catch (ServiceException e) {
+            Error = e;
+        }
+
+        // Assert
+        assertNotNull(Error);
+        assertEquals(400, Error.getHttpStatusCode());
+        assertEquals(3, observer.requestCount);
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
