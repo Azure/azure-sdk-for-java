@@ -24,7 +24,9 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.common.ExponentialRetryPolicyFilter;
 import com.microsoft.azure.configuration.Configuration;
+import com.microsoft.azure.http.ServiceFilter;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
@@ -987,6 +989,40 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(leaseId);
+    }
+
+    class RetryPolicyObserver implements ServiceFilter {
+        public int requestCount;
+
+        public Response handle(Request request, Next next) {
+            requestCount++;
+            return next.handle(request);
+        }
+    }
+
+    @Test
+    public void retryPolicyWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+
+        // Act
+        RetryPolicyObserver observer = new RetryPolicyObserver();
+        service = service.withFilter(observer);
+        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 3, new int[] { 400, 500, 503 }));
+
+        ServiceException Error = null;
+        try {
+            service.createPageBlob("mycontainer1", "test", 12);
+        }
+        catch (ServiceException e) {
+            Error = e;
+        }
+
+        // Assert
+        assertNotNull(Error);
+        assertEquals(400, Error.getHttpStatusCode());
+        assertEquals(4, observer.requestCount);
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
