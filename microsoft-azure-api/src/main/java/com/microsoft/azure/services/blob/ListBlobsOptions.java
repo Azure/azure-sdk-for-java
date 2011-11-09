@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.EnumSet;
 
-public class ListBlobsOptions {
+public class ListBlobsOptions extends BlobOptions {
     private String prefix;
     private String marker;
     private int maxResults;

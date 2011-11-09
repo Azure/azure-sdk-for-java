@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class GetBlobPropertiesOptions {
+public class GetBlobPropertiesOptions extends BlobOptions {
     private String snapshot;
     private String leaseId;
     private AccessCondition accessCondition;

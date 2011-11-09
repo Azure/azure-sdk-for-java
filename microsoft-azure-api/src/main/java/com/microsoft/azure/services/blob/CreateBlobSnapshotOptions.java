@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.HashMap;
 
-public class CreateBlobSnapshotOptions {
+public class CreateBlobSnapshotOptions extends BlobOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private String leaseId;
     private AccessCondition accessCondition;

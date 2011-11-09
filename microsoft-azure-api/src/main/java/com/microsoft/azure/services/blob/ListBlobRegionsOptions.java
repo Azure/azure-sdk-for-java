@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class ListBlobRegionsOptions {
+public class ListBlobRegionsOptions extends BlobOptions {
     private String leaseId;
     private String snapshot;
     private Long rangeStart;

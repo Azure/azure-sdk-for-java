@@ -1,7 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-
-public class SetBlobPropertiesOptions {
+public class SetBlobPropertiesOptions extends BlobOptions {
     private String leaseId;
     private String contentType;
     private Long contentLength;

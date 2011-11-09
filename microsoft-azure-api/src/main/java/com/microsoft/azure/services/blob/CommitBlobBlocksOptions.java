@@ -2,7 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.util.HashMap;
 
-public class CommitBlobBlocksOptions {
+public class CommitBlobBlocksOptions extends BlobOptions {
     private String blobContentType;
     private String blobContentEncoding;
     private String blobContentLanguage;

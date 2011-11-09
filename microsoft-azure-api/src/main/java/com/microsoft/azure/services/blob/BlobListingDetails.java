@@ -2,12 +2,12 @@ package com.microsoft.azure.services.blob;
 
 /**
  * TODO: Naming and unification with client package
- *
+ * 
  * Specifies which items to include when listing a set of blobs.
  * <p>
  * By default, committed blocks are always returned. Use the values in this enum
  * to include snapshots, metadata, and/or uncommitted blocks.
- *
+ * 
  * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum BlobListingDetails {
@@ -38,7 +38,7 @@ public enum BlobListingDetails {
 
     /**
      * Sets the value of this enum.
-     *
+     * 
      * @param val
      *            The value being assigned.
      */

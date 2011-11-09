@@ -1,9 +1,9 @@
 package com.microsoft.azure.services.blob;
 
-public class ListBlobBlocksOptions {
+public class ListBlobBlocksOptions extends BlobOptions {
     private String leaseId;
     private String snapshot;
-    //TODO: Enum?
+    // TODO: Enum?
     private String listType; // "committed", "uncommitted", "all"
 
     public String getLeaseId() {

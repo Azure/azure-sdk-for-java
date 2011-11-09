@@ -1,7 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-
-public class GetBlobOptions {
+public class GetBlobOptions extends BlobOptions {
     private String snapshot;
     private String leaseId;
     private boolean computeRangeMD5;

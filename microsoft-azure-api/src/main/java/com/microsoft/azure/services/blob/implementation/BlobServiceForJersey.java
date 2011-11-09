@@ -80,8 +80,12 @@ public class BlobServiceForJersey implements BlobService {
      * configurable though code?
      */
     @Inject
-    public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-            @Named(BlobConfiguration.TIMEOUT) String timeout, SharedKeyLiteFilter filter) {
+    public BlobServiceForJersey(
+            Client channel,
+            @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
+            @Named(BlobConfiguration.URL) String url,
+            @Named(BlobConfiguration.TIMEOUT) String timeout,
+            SharedKeyLiteFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -93,8 +97,7 @@ public class BlobServiceForJersey implements BlobService {
         channel.addFilter(filter);
     }
 
-    public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName,
-            String url, Integer timeout, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
+    public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName, String url, Integer timeout, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
         this.channel = channel;
         this.filters = filters;
         this.accountName = accountName;
@@ -268,7 +271,7 @@ public class BlobServiceForJersey implements BlobService {
     private WebResource getResource() {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", this.timeout);
-        for(ServiceFilter filter : filters) {
+        for (ServiceFilter filter : filters) {
             webResource.addFilter(new ClientFilterAdapter(filter));
         }
 

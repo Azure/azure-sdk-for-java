@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class DeleteBlobOptions {
+public class DeleteBlobOptions extends BlobOptions {
     private String snapshot;
     private String leaseId;
     private boolean deleteSnaphotsOnly;

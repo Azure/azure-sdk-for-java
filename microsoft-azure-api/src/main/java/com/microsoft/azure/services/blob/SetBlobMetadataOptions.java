@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class SetBlobMetadataOptions {
+public class SetBlobMetadataOptions extends BlobOptions {
     private String leaseId;
     private AccessCondition accessCondition;
 

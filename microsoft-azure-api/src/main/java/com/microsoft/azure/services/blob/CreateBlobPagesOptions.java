@@ -1,6 +1,6 @@
 package com.microsoft.azure.services.blob;
 
-public class CreateBlobPagesOptions {
+public class CreateBlobPagesOptions extends BlobOptions {
     private String leaseId;
     private String contentMD5;
     private AccessCondition accessCondition;
