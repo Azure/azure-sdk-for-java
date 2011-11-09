@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ClientFilterAdapter;
 import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.blob.AccessCondition;
 import com.microsoft.azure.services.blob.AccessConditionHeaderType;
@@ -21,7 +22,6 @@ import com.microsoft.azure.services.blob.BlobConfiguration;
 import com.microsoft.azure.services.blob.BlobListingDetails;
 import com.microsoft.azure.services.blob.BlobProperties;
 import com.microsoft.azure.services.blob.BlobService;
-import com.microsoft.azure.services.blob.BlobSharedKeyLiteFilter;
 import com.microsoft.azure.services.blob.BlobSnapshot;
 import com.microsoft.azure.services.blob.BlockList;
 import com.microsoft.azure.services.blob.CommitBlobBlocksOptions;
@@ -73,7 +73,7 @@ public class BlobServiceForJersey implements BlobService {
     private final Integer timeout;
     private final RFC1123DateConverter dateMapper;
     private final ServiceFilter[] filters;
-    private final BlobSharedKeyLiteFilter filter;
+    private final SharedKeyLiteFilter filter;
 
     /*
      * TODO: How can we make "timeout" optional? TODO: How to make "filter"
@@ -81,7 +81,7 @@ public class BlobServiceForJersey implements BlobService {
      */
     @Inject
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-            @Named(BlobConfiguration.TIMEOUT) String timeout, BlobSharedKeyLiteFilter filter) {
+            @Named(BlobConfiguration.TIMEOUT) String timeout, SharedKeyLiteFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -94,7 +94,7 @@ public class BlobServiceForJersey implements BlobService {
     }
 
     public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName,
-            String url, Integer timeout, BlobSharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
+            String url, Integer timeout, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
         this.channel = channel;
         this.filters = filters;
         this.accountName = accountName;
@@ -268,6 +268,9 @@ public class BlobServiceForJersey implements BlobService {
     private WebResource getResource() {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", this.timeout);
+        for(ServiceFilter filter : filters) {
+            webResource.addFilter(new ClientFilterAdapter(filter));
+        }
 
         return webResource;
     }

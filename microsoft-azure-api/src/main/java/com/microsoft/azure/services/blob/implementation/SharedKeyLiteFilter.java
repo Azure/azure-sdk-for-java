@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.blob;
+package com.microsoft.azure.services.blob.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,8 +8,7 @@ import java.util.Locale;
 
 import javax.inject.Named;
 
-import com.microsoft.azure.services.blob.implementation.HmacSHA256Sign;
-import com.microsoft.azure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.azure.services.blob.BlobConfiguration;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -18,11 +17,11 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 /*
  * TODO: Should the "full" shared key signing?
  */
-public class BlobSharedKeyLiteFilter extends ClientFilter {
+public class SharedKeyLiteFilter extends ClientFilter {
     private final String accountName;
     private final HmacSHA256Sign signer;
 
-    public BlobSharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
+    public SharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
 
         this.accountName = accountName;
         // TODO: How to make this configurable?
@@ -32,11 +31,13 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
 
-        sign(cr);
+        // Only sign if no other filter has done it yet
+        if (cr.getHeaders().getFirst("Authorization") == null) {
+            sign(cr);
+        }
 
         return this.getNext().handle(cr);
     }
-
 
     private String nullEmpty(String value) {
         return value != null ? value : "";
@@ -66,7 +67,7 @@ public class BlobSharedKeyLiteFilter extends ClientFilter {
 
         System.out.println(stringToSign);
         String signature = this.signer.sign(stringToSign);
-        cr.getHeaders().add("Authorization", "SharedKeyLite " + this.accountName + ":" + signature);
+        cr.getHeaders().putSingle("Authorization", "SharedKeyLite " + this.accountName + ":" + signature);
     }
 
     /*
