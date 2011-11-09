@@ -15,6 +15,9 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
+/*
+ * TODO: Should the "full" shared key signing?
+ */
 public class BlobSharedKeyLiteFilter extends ClientFilter {
     private final String accountName;
     private final HmacSHA256Sign signer;

@@ -17,10 +17,12 @@ public interface BlobService {
 
     ListContainersResult listContainers(ListContainersOptions options) throws ServiceException;
 
+    //TODO: Should we use "create" or "put"?
     void createContainer(String container) throws ServiceException;
 
     void createContainer(String container, CreateContainerOptions options) throws ServiceException;
 
+    // TODO: Should this have a "DeleteContainerResult" class
     void deleteContainer(String container) throws ServiceException;
 
     void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException;
@@ -41,6 +43,7 @@ public interface BlobService {
 
     ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException;
 
+    //TODO: Should we use "create" or "put"?
     void createPageBlob(String container, String blob, int length) throws ServiceException;
 
     void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
