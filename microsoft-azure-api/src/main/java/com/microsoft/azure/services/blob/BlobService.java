@@ -52,20 +52,24 @@ public interface BlobService {
 
     void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException;
 
+    //TODO: Should we use "createPageBlobPages"?
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException;
 
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) throws ServiceException;
 
+    //TODO: Should we use "updatePageBlobPages"?
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
             throws ServiceException;
 
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
             CreateBlobPagesOptions options) throws ServiceException;
 
+    //TODO: createBlockBlobBlock?
     void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException;
 
     void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options) throws ServiceException;
 
+    //TODO: commitBlockBlobBlocks?
     void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException;
 
     void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException;
