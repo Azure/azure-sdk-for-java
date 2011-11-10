@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import com.microsoft.azure.configuration.Configuration;
 
 public abstract class IntegrationTestBase {
-    protected Configuration createConfiguration() {
+    protected static Configuration createConfiguration() {
         Configuration config = new Configuration();
         Map<String, String> env = System.getenv();
         setConfigValue(config, env, BlobConfiguration.ACCOUNT_NAME, "xxx");
@@ -23,7 +23,7 @@ public abstract class IntegrationTestBase {
         return config;
     }
 
-    private void setConfigValue(Configuration config, Map<String, String> props, String key, String defaultValue) {
+    private static void setConfigValue(Configuration config, Map<String, String> props, String key, String defaultValue) {
         String value = props.get(key);
         if (value == null)
             value = defaultValue;

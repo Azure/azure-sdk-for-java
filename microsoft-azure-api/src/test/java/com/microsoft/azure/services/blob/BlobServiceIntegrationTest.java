@@ -21,6 +21,8 @@ import java.util.HashMap;
 
 import junit.framework.Assert;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.ServiceException;
@@ -29,6 +31,81 @@ import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.http.ServiceFilter;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
+    private static final String testContainersPrefix = "sdktest-";
+    private static final String createableContainersPrefix = "csdktest-";
+    private static String CREATEABLE_CONTAINER_1;
+    private static String CREATEABLE_CONTAINER_2;
+    private static String CREATEABLE_CONTAINER_3;
+    private static String CREATEABLE_CONTAINER_4;
+    private static String TEST_CONTAINER_FOR_BLOBS;
+    private static String TEST_CONTAINER_FOR_BLOBS_2;
+    private static String TEST_CONTAINER_FOR_LISTING;
+    private static String[] creatableContainers;
+    private static String[] testContainers;
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        // Setup container names array (list of container names used by
+        // integration tests)
+        testContainers = new String[10];
+        for (int i = 0; i < testContainers.length; i++) {
+            testContainers[i] = String.format("%s%d", testContainersPrefix, i + 1);
+        }
+
+        creatableContainers = new String[10];
+        for (int i = 0; i < creatableContainers.length; i++) {
+            creatableContainers[i] = String.format("%s%d", createableContainersPrefix, i + 1);
+        }
+
+        CREATEABLE_CONTAINER_1 = creatableContainers[0];
+        CREATEABLE_CONTAINER_2 = creatableContainers[1];
+        CREATEABLE_CONTAINER_3 = creatableContainers[2];
+        CREATEABLE_CONTAINER_4 = creatableContainers[3];
+
+        TEST_CONTAINER_FOR_BLOBS = testContainers[0];
+        TEST_CONTAINER_FOR_BLOBS_2 = testContainers[1];
+        TEST_CONTAINER_FOR_LISTING = testContainers[2];
+
+        // Create all test containers and their content
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+        for (int i = 0; i < testContainers.length; i++) {
+            try {
+                service.createContainer(testContainers[i]);
+            }
+            catch (ServiceException e) {
+                // Ignore exception as the containers might not exists
+            }
+        }
+
+        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "myblob1", 512);
+        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "myblob2", 512);
+        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "otherblob1", 512);
+        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "otherblob2", 512);
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        Configuration config = createConfiguration();
+        BlobService service = config.create(BlobService.class);
+        for (int i = 0; i < testContainers.length; i++) {
+            try {
+                service.deleteContainer(testContainers[i]);
+            }
+            catch (ServiceException e) {
+                // Ignore exception as the containers might not exists
+            }
+        }
+
+        for (int i = 0; i < creatableContainers.length; i++) {
+            try {
+                service.deleteContainer(creatableContainers[i]);
+            }
+            catch (ServiceException e) {
+                // Ignore exception as the containers might not exists
+            }
+        }
+    }
 
     @Test
     public void getServiceProppertiesWorks() throws Exception {
@@ -81,8 +158,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createContainer("foo");
-        service.deleteContainer("foo");
+        service.createContainer(CREATEABLE_CONTAINER_1);
 
         // Assert
     }
@@ -94,16 +170,17 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createContainer("foo2", new CreateContainerOptions().setPublicAccess("blob").addMetadata("test", "bar").addMetadata("blah", "bleah"));
+        service.createContainer(CREATEABLE_CONTAINER_2,
+                new CreateContainerOptions().setPublicAccess("blob").addMetadata("test", "bar").addMetadata("blah", "bleah"));
 
-        ContainerProperties prop = service.getContainerMetadata("foo2");
-        ContainerProperties prop2 = service.getContainerProperties("foo2");
-        ContainerACL acl = service.getContainerACL("foo2");
+        ContainerProperties prop = service.getContainerMetadata(CREATEABLE_CONTAINER_2);
+        ContainerProperties prop2 = service.getContainerProperties(CREATEABLE_CONTAINER_2);
+        ContainerACL acl = service.getContainerACL(CREATEABLE_CONTAINER_2);
 
-        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix("foo2").setListingDetails(
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix(CREATEABLE_CONTAINER_2).setListingDetails(
                 EnumSet.of(ContainerListingDetails.METADATA)));
 
-        service.deleteContainer("foo2");
+        service.deleteContainer(CREATEABLE_CONTAINER_2);
 
         // Assert
         assertNotNull(prop);
@@ -144,15 +221,13 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createContainer("foo3");
+        service.createContainer(CREATEABLE_CONTAINER_3);
 
         HashMap<String, String> metadata = new HashMap<String, String>();
         metadata.put("test", "bar");
         metadata.put("blah", "bleah");
-        service.setContainerMetadata("foo3", metadata);
-        ContainerProperties prop = service.getContainerMetadata("foo3");
-
-        service.deleteContainer("foo3");
+        service.setContainerMetadata(CREATEABLE_CONTAINER_3, metadata);
+        ContainerProperties prop = service.getContainerMetadata(CREATEABLE_CONTAINER_3);
 
         // Assert
         assertNotNull(prop);
@@ -172,7 +247,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         BlobService service = config.create(BlobService.class);
 
-        String container = "foo4";
+        String container = CREATEABLE_CONTAINER_4;
         Date expiryStartDate = new GregorianCalendar(2010, 1, 1).getTime();
         Date expiryEndDate = new GregorianCalendar(2020, 1, 1).getTime();
 
@@ -211,7 +286,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(results);
-        assertEquals(8, results.getContainers().size());
+        assertTrue(testContainers.length <= results.getContainers().size());
         assertNotNull(results.getContainers().get(0).getName());
         assertNotNull(results.getContainers().get(0).getMetadata());
         assertNotNull(results.getContainers().get(0).getProperties());
@@ -228,6 +303,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         ListContainersResult results = service.listContainers(new ListContainersOptions().setMaxResults(3));
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
 
         // Assert
         assertNotNull(results);
@@ -235,12 +311,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(results.getNextMarker());
         assertEquals(3, results.getMaxResults());
 
-        // Act
-        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
-
-        // Assert
         assertNotNull(results2);
-        assertEquals(5, results2.getContainers().size());
+        assertTrue(testContainers.length - 3 <= results2.getContainers().size());
         assertEquals("", results2.getNextMarker());
         assertEquals(0, results2.getMaxResults());
     }
@@ -252,13 +324,21 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListContainersResult results = service.listContainers(new ListContainersOptions().setPrefix("mycontainer1"));
-
+        ListContainersResult results = service.listContainers(new ListContainersOptions().setPrefix(testContainersPrefix).setMaxResults(3));
         // Assert
         assertNotNull(results);
         assertEquals(3, results.getContainers().size());
         assertNotNull(results.getNextMarker());
-        assertEquals(0, results.getMaxResults());
+        assertEquals(3, results.getMaxResults());
+
+        // Act
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setMarker(results.getNextMarker()));
+
+        // Assert
+        assertNotNull(results2);
+        assertEquals(testContainers.length - 3, results2.getContainers().size());
+        assertNotNull(results2.getNextMarker());
+        assertEquals(0, results2.getMaxResults());
     }
 
     @Test
@@ -268,11 +348,11 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListBlobsResult results = service.listBlobs("mycontainer11");
+        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING);
 
         // Assert
         assertNotNull(results);
-        assertEquals(3, results.getBlobs().size());
+        assertEquals(4, results.getBlobs().size());
     }
 
     @Test
@@ -282,7 +362,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        ListBlobsResult results = service.listBlobs("mycontainer11", new ListBlobsOptions().setPrefix("Create"));
+        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setPrefix("myblob"));
 
         // Assert
         assertNotNull(results);
@@ -296,7 +376,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 512);
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512);
 
         // Assert
     }
@@ -308,12 +388,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 512, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
                 .setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        BlobProperties props = service.getBlobProperties("mycontainer1", "test");
+        BlobProperties props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
 
         // Assert
         assertNotNull(props);
@@ -339,7 +419,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         service.createPageBlob(container, blob, 512);
 
@@ -360,7 +440,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 512);
@@ -382,7 +462,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 16384 + 512);
@@ -418,7 +498,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test13";
         String content = new String(new char[512]);
         service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
@@ -443,7 +523,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test14";
         service.createBlockBlob(container, blob, null);
         service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(new byte[256]));
@@ -476,7 +556,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test14";
         String blockId1 = "1fedcba";
         String blockId2 = "2abcdef";
@@ -516,7 +596,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test13";
         String content = new String(new char[512]);
         service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
@@ -533,7 +613,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream("some content".getBytes()));
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream("some content".getBytes()));
 
         // Assert
     }
@@ -546,12 +626,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
                 new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
-                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
-                /* .setContentMD5("1234") */.setContentType("text/plain"));
+                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                        /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        BlobProperties props = service.getBlobProperties("mycontainer1", "test2");
+        BlobProperties props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test2");
 
         // Assert
         assertNotNull(props);
@@ -577,7 +657,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test3";
         service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
         BlobSnapshot snapshot = service.createBlobSnapshot(container, blob);
@@ -596,7 +676,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test3";
         service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
         BlobSnapshot snapshot = service.createBlobSnapshot(container, blob,
@@ -622,12 +702,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
                 new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
-                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
-                /* .setContentMD5("1234") */.setContentType("text/plain"));
+                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                        /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        GetBlobResult blob = service.getBlob("mycontainer1", "test2");
+        GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test2");
         BlobProperties props = blob.getProperties();
 
         // Assert
@@ -655,12 +735,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 4096, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
                 .setBlobContentLanguage("en-us")
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        GetBlobResult blob = service.getBlob("mycontainer1", "test");
+        GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test");
         BlobProperties props = blob.getProperties();
 
         // Assert
@@ -688,9 +768,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 4096);
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
         try {
-            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
+            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifMatch("123")));
             Assert.fail("getBlob should throw an exception");
         }
         catch (ServiceException e) {
@@ -706,10 +786,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 4096);
-        BlobProperties props = service.getBlobProperties("mycontainer1", "test");
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
+        BlobProperties props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
         try {
-            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
+            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (ServiceException e) {
@@ -725,10 +805,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        service.createPageBlob("mycontainer1", "test", 4096);
-        BlobProperties props = service.getBlobProperties("mycontainer1", "test");
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
+        BlobProperties props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
         try {
-            service.getBlob("mycontainer1", "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
+            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (ServiceException e) {
@@ -744,7 +824,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         service.createPageBlob(container, blob, 4096);
         BlobProperties props = service.getBlobProperties(container, blob);
@@ -780,7 +860,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         service.createPageBlob(container, blob, 4096);
         BlobProperties props = service.getBlobProperties(container, blob);
@@ -810,7 +890,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         service.createPageBlob(container, blob, 4096, new CreateBlobOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
         GetBlobMetadataResult props = service.getBlobMetadata(container, blob);
@@ -835,7 +915,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test10";
         service.createPageBlob(container, blob, 4096);
         SetBlobPropertiesResult result = service.setBlobProperties(container, blob,
@@ -873,7 +953,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobService service = config.create(BlobService.class);
 
         // Act
-        String container = "mycontainer1";
+        String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test11";
         HashMap<String, String> metadata = new HashMap<String, String>();
         metadata.put("test", "bar");
@@ -905,9 +985,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob("mycontainer1", "test2", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")));
 
-        service.deleteBlob("mycontainer1", "test2");
+        service.deleteBlob(TEST_CONTAINER_FOR_BLOBS, "test2");
 
         // Assert
     }
@@ -920,10 +1000,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content2";
-        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.copyBlob("mycontainer1", "test5", "mycontainer2", "test6");
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.copyBlob(TEST_CONTAINER_FOR_BLOBS_2, "test5", TEST_CONTAINER_FOR_BLOBS, "test6");
 
-        GetBlobResult blob = service.getBlob("mycontainer1", "test5");
+        GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS_2, "test5");
         BlobProperties props = blob.getProperties();
 
         // Assert
@@ -948,9 +1028,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content2";
-        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
-        String leaseId = service.acquireLease("mycontainer2", "test6");
-        service.releaseLease("mycontainer2", "test6", leaseId);
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease(TEST_CONTAINER_FOR_BLOBS, "test6");
+        service.releaseLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
 
         // Assert
         assertNotNull(leaseId);
@@ -964,10 +1044,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content2";
-        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
-        String leaseId = service.acquireLease("mycontainer2", "test6");
-        String leaseId2 = service.renewLease("mycontainer2", "test6", leaseId);
-        service.releaseLease("mycontainer2", "test6", leaseId);
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease(TEST_CONTAINER_FOR_BLOBS, "test6");
+        String leaseId2 = service.renewLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
+        service.releaseLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
 
         // Assert
         assertNotNull(leaseId);
@@ -982,10 +1062,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content2";
-        service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
-        String leaseId = service.acquireLease("mycontainer2", "test6");
-        service.breakLease("mycontainer2", "test6", leaseId);
-        service.releaseLease("mycontainer2", "test6", leaseId);
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        String leaseId = service.acquireLease(TEST_CONTAINER_FOR_BLOBS, "test6");
+        service.breakLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
+        service.releaseLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
 
         // Assert
         assertNotNull(leaseId);
@@ -1013,7 +1093,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         ServiceException Error = null;
         try {
-            service.createPageBlob("mycontainer1", "test", 12);
+            service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 12);
         }
         catch (ServiceException e) {
             Error = e;
@@ -1039,7 +1119,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         ServiceException Error = null;
         try {
-            service.createPageBlob("mycontainer1", "test", 12);
+            service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 12);
         }
         catch (ServiceException e) {
             Error = e;
