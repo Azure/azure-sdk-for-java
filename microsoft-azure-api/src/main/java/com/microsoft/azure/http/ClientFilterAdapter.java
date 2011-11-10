@@ -5,122 +5,112 @@ import java.net.URI;
 import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response.StatusType;
 
 import com.microsoft.azure.http.ServiceFilter.Request;
 import com.microsoft.azure.http.ServiceFilter.Response;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class ClientFilterAdapter extends ClientFilter {
-	ServiceFilter filter;
+    ServiceFilter filter;
 
-	public ClientFilterAdapter(ServiceFilter filter) {
-		this.filter = filter;
-	}
+    public ClientFilterAdapter(ServiceFilter filter) {
+        this.filter = filter;
+    }
 
-	@Override
-	public ClientResponse handle(ClientRequest clientRequest)
-			throws ClientHandlerException {
+    @Override
+    public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
 
-		final ClientRequest cr = clientRequest;
-		Response resp = filter.handle(
-				new ServiceFilterRequest(clientRequest),
-				new ServiceFilter.Next() {
-					public Response handle(
-							Request request) {
-						return new ServiceFilterResponse(
-								getNext().handle(cr));
-					}
-				});
+        final ClientRequest cr = clientRequest;
+        Response resp = filter.handle(new ServiceFilterRequest(clientRequest), new ServiceFilter.Next() {
+            public Response handle(Request request) {
+                return new ServiceFilterResponse(getNext().handle(cr));
+            }
+        });
 
-		return ((ServiceFilterResponse) resp).clientResponse;
-	}
+        return ((ServiceFilterResponse) resp).clientResponse;
+    }
 }
 
 class ServiceFilterRequest implements ServiceFilter.Request {
-	ClientRequest clientRequest;
+    ClientRequest clientRequest;
 
-	public ServiceFilterRequest(ClientRequest clientRequest) {
-		this.clientRequest = clientRequest;
-	}
+    public ServiceFilterRequest(ClientRequest clientRequest) {
+        this.clientRequest = clientRequest;
+    }
 
-	public Map<String, Object> getProperties() {
-		return clientRequest.getProperties();
-	}
+    public Map<String, Object> getProperties() {
+        return clientRequest.getProperties();
+    }
 
-	public void setProperties(Map<String, Object> properties) {
-		clientRequest.setProperties(properties);
-	}
+    public void setProperties(Map<String, Object> properties) {
+        clientRequest.setProperties(properties);
+    }
 
-	public URI getURI() {
-		return clientRequest.getURI();
-	}
+    public URI getURI() {
+        return clientRequest.getURI();
+    }
 
-	public void setURI(URI uri) {
-		clientRequest.setURI(uri);
-	}
+    public void setURI(URI uri) {
+        clientRequest.setURI(uri);
+    }
 
-	public String getMethod() {
-		return clientRequest.getMethod();
-	}
+    public String getMethod() {
+        return clientRequest.getMethod();
+    }
 
-	public void setMethod(String method) {
-		clientRequest.setMethod(method);
-	}
+    public void setMethod(String method) {
+        clientRequest.setMethod(method);
+    }
 
-	public Object getEntity() {
-		return clientRequest.getEntity();
-	}
+    public Object getEntity() {
+        return clientRequest.getEntity();
+    }
 
-	public void setEntity(Object entity) {
-		clientRequest.setEntity(entity);
-	}
+    public void setEntity(Object entity) {
+        clientRequest.setEntity(entity);
+    }
 
-	public MultivaluedMap<String, Object> getHeaders() {
-		return clientRequest.getHeaders();
-	}
+    public MultivaluedMap<String, Object> getHeaders() {
+        return clientRequest.getHeaders();
+    }
 
 }
 
 class ServiceFilterResponse implements ServiceFilter.Response {
-	ClientResponse clientResponse;
+    ClientResponse clientResponse;
 
-	public ServiceFilterResponse(ClientResponse clientResponse) {
-		this.clientResponse = clientResponse;
-	}
+    public ServiceFilterResponse(ClientResponse clientResponse) {
+        this.clientResponse = clientResponse;
+    }
 
-	public Map<String, Object> getProperties() {
-		return clientResponse.getProperties();
-	}
+    public Map<String, Object> getProperties() {
+        return clientResponse.getProperties();
+    }
 
-	public int getStatus() {
-		return clientResponse.getStatus();
-	}
+    public int getStatus() {
+        return clientResponse.getStatus();
+    }
 
-	public void setStatus(int status) {
-		clientResponse.setStatus(status);
-	}
+    public void setStatus(int status) {
+        clientResponse.setStatus(status);
+    }
 
+    public MultivaluedMap<String, String> getHeaders() {
+        return clientResponse.getHeaders();
+    }
 
-	public MultivaluedMap<String, String> getHeaders() {
-		return clientResponse.getHeaders();
-	}
+    public boolean hasEntity() {
+        return clientResponse.hasEntity();
+    }
 
-	public boolean hasEntity() {
-		return clientResponse.hasEntity();
-	}
+    public InputStream getEntityInputStream() {
+        return clientResponse.getEntityInputStream();
+    }
 
-	public InputStream getEntityInputStream() {
-		return clientResponse.getEntityInputStream();
-	}
-
-	public void setEntityInputStream(InputStream entity) {
-		clientResponse.setEntityInputStream(entity);
-	}
-
+    public void setEntityInputStream(InputStream entity) {
+        clientResponse.setEntityInputStream(entity);
+    }
 }
