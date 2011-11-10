@@ -1,5 +1,7 @@
 package com.microsoft.azure.services.blob;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -8,9 +10,10 @@ import com.microsoft.azure.configuration.Configuration;
 public abstract class IntegrationTestBase {
     protected Configuration createConfiguration() {
         Configuration config = new Configuration();
-        config.setProperty(BlobConfiguration.ACCOUNT_NAME, "xxx");
-        config.setProperty(BlobConfiguration.ACCOUNT_KEY, "xxx");
-        config.setProperty(BlobConfiguration.URL, "http://xxx.blob.core.windows.net");
+        Map<String, String> env = System.getenv();
+        setConfigValue(config, env, BlobConfiguration.ACCOUNT_NAME, "xxx");
+        setConfigValue(config, env, BlobConfiguration.ACCOUNT_KEY, "xxx");
+        setConfigValue(config, env, BlobConfiguration.URL, "http://xxx.blob.core.windows.net");
 
         // when mock running
         // config.setProperty("serviceBus.uri", "http://localhost:8086");
@@ -18,6 +21,14 @@ public abstract class IntegrationTestBase {
         // "http://localhost:8081/WRAPv0.9");
 
         return config;
+    }
+
+    private void setConfigValue(Configuration config, Map<String, String> props, String key, String defaultValue) {
+        String value = props.get(key);
+        if (value == null)
+            value = defaultValue;
+
+        config.setProperty(key, value);
     }
 
     @BeforeClass
