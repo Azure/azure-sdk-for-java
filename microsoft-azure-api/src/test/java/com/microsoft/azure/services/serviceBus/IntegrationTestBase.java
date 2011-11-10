@@ -60,7 +60,7 @@ public abstract class IntegrationTestBase {
 			}
 		}
 		if (!testAlphaExists) {
-			service.createQueue(new Queue().setName("TestAlpha"));
+			service.createQueue(new Queue("TestAlpha"));
 		}
 	}
 }

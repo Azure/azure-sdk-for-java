@@ -49,6 +49,4 @@ public class ServiceBusCreationTest  {
 		
 		assertNotNull(service);
 	}
-
-
 }
