@@ -49,7 +49,7 @@ public class ContainerACL {
         this.signedIdentifiers = signedIdentifiers;
     }
 
-    public void AddSignedIdentifier(String id, Date start, Date expiry, String permission) {
+    public void addSignedIdentifier(String id, Date start, Date expiry, String permission) {
         AccessPolicy accessPolicy = new AccessPolicy();
         accessPolicy.setStart(start);
         accessPolicy.setExpiry(expiry);
