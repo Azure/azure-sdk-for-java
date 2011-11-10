@@ -7,8 +7,8 @@ import com.microsoft.azure.services.serviceBus.client.MessagingClient;
 import com.microsoft.azure.services.serviceBus.implementation.BrokerPropertiesMapper;
 import com.microsoft.azure.services.serviceBus.implementation.EntryModelProvider;
 import com.microsoft.azure.services.serviceBus.implementation.MarshallerProvider;
-import com.microsoft.azure.services.serviceBus.implementation.ServiceBusServiceForJersey;
-import com.microsoft.azure.services.serviceBus.implementation.ServiceBusServiceImpl;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusRestProxy;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
@@ -16,8 +16,10 @@ public class Exports implements Builder.Exports {
 	public void register(Builder.Registry registry) {
 		
 		// provide contract implementation
-		registry.add(ServiceBusService.class, ServiceBusServiceImpl.class);
-		registry.add(ServiceBusServiceForJersey.class);
+		registry.add(ServiceBusContract.class, ServiceBusExceptionProcessor.class);
+		registry.add(ServiceBusService.class);
+		registry.add(ServiceBusExceptionProcessor.class);
+		registry.add(ServiceBusRestProxy.class);
 		registry.add(MessagingClient.class);
 
 		// alter jersey client config for serviceBus

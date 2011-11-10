@@ -1,7 +1,5 @@
 package com.microsoft.azure.services.serviceBus.implementation;
 
-import java.io.InputStream;
-import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,8 +16,7 @@ import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.Queue;
 import com.microsoft.azure.services.serviceBus.ListQueuesResult;
 import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.azure.services.serviceBus.ReceiveMode;
-import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.ServiceBusContract;
 import com.microsoft.azure.services.serviceBus.Topic;
 import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.microsoft.azure.services.serviceBus.implementation.Feed;
@@ -28,25 +25,22 @@ import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;
 import com.microsoft.azure.http.ClientFilterAdapter;
 import com.microsoft.azure.http.ServiceFilter;
-import com.microsoft.azure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class ServiceBusServiceForJersey implements ServiceBusService {
+public class ServiceBusRestProxy implements ServiceBusContract {
 
 	private Client channel;
 	private String uri;
 	private BrokerPropertiesMapper mapper;
-	static Log log = LogFactory.getLog(ServiceBusService.class);
+	static Log log = LogFactory.getLog(ServiceBusContract.class);
 
 	ServiceFilter[] filters;
 
 	@Inject
-	public ServiceBusServiceForJersey(
+	public ServiceBusRestProxy(
 			Client channel, 
 			@Named("serviceBus") WrapFilter authFilter,
 			@Named("serviceBus.uri") String uri,
@@ -59,7 +53,7 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 		channel.addFilter(authFilter);
 	}
 
-	public ServiceBusServiceForJersey(
+	public ServiceBusRestProxy(
 			Client channel, 
 			ServiceFilter[] filters,
 			String uri,
@@ -70,10 +64,10 @@ public class ServiceBusServiceForJersey implements ServiceBusService {
 		this.mapper = mapper;
 	}
 
-	public ServiceBusService withFilter(ServiceFilter filter) {
+	public ServiceBusContract withFilter(ServiceFilter filter) {
 		ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
 		newFilters[filters.length] = filter;
-		return new ServiceBusServiceForJersey(channel, newFilters, uri, mapper);
+		return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
 	}
 
 	

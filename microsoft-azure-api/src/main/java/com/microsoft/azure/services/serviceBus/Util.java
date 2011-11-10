@@ -3,13 +3,13 @@ package com.microsoft.azure.services.serviceBus;
 import com.microsoft.azure.ServiceException;
 
 public class Util {
-	public static Iterable<Queue> iterateQueues(ServiceBusService service)
+	public static Iterable<Queue> iterateQueues(ServiceBusContract service)
 			throws ServiceException {
 		// TODO: iterate over link rel=next pagination
 		return service.listQueues().getItems();
 	}
 
-	public static Iterable<Topic> iterateTopics(ServiceBusService service)
+	public static Iterable<Topic> iterateTopics(ServiceBusContract service)
 			throws ServiceException {
 		// TODO: iterate over link rel=next pagination
 		return service.listTopics().getItems();

@@ -9,6 +9,13 @@ public class ServiceBusConfiguration {
 	public final static String WRAP_PASSWORD = "serviceBus.wrap.password";
 	public final static String WRAP_SCOPE = "serviceBus.wrap.scope";
 
+	public static Configuration configure(
+			String namespace, String authenticationName,
+			String authenticationPassword) {
+		return configure(null, Configuration.getInstance(), namespace, authenticationName,
+				authenticationPassword);
+	}
+
 	public static Configuration configure(Configuration configuration,
 			String namespace, String authenticationName,
 			String authenticationPassword) {

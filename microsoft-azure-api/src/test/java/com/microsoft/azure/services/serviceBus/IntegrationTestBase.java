@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.ServiceBusContract;
 import com.microsoft.azure.services.serviceBus.Queue;
 import static com.microsoft.azure.services.serviceBus.Util.*;
 
@@ -38,7 +38,7 @@ public abstract class IntegrationTestBase {
 		System.setProperty("http.keepAlive", "false");
 		
 		boolean testAlphaExists = false;
-		ServiceBusService service = createConfiguration().create(ServiceBusService.class);
+		ServiceBusContract service = createConfiguration().create(ServiceBusContract.class);
 		for(Queue queue : iterateQueues(service)) {
 			String queueName = queue.getName();
 			if (queueName.startsWith("Test") || queueName.startsWith("test")) {

@@ -17,13 +17,13 @@ import com.microsoft.azure.http.ServiceFilter.Request;
 import com.microsoft.azure.http.ServiceFilter.Response;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
-import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.ServiceBusContract;
 import static org.junit.Assert.*;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
 	private Configuration config;
-	private ServiceBusService service;
+	private ServiceBusContract service;
 
 	static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete().setTimeout(5);
 	static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
@@ -31,7 +31,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 	@Before
 	public void createService() throws Exception {
 		config = createConfiguration();
-		service = config.create(ServiceBusService.class);
+		service = config.create(ServiceBusContract.class);
 	}
 	
 	@Test
@@ -233,7 +233,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 		final List<Request> requests = new ArrayList<Request>();
 		final List<Response> responses = new ArrayList<Response>();
 		
-		ServiceBusService filtered = service.withFilter(new ServiceFilter() {
+		ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
 			public Response handle(Request request, Next next) {
 				requests.add(request);
 				Response response = next.handle(request);

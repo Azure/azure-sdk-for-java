@@ -7,38 +7,38 @@ import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
-import com.microsoft.azure.services.serviceBus.ServiceBusService;
+import com.microsoft.azure.services.serviceBus.ServiceBusContract;
 
 public class MessagingClient {
-	private ServiceBusService service;
+	private ServiceBusContract service;
 
 
 	public MessagingClient() throws Exception {
-		this.setService(Configuration.load().create(ServiceBusService.class));
+		this.setService(Configuration.load().create(ServiceBusContract.class));
 	}
 
 	public MessagingClient(String profile) throws Exception {
-		this.setService(Configuration.load().create(profile, ServiceBusService.class));
+		this.setService(Configuration.load().create(profile, ServiceBusContract.class));
 	}
 
 	public MessagingClient(Configuration configuration) throws Exception {
-		this.setService(configuration.create(ServiceBusService.class));
+		this.setService(configuration.create(ServiceBusContract.class));
 	}
 
 	public MessagingClient(String profile, Configuration configuration) throws Exception {
-		this.setService(configuration.create(profile, ServiceBusService.class));
+		this.setService(configuration.create(profile, ServiceBusContract.class));
 	}
 
 	@Inject
-	public MessagingClient(ServiceBusService service) {
+	public MessagingClient(ServiceBusContract service) {
 		this.setService(service);
 	}
 
-	public void setService(ServiceBusService service) {
+	public void setService(ServiceBusContract service) {
 		this.service = service;
 	}
 
-	public ServiceBusService getService() {
+	public ServiceBusContract getService() {
 		return service;
 	}
 
