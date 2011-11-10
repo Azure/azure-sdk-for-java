@@ -11,7 +11,8 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.blob.AcquireLeaseOptions;
-import com.microsoft.azure.services.blob.Blob;
+import com.microsoft.azure.services.blob.GetBlobResult;
+import com.microsoft.azure.services.blob.BlobOptions;
 import com.microsoft.azure.services.blob.BlobProperties;
 import com.microsoft.azure.services.blob.BlobService;
 import com.microsoft.azure.services.blob.BlobSnapshot;
@@ -75,6 +76,30 @@ public class BlobServiceImpl implements BlobService {
     public ServiceProperties getServiceProperties() throws ServiceException {
         try {
             return service.getServiceProperties();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ServiceProperties getServiceProperties(BlobOptions options) throws ServiceException {
+        try {
+            return service.getServiceProperties(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public void setServiceProperties(ServiceProperties serviceProperties, BlobOptions options) throws ServiceException {
+        try {
+            service.setServiceProperties(serviceProperties, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -180,9 +205,33 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
+    public ContainerProperties getContainerProperties(String container, BlobOptions options) throws ServiceException {
+        try {
+            return service.getContainerProperties(container, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
     public ContainerProperties getContainerMetadata(String container) throws ServiceException {
         try {
             return service.getContainerMetadata(container);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ContainerProperties getContainerMetadata(String container, BlobOptions options) throws ServiceException {
+        try {
+            return service.getContainerMetadata(container, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -204,9 +253,33 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
+    public ContainerACL getContainerACL(String container, BlobOptions options) throws ServiceException {
+        try {
+            return service.getContainerACL(container, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
     public void setContainerACL(String container, ContainerACL acl) throws ServiceException {
         try {
             service.setContainerACL(container, acl);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public void setContainerACL(String container, ContainerACL acl, BlobOptions options) throws ServiceException {
+        try {
+            service.setContainerACL(container, acl, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -520,6 +593,18 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
+    public SetBlobPropertiesResult setBlobProperties(String container, String blob) throws ServiceException {
+        try {
+            return service.setBlobProperties(container, blob);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) throws ServiceException {
         try {
             return service.setBlobMetadata(container, blob, metadata);
@@ -545,7 +630,7 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
-    public Blob getBlob(String container, String blob) throws ServiceException {
+    public GetBlobResult getBlob(String container, String blob) throws ServiceException {
         try {
             return service.getBlob(container, blob);
         }
@@ -557,7 +642,7 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
-    public Blob getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
+    public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         try {
             return service.getBlob(container, blob, options);
         }
@@ -678,6 +763,18 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
+    public String renewLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+        try {
+            return service.renewLease(container, blob, leaseId, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
     public void releaseLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             service.releaseLease(container, blob, leaseId);
@@ -690,9 +787,33 @@ public class BlobServiceImpl implements BlobService {
         }
     }
 
+    public void releaseLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+        try {
+            service.releaseLease(container, blob, leaseId, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
     public void breakLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             service.breakLease(container, blob, leaseId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public void breakLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+        try {
+            service.breakLease(container, blob, leaseId, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

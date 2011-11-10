@@ -181,7 +181,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         ContainerACL acl = new ContainerACL();
         acl.setPublicAccess("blob");
-        acl.AddSignedIdentifier("test", expiryStartDate, expiryEndDate, "rwd");
+        acl.addSignedIdentifier("test", expiryStartDate, expiryEndDate, "rwd");
         service.setContainerACL(container, acl);
 
         ContainerACL acl2 = service.getContainerACL(container);
@@ -627,7 +627,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        Blob blob = service.getBlob("mycontainer1", "test2");
+        GetBlobResult blob = service.getBlob("mycontainer1", "test2");
         BlobProperties props = blob.getProperties();
 
         // Assert
@@ -660,7 +660,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        Blob blob = service.getBlob("mycontainer1", "test");
+        GetBlobResult blob = service.getBlob("mycontainer1", "test");
         BlobProperties props = blob.getProperties();
 
         // Assert
@@ -923,7 +923,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createBlockBlob("mycontainer2", "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
         service.copyBlob("mycontainer1", "test5", "mycontainer2", "test6");
 
-        Blob blob = service.getBlob("mycontainer1", "test5");
+        GetBlobResult blob = service.getBlob("mycontainer1", "test5");
         BlobProperties props = blob.getProperties();
 
         // Assert

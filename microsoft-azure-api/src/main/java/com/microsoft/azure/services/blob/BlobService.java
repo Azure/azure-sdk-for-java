@@ -11,29 +11,39 @@ public interface BlobService {
 
     ServiceProperties getServiceProperties() throws ServiceException;
 
+    ServiceProperties getServiceProperties(BlobOptions options) throws ServiceException;
+
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
+
+    void setServiceProperties(ServiceProperties serviceProperties, BlobOptions options) throws ServiceException;
 
     ListContainersResult listContainers() throws ServiceException;
 
     ListContainersResult listContainers(ListContainersOptions options) throws ServiceException;
 
-    //TODO: Should we use "create" or "put"?
     void createContainer(String container) throws ServiceException;
 
     void createContainer(String container, CreateContainerOptions options) throws ServiceException;
 
-    // TODO: Should this have a "DeleteContainerResult" class
     void deleteContainer(String container) throws ServiceException;
 
     void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException;
 
     ContainerProperties getContainerProperties(String container) throws ServiceException;
 
+    ContainerProperties getContainerProperties(String container, BlobOptions options) throws ServiceException;
+
     ContainerProperties getContainerMetadata(String container) throws ServiceException;
+
+    ContainerProperties getContainerMetadata(String container, BlobOptions options) throws ServiceException;
 
     ContainerACL getContainerACL(String container) throws ServiceException;
 
+    ContainerACL getContainerACL(String container, BlobOptions options) throws ServiceException;
+
     void setContainerACL(String container, ContainerACL acl) throws ServiceException;
+
+    void setContainerACL(String container, ContainerACL acl, BlobOptions options) throws ServiceException;
 
     void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException;
 
@@ -43,7 +53,6 @@ public interface BlobService {
 
     ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException;
 
-    //TODO: Should we use "create" or "put"?
     void createPageBlob(String container, String blob, int length) throws ServiceException;
 
     void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
@@ -52,24 +61,22 @@ public interface BlobService {
 
     void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException;
 
-    //TODO: Should we use "createPageBlobPages"?
+    // TODO: Should we use "createPageBlobPages"?
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException;
 
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) throws ServiceException;
 
-    //TODO: Should we use "updatePageBlobPages"?
+    // TODO: Should we use "updatePageBlobPages"?
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
             throws ServiceException;
 
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
             CreateBlobPagesOptions options) throws ServiceException;
 
-    //TODO: createBlockBlobBlock?
     void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException;
 
     void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options) throws ServiceException;
 
-    //TODO: commitBlockBlobBlocks?
     void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException;
 
     void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException;
@@ -90,6 +97,8 @@ public interface BlobService {
 
     ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) throws ServiceException;
 
+    SetBlobPropertiesResult setBlobProperties(String container, String blob) throws ServiceException;
+
     SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) throws ServiceException;
 
     SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) throws ServiceException;
@@ -97,9 +106,9 @@ public interface BlobService {
     SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options)
             throws ServiceException;
 
-    Blob getBlob(String container, String blob) throws ServiceException;
+    GetBlobResult getBlob(String container, String blob) throws ServiceException;
 
-    Blob getBlob(String container, String blob, GetBlobOptions options) throws ServiceException;
+    GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException;
 
     void deleteBlob(String container, String blob) throws ServiceException;
 
@@ -120,8 +129,13 @@ public interface BlobService {
 
     String renewLease(String container, String blob, String leaseId) throws ServiceException;
 
+    String renewLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
+
     void releaseLease(String container, String blob, String leaseId) throws ServiceException;
+
+    void releaseLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
 
     void breakLease(String container, String blob, String leaseId) throws ServiceException;
 
+    void breakLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
 }

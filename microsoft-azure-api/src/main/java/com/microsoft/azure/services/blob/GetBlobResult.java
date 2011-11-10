@@ -2,10 +2,7 @@ package com.microsoft.azure.services.blob;
 
 import java.io.InputStream;
 
-/*
- * TODO: Should this be called "GetBlobResult"?
- */
-public class Blob {
+public class GetBlobResult {
     private InputStream contentStream;
     private BlobProperties properties;
 
