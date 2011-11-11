@@ -87,9 +87,6 @@ public class ListBlobsResult {
         this.containerName = containerName;
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class Blob {
         private String name;
         private String url;
@@ -144,9 +141,6 @@ public class ListBlobsResult {
         }
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class BlobProperties {
         private Date lastModified;
         private String etag;

@@ -49,9 +49,6 @@ public class BlockList {
         return this;
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public abstract static class Entry {
         private String blockId;
 

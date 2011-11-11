@@ -1,11 +1,8 @@
 package com.microsoft.azure.services.blob;
 
-
 /**
- * TODO: Unify this with client layer
- *
  * Specifies the kinds of conditional headers that may be set for a request.
- *
+ * 
  * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum AccessConditionHeaderType {
@@ -36,9 +33,9 @@ public enum AccessConditionHeaderType {
 
     /**
      * TODO: Should this be move somewhere else?
-     *
+     * 
      * Returns a string representation of the current value, or an empty string if no value is assigned.
-     *
+     * 
      * @return A <code>String</code> that represents the currently assigned value.
      */
     @Override
