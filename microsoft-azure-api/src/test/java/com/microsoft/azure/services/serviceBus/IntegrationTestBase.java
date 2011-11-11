@@ -1,14 +1,11 @@
 package com.microsoft.azure.services.serviceBus;
 
-import java.io.Console;
+import static com.microsoft.azure.services.serviceBus.Util.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.ServiceBusContract;
-import com.microsoft.azure.services.serviceBus.Queue;
-import static com.microsoft.azure.services.serviceBus.Util.*;
 
 public abstract class IntegrationTestBase {
     protected Configuration createConfiguration() {

@@ -1,7 +1,6 @@
 package com.microsoft.azure.utils;
 
 import com.microsoft.azure.ServiceException;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;

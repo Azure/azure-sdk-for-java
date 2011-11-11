@@ -1,11 +1,10 @@
 package com.microsoft.azure.services.serviceBus;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.microsoft.azure.configuration.Configuration;
-import com.microsoft.azure.services.serviceBus.ServiceBusContract;
-import com.microsoft.azure.services.serviceBus.implementation.ServiceBusRestProxy;
 
 public class ServiceBusCreationTest {
     @Test

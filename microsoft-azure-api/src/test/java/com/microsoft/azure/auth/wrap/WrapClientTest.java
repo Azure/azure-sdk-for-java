@@ -1,5 +1,8 @@
 package com.microsoft.azure.auth.wrap;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -8,9 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.contract.WrapContract;

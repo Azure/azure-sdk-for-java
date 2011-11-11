@@ -1,11 +1,11 @@
 package com.microsoft.azure.services.serviceBus;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import javax.sound.sampled.ReverbType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +15,6 @@ import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.http.ServiceFilter.Request;
 import com.microsoft.azure.http.ServiceFilter.Response;
-import com.microsoft.azure.services.serviceBus.Message;
-import com.microsoft.azure.services.serviceBus.ReceiveMode;
-import com.microsoft.azure.services.serviceBus.ServiceBusContract;
-import static org.junit.Assert.*;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 

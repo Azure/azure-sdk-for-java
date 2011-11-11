@@ -11,20 +11,17 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.azure.services.serviceBus.ListTopicsResult;
-import com.microsoft.azure.services.serviceBus.Message;
-import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.ListQueuesResult;
-import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.azure.services.serviceBus.ServiceBusContract;
-import com.microsoft.azure.services.serviceBus.Topic;
-import com.microsoft.azure.services.serviceBus.implementation.Entry;
-import com.microsoft.azure.services.serviceBus.implementation.Feed;
-
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.auth.wrap.WrapFilter;
 import com.microsoft.azure.http.ClientFilterAdapter;
 import com.microsoft.azure.http.ServiceFilter;
+import com.microsoft.azure.services.serviceBus.ListQueuesResult;
+import com.microsoft.azure.services.serviceBus.ListTopicsResult;
+import com.microsoft.azure.services.serviceBus.Message;
+import com.microsoft.azure.services.serviceBus.Queue;
+import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
+import com.microsoft.azure.services.serviceBus.ServiceBusContract;
+import com.microsoft.azure.services.serviceBus.Topic;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

@@ -2,12 +2,9 @@ package com.microsoft.azure.services.serviceBus.client;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.services.serviceBus.IntegrationTestBase;
 import com.microsoft.azure.services.serviceBus.Message;
 

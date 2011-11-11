@@ -6,7 +6,6 @@ import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusContract;
 
 public class MessagingClient {

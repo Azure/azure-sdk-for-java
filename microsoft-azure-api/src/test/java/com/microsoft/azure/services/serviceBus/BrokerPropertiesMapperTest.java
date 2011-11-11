@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.junit.Test;
 
 import com.microsoft.azure.services.serviceBus.implementation.BrokerProperties;

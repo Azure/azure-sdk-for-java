@@ -2,7 +2,6 @@ package com.microsoft.azure.services.serviceBus.implementation;
 
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonGetter;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;

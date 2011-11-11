@@ -7,7 +7,6 @@ import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.microsoft.azure.services.serviceBus.implementation.Feed;
-import com.microsoft.azure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
 
 public class ServiceBusService implements ServiceBusContract {
     final ServiceBusContract next;

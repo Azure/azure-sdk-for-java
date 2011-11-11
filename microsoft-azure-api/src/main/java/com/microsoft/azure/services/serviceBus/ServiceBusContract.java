@@ -1,10 +1,9 @@
 package com.microsoft.azure.services.serviceBus;
 
+import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.serviceBus.implementation.Entry;
 import com.microsoft.azure.services.serviceBus.implementation.Feed;
-
-import com.microsoft.azure.ServiceException;
 
 public interface ServiceBusContract {
     ServiceBusContract withFilter(ServiceFilter filter);

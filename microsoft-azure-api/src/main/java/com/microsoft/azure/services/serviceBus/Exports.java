@@ -7,8 +7,8 @@ import com.microsoft.azure.services.serviceBus.client.MessagingClient;
 import com.microsoft.azure.services.serviceBus.implementation.BrokerPropertiesMapper;
 import com.microsoft.azure.services.serviceBus.implementation.EntryModelProvider;
 import com.microsoft.azure.services.serviceBus.implementation.MarshallerProvider;
-import com.microsoft.azure.services.serviceBus.implementation.ServiceBusRestProxy;
 import com.microsoft.azure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
+import com.microsoft.azure.services.serviceBus.implementation.ServiceBusRestProxy;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 

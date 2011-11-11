@@ -2,11 +2,10 @@ package com.microsoft.azure.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.microsoft.azure.configuration.builder.Builder;
 import com.microsoft.azure.configuration.builder.DefaultBuilder;
 import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 
 public class Configuration {
 
