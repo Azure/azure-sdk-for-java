@@ -17,7 +17,6 @@ import com.microsoft.azure.http.ServiceFilter;
 import com.microsoft.azure.services.blob.AccessCondition;
 import com.microsoft.azure.services.blob.AccessConditionHeaderType;
 import com.microsoft.azure.services.blob.AcquireLeaseOptions;
-import com.microsoft.azure.services.blob.GetBlobResult;
 import com.microsoft.azure.services.blob.BlobConfiguration;
 import com.microsoft.azure.services.blob.BlobListingDetails;
 import com.microsoft.azure.services.blob.BlobOptions;
@@ -42,6 +41,7 @@ import com.microsoft.azure.services.blob.GetBlobMetadataOptions;
 import com.microsoft.azure.services.blob.GetBlobMetadataResult;
 import com.microsoft.azure.services.blob.GetBlobOptions;
 import com.microsoft.azure.services.blob.GetBlobPropertiesOptions;
+import com.microsoft.azure.services.blob.GetBlobResult;
 import com.microsoft.azure.services.blob.ListBlobBlocksOptions;
 import com.microsoft.azure.services.blob.ListBlobBlocksResult;
 import com.microsoft.azure.services.blob.ListBlobRegionsOptions;
@@ -66,7 +66,6 @@ import com.sun.jersey.core.util.Base64;
 public class BlobServiceForJersey implements BlobService {
     // private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
 
-    // TODO: Should we make this a configuration options?
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
     private final String accountName;
@@ -80,10 +79,7 @@ public class BlobServiceForJersey implements BlobService {
      * configurable though code?
      */
     @Inject
-    public BlobServiceForJersey(
-            Client channel,
-            @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.URL) String url,
+    public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {
 
         this.channel = channel;
@@ -97,6 +93,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter,
             RFC1123DateConverter dateMapper) {
+
         this.channel = channel;
         this.filters = filters;
         this.accountName = accountName;
@@ -276,18 +273,18 @@ public class BlobServiceForJersey implements BlobService {
         return webResource;
     }
 
-    private WebResource setCanonicalizedResource(WebResource webResource, String resourceName, String operation) {
-        String value = "/" + this.accountName + "/";
-        if (resourceName != null) {
-            value += resourceName;
-        }
+    private WebResource setCanonicalizedResource(WebResource webResource, String operation) {
+        // Resource path
+        String value = "/" + this.accountName;
+        value += webResource.getURI().getPath();
 
+        // "comp" param
         if (operation != null) {
             value += "?comp=" + operation;
         }
 
-        // TODO: Is this the best way to pass a parameter to a filter?
         webResource.setProperty("canonicalizedResource", value);
+
         return webResource;
     }
 
@@ -319,7 +316,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ServiceProperties getServiceProperties(BlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, null, "properties");
+        webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -332,7 +329,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void setServiceProperties(ServiceProperties serviceProperties, BlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, null, "properties");
+        webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -346,7 +343,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, container, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
@@ -362,7 +359,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, container, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
@@ -389,7 +386,7 @@ public class BlobServiceForJersey implements BlobService {
     private ContainerProperties getContainerPropertiesImpl(String container, BlobOptions options, String operation) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
         webResource = addOptionalQueryParam(webResource, "comp", operation);
-        webResource = setCanonicalizedResource(webResource, container, operation);
+        webResource = setCanonicalizedResource(webResource, operation);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -410,7 +407,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ContainerACL getContainerACL(String container, BlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "acl");
-        webResource = setCanonicalizedResource(webResource, container, "acl");
+        webResource = setCanonicalizedResource(webResource, "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -432,7 +429,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void setContainerACL(String container, ContainerACL acl, BlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "acl");
-        webResource = setCanonicalizedResource(webResource, container, "acl");
+        webResource = setCanonicalizedResource(webResource, "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-public-access", acl.getPublicAccess());
@@ -449,7 +446,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, container, "metadata");
+        webResource = setCanonicalizedResource(webResource, "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
@@ -465,7 +462,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("comp", "list");
-        webResource = setCanonicalizedResource(webResource, null, "list");
+        webResource = setCanonicalizedResource(webResource, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
@@ -484,7 +481,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("comp", "list").queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, container, "list");
+        webResource = setCanonicalizedResource(webResource, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
@@ -510,7 +507,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-type", "PageBlob");
@@ -529,7 +526,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -546,7 +543,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        webResource = setCanonicalizedResource(webResource, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -565,7 +562,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
+        webResource = setCanonicalizedResource(webResource, "metadata");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -589,7 +586,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "properties");
+        webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getCacheControl());
@@ -625,7 +622,7 @@ public class BlobServiceForJersey implements BlobService {
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "metadata");
+        webResource = setCanonicalizedResource(webResource, "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -648,7 +645,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        webResource = setCanonicalizedResource(webResource, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -673,7 +670,7 @@ public class BlobServiceForJersey implements BlobService {
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -689,7 +686,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob).queryParam("comp", "snapshot");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "snapshot");
+        webResource = setCanonicalizedResource(webResource, "snapshot");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -714,7 +711,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options) {
         WebResource webResource = getResource(options).path(destinationContainer).path(destinationBlob);
-        webResource = setCanonicalizedResource(webResource, destinationContainer + "/" + destinationBlob, null);
+        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -763,7 +760,7 @@ public class BlobServiceForJersey implements BlobService {
     private String putLeaseImpl(String leaseAction, String container, String blob, String leaseId, BlobOptions options, AccessCondition accessCondition)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "lease");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "lease");
+        webResource = setCanonicalizedResource(webResource, "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
@@ -799,7 +796,7 @@ public class BlobServiceForJersey implements BlobService {
     private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
             InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "page");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "page");
+        webResource = setCanonicalizedResource(webResource, "page");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, rangeStart, rangeEnd);
@@ -829,7 +826,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "pagelist");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "pagelist");
+        webResource = setCanonicalizedResource(webResource, "pagelist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
@@ -855,7 +852,7 @@ public class BlobServiceForJersey implements BlobService {
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "block");
         webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "block");
+        webResource = setCanonicalizedResource(webResource, "block");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -871,7 +868,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
+        webResource = setCanonicalizedResource(webResource, "blocklist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -893,7 +890,7 @@ public class BlobServiceForJersey implements BlobService {
 
     public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
-        webResource = setCanonicalizedResource(webResource, container + "/" + blob, "blocklist");
+        webResource = setCanonicalizedResource(webResource, "blocklist");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
 

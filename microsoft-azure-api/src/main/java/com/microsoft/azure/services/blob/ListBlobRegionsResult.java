@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="PageList")
+@XmlRootElement(name = "PageList")
 public class ListBlobRegionsResult {
     private Date lastModified;
     private String etag;
@@ -37,7 +37,7 @@ public class ListBlobRegionsResult {
         this.contentLength = contentLength;
     }
 
-    @XmlElement(name="PageRange")
+    @XmlElement(name = "PageRange")
     public List<PageRange> getPageRanges() {
         return pageRanges;
     }
@@ -46,14 +46,11 @@ public class ListBlobRegionsResult {
         this.pageRanges = pageRanges;
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class PageRange {
         private long start;
         private long end;
 
-        @XmlElement(name="Start")
+        @XmlElement(name = "Start")
         public long getStart() {
             return start;
         }
@@ -62,7 +59,7 @@ public class ListBlobRegionsResult {
             this.start = start;
         }
 
-        @XmlElement(name="End")
+        @XmlElement(name = "End")
         public long getEnd() {
             return end;
         }

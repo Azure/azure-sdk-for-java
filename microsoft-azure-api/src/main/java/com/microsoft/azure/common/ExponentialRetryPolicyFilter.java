@@ -14,7 +14,7 @@ public class ExponentialRetryPolicyFilter implements ServiceFilter {
     public static final int DEFAULT_CLIENT_BACKOFF = 1000 * 30;
     public static final int DEFAULT_CLIENT_RETRY_COUNT = 3;
     public static final int DEFAULT_MAX_BACKOFF = 1000 * 90;
-    public static final int DEFAULT_MIN_BACKOFF = 1000 * 3;
+    public static final int DEFAULT_MIN_BACKOFF = 100 * 3;
 
     private final int deltaBackoffIntervalInMs;
     private final int maximumAttempts;

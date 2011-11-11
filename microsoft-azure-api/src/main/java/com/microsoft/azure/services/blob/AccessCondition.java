@@ -5,10 +5,8 @@ import java.util.Date;
 import com.microsoft.azure.services.blob.implementation.RFC1123DateConverter;
 
 /**
- * TODO: Unify this with client layer
- *
  * Represents a set of access conditions to be used for operations against the storage services.
- *
+ * 
  * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class AccessCondition {
@@ -28,10 +26,10 @@ public final class AccessCondition {
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
-     *
+     * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
-     *
+     * 
      * @return An <code>AccessCondition</code> object that represents the <i>If-Match</i> condition.
      */
     public static AccessCondition ifMatch(String etag) {
@@ -48,10 +46,10 @@ public final class AccessCondition {
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
-     *
+     * 
      * @param lastMotified
      *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
-     *
+     * 
      * @return An <code>AccessCondition</code> object that represents the <i>If-Modified-Since</i> condition.
      */
     public static AccessCondition ifModifiedSince(Date lastMotified) {
@@ -68,10 +66,10 @@ public final class AccessCondition {
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
-     *
+     * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
-     *
+     * 
      * @return An <code>AccessCondition</code> object that represents the <i>If-None-Match</i> condition.
      */
     public static AccessCondition ifNoneMatch(String etag) {
@@ -88,10 +86,10 @@ public final class AccessCondition {
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
-     *
+     * 
      * @param lastMotified
      *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
-     *
+     * 
      * @return An <code>AccessCondition</code> object that represents the <i>If-Unmodified-Since</i> condition.
      */
     public static AccessCondition ifNotModifiedSince(Date lastMotified) {
@@ -117,7 +115,7 @@ public final class AccessCondition {
 
     /**
      * Creates an instance of the <code>AccessCondition</code> class using the specified header type and value.
-     *
+     * 
      * @param headerType
      *            An {@link AccessConditionHeaderType} value that represents the header type.
      * @param value

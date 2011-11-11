@@ -37,9 +37,6 @@ public class ServiceProperties {
         this.defaultServiceVersion = defaultServiceVersion;
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class Logging {
         private String version;
         private Boolean delete;
@@ -93,9 +90,6 @@ public class ServiceProperties {
         }
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class Metrics {
         private String version;
         private boolean enabled;
@@ -139,9 +133,6 @@ public class ServiceProperties {
         }
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class RetentionPolicy {
         private boolean enabled;
         private Integer days; // nullable, because optional if "enabled" is false

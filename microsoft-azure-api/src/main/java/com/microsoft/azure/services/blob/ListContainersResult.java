@@ -77,9 +77,6 @@ public class ListContainersResult {
         this.maxResults = maxResults;
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class Container {
         private String name;
         private String url;
@@ -124,9 +121,6 @@ public class ListContainersResult {
         }
     }
 
-    /*
-     * TODO: Are nested classes ok? (if not, we need to find a name for it)
-     */
     public static class ContainerProperties {
         private Date lastModified;
         private String etag;

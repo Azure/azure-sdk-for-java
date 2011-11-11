@@ -8,6 +8,9 @@ import java.util.Locale;
 
 import javax.inject.Named;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.microsoft.azure.services.blob.BlobConfiguration;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
@@ -18,6 +21,8 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * TODO: Should the "full" shared key signing?
  */
 public class SharedKeyLiteFilter extends ClientFilter {
+    private static Log log = LogFactory.getLog(SharedKeyLiteFilter.class);
+
     private final String accountName;
     private final HmacSHA256Sign signer;
 
@@ -65,7 +70,10 @@ public class SharedKeyLiteFilter extends ClientFilter {
         stringToSign += addCanonicalizedHeaders(cr);
         stringToSign += addCanonicalizedResource(cr);
 
-        System.out.println(stringToSign);
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("String to sign: \"%s\"", stringToSign));
+        }
+
         String signature = this.signer.sign(stringToSign);
         cr.getHeaders().putSingle("Authorization", "SharedKeyLite " + this.accountName + ":" + signature);
     }

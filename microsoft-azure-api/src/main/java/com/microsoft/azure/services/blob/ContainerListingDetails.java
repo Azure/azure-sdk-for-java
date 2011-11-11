@@ -1,11 +1,9 @@
 package com.microsoft.azure.services.blob;
 
 /**
- * TODO: Naming and unification with client package
- *
  * Specifies which details to include when listing the containers in this
  * storage account.
- *
+ * 
  * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum ContainerListingDetails {
@@ -26,7 +24,7 @@ public enum ContainerListingDetails {
 
     /**
      * Sets the value of this enum.
-     *
+     * 
      * @param val
      *            The value being assigned.
      */
