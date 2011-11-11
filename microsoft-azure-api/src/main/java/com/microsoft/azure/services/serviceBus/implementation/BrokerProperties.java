@@ -8,197 +8,193 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
-
 //
 // members of this class defined per specification at
 // http://msdn.microsoft.com/en-us/library/windowsazure/hh367521.aspx#BKMK_REST3prod
 //
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonWriteNullProperties(false)
 public class BrokerProperties {
 
-	@JsonProperty("CorrelationId")
-	String correlationId;
-	
-	@JsonProperty("SessionId")
-	String sessionId;
-	
-	@JsonProperty("DeliveryCount")
-	Integer deliveryCount;
+    @JsonProperty("CorrelationId")
+    String correlationId;
 
-	@JsonProperty("LockedUntilUtc")
-	Date lockedUntilUtc;
+    @JsonProperty("SessionId")
+    String sessionId;
 
-	@JsonProperty("LockToken")
-	String lockToken;
+    @JsonProperty("DeliveryCount")
+    Integer deliveryCount;
 
-	@JsonProperty("MessageId")
-	String messageId;
-	
-	@JsonProperty("Label")
-	String label;
-	
-	@JsonProperty("ReplyTo")
-	String replyTo;
+    @JsonProperty("LockedUntilUtc")
+    Date lockedUntilUtc;
 
-	@JsonProperty("SequenceNumber")
-	Long sequenceNumber;
+    @JsonProperty("LockToken")
+    String lockToken;
 
-	@JsonProperty("TimeToLive")
-	Double timeToLive;
+    @JsonProperty("MessageId")
+    String messageId;
 
-	@JsonProperty("To")
-	String to;
+    @JsonProperty("Label")
+    String label;
 
-	@JsonProperty("ScheduledEnqueueTimeUtc")
-	Date scheduledEnqueueTimeUtc;
+    @JsonProperty("ReplyTo")
+    String replyTo;
 
-	@JsonProperty("ReplyToSessionId")
-	String replyToSessionId;
+    @JsonProperty("SequenceNumber")
+    Long sequenceNumber;
 
-	@JsonProperty("MessageLocation")
-	String messageLocation;
+    @JsonProperty("TimeToLive")
+    Double timeToLive;
 
-	@JsonProperty("LockLocation")
-	String lockLocation;
+    @JsonProperty("To")
+    String to;
 
-	
-	
-	@JsonIgnore
-	public Integer getDeliveryCount() {
-		return deliveryCount;
-	}
+    @JsonProperty("ScheduledEnqueueTimeUtc")
+    Date scheduledEnqueueTimeUtc;
 
-	public void setDeliveryCount(Integer deliveryCount) {
-		this.deliveryCount = deliveryCount;
-	}
+    @JsonProperty("ReplyToSessionId")
+    String replyToSessionId;
 
-	@JsonIgnore
-	public String getMessageId() {
-		return messageId;
-	}
+    @JsonProperty("MessageLocation")
+    String messageLocation;
 
-	public void setMessageId(String messageId) {
-		this.messageId = messageId;
-	}
+    @JsonProperty("LockLocation")
+    String lockLocation;
 
-	@JsonIgnore
-	public Long getSequenceNumber() {
-		return sequenceNumber;
-	}
+    @JsonIgnore
+    public Integer getDeliveryCount() {
+        return deliveryCount;
+    }
 
-	public void setSequenceNumber(Long sequenceNumber) {
-		this.sequenceNumber = sequenceNumber;
-	}
+    public void setDeliveryCount(Integer deliveryCount) {
+        this.deliveryCount = deliveryCount;
+    }
 
-	@JsonIgnore
-	public Double getTimeToLive() {
-		return timeToLive;
-	}
+    @JsonIgnore
+    public String getMessageId() {
+        return messageId;
+    }
 
-	public void setTimeToLive(Double timeToLive) {
-		this.timeToLive = timeToLive;
-	}
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 
-	@JsonIgnore
-	public String getLockToken() {
-		return lockToken;
-	}
+    @JsonIgnore
+    public Long getSequenceNumber() {
+        return sequenceNumber;
+    }
 
-	public void setLockToken(String lockToken) {
-		this.lockToken = lockToken;
-	}
+    public void setSequenceNumber(Long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
 
-	@JsonIgnore
-	public Date getLockedUntilUtc() {
-		return lockedUntilUtc;
-	}
+    @JsonIgnore
+    public Double getTimeToLive() {
+        return timeToLive;
+    }
 
-	public void setLockedUntilUtc(Date lockedUntilUtc) {
-		this.lockedUntilUtc = lockedUntilUtc;
-	}
+    public void setTimeToLive(Double timeToLive) {
+        this.timeToLive = timeToLive;
+    }
 
-	@JsonIgnore
-	public String getCorrelationId() {
-		return correlationId;
-	}
+    @JsonIgnore
+    public String getLockToken() {
+        return lockToken;
+    }
 
-	public void setCorrelationId(String correlationId) {
-		this.correlationId = correlationId;
-	}
+    public void setLockToken(String lockToken) {
+        this.lockToken = lockToken;
+    }
 
-	@JsonIgnore
-	public String getSessionId() {
-		return sessionId;
-	}
+    @JsonIgnore
+    public Date getLockedUntilUtc() {
+        return lockedUntilUtc;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public void setLockedUntilUtc(Date lockedUntilUtc) {
+        this.lockedUntilUtc = lockedUntilUtc;
+    }
 
-	@JsonIgnore
-	public String getLabel() {
-		return label;
-	}
+    @JsonIgnore
+    public String getCorrelationId() {
+        return correlationId;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+    }
 
-	@JsonIgnore
-	public String getReplyTo() {
-		return replyTo;
-	}
+    @JsonIgnore
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public void setReplyTo(String replyTo) {
-		this.replyTo = replyTo;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	@JsonIgnore
-	public String getTo() {
-		return to;
-	}
+    @JsonIgnore
+    public String getLabel() {
+        return label;
+    }
 
-	public void setTo(String to) {
-		this.to = to;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	@JsonIgnore
-	public Date getScheduledEnqueueTimeUtc() {
-		return scheduledEnqueueTimeUtc;
-	}
+    @JsonIgnore
+    public String getReplyTo() {
+        return replyTo;
+    }
 
-	public void setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
-		this.scheduledEnqueueTimeUtc = scheduledEnqueueTimeUtc;
-	}
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+    }
 
-	@JsonIgnore
-	public String getReplyToSessionId() {
-		return replyToSessionId;
-	}
+    @JsonIgnore
+    public String getTo() {
+        return to;
+    }
 
-	public void setReplyToSessionId(String replyToSessionId) {
-		this.replyToSessionId = replyToSessionId;
-	}
+    public void setTo(String to) {
+        this.to = to;
+    }
 
-	@JsonIgnore
-	public String getMessageLocation() {
-		return messageLocation;
-	}
+    @JsonIgnore
+    public Date getScheduledEnqueueTimeUtc() {
+        return scheduledEnqueueTimeUtc;
+    }
 
-	public void setMessageLocation(String messageLocation) {
-		this.messageLocation = messageLocation;
-	}
+    public void setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
+        this.scheduledEnqueueTimeUtc = scheduledEnqueueTimeUtc;
+    }
 
-	@JsonIgnore
-	public String getLockLocation() {
-		return lockLocation;
-	}
+    @JsonIgnore
+    public String getReplyToSessionId() {
+        return replyToSessionId;
+    }
 
-	public void setLockLocation(String lockLocation) {
-		this.lockLocation = lockLocation;
-	}
+    public void setReplyToSessionId(String replyToSessionId) {
+        this.replyToSessionId = replyToSessionId;
+    }
 
-	
+    @JsonIgnore
+    public String getMessageLocation() {
+        return messageLocation;
+    }
+
+    public void setMessageLocation(String messageLocation) {
+        this.messageLocation = messageLocation;
+    }
+
+    @JsonIgnore
+    public String getLockLocation() {
+        return lockLocation;
+    }
+
+    public void setLockLocation(String lockLocation) {
+        this.lockLocation = lockLocation;
+    }
+
 }

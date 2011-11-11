@@ -9,8 +9,8 @@ import java.util.TimeZone;
 
 /*
  * TODO: Move to some other common package?
- *
- *  RFC 1123 date to string conversion
+ * 
+ * RFC 1123 date to string conversion
  */
 public class RFC1123DateConverter {
     private static final String RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss z";

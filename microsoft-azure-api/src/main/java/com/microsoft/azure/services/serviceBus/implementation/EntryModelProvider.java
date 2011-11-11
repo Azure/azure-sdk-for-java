@@ -19,62 +19,66 @@ import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.jersey.spi.MessageBodyWorkers;
 
 public class EntryModelProvider extends
-		AbstractMessageReaderWriterProvider<EntryModel<?>> {
+        AbstractMessageReaderWriterProvider<EntryModel<?>> {
 
-	MessageBodyWorkers workers;
+    MessageBodyWorkers workers;
 
-	public EntryModelProvider(@Context MessageBodyWorkers workers) {
-		this.workers = workers;
-	}
+    public EntryModelProvider(@Context MessageBodyWorkers workers) {
+        this.workers = workers;
+    }
 
-	public boolean isReadable(Class<?> type, Type genericType,
-			Annotation[] annotations, MediaType mediaType) {
-		return EntryModel.class.isAssignableFrom(type);
-	}
+    public boolean isReadable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType) {
+        return EntryModel.class.isAssignableFrom(type);
+    }
 
-	public EntryModel<?> readFrom(Class<EntryModel<?>> type, Type genericType,
-			Annotation[] annotations, MediaType mediaType,
-			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-			throws IOException, WebApplicationException {
+    public EntryModel<?> readFrom(Class<EntryModel<?>> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+            throws IOException, WebApplicationException {
 
-		MessageBodyReader<Entry> reader = workers.getMessageBodyReader(
-				Entry.class, Entry.class, annotations, mediaType);
+        MessageBodyReader<Entry> reader = workers.getMessageBodyReader(
+                Entry.class, Entry.class, annotations, mediaType);
 
-		Entry entry = reader.readFrom(Entry.class, Entry.class, annotations,
-				mediaType, httpHeaders, entityStream);
+        Entry entry = reader.readFrom(Entry.class, Entry.class, annotations,
+                mediaType, httpHeaders, entityStream);
 
-		// these exceptions are masked as a RuntimeException because they cannot
-		// be thrown by this override
-			try {
-				return type.getConstructor(Entry.class).newInstance(entry);
-			} catch (NoSuchMethodException e) {
-				throw new RuntimeException(e);
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
-			} catch (InstantiationException e) {
-				throw new RuntimeException(e);
-			}
-	}
+        // these exceptions are masked as a RuntimeException because they cannot
+        // be thrown by this override
+        try {
+            return type.getConstructor(Entry.class).newInstance(entry);
+        }
+        catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public boolean isWriteable(Class<?> type, Type genericType,
-			Annotation[] annotations, MediaType mediaType) {
-		return EntryModel.class.isAssignableFrom(type);
-	}
+    public boolean isWriteable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType) {
+        return EntryModel.class.isAssignableFrom(type);
+    }
 
-	public void writeTo(EntryModel<?> t, Class<?> type, Type genericType,
-			Annotation[] annotations, MediaType mediaType,
-			MultivaluedMap<String, Object> httpHeaders,
-			OutputStream entityStream) throws IOException,
-			WebApplicationException {
-		
-		Entry entry = t.getEntry();
-		
-		MessageBodyWriter<Entry> writer = workers.getMessageBodyWriter(
-				Entry.class, Entry.class, annotations, mediaType);
+    public void writeTo(EntryModel<?> t, Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, Object> httpHeaders,
+            OutputStream entityStream) throws IOException,
+            WebApplicationException {
 
-		writer.writeTo(entry, Entry.class, genericType, annotations, mediaType, httpHeaders, entityStream);
-	}
+        Entry entry = t.getEntry();
+
+        MessageBodyWriter<Entry> writer = workers.getMessageBodyWriter(
+                Entry.class, Entry.class, annotations, mediaType);
+
+        writer.writeTo(entry, Entry.class, genericType, annotations, mediaType, httpHeaders, entityStream);
+    }
 
 }

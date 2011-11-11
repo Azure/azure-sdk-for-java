@@ -32,277 +32,262 @@ import com.sun.jersey.api.client.WebResource.Builder;
 
 public class ServiceBusRestProxy implements ServiceBusContract {
 
-	private Client channel;
-	private String uri;
-	private BrokerPropertiesMapper mapper;
-	static Log log = LogFactory.getLog(ServiceBusContract.class);
+    private Client channel;
+    private String uri;
+    private BrokerPropertiesMapper mapper;
+    static Log log = LogFactory.getLog(ServiceBusContract.class);
 
-	ServiceFilter[] filters;
+    ServiceFilter[] filters;
 
-	@Inject
-	public ServiceBusRestProxy(
-			Client channel, 
-			@Named("serviceBus") WrapFilter authFilter,
-			@Named("serviceBus.uri") String uri,
-			BrokerPropertiesMapper mapper) {
+    @Inject
+    public ServiceBusRestProxy(
+            Client channel,
+            @Named("serviceBus") WrapFilter authFilter,
+            @Named("serviceBus.uri") String uri,
+            BrokerPropertiesMapper mapper) {
 
-		this.channel = channel;
-		this.filters = new ServiceFilter[0];
-		this.uri = uri;
-		this.mapper = mapper;
-		channel.addFilter(authFilter);
-	}
+        this.channel = channel;
+        this.filters = new ServiceFilter[0];
+        this.uri = uri;
+        this.mapper = mapper;
+        channel.addFilter(authFilter);
+    }
 
-	public ServiceBusRestProxy(
-			Client channel, 
-			ServiceFilter[] filters,
-			String uri,
-			BrokerPropertiesMapper mapper) {
-		this.channel = channel;
-		this.filters = filters;
-		this.uri = uri;
-		this.mapper = mapper;
-	}
+    public ServiceBusRestProxy(
+            Client channel,
+            ServiceFilter[] filters,
+            String uri,
+            BrokerPropertiesMapper mapper) {
+        this.channel = channel;
+        this.filters = filters;
+        this.uri = uri;
+        this.mapper = mapper;
+    }
 
-	public ServiceBusContract withFilter(ServiceFilter filter) {
-		ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
-		newFilters[filters.length] = filter;
-		return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
-	}
+    public ServiceBusContract withFilter(ServiceFilter filter) {
+        ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
+        newFilters[filters.length] = filter;
+        return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
+    }
 
-	
-	public Client getChannel() {
-		return channel;
-	}
+    public Client getChannel() {
+        return channel;
+    }
 
-	public void setChannel(Client channel) {
-		this.channel = channel;
-	}
+    public void setChannel(Client channel) {
+        this.channel = channel;
+    }
 
-	private WebResource getResource() {
-		WebResource resource = getChannel()
-			.resource(uri);
-		for(ServiceFilter filter : filters) {	
-			resource.addFilter(new ClientFilterAdapter(filter));
-		}
-		return resource;
-	}
+    private WebResource getResource() {
+        WebResource resource = getChannel()
+                .resource(uri);
+        for (ServiceFilter filter : filters) {
+            resource.addFilter(new ClientFilterAdapter(filter));
+        }
+        return resource;
+    }
 
-	void sendMessage(String path, Message message) {
-		Builder request = getResource()
-			.path(path)
-			.path("messages")
-			.getRequestBuilder();
-		
-		if (message.getContentType() != null)
-			request = request.type(message.getContentType());
+    void sendMessage(String path, Message message) {
+        Builder request = getResource()
+                .path(path)
+                .path("messages")
+                .getRequestBuilder();
 
-		if (message.getProperties() != null)
-			request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
+        if (message.getContentType() != null)
+            request = request.type(message.getContentType());
 
-		request.post(message.getBody());
-	}
+        if (message.getProperties() != null)
+            request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
 
-	public void sendQueueMessage(String path, Message message) throws ServiceException {
-		sendMessage(path, message);
-	}
+        request.post(message.getBody());
+    }
 
-	public Message receiveQueueMessage(String queueName)
-			throws ServiceException {
-		return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
-	}
-	
-	public Message receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
+    public void sendQueueMessage(String path, Message message) throws ServiceException {
+        sendMessage(path, message);
+    }
 
-		WebResource resource = getResource()
-			.path(queuePath)
-			.path("messages")
-			.path("head");
+    public Message receiveQueueMessage(String queueName)
+            throws ServiceException {
+        return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
+    }
 
-		if (options.getTimeout() != null) {
-			resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
-		}
+    public Message receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
 
-		ClientResponse clientResult;
-		if (options.isReceiveAndDelete()) {
-			clientResult = resource.delete(ClientResponse.class);
-		}
-		else if (options.isPeekLock()) {
-			clientResult = resource.post(ClientResponse.class, "");
-		}
-		else {
-			throw new RuntimeException("Unknown ReceiveMode");
-		}
+        WebResource resource = getResource()
+                .path(queuePath)
+                .path("messages")
+                .path("head");
 
-		String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
-		String location = clientResult.getHeaders().getFirst("Location");
-		MediaType contentType = clientResult.getType();
-		Date date = clientResult.getResponseDate();
+        if (options.getTimeout() != null) {
+            resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
+        }
 
+        ClientResponse clientResult;
+        if (options.isReceiveAndDelete()) {
+            clientResult = resource.delete(ClientResponse.class);
+        }
+        else if (options.isPeekLock()) {
+            clientResult = resource.post(ClientResponse.class, "");
+        }
+        else {
+            throw new RuntimeException("Unknown ReceiveMode");
+        }
 
-		Message result = new Message();
-		if (brokerProperties != null)
-		{
-			result.setProperties(mapper.fromString(brokerProperties));
-		}
-		if (contentType != null)
-		{
-			result.setContentType(contentType.toString());
-		}
-		if (location != null)
-		{
-			result.getProperties().setLockLocation(location);
-		}
-		result.setDate(date);
-		result.setBody(clientResult.getEntityInputStream());
-		return result;
-	}
+        String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
+        String location = clientResult.getHeaders().getFirst("Location");
+        MediaType contentType = clientResult.getType();
+        Date date = clientResult.getResponseDate();
 
-	public void sendTopicMessage(String topicName, Message message) throws ServiceException
-	{
-		sendMessage(topicName, message);
-	}
-	
-	public Message receiveSubscriptionMessage(String topicName,
-			String subscriptionName) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        Message result = new Message();
+        if (brokerProperties != null) {
+            result.setProperties(mapper.fromString(brokerProperties));
+        }
+        if (contentType != null) {
+            result.setContentType(contentType.toString());
+        }
+        if (location != null) {
+            result.getProperties().setLockLocation(location);
+        }
+        result.setDate(date);
+        result.setBody(clientResult.getEntityInputStream());
+        return result;
+    }
 
-	public Message receiveSubscriptionMessage(String topicName,
-			String subscriptionName, ReceiveMessageOptions options)
-			throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
+        sendMessage(topicName, message);
+    }
 
+    public Message receiveSubscriptionMessage(String topicName,
+            String subscriptionName) throws ServiceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void unlockMessage(Message message) throws ServiceException {
-		getChannel()
-			.resource(message.getLockLocation())
-			.put("");
-	}
+    public Message receiveSubscriptionMessage(String topicName,
+            String subscriptionName, ReceiveMessageOptions options)
+            throws ServiceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void deleteMessage(Message message) throws ServiceException {
-		getChannel()
-			.resource(message.getLockLocation())
-			.delete();
-	}
+    public void unlockMessage(Message message) throws ServiceException {
+        getChannel()
+                .resource(message.getLockLocation())
+                .put("");
+    }
 
-	public Queue createQueue(Queue entry) throws ServiceException {
-		return getResource()
-			.path(entry.getName())
-			.type("application/atom+xml")//;type=entry;charset=utf-8")
-			.put(Queue.class, entry);
-	}
+    public void deleteMessage(Message message) throws ServiceException {
+        getChannel()
+                .resource(message.getLockLocation())
+                .delete();
+    }
 
-	public void deleteQueue(String queuePath) throws ServiceException {
-		getResource()
-			.path(queuePath)
-			.delete();
-	}
+    public Queue createQueue(Queue entry) throws ServiceException {
+        return getResource()
+                .path(entry.getName())
+                .type("application/atom+xml")//;type=entry;charset=utf-8")
+                .put(Queue.class, entry);
+    }
 
-	public Queue getQueue(String queuePath) throws ServiceException {
-		return getResource()
-			.path(queuePath)
-			.get(Queue.class);
-	}
+    public void deleteQueue(String queuePath) throws ServiceException {
+        getResource()
+                .path(queuePath)
+                .delete();
+    }
 
-	
-	public ListQueuesResult listQueues() throws ServiceException {
-		Feed feed = getResource()
-			.path("$Resources/Queues")
-			.get(Feed.class);
-		ArrayList<Queue> queues = new ArrayList<Queue>();
-		for(Entry entry : feed.getEntries()){
-			queues.add(new Queue(entry));
-		}
-		ListQueuesResult result = new ListQueuesResult();
-		result.setItems(queues);
-		return result;
-	}
+    public Queue getQueue(String queuePath) throws ServiceException {
+        return getResource()
+                .path(queuePath)
+                .get(Queue.class);
+    }
 
-	public Topic createTopic(Topic entry) throws ServiceException {
-		return getResource()
-			.path(entry.getName())
-			.type("application/atom+xml")//;type=entry;charset=utf-8")
-			.put(Topic.class, entry);
-	}
+    public ListQueuesResult listQueues() throws ServiceException {
+        Feed feed = getResource()
+                .path("$Resources/Queues")
+                .get(Feed.class);
+        ArrayList<Queue> queues = new ArrayList<Queue>();
+        for (Entry entry : feed.getEntries()) {
+            queues.add(new Queue(entry));
+        }
+        ListQueuesResult result = new ListQueuesResult();
+        result.setItems(queues);
+        return result;
+    }
 
-	public void deleteTopic(String TopicPath) throws ServiceException {
-		getResource()
-			.path(TopicPath)
-			.delete();
-	}
+    public Topic createTopic(Topic entry) throws ServiceException {
+        return getResource()
+                .path(entry.getName())
+                .type("application/atom+xml")//;type=entry;charset=utf-8")
+                .put(Topic.class, entry);
+    }
 
-	public Topic getTopic(String TopicPath) throws ServiceException {
-		return getResource()
-			.path(TopicPath)
-			.get(Topic.class);
-	}
+    public void deleteTopic(String TopicPath) throws ServiceException {
+        getResource()
+                .path(TopicPath)
+                .delete();
+    }
 
-	
-	public ListTopicsResult listTopics() throws ServiceException {
-		Feed feed = getResource()
-			.path("$Resources/Topics")
-			.get(Feed.class);
-		ArrayList<Topic> Topics = new ArrayList<Topic>();
-		for(Entry entry : feed.getEntries()){
-			Topics.add(new Topic(entry));
-		}
-		ListTopicsResult result = new ListTopicsResult();
-		result.setItems(Topics);
-		return result;
-	}
+    public Topic getTopic(String TopicPath) throws ServiceException {
+        return getResource()
+                .path(TopicPath)
+                .get(Topic.class);
+    }
 
-	public void addSubscription(String topicPath, String subscriptionName,
-			Entry subscription) {
-		// TODO Auto-generated method stub
+    public ListTopicsResult listTopics() throws ServiceException {
+        Feed feed = getResource()
+                .path("$Resources/Topics")
+                .get(Feed.class);
+        ArrayList<Topic> Topics = new ArrayList<Topic>();
+        for (Entry entry : feed.getEntries()) {
+            Topics.add(new Topic(entry));
+        }
+        ListTopicsResult result = new ListTopicsResult();
+        result.setItems(Topics);
+        return result;
+    }
 
-	}
+    public void addSubscription(String topicPath, String subscriptionName,
+            Entry subscription) {
+        // TODO Auto-generated method stub
 
-	public void removeSubscription(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    public void removeSubscription(String topicPath, String subscriptionName) {
+        // TODO Auto-generated method stub
 
-	public Entry getSubscription(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
-	public Feed getSubscriptions(String topicPath) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Entry getSubscription(String topicPath, String subscriptionName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void addRule(String topicPath, String subscriptionName,
-			String ruleName, Entry rule) {
-		// TODO Auto-generated method stub
+    public Feed getSubscriptions(String topicPath) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	}
+    public void addRule(String topicPath, String subscriptionName,
+            String ruleName, Entry rule) {
+        // TODO Auto-generated method stub
 
-	public void removeRule(String topicPath, String subscriptionName,
-			String ruleName) {
-		// TODO Auto-generated method stub
+    }
 
-	}
+    public void removeRule(String topicPath, String subscriptionName,
+            String ruleName) {
+        // TODO Auto-generated method stub
 
-	public Entry getRule(String topicPath, String subscriptionName,
-			String ruleName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
-	public Feed getRules(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Entry getRule(String topicPath, String subscriptionName,
+            String ruleName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-
-
-
-
-
+    public Feed getRules(String topicPath, String subscriptionName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

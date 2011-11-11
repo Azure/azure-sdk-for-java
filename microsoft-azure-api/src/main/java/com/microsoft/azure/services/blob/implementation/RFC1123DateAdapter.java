@@ -4,13 +4,12 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-
 /*
  * TODO: Move to some other common package?
- *
+ * 
  * JAXB adapter for RFC 1123 date element
  */
-public class  RFC1123DateAdapter extends XmlAdapter<String, Date> {
+public class RFC1123DateAdapter extends XmlAdapter<String, Date> {
 
     @Override
     public Date unmarshal(String arg0) throws Exception {

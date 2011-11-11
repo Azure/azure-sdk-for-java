@@ -7,27 +7,28 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class WrapFilter extends ClientFilter {
-	private WrapClient client;
+    private WrapClient client;
 
-	public WrapFilter(WrapClient client) {
-		this.client = client;
-	}
+    public WrapFilter(WrapClient client) {
+        this.client = client;
+    }
 
-	@Override
-	public ClientResponse handle(ClientRequest cr)
-			throws ClientHandlerException {
+    @Override
+    public ClientResponse handle(ClientRequest cr)
+            throws ClientHandlerException {
 
-		String accessToken;
-		try {
-			accessToken = client.getAccessToken();
-		} catch (ServiceException e) {
-			// must wrap exception because of base class signature
-			throw new ClientHandlerException(e);
-		}
+        String accessToken;
+        try {
+            accessToken = client.getAccessToken();
+        }
+        catch (ServiceException e) {
+            // must wrap exception because of base class signature
+            throw new ClientHandlerException(e);
+        }
 
-		cr.getHeaders().add("Authorization",
-				"WRAP access_token=\"" + accessToken + "\"");
+        cr.getHeaders().add("Authorization",
+                "WRAP access_token=\"" + accessToken + "\"");
 
-		return this.getNext().handle(cr);
-	}
+        return this.getNext().handle(cr);
+    }
 }

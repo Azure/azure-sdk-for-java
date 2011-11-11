@@ -7,9 +7,9 @@ import com.microsoft.azure.services.serviceBus.implementation.SubscriptionDescri
 
 public class Subscription extends EntryModel<SubscriptionDescription> {
 
-	public Subscription(Entry entry, SubscriptionDescription model) {
-		super(entry, model);
-		// TODO Auto-generated constructor stub
-	}
+    public Subscription(Entry entry, SubscriptionDescription model) {
+        super(entry, model);
+        // TODO Auto-generated constructor stub
+    }
 
 }
