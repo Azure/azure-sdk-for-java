@@ -46,11 +46,17 @@ public abstract class IntegrationTestBase {
 					testAlphaExists = true;
 					long count = queue.getMessageCount();
 					for(long i = 0; i != count; ++i) {
-						service.receiveMessage(queueName, 2000, ReceiveMode.RECEIVE_AND_DELETE);
+						service.receiveQueueMessage(queueName, new ReceiveMessageOptions().setTimeout(20));
 					}
 				} else {
 					service.deleteQueue(queueName);
 				}
+			}
+		}
+		for(Topic topic : iterateTopics(service)) {
+			String topicName = topic.getName();
+			if (topicName.startsWith("Test") || topicName.startsWith("test")) {
+				service.deleteQueue(topicName);
 			}
 		}
 		if (!testAlphaExists) {

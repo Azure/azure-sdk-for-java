@@ -1,331 +1,327 @@
 package com.microsoft.azure.services.serviceBus.implementation;
 
-import java.io.InputStream;
-import java.rmi.UnexpectedException;
-import java.util.ArrayList;
-import java.util.Date;
-
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.microsoft.azure.ServiceException;
+import com.microsoft.azure.http.ServiceFilter;
+import com.microsoft.azure.services.serviceBus.ListQueuesResult;
+import com.microsoft.azure.services.serviceBus.ListTopicsResult;
 import com.microsoft.azure.services.serviceBus.Message;
 import com.microsoft.azure.services.serviceBus.Queue;
-import com.microsoft.azure.services.serviceBus.QueueList;
-import com.microsoft.azure.services.serviceBus.ReceiveMode;
+import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
-import com.microsoft.azure.services.serviceBus.implementation.Entry;
-import com.microsoft.azure.services.serviceBus.implementation.Feed;
-
-import com.microsoft.azure.ServiceException;
-import com.microsoft.azure.auth.wrap.WrapFilter;
+import com.microsoft.azure.services.serviceBus.Topic;
 import com.microsoft.azure.utils.ServiceExceptionFactory;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
 
 public class ServiceBusServiceImpl implements ServiceBusService {
 
-	private Client channel;
-	private String uri;
-	private BrokerPropertiesMapper mapper;
+	private ServiceBusService service;
 	static Log log = LogFactory.getLog(ServiceBusService.class);
 
 	@Inject
-	public ServiceBusServiceImpl(
-			Client channel, 
-			@Named("serviceBus") WrapFilter authFilter,
-			@Named("serviceBus.uri") String uri,
-			BrokerPropertiesMapper mapper) {
-
-		this.channel = channel;
-		this.uri = uri;
-		this.mapper = mapper;
-		channel.addFilter(authFilter);
+	public ServiceBusServiceImpl(ServiceBusServiceForJersey service)
+	{
+		this.service = service;
 	}
 
-	public Client getChannel() {
-		return channel;
+	public ServiceBusServiceImpl(ServiceBusService service) {
+		this.service = service;
 	}
 
-	public void setChannel(Client channel) {
-		this.channel = channel;
+	public ServiceBusService withFilter(ServiceFilter filter) {
+		return new ServiceBusServiceImpl(service.withFilter(filter));
 	}
-
-	private WebResource getResource() {
-		return getChannel()
-			.resource(uri);
-	}
-
+	
+	
 	private ServiceException processCatch(ServiceException e) {
 		log.warn(e.getMessage(), e.getCause());
 		return ServiceExceptionFactory.process("serviceBus", e);
 	}
 
-	public void sendMessage(String path, Message message) throws ServiceException {
+
+	public void sendQueueMessage(String path, Message message)
+			throws ServiceException {
 		try {
-			Builder request = getResource()
-				.path(path)
-				.path("messages")
-				.getRequestBuilder();
-			
-			if (message.getContentType() != null)
-				request = request.type(message.getContentType());
-
-			if (message.getProperties() != null)
-				request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
-
-			request.post(message.getBody());
-		}
-		catch(UniformInterfaceException e) {
+			service.sendQueueMessage(path, message);
+		} catch (UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
 	}
 
-	public Message receiveMessage(String queuePath, Integer timeout,
-			ReceiveMode receiveMode) throws ServiceException {
 
-		WebResource resource = getResource()
-			.path(queuePath)
-			.path("messages")
-			.path("head");
-
-		if (timeout != null) {
-			resource = resource.queryParam("timeout", Integer.toString(timeout));
-		}
-
-		ClientResponse clientResult;
-		if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
-			try {
-				clientResult = resource.delete(ClientResponse.class);
-			}
-			catch(UniformInterfaceException e) {
-				throw processCatch(new ServiceException(e));
-			}
-			catch(ClientHandlerException e) {
-				throw processCatch(new ServiceException(e));
-			}
-		}
-		else if (receiveMode == ReceiveMode.PEEK_LOCK) {
-			try {
-				clientResult = resource.post(ClientResponse.class, "");
-			}
-			catch(UniformInterfaceException e) {
-				throw processCatch(new ServiceException(e));
-			}
-			catch(ClientHandlerException e) {
-				throw processCatch(new ServiceException(e));
-			}
-		}
-		else {
-			throw new RuntimeException("Unknown ReceiveMode");
-		}
-
-		String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
-		String location = clientResult.getHeaders().getFirst("Location");
-		MediaType contentType = clientResult.getType();
-		Date date = clientResult.getResponseDate();
-
-
-		Message result = new Message();
-		if (brokerProperties != null)
-		{
-			result.setProperties(mapper.fromString(brokerProperties));
-		}
-		if (contentType != null)
-		{
-			result.setContentType(contentType.toString());
-		}
-		if (location != null)
-		{
-			result.getProperties().setLockLocation(location);
-		}
-		result.setDate(date);
-		result.setBody(clientResult.getEntityInputStream());
-		return result;
-	}
-
-	public Message receiveMessage(String topicPath, String subscriptionName,
-			int timeout, ReceiveMode receiveMode) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void abandonMessage(Message message) throws ServiceException {
+	public Message receiveQueueMessage(String queueName)
+			throws ServiceException {
 		try {
-			getChannel()
-				.resource(message.getLockLocation())
-				.delete();
-		}
-		catch(UniformInterfaceException e) {
+			return service.receiveQueueMessage(queueName);
+		} catch (UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
 	}
 
-	public void completeMessage(Message message) throws ServiceException {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public Queue createQueue(Queue entry) throws ServiceException {
+	public Message receiveQueueMessage(String queueName,
+			ReceiveMessageOptions options) throws ServiceException {
 		try {
-			return getResource()
-				.path(entry.getName())
-				.type("application/atom+xml")//;type=entry;charset=utf-8")
-				.put(Queue.class, entry);
-		}
-		catch(UniformInterfaceException e) {
+			return service.receiveQueueMessage(queueName, options);
+		} catch (UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
 	}
+
+
+	public void sendTopicMessage(String path, Message message)
+			throws ServiceException {
+		try {
+			service.sendTopicMessage(path, message);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+	public Message receiveSubscriptionMessage(String topicName,
+			String subscriptionName) throws ServiceException {
+		try {
+			return service.receiveSubscriptionMessage(topicName,
+					subscriptionName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Message receiveSubscriptionMessage(String topicName,
+			String subscriptionName, ReceiveMessageOptions options)
+			throws ServiceException {
+		try {
+			return service.receiveSubscriptionMessage(topicName,
+					subscriptionName, options);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void unlockMessage(Message message) throws ServiceException {
+		try {
+			service.unlockMessage(message);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void deleteMessage(Message message) throws ServiceException {
+		try {
+			service.deleteMessage(message);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Queue createQueue(Queue queue) throws ServiceException {
+		try {
+			return service.createQueue(queue);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
 
 	public void deleteQueue(String queuePath) throws ServiceException {
 		try {
-			getResource()
-				.path(queuePath)
-				.delete();
-		}
-		catch(UniformInterfaceException e) {
+			service.deleteQueue(queuePath);
+		} catch (UniformInterfaceException e) {
 			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
 	}
 
+
 	public Queue getQueue(String queuePath) throws ServiceException {
 		try {
-			return getResource()
-					.path(queuePath)
-					.get(Queue.class);
-		}
-		catch(UniformInterfaceException e) {
+			return service.getQueue(queuePath);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
-		catch(ClientHandlerException e) {
+	}
+
+
+	public ListQueuesResult listQueues() throws ServiceException {
+		try {
+			return service.listQueues();
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Topic createTopic(Topic topic) throws ServiceException {
+		try {
+			return service.createTopic(topic);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void deleteTopic(String topicPath) throws ServiceException {
+		try {
+			service.deleteTopic(topicPath);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Topic getTopic(String topicPath) throws ServiceException {
+		try {
+			return service.getTopic(topicPath);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public ListTopicsResult listTopics() throws ServiceException {
+		try {
+			return service.listTopics();
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void addSubscription(String topicPath, String subscriptionName,
+			Entry subscription) throws ServiceException {
+		try {
+			service.addSubscription(topicPath, subscriptionName, subscription);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void removeSubscription(String topicPath, String subscriptionName)
+			throws ServiceException {
+		try {
+			service.removeSubscription(topicPath, subscriptionName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Entry getSubscription(String topicPath, String subscriptionName)
+			throws ServiceException {
+		try {
+			return service.getSubscription(topicPath, subscriptionName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Feed getSubscriptions(String topicPath) throws ServiceException {
+		try {
+			return service.getSubscriptions(topicPath);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void addRule(String topicPath, String subscriptionName,
+			String ruleName, Entry rule) throws ServiceException {
+		try {
+			service.addRule(topicPath, subscriptionName, ruleName, rule);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public void removeRule(String topicPath, String subscriptionName,
+			String ruleName) throws ServiceException {
+		try {
+			service.removeRule(topicPath, subscriptionName, ruleName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Entry getRule(String topicPath, String subscriptionName,
+			String ruleName) throws ServiceException {
+		try {
+			return service.getRule(topicPath, subscriptionName, ruleName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
+			throw processCatch(new ServiceException(e));
+		}
+	}
+
+
+	public Feed getRules(String topicPath, String subscriptionName)
+			throws ServiceException {
+		try {
+			return service.getRules(topicPath, subscriptionName);
+		} catch (UniformInterfaceException e) {
+			throw processCatch(new ServiceException(e));
+		} catch (ClientHandlerException e) {
 			throw processCatch(new ServiceException(e));
 		}
 	}
 
 	
-	public QueueList getQueueList() throws ServiceException {
-		try {
-			Feed feed = getResource()
-					.path("$Resources/Queues")
-					.get(Feed.class);
-			ArrayList<Queue> queues = new ArrayList<Queue>();
-			for(Entry entry : feed.getEntries()){
-				queues.add(new Queue(entry));
-			}
-			QueueList result = new QueueList();
-			result.setQueues(queues);
-			return result;
-		}
-		catch(UniformInterfaceException e) {
-			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
-			throw processCatch(new ServiceException(e));
-		}
-	}
-	public Entry createTopic(Entry entry) throws ServiceException {
-		try {
-			return getResource()
-				.path(entry.getTitle())
-				.type("application/atom+xml")//;type=entry;charset=utf-8")
-				.put(Entry.class, entry);
-		}
-		catch(UniformInterfaceException e) {
-			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
-			throw processCatch(new ServiceException(e));
-		}
-	}
-
-	public void deleteTopic(String topicPath) throws ServiceException {
-		try {
-			getResource()
-				.path(topicPath)
-				.delete();
-		}
-		catch(UniformInterfaceException e) {
-			throw processCatch(new ServiceException(e));
-		}
-		catch(ClientHandlerException e) {
-			throw processCatch(new ServiceException(e));
-		}
-	}
-
-	public Entry getTopic(String topicPath) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Feed getTopics() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void addSubscription(String topicPath, String subscriptionName,
-			Entry subscription) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void removeSubscription(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Entry getSubscription(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Feed getSubscriptions(String topicPath) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void addRule(String topicPath, String subscriptionName,
-			String ruleName, Entry rule) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void removeRule(String topicPath, String subscriptionName,
-			String ruleName) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Entry getRule(String topicPath, String subscriptionName,
-			String ruleName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Feed getRules(String topicPath, String subscriptionName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 }

@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import com.microsoft.azure.ServiceException;
 import com.microsoft.azure.configuration.Configuration;
 import com.microsoft.azure.services.serviceBus.Message;
+import com.microsoft.azure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.azure.services.serviceBus.ReceiveMode;
 import com.microsoft.azure.services.serviceBus.ServiceBusService;
 
@@ -46,7 +47,7 @@ public class MessagingClient {
 		return new MessageTransceiver() {
 
 			public void sendMessage(Message message) throws ServiceException {
-				service.sendMessage(queue, message);
+				service.sendQueueMessage(queue, message);
 			}
 
 			public Message receiveMessage() throws ServiceException {
@@ -55,27 +56,16 @@ public class MessagingClient {
 
 			public Message receiveMessage(ReceiveMessageOptions options)
 					throws ServiceException {
-				return service.receiveMessage(queue, options.getTimeout(),
-						ReceiveMode.RECEIVE_AND_DELETE);
+				return service.receiveQueueMessage(queue, options);
 			}
 
-			public Message peekLockMessage() throws ServiceException {
-				return peekLockMessage(ReceiveMessageOptions.DEFAULT);
+			public void unlockMessage(Message message) throws ServiceException {
+				service.unlockMessage(message);
 			}
 
-			public Message peekLockMessage(ReceiveMessageOptions options)
+			public void deleteMessage(Message message)
 					throws ServiceException {
-				return service.receiveMessage(queue, options.getTimeout(),
-						ReceiveMode.PEEK_LOCK);
-			}
-
-			public void abandonMessage(Message message) throws ServiceException {
-				service.abandonMessage(message);
-			}
-
-			public void completeMessage(Message message)
-					throws ServiceException {
-				service.completeMessage(message);
+				service.deleteMessage(message);
 			}
 		};
 	}
@@ -84,7 +74,7 @@ public class MessagingClient {
 		final String topic = topicName;
 		return new MessageSender() {
 			public void sendMessage(Message message) throws ServiceException {
-				service.sendMessage(topic, message);
+				service.sendQueueMessage(topic, message);
 			}
 		};
 	}
@@ -100,27 +90,16 @@ public class MessagingClient {
 
 			public Message receiveMessage(ReceiveMessageOptions options)
 					throws ServiceException {
-				return service.receiveMessage(topic, subscription, options.getTimeout(),
-						ReceiveMode.RECEIVE_AND_DELETE);
+				return service.receiveSubscriptionMessage(topic, subscription, options);
 			}
 			
-			public Message peekLockMessage() throws ServiceException {
-				return peekLockMessage(ReceiveMessageOptions.DEFAULT);
+			public void unlockMessage(Message message) throws ServiceException {
+				service.unlockMessage(message);
 			}
 
-			public Message peekLockMessage(ReceiveMessageOptions options)
+			public void deleteMessage(Message message)
 					throws ServiceException {
-				return service.receiveMessage(topic, subscription, options.getTimeout(),
-						ReceiveMode.PEEK_LOCK);
-			}
-
-			public void abandonMessage(Message message) throws ServiceException {
-				service.abandonMessage(message);
-			}
-
-			public void completeMessage(Message message)
-					throws ServiceException {
-				service.completeMessage(message);
+				service.deleteMessage(message);
 			}
 		};
 	}
