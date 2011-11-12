@@ -75,8 +75,7 @@ public class BlobServiceForJersey implements BlobService {
     private final SharedKeyLiteFilter filter;
 
     /*
-     * TODO: How can we make "timeout" optional? TODO: How to make "filter"
-     * configurable though code?
+     * TODO: How to make "filter" configurable though code?
      */
     @Inject
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,

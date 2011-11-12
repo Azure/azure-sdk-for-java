@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapter;
 
 @XmlRootElement(name = "QueueMessagesList")
 public class ListMessagesResult {
@@ -38,6 +41,7 @@ public class ListMessagesResult {
         }
 
         @XmlElement(name = "InsertionTime")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
         public Date getInsertionDate() {
             return insertionDate;
         }
@@ -47,6 +51,7 @@ public class ListMessagesResult {
         }
 
         @XmlElement(name = "ExpirationTime")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
         public Date getExpirationDate() {
             return expirationDate;
         }
@@ -65,6 +70,7 @@ public class ListMessagesResult {
         }
 
         @XmlElement(name = "TimeNextVisible")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
         public Date getTimeNextVisible() {
             return timeNextVisible;
         }

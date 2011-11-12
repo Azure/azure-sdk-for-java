@@ -1,12 +1,10 @@
 package com.microsoft.windowsazure.services.queue.models;
 
-import java.util.EnumSet;
-
 public class ListQueuesOptions extends QueueServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
-    private EnumSet<QueueListingDetails> listingDetails = EnumSet.noneOf(QueueListingDetails.class);
+    private boolean includeMetadata;
 
     public String getPrefix() {
         return prefix;
@@ -35,12 +33,12 @@ public class ListQueuesOptions extends QueueServiceOptions {
         return this;
     }
 
-    public EnumSet<QueueListingDetails> getListingDetails() {
-        return listingDetails;
+    public boolean isIncludeMetadata() {
+        return includeMetadata;
     }
 
-    public ListQueuesOptions setListingDetails(EnumSet<QueueListingDetails> listingDetails) {
-        this.listingDetails = listingDetails;
+    public ListQueuesOptions setIncludeMetadata(boolean includeMetadata) {
+        this.includeMetadata = includeMetadata;
         return this;
     }
 }

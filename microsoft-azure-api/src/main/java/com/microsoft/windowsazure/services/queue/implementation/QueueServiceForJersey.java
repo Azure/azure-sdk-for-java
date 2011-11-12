@@ -228,13 +228,22 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public ListQueuesResult listQueues() throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return listQueues(new ListQueuesOptions());
     }
 
     public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource webResource = getResource(options).path("/").queryParam("comp", "list");
+        webResource = setCanonicalizedResource(webResource, "list");
+        webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
+        webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
+        webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
+        if (options.isIncludeMetadata()) {
+            webResource = webResource.queryParam("include", "metadata");
+        }
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        return builder.get(ListQueuesResult.class);
     }
 
     public GetQueueMetadataResult getQueueMetadata(String queue) throws ServiceException {
@@ -258,23 +267,37 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public void setQueueMetadata(String queue, HashMap<String, String> metadata) throws ServiceException {
-        // TODO Auto-generated method stub
-
+        setQueueMetadata(queue, metadata, new QueueServiceOptions());
     }
 
     public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
+        webResource = setCanonicalizedResource(webResource, "metadata");
 
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        builder = addOptionalMetadataHeader(builder, metadata);
+
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("text/plain").put("");
     }
 
     public void createMessage(String queue, String message) throws ServiceException {
-        // TODO Auto-generated method stub
-
+        createMessage(queue, message, new CreateMessageOptions());
     }
 
     public void createMessage(String queue, String message, CreateMessageOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue).path("messages");
+        webResource = setCanonicalizedResource(webResource, null);
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
+        webResource = addOptionalQueryParam(webResource, "messagettl", options.getTimeToLiveInSeconds());
 
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        QueueMessage queueMessage = new QueueMessage();
+        queueMessage.setMessageText(message);
+
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("application/xml").post(queueMessage);
     }
 
     public UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds)
@@ -290,13 +313,18 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public ListMessagesResult listMessages(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return listMessages(queue, new ListMessagesOptions());
     }
 
     public ListMessagesResult listMessages(String queue, ListMessagesOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource webResource = getResource(options).path(queue).path("messages");
+        webResource = setCanonicalizedResource(webResource, null);
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
+        webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        return builder.get(ListMessagesResult.class);
     }
 
     public PeekMessagesResult peekMessages(String queue) throws ServiceException {
