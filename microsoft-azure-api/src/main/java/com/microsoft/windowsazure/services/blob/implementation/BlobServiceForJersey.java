@@ -145,14 +145,14 @@ public class BlobServiceForJersey implements BlobServiceContract {
         sb.addValue(options.isIncludeSnapshots(), "snapshots");
         sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
+        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
         return webResource;
     }
 
     private WebResource addOptionalContainerIncludeQueryParam(ListContainersOptions options, WebResource webResource) {
         EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
+        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
         return webResource;
     }
 
@@ -419,6 +419,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
+        webResource = addOptionalQueryParam(webResource, "delimiter", options.getDelimiter());
         webResource = addOptionalBlobListingIncludeQueryParam(options, webResource);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);

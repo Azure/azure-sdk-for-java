@@ -46,8 +46,9 @@ public class JerseyHelpers {
             }
         }
 
-        @Override
-        public String toString() {
+        public String getValue() {
+            if (sb.length() == 0)
+                return null;
             return sb.toString();
         }
     }
