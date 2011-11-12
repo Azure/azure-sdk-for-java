@@ -52,7 +52,7 @@ public class SharedKeyLiteFilter extends ClientFilter {
      * StringToSign = VERB + "\n" + Content-MD5 + "\n" + Content-Type + "\n" +
      * Date + "\n" + CanonicalizedHeaders + CanonicalizedResource;
      */
-    private void sign(ClientRequest cr) {
+    public void sign(ClientRequest cr) {
         // gather signed material
         String requestMethod = cr.getMethod();
         String contentMD5 = getHeader(cr, "Content-MD5");

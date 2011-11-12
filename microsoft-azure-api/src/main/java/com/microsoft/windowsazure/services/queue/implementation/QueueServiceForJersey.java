@@ -17,7 +17,6 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
-import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueServiceContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;

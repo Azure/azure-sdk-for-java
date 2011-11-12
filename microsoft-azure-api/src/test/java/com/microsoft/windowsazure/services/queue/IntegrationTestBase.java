@@ -18,9 +18,9 @@ public abstract class IntegrationTestBase {
         //setConfigValue(config, env, QueueConfiguration.URL, "http://127.0.0.1:10001/devstoreaccount1");
 
         // Storage account support
-        setConfigValue(config, env, QueueConfiguration.ACCOUNT_NAME, "xxx");
-        setConfigValue(config, env, QueueConfiguration.ACCOUNT_KEY, "xxx");
-        setConfigValue(config, env, QueueConfiguration.URL, "http://xxx.queue.core.windows.net");
+        setConfigValue(config, env, QueueConfiguration.ACCOUNT_NAME, "onesdktest");
+        setConfigValue(config, env, QueueConfiguration.ACCOUNT_KEY, "rKIHg9krRmIOA5JHf63WuolShpuMN0sZszkdCAIZx/PUQtoZf4Oi+YZiXwruIeOnuDfqJFpHsMibm8hjeft94w==");
+        setConfigValue(config, env, QueueConfiguration.URL, "http://onesdktest.queue.core.windows.net");
 
         // when mock running
         // config.setProperty("serviceBus.uri", "http://localhost:8086");
