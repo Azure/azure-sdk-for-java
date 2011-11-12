@@ -2,7 +2,7 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.HashMap;
 
-public class CreateContainerOptions extends BlobOptions {
+public class CreateContainerOptions extends BlobServiceOptions {
     private String publicAccess;
     private HashMap<String, String> metadata = new HashMap<String, String>();
 

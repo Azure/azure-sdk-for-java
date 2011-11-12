@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class BlobOptions {
+public class BlobServiceOptions {
     // Nullable because it is optional
     private Integer timeout;
 
@@ -8,7 +8,7 @@ public class BlobOptions {
         return timeout;
     }
 
-    public BlobOptions setTimeout(Integer timeout) {
+    public BlobServiceOptions setTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }

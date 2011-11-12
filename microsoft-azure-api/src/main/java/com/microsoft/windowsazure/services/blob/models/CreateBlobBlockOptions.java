@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class CreateBlobBlockOptions extends BlobOptions {
+public class CreateBlobBlockOptions extends BlobServiceOptions {
     private String leaseId;
     // TODO: Should the service layer support computing MD5 for the caller?
     private String contentMD5;

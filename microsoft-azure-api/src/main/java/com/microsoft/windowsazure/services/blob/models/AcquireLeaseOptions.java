@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class AcquireLeaseOptions extends BlobOptions {
+public class AcquireLeaseOptions extends BlobServiceOptions {
     private AccessCondition accessCondition;
 
     public AccessCondition getAccessCondition() {

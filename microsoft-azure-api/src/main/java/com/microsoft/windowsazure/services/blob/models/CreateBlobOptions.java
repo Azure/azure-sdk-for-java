@@ -2,7 +2,7 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.HashMap;
 
-public class CreateBlobOptions extends BlobOptions {
+public class CreateBlobOptions extends BlobServiceOptions {
     private String contentType;
     private String contentEncoding;
     private String contentLanguage;

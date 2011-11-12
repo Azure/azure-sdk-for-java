@@ -12,13 +12,11 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.BlobServiceContract;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
-import com.microsoft.windowsazure.services.blob.models.BlobOptions;
-import com.microsoft.windowsazure.services.blob.models.BlobProperties;
-import com.microsoft.windowsazure.services.blob.models.BlobSnapshot;
+import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
+import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
-import com.microsoft.windowsazure.services.blob.models.ContainerProperties;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
@@ -32,7 +30,12 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
+import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
+import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
+import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
+import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsOptions;
@@ -73,7 +76,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         return ServiceExceptionFactory.process("blob", e);
     }
 
-    public ServiceProperties getServiceProperties() throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties() throws ServiceException {
         try {
             return service.getServiceProperties();
         }
@@ -85,7 +88,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ServiceProperties getServiceProperties(BlobOptions options) throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException {
         try {
             return service.getServiceProperties(options);
         }
@@ -97,7 +100,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, BlobOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options) throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties, options);
         }
@@ -193,7 +196,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerProperties getContainerProperties(String container) throws ServiceException {
+    public GetContainerPropertiesResult getContainerProperties(String container) throws ServiceException {
         try {
             return service.getContainerProperties(container);
         }
@@ -205,7 +208,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerProperties getContainerProperties(String container, BlobOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options) throws ServiceException {
         try {
             return service.getContainerProperties(container, options);
         }
@@ -217,7 +220,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerProperties getContainerMetadata(String container) throws ServiceException {
+    public GetContainerPropertiesResult getContainerMetadata(String container) throws ServiceException {
         try {
             return service.getContainerMetadata(container);
         }
@@ -229,7 +232,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerProperties getContainerMetadata(String container, BlobOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options) throws ServiceException {
         try {
             return service.getContainerMetadata(container, options);
         }
@@ -241,7 +244,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerACL getContainerACL(String container) throws ServiceException {
+    public GetContainerACLResult getContainerACL(String container) throws ServiceException {
         try {
             return service.getContainerACL(container);
         }
@@ -253,7 +256,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public ContainerACL getContainerACL(String container, BlobOptions options) throws ServiceException {
+    public GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException {
         try {
             return service.getContainerACL(container, options);
         }
@@ -277,7 +280,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public void setContainerACL(String container, ContainerACL acl, BlobOptions options) throws ServiceException {
+    public void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException {
         try {
             service.setContainerACL(container, acl, options);
         }
@@ -509,7 +512,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public BlobProperties getBlobProperties(String container, String blob) throws ServiceException {
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException {
         try {
             return service.getBlobProperties(container, blob);
         }
@@ -521,7 +524,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException {
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException {
         try {
             return service.getBlobProperties(container, blob, options);
         }
@@ -678,7 +681,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public BlobSnapshot createBlobSnapshot(String container, String blob) throws ServiceException {
+    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
         try {
             return service.createBlobSnapshot(container, blob);
         }
@@ -690,7 +693,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
+    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
         try {
             return service.createBlobSnapshot(container, blob, options);
         }
@@ -727,7 +730,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public String acquireLease(String container, String blob) throws ServiceException {
+    public AcquireLeaseResult acquireLease(String container, String blob) throws ServiceException {
         try {
             return service.acquireLease(container, blob);
         }
@@ -739,7 +742,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public String acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException {
+    public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException {
         try {
             return service.acquireLease(container, blob, options);
         }
@@ -751,7 +754,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public String renewLease(String container, String blob, String leaseId) throws ServiceException {
+    public AcquireLeaseResult renewLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             return service.renewLease(container, blob, leaseId);
         }
@@ -763,7 +766,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public String renewLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+    public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
         try {
             return service.renewLease(container, blob, leaseId, options);
         }
@@ -787,7 +790,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public void releaseLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+    public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
         try {
             service.releaseLease(container, blob, leaseId, options);
         }
@@ -811,7 +814,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public void breakLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException {
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
         try {
             service.breakLease(container, blob, leaseId, options);
         }

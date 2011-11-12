@@ -1,22 +1,12 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
+import java.util.HashMap;
 
-/*
- * TODO: Rename to "CreateBlobSnapshotResult"?
- */
-public class BlobSnapshot {
-    private String snapshot;
+public class GetContainerPropertiesResult {
     private String etag;
     private Date lastModified;
-
-    public String getSnapshot() {
-        return snapshot;
-    }
-
-    public void setSnapshot(String snapshot) {
-        this.snapshot = snapshot;
-    }
+    private HashMap<String, String> metadata;
 
     public String getEtag() {
         return etag;
@@ -32,5 +22,13 @@ public class BlobSnapshot {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public HashMap<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(HashMap<String, String> metadata) {
+        this.metadata = metadata;
     }
 }

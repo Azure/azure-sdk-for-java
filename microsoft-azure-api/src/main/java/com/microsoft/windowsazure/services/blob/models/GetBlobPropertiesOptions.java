@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 
-public class GetBlobPropertiesOptions extends BlobOptions {
+public class GetBlobPropertiesOptions extends BlobServiceOptions {
     private String snapshot;
     private String leaseId;
     private AccessCondition accessCondition;

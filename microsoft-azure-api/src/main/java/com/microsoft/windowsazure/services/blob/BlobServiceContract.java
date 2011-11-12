@@ -6,13 +6,11 @@ import java.util.HashMap;
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
-import com.microsoft.windowsazure.services.blob.models.BlobOptions;
-import com.microsoft.windowsazure.services.blob.models.BlobProperties;
-import com.microsoft.windowsazure.services.blob.models.BlobSnapshot;
+import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
+import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
-import com.microsoft.windowsazure.services.blob.models.ContainerProperties;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
@@ -26,7 +24,12 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
+import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
+import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
+import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
+import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsOptions;
@@ -45,13 +48,13 @@ import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptio
 public interface BlobServiceContract {
     BlobServiceContract withFilter(ServiceFilter filter);
 
-    ServiceProperties getServiceProperties() throws ServiceException;
+    GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
-    ServiceProperties getServiceProperties(BlobOptions options) throws ServiceException;
+    GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException;
 
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
-    void setServiceProperties(ServiceProperties serviceProperties, BlobOptions options) throws ServiceException;
+    void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options) throws ServiceException;
 
     ListContainersResult listContainers() throws ServiceException;
 
@@ -65,21 +68,21 @@ public interface BlobServiceContract {
 
     void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException;
 
-    ContainerProperties getContainerProperties(String container) throws ServiceException;
+    GetContainerPropertiesResult getContainerProperties(String container) throws ServiceException;
 
-    ContainerProperties getContainerProperties(String container, BlobOptions options) throws ServiceException;
+    GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options) throws ServiceException;
 
-    ContainerProperties getContainerMetadata(String container) throws ServiceException;
+    GetContainerPropertiesResult getContainerMetadata(String container) throws ServiceException;
 
-    ContainerProperties getContainerMetadata(String container, BlobOptions options) throws ServiceException;
+    GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options) throws ServiceException;
 
-    ContainerACL getContainerACL(String container) throws ServiceException;
+    GetContainerACLResult getContainerACL(String container) throws ServiceException;
 
-    ContainerACL getContainerACL(String container, BlobOptions options) throws ServiceException;
+    GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException;
 
     void setContainerACL(String container, ContainerACL acl) throws ServiceException;
 
-    void setContainerACL(String container, ContainerACL acl, BlobOptions options) throws ServiceException;
+    void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException;
 
     void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException;
 
@@ -97,12 +100,10 @@ public interface BlobServiceContract {
 
     void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException;
 
-    // TODO: Should we use "createPageBlobPages"?
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException;
 
     CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) throws ServiceException;
 
-    // TODO: Should we use "updatePageBlobPages"?
     CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
             throws ServiceException;
 
@@ -121,9 +122,9 @@ public interface BlobServiceContract {
 
     ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) throws ServiceException;
 
-    BlobProperties getBlobProperties(String container, String blob) throws ServiceException;
+    GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException;
 
-    BlobProperties getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException;
+    GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException;
 
     GetBlobMetadataResult getBlobMetadata(String container, String blob) throws ServiceException;
 
@@ -150,28 +151,28 @@ public interface BlobServiceContract {
 
     void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException;
 
-    BlobSnapshot createBlobSnapshot(String container, String blob) throws ServiceException;
+    GetBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException;
 
-    BlobSnapshot createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException;
+    GetBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException;
 
     void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) throws ServiceException;
 
     void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options)
             throws ServiceException;
 
-    String acquireLease(String container, String blob) throws ServiceException;
+    AcquireLeaseResult acquireLease(String container, String blob) throws ServiceException;
 
-    String acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException;
+    AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException;
 
-    String renewLease(String container, String blob, String leaseId) throws ServiceException;
+    AcquireLeaseResult renewLease(String container, String blob, String leaseId) throws ServiceException;
 
-    String renewLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
+    AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException;
 
     void releaseLease(String container, String blob, String leaseId) throws ServiceException;
 
-    void releaseLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
+    void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException;
 
     void breakLease(String container, String blob, String leaseId) throws ServiceException;
 
-    void breakLease(String container, String blob, String leaseId, BlobOptions options) throws ServiceException;
+    void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException;
 }

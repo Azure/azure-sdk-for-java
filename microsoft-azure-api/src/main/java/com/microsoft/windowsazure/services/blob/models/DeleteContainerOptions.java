@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class DeleteContainerOptions extends BlobOptions {
+public class DeleteContainerOptions extends BlobServiceOptions {
     private AccessCondition accessCondition;
 
     public AccessCondition getAccessCondition() {

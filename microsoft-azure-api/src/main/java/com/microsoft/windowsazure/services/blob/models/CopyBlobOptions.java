@@ -2,7 +2,7 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.HashMap;
 
-public class CopyBlobOptions extends BlobOptions {
+public class CopyBlobOptions extends BlobServiceOptions {
     private String leaseId;
     private AccessCondition accessCondition;
     private String sourceLeaseId;

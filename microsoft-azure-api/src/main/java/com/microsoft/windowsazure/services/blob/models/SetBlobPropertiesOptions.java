@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 
-public class SetBlobPropertiesOptions extends BlobOptions {
+public class SetBlobPropertiesOptions extends BlobServiceOptions {
     private String leaseId;
     private String contentType;
     private Long contentLength;

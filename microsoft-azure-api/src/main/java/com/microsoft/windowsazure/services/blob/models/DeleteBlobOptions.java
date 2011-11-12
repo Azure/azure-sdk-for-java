@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class DeleteBlobOptions extends BlobOptions {
+public class DeleteBlobOptions extends BlobServiceOptions {
     private String snapshot;
     private String leaseId;
     private boolean deleteSnaphotsOnly;

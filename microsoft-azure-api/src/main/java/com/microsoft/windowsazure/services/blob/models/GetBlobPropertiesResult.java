@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapter;
 
 // TODO: Unify this with ListBlobsResults.BlobProperties
-public class BlobProperties {
+public class GetBlobPropertiesResult {
     private Date lastModified;
     private String etag;
     private String contentType;

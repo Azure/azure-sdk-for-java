@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 
-public class ListBlobBlocksOptions extends BlobOptions {
+public class ListBlobBlocksOptions extends BlobServiceOptions {
     private String leaseId;
     private String snapshot;
     private String listType; // "committed", "uncommitted", "all"

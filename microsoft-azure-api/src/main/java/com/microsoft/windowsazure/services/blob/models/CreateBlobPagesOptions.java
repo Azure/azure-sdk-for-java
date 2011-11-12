@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-public class CreateBlobPagesOptions extends BlobOptions {
+public class CreateBlobPagesOptions extends BlobServiceOptions {
     private String leaseId;
     private String contentMD5;
     private AccessCondition accessCondition;

@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 
-public class SetContainerMetadataOptions extends BlobOptions {
+public class SetContainerMetadataOptions extends BlobServiceOptions {
     private AccessCondition accessCondition;
 
     public AccessCondition getAccessCondition() {

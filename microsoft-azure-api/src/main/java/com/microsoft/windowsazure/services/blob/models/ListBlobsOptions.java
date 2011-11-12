@@ -3,7 +3,7 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.EnumSet;
 
 
-public class ListBlobsOptions extends BlobOptions {
+public class ListBlobsOptions extends BlobServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
