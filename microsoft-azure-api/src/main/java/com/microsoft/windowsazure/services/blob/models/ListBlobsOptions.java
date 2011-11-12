@@ -1,14 +1,13 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-import java.util.EnumSet;
-
-
 public class ListBlobsOptions extends BlobServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
     private String delimiter;
-    private EnumSet<BlobListingDetails> listingDetails = EnumSet.noneOf(BlobListingDetails.class);
+    private boolean includeMetadata;
+    private boolean includeSnapshots;
+    private boolean includeUncommittedBlobs;
 
     public String getPrefix() {
         return prefix;
@@ -46,12 +45,30 @@ public class ListBlobsOptions extends BlobServiceOptions {
         return this;
     }
 
-    public EnumSet<BlobListingDetails> getListingDetails() {
-        return listingDetails;
+    public boolean isIncludeMetadata() {
+        return includeMetadata;
     }
 
-    public ListBlobsOptions setListingDetails(EnumSet<BlobListingDetails> listingDetails) {
-        this.listingDetails = listingDetails;
+    public ListBlobsOptions setIncludeMetadata(boolean includeMetadata) {
+        this.includeMetadata = includeMetadata;
+        return this;
+    }
+
+    public boolean isIncludeSnapshots() {
+        return includeSnapshots;
+    }
+
+    public ListBlobsOptions setIncludeSnapshots(boolean includeSnapshots) {
+        this.includeSnapshots = includeSnapshots;
+        return this;
+    }
+
+    public boolean isIncludeUncommittedBlobs() {
+        return includeUncommittedBlobs;
+    }
+
+    public ListBlobsOptions setIncludeUncommittedBlobs(boolean includeUncommittedBlobs) {
+        this.includeUncommittedBlobs = includeUncommittedBlobs;
         return this;
     }
 }

@@ -12,7 +12,6 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -29,7 +28,6 @@ import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
-import com.microsoft.windowsazure.services.blob.models.ContainerListingDetails;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
@@ -200,8 +198,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         GetContainerPropertiesResult prop2 = service.getContainerProperties(CREATEABLE_CONTAINER_2);
         ContainerACL acl = service.getContainerACL(CREATEABLE_CONTAINER_2).getContainerACL();
 
-        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix(CREATEABLE_CONTAINER_2).setListingDetails(
-                EnumSet.of(ContainerListingDetails.METADATA)));
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix(CREATEABLE_CONTAINER_2).setIncludeMetadata(true));
 
         service.deleteContainer(CREATEABLE_CONTAINER_2);
 

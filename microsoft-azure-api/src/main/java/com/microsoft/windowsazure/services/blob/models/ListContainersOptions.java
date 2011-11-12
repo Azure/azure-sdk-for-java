@@ -1,13 +1,11 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-import java.util.EnumSet;
-
 
 public class ListContainersOptions extends BlobServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
-    private EnumSet<ContainerListingDetails> listingDetails = EnumSet.noneOf(ContainerListingDetails.class);
+    private boolean includeMetadata;
 
     public String getPrefix() {
         return prefix;
@@ -36,12 +34,12 @@ public class ListContainersOptions extends BlobServiceOptions {
         return this;
     }
 
-    public EnumSet<ContainerListingDetails> getListingDetails() {
-        return listingDetails;
+    public boolean isIncludeMetadata() {
+        return includeMetadata;
     }
 
-    public ListContainersOptions setListingDetails(EnumSet<ContainerListingDetails> listingDetails) {
-        this.listingDetails = listingDetails;
+    public ListContainersOptions setIncludeMetadata(boolean includeMetadata) {
+        this.includeMetadata = includeMetadata;
         return this;
     }
 }

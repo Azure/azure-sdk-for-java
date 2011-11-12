@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.blob.implementation;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +34,11 @@ public class JerseyHelpers {
         return webResource;
     }
 
-    public static class EnumCommaStringBuilder<E extends Enum<E>> {
+    public static class EnumCommaStringBuilder {
         private final StringBuilder sb = new StringBuilder();
 
-        public void addValue(EnumSet<E> enumSet, E value, String representation) {
-            if (enumSet.contains(value)) {
+        public void addValue(boolean value, String representation) {
+            if (value) {
                 if (sb.length() >= 0) {
                     sb.append(",");
                 }
