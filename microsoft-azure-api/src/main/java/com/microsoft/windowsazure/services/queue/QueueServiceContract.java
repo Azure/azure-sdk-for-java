@@ -4,9 +4,21 @@ import java.util.HashMap;
 
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
+import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
+import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
+import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
+import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
+import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
+import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
+import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
-public interface QueueService {
-    QueueService withFilter(ServiceFilter filter);
+public interface QueueServiceContract {
+    QueueServiceContract withFilter(ServiceFilter filter);
 
     ServiceProperties getServiceProperties() throws ServiceException;
 

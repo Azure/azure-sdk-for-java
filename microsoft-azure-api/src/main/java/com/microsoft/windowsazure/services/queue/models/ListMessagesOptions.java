@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.queue;
+package com.microsoft.windowsazure.services.queue.models;
 
 public class ListMessagesOptions extends QueueServiceOptions {
     private Integer numberOfMessages;

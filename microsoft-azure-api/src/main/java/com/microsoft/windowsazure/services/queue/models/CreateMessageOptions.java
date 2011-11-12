@@ -1,4 +1,5 @@
-package com.microsoft.windowsazure.services.queue;
+package com.microsoft.windowsazure.services.queue.models;
+
 
 public class CreateMessageOptions extends QueueServiceOptions {
     private Integer visibilityTimeoutInSeconds;

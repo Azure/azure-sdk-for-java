@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.queue;
+package com.microsoft.windowsazure.services.queue.models;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

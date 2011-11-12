@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.queue;
+package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.EnumSet;
 
