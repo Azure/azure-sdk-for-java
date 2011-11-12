@@ -1,0 +1,5 @@
+com.microsoft.windowsazure.auth.wrap.Exports
+com.microsoft.windowsazure.configuration.jersey.Exports
+com.microsoft.windowsazure.services.blob.Exports
+com.microsoft.windowsazure.services.serviceBus.Exports
+com.microsoft.windowsazure.utils.Exports
