@@ -44,8 +44,6 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
-import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.Blob;
-import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.BlobPrefix;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
@@ -377,11 +375,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(results);
-        assertEquals(4, results.getEntries().size());
-        assertTrue(results.getEntries().get(0) instanceof Blob);
-        assertTrue(results.getEntries().get(1) instanceof Blob);
-        assertTrue(results.getEntries().get(2) instanceof Blob);
-        assertTrue(results.getEntries().get(3) instanceof Blob);
+        assertEquals(4, results.getBlobs().size());
     }
 
     @Test
@@ -404,18 +398,14 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(results);
-        assertEquals(2, results.getEntries().size());
-        assertTrue(results.getEntries().get(0) instanceof Blob);
-        assertTrue(results.getEntries().get(1) instanceof Blob);
-        assertEquals("myblob1", ((Blob) results.getEntries().get(0)).getName());
-        assertEquals("myblob2", ((Blob) results.getEntries().get(1)).getName());
+        assertEquals(2, results.getBlobs().size());
+        assertEquals("myblob1", results.getBlobs().get(0).getName());
+        assertEquals("myblob2", results.getBlobs().get(1).getName());
 
         assertNotNull(results2);
-        assertEquals(2, results2.getEntries().size());
-        assertTrue(results2.getEntries().get(0) instanceof Blob);
-        assertTrue(results2.getEntries().get(1) instanceof Blob);
-        assertEquals("otherblob1", ((Blob) results2.getEntries().get(0)).getName());
-        assertEquals("otherblob2", ((Blob) results2.getEntries().get(1)).getName());
+        assertEquals(2, results2.getBlobs().size());
+        assertEquals("otherblob1", results2.getBlobs().get(0).getName());
+        assertEquals("otherblob2", results2.getBlobs().get(1).getName());
     }
 
     @Test
@@ -438,7 +428,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(results);
-        assertEquals(4, results.getEntries().size());
+        assertEquals(4, results.getBlobs().size());
     }
 
     @Test
@@ -465,21 +455,23 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(results);
-        assertEquals(4, results.getEntries().size());
-        assertTrue(results.getEntries().get(0) instanceof BlobPrefix);
-        assertTrue(results.getEntries().get(1) instanceof BlobPrefix);
-        assertTrue(results.getEntries().get(2) instanceof Blob);
-        assertTrue(results.getEntries().get(3) instanceof Blob);
+        assertEquals(2, results.getBlobs().size());
+        assertEquals(2, results.getBlobPrefixes().size());
 
-        assertEquals(2, results2.getEntries().size());
+        assertEquals(2, results2.getBlobs().size());
+        assertEquals(0, results2.getBlobPrefixes().size());
 
-        assertEquals(2, results3.getEntries().size());
+        assertEquals(0, results3.getBlobs().size());
+        assertEquals(2, results3.getBlobPrefixes().size());
 
-        assertEquals(1, results4.getEntries().size());
+        assertEquals(1, results4.getBlobs().size());
+        assertEquals(0, results4.getBlobPrefixes().size());
 
-        assertEquals(1, results5.getEntries().size());
+        assertEquals(1, results5.getBlobs().size());
+        assertEquals(0, results5.getBlobPrefixes().size());
 
-        assertEquals(0, results6.getEntries().size());
+        assertEquals(0, results6.getBlobs().size());
+        assertEquals(0, results6.getBlobPrefixes().size());
     }
 
     @Test

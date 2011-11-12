@@ -1,5 +1,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,8 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapte
 
 @XmlRootElement(name = "EnumerationResults")
 public class ListBlobsResult {
-    private List<ListBlobsEntry> entries;
+    private List<BlobPrefixEntry> blobPrefixes = new ArrayList<BlobPrefixEntry>();
+    private List<BlobEntry> blobs = new ArrayList<BlobEntry>();
     private String containerName;
     private String prefix;
     private String marker;
@@ -26,13 +28,35 @@ public class ListBlobsResult {
     private int maxResults;
 
     @XmlElementWrapper(name = "Blobs")
-    @XmlElementRefs({ @XmlElementRef(name = "BlobPrefix", type = BlobPrefix.class), @XmlElementRef(name = "Blob", type = Blob.class) })
+    @XmlElementRefs({ @XmlElementRef(name = "BlobPrefix", type = BlobPrefixEntry.class), @XmlElementRef(name = "Blob", type = BlobEntry.class) })
     public List<ListBlobsEntry> getEntries() {
-        return entries;
+        ArrayList<ListBlobsEntry> result = new ArrayList<ListBlobsEntry>();
+        result.addAll(this.blobPrefixes);
+        result.addAll(this.blobs);
+        return result;
     }
 
     public void setEntries(List<ListBlobsEntry> entries) {
-        this.entries = entries;
+        // Split collection into "blobs" and "blobPrefixes" collections
+        this.blobPrefixes = new ArrayList<BlobPrefixEntry>();
+        this.blobs = new ArrayList<BlobEntry>();
+
+        for (ListBlobsEntry entry : entries) {
+            if (entry instanceof BlobPrefixEntry) {
+                this.blobPrefixes.add((BlobPrefixEntry) entry);
+            }
+            else if (entry instanceof BlobEntry) {
+                this.blobs.add((BlobEntry) entry);
+            }
+        }
+    }
+
+    public List<BlobPrefixEntry> getBlobPrefixes() {
+        return this.blobPrefixes;
+    }
+
+    public List<BlobEntry> getBlobs() {
+        return this.blobs;
     }
 
     @XmlElement(name = "Prefix")
@@ -94,7 +118,7 @@ public class ListBlobsResult {
     }
 
     @XmlRootElement(name = "BlobPrefix")
-    public static class BlobPrefix extends ListBlobsEntry {
+    public static class BlobPrefixEntry extends ListBlobsEntry {
         private String name;
 
         @XmlElement(name = "Name")
@@ -108,7 +132,7 @@ public class ListBlobsResult {
     }
 
     @XmlRootElement(name = "Blob")
-    public static class Blob extends ListBlobsEntry {
+    public static class BlobEntry extends ListBlobsEntry {
         private String name;
         private String url;
         private String snapshot;
