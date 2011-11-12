@@ -332,12 +332,15 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public void clearMessages(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
-
+        clearMessages(queue, new QueueServiceOptions());
     }
 
     public void clearMessages(String queue, QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue).path("messages");
+        webResource = setCanonicalizedResource(webResource, null);
 
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        builder.delete();
     }
 }

@@ -1,5 +1,6 @@
 package com.microsoft.windowsazure.services.queue.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
 
 @XmlRootElement(name = "EnumerationResults")
 public class ListQueuesResult {
-    private List<Queue> queues;
+    private List<Queue> queues = new ArrayList<Queue>();
     private String accountName;
     private String prefix;
     private String marker;

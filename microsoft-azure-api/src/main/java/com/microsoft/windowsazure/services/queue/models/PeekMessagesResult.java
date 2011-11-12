@@ -1,5 +1,6 @@
 package com.microsoft.windowsazure.services.queue.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,18 +12,18 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapte
 
 @XmlRootElement(name = "QueueMessagesList")
 public class PeekMessagesResult {
-    private List<Entry> entries;
+    private List<QueueMessage> queueMessages = new ArrayList<QueueMessage>();
 
     @XmlElement(name = "QueueMessage")
-    public List<Entry> getEntries() {
-        return entries;
+    public List<QueueMessage> getQueueMessages() {
+        return queueMessages;
     }
 
-    public void setEntries(List<Entry> entries) {
-        this.entries = entries;
+    public void setQueueMessages(List<QueueMessage> queueMessages) {
+        this.queueMessages = queueMessages;
     }
 
-    public static class Entry {
+    public static class QueueMessage {
         private String id;
         private Date insertionDate;
         private Date expirationDate;

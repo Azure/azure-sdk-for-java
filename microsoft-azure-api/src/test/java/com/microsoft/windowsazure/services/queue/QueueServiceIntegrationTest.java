@@ -17,7 +17,7 @@ import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
-import com.microsoft.windowsazure.services.queue.models.ListMessagesResult.Entry;
+import com.microsoft.windowsazure.services.queue.models.ListMessagesResult.QueueMessage;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
@@ -32,6 +32,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_QUEUE_FOR_MESSAGES_3;
     private static String TEST_QUEUE_FOR_MESSAGES_4;
     private static String TEST_QUEUE_FOR_MESSAGES_5;
+    private static String TEST_QUEUE_FOR_MESSAGES_6;
     private static String CREATABLE_QUEUE_1;
     private static String CREATABLE_QUEUE_2;
     private static String CREATABLE_QUEUE_3;
@@ -57,6 +58,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         TEST_QUEUE_FOR_MESSAGES_3 = testQueues[2];
         TEST_QUEUE_FOR_MESSAGES_4 = testQueues[3];
         TEST_QUEUE_FOR_MESSAGES_5 = testQueues[4];
+        TEST_QUEUE_FOR_MESSAGES_6 = testQueues[5];
 
         CREATABLE_QUEUE_1 = creatableQueues[0];
         CREATABLE_QUEUE_2 = creatableQueues[1];
@@ -293,9 +295,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getEntries().size());
+        assertEquals(1, result.getQueueMessages().size());
 
-        Entry entry = result.getEntries().get(0);
+        QueueMessage entry = result.getQueueMessages().get(0);
 
         assertNotNull(entry.getId());
         assertNotNull(entry.getText());
@@ -332,9 +334,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(4, result.getEntries().size());
+        assertEquals(4, result.getQueueMessages().size());
         for (int i = 0; i < 4; i++) {
-            Entry entry = result.getEntries().get(i);
+            QueueMessage entry = result.getQueueMessages().get(i);
 
             assertNotNull(entry.getId());
             assertNotNull(entry.getText());
@@ -371,9 +373,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getEntries().size());
+        assertEquals(1, result.getQueueMessages().size());
 
-        com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.Entry entry = result.getEntries().get(0);
+        com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(0);
 
         assertNotNull(entry.getId());
         assertNotNull(entry.getText());
@@ -405,9 +407,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(4, result.getEntries().size());
+        assertEquals(4, result.getQueueMessages().size());
         for (int i = 0; i < 4; i++) {
-            com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.Entry entry = result.getEntries().get(i);
+            com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(i);
 
             assertNotNull(entry.getId());
             assertNotNull(entry.getText());
@@ -419,5 +421,25 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
             assertNotNull(entry.getInsertionDate());
             assertTrue(year2010.before(entry.getInsertionDate()));
         }
+    }
+
+    @Test
+    public void clearMessagesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueServiceContract service = config.create(QueueServiceContract.class);
+
+        // Act
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_6, "message1");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_6, "message2");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_6, "message3");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_6, "message4");
+        service.clearMessages(TEST_QUEUE_FOR_MESSAGES_6);
+
+        PeekMessagesResult result = service.peekMessages(TEST_QUEUE_FOR_MESSAGES_6);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(0, result.getQueueMessages().size());
     }
 }
