@@ -46,7 +46,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         // Act
         QueueServiceProperties props = service.getServiceProperties();
 
-        props.setDefaultServiceVersion("2009-09-19");
         props.getLogging().setRead(true);
         service.setServiceProperties(props);
 
@@ -54,7 +53,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(props);
-        assertEquals("2009-09-19", props.getDefaultServiceVersion());
         assertNotNull(props.getLogging());
         assertNotNull(props.getLogging().getRetentionPolicy());
         assertNotNull(props.getLogging().getVersion());

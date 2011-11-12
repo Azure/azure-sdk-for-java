@@ -28,15 +28,6 @@ public class QueueServiceProperties {
         this.metrics = metrics;
     }
 
-    @XmlElement(name = "DefaultServiceVersion")
-    public String getDefaultServiceVersion() {
-        return defaultServiceVersion;
-    }
-
-    public void setDefaultServiceVersion(String defaultServiceVersion) {
-        this.defaultServiceVersion = defaultServiceVersion;
-    }
-
     public static class Logging {
         private String version;
         private Boolean delete;
