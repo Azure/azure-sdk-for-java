@@ -44,6 +44,8 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.Blob;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.BlobPrefix;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
@@ -98,11 +100,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 // Ignore exception as the containers might not exists
             }
         }
-
-        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "myblob1", 512);
-        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "myblob2", 512);
-        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "otherblob1", 512);
-        service.createPageBlob(TEST_CONTAINER_FOR_LISTING, "otherblob2", 512);
     }
 
     @AfterClass
@@ -366,13 +363,25 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobServiceContract service = config.create(BlobServiceContract.class);
+        String[] blobNames = { "myblob1", "myblob2", "other-blob1", "other-blob2" };
+        for (String blob : blobNames) {
+            service.createPageBlob(TEST_CONTAINER_FOR_LISTING, blob, 512);
+        }
 
         // Act
         ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING);
 
+        for (String blob : blobNames) {
+            service.deleteBlob(TEST_CONTAINER_FOR_LISTING, blob);
+        }
+
         // Assert
         assertNotNull(results);
-        assertEquals(4, results.getBlobs().size());
+        assertEquals(4, results.getEntries().size());
+        assertTrue(results.getEntries().get(0) instanceof Blob);
+        assertTrue(results.getEntries().get(1) instanceof Blob);
+        assertTrue(results.getEntries().get(2) instanceof Blob);
+        assertTrue(results.getEntries().get(3) instanceof Blob);
     }
 
     @Test
@@ -380,13 +389,97 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobServiceContract service = config.create(BlobServiceContract.class);
+        String[] blobNames = { "myblob1", "myblob2", "otherblob1", "otherblob2" };
+        for (String blob : blobNames) {
+            service.createPageBlob(TEST_CONTAINER_FOR_LISTING, blob, 512);
+        }
 
         // Act
         ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setPrefix("myblob"));
+        ListBlobsResult results2 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setPrefix("o"));
+
+        for (String blob : blobNames) {
+            service.deleteBlob(TEST_CONTAINER_FOR_LISTING, blob);
+        }
 
         // Assert
         assertNotNull(results);
-        assertEquals(2, results.getBlobs().size());
+        assertEquals(2, results.getEntries().size());
+        assertTrue(results.getEntries().get(0) instanceof Blob);
+        assertTrue(results.getEntries().get(1) instanceof Blob);
+        assertEquals("myblob1", ((Blob) results.getEntries().get(0)).getName());
+        assertEquals("myblob2", ((Blob) results.getEntries().get(1)).getName());
+
+        assertNotNull(results2);
+        assertEquals(2, results2.getEntries().size());
+        assertTrue(results2.getEntries().get(0) instanceof Blob);
+        assertTrue(results2.getEntries().get(1) instanceof Blob);
+        assertEquals("otherblob1", ((Blob) results2.getEntries().get(0)).getName());
+        assertEquals("otherblob2", ((Blob) results2.getEntries().get(1)).getName());
+    }
+
+    @Test
+    public void listBlobsWithOptionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobServiceContract service = config.create(BlobServiceContract.class);
+        String[] blobNames = { "myblob1", "myblob2", "otherblob1", "otherblob2" };
+        for (String blob : blobNames) {
+            service.createPageBlob(TEST_CONTAINER_FOR_LISTING, blob, 512);
+        }
+
+        // Act
+        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setIncludeMetadata(true)
+                .setIncludeSnapshots(true));
+
+        for (String blob : blobNames) {
+            service.deleteBlob(TEST_CONTAINER_FOR_LISTING, blob);
+        }
+
+        // Assert
+        assertNotNull(results);
+        assertEquals(4, results.getEntries().size());
+    }
+
+    @Test
+    public void listBlobsWithDelimiterWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobServiceContract service = config.create(BlobServiceContract.class);
+        String[] blobNames = { "myblob1", "myblob2", "dir1-blob1", "dir1-blob2", "dir2-dir21-blob3", "dir2-dir22-blob3" };
+        for (String blob : blobNames) {
+            service.createPageBlob(TEST_CONTAINER_FOR_LISTING, blob, 512);
+        }
+
+        // Act
+        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-"));
+        ListBlobsResult results2 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-").setPrefix("dir1-"));
+        ListBlobsResult results3 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-").setPrefix("dir2-"));
+        ListBlobsResult results4 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-").setPrefix("dir2-dir21-"));
+        ListBlobsResult results5 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-").setPrefix("dir2-dir22-"));
+        ListBlobsResult results6 = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setDelimiter("-").setPrefix("dir2-dir44-"));
+
+        for (String blob : blobNames) {
+            service.deleteBlob(TEST_CONTAINER_FOR_LISTING, blob);
+        }
+
+        // Assert
+        assertNotNull(results);
+        assertEquals(4, results.getEntries().size());
+        assertTrue(results.getEntries().get(0) instanceof BlobPrefix);
+        assertTrue(results.getEntries().get(1) instanceof BlobPrefix);
+        assertTrue(results.getEntries().get(2) instanceof Blob);
+        assertTrue(results.getEntries().get(3) instanceof Blob);
+
+        assertEquals(2, results2.getEntries().size());
+
+        assertEquals(2, results3.getEntries().size());
+
+        assertEquals(1, results4.getEntries().size());
+
+        assertEquals(1, results5.getEntries().size());
+
+        assertEquals(0, results6.getEntries().size());
     }
 
     @Test

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -15,7 +17,7 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapte
 
 @XmlRootElement(name = "EnumerationResults")
 public class ListBlobsResult {
-    private List<Blob> blobs;
+    private List<ListBlobsEntry> entries;
     private String containerName;
     private String prefix;
     private String marker;
@@ -24,13 +26,13 @@ public class ListBlobsResult {
     private int maxResults;
 
     @XmlElementWrapper(name = "Blobs")
-    @XmlElement(name = "Blob")
-    public List<Blob> getBlobs() {
-        return blobs;
+    @XmlElementRefs({ @XmlElementRef(name = "BlobPrefix", type = BlobPrefix.class), @XmlElementRef(name = "Blob", type = Blob.class) })
+    public List<ListBlobsEntry> getEntries() {
+        return entries;
     }
 
-    public void setBlobs(List<Blob> value) {
-        this.blobs = value;
+    public void setEntries(List<ListBlobsEntry> entries) {
+        this.entries = entries;
     }
 
     @XmlElement(name = "Prefix")
@@ -87,7 +89,26 @@ public class ListBlobsResult {
         this.containerName = containerName;
     }
 
-    public static class Blob {
+    public static abstract class ListBlobsEntry {
+
+    }
+
+    @XmlRootElement(name = "BlobPrefix")
+    public static class BlobPrefix extends ListBlobsEntry {
+        private String name;
+
+        @XmlElement(name = "Name")
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    @XmlRootElement(name = "Blob")
+    public static class Blob extends ListBlobsEntry {
         private String name;
         private String url;
         private String snapshot;
