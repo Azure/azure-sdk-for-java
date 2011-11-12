@@ -29,7 +29,7 @@ import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
-import com.microsoft.windowsazure.services.queue.models.QueueServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -171,24 +171,24 @@ public class QueueServiceForJersey implements QueueServiceContract {
         return webResource;
     }
 
-    public QueueServiceProperties getServiceProperties() throws ServiceException {
+    public ServiceProperties getServiceProperties() throws ServiceException {
         return getServiceProperties(new QueueServiceOptions());
     }
 
-    public QueueServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
+    public ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
-        return builder.get(QueueServiceProperties.class);
+        return builder.get(ServiceProperties.class);
     }
 
-    public void setServiceProperties(QueueServiceProperties serviceProperties) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
         setServiceProperties(serviceProperties, new QueueServiceOptions());
     }
 
-    public void setServiceProperties(QueueServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, "properties");
 

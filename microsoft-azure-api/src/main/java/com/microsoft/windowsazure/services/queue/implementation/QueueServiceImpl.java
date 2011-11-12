@@ -20,7 +20,7 @@ import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
-import com.microsoft.windowsazure.services.queue.models.QueueServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -48,7 +48,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         return ServiceExceptionFactory.process("blob", e);
     }
 
-    public QueueServiceProperties getServiceProperties() throws ServiceException {
+    public ServiceProperties getServiceProperties() throws ServiceException {
         try {
             return service.getServiceProperties();
         }
@@ -60,7 +60,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public QueueServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
+    public ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
         try {
             return service.getServiceProperties(options);
         }
@@ -72,7 +72,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void setServiceProperties(QueueServiceProperties serviceProperties) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties);
         }
@@ -84,7 +84,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void setServiceProperties(QueueServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties, options);
         }

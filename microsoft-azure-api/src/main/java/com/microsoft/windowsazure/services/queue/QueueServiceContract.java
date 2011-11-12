@@ -14,19 +14,19 @@ import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
-import com.microsoft.windowsazure.services.queue.models.QueueServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
 public interface QueueServiceContract {
     QueueServiceContract withFilter(ServiceFilter filter);
 
-    QueueServiceProperties getServiceProperties() throws ServiceException;
+    ServiceProperties getServiceProperties() throws ServiceException;
 
-    QueueServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException;
+    ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException;
 
-    void setServiceProperties(QueueServiceProperties serviceProperties) throws ServiceException;
+    void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
-    void setServiceProperties(QueueServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException;
+    void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException;
 
     void createQueue(String queue) throws ServiceException;
 

@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.configuration.Configuration;
-import com.microsoft.windowsazure.services.queue.models.QueueServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 
 public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
@@ -26,7 +26,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueServiceContract service = config.create(QueueServiceContract.class);
 
         // Act
-        QueueServiceProperties props = service.getServiceProperties();
+        ServiceProperties props = service.getServiceProperties();
 
         // Assert
         assertNotNull(props);
@@ -44,7 +44,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueServiceContract service = config.create(QueueServiceContract.class);
 
         // Act
-        QueueServiceProperties props = service.getServiceProperties();
+        ServiceProperties props = service.getServiceProperties();
 
         props.getLogging().setRead(true);
         service.setServiceProperties(props);
