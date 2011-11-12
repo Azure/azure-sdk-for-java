@@ -116,15 +116,6 @@ public class BlobServiceForJersey implements BlobServiceContract {
         return JerseyHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
     }
 
-    private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
-        sb.addValue(options.isIncludeSnapshots(), "snapshots");
-        sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
-        sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
-        return webResource;
-    }
-
     private Builder addOptionalHeader(Builder builder, String name, Object value) {
         return JerseyHelpers.addOptionalHeader(builder, name, value);
     }
@@ -147,6 +138,22 @@ public class BlobServiceForJersey implements BlobServiceContract {
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
         return JerseyHelpers.getMetadataFromHeaders(response);
+    }
+
+    private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {
+        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        sb.addValue(options.isIncludeSnapshots(), "snapshots");
+        sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
+        sb.addValue(options.isIncludeMetadata(), "metadata");
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
+        return webResource;
+    }
+
+    private WebResource addOptionalContainerIncludeQueryParam(ListContainersOptions options, WebResource webResource) {
+        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        sb.addValue(options.isIncludeMetadata(), "metadata");
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
+        return webResource;
     }
 
     private Builder addPutBlobHeaders(CreateBlobOptions options, Builder builder) {
@@ -395,9 +402,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
-        if (options.isIncludeMetadata()) {
-            webResource = webResource.queryParam("include", "metadata");
-        }
+        webResource = addOptionalContainerIncludeQueryParam(options, webResource);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
