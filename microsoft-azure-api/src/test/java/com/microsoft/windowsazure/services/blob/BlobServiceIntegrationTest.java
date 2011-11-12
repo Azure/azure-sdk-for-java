@@ -46,6 +46,7 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.PageRange;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
@@ -528,7 +529,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String blob = "test";
         service.createPageBlob(container, blob, 512);
 
-        CreateBlobPagesResult result = service.clearBlobPages(container, blob, 0, 511);
+        CreateBlobPagesResult result = service.clearBlobPages(container, blob, new PageRange(0, 511));
 
         // Assert
         assertNotNull(result);
@@ -550,7 +551,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 512);
 
-        CreateBlobPagesResult result = service.createBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        CreateBlobPagesResult result = service.createBlobPages(container, blob, new PageRange(0, 511), content.length(),
+                new ByteArrayInputStream(content.getBytes("UTF-8")));
 
         // Assert
         assertNotNull(result);
@@ -572,10 +574,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = new String(new char[512]);
         service.createPageBlob(container, blob, 16384 + 512);
 
-        service.createBlobPages(container, blob, 0, 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.createBlobPages(container, blob, 1024, 1024 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.createBlobPages(container, blob, 8192, 8192 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.createBlobPages(container, blob, 16384, 16384 + 511, content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, new PageRange(0, 511), content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, new PageRange(1024, 1024 + 511), content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, new PageRange(8192, 8192 + 511), content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobPages(container, blob, new PageRange(16384, 16384 + 511), content.length(), new ByteArrayInputStream(content.getBytes("UTF-8")));
 
         ListBlobRegionsResult result = service.listBlobRegions(container, blob);
 

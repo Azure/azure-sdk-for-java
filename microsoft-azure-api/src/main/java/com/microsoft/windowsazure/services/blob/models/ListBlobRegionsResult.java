@@ -45,27 +45,4 @@ public class ListBlobRegionsResult {
     public void setPageRanges(List<PageRange> pageRanges) {
         this.pageRanges = pageRanges;
     }
-
-    public static class PageRange {
-        private long start;
-        private long end;
-
-        @XmlElement(name = "Start")
-        public long getStart() {
-            return start;
-        }
-
-        public void setStart(long start) {
-            this.start = start;
-        }
-
-        @XmlElement(name = "End")
-        public long getEnd() {
-            return end;
-        }
-
-        public void setEnd(long end) {
-            this.end = end;
-        }
-    }
 }

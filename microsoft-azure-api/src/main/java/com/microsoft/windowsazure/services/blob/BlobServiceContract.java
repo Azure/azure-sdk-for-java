@@ -38,6 +38,7 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.PageRange;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
@@ -100,15 +101,14 @@ public interface BlobServiceContract {
 
     void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException;
 
-    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException;
+    CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range) throws ServiceException;
 
-    CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options) throws ServiceException;
+    CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException;
 
-    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
+    CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream) throws ServiceException;
+
+    CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream, CreateBlobPagesOptions options)
             throws ServiceException;
-
-    CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
-            CreateBlobPagesOptions options) throws ServiceException;
 
     void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException;
 

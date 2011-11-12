@@ -48,6 +48,7 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.PageRange;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
@@ -703,32 +704,32 @@ public class BlobServiceForJersey implements BlobServiceContract {
         return result;
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException {
-        return clearBlobPages(container, blob, rangeStart, rangeEnd, new CreateBlobPagesOptions());
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range) throws ServiceException {
+        return clearBlobPages(container, blob, range, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options)
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options)
             throws ServiceException {
-        return updatePageBlobPagesImpl("clear", container, blob, rangeStart, rangeEnd, 0, null, options);
+        return updatePageBlobPagesImpl("clear", container, blob, range, 0, null, options);
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream)
             throws ServiceException {
-        return createBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream, new CreateBlobPagesOptions());
+        return createBlobPages(container, blob, range, length, contentStream, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream,
             CreateBlobPagesOptions options) throws ServiceException {
-        return updatePageBlobPagesImpl("update", container, blob, rangeStart, rangeEnd, length, contentStream, options);
+        return updatePageBlobPagesImpl("update", container, blob, range, length, contentStream, options);
     }
 
-    private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, Long rangeStart, Long rangeEnd, long length,
+    private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, PageRange range, long length,
             InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "page");
         webResource = setCanonicalizedResource(webResource, "page");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalRangeHeader(builder, rangeStart, rangeEnd);
+        builder = addOptionalRangeHeader(builder, range.getStart(), range.getEnd());
         builder = addOptionalHeader(builder, "Content-Length", length);
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());

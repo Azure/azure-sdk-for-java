@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.PageRange;
 import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
@@ -388,9 +389,9 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd) throws ServiceException {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range) throws ServiceException {
         try {
-            return service.clearBlobPages(container, blob, rangeStart, rangeEnd);
+            return service.clearBlobPages(container, blob, range);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -400,10 +401,22 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, long rangeStart, long rangeEnd, CreateBlobPagesOptions options)
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException {
+        try {
+            return service.clearBlobPages(container, blob, range, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream)
             throws ServiceException {
         try {
-            return service.clearBlobPages(container, blob, rangeStart, rangeEnd, options);
+            return service.createBlobPages(container, blob, range, length, contentStream);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -413,23 +426,10 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream)
-            throws ServiceException {
-        try {
-            return service.createBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    public CreateBlobPagesResult createBlobPages(String container, String blob, long rangeStart, long rangeEnd, long length, InputStream contentStream,
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream,
             CreateBlobPagesOptions options) throws ServiceException {
         try {
-            return service.createBlobPages(container, blob, rangeStart, rangeEnd, length, contentStream, options);
+            return service.createBlobPages(container, blob, range, length, contentStream, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
