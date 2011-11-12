@@ -2,19 +2,15 @@ package com.microsoft.windowsazure.services.queue.implementation;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueServiceContract;
@@ -32,12 +28,11 @@ import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 public class QueueServiceForJersey implements QueueServiceContract {
-    private static Log log = LogFactory.getLog(QueueServiceForJersey.class);
+    //private static Log log = LogFactory.getLog(QueueServiceForJersey.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
@@ -81,49 +76,23 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     private void ThrowIfError(ClientResponse r) {
-        if (r.getStatus() >= 300) {
-            throw new UniformInterfaceException(r);
-        }
+        JerseyHelpers.ThrowIfError(r);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
-        if (value != null) {
-            webResource = webResource.queryParam(key, value.toString());
-        }
-        return webResource;
+        return JerseyHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
-        if (value != defaultValue) {
-            webResource = webResource.queryParam(key, Integer.toString(value));
-        }
-        return webResource;
-    }
-
-    private Builder addOptionalHeader(Builder builder, String name, Object value) {
-        if (value != null) {
-            builder = builder.header(name, value);
-        }
-        return builder;
+        return JerseyHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
     }
 
     private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
-        for (Entry<String, String> entry : metadata.entrySet()) {
-            builder = builder.header("x-ms-meta-" + entry.getKey(), entry.getValue());
-        }
-        return builder;
+        return JerseyHelpers.addOptionalMetadataHeader(builder, metadata);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
-        HashMap<String, String> metadata = new HashMap<String, String>();
-        for (Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().startsWith("x-ms-meta-")) {
-                String name = entry.getKey().substring("x-ms-meta-".length());
-                String value = entry.getValue().get(0);
-                metadata.put(name, value);
-            }
-        }
-        return metadata;
+        return JerseyHelpers.getMetadataFromHeaders(response);
     }
 
     private WebResource getResource(QueueServiceOptions options) {
