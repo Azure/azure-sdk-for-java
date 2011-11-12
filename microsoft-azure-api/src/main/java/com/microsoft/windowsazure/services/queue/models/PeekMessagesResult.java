@@ -5,21 +5,24 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapter;
 
 @XmlRootElement(name = "QueueMessagesList")
 public class PeekMessagesResult {
-    private List<QueueMessage> messages;
+    private List<Entry> entries;
 
     @XmlElement(name = "QueueMessage")
-    public List<QueueMessage> getMessages() {
-        return messages;
+    public List<Entry> getEntries() {
+        return entries;
     }
 
-    public void setMessages(List<QueueMessage> messages) {
-        this.messages = messages;
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
     }
 
-    public static class QueueMessage {
+    public static class Entry {
         private String id;
         private Date insertionDate;
         private Date expirationDate;
@@ -36,6 +39,7 @@ public class PeekMessagesResult {
         }
 
         @XmlElement(name = "InsertionTime")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
         public Date getInsertionDate() {
             return insertionDate;
         }
@@ -45,6 +49,7 @@ public class PeekMessagesResult {
         }
 
         @XmlElement(name = "ExpirationTime")
+        @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
         public Date getExpirationDate() {
             return expirationDate;
         }

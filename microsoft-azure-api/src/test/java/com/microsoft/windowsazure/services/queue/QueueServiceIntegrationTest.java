@@ -17,8 +17,11 @@ import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
+import com.microsoft.windowsazure.services.queue.models.ListMessagesResult.Entry;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
+import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 
 public class QueueServiceIntegrationTest extends IntegrationTestBase {
@@ -27,6 +30,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_QUEUE_FOR_MESSAGES;
     private static String TEST_QUEUE_FOR_MESSAGES_2;
     private static String TEST_QUEUE_FOR_MESSAGES_3;
+    private static String TEST_QUEUE_FOR_MESSAGES_4;
+    private static String TEST_QUEUE_FOR_MESSAGES_5;
     private static String CREATABLE_QUEUE_1;
     private static String CREATABLE_QUEUE_2;
     private static String CREATABLE_QUEUE_3;
@@ -50,6 +55,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         TEST_QUEUE_FOR_MESSAGES = testQueues[0];
         TEST_QUEUE_FOR_MESSAGES_2 = testQueues[1];
         TEST_QUEUE_FOR_MESSAGES_3 = testQueues[2];
+        TEST_QUEUE_FOR_MESSAGES_4 = testQueues[3];
+        TEST_QUEUE_FOR_MESSAGES_5 = testQueues[4];
 
         CREATABLE_QUEUE_1 = creatableQueues[0];
         CREATABLE_QUEUE_2 = creatableQueues[1];
@@ -268,7 +275,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listMessageWorks() throws Exception {
+    public void listMessagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         QueueServiceContract service = config.create(QueueServiceContract.class);
@@ -286,21 +293,27 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.getMessages().size());
-        assertNotNull(result.getMessages().get(0).getId());
-        assertNotNull(result.getMessages().get(0).getText());
-        assertNotNull(result.getMessages().get(0).getExpirationDate());
-        assertTrue(year2010.before(result.getMessages().get(0).getExpirationDate()));
-        assertNotNull(result.getMessages().get(0).getInsertionDate());
-        assertTrue(year2010.before(result.getMessages().get(0).getInsertionDate()));
-        assertNotNull(result.getMessages().get(0).getPopReceipt());
-        assertNotNull(result.getMessages().get(0).getTimeNextVisible());
-        assertTrue(year2010.before(result.getMessages().get(0).getTimeNextVisible()));
-        assertTrue(1 <= result.getMessages().get(0).getDequeueCount());
+        assertEquals(1, result.getEntries().size());
+
+        Entry entry = result.getEntries().get(0);
+
+        assertNotNull(entry.getId());
+        assertNotNull(entry.getText());
+        assertNotNull(entry.getPopReceipt());
+        assertEquals(1, entry.getDequeueCount());
+
+        assertNotNull(entry.getExpirationDate());
+        assertTrue(year2010.before(entry.getExpirationDate()));
+
+        assertNotNull(entry.getInsertionDate());
+        assertTrue(year2010.before(entry.getInsertionDate()));
+
+        assertNotNull(entry.getTimeNextVisible());
+        assertTrue(year2010.before(entry.getTimeNextVisible()));
     }
 
     @Test
-    public void listMessageWithOptionsWorks() throws Exception {
+    public void listMessagesWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         QueueServiceContract service = config.create(QueueServiceContract.class);
@@ -319,18 +332,92 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
-        assertEquals(4, result.getMessages().size());
+        assertEquals(4, result.getEntries().size());
         for (int i = 0; i < 4; i++) {
-            assertNotNull(result.getMessages().get(i).getId());
-            assertNotNull(result.getMessages().get(i).getText());
-            assertNotNull(result.getMessages().get(i).getExpirationDate());
-            assertTrue(year2010.before(result.getMessages().get(i).getExpirationDate()));
-            assertNotNull(result.getMessages().get(i).getInsertionDate());
-            assertTrue(year2010.before(result.getMessages().get(i).getInsertionDate()));
-            assertNotNull(result.getMessages().get(i).getPopReceipt());
-            assertNotNull(result.getMessages().get(i).getTimeNextVisible());
-            assertTrue(0 <= result.getMessages().get(i).getTimeNextVisible().getTime());
-            assertTrue(1 <= result.getMessages().get(i).getDequeueCount());
+            Entry entry = result.getEntries().get(i);
+
+            assertNotNull(entry.getId());
+            assertNotNull(entry.getText());
+            assertNotNull(entry.getPopReceipt());
+            assertEquals(1, entry.getDequeueCount());
+
+            assertNotNull(entry.getExpirationDate());
+            assertTrue(year2010.before(entry.getExpirationDate()));
+
+            assertNotNull(entry.getInsertionDate());
+            assertTrue(year2010.before(entry.getInsertionDate()));
+
+            assertNotNull(entry.getTimeNextVisible());
+            assertTrue(year2010.before(entry.getTimeNextVisible()));
+        }
+    }
+
+    @Test
+    public void peekMessagesWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueServiceContract service = config.create(QueueServiceContract.class);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.set(2010, 01, 01);
+        Date year2010 = calendar.getTime();
+
+        // Act
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_4, "message1");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_4, "message2");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_4, "message3");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_4, "message4");
+        PeekMessagesResult result = service.peekMessages(TEST_QUEUE_FOR_MESSAGES_4);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+
+        com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.Entry entry = result.getEntries().get(0);
+
+        assertNotNull(entry.getId());
+        assertNotNull(entry.getText());
+        assertEquals(0, entry.getDequeueCount());
+
+        assertNotNull(entry.getExpirationDate());
+        assertTrue(year2010.before(entry.getExpirationDate()));
+
+        assertNotNull(entry.getInsertionDate());
+        assertTrue(year2010.before(entry.getInsertionDate()));
+    }
+
+    @Test
+    public void peekMessagesWithOptionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueServiceContract service = config.create(QueueServiceContract.class);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.set(2010, 01, 01);
+        Date year2010 = calendar.getTime();
+
+        // Act
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message1");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message2");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message3");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message4");
+        PeekMessagesResult result = service.peekMessages(TEST_QUEUE_FOR_MESSAGES_5, new PeekMessagesOptions().setNumberOfMessages(4));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(4, result.getEntries().size());
+        for (int i = 0; i < 4; i++) {
+            com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.Entry entry = result.getEntries().get(i);
+
+            assertNotNull(entry.getId());
+            assertNotNull(entry.getText());
+            assertEquals(0, entry.getDequeueCount());
+
+            assertNotNull(entry.getExpirationDate());
+            assertTrue(year2010.before(entry.getExpirationDate()));
+
+            assertNotNull(entry.getInsertionDate());
+            assertTrue(year2010.before(entry.getInsertionDate()));
         }
     }
 }

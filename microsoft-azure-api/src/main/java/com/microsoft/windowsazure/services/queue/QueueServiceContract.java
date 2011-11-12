@@ -48,13 +48,13 @@ public interface QueueServiceContract {
 
     void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException;
 
-    void createMessage(String queue, String message) throws ServiceException;
+    void createMessage(String queue, String messageText) throws ServiceException;
 
-    void createMessage(String queue, String message, CreateMessageOptions options) throws ServiceException;
+    void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException;
 
-    UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds) throws ServiceException;
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds) throws ServiceException;
 
-    UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds, QueueServiceOptions options)
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds, QueueServiceOptions options)
             throws ServiceException;
 
     ListMessagesResult listMessages(String queue) throws ServiceException;
@@ -65,9 +65,9 @@ public interface QueueServiceContract {
 
     PeekMessagesResult peekMessages(String queue, PeekMessagesOptions options) throws ServiceException;
 
-    void deleteMessage(String queue, String message, String popReceipt) throws ServiceException;
+    void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException;
 
-    void deleteMessage(String queue, String message, String popReceipt, QueueServiceOptions options) throws ServiceException;
+    void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException;
 
     void clearMessages(String queue) throws ServiceException;
 

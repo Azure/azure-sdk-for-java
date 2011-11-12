@@ -11,18 +11,18 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapte
 
 @XmlRootElement(name = "QueueMessagesList")
 public class ListMessagesResult {
-    private List<QueueMessage> messages;
+    private List<Entry> entries;
 
     @XmlElement(name = "QueueMessage")
-    public List<QueueMessage> getMessages() {
-        return messages;
+    public List<Entry> getEntries() {
+        return entries;
     }
 
-    public void setMessages(List<QueueMessage> messages) {
-        this.messages = messages;
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
     }
 
-    public static class QueueMessage {
+    public static class Entry {
         private String id;
         private Date insertionDate;
         private Date expirationDate;

@@ -1,7 +1,6 @@
 package com.microsoft.windowsazure.services.queue.implementation;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +48,7 @@ public class QueueServiceForJersey implements QueueServiceContract {
     private final SharedKeyLiteFilter filter;
 
     /*
-     * TODO: How can we make "timeout" optional? TODO: How to make "filter"
-     * configurable though code?
+     * TODO: How to make "filter" configurable though code?
      */
     @Inject
     public QueueServiceForJersey(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName, @Named(QueueConfiguration.URL) String url,
@@ -85,24 +83,6 @@ public class QueueServiceForJersey implements QueueServiceContract {
     private void ThrowIfError(ClientResponse r) {
         if (r.getStatus() >= 300) {
             throw new UniformInterfaceException(r);
-        }
-    }
-
-    private class EnumCommaStringBuilder<E extends Enum<E>> {
-        private final StringBuilder sb = new StringBuilder();
-
-        public void addValue(EnumSet<E> enumSet, E value, String representation) {
-            if (enumSet.contains(value)) {
-                if (sb.length() >= 0) {
-                    sb.append(",");
-                }
-                sb.append(representation);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return sb.toString();
         }
     }
 
@@ -281,11 +261,11 @@ public class QueueServiceForJersey implements QueueServiceContract {
         builder.type("text/plain").put("");
     }
 
-    public void createMessage(String queue, String message) throws ServiceException {
-        createMessage(queue, message, new CreateMessageOptions());
+    public void createMessage(String queue, String messageText) throws ServiceException {
+        createMessage(queue, messageText, new CreateMessageOptions());
     }
 
-    public void createMessage(String queue, String message, CreateMessageOptions options) throws ServiceException {
+    public void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(queue).path("messages");
         webResource = setCanonicalizedResource(webResource, null);
         webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
@@ -294,19 +274,19 @@ public class QueueServiceForJersey implements QueueServiceContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         QueueMessage queueMessage = new QueueMessage();
-        queueMessage.setMessageText(message);
+        queueMessage.setMessageText(messageText);
 
         // Note: Add content type here to enable proper HMAC signing
         builder.type("application/xml").post(queueMessage);
     }
 
-    public UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds)
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
             throws ServiceException {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds,
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
             QueueServiceOptions options) throws ServiceException {
         // TODO Auto-generated method stub
         return null;
@@ -328,21 +308,25 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public PeekMessagesResult peekMessages(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return peekMessages(queue, new PeekMessagesOptions());
     }
 
     public PeekMessagesResult peekMessages(String queue, PeekMessagesOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource webResource = getResource(options).path(queue).path("messages").queryParam("peekonly", "true");
+        webResource = setCanonicalizedResource(webResource, null);
+        webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        return builder.get(PeekMessagesResult.class);
     }
 
-    public void deleteMessage(String queue, String message, String popReceipt) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException {
         // TODO Auto-generated method stub
 
     }
 
-    public void deleteMessage(String queue, String message, String popReceipt, QueueServiceOptions options) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
         // TODO Auto-generated method stub
 
     }

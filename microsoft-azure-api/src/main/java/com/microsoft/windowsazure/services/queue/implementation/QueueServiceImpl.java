@@ -216,9 +216,9 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void createMessage(String queue, String message) throws ServiceException {
+    public void createMessage(String queue, String messageText) throws ServiceException {
         try {
-            service.createMessage(queue, message);
+            service.createMessage(queue, messageText);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -228,9 +228,9 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void createMessage(String queue, String message, CreateMessageOptions options) throws ServiceException {
+    public void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException {
         try {
-            service.createMessage(queue, message, options);
+            service.createMessage(queue, messageText, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -240,10 +240,10 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds)
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
             throws ServiceException {
         try {
-            return service.updateMessage(queue, message, popReceipt, text, visibilityTimeoutInSeconds);
+            return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -253,10 +253,10 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String message, String popReceipt, String text, int visibilityTimeoutInSeconds,
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
             QueueServiceOptions options) throws ServiceException {
         try {
-            return service.updateMessage(queue, message, popReceipt, text, visibilityTimeoutInSeconds, options);
+            return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -314,9 +314,9 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void deleteMessage(String queue, String message, String popReceipt) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException {
         try {
-            service.deleteMessage(queue, message, popReceipt);
+            service.deleteMessage(queue, messageId, popReceipt);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -326,9 +326,9 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public void deleteMessage(String queue, String message, String popReceipt, QueueServiceOptions options) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
         try {
-            service.deleteMessage(queue, message, popReceipt, options);
+            service.deleteMessage(queue, messageId, popReceipt, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -361,5 +361,4 @@ public class QueueServiceImpl implements QueueServiceContract {
             throw processCatch(new ServiceException(e));
         }
     }
-
 }
