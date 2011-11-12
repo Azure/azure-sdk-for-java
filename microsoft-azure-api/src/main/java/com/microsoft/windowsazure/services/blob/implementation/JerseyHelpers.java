@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.microsoft.windowsazure.services.blob.AccessCondition;
-import com.microsoft.windowsazure.services.blob.AccessConditionHeaderType;
+import com.microsoft.windowsazure.services.blob.models.AccessCondition;
+import com.microsoft.windowsazure.services.blob.models.AccessConditionHeaderType;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;

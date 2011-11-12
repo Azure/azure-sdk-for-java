@@ -10,61 +10,61 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.blob.AcquireLeaseOptions;
-import com.microsoft.windowsazure.services.blob.BlobOptions;
-import com.microsoft.windowsazure.services.blob.BlobProperties;
-import com.microsoft.windowsazure.services.blob.BlobService;
-import com.microsoft.windowsazure.services.blob.BlobSnapshot;
-import com.microsoft.windowsazure.services.blob.BlockList;
-import com.microsoft.windowsazure.services.blob.CommitBlobBlocksOptions;
-import com.microsoft.windowsazure.services.blob.ContainerACL;
-import com.microsoft.windowsazure.services.blob.ContainerProperties;
-import com.microsoft.windowsazure.services.blob.CopyBlobOptions;
-import com.microsoft.windowsazure.services.blob.CreateBlobBlockOptions;
-import com.microsoft.windowsazure.services.blob.CreateBlobOptions;
-import com.microsoft.windowsazure.services.blob.CreateBlobPagesOptions;
-import com.microsoft.windowsazure.services.blob.CreateBlobPagesResult;
-import com.microsoft.windowsazure.services.blob.CreateBlobSnapshotOptions;
-import com.microsoft.windowsazure.services.blob.CreateContainerOptions;
-import com.microsoft.windowsazure.services.blob.DeleteBlobOptions;
-import com.microsoft.windowsazure.services.blob.DeleteContainerOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobMetadataOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.GetBlobOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobPropertiesOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.ListBlobBlocksOptions;
-import com.microsoft.windowsazure.services.blob.ListBlobBlocksResult;
-import com.microsoft.windowsazure.services.blob.ListBlobRegionsOptions;
-import com.microsoft.windowsazure.services.blob.ListBlobRegionsResult;
-import com.microsoft.windowsazure.services.blob.ListBlobsOptions;
-import com.microsoft.windowsazure.services.blob.ListBlobsResult;
-import com.microsoft.windowsazure.services.blob.ListContainersOptions;
-import com.microsoft.windowsazure.services.blob.ListContainersResult;
-import com.microsoft.windowsazure.services.blob.ServiceProperties;
-import com.microsoft.windowsazure.services.blob.SetBlobMetadataOptions;
-import com.microsoft.windowsazure.services.blob.SetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.SetBlobPropertiesOptions;
-import com.microsoft.windowsazure.services.blob.SetBlobPropertiesResult;
-import com.microsoft.windowsazure.services.blob.SetContainerMetadataOptions;
+import com.microsoft.windowsazure.services.blob.BlobServiceContract;
+import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
+import com.microsoft.windowsazure.services.blob.models.BlobOptions;
+import com.microsoft.windowsazure.services.blob.models.BlobProperties;
+import com.microsoft.windowsazure.services.blob.models.BlobSnapshot;
+import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
+import com.microsoft.windowsazure.services.blob.models.ContainerACL;
+import com.microsoft.windowsazure.services.blob.models.ContainerProperties;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.DeleteContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
+import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
+import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
+import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
+import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataOptions;
+import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
+import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
+import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class BlobServiceImpl implements BlobService {
+public class BlobServiceImpl implements BlobServiceContract {
     private static Log log = LogFactory.getLog(BlobServiceImpl.class);
-    private final BlobService service;
+    private final BlobServiceContract service;
 
     @Inject
     public BlobServiceImpl(BlobServiceForJersey service) {
         this.service = service;
     }
 
-    public BlobServiceImpl(BlobService service) {
+    public BlobServiceImpl(BlobServiceContract service) {
         this.service = service;
     }
 
-    public BlobService withFilter(ServiceFilter filter) {
+    public BlobServiceContract withFilter(ServiceFilter filter) {
         return new BlobServiceImpl(service.withFilter(filter));
     }
 

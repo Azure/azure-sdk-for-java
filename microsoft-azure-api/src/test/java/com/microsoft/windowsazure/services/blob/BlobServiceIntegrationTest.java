@@ -26,33 +26,33 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.common.ExponentialRetryPolicyFilter;
 import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.blob.AccessCondition;
-import com.microsoft.windowsazure.services.blob.BlobProperties;
-import com.microsoft.windowsazure.services.blob.BlobService;
-import com.microsoft.windowsazure.services.blob.BlobSnapshot;
-import com.microsoft.windowsazure.services.blob.BlockList;
-import com.microsoft.windowsazure.services.blob.ContainerACL;
-import com.microsoft.windowsazure.services.blob.ContainerListingDetails;
-import com.microsoft.windowsazure.services.blob.ContainerProperties;
-import com.microsoft.windowsazure.services.blob.CreateBlobOptions;
-import com.microsoft.windowsazure.services.blob.CreateBlobPagesResult;
-import com.microsoft.windowsazure.services.blob.CreateBlobSnapshotOptions;
-import com.microsoft.windowsazure.services.blob.CreateContainerOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.GetBlobOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobPropertiesOptions;
-import com.microsoft.windowsazure.services.blob.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.ListBlobBlocksOptions;
-import com.microsoft.windowsazure.services.blob.ListBlobBlocksResult;
-import com.microsoft.windowsazure.services.blob.ListBlobRegionsResult;
-import com.microsoft.windowsazure.services.blob.ListBlobsOptions;
-import com.microsoft.windowsazure.services.blob.ListBlobsResult;
-import com.microsoft.windowsazure.services.blob.ListContainersOptions;
-import com.microsoft.windowsazure.services.blob.ListContainersResult;
-import com.microsoft.windowsazure.services.blob.ServiceProperties;
-import com.microsoft.windowsazure.services.blob.SetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.SetBlobPropertiesOptions;
-import com.microsoft.windowsazure.services.blob.SetBlobPropertiesResult;
+import com.microsoft.windowsazure.services.blob.BlobServiceContract;
+import com.microsoft.windowsazure.services.blob.models.AccessCondition;
+import com.microsoft.windowsazure.services.blob.models.BlobProperties;
+import com.microsoft.windowsazure.services.blob.models.BlobSnapshot;
+import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.ContainerACL;
+import com.microsoft.windowsazure.services.blob.models.ContainerListingDetails;
+import com.microsoft.windowsazure.services.blob.models.ContainerProperties;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
+import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
+import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
+import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
+import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
+import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static final String testContainersPrefix = "sdktest-";
@@ -92,7 +92,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Create all test containers and their content
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
         for (int i = 0; i < testContainers.length; i++) {
             try {
                 service.createContainer(testContainers[i]);
@@ -111,7 +111,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
         for (int i = 0; i < testContainers.length; i++) {
             try {
                 service.deleteContainer(testContainers[i]);
@@ -135,7 +135,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getServiceProppertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ServiceProperties props = service.getServiceProperties();
@@ -153,7 +153,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void setServiceProppertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ServiceProperties props = service.getServiceProperties();
@@ -179,7 +179,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createContainer(CREATEABLE_CONTAINER_1);
@@ -191,7 +191,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createContainerWithMetadataWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createContainer(CREATEABLE_CONTAINER_2,
@@ -242,7 +242,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void setContainerMetadataWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createContainer(CREATEABLE_CONTAINER_3);
@@ -269,7 +269,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void setContainerACLWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         String container = CREATEABLE_CONTAINER_4;
         Date expiryStartDate = new GregorianCalendar(2010, 1, 1).getTime();
@@ -303,7 +303,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listContainersWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ListContainersResult results = service.listContainers();
@@ -323,7 +323,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listContainersWithPaginationWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ListContainersResult results = service.listContainers(new ListContainersOptions().setMaxResults(3));
@@ -345,7 +345,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listContainersWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ListContainersResult results = service.listContainers(new ListContainersOptions().setPrefix(testContainersPrefix).setMaxResults(3));
@@ -369,7 +369,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listBlobsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING);
@@ -383,7 +383,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listBlobsWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setPrefix("myblob"));
@@ -397,7 +397,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createPageBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512);
@@ -409,7 +409,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createPageBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
@@ -440,7 +440,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void clearBlobPagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -461,7 +461,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlobPagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -483,7 +483,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listBlobRegionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -519,7 +519,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listBlobBlocksOnEmptyBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -544,7 +544,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void listBlobBlocksWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -577,7 +577,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void commitBlobBlocksWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -617,7 +617,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlobBlockWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -634,7 +634,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream("some content".getBytes()));
@@ -646,7 +646,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlockBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content";
@@ -678,7 +678,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlobSnapshotWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -697,7 +697,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void createBlobSnapshotWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -722,7 +722,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content";
@@ -756,7 +756,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getPageBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096, new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8")
@@ -789,7 +789,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobWithIfMatchETagAccessConditionWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
@@ -807,7 +807,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobWithIfNoneMatchETagAccessConditionWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
@@ -826,7 +826,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobWithIfModifiedSinceAccessConditionWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
@@ -845,7 +845,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobWithIfNotModifiedSinceAccessConditionWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -881,7 +881,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobPropertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -911,7 +911,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getBlobMetadataWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -936,7 +936,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void setBlobPropertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -974,7 +974,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void setBlobMetadataWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
@@ -1005,7 +1005,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void deleteBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content";
@@ -1020,7 +1020,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void copyBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content2";
@@ -1048,7 +1048,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void acquireLeaseWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content2";
@@ -1064,7 +1064,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void renewLeaseWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content2";
@@ -1082,7 +1082,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void breakLeaseWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
         String content = "some content2";
@@ -1108,7 +1108,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void retryPolicyWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
         RetryPolicyObserver observer = new RetryPolicyObserver();
         service = service.withFilter(observer);
 
@@ -1133,7 +1133,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void retryPolicyCompositionWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobService service = config.create(BlobService.class);
+        BlobServiceContract service = config.create(BlobServiceContract.class);
         RetryPolicyObserver observer = new RetryPolicyObserver();
         service = service.withFilter(observer);
 
