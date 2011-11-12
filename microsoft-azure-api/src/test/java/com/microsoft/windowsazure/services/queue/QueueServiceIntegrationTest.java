@@ -321,16 +321,16 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result);
         assertEquals(4, result.getMessages().size());
         for (int i = 0; i < 4; i++) {
-            assertNotNull(result.getMessages().get(1).getId());
-            assertNotNull(result.getMessages().get(1).getText());
-            assertNotNull(result.getMessages().get(1).getExpirationDate());
-            assertTrue(year2010.before(result.getMessages().get(1).getExpirationDate()));
-            assertNotNull(result.getMessages().get(1).getInsertionDate());
-            assertTrue(year2010.before(result.getMessages().get(1).getInsertionDate()));
-            assertNotNull(result.getMessages().get(1).getPopReceipt());
-            assertNotNull(result.getMessages().get(1).getTimeNextVisible());
-            assertTrue(0 <= result.getMessages().get(1).getTimeNextVisible().getTime());
-            assertTrue(1 <= result.getMessages().get(1).getDequeueCount());
+            assertNotNull(result.getMessages().get(i).getId());
+            assertNotNull(result.getMessages().get(i).getText());
+            assertNotNull(result.getMessages().get(i).getExpirationDate());
+            assertTrue(year2010.before(result.getMessages().get(i).getExpirationDate()));
+            assertNotNull(result.getMessages().get(i).getInsertionDate());
+            assertTrue(year2010.before(result.getMessages().get(i).getInsertionDate()));
+            assertNotNull(result.getMessages().get(i).getPopReceipt());
+            assertNotNull(result.getMessages().get(i).getTimeNextVisible());
+            assertTrue(0 <= result.getMessages().get(i).getTimeNextVisible().getTime());
+            assertTrue(1 <= result.getMessages().get(i).getDequeueCount());
         }
     }
 }
