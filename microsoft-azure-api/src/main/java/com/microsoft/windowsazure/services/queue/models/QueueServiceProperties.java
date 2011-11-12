@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "StorageServiceProperties")
-public class ServiceProperties {
+public class QueueServiceProperties {
     //TODO: What should the default value be (null or new Logging())?
     private Logging logging;
     private Metrics metrics;
