@@ -199,23 +199,32 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public void createQueue(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
+        createQueue(queue, new CreateQueueOptions());
 
     }
 
     public void createQueue(String queue, CreateQueueOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue);
+        webResource = setCanonicalizedResource(webResource, null);
 
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        builder = addOptionalMetadataHeader(builder, options.getMetadata());
+
+        // Note: Add content type here to enable proper HMAC signing
+        builder.type("text/plain").put("");
     }
 
     public void deleteQueue(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
-
+        deleteQueue(queue, new QueueServiceOptions());
     }
 
     public void deleteQueue(String queue, QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue);
+        webResource = setCanonicalizedResource(webResource, null);
 
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        builder.delete();
     }
 
     public ListQueuesResult listQueues() throws ServiceException {
@@ -229,13 +238,23 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public GetQueueMetadataResult getQueueMetadata(String queue) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return getQueueMetadata(queue, new QueueServiceOptions());
     }
 
     public GetQueueMetadataResult getQueueMetadata(String queue, QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
+        webResource = setCanonicalizedResource(webResource, "metadata");
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
+
+        GetQueueMetadataResult result = new GetQueueMetadataResult();
+        result.setApproximateMessageCount(Integer.parseInt(response.getHeaders().getFirst("x-ms-approximate-messages-count")));
+        result.setMetadata(getMetadataFromHeaders(response));
+
+        return result;
     }
 
     public void setQueueMetadata(String queue, HashMap<String, String> metadata) throws ServiceException {
