@@ -23,6 +23,7 @@ import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
+import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
 public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static final String testQueuesPrefix = "sdktest-";
@@ -33,6 +34,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_QUEUE_FOR_MESSAGES_4;
     private static String TEST_QUEUE_FOR_MESSAGES_5;
     private static String TEST_QUEUE_FOR_MESSAGES_6;
+    private static String TEST_QUEUE_FOR_MESSAGES_7;
+    private static String TEST_QUEUE_FOR_MESSAGES_8;
     private static String CREATABLE_QUEUE_1;
     private static String CREATABLE_QUEUE_2;
     private static String CREATABLE_QUEUE_3;
@@ -59,6 +62,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         TEST_QUEUE_FOR_MESSAGES_4 = testQueues[3];
         TEST_QUEUE_FOR_MESSAGES_5 = testQueues[4];
         TEST_QUEUE_FOR_MESSAGES_6 = testQueues[5];
+        TEST_QUEUE_FOR_MESSAGES_7 = testQueues[6];
+        TEST_QUEUE_FOR_MESSAGES_8 = testQueues[7];
 
         CREATABLE_QUEUE_1 = creatableQueues[0];
         CREATABLE_QUEUE_2 = creatableQueues[1];
@@ -299,8 +304,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         QueueMessage entry = result.getQueueMessages().get(0);
 
-        assertNotNull(entry.getId());
-        assertNotNull(entry.getText());
+        assertNotNull(entry.getMessageId());
+        assertNotNull(entry.getMessageText());
         assertNotNull(entry.getPopReceipt());
         assertEquals(1, entry.getDequeueCount());
 
@@ -338,8 +343,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < 4; i++) {
             QueueMessage entry = result.getQueueMessages().get(i);
 
-            assertNotNull(entry.getId());
-            assertNotNull(entry.getText());
+            assertNotNull(entry.getMessageId());
+            assertNotNull(entry.getMessageText());
             assertNotNull(entry.getPopReceipt());
             assertEquals(1, entry.getDequeueCount());
 
@@ -377,8 +382,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
         com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(0);
 
-        assertNotNull(entry.getId());
-        assertNotNull(entry.getText());
+        assertNotNull(entry.getMessageId());
+        assertNotNull(entry.getMessageText());
         assertEquals(0, entry.getDequeueCount());
 
         assertNotNull(entry.getExpirationDate());
@@ -411,8 +416,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < 4; i++) {
             com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(i);
 
-            assertNotNull(entry.getId());
-            assertNotNull(entry.getText());
+            assertNotNull(entry.getMessageId());
+            assertNotNull(entry.getMessageText());
             assertEquals(0, entry.getDequeueCount());
 
             assertNotNull(entry.getExpirationDate());
@@ -441,5 +446,69 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(result);
         assertEquals(0, result.getQueueMessages().size());
+    }
+
+    @Test
+    public void deleteMessageWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueServiceContract service = config.create(QueueServiceContract.class);
+
+        // Act
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message1");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message2");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message3");
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message4");
+
+        ListMessagesResult result = service.listMessages(TEST_QUEUE_FOR_MESSAGES_7);
+        service.deleteMessage(TEST_QUEUE_FOR_MESSAGES_7, result.getQueueMessages().get(0).getMessageId(), result.getQueueMessages().get(0).getPopReceipt());
+        ListMessagesResult result2 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_7, new ListMessagesOptions().setNumberOfMessages(32));
+
+        // Assert
+        assertNotNull(result2);
+        assertEquals(3, result2.getQueueMessages().size());
+    }
+
+    @Test
+    public void updateMessageWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueServiceContract service = config.create(QueueServiceContract.class);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.set(2010, 01, 01);
+        Date year2010 = calendar.getTime();
+
+        // Act
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES_8, "message1");
+
+        ListMessagesResult listResult1 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_8);
+        UpdateMessageResult updateResult = service.updateMessage(TEST_QUEUE_FOR_MESSAGES_8, listResult1.getQueueMessages().get(0).getMessageId(), listResult1
+                .getQueueMessages().get(0).getPopReceipt(), "new text", 0);
+        ListMessagesResult listResult2 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_8);
+
+        // Assert
+        assertNotNull(updateResult);
+        assertNotNull(updateResult.getPopReceipt());
+        assertNotNull(updateResult.getTimeNextVisible());
+        assertTrue(year2010.before(updateResult.getTimeNextVisible()));
+
+        assertNotNull(listResult2);
+        QueueMessage entry = listResult2.getQueueMessages().get(0);
+
+        assertEquals(listResult1.getQueueMessages().get(0).getMessageId(), entry.getMessageId());
+        assertEquals("new text", entry.getMessageText());
+        assertNotNull(entry.getPopReceipt());
+        assertEquals(2, entry.getDequeueCount());
+
+        assertNotNull(entry.getExpirationDate());
+        assertTrue(year2010.before(entry.getExpirationDate()));
+
+        assertNotNull(entry.getInsertionDate());
+        assertTrue(year2010.before(entry.getInsertionDate()));
+
+        assertNotNull(entry.getTimeNextVisible());
+        assertTrue(year2010.before(entry.getTimeNextVisible()));
+
     }
 }

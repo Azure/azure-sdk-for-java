@@ -282,14 +282,29 @@ public class QueueServiceForJersey implements QueueServiceContract {
 
     public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
             throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, new QueueServiceOptions());
     }
 
     public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
             QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
+        webResource = setCanonicalizedResource(webResource, null);
+        webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", visibilityTimeoutInSeconds);
+
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        QueueMessage queueMessage = new QueueMessage();
+        queueMessage.setMessageText(messageText);
+
+        // Note: Add content type here to enable proper HMAC signing
+        ClientResponse response = builder.type("application/xml").put(ClientResponse.class, queueMessage);
+        ThrowIfError(response);
+
+        UpdateMessageResult result = new UpdateMessageResult();
+        result.setPopReceipt(response.getHeaders().getFirst("x-ms-popreceipt"));
+        result.setTimeNextVisible(dateMapper.parseNoThrow(response.getHeaders().getFirst("x-ms-time-next-visible")));
+        return result;
     }
 
     public ListMessagesResult listMessages(String queue) throws ServiceException {
@@ -322,13 +337,17 @@ public class QueueServiceForJersey implements QueueServiceContract {
     }
 
     public void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException {
-        // TODO Auto-generated method stub
-
+        deleteMessage(queue, messageId, popReceipt, new QueueServiceOptions());
     }
 
     public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
-        // TODO Auto-generated method stub
+        WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
+        webResource = setCanonicalizedResource(webResource, null);
+        webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
 
+        Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        builder.delete();
     }
 
     public void clearMessages(String queue) throws ServiceException {

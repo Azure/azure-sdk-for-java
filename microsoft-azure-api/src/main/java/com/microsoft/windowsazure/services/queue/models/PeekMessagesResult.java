@@ -24,19 +24,19 @@ public class PeekMessagesResult {
     }
 
     public static class QueueMessage {
-        private String id;
+        private String messageId;
         private Date insertionDate;
         private Date expirationDate;
         private int dequeueCount;
-        private String text;
+        private String messageText;
 
         @XmlElement(name = "MessageId")
-        public String getId() {
-            return id;
+        public String getMessageId() {
+            return messageId;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setMessageId(String messageId) {
+            this.messageId = messageId;
         }
 
         @XmlElement(name = "InsertionTime")
@@ -69,12 +69,12 @@ public class PeekMessagesResult {
         }
 
         @XmlElement(name = "MessageText")
-        public String getText() {
-            return text;
+        public String getMessageText() {
+            return messageText;
         }
 
-        public void setText(String text) {
-            this.text = text;
+        public void setMessageText(String messageText) {
+            this.messageText = messageText;
         }
     }
 }
