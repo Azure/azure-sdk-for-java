@@ -1,9 +1,9 @@
-package com.microsoft.azure.services.queue;
+package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.azure.ServiceException;
-import com.microsoft.azure.http.ServiceFilter;
+import com.microsoft.windowsazure.ServiceException;
+import com.microsoft.windowsazure.http.ServiceFilter;
 
 public interface QueueService {
     QueueService withFilter(ServiceFilter filter);

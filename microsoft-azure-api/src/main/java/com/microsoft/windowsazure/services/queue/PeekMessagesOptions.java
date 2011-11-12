@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.queue;
+package com.microsoft.windowsazure.services.queue;
 
 public class PeekMessagesOptions extends QueueServiceOptions {
     private Integer numberOfMessages;

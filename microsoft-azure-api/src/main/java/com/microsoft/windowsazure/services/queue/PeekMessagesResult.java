@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.queue;
+package com.microsoft.windowsazure.services.queue;
 
 import java.util.Date;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "QueueMessagesList")
-public class ListMessagesResult {
+public class PeekMessagesResult {
     private List<QueueMessage> messages;
 
     @XmlElement(name = "QueueMessage")
@@ -23,8 +23,6 @@ public class ListMessagesResult {
         private String id;
         private Date insertionDate;
         private Date expirationDate;
-        private String popReceipt;
-        private Date timeNextVisible;
         private int dequeueCount;
         private String text;
 
@@ -53,24 +51,6 @@ public class ListMessagesResult {
 
         public void setExpirationDate(Date expirationDate) {
             this.expirationDate = expirationDate;
-        }
-
-        @XmlElement(name = "PopReceipt")
-        public String getPopReceipt() {
-            return popReceipt;
-        }
-
-        public void setPopReceipt(String popReceipt) {
-            this.popReceipt = popReceipt;
-        }
-
-        @XmlElement(name = "TimeNextVisible")
-        public Date getTimeNextVisible() {
-            return timeNextVisible;
-        }
-
-        public void setTimeNextVisible(Date timeNextVisible) {
-            this.timeNextVisible = timeNextVisible;
         }
 
         @XmlElement(name = "DequeueCount")

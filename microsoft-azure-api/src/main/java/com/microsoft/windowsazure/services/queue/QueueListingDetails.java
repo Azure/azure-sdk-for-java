@@ -1,4 +1,4 @@
-package com.microsoft.azure.services.queue;
+package com.microsoft.windowsazure.services.queue;
 
 /**
  * TODO: Make this a bool?
