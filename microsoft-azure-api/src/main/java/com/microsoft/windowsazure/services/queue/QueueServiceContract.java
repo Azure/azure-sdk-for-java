@@ -55,8 +55,7 @@ public interface QueueServiceContract extends FilterableService<QueueServiceCont
             throws ServiceException;
 
     UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
-            QueueServiceOptions options)
-            throws ServiceException;
+            QueueServiceOptions options) throws ServiceException;
 
     void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException;
 

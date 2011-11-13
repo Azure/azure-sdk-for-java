@@ -685,8 +685,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
     }
 
     private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId, BlobServiceOptions options,
-            AccessCondition accessCondition)
-            throws ServiceException {
+            AccessCondition accessCondition) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, "lease");
 
@@ -708,8 +707,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         return clearBlobPages(container, blob, range, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options)
-            throws ServiceException {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("clear", container, blob, range, 0, null, options);
     }
 
