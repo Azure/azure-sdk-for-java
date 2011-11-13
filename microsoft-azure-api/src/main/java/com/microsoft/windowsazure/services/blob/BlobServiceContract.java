@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.http.FilterableService;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
@@ -46,9 +46,7 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 
-public interface BlobServiceContract {
-    BlobServiceContract withFilter(ServiceFilter filter);
-
+public interface BlobServiceContract extends FilterableService<BlobServiceContract> {
     GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
     GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException;

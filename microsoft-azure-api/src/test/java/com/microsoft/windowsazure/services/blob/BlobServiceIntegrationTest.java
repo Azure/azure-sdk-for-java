@@ -131,7 +131,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
-        ServiceProperties props = service.getServiceProperties().getServiceProperties();
+        ServiceProperties props = service.getServiceProperties().getValue();
 
         // Assert
         assertNotNull(props);
@@ -149,13 +149,13 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobServiceContract service = config.create(BlobServiceContract.class);
 
         // Act
-        ServiceProperties props = service.getServiceProperties().getServiceProperties();
+        ServiceProperties props = service.getServiceProperties().getValue();
 
         props.setDefaultServiceVersion("2009-09-19");
         props.getLogging().setRead(true);
         service.setServiceProperties(props);
 
-        props = service.getServiceProperties().getServiceProperties();
+        props = service.getServiceProperties().getValue();
 
         // Assert
         assertNotNull(props);

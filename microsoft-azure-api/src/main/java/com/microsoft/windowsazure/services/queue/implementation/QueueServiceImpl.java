@@ -13,6 +13,7 @@ import com.microsoft.windowsazure.services.queue.QueueServiceContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
+import com.microsoft.windowsazure.services.queue.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
@@ -48,7 +49,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         return ServiceExceptionFactory.process("blob", e);
     }
 
-    public ServiceProperties getServiceProperties() throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties() throws ServiceException {
         try {
             return service.getServiceProperties();
         }
@@ -60,7 +61,7 @@ public class QueueServiceImpl implements QueueServiceContract {
         }
     }
 
-    public ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException {
         try {
             return service.getServiceProperties(options);
         }

@@ -3,10 +3,11 @@ package com.microsoft.windowsazure.services.queue;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.http.FilterableService;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
+import com.microsoft.windowsazure.services.queue.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
@@ -17,12 +18,10 @@ import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
-public interface QueueServiceContract {
-    QueueServiceContract withFilter(ServiceFilter filter);
+public interface QueueServiceContract extends FilterableService<QueueServiceContract> {
+    GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
-    ServiceProperties getServiceProperties() throws ServiceException;
-
-    ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException;
+    GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException;
 
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
@@ -52,10 +51,16 @@ public interface QueueServiceContract {
 
     void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException;
 
-    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds) throws ServiceException;
-
-    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds, QueueServiceOptions options)
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
             throws ServiceException;
+
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
+            QueueServiceOptions options)
+            throws ServiceException;
+
+    void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException;
+
+    void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException;
 
     ListMessagesResult listMessages(String queue) throws ServiceException;
 
@@ -64,10 +69,6 @@ public interface QueueServiceContract {
     PeekMessagesResult peekMessages(String queue) throws ServiceException;
 
     PeekMessagesResult peekMessages(String queue, PeekMessagesOptions options) throws ServiceException;
-
-    void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException;
-
-    void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException;
 
     void clearMessages(String queue) throws ServiceException;
 

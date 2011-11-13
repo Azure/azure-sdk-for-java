@@ -253,7 +253,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         GetServicePropertiesResult result = new GetServicePropertiesResult();
-        result.setServiceProperties(builder.get(ServiceProperties.class));
+        result.setValue(builder.get(ServiceProperties.class));
         return result;
     }
 
