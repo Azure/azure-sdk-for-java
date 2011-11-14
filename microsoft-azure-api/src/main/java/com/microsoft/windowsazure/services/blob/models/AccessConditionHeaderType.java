@@ -32,8 +32,6 @@ public enum AccessConditionHeaderType {
     IF_NONE_MATCH;
 
     /**
-     * TODO: Should this be move somewhere else?
-     * 
      * Returns a string representation of the current value, or an empty string if no value is assigned.
      * 
      * @return A <code>String</code> that represents the currently assigned value.

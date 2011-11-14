@@ -17,9 +17,6 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-/*
- * TODO: Should the "full" shared key signing?
- */
 public class SharedKeyLiteFilter extends ClientFilter {
     private static Log log = LogFactory.getLog(SharedKeyLiteFilter.class);
 
@@ -29,7 +26,6 @@ public class SharedKeyLiteFilter extends ClientFilter {
     public SharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
 
         this.accountName = accountName;
-        // TODO: How to make this configurable?
         this.signer = new HmacSHA256Sign(accountKey);
     }
 

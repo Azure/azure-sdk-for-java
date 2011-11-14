@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
@@ -149,9 +149,9 @@ public interface BlobServiceContract extends FilterableService<BlobServiceContra
 
     void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException;
 
-    GetBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException;
+    CreateBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException;
 
-    GetBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException;
+    CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException;
 
     void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) throws ServiceException;
 

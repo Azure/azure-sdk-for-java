@@ -26,18 +26,19 @@ import com.microsoft.windowsazure.common.ExponentialRetryPolicyFilter;
 import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
+import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
@@ -566,9 +567,15 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        GetBlobPropertiesResult props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
+        GetBlobPropertiesResult result = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
 
         // Assert
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
         assertEquals("UTF-8", props.getContentEncoding());
@@ -577,8 +584,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(512, props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("PageBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -805,9 +810,15 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
-        GetBlobPropertiesResult props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test2");
+        GetBlobPropertiesResult result = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test2");
 
         // Assert
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
         assertEquals("UTF-8", props.getContentEncoding());
@@ -816,8 +827,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(content.length(), props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("BlockBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -834,7 +843,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test3";
         service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
-        GetBlobSnapshotResult snapshot = service.createBlobSnapshot(container, blob);
+        CreateBlobSnapshotResult snapshot = service.createBlobSnapshot(container, blob);
 
         // Assert
         assertNotNull(snapshot);
@@ -853,19 +862,19 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test3";
         service.createBlockBlob(container, blob, new ByteArrayInputStream("some content".getBytes()));
-        GetBlobSnapshotResult snapshot = service.createBlobSnapshot(container, blob,
+        CreateBlobSnapshotResult snapshot = service.createBlobSnapshot(container, blob,
                 new CreateBlobSnapshotOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
 
-        GetBlobPropertiesResult props = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions().setSnapshot(snapshot.getSnapshot()));
+        GetBlobPropertiesResult result = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions().setSnapshot(snapshot.getSnapshot()));
 
         // Assert
-        assertNotNull(props);
-        assertEquals(snapshot.getEtag(), props.getEtag());
-        assertEquals(snapshot.getLastModified(), props.getLastModified());
-        assertTrue(props.getMetadata().containsKey("test"));
-        assertTrue(props.getMetadata().containsValue("bar"));
-        assertTrue(props.getMetadata().containsKey("blah"));
-        assertTrue(props.getMetadata().containsValue("bleah"));
+        assertNotNull(result);
+        assertEquals(snapshot.getEtag(), result.getProperties().getEtag());
+        assertEquals(snapshot.getLastModified(), result.getProperties().getLastModified());
+        assertTrue(result.getMetadata().containsKey("test"));
+        assertTrue(result.getMetadata().containsValue("bar"));
+        assertTrue(result.getMetadata().containsKey("blah"));
+        assertTrue(result.getMetadata().containsValue("bleah"));
     }
 
     @Test
@@ -882,9 +891,15 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test2");
-        GetBlobPropertiesResult props = blob.getProperties();
+        GetBlobPropertiesResult result = blob.getProperties();
 
         // Assert
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
         assertEquals("UTF-8", props.getContentEncoding());
@@ -893,8 +908,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(content.length(), props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("BlockBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -915,10 +928,15 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test");
-        GetBlobPropertiesResult props = blob.getProperties();
+        GetBlobPropertiesResult result = blob.getProperties();
 
         // Assert
-        assertNotNull(props);
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertEquals("test", props.getCacheControl());
         assertEquals("UTF-8", props.getContentEncoding());
         assertEquals("en-us", props.getContentLanguage());
@@ -926,8 +944,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(4096, props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("PageBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -963,7 +979,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
         GetBlobPropertiesResult props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
         try {
-            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getEtag())));
+            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test",
+                    new GetBlobOptions().setAccessCondition(AccessCondition.ifNoneMatch(props.getProperties().getEtag())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (ServiceException e) {
@@ -982,7 +999,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 4096);
         GetBlobPropertiesResult props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test");
         try {
-            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test", new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getLastModified())));
+            service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test",
+                    new GetBlobOptions().setAccessCondition(AccessCondition.ifModifiedSince(props.getProperties().getLastModified())));
             Assert.fail("getBlob should throw an exception");
         }
         catch (ServiceException e) {
@@ -1005,7 +1023,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // To test for "IfNotModifiedSince", we need to make updates to the blob
         // until at least 1 second has passed since the blob creation
-        Date lastModifiedBase = (Date) props.getLastModified().clone();
+        Date lastModifiedBase = (Date) props.getProperties().getLastModified().clone();
 
         // +1 second
         Date lastModifiedNext = new Date(lastModifiedBase.getTime() + 1 * 1000);
@@ -1037,10 +1055,15 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
         service.createPageBlob(container, blob, 4096);
-        GetBlobPropertiesResult props = service.getBlobProperties(container, blob);
+        GetBlobPropertiesResult result = service.getBlobProperties(container, blob);
 
         // Assert
-        // Assert
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertNotNull(props);
         assertNull(props.getCacheControl());
         assertNull(props.getContentEncoding());
@@ -1049,8 +1072,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(4096, props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("PageBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -1069,7 +1090,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createPageBlob(container, blob, 4096, new CreateBlobOptions().addMetadata("test", "bar").addMetadata("blah", "bleah"));
         GetBlobMetadataResult props = service.getBlobMetadata(container, blob);
 
-        // Assert
         // Assert
         assertNotNull(props);
         assertNotNull(props.getEtag());
@@ -1096,7 +1116,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
                 new SetBlobPropertiesOptions().setCacheControl("test").setContentEncoding("UTF-8").setContentLanguage("en-us").setContentLength(512L)
                         .setContentMD5(null).setContentType("text/plain").setSequenceNumberAction("increment"));
 
-        GetBlobPropertiesResult props = service.getBlobProperties(container, blob);
+        GetBlobPropertiesResult getResult = service.getBlobProperties(container, blob);
 
         // Assert
         assertNotNull(result);
@@ -1105,6 +1125,12 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result.getSequenceNumber());
         assertEquals(1, result.getSequenceNumber().longValue());
 
+        assertNotNull(getResult);
+
+        assertNotNull(getResult.getMetadata());
+        assertEquals(0, getResult.getMetadata().size());
+
+        BlobProperties props = getResult.getProperties();
         assertNotNull(props);
         assertEquals("test", props.getCacheControl());
         assertEquals("UTF-8", props.getContentEncoding());
@@ -1112,8 +1138,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("text/plain", props.getContentType());
         assertEquals(512, props.getContentLength());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("PageBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
@@ -1178,15 +1202,19 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.copyBlob(TEST_CONTAINER_FOR_BLOBS_2, "test5", TEST_CONTAINER_FOR_BLOBS, "test6");
 
         GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS_2, "test5");
-        GetBlobPropertiesResult props = blob.getProperties();
+        GetBlobPropertiesResult result = blob.getProperties();
 
         // Assert
+        assertNotNull(result);
+
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+
+        BlobProperties props = result.getProperties();
         assertNotNull(props);
         assertEquals(content.length(), props.getContentLength());
         assertNotNull(props.getEtag());
         assertNull(props.getContentMD5());
-        assertNotNull(props.getMetadata());
-        assertEquals(0, props.getMetadata().size());
         assertNotNull(props.getLastModified());
         assertEquals("BlockBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());

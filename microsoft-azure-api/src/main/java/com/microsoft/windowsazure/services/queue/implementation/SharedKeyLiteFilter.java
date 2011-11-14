@@ -8,9 +8,6 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-/*
- * TODO: Should the "full" shared key signing?
- */
 public class SharedKeyLiteFilter extends ClientFilter {
     private final com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter blobSharedKeyFilter;
 

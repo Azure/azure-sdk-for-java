@@ -43,9 +43,6 @@ public class QueueServiceForJersey implements QueueServiceContract {
     private final ServiceFilter[] filters;
     private final SharedKeyLiteFilter filter;
 
-    /*
-     * TODO: How to make "filter" configurable though code?
-     */
     @Inject
     public QueueServiceForJersey(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName, @Named(QueueConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {

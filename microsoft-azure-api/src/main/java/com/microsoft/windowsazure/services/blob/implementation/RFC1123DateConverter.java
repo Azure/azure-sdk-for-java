@@ -8,8 +8,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /*
- * TODO: Move to some other common package?
- * 
  * RFC 1123 date to string conversion
  */
 public class RFC1123DateConverter {
@@ -28,7 +26,6 @@ public class RFC1123DateConverter {
             return parse(date);
         }
         catch (ParseException e) {
-            // TODO: Is it better to return null or throw a runtime exception?
             return null;
         }
     }
