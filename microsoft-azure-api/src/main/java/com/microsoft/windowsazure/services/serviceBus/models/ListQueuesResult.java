@@ -1,12 +1,14 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
 
 import java.util.List;
+
+import com.microsoft.windowsazure.services.serviceBus.Queue;
 
 public class ListQueuesResult {
 
     private List<Queue> items;
 
-    List<Queue> getItems() {
+    public List<Queue> getItems() {
         return items;
     }
 

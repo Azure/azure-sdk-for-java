@@ -7,15 +7,23 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListSubscriptionsResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -56,7 +64,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Message receiveQueueMessage(String queueName)
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
             throws ServiceException {
         try {
             return next.receiveQueueMessage(queueName);
@@ -69,7 +77,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Message receiveQueueMessage(String queueName,
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName,
             ReceiveMessageOptions options) throws ServiceException {
         try {
             return next.receiveQueueMessage(queueName, options);
@@ -95,7 +103,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName) throws ServiceException {
         try {
             return next.receiveSubscriptionMessage(topicName,
@@ -109,7 +117,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName, ReceiveMessageOptions options)
             throws ServiceException {
         try {
@@ -148,7 +156,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Queue createQueue(Queue queue) throws ServiceException {
+    public CreateQueueResult createQueue(Queue queue) throws ServiceException {
         try {
             return next.createQueue(queue);
         }
@@ -172,7 +180,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Queue getQueue(String queuePath) throws ServiceException {
+    public GetQueueResult getQueue(String queuePath) throws ServiceException {
         try {
             return next.getQueue(queuePath);
         }
@@ -196,7 +204,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Topic createTopic(Topic topic) throws ServiceException {
+    public CreateTopicResult createTopic(Topic topic) throws ServiceException {
         try {
             return next.createTopic(topic);
         }
@@ -220,7 +228,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Topic getTopic(String topicPath) throws ServiceException {
+    public GetTopicResult getTopic(String topicPath) throws ServiceException {
         try {
             return next.getTopic(topicPath);
         }
@@ -244,7 +252,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Subscription createSubscription(String topicPath, Subscription subscription) throws ServiceException {
+    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) throws ServiceException {
         try {
             return next.createSubscription(topicPath, subscription);
         }
@@ -269,7 +277,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Subscription getSubscription(String topicPath, String subscriptionName)
+    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName)
             throws ServiceException {
         try {
             return next.getSubscription(topicPath, subscriptionName);

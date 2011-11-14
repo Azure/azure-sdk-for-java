@@ -1,12 +1,14 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
 
 import java.util.List;
+
+import com.microsoft.windowsazure.services.serviceBus.Subscription;
 
 public class ListSubscriptionsResult {
 
     private List<Subscription> items;
 
-    List<Subscription> getItems() {
+    public List<Subscription> getItems() {
         return items;
     }
 

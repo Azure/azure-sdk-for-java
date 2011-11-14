@@ -15,6 +15,10 @@ import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.http.ServiceFilter.Request;
 import com.microsoft.windowsazure.http.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -35,7 +39,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        Queue entry = service.getQueue("TestAlpha");
+        Queue entry = service.getQueue("TestAlpha").getValue();
         ListQueuesResult feed = service.listQueues();
 
         // Assert
@@ -49,7 +53,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
         // Act
         Queue queue = new Queue("TestCreateQueueWorks").setMaxSizeInMegabytes(1024L);
-        Queue saved = service.createQueue(queue);
+        Queue saved = service.createQueue(queue).getValue();
 
         // Assert
         assertNotNull(saved);
@@ -87,7 +91,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName, new Message("Hello World"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
         byte[] data = new byte[100];
         int size = message.getBody().read(data);
 
@@ -104,7 +108,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName, new Message("Hello Again"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Assert
         byte[] data = new byte[100];
@@ -119,7 +123,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeCompleted";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = message.getLockToken();
@@ -140,14 +144,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeUnlocked";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.unlockMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -162,14 +166,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeDeleted";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.deleteMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -188,7 +192,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName,
                 new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(message);
@@ -201,9 +205,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
 
         // Act
-        Topic created = service.createTopic(new Topic().setName(topicName));
+        Topic created = service.createTopic(new Topic().setName(topicName)).getValue();
         ListTopicsResult listed = service.listTopics();
-        Topic fetched = service.getTopic(topicName);
+        Topic fetched = service.getTopic(topicName).getValue();
         service.deleteTopic(topicName);
         ListTopicsResult listed2 = service.listTopics();
 
@@ -232,7 +236,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         });
 
         // Act 
-        Queue created = filtered.createQueue(new Queue("TestFilterCanSeeAndChangeRequestOrResponse"));
+        Queue created = filtered.createQueue(new Queue("TestFilterCanSeeAndChangeRequestOrResponse")).getValue();
 
         // Assert
         assertNotNull(created);
@@ -247,7 +251,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createTopic(new Topic(topicName));
 
         // Act
-        Subscription created = service.createSubscription(topicName, new Subscription("MySubscription"));
+        Subscription created = service.createSubscription(topicName, new Subscription("MySubscription")).getValue();
 
         // Assert
         assertNotNull(created);
@@ -278,7 +282,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createSubscription(topicName, new Subscription("MySubscription3"));
 
         // Act
-        Subscription result = service.getSubscription(topicName, "MySubscription3");
+        Subscription result = service.getSubscription(topicName, "MySubscription3").getValue();
 
         // Assert
         assertNotNull(result);
@@ -301,6 +305,5 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(result);
         assertEquals(1, result.getItems().size());
         assertEquals("MySubscription5", result.getItems().get(0).getName());
-
     }
 }

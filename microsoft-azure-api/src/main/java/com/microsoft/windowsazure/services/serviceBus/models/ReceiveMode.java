@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
 
 public enum ReceiveMode {
     PEEK_LOCK,

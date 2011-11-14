@@ -15,15 +15,23 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.auth.wrap.WrapFilter;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListSubscriptionsResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -105,12 +113,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         sendMessage(path, message);
     }
 
-    public Message receiveQueueMessage(String queueName)
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
             throws ServiceException {
         return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
     }
 
-    public Message receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
 
         WebResource resource = getResource()
                 .path(queuePath)
@@ -137,32 +145,32 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         MediaType contentType = clientResult.getType();
         Date date = clientResult.getResponseDate();
 
-        Message result = new Message();
+        Message message = new Message();
         if (brokerProperties != null) {
-            result.setProperties(mapper.fromString(brokerProperties));
+            message.setProperties(mapper.fromString(brokerProperties));
         }
         if (contentType != null) {
-            result.setContentType(contentType.toString());
+            message.setContentType(contentType.toString());
         }
         if (location != null) {
-            result.getProperties().setLockLocation(location);
+            message.getProperties().setLockLocation(location);
         }
-        result.setDate(date);
-        result.setBody(clientResult.getEntityInputStream());
-        return result;
+        message.setDate(date);
+        message.setBody(clientResult.getEntityInputStream());
+        return new ReceiveQueueMessageResult(message);
     }
 
     public void sendTopicMessage(String topicName, Message message) throws ServiceException {
         sendMessage(topicName, message);
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName) throws ServiceException {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName, ReceiveMessageOptions options)
             throws ServiceException {
         // TODO Auto-generated method stub
@@ -181,11 +189,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Queue createQueue(Queue entry) throws ServiceException {
-        return getResource()
+    public CreateQueueResult createQueue(Queue entry) throws ServiceException {
+        return new CreateQueueResult(getResource()
                 .path(entry.getName())
-                .type("application/atom+xml")//;type=entry;charset=utf-8")
-                .put(Queue.class, entry);
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Queue.class, entry));
     }
 
     public void deleteQueue(String queuePath) throws ServiceException {
@@ -194,10 +202,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Queue getQueue(String queuePath) throws ServiceException {
-        return getResource()
+    public GetQueueResult getQueue(String queuePath) throws ServiceException {
+        return new GetQueueResult(getResource()
                 .path(queuePath)
-                .get(Queue.class);
+                .get(Queue.class));
     }
 
     public ListQueuesResult listQueues() throws ServiceException {
@@ -213,11 +221,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public Topic createTopic(Topic entry) throws ServiceException {
-        return getResource()
+    public CreateTopicResult createTopic(Topic entry) throws ServiceException {
+        return new CreateTopicResult(getResource()
                 .path(entry.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Topic.class, entry);
+                .put(Topic.class, entry));
     }
 
     public void deleteTopic(String TopicPath) throws ServiceException {
@@ -226,10 +234,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Topic getTopic(String TopicPath) throws ServiceException {
-        return getResource()
+    public GetTopicResult getTopic(String TopicPath) throws ServiceException {
+        return new GetTopicResult(getResource()
                 .path(TopicPath)
-                .get(Topic.class);
+                .get(Topic.class));
     }
 
     public ListTopicsResult listTopics() throws ServiceException {
@@ -245,13 +253,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public Subscription createSubscription(String topicPath, Subscription subscription) {
-        return getResource()
+    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) {
+        return new CreateSubscriptionResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscription.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Subscription.class, subscription);
+                .put(Subscription.class, subscription));
     }
 
     public void deleteSubscription(String topicPath, String subscriptionName) {
@@ -262,12 +270,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Subscription getSubscription(String topicPath, String subscriptionName) {
-        return getResource()
+    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) {
+        return new GetSubscriptionResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscriptionName)
-                .get(Subscription.class);
+                .get(Subscription.class));
     }
 
     public ListSubscriptionsResult listSubscriptions(String topicPath) {

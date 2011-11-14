@@ -7,6 +7,18 @@ import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Feed;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 
 public class ServiceBusService implements ServiceBusContract {
     final ServiceBusContract next;
@@ -41,12 +53,12 @@ public class ServiceBusService implements ServiceBusContract {
         next.sendQueueMessage(queueName, message);
     }
 
-    public Message receiveQueueMessage(String queueName)
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
             throws ServiceException {
         return next.receiveQueueMessage(queueName);
     }
 
-    public Message receiveQueueMessage(String queueName,
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName,
             ReceiveMessageOptions options) throws ServiceException {
         return next.receiveQueueMessage(queueName, options);
     }
@@ -56,12 +68,12 @@ public class ServiceBusService implements ServiceBusContract {
         next.sendTopicMessage(topicName, message);
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName) throws ServiceException {
         return next.receiveSubscriptionMessage(topicName, subscriptionName);
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName, ReceiveMessageOptions options)
             throws ServiceException {
         return next.receiveSubscriptionMessage(topicName, subscriptionName,
@@ -76,7 +88,7 @@ public class ServiceBusService implements ServiceBusContract {
         next.deleteMessage(message);
     }
 
-    public Queue createQueue(Queue queue) throws ServiceException {
+    public CreateQueueResult createQueue(Queue queue) throws ServiceException {
         return next.createQueue(queue);
     }
 
@@ -84,7 +96,7 @@ public class ServiceBusService implements ServiceBusContract {
         next.deleteQueue(queueName);
     }
 
-    public Queue getQueue(String queueName) throws ServiceException {
+    public GetQueueResult getQueue(String queueName) throws ServiceException {
         return next.getQueue(queueName);
     }
 
@@ -92,7 +104,7 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listQueues();
     }
 
-    public Topic createTopic(Topic topic) throws ServiceException {
+    public CreateTopicResult createTopic(Topic topic) throws ServiceException {
         return next.createTopic(topic);
     }
 
@@ -100,7 +112,7 @@ public class ServiceBusService implements ServiceBusContract {
         next.deleteTopic(topicName);
     }
 
-    public Topic getTopic(String topicName) throws ServiceException {
+    public GetTopicResult getTopic(String topicName) throws ServiceException {
         return next.getTopic(topicName);
     }
 
@@ -108,7 +120,7 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listTopics();
     }
 
-    public Subscription createSubscription(String topicName, Subscription subscription) throws ServiceException {
+    public CreateSubscriptionResult createSubscription(String topicName, Subscription subscription) throws ServiceException {
         return next.createSubscription(topicName, subscription);
     }
 
@@ -117,7 +129,7 @@ public class ServiceBusService implements ServiceBusContract {
         next.deleteSubscription(topicName, subscriptionName);
     }
 
-    public Subscription getSubscription(String topicName, String subscriptionName)
+    public GetSubscriptionResult getSubscription(String topicName, String subscriptionName)
             throws ServiceException {
         return next.getSubscription(topicName, subscriptionName);
     }
