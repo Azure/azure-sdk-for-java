@@ -46,7 +46,7 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 
-public interface BlobServiceContract extends FilterableService<BlobServiceContract> {
+public interface BlobContract extends FilterableService<BlobContract> {
     GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
     GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException;

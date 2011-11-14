@@ -12,7 +12,7 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
-import com.microsoft.windowsazure.services.blob.BlobServiceContract;
+import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers.EnumCommaStringBuilder;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
@@ -62,8 +62,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.Base64;
 
-public class BlobServiceForJersey implements BlobServiceContract {
-    // private static Log log = LogFactory.getLog(BlobServiceForJersey.class);
+public class BlobRestProxy implements BlobContract {
+    // private static Log log = LogFactory.getLog(BlobRestProxy.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
@@ -74,7 +74,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
     private final SharedKeyLiteFilter filter;
 
     @Inject
-    public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
+    public BlobRestProxy(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {
 
         this.channel = channel;
@@ -86,8 +86,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         channel.addFilter(filter);
     }
 
-    public BlobServiceForJersey(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter,
-            RFC1123DateConverter dateMapper) {
+    public BlobRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = channel;
         this.filters = filters;
@@ -97,10 +96,10 @@ public class BlobServiceForJersey implements BlobServiceContract {
         this.dateMapper = dateMapper;
     }
 
-    public BlobServiceContract withFilter(ServiceFilter filter) {
+    public BlobContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new BlobServiceForJersey(this.channel, newFilters, this.accountName, this.url, this.filter, this.dateMapper);
+        return new BlobRestProxy(this.channel, newFilters, this.accountName, this.url, this.filter, this.dateMapper);
     }
 
     private void ThrowIfError(ClientResponse r) {
@@ -177,7 +176,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         return builder;
     }
 
-    private GetBlobPropertiesResult getBlobPropertiesFromResponse(ClientResponse response) {
+    private GetBlobPropertiesResult getBlobPropertiesResultFromResponse(ClientResponse response) {
         // Properties
         BlobProperties properties = new BlobProperties();
         properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
@@ -480,7 +479,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
         ThrowIfError(response);
 
-        return getBlobPropertiesFromResponse(response);
+        return getBlobPropertiesResultFromResponse(response);
     }
 
     public GetBlobMetadataResult getBlobMetadata(String container, String blob) throws ServiceException {
@@ -583,9 +582,10 @@ public class BlobServiceForJersey implements BlobServiceContract {
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);
 
-        GetBlobPropertiesResult properties = getBlobPropertiesFromResponse(response);
+        GetBlobPropertiesResult properties = getBlobPropertiesResultFromResponse(response);
         GetBlobResult blobResult = new GetBlobResult();
-        blobResult.setProperties(properties);
+        blobResult.setProperties(properties.getProperties());
+        blobResult.setMetadata(properties.getMetadata());
         blobResult.setContentStream(response.getEntityInputStream());
         return blobResult;
     }

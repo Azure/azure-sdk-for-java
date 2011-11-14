@@ -18,7 +18,7 @@ import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
-public interface QueueServiceContract extends FilterableService<QueueServiceContract> {
+public interface QueueContract extends FilterableService<QueueContract> {
     GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
     GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException;
