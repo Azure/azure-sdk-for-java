@@ -55,6 +55,7 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static final String testContainersPrefix = "sdktest-";
     private static final String createableContainersPrefix = "csdktest-";
+    private static final String BLOB_FOR_ROOT_CONTAINER = "sdktestroot";
     private static String CREATEABLE_CONTAINER_1;
     private static String CREATEABLE_CONTAINER_2;
     private static String CREATEABLE_CONTAINER_3;
@@ -358,6 +359,73 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void workingWithRootContainersWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobServiceContract service = config.create(BlobServiceContract.class);
+
+        //
+        // Ensure root container exists
+        //
+        ServiceException error = null;
+        try {
+            service.createContainer("$root");
+        }
+        catch (ServiceException e) {
+            error = e;
+        }
+
+        // Assert
+        assertTrue(error == null || error.getHttpStatusCode() == 409);
+
+        //
+        // Work with root container explicitly ("$root")
+        //
+        {
+            // Act
+            service.createPageBlob("$root", BLOB_FOR_ROOT_CONTAINER, 512);
+            ListBlobsResult list = service.listBlobs("$root");
+            GetBlobPropertiesResult properties = service.getBlobProperties("$root", BLOB_FOR_ROOT_CONTAINER);
+            GetBlobMetadataResult metadata = service.getBlobMetadata("$root", BLOB_FOR_ROOT_CONTAINER);
+
+            // Assert
+            assertNotNull(list);
+            assertTrue(1 <= list.getBlobs().size());
+            assertNotNull(properties);
+            assertNotNull(metadata);
+
+            // Act
+            service.deleteBlob("$root", BLOB_FOR_ROOT_CONTAINER);
+        }
+
+        //
+        // Work with root container implicitly ("")
+        //
+        {
+            // Act
+            service.createPageBlob("", BLOB_FOR_ROOT_CONTAINER, 512);
+            // "$root" must be explicit when listing blobs in the root container
+            ListBlobsResult list = service.listBlobs("$root");
+            GetBlobPropertiesResult properties = service.getBlobProperties("", BLOB_FOR_ROOT_CONTAINER);
+            GetBlobMetadataResult metadata = service.getBlobMetadata("", BLOB_FOR_ROOT_CONTAINER);
+
+            // Assert
+            assertNotNull(list);
+            assertTrue(1 <= list.getBlobs().size());
+            assertNotNull(properties);
+            assertNotNull(metadata);
+
+            // Act
+            service.deleteBlob("", BLOB_FOR_ROOT_CONTAINER);
+        }
+
+        // If container was created, delete it
+        if (error == null) {
+            service.deleteContainer("$root");
+        }
+    }
+
+    @Test
     public void listBlobsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -420,8 +488,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         }
 
         // Act
-        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setIncludeMetadata(true)
-                .setIncludeSnapshots(true));
+        ListBlobsResult results = service.listBlobs(TEST_CONTAINER_FOR_LISTING, new ListBlobsOptions().setIncludeMetadata(true).setIncludeSnapshots(true));
 
         for (String blob : blobNames) {
             service.deleteBlob(TEST_CONTAINER_FOR_LISTING, blob);
@@ -733,10 +800,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
-                new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
-                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
-                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions()
+                .setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         GetBlobPropertiesResult props = service.getBlobProperties(TEST_CONTAINER_FOR_BLOBS, "test2");
 
@@ -809,10 +876,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String content = "some content";
-        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")),
-                new CreateBlobOptions().setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
-                        /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
-                        /* .setContentMD5("1234") */.setContentType("text/plain"));
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream(content.getBytes("UTF-8")), new CreateBlobOptions()
+                .setBlobCacheControl("test").setBlobContentEncoding("UTF-8").setBlobContentLanguage("en-us")
+                /* .setBlobContentMD5("1234") */.setBlobContentType("text/plain").setCacheControl("test").setContentEncoding("UTF-8")
+                /* .setContentMD5("1234") */.setContentType("text/plain"));
 
         GetBlobResult blob = service.getBlob(TEST_CONTAINER_FOR_BLOBS, "test2");
         GetBlobPropertiesResult props = blob.getProperties();
