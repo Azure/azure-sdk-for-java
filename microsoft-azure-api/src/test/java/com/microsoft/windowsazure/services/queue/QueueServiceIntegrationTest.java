@@ -110,7 +110,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     public void getServicePropertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        QueueContract service = config.create(QueueContract.class);
+        QueueService service = new QueueService(config);
 
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();

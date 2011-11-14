@@ -130,7 +130,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     public void getServiceProppertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        BlobContract service = config.create(BlobContract.class);
+        BlobService service = new BlobService(config);
 
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();
