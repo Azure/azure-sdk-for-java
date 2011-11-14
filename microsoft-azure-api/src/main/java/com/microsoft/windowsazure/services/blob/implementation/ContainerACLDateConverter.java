@@ -8,8 +8,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /*
- * TODO: Move to some other common package?
- * 
  * "not quite" ISO 8601 date time conversion routines
  */
 public class ContainerACLDateConverter {
@@ -29,7 +27,6 @@ public class ContainerACLDateConverter {
             return parse(date);
         }
         catch (ParseException e) {
-            //TODO: Is it better to return null or throw a runtime exception?
             return null;
         }
     }
