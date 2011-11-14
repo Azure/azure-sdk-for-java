@@ -5,6 +5,8 @@ import javax.ws.rs.core.MediaType;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.Filter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.RuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 
 public class Rule extends EntryModel<RuleDescription> {
@@ -33,4 +35,23 @@ public class Rule extends EntryModel<RuleDescription> {
         getEntry().setTitle(value);
         return this;
     }
+
+    public Filter getFilter() {
+        return getModel().getFilter();
+    }
+
+    public Rule setFilter(Filter value) {
+        getModel().setFilter(value);
+        return this;
+    }
+
+    public RuleAction getAction() {
+        return getModel().getAction();
+    }
+
+    public Rule setAction(RuleAction value) {
+        getModel().setAction(value);
+        return this;
+    }
+
 }
