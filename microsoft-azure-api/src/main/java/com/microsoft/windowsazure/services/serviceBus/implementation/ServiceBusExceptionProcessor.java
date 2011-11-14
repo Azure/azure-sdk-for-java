@@ -9,12 +9,15 @@ import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
@@ -22,6 +25,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
@@ -302,10 +306,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void addRule(String topicPath, String subscriptionName,
-            String ruleName, Entry rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicPath, String subscriptionName,
+            Rule rule) throws ServiceException {
         try {
-            next.addRule(topicPath, subscriptionName, ruleName, rule);
+            return next.createRule(topicPath, subscriptionName, rule);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -315,10 +319,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void removeRule(String topicPath, String subscriptionName,
+    public void deleteRule(String topicPath, String subscriptionName,
             String ruleName) throws ServiceException {
         try {
-            next.removeRule(topicPath, subscriptionName, ruleName);
+            next.deleteRule(topicPath, subscriptionName, ruleName);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -328,7 +332,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Entry getRule(String topicPath, String subscriptionName,
+    public GetRuleResult getRule(String topicPath, String subscriptionName,
             String ruleName) throws ServiceException {
         try {
             return next.getRule(topicPath, subscriptionName, ruleName);
@@ -341,10 +345,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Feed getRules(String topicPath, String subscriptionName)
+    public ListRulesResult listRules(String topicPath, String subscriptionName)
             throws ServiceException {
         try {
-            return next.getRules(topicPath, subscriptionName);
+            return next.listRules(topicPath, subscriptionName);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

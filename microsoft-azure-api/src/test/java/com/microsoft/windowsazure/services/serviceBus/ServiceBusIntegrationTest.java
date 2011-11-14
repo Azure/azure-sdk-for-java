@@ -16,11 +16,13 @@ import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.http.ServiceFilter.Request;
 import com.microsoft.windowsazure.http.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
@@ -329,5 +331,82 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
         assertEquals("text/html", message.getContentType());
+    }
+
+    @Test
+    public void rulesCanBeCreatedOnSubscriptions() throws Exception {
+        // Arrange
+        String topicName = "TestrulesCanBeCreatedOnSubscriptions";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+
+        // Act
+        Rule created = service.createRule(topicName, "sub", new Rule("MyRule1")).getValue();
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MyRule1", created.getName());
+    }
+
+    @Test
+    public void rulesCanBeListedAndDefaultRuleIsPrecreated() throws Exception {
+        // Arrange
+        String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.createRule(topicName, "sub", new Rule("MyRule2"));
+
+        // Act
+        ListRulesResult result = service.listRules(topicName, "sub");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.getItems().size());
+        Rule rule0 = result.getItems().get(0);
+        Rule rule1 = result.getItems().get(1);
+        if (rule0.getName() == "MyRule2") {
+            Rule swap = rule1;
+            rule1 = rule0;
+            rule0 = swap;
+        }
+
+        assertEquals("$Default", rule0.getName());
+        assertEquals("MyRule2", rule1.getName());
+        assertNotNull(result.getItems().get(0).getModel());
+    }
+
+    @Test
+    public void ruleDetailsMayBeFetched() throws Exception {
+        // Arrange
+        String topicName = "TestruleDetailsMayBeFetched";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+
+        // Act
+        Rule result = service.getRule(topicName, "sub", "$Default").getValue();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("$Default", result.getName());
+    }
+
+    @Test
+    public void rulesMayBeDeleted() throws Exception {
+        // Arrange
+        String topicName = "TestRulesMayBeDeleted";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.createRule(topicName, "sub", new Rule("MyRule4"));
+        service.createRule(topicName, "sub", new Rule("MyRule5"));
+
+        // Act
+        service.deleteRule(topicName, "sub", "MyRule5");
+        service.deleteRule(topicName, "sub", "$Default");
+
+        // Assert
+        ListRulesResult result = service.listRules(topicName, "sub");
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MyRule4", result.getItems().get(0).getName());
     }
 }

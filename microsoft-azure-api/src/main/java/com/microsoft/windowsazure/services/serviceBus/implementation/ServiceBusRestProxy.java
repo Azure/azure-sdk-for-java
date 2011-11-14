@@ -17,12 +17,15 @@ import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
@@ -30,6 +33,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 import com.sun.jersey.api.client.Client;
@@ -303,27 +307,54 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public void addRule(String topicPath, String subscriptionName,
-            String ruleName, Entry rule) {
-        // TODO Auto-generated method stub
-
+    public CreateRuleResult createRule(String topicPath, String subscriptionName,
+            Rule rule) {
+        return new CreateRuleResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(rule.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Rule.class, rule));
     }
 
-    public void removeRule(String topicPath, String subscriptionName,
+    public void deleteRule(String topicPath, String subscriptionName,
             String ruleName) {
-        // TODO Auto-generated method stub
-
+        getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(ruleName)
+                .delete();
     }
 
-    public Entry getRule(String topicPath, String subscriptionName,
+    public GetRuleResult getRule(String topicPath, String subscriptionName,
             String ruleName) {
-        // TODO Auto-generated method stub
-        return null;
+        return new GetRuleResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(ruleName)
+                .get(Rule.class));
     }
 
-    public Feed getRules(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-        return null;
+    public ListRulesResult listRules(String topicPath, String subscriptionName) {
+        Feed feed = getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .get(Feed.class);
+        ArrayList<Rule> list = new ArrayList<Rule>();
+        for (Entry entry : feed.getEntries()) {
+            list.add(new Rule(entry));
+        }
+        ListRulesResult result = new ListRulesResult();
+        result.setItems(list);
+        return result;
     }
 
 }

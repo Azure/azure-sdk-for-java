@@ -5,15 +5,16 @@ import javax.inject.Inject;
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
-import com.microsoft.windowsazure.services.serviceBus.implementation.Feed;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
@@ -21,6 +22,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
@@ -142,23 +144,23 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listSubscriptions(topicName);
     }
 
-    public void addRule(String topicName, String subscriptionName,
-            String ruleName, Entry rule) throws ServiceException {
-        next.addRule(topicName, subscriptionName, ruleName, rule);
+    public CreateRuleResult createRule(String topicName, String subscriptionName,
+            Rule rule) throws ServiceException {
+        return next.createRule(topicName, subscriptionName, rule);
     }
 
-    public void removeRule(String topicName, String subscriptionName,
+    public void deleteRule(String topicName, String subscriptionName,
             String ruleName) throws ServiceException {
-        next.removeRule(topicName, subscriptionName, ruleName);
+        next.deleteRule(topicName, subscriptionName, ruleName);
     }
 
-    public Entry getRule(String topicName, String subscriptionName,
+    public GetRuleResult getRule(String topicName, String subscriptionName,
             String ruleName) throws ServiceException {
         return next.getRule(topicName, subscriptionName, ruleName);
     }
 
-    public Feed getRules(String topicName, String subscriptionName)
+    public ListRulesResult listRules(String topicName, String subscriptionName)
             throws ServiceException {
-        return next.getRules(topicName, subscriptionName);
+        return next.listRules(topicName, subscriptionName);
     }
 }
