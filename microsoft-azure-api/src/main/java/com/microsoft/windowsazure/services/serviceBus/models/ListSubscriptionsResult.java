@@ -2,7 +2,6 @@ package com.microsoft.windowsazure.services.serviceBus.models;
 
 import java.util.List;
 
-import com.microsoft.windowsazure.services.serviceBus.Subscription;
 
 public class ListSubscriptionsResult {
 

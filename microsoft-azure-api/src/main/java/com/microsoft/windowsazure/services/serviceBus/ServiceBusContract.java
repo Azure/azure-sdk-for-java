@@ -13,9 +13,13 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public interface ServiceBusContract {
     ServiceBusContract withFilter(ServiceFilter filter);

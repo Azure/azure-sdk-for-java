@@ -18,7 +18,11 @@ import com.microsoft.windowsazure.http.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 

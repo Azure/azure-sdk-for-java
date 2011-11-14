@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.serviceBus.models;
 
-import com.microsoft.windowsazure.services.serviceBus.Topic;
 
 public class CreateTopicResult {
 
