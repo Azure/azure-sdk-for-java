@@ -6,7 +6,6 @@ import java.util.Random;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.http.ServiceFilter;
 
 public class ExponentialRetryPolicyFilter implements ServiceFilter {
     private static final Log log = LogFactory.getLog(ExponentialRetryPolicyFilter.class);

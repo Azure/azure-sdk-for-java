@@ -5,7 +5,7 @@ import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 import com.microsoft.windowsazure.services.serviceBus.Queue;
 import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;

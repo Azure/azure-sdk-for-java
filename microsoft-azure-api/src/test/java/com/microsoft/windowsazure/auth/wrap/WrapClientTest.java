@@ -12,10 +12,10 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.auth.wrap.WrapClient;
 import com.microsoft.windowsazure.auth.wrap.contract.WrapContract;
 import com.microsoft.windowsazure.auth.wrap.contract.WrapResponse;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.utils.DateFactory;
 
 public class WrapClientTest {

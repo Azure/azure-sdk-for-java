@@ -10,11 +10,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.configuration.Configuration;
-import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.http.ServiceFilter.Request;
-import com.microsoft.windowsazure.http.ServiceFilter.Response;
+import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceFilter.Request;
+import com.microsoft.windowsazure.common.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;

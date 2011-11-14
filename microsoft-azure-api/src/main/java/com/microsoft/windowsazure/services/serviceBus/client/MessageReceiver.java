@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus.client;
 
-import com.microsoft.windowsazure.ServiceException;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 

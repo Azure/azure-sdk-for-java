@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.http;
+package com.microsoft.windowsazure.common;
 
 import java.io.InputStream;
 import java.net.URI;

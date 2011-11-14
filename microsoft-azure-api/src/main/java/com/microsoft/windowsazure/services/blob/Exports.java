@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.blob;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
+import com.microsoft.windowsazure.common.Builder;
 import com.microsoft.windowsazure.services.blob.implementation.BlobExceptionProcessor;
 import com.microsoft.windowsazure.services.blob.implementation.BlobRestProxy;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter;

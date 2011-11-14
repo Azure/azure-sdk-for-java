@@ -5,8 +5,8 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;

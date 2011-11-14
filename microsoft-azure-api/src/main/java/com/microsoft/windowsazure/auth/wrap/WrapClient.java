@@ -6,9 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.management.timer.Timer;
 
-import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.auth.wrap.contract.WrapContract;
 import com.microsoft.windowsazure.auth.wrap.contract.WrapResponse;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.utils.DateFactory;
 
 public class WrapClient {

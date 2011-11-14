@@ -2,8 +2,8 @@ package com.microsoft.windowsazure.services.serviceBus.client;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;

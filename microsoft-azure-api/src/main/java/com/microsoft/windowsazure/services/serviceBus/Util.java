@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
-import com.microsoft.windowsazure.ServiceException;
+import com.microsoft.windowsazure.common.ServiceException;
 
 public class Util {
     public static Iterable<Queue> iterateQueues(ServiceBusContract service)

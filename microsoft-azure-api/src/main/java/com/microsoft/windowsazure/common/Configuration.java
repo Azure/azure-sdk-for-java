@@ -1,10 +1,8 @@
-package com.microsoft.windowsazure.configuration;
+package com.microsoft.windowsazure.common;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
-import com.microsoft.windowsazure.configuration.builder.DefaultBuilder;
 import com.sun.jersey.api.client.config.ClientConfig;
 
 public class Configuration {

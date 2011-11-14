@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.http;
+package com.microsoft.windowsazure.utils.jersey;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -6,8 +6,9 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.http.ServiceFilter.Request;
-import com.microsoft.windowsazure.http.ServiceFilter.Response;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceFilter.Request;
+import com.microsoft.windowsazure.common.ServiceFilter.Response;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

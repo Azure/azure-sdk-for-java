@@ -21,10 +21,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.ServiceException;
+import com.microsoft.windowsazure.common.Configuration;
 import com.microsoft.windowsazure.common.ExponentialRetryPolicyFilter;
-import com.microsoft.windowsazure.configuration.Configuration;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.auth.wrap.contract.WrapContract;
 import com.microsoft.windowsazure.auth.wrap.contract.WrapContractImpl;
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 import com.sun.jersey.api.client.Client;
 
 public class WrapContractIntegrationTest {

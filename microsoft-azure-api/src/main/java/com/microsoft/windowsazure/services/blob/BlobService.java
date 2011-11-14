@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.configuration.Configuration;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;

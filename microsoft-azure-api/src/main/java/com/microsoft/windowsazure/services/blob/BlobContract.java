@@ -3,8 +3,8 @@ package com.microsoft.windowsazure.services.blob;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.FilterableService;
+import com.microsoft.windowsazure.common.FilterableService;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;

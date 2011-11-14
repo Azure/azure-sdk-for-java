@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.auth.wrap.WrapClient;
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 
 public class WrapClientIntegrationTest {
     private Configuration createConfiguration() {
