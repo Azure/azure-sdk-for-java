@@ -2,11 +2,11 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
-import com.microsoft.windowsazure.services.serviceBus.implementation.Feed;
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
+import com.microsoft.windowsazure.services.serviceBus.implementation.Feed;
 
 public class ServiceBusService implements ServiceBusContract {
     final ServiceBusContract next;
@@ -108,23 +108,22 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listTopics();
     }
 
-    public void addSubscription(String topicName, String subscriptionName,
-            Entry subscription) throws ServiceException {
-        next.addSubscription(topicName, subscriptionName, subscription);
+    public Subscription createSubscription(String topicName, Subscription subscription) throws ServiceException {
+        return next.createSubscription(topicName, subscription);
     }
 
-    public void removeSubscription(String topicName, String subscriptionName)
+    public void deleteSubscription(String topicName, String subscriptionName)
             throws ServiceException {
-        next.removeSubscription(topicName, subscriptionName);
+        next.deleteSubscription(topicName, subscriptionName);
     }
 
-    public Entry getSubscription(String topicName, String subscriptionName)
+    public Subscription getSubscription(String topicName, String subscriptionName)
             throws ServiceException {
         return next.getSubscription(topicName, subscriptionName);
     }
 
-    public Feed getSubscriptions(String topicName) throws ServiceException {
-        return next.getSubscriptions(topicName);
+    public ListSubscriptionsResult listSubscriptions(String topicName) throws ServiceException {
+        return next.listSubscriptions(topicName);
     }
 
     public void addRule(String topicName, String subscriptionName,

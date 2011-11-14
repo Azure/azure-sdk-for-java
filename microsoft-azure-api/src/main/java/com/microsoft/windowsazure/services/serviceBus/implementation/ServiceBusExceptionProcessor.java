@@ -8,11 +8,13 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.ServiceException;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.Queue;
 import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
+import com.microsoft.windowsazure.services.serviceBus.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.Topic;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -242,10 +244,9 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void addSubscription(String topicPath, String subscriptionName,
-            Entry subscription) throws ServiceException {
+    public Subscription createSubscription(String topicPath, Subscription subscription) throws ServiceException {
         try {
-            next.addSubscription(topicPath, subscriptionName, subscription);
+            return next.createSubscription(topicPath, subscription);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -255,10 +256,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void removeSubscription(String topicPath, String subscriptionName)
+    public void deleteSubscription(String topicPath, String subscriptionName)
             throws ServiceException {
         try {
-            next.removeSubscription(topicPath, subscriptionName);
+            next.deleteSubscription(topicPath, subscriptionName);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -268,7 +269,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Entry getSubscription(String topicPath, String subscriptionName)
+    public Subscription getSubscription(String topicPath, String subscriptionName)
             throws ServiceException {
         try {
             return next.getSubscription(topicPath, subscriptionName);
@@ -281,9 +282,9 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public Feed getSubscriptions(String topicPath) throws ServiceException {
+    public ListSubscriptionsResult listSubscriptions(String topicPath) throws ServiceException {
         try {
-            return next.getSubscriptions(topicPath);
+            return next.listSubscriptions(topicPath);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

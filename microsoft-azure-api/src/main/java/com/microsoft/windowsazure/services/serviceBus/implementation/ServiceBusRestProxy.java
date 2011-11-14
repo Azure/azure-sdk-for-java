@@ -16,11 +16,13 @@ import com.microsoft.windowsazure.auth.wrap.WrapFilter;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.Message;
 import com.microsoft.windowsazure.services.serviceBus.Queue;
 import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
+import com.microsoft.windowsazure.services.serviceBus.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.Topic;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -214,7 +216,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     public Topic createTopic(Topic entry) throws ServiceException {
         return getResource()
                 .path(entry.getName())
-                .type("application/atom+xml")//;type=entry;charset=utf-8")
+                .type("application/atom+xml;type=entry;charset=utf-8")
                 .put(Topic.class, entry);
     }
 
@@ -243,25 +245,43 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public void addSubscription(String topicPath, String subscriptionName,
-            Entry subscription) {
-        // TODO Auto-generated method stub
-
+    public Subscription createSubscription(String topicPath, Subscription subscription) {
+        return getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscription.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Subscription.class, subscription);
     }
 
-    public void removeSubscription(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-
+    public void deleteSubscription(String topicPath, String subscriptionName) {
+        getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .delete();
     }
 
-    public Entry getSubscription(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-        return null;
+    public Subscription getSubscription(String topicPath, String subscriptionName) {
+        return getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .get(Subscription.class);
     }
 
-    public Feed getSubscriptions(String topicPath) {
-        // TODO Auto-generated method stub
-        return null;
+    public ListSubscriptionsResult listSubscriptions(String topicPath) {
+        Feed feed = getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .get(Feed.class);
+        ArrayList<Subscription> list = new ArrayList<Subscription>();
+        for (Entry entry : feed.getEntries()) {
+            list.add(new Subscription(entry));
+        }
+        ListSubscriptionsResult result = new ListSubscriptionsResult();
+        result.setItems(list);
+        return result;
     }
 
     public void addRule(String topicPath, String subscriptionName,

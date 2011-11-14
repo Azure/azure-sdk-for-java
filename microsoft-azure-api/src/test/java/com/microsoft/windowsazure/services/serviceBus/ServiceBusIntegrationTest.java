@@ -15,13 +15,6 @@ import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.http.ServiceFilter.Request;
 import com.microsoft.windowsazure.http.ServiceFilter.Response;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.Message;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -245,5 +238,69 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(created);
         assertEquals(1, requests.size());
         assertEquals(1, responses.size());
+    }
+
+    @Test
+    public void subscriptionsCanBeCreatedOnTopics() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsCanBeCreatedOnTopics";
+        service.createTopic(new Topic(topicName));
+
+        // Act
+        Subscription created = service.createSubscription(topicName, new Subscription("MySubscription"));
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MySubscription", created.getName());
+    }
+
+    @Test
+    public void subscriptionsCanBeListed() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsCanBeListed";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription2"));
+
+        // Act
+        ListSubscriptionsResult result = service.listSubscriptions(topicName);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MySubscription2", result.getItems().get(0).getName());
+    }
+
+    @Test
+    public void subscriptionsDetailsMayBeFetched() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsDetailsMayBeFetched";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription3"));
+
+        // Act
+        Subscription result = service.getSubscription(topicName, "MySubscription3");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("MySubscription3", result.getName());
+    }
+
+    @Test
+    public void subscriptionsMayBeDeleted() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsMayBeDeleted";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription4"));
+        service.createSubscription(topicName, new Subscription("MySubscription5"));
+
+        // Act
+        service.deleteSubscription(topicName, "MySubscription4");
+
+        // Assert
+        ListSubscriptionsResult result = service.listSubscriptions(topicName);
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MySubscription5", result.getItems().get(0).getName());
+
     }
 }

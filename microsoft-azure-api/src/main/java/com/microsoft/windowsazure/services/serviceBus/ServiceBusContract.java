@@ -40,13 +40,13 @@ public interface ServiceBusContract {
 
     ListTopicsResult listTopics() throws ServiceException;
 
-    void addSubscription(String topicName, String subscriptionName, Entry subscription) throws ServiceException;
+    Subscription createSubscription(String topicName, Subscription subscription) throws ServiceException;
 
-    void removeSubscription(String topicName, String subscriptionName) throws ServiceException;
+    void deleteSubscription(String topicName, String subscriptionName) throws ServiceException;
 
-    Entry getSubscription(String topicName, String subscriptionName) throws ServiceException;
+    Subscription getSubscription(String topicName, String subscriptionName) throws ServiceException;
 
-    Feed getSubscriptions(String topicName) throws ServiceException;
+    ListSubscriptionsResult listSubscriptions(String topicName) throws ServiceException;
 
     void addRule(String topicName, String subscriptionName, String ruleName, Entry rule) throws ServiceException;
 
