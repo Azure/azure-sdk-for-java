@@ -125,6 +125,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("messages")
                 .path("head");
 
+        Message message = receiveMessage(options, resource);
+        return new ReceiveQueueMessageResult(message);
+    }
+
+    private Message receiveMessage(ReceiveMessageOptions options, WebResource resource) {
         if (options.getTimeout() != null) {
             resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
         }
@@ -157,7 +162,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         }
         message.setDate(date);
         message.setBody(clientResult.getEntityInputStream());
-        return new ReceiveQueueMessageResult(message);
+        return message;
     }
 
     public void sendTopicMessage(String topicName, Message message) throws ServiceException {
@@ -166,15 +171,21 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return receiveSubscriptionMessage(topicName, subscriptionName, ReceiveMessageOptions.DEFAULT);
     }
 
     public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName, ReceiveMessageOptions options)
             throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource resource = getResource()
+                .path(topicName)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("messages")
+                .path("head");
+
+        Message message = receiveMessage(options, resource);
+        return new ReceiveSubscriptionMessageResult(message);
     }
 
     public void unlockMessage(Message message) throws ServiceException {

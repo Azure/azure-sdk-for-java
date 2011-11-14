@@ -310,4 +310,24 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertEquals(1, result.getItems().size());
         assertEquals("MySubscription5", result.getItems().get(0).getName());
     }
+
+    @Test
+    public void subscriptionWillReceiveMessage() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionWillReceiveMessage";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.sendTopicMessage(topicName, new Message("<p>Testing subscription</p>").setContentType("text/html"));
+
+        // Act
+        Message message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS).getValue();
+
+        // Assert
+        assertNotNull(message);
+
+        byte[] data = new byte[100];
+        int size = message.getBody().read(data);
+        assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
+        assertEquals("text/html", message.getContentType());
+    }
 }
