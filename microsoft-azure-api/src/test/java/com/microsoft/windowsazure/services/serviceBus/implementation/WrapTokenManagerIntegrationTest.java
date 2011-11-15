@@ -1,13 +1,13 @@
-package com.microsoft.windowsazure.auth.wrap;
+package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.auth.wrap.WrapClient;
 import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.services.serviceBus.implementation.WrapTokenManager;
 
-public class WrapClientIntegrationTest {
+public class WrapTokenManagerIntegrationTest {
     private Configuration createConfiguration() {
         Configuration config = new Configuration();
         config.setProperty("wrapClient.uri", "https://lodejard-sb.accesscontrol.windows.net/WRAPv0.9");
@@ -21,7 +21,7 @@ public class WrapClientIntegrationTest {
     public void wrapClientWillAcquireAccessToken() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
-        WrapClient client = config.create(WrapClient.class);
+        WrapTokenManager client = config.create(WrapTokenManager.class);
 
         // Act
         String accessToken = client.getAccessToken();

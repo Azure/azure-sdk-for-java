@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.auth.wrap.contract;
+package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -12,17 +12,17 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
 
-public class WrapContractImpl implements WrapContract {
+public class WrapRestProxy implements WrapContract {
     Client channel;
 
     static Log log = LogFactory.getLog(WrapContract.class);
 
     @Inject
-    public WrapContractImpl(Client channel) {
+    public WrapRestProxy(Client channel) {
         this.channel = channel;
     }
 
-    public WrapResponse post(String uri, String name, String password, String scope) throws ServiceException {
+    public WrapAccessTokenResult wrapAccessToken(String uri, String name, String password, String scope) throws ServiceException {
         Form requestForm = new Form();
         requestForm.add("wrap_name", name);
         requestForm.add("wrap_password", password);
@@ -30,9 +30,7 @@ public class WrapContractImpl implements WrapContract {
 
         Form responseForm;
         try {
-            responseForm = channel.resource(uri)
-                    .accept(MediaType.APPLICATION_FORM_URLENCODED)
-                    .type(MediaType.APPLICATION_FORM_URLENCODED)
+            responseForm = channel.resource(uri).accept(MediaType.APPLICATION_FORM_URLENCODED).type(MediaType.APPLICATION_FORM_URLENCODED)
                     .post(Form.class, requestForm);
         }
         catch (UniformInterfaceException e) {
@@ -40,7 +38,7 @@ public class WrapContractImpl implements WrapContract {
             throw ServiceExceptionFactory.process("WRAP", new ServiceException("WRAP server returned error acquiring access_token", e));
         }
 
-        WrapResponse response = new WrapResponse();
+        WrapAccessTokenResult response = new WrapAccessTokenResult();
 
         response.setAccessToken(responseForm.getFirst("wrap_access_token"));
 

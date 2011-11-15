@@ -1,6 +1,6 @@
-package com.microsoft.windowsazure.auth.wrap.contract;
+package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-public class WrapResponse {
+public class WrapAccessTokenResult {
     String accessToken;
     long expiresIn;
 

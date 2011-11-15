@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.auth.wrap;
+package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import com.microsoft.windowsazure.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -7,10 +7,10 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class WrapFilter extends ClientFilter {
-    private WrapClient client;
+    private WrapTokenManager tokenManager;
 
-    public WrapFilter(WrapClient client) {
-        this.client = client;
+    public WrapFilter(WrapTokenManager tokenManager) {
+        this.tokenManager = tokenManager;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class WrapFilter extends ClientFilter {
 
         String accessToken;
         try {
-            accessToken = client.getAccessToken();
+            accessToken = tokenManager.getAccessToken();
         }
         catch (ServiceException e) {
             // must wrap exception because of base class signature
