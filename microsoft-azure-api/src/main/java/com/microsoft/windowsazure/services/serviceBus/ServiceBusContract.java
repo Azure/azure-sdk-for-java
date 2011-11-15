@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.http.FilterableService;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
-public interface ServiceBusContract {
-    ServiceBusContract withFilter(ServiceFilter filter);
+public interface ServiceBusContract extends FilterableService<ServiceBusContract> {
 
     void sendQueueMessage(String queueName, Message message) throws ServiceException;
 
