@@ -17,6 +17,7 @@ import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers.Enu
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
+import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
@@ -27,6 +28,7 @@ import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
 import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.DeleteContainerOptions;
@@ -36,7 +38,6 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
@@ -72,9 +73,6 @@ public class BlobServiceForJersey implements BlobServiceContract {
     private final ServiceFilter[] filters;
     private final SharedKeyLiteFilter filter;
 
-    /*
-     * TODO: How to make "filter" configurable though code?
-     */
     @Inject
     public BlobServiceForJersey(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {
@@ -180,15 +178,9 @@ public class BlobServiceForJersey implements BlobServiceContract {
     }
 
     private GetBlobPropertiesResult getBlobPropertiesFromResponse(ClientResponse response) {
-        GetBlobPropertiesResult properties = new GetBlobPropertiesResult();
-
-        // Last-Modified
+        // Properties
+        BlobProperties properties = new BlobProperties();
         properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
-
-        HashMap<String, String> metadata = getMetadataFromHeaders(response);
-        properties.setMetadata(metadata);
-
-        //
         properties.setBlobType(response.getHeaders().getFirst("x-ms-blob-type"));
         properties.setLeaseStatus(response.getHeaders().getFirst("x-ms-lease-status"));
 
@@ -201,9 +193,17 @@ public class BlobServiceForJersey implements BlobServiceContract {
 
         properties.setEtag(response.getHeaders().getFirst("Etag"));
         if (response.getHeaders().containsKey("x-ms-blob-sequence-number")) {
-            properties.setSequenceNUmber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
+            properties.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
         }
-        return properties;
+
+        // Metadata
+        HashMap<String, String> metadata = getMetadataFromHeaders(response);
+
+        // Result
+        GetBlobPropertiesResult result = new GetBlobPropertiesResult();
+        result.setMetadata(metadata);
+        result.setProperties(properties);
+        return result;
     }
 
     private WebResource getResource(BlobServiceOptions options) {
@@ -253,7 +253,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         GetServicePropertiesResult result = new GetServicePropertiesResult();
-        result.setServiceProperties(builder.get(ServiceProperties.class));
+        result.setValue(builder.get(ServiceProperties.class));
         return result;
     }
 
@@ -607,11 +607,11 @@ public class BlobServiceForJersey implements BlobServiceContract {
         builder.delete();
     }
 
-    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
         return createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions());
     }
 
-    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob).queryParam("comp", "snapshot");
         webResource = setCanonicalizedResource(webResource, "snapshot");
 
@@ -624,7 +624,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
         ThrowIfError(response);
 
-        GetBlobSnapshotResult blobSnapshot = new GetBlobSnapshotResult();
+        CreateBlobSnapshotResult blobSnapshot = new CreateBlobSnapshotResult();
         blobSnapshot.setEtag(response.getHeaders().getFirst("ETag"));
         blobSnapshot.setSnapshot(response.getHeaders().getFirst("x-ms-snapshot"));
         blobSnapshot.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
@@ -685,8 +685,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
     }
 
     private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId, BlobServiceOptions options,
-            AccessCondition accessCondition)
-            throws ServiceException {
+            AccessCondition accessCondition) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "lease");
         webResource = setCanonicalizedResource(webResource, "lease");
 
@@ -708,8 +707,7 @@ public class BlobServiceForJersey implements BlobServiceContract {
         return clearBlobPages(container, blob, range, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options)
-            throws ServiceException {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("clear", container, blob, range, 0, null, options);
     }
 

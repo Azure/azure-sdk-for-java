@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.blob.models;
+package com.microsoft.windowsazure.services.queue.models;
 
 public class GetServicePropertiesResult {
     private ServiceProperties value;

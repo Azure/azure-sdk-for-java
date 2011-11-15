@@ -2,10 +2,7 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-/*
- * TODO: Rename to "CreateBlobSnapshotResult"?
- */
-public class GetBlobSnapshotResult {
+public class CreateBlobSnapshotResult {
     private String snapshot;
     private String etag;
     private Date lastModified;

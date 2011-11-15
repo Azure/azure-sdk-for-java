@@ -32,7 +32,7 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.GetBlobSnapshotResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
@@ -681,7 +681,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
         try {
             return service.createBlobSnapshot(container, blob);
         }
@@ -693,7 +693,7 @@ public class BlobServiceImpl implements BlobServiceContract {
         }
     }
 
-    public GetBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
         try {
             return service.createBlobSnapshot(container, blob, options);
         }

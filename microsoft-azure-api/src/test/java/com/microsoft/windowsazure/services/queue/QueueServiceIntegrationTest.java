@@ -113,7 +113,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueServiceContract service = config.create(QueueServiceContract.class);
 
         // Act
-        ServiceProperties props = service.getServiceProperties();
+        ServiceProperties props = service.getServiceProperties().getValue();
 
         // Assert
         assertNotNull(props);
@@ -131,12 +131,12 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueServiceContract service = config.create(QueueServiceContract.class);
 
         // Act
-        ServiceProperties props = service.getServiceProperties();
+        ServiceProperties props = service.getServiceProperties().getValue();
 
         props.getLogging().setRead(true);
         service.setServiceProperties(props);
 
-        props = service.getServiceProperties();
+        props = service.getServiceProperties().getValue();
 
         // Assert
         assertNotNull(props);

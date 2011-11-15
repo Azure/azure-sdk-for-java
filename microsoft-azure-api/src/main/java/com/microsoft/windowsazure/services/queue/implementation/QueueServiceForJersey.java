@@ -17,6 +17,7 @@ import com.microsoft.windowsazure.services.queue.QueueServiceContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
+import com.microsoft.windowsazure.services.queue.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
@@ -42,9 +43,6 @@ public class QueueServiceForJersey implements QueueServiceContract {
     private final ServiceFilter[] filters;
     private final SharedKeyLiteFilter filter;
 
-    /*
-     * TODO: How to make "filter" configurable though code?
-     */
     @Inject
     public QueueServiceForJersey(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName, @Named(QueueConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {
@@ -120,17 +118,19 @@ public class QueueServiceForJersey implements QueueServiceContract {
         return webResource;
     }
 
-    public ServiceProperties getServiceProperties() throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties() throws ServiceException {
         return getServiceProperties(new QueueServiceOptions());
     }
 
-    public ServiceProperties getServiceProperties(QueueServiceOptions options) throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
         webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
-        return builder.get(ServiceProperties.class);
+        GetServicePropertiesResult result = new GetServicePropertiesResult();
+        result.setValue(builder.get(ServiceProperties.class));
+        return result;
     }
 
     public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
