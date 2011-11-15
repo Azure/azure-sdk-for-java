@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;

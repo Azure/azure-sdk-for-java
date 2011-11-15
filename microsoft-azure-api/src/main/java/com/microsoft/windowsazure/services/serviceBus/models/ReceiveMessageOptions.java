@@ -1,4 +1,5 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
+
 
 public class ReceiveMessageOptions {
     Integer timeout;

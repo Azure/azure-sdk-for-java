@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.serviceBus.models;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
