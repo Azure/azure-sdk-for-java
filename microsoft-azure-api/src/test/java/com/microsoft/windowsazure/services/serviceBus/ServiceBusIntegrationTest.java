@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.http.ServiceFilter.Request;
 import com.microsoft.windowsazure.http.ServiceFilter.Response;
@@ -28,7 +27,6 @@ import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
-    private Configuration config;
     private ServiceBusContract service;
 
     static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete().setTimeout(5);
@@ -36,8 +34,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     @Before
     public void createService() throws Exception {
-        config = createConfiguration();
-        service = config.create(ServiceBusContract.class);
+        service = new ServiceBusService();
     }
 
     @Test
@@ -195,8 +192,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createQueue(new Queue(queueName));
 
         // Act
-        service.sendQueueMessage(queueName,
-                new Message("<data>Hello Again</data>").setContentType("text/xml"));
+        service.sendQueueMessage(queueName, new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
         Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
