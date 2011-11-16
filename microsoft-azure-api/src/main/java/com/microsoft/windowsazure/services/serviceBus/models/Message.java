@@ -23,7 +23,8 @@ public class Message {
     }
 
     /**
-     * Creates an instance of the <code>Message</code> class using the specified <code>InputStream</code>.
+     * Creates an instance of the <code>Message</code> class using the 
+     * specified <code>InputStream</code>.
      * 
      * @param body
      *            An <code>InputStream</code> object that represents the body of
@@ -149,8 +150,8 @@ public class Message {
      * Sets the date/time of the message.
      * 
      * @param date
-     *            A <code>Date</code> object that represents the date/time of the
-     *            object.
+     *            A <code>Date</code> object that represents the date/time of
+     *            the object.
      * 
      * @return A <code>Message</code> object that reperesents the updated
      *         message.
@@ -403,8 +404,8 @@ public class Message {
      * Sets the session ID of the Reply To recipient.
      * 
      * @param replyToSessionId
-     *            A <code>String</code> object that represents the session ID of
-     *            the Reply To recipient.
+     *            A <code>String</code> object that represents the session ID
+     *            of the Reply To recipient.
      * 
      * @return A <code>Message</code> object that reperesents the updated
      *         message.
