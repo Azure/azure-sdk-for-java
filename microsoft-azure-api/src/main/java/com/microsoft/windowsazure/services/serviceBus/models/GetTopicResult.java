@@ -1,20 +1,39 @@
 package com.microsoft.windowsazure.services.serviceBus.models;
 
-
+/**
+ * Represents the result of a <code>getTopic</code> operation.
+ */
 public class GetTopicResult {
 
-    private Topic value;
+	private Topic value;
 
-    public GetTopicResult(Topic value) {
-        this.setValue(value);
-    }
+	/**
+	 * Creates an instance of the <code>GetTopicResult</code> class.
+	 * 
+	 * @param value
+	 *            A {@link Topic} object assigned as the value of the result.
+	 */
+	public GetTopicResult(Topic value) {
+		this.setValue(value);
+	}
 
-    public void setValue(Topic value) {
-        this.value = value;
-    }
+	/**
+	 * Specfies the value of the result.
+	 * 
+	 * @param value
+	 *            A {@link Topic} object assigned as the value of the result.
+	 */
+	public void setValue(Topic value) {
+		this.value = value;
+	}
 
-    public Topic getValue() {
-        return value;
-    }
+	/**
+	 * Returns the value of the result.
+	 * 
+	 * @return A {@link Topic} object that represents the value of the result.
+	 */
+	public Topic getValue() {
+		return value;
+	}
 
 }
