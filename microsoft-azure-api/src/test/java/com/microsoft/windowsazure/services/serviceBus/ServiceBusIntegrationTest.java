@@ -15,13 +15,6 @@ import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.common.ServiceFilter.Request;
 import com.microsoft.windowsazure.common.ServiceFilter.Response;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.Message;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -192,8 +185,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createQueue(new Queue(queueName));
 
         // Act
-        service.sendQueueMessage(queueName,
-                new Message("<data>Hello Again</data>").setContentType("text/xml"));
+        service.sendQueueMessage(queueName, new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
         Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
 
@@ -230,7 +222,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         final List<Response> responses = new ArrayList<Response>();
 
         ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
-            public Response handle(Request request, Next next) {
+            public Response handle(Request request, Next next) throws Exception {
                 requests.add(request);
                 Response response = next.handle(request);
                 responses.add(response);

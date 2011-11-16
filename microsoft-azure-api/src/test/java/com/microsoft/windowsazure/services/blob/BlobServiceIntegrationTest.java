@@ -22,7 +22,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.common.ExponentialRetryPolicyFilter;
+import com.microsoft.windowsazure.common.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.common.RetryPolicyFilter;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
@@ -1273,7 +1274,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     class RetryPolicyObserver implements ServiceFilter {
         public int requestCount;
 
-        public Response handle(Request request, Next next) {
+        public Response handle(Request request, Next next) throws Exception {
             requestCount++;
             return next.handle(request);
         }
@@ -1288,7 +1289,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service = service.withFilter(observer);
 
         // Act
-        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 3, new int[] { 400, 500, 503 }));
+        service = service
+                .withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(100/*deltaBackoff*/, 3/*maximumAttempts*/, new int[] { 400, 500, 503 })));
 
         ServiceException Error = null;
         try {
@@ -1313,8 +1315,10 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service = service.withFilter(observer);
 
         // Act
-        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 3, new int[] { 400, 500, 503 }));
-        service = service.withFilter(new ExponentialRetryPolicyFilter(ExponentialRetryPolicyFilter.DEFAULT_MIN_BACKOFF, 2, new int[] { 400, 500, 503 }));
+        service = service
+                .withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(100/*deltaBackoff*/, 3/*maximumAttempts*/, new int[] { 400, 500, 503 })));
+        service = service
+                .withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(100/*deltaBackoff*/, 2/*maximumAttempts*/, new int[] { 400, 500, 503 })));
 
         ServiceException Error = null;
         try {

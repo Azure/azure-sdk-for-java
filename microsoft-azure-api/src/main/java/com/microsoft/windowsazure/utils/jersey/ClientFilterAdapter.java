@@ -25,13 +25,18 @@ public class ClientFilterAdapter extends ClientFilter {
     public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
 
         final ClientRequest cr = clientRequest;
-        Response resp = filter.handle(new ServiceFilterRequest(clientRequest), new ServiceFilter.Next() {
-            public Response handle(Request request) {
-                return new ServiceFilterResponse(getNext().handle(cr));
-            }
-        });
+        try {
+            Response resp = filter.handle(new ServiceFilterRequest(clientRequest), new ServiceFilter.Next() {
+                public Response handle(Request request) {
+                    return new ServiceFilterResponse(getNext().handle(cr));
+                }
+            });
 
-        return ((ServiceFilterResponse) resp).clientResponse;
+            return ((ServiceFilterResponse) resp).clientResponse;
+        }
+        catch (Exception e) {
+            throw new ClientHandlerException(e);
+        }
     }
 }
 

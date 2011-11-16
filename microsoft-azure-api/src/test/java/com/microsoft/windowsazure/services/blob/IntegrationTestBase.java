@@ -18,9 +18,9 @@ public abstract class IntegrationTestBase {
         //setConfigValue(config, env, BlobConfiguration.URL, "http://127.0.0.1:10000/devstoreaccount1");
 
         // Storage account support
-        setConfigValue(config, env, BlobConfiguration.ACCOUNT_NAME, "xxx");
-        setConfigValue(config, env, BlobConfiguration.ACCOUNT_KEY, "xxx");
-        setConfigValue(config, env, BlobConfiguration.URL, "http://xxx.blob.core.windows.net");
+        setConfigValue(config, env, BlobConfiguration.ACCOUNT_NAME, "onesdktest");
+        setConfigValue(config, env, BlobConfiguration.ACCOUNT_KEY, "X7jm3ar3rLmrNx4RUnX1/Blf01zdwreldbJNX+bnfmCQD//kR4qcJO+Amc8mS+4+l9L5i2cP215YccjpDogTOQ==");
+        setConfigValue(config, env, BlobConfiguration.URL, "http://onesdktest.blob.core.windows.net");
 
         // when mock running
         // config.setProperty("serviceBus.uri", "http://localhost:8086");
