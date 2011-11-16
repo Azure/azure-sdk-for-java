@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.auth.wrap;
+package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import java.util.Date;
 
@@ -7,29 +7,22 @@ import javax.inject.Named;
 import javax.management.timer.Timer;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.auth.wrap.contract.WrapContract;
-import com.microsoft.windowsazure.auth.wrap.contract.WrapResponse;
 import com.microsoft.windowsazure.utils.DateFactory;
 
-public class WrapClient {
+public class WrapTokenManager {
 
     WrapContract contract;
-    private DateFactory dateFactory;
-    private String uri;
-    private String name;
-    private String password;
-    private String scope;
+    private final DateFactory dateFactory;
+    private final String uri;
+    private final String name;
+    private final String password;
+    private final String scope;
 
     private ActiveToken activeToken;
 
     @Inject
-    public WrapClient(
-            WrapContract contract,
-            DateFactory dateFactory,
-            @Named("wrap.uri") String uri,
-            @Named("wrap.scope") String scope,
-            @Named("wrap.name") String name,
-            @Named("wrap.password") String password) {
+    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri, @Named("wrap.scope") String scope,
+            @Named("wrap.name") String name, @Named("wrap.password") String password) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.uri = uri;
@@ -61,7 +54,7 @@ public class WrapClient {
             return active.getWrapResponse().getAccessToken();
         }
 
-        WrapResponse wrapResponse = getContract().post(uri, name, password, scope);
+        WrapAccessTokenResult wrapResponse = getContract().wrapAccessToken(uri, name, password, scope);
         Date expiresUtc = new Date(now.getTime() + wrapResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
 
         ActiveToken acquired = new ActiveToken();
@@ -74,7 +67,7 @@ public class WrapClient {
 
     class ActiveToken {
         Date expiresUtc;
-        WrapResponse wrapResponse;
+        WrapAccessTokenResult wrapResponse;
 
         /**
          * @return the expiresUtc
@@ -94,7 +87,7 @@ public class WrapClient {
         /**
          * @return the wrapResponse
          */
-        public WrapResponse getWrapResponse() {
+        public WrapAccessTokenResult getWrapResponse() {
             return wrapResponse;
         }
 
@@ -102,7 +95,7 @@ public class WrapClient {
          * @param wrapResponse
          *            the wrapResponse to set
          */
-        public void setWrapResponse(WrapResponse wrapResponse) {
+        public void setWrapResponse(WrapAccessTokenResult wrapResponse) {
             this.wrapResponse = wrapResponse;
         }
     }

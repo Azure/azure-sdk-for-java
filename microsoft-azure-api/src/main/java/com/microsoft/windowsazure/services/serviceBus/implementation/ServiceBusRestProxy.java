@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.auth.wrap.WrapFilter;
 import com.microsoft.windowsazure.http.ClientFilterAdapter;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
