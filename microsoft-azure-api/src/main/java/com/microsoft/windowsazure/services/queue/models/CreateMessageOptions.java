@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.queue.models;
 
-
 public class CreateMessageOptions extends QueueServiceOptions {
     private Integer visibilityTimeoutInSeconds;
     private Integer timeToLiveInSeconds;
@@ -9,15 +8,17 @@ public class CreateMessageOptions extends QueueServiceOptions {
         return visibilityTimeoutInSeconds;
     }
 
-    public void setVisibilityTimeoutInSeconds(Integer visibilityTimeoutInSeconds) {
+    public CreateMessageOptions setVisibilityTimeoutInSeconds(Integer visibilityTimeoutInSeconds) {
         this.visibilityTimeoutInSeconds = visibilityTimeoutInSeconds;
+        return this;
     }
 
     public Integer getTimeToLiveInSeconds() {
         return timeToLiveInSeconds;
     }
 
-    public void setTimeToLiveInSeconds(Integer timeToLiveInSeconds) {
+    public CreateMessageOptions setTimeToLiveInSeconds(Integer timeToLiveInSeconds) {
         this.timeToLiveInSeconds = timeToLiveInSeconds;
+        return this;
     }
 }
