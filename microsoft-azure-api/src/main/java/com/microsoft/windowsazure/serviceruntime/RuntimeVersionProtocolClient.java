@@ -25,9 +25,7 @@ class RuntimeVersionProtocolClient {
     public Map<String, String> getVersionMap(String connectionPath) {
         try {
             Map<String, String> versions = new HashMap<String, String>();
-            JAXBContext context = JAXBContext
-                    .newInstance(RuntimeServerDiscoveryInfo.class.getPackage()
-                            .getName());
+            JAXBContext context = JAXBContext.newInstance(RuntimeServerDiscoveryInfo.class.getPackage().getName());
             Unmarshaller unmarshaller = context.createUnmarshaller();
             InputStream input = inputChannel.getInputStream(connectionPath);
 
@@ -35,13 +33,14 @@ class RuntimeVersionProtocolClient {
             RuntimeServerDiscoveryInfo discoveryInfo = ((JAXBElement<RuntimeServerDiscoveryInfo>) unmarshaller
                     .unmarshal(input)).getValue();
 
-            for (RuntimeServerEndpointInfo endpointInfo : discoveryInfo
-                    .getRuntimeServerEndpoints().getRuntimeServerEndpoint()) {
+            for (RuntimeServerEndpointInfo endpointInfo : discoveryInfo.getRuntimeServerEndpoints()
+                    .getRuntimeServerEndpoint()) {
                 versions.put(endpointInfo.getVersion(), endpointInfo.getPath());
             }
 
             return versions;
-        } catch (JAXBException e) {
+        }
+        catch (JAXBException e) {
             throw new RuntimeException(e);
         }
     }

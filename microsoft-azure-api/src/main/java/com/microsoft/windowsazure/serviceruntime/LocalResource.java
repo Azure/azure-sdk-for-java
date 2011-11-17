@@ -2,10 +2,6 @@ package com.microsoft.windowsazure.serviceruntime;
 
 /**
  * Represents a local storage resource reserved for a service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
  */
 public final class LocalResource {
 

@@ -16,75 +16,63 @@ import javax.xml.bind.Unmarshaller;
 /**
  * 
  */
-class XmlRoleEnvironmentDataDeserializer implements
-        RoleEnvironmentDataDeserializer {
+class XmlRoleEnvironmentDataDeserializer implements RoleEnvironmentDataDeserializer {
     public XmlRoleEnvironmentDataDeserializer() {
     }
 
     @Override
     public RoleEnvironmentData deserialize(InputStream stream) {
         try {
-            JAXBContext context = JAXBContext
-                    .newInstance(RoleEnvironmentInfo.class.getPackage()
-                            .getName());
+            JAXBContext context = JAXBContext.newInstance(RoleEnvironmentInfo.class.getPackage().getName());
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
             @SuppressWarnings("unchecked")
-            RoleEnvironmentInfo environmentInfo = ((JAXBElement<RoleEnvironmentInfo>) unmarshaller
-                    .unmarshal(stream)).getValue();
+            RoleEnvironmentInfo environmentInfo = ((JAXBElement<RoleEnvironmentInfo>) unmarshaller.unmarshal(stream))
+                    .getValue();
 
             Map<String, String> configurationSettings = translateConfigurationSettings(environmentInfo);
             Map<String, LocalResource> localResources = translateLocalResources(environmentInfo);
             RoleInstance currentInstance = translateCurrentInstance(environmentInfo);
-            Map<String, Role> roles = translateRoles(environmentInfo,
-                    currentInstance, environmentInfo.getCurrentInstance()
-                            .getRoleName());
+            Map<String, Role> roles = translateRoles(environmentInfo, currentInstance, environmentInfo
+                    .getCurrentInstance().getRoleName());
 
-            return new RoleEnvironmentData(environmentInfo.getDeployment()
-                    .getId(), configurationSettings, localResources,
-                    currentInstance, roles, environmentInfo.getDeployment()
-                            .isEmulated());
-        } catch (JAXBException e) {
+            return new RoleEnvironmentData(environmentInfo.getDeployment().getId(), configurationSettings,
+                    localResources, currentInstance, roles, environmentInfo.getDeployment().isEmulated());
+        }
+        catch (JAXBException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Map<String, String> translateConfigurationSettings(
-            RoleEnvironmentInfo environmentInfo) {
+    private Map<String, String> translateConfigurationSettings(RoleEnvironmentInfo environmentInfo) {
         Map<String, String> configurationSettings = new HashMap<String, String>();
 
-        for (ConfigurationSettingInfo settingInfo : environmentInfo
-                .getCurrentInstance().getConfigurationSettings()
+        for (ConfigurationSettingInfo settingInfo : environmentInfo.getCurrentInstance().getConfigurationSettings()
                 .getConfigurationSetting()) {
-            configurationSettings.put(settingInfo.getName(),
-                    settingInfo.getValue());
+            configurationSettings.put(settingInfo.getName(), settingInfo.getValue());
         }
 
         return configurationSettings;
     }
 
-    private Map<String, LocalResource> translateLocalResources(
-            RoleEnvironmentInfo environmentInfo) {
+    private Map<String, LocalResource> translateLocalResources(RoleEnvironmentInfo environmentInfo) {
         Map<String, LocalResource> localResources = new HashMap<String, LocalResource>();
 
-        for (LocalResourceInfo resourceInfo : environmentInfo
-                .getCurrentInstance().getLocalResources().getLocalResource()) {
-            localResources.put(resourceInfo.getName(), new LocalResource(
-                    resourceInfo.getSizeInMB(), resourceInfo.getName(),
-                    resourceInfo.getPath()));
+        for (LocalResourceInfo resourceInfo : environmentInfo.getCurrentInstance().getLocalResources()
+                .getLocalResource()) {
+            localResources.put(resourceInfo.getName(),
+                    new LocalResource(resourceInfo.getSizeInMB(), resourceInfo.getName(), resourceInfo.getPath()));
         }
 
         return localResources;
     }
 
-    private Map<String, Role> translateRoles(
-            RoleEnvironmentInfo environmentInfo, RoleInstance currentInstance,
+    private Map<String, Role> translateRoles(RoleEnvironmentInfo environmentInfo, RoleInstance currentInstance,
             String currentRole) {
         Map<String, Role> roles = new HashMap<String, Role>();
 
         for (RoleInfo roleInfo : environmentInfo.getRoles().getRole()) {
-            Map<String, RoleInstance> instances = translateRoleInstances(roleInfo
-                    .getInstances());
+            Map<String, RoleInstance> instances = translateRoleInstances(roleInfo.getInstances());
 
             if (roleInfo.getName() == currentRole) {
                 instances.put(currentInstance.getId(), currentInstance);
@@ -114,18 +102,14 @@ class XmlRoleEnvironmentDataDeserializer implements
         return roles;
     }
 
-    private Map<String, RoleInstance> translateRoleInstances(
-            RoleInstancesInfo instancesInfo) {
+    private Map<String, RoleInstance> translateRoleInstances(RoleInstancesInfo instancesInfo) {
         Map<String, RoleInstance> roleInstances = new HashMap<String, RoleInstance>();
 
         for (RoleInstanceInfo instanceInfo : instancesInfo.getInstance()) {
-            RoleInstance instance = new RoleInstance(instanceInfo.getId(),
-                    instanceInfo.getFaultDomain(),
-                    instanceInfo.getUpdateDomain(),
-                    translateRoleInstanceEndpoints(instanceInfo.getEndpoints()));
+            RoleInstance instance = new RoleInstance(instanceInfo.getId(), instanceInfo.getFaultDomain(),
+                    instanceInfo.getUpdateDomain(), translateRoleInstanceEndpoints(instanceInfo.getEndpoints()));
 
-            for (RoleInstanceEndpoint endpoint : instance
-                    .getInstanceEndpoints().values()) {
+            for (RoleInstanceEndpoint endpoint : instance.getInstanceEndpoints().values()) {
                 endpoint.setRoleInstance(instance);
             }
 
@@ -135,15 +119,12 @@ class XmlRoleEnvironmentDataDeserializer implements
         return roleInstances;
     }
 
-    private Map<String, RoleInstanceEndpoint> translateRoleInstanceEndpoints(
-            EndpointsInfo endpointsInfo) {
+    private Map<String, RoleInstanceEndpoint> translateRoleInstanceEndpoints(EndpointsInfo endpointsInfo) {
         Map<String, RoleInstanceEndpoint> endpoints = new HashMap<String, RoleInstanceEndpoint>();
 
         for (EndpointInfo endpointInfo : endpointsInfo.getEndpoint()) {
-            RoleInstanceEndpoint endpoint = new RoleInstanceEndpoint(
-                    endpointInfo.getProtocol().toString(),
-                    new InetSocketAddress(endpointInfo.getAddress(),
-                            endpointInfo.getPort()));
+            RoleInstanceEndpoint endpoint = new RoleInstanceEndpoint(endpointInfo.getProtocol().toString(),
+                    new InetSocketAddress(endpointInfo.getAddress(), endpointInfo.getPort()));
 
             endpoints.put(endpointInfo.getName(), endpoint);
         }
@@ -151,19 +132,13 @@ class XmlRoleEnvironmentDataDeserializer implements
         return endpoints;
     }
 
-    private RoleInstance translateCurrentInstance(
-            RoleEnvironmentInfo environmentInfo) {
-        CurrentRoleInstanceInfo currentInstanceInfo = environmentInfo
-                .getCurrentInstance();
-        RoleInstance currentInstance = new RoleInstance(
-                currentInstanceInfo.getId(),
-                currentInstanceInfo.getFaultDomain(),
-                currentInstanceInfo.getUpdateDomain(),
-                translateRoleInstanceEndpoints(environmentInfo
-                        .getCurrentInstance().getEndpoints()));
+    private RoleInstance translateCurrentInstance(RoleEnvironmentInfo environmentInfo) {
+        CurrentRoleInstanceInfo currentInstanceInfo = environmentInfo.getCurrentInstance();
+        RoleInstance currentInstance = new RoleInstance(currentInstanceInfo.getId(),
+                currentInstanceInfo.getFaultDomain(), currentInstanceInfo.getUpdateDomain(),
+                translateRoleInstanceEndpoints(environmentInfo.getCurrentInstance().getEndpoints()));
 
-        for (RoleInstanceEndpoint endpoint : currentInstance
-                .getInstanceEndpoints().values()) {
+        for (RoleInstanceEndpoint endpoint : currentInstance.getInstanceEndpoints().values()) {
             endpoint.setRoleInstance(currentInstance);
         }
 

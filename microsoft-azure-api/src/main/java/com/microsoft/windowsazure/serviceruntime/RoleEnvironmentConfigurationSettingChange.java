@@ -3,14 +3,9 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Represents a change to a configuration setting.
  * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
- * 
  * @see RoleEnvironmentTopologyChange
  */
-public class RoleEnvironmentConfigurationSettingChange extends
-        RoleEnvironmentChange {
+public class RoleEnvironmentConfigurationSettingChange extends RoleEnvironmentChange {
 
     private String settingName;
 

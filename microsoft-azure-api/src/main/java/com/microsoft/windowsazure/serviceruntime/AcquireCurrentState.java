@@ -11,8 +11,7 @@ class AcquireCurrentState extends CurrentState {
     private final CurrentStatus status;
     private final Calendar expiration;
 
-    public AcquireCurrentState(String clientId, BigInteger incarnation,
-            CurrentStatus status, Calendar expiration) {
+    public AcquireCurrentState(String clientId, BigInteger incarnation, CurrentStatus status, Calendar expiration) {
         super(clientId);
         this.incarnation = incarnation;
         this.status = status;

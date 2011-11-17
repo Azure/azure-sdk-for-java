@@ -26,10 +26,8 @@ class Protocol1RuntimeGoalStateClient implements RuntimeGoalStateClient {
     private AtomicReference<GoalState> currentGoalState;
     private AtomicReference<RoleEnvironmentData> currentEnvironmentData;
 
-    public Protocol1RuntimeGoalStateClient(
-            Protocol1RuntimeCurrentStateClient currentStateClient,
-            GoalStateDeserializer goalStateDeserializer,
-            RoleEnvironmentDataDeserializer roleEnvironmentDeserializer,
+    public Protocol1RuntimeGoalStateClient(Protocol1RuntimeCurrentStateClient currentStateClient,
+            GoalStateDeserializer goalStateDeserializer, RoleEnvironmentDataDeserializer roleEnvironmentDeserializer,
             InputChannel inputChannel) {
         this.currentStateClient = currentStateClient;
         this.goalStateDeserializer = goalStateDeserializer;
@@ -49,23 +47,19 @@ class Protocol1RuntimeGoalStateClient implements RuntimeGoalStateClient {
         return currentGoalState.get();
     }
 
-    public synchronized RoleEnvironmentData getRoleEnvironmentData()
-            throws InterruptedException {
+    public synchronized RoleEnvironmentData getRoleEnvironmentData() throws InterruptedException {
         ensureGoalStateRetrieved();
 
         if (currentEnvironmentData.get() == null) {
             GoalState current = currentGoalState.get();
 
             if (current.getEnvironmentPath() == null) {
-                throw new InterruptedException(
-                        "No role environment data for the current goal state.");
+                throw new InterruptedException("No role environment data for the current goal state.");
             }
 
-            InputStream environmentStream = inputChannel.getInputStream(current
-                    .getEnvironmentPath());
+            InputStream environmentStream = inputChannel.getInputStream(current.getEnvironmentPath());
 
-            currentEnvironmentData.set(roleEnvironmentDeserializer
-                    .deserialize(environmentStream));
+            currentEnvironmentData.set(roleEnvironmentDeserializer.deserialize(environmentStream));
         }
 
         return currentEnvironmentData.get();
@@ -118,8 +112,7 @@ class Protocol1RuntimeGoalStateClient implements RuntimeGoalStateClient {
                     currentEnvironmentData.set(null);
                 }
 
-                currentStateClient.setEndpoint(currentGoalState.get()
-                        .getCurrentStateEndpoint());
+                currentStateClient.setEndpoint(currentGoalState.get().getCurrentStateEndpoint());
 
                 goalStateLatch.countDown();
 
@@ -136,8 +129,7 @@ class Protocol1RuntimeGoalStateClient implements RuntimeGoalStateClient {
                         currentEnvironmentData.set(null);
                     }
 
-                    currentStateClient.setEndpoint(currentGoalState.get()
-                            .getCurrentStateEndpoint());
+                    currentStateClient.setEndpoint(currentGoalState.get().getCurrentStateEndpoint());
 
                     for (GoalStateChangedListener listener : listeners) {
                         listener.goalStateChanged(currentGoalState.get());

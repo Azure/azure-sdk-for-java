@@ -16,8 +16,7 @@ class GoalState {
     private final Calendar deadline;
     private final String currentStateEndpoint;
 
-    public GoalState(BigInteger incarnation, ExpectedState expectedState,
-            String environmentPath, Calendar deadline,
+    public GoalState(BigInteger incarnation, ExpectedState expectedState, String environmentPath, Calendar deadline,
             String currentStateEndpoint) {
         this.incarnation = incarnation;
         this.expectedState = expectedState;

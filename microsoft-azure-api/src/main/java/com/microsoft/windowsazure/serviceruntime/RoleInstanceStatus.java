@@ -3,13 +3,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Defines role instance status values, such as Busy and Ready.
  * <p>
- * The {@link RoleEnvironment#setStatus} method
- * uses a value from this enumeration.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
- * 
+ * The {@link RoleEnvironment#setStatus} method uses a value from this enumeration.
  */
 public enum RoleInstanceStatus {
     /**

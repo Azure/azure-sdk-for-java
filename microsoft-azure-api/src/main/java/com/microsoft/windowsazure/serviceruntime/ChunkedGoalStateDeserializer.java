@@ -17,9 +17,9 @@ class ChunkedGoalStateDeserializer implements GoalStateDeserializer {
     @Override
     public void initialize(InputStream inputStream) {
         try {
-            reader = new BufferedReader(new InputStreamReader(inputStream,
-                    "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        }
+        catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -38,13 +38,13 @@ class ChunkedGoalStateDeserializer implements GoalStateDeserializer {
 
             reader.read(chunkData, 0, length);
 
-            GoalState goalState = deserializer
-                    .deserialize(new String(chunkData));
+            GoalState goalState = deserializer.deserialize(new String(chunkData));
 
             reader.readLine();
 
             return goalState;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
 
             return null;

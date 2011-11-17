@@ -3,13 +3,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Represents the listener for the environment changed event.
  * <p>
- * The environment changed event is encapsulated in a
- * {@link RoleEnvironmentChangedEvent} object.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
- * 
+ * The environment changed event is encapsulated in a {@link RoleEnvironmentChangedEvent} object.
  */
 public interface RoleEnvironmentChangedListener {
 
