@@ -6,11 +6,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.microsoft.windowsazure.configuration.Configuration;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public abstract class IntegrationTestBase {
     protected Configuration createConfiguration() {

@@ -15,13 +15,16 @@ import com.microsoft.windowsazure.configuration.Configuration;
 import com.microsoft.windowsazure.http.ServiceFilter;
 import com.microsoft.windowsazure.http.ServiceFilter.Request;
 import com.microsoft.windowsazure.http.ServiceFilter.Response;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.Message;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -42,7 +45,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        Queue entry = service.getQueue("TestAlpha");
+        Queue entry = service.getQueue("TestAlpha").getValue();
         ListQueuesResult feed = service.listQueues();
 
         // Assert
@@ -56,7 +59,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
         // Act
         Queue queue = new Queue("TestCreateQueueWorks").setMaxSizeInMegabytes(1024L);
-        Queue saved = service.createQueue(queue);
+        Queue saved = service.createQueue(queue).getValue();
 
         // Assert
         assertNotNull(saved);
@@ -94,7 +97,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName, new Message("Hello World"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
         byte[] data = new byte[100];
         int size = message.getBody().read(data);
 
@@ -111,7 +114,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName, new Message("Hello Again"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Assert
         byte[] data = new byte[100];
@@ -126,7 +129,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeCompleted";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = message.getLockToken();
@@ -147,14 +150,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeUnlocked";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.unlockMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -169,14 +172,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queueName = "TestPeekLockedMessageCanBeDeleted";
         service.createQueue(new Queue(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.deleteMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -195,7 +198,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage(queueName,
                 new Message("<data>Hello Again</data>").setContentType("text/xml"));
 
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS);
+        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(message);
@@ -208,9 +211,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
 
         // Act
-        Topic created = service.createTopic(new Topic().setName(topicName));
+        Topic created = service.createTopic(new Topic().setName(topicName)).getValue();
         ListTopicsResult listed = service.listTopics();
-        Topic fetched = service.getTopic(topicName);
+        Topic fetched = service.getTopic(topicName).getValue();
         service.deleteTopic(topicName);
         ListTopicsResult listed2 = service.listTopics();
 
@@ -239,11 +242,171 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         });
 
         // Act 
-        Queue created = filtered.createQueue(new Queue("TestFilterCanSeeAndChangeRequestOrResponse"));
+        Queue created = filtered.createQueue(new Queue("TestFilterCanSeeAndChangeRequestOrResponse")).getValue();
 
         // Assert
         assertNotNull(created);
         assertEquals(1, requests.size());
         assertEquals(1, responses.size());
+    }
+
+    @Test
+    public void subscriptionsCanBeCreatedOnTopics() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsCanBeCreatedOnTopics";
+        service.createTopic(new Topic(topicName));
+
+        // Act
+        Subscription created = service.createSubscription(topicName, new Subscription("MySubscription")).getValue();
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MySubscription", created.getName());
+    }
+
+    @Test
+    public void subscriptionsCanBeListed() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsCanBeListed";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription2"));
+
+        // Act
+        ListSubscriptionsResult result = service.listSubscriptions(topicName);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MySubscription2", result.getItems().get(0).getName());
+    }
+
+    @Test
+    public void subscriptionsDetailsMayBeFetched() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsDetailsMayBeFetched";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription3"));
+
+        // Act
+        Subscription result = service.getSubscription(topicName, "MySubscription3").getValue();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("MySubscription3", result.getName());
+    }
+
+    @Test
+    public void subscriptionsMayBeDeleted() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionsMayBeDeleted";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("MySubscription4"));
+        service.createSubscription(topicName, new Subscription("MySubscription5"));
+
+        // Act
+        service.deleteSubscription(topicName, "MySubscription4");
+
+        // Assert
+        ListSubscriptionsResult result = service.listSubscriptions(topicName);
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MySubscription5", result.getItems().get(0).getName());
+    }
+
+    @Test
+    public void subscriptionWillReceiveMessage() throws Exception {
+        // Arrange
+        String topicName = "TestSubscriptionWillReceiveMessage";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.sendTopicMessage(topicName, new Message("<p>Testing subscription</p>").setContentType("text/html"));
+
+        // Act
+        Message message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS).getValue();
+
+        // Assert
+        assertNotNull(message);
+
+        byte[] data = new byte[100];
+        int size = message.getBody().read(data);
+        assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
+        assertEquals("text/html", message.getContentType());
+    }
+
+    @Test
+    public void rulesCanBeCreatedOnSubscriptions() throws Exception {
+        // Arrange
+        String topicName = "TestrulesCanBeCreatedOnSubscriptions";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+
+        // Act
+        Rule created = service.createRule(topicName, "sub", new Rule("MyRule1")).getValue();
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MyRule1", created.getName());
+    }
+
+    @Test
+    public void rulesCanBeListedAndDefaultRuleIsPrecreated() throws Exception {
+        // Arrange
+        String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.createRule(topicName, "sub", new Rule("MyRule2"));
+
+        // Act
+        ListRulesResult result = service.listRules(topicName, "sub");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.getItems().size());
+        Rule rule0 = result.getItems().get(0);
+        Rule rule1 = result.getItems().get(1);
+        if (rule0.getName() == "MyRule2") {
+            Rule swap = rule1;
+            rule1 = rule0;
+            rule0 = swap;
+        }
+
+        assertEquals("$Default", rule0.getName());
+        assertEquals("MyRule2", rule1.getName());
+        assertNotNull(result.getItems().get(0).getModel());
+    }
+
+    @Test
+    public void ruleDetailsMayBeFetched() throws Exception {
+        // Arrange
+        String topicName = "TestruleDetailsMayBeFetched";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+
+        // Act
+        Rule result = service.getRule(topicName, "sub", "$Default").getValue();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("$Default", result.getName());
+    }
+
+    @Test
+    public void rulesMayBeDeleted() throws Exception {
+        // Arrange
+        String topicName = "TestRulesMayBeDeleted";
+        service.createTopic(new Topic(topicName));
+        service.createSubscription(topicName, new Subscription("sub"));
+        service.createRule(topicName, "sub", new Rule("MyRule4"));
+        service.createRule(topicName, "sub", new Rule("MyRule5"));
+
+        // Act
+        service.deleteRule(topicName, "sub", "MyRule5");
+        service.deleteRule(topicName, "sub", "$Default");
+
+        // Assert
+        ListRulesResult result = service.listRules(topicName, "sub");
+        assertNotNull(result);
+        assertEquals(1, result.getItems().size());
+        assertEquals("MyRule4", result.getItems().get(0).getName());
     }
 }
