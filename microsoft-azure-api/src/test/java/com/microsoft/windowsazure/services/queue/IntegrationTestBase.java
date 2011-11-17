@@ -22,11 +22,6 @@ public abstract class IntegrationTestBase {
         setConfigValue(config, env, QueueConfiguration.ACCOUNT_KEY, "xxx");
         setConfigValue(config, env, QueueConfiguration.URL, "http://xxx.queue.core.windows.net");
 
-        // when mock running
-        // config.setProperty("serviceBus.uri", "http://localhost:8086");
-        // config.setProperty("wrapClient.uri",
-        // "http://localhost:8081/WRAPv0.9");
-
         return config;
     }
 
@@ -41,16 +36,10 @@ public abstract class IntegrationTestBase {
     @BeforeClass
     public static void initializeSystem() {
         System.out.println("initialize");
-        // System.setProperty("http.proxyHost", "itgproxy");
-        // System.setProperty("http.proxyPort", "80");
-        // System.setProperty("http.keepAlive", "false");
     }
 
     @Before
     public void initialize() throws Exception {
         System.out.println("initialize");
-        // System.setProperty("http.proxyHost", "itgproxy");
-        // System.setProperty("http.proxyPort", "80");
-        // System.setProperty("http.keepAlive", "false");
     }
 }
