@@ -24,16 +24,13 @@ class RuntimeKernel {
         this.goalStateDeserializer = new ChunkedGoalStateDeserializer();
         this.inputChannel = new FileInputChannel();
         this.outputChannel = new FileOutputChannel();
-        this.protocol1RuntimeCurrentStateClient = new Protocol1RuntimeCurrentStateClient(
-                currentStateSerializer, outputChannel);
+        this.protocol1RuntimeCurrentStateClient = new Protocol1RuntimeCurrentStateClient(currentStateSerializer,
+                outputChannel);
         this.roleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        this.protocol1RuntimeGoalStateClient = new Protocol1RuntimeGoalStateClient(
-                protocol1RuntimeCurrentStateClient, goalStateDeserializer,
-                roleEnvironmentDataDeserializer, inputChannel);
-        this.runtimeVersionProtocolClient = new RuntimeVersionProtocolClient(
-                inputChannel);
-        this.runtimeVersionManager = new RuntimeVersionManager(
-                runtimeVersionProtocolClient);
+        this.protocol1RuntimeGoalStateClient = new Protocol1RuntimeGoalStateClient(protocol1RuntimeCurrentStateClient,
+                goalStateDeserializer, roleEnvironmentDataDeserializer, inputChannel);
+        this.runtimeVersionProtocolClient = new RuntimeVersionProtocolClient(inputChannel);
+        this.runtimeVersionManager = new RuntimeVersionManager(runtimeVersionProtocolClient);
     }
 
     public static RuntimeKernel getKernel() {

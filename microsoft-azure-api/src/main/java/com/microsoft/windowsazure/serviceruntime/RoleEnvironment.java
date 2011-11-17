@@ -1,6 +1,7 @@
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,10 +16,6 @@ import javax.xml.bind.JAXBException;
 /**
  * Represents the Windows Azure environment in which an instance of a role is
  * running.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
  */
 public final class RoleEnvironment {
     private static final String VersionEndpointEnvironmentName = "WaRuntimeEndpoint";
@@ -36,15 +33,14 @@ public final class RoleEnvironment {
 
     static {
         try {
-            JAXBContext.newInstance(RoleEnvironment.class.getPackage()
-                    .getName());
-        } catch (JAXBException e) {
+            JAXBContext.newInstance(RoleEnvironment.class.getPackage().getName());
+        }
+        catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         clientId = UUID.randomUUID().toString();
-        maxDateTime = javax.xml.bind.DatatypeConverter
-                .parseDateTime("9999-12-31T23:59:59.9999999");
+        maxDateTime = javax.xml.bind.DatatypeConverter.parseDateTime("9999-12-31T23:59:59.9999999");
     }
 
     private RoleEnvironment() {
@@ -61,9 +57,9 @@ public final class RoleEnvironment {
             RuntimeKernel kernel = RuntimeKernel.getKernel();
 
             try {
-                runtimeClient = kernel.getRuntimeVersionManager()
-                        .getRuntimeClient(endpoint);
-            } catch (Throwable t) {
+                runtimeClient = kernel.getRuntimeVersionManager().getRuntimeClient(endpoint);
+            }
+            catch (Throwable t) {
                 throw new RoleEnvironmentNotAvailableException(t);
             }
 
@@ -72,47 +68,42 @@ public final class RoleEnvironment {
             stoppingListeners = new LinkedList<RoleEnvironmentStoppingListener>();
 
             try {
-                currentGoalState = new AtomicReference<GoalState>(
-                        runtimeClient.getCurrentGoalState());
+                currentGoalState = new AtomicReference<GoalState>(runtimeClient.getCurrentGoalState());
                 currentEnvironmentData = new AtomicReference<RoleEnvironmentData>(
                         runtimeClient.getRoleEnvironmentData());
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 throw new RoleEnvironmentNotAvailableException(e);
             }
 
             lastState = new AtomicReference<CurrentState>();
 
-            runtimeClient
-                    .addGoalStateChangedListener(new GoalStateChangedListener() {
-                        public void goalStateChanged(GoalState newGoalState) {
-                            switch (newGoalState.getExpectedState()) {
-                            case STARTED:
-                                if (newGoalState.getIncarnation()
-                                        .compareTo(
-                                                currentGoalState.get()
-                                                        .getIncarnation()) > 0) {
-                                    processGoalStateChange(newGoalState);
-                                }
-                                break;
-                            case STOPPED:
-                                raiseStoppingEvent();
-
-                                CurrentState stoppedState = new AcquireCurrentState(
-                                        clientId,
-                                        newGoalState.getIncarnation(),
-                                        CurrentStatus.STOPPED, maxDateTime);
-
-                                runtimeClient.setCurrentState(stoppedState);
-                                break;
+            runtimeClient.addGoalStateChangedListener(new GoalStateChangedListener() {
+                public void goalStateChanged(GoalState newGoalState) {
+                    switch (newGoalState.getExpectedState()) {
+                        case STARTED:
+                            if (newGoalState.getIncarnation().compareTo(currentGoalState.get().getIncarnation()) > 0) {
+                                processGoalStateChange(newGoalState);
                             }
-                        }
-                    });
-        } else {
+                            break;
+                        case STOPPED:
+                            raiseStoppingEvent();
+
+                            CurrentState stoppedState = new AcquireCurrentState(clientId,
+                                    newGoalState.getIncarnation(), CurrentStatus.STOPPED, maxDateTime);
+
+                            runtimeClient.setCurrentState(stoppedState);
+                            break;
+                    }
+                }
+            });
+        }
+        else {
             try {
                 currentGoalState.set(runtimeClient.getCurrentGoalState());
-                currentEnvironmentData.set(runtimeClient
-                        .getRoleEnvironmentData());
-            } catch (InterruptedException e) {
+                currentEnvironmentData.set(runtimeClient.getRoleEnvironmentData());
+            }
+            catch (InterruptedException e) {
                 throw new RoleEnvironmentNotAvailableException(e);
             }
         }
@@ -120,27 +111,27 @@ public final class RoleEnvironment {
 
     private static void processGoalStateChange(GoalState newGoalState) {
         List<RoleEnvironmentChange> changes = new LinkedList<RoleEnvironmentChange>();
-        RoleEnvironmentChangingEvent changingEvent = new RoleEnvironmentChangingEvent(
-                changes);
+        RoleEnvironmentChangingEvent changingEvent = new RoleEnvironmentChangingEvent(changes);
         CurrentState last = lastState.get();
 
         calculateChanges(changes);
 
         if (changes.isEmpty()) {
             acceptLatestIncarnation(newGoalState, last);
-        } else {
+        }
+        else {
             for (RoleEnvironmentChangingListener listener : changingListeners) {
                 try {
                     listener.roleEnvironmentChanging(changingEvent);
-                } catch (Throwable t) {
+                }
+                catch (Throwable t) {
                     t.printStackTrace();
                 }
             }
 
             if (changingEvent.isCancelled()) {
-                CurrentState recycleState = new AcquireCurrentState(clientId,
-                        newGoalState.getIncarnation(), CurrentStatus.RECYCLE,
-                        maxDateTime);
+                CurrentState recycleState = new AcquireCurrentState(clientId, newGoalState.getIncarnation(),
+                        CurrentStatus.RECYCLE, maxDateTime);
 
                 runtimeClient.setCurrentState(recycleState);
 
@@ -150,31 +141,29 @@ public final class RoleEnvironment {
             acceptLatestIncarnation(newGoalState, last);
 
             try {
-                currentEnvironmentData.set(runtimeClient
-                        .getRoleEnvironmentData());
-            } catch (InterruptedException e) {
+                currentEnvironmentData.set(runtimeClient.getRoleEnvironmentData());
+            }
+            catch (InterruptedException e) {
                 throw new RoleEnvironmentNotAvailableException(e);
             }
 
             for (RoleEnvironmentChangedListener listener : changedListeners) {
                 try {
-                    listener.roleEnvironmentChanged(new RoleEnvironmentChangedEvent(
-                            changes));
-                } catch (Throwable t) {
+                    listener.roleEnvironmentChanged(new RoleEnvironmentChangedEvent(changes));
+                }
+                catch (Throwable t) {
                     t.printStackTrace();
                 }
             }
         }
     }
 
-    private static void acceptLatestIncarnation(GoalState newGoalState,
-            CurrentState last) {
+    private static void acceptLatestIncarnation(GoalState newGoalState, CurrentState last) {
         if (last != null && last instanceof AcquireCurrentState) {
             AcquireCurrentState acquireState = (AcquireCurrentState) last;
 
-            CurrentState acceptState = new AcquireCurrentState(clientId,
-                    newGoalState.getIncarnation(), acquireState.getStatus(),
-                    acquireState.getExpiration());
+            CurrentState acceptState = new AcquireCurrentState(clientId, newGoalState.getIncarnation(),
+                    acquireState.getStatus(), acquireState.getExpiration());
 
             runtimeClient.setCurrentState(acceptState);
         }
@@ -188,7 +177,8 @@ public final class RoleEnvironment {
 
         try {
             newData = runtimeClient.getRoleEnvironmentData();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             throw new RoleEnvironmentNotAvailableException(e);
         }
 
@@ -200,19 +190,17 @@ public final class RoleEnvironment {
         for (String setting : currentConfig.keySet()) {
             if (newConfig.containsKey(setting)) {
                 if (!newConfig.get(setting).equals(currentConfig.get(setting))) {
-                    changes.add(new RoleEnvironmentConfigurationSettingChange(
-                            setting));
+                    changes.add(new RoleEnvironmentConfigurationSettingChange(setting));
                 }
-            } else {
-                changes.add(new RoleEnvironmentConfigurationSettingChange(
-                        setting));
+            }
+            else {
+                changes.add(new RoleEnvironmentConfigurationSettingChange(setting));
             }
         }
 
         for (String setting : newConfig.keySet()) {
             if (!currentConfig.containsKey(setting)) {
-                changes.add(new RoleEnvironmentConfigurationSettingChange(
-                        setting));
+                changes.add(new RoleEnvironmentConfigurationSettingChange(setting));
             }
         }
 
@@ -225,45 +213,37 @@ public final class RoleEnvironment {
 
                 for (String instance : currentRole.getInstances().keySet()) {
                     if (newRole.getInstances().containsKey(instance)) {
-                        RoleInstance currentInstance = currentRole
-                                .getInstances().get(instance);
-                        RoleInstance newInstance = newRole.getInstances().get(
-                                instance);
+                        RoleInstance currentInstance = currentRole.getInstances().get(instance);
+                        RoleInstance newInstance = newRole.getInstances().get(instance);
 
-                        if (currentInstance.getUpdateDomain() == newInstance
-                                .getUpdateDomain()
-                                && currentInstance.getFaultDomain() == newInstance
-                                        .getFaultDomain()) {
-                            for (String endpoint : currentInstance
-                                    .getInstanceEndpoints().keySet()) {
-                                if (newInstance.getInstanceEndpoints()
-                                        .containsKey(endpoint)) {
-                                    RoleInstanceEndpoint currentEndpoint = currentInstance
-                                            .getInstanceEndpoints().get(
-                                                    endpoint);
-                                    RoleInstanceEndpoint newEndpoint = newInstance
-                                            .getInstanceEndpoints().get(
-                                                    endpoint);
+                        if (currentInstance.getUpdateDomain() == newInstance.getUpdateDomain()
+                                && currentInstance.getFaultDomain() == newInstance.getFaultDomain()) {
+                            for (String endpoint : currentInstance.getInstanceEndpoints().keySet()) {
+                                if (newInstance.getInstanceEndpoints().containsKey(endpoint)) {
+                                    RoleInstanceEndpoint currentEndpoint = currentInstance.getInstanceEndpoints().get(
+                                            endpoint);
+                                    RoleInstanceEndpoint newEndpoint = newInstance.getInstanceEndpoints().get(endpoint);
 
-                                    if (!currentEndpoint.getProtocol().equals(
-                                            newEndpoint.getProtocol())
-                                            || !currentEndpoint.getIpEndPoint()
-                                                    .equals(newEndpoint
-                                                            .getIpEndPoint())) {
+                                    if (!currentEndpoint.getProtocol().equals(newEndpoint.getProtocol())
+                                            || !currentEndpoint.getIpEndPoint().equals(newEndpoint.getIpEndPoint())) {
                                         changedRoleSet.add(role);
                                     }
-                                } else {
+                                }
+                                else {
                                     changedRoleSet.add(role);
                                 }
                             }
-                        } else {
+                        }
+                        else {
                             changedRoleSet.add(role);
                         }
-                    } else {
+                    }
+                    else {
                         changedRoleSet.add(role);
                     }
                 }
-            } else {
+            }
+            else {
                 changedRoleSet.add(role);
             }
         }
@@ -275,45 +255,37 @@ public final class RoleEnvironment {
 
                 for (String instance : newRole.getInstances().keySet()) {
                     if (currentRole.getInstances().containsKey(instance)) {
-                        RoleInstance currentInstance = currentRole
-                                .getInstances().get(instance);
-                        RoleInstance newInstance = newRole.getInstances().get(
-                                instance);
+                        RoleInstance currentInstance = currentRole.getInstances().get(instance);
+                        RoleInstance newInstance = newRole.getInstances().get(instance);
 
-                        if (currentInstance.getUpdateDomain() == newInstance
-                                .getUpdateDomain()
-                                && currentInstance.getFaultDomain() == newInstance
-                                        .getFaultDomain()) {
-                            for (String endpoint : newInstance
-                                    .getInstanceEndpoints().keySet()) {
-                                if (currentInstance.getInstanceEndpoints()
-                                        .containsKey(endpoint)) {
-                                    RoleInstanceEndpoint currentEndpoint = currentInstance
-                                            .getInstanceEndpoints().get(
-                                                    endpoint);
-                                    RoleInstanceEndpoint newEndpoint = newInstance
-                                            .getInstanceEndpoints().get(
-                                                    endpoint);
+                        if (currentInstance.getUpdateDomain() == newInstance.getUpdateDomain()
+                                && currentInstance.getFaultDomain() == newInstance.getFaultDomain()) {
+                            for (String endpoint : newInstance.getInstanceEndpoints().keySet()) {
+                                if (currentInstance.getInstanceEndpoints().containsKey(endpoint)) {
+                                    RoleInstanceEndpoint currentEndpoint = currentInstance.getInstanceEndpoints().get(
+                                            endpoint);
+                                    RoleInstanceEndpoint newEndpoint = newInstance.getInstanceEndpoints().get(endpoint);
 
-                                    if (!currentEndpoint.getProtocol().equals(
-                                            newEndpoint.getProtocol())
-                                            || !currentEndpoint.getIpEndPoint()
-                                                    .equals(newEndpoint
-                                                            .getIpEndPoint())) {
+                                    if (!currentEndpoint.getProtocol().equals(newEndpoint.getProtocol())
+                                            || !currentEndpoint.getIpEndPoint().equals(newEndpoint.getIpEndPoint())) {
                                         changedRoleSet.add(role);
                                     }
-                                } else {
+                                }
+                                else {
                                     changedRoleSet.add(role);
                                 }
                             }
-                        } else {
+                        }
+                        else {
                             changedRoleSet.add(role);
                         }
-                    } else {
+                    }
+                    else {
                         changedRoleSet.add(role);
                     }
                 }
-            } else {
+            }
+            else {
                 changedRoleSet.add(role);
             }
         }
@@ -327,7 +299,8 @@ public final class RoleEnvironment {
         for (RoleEnvironmentStoppingListener listener : stoppingListeners) {
             try {
                 listener.roleEnvironmentStopping();
-            } catch (Throwable t) {
+            }
+            catch (Throwable t) {
                 t.printStackTrace();
             }
         }
@@ -369,7 +342,8 @@ public final class RoleEnvironment {
     public static boolean isAvailable() {
         try {
             initialize();
-        } catch (RoleEnvironmentNotAvailableException ex) {
+        }
+        catch (RoleEnvironmentNotAvailableException ex) {
         }
 
         return runtimeClient != null;
@@ -392,8 +366,8 @@ public final class RoleEnvironment {
      * <p>
      * Roles are defined in the service definition file.
      * 
-     * @return A <code>java.util.Map</code> object containing the set of
-     *         {@link Role} objects that represent the roles defined for your
+     * @return A <code>java.util.Map</code> object containing the set of {@link Role} objects that represent the roles
+     *         defined for your
      *         service.
      */
     public static Map<String, Role> getRoles() {
@@ -405,12 +379,11 @@ public final class RoleEnvironment {
     /**
      * Retrieves the settings in the service configuration file.
      * <p>
-     * A role's configuration settings are defined in the service definition
-     * file. Values for configuration settings are set in the service
-     * configuration file.
+     * A role's configuration settings are defined in the service definition file. Values for configuration settings are
+     * set in the service configuration file.
      * 
-     * @return A <code>java.util.Map</code> object containing the
-     *         <code>String</code> objects that represent the configuration
+     * @return A <code>java.util.Map</code> object containing the <code>String</code> objects that represent the
+     *         configuration
      *         settings.
      */
     public static Map<String, String> getConfigurationSettings() {
@@ -422,8 +395,8 @@ public final class RoleEnvironment {
     /**
      * Retrieves the set of named local storage resources.
      * 
-     * @return A <code>java.util.Map</code> object containing the
-     *         <code>String</code> objects that represent the local storage
+     * @return A <code>java.util.Map</code> object containing the <code>String</code> objects that represent the local
+     *         storage
      *         resources.
      */
     public static Map<String, LocalResource> getLocalResources() {
@@ -435,21 +408,18 @@ public final class RoleEnvironment {
     /**
      * Requests that the current role instance be stopped and restarted.
      * <p>
-     * Before the role instance is recycled, the Windows Azure load balancer
-     * takes the role instance out of rotation. This ensures that no new
-     * requests are routed to the instance while it is restarting.
+     * Before the role instance is recycled, the Windows Azure load balancer takes the role instance out of rotation.
+     * This ensures that no new requests are routed to the instance while it is restarting.
      * 
-     * A call to <code>RequestRecycle</code> initiates the normal shutdown
-     * cycle. Windows Azure raises the <code>Stopping</code> event and calls the
-     * <code>OnStop</code> method so that you can run the necessary code to
+     * A call to <code>RequestRecycle</code> initiates the normal shutdown cycle. Windows Azure raises the
+     * <code>Stopping</code> event and calls the <code>OnStop</code> method so that you can run the necessary code to
      * prepare the instance to be recycled.
      */
     public static void requestRecycle() {
         initialize();
 
-        CurrentState recycleState = new AcquireCurrentState(clientId,
-                currentGoalState.get().getIncarnation(), CurrentStatus.RECYCLE,
-                maxDateTime);
+        CurrentState recycleState = new AcquireCurrentState(clientId, currentGoalState.get().getIncarnation(),
+                CurrentStatus.RECYCLE, maxDateTime);
 
         runtimeClient.setCurrentState(recycleState);
     }
@@ -457,35 +427,36 @@ public final class RoleEnvironment {
     /**
      * Sets the status of the role instance.
      * <p>
-     * An instance may indicate that it is in one of two states: Ready or Busy.
-     * If an instance's state is Ready, it is prepared to receive requests from
-     * the load balancer. If the instance's state is Busy, it will not receive
+     * An instance may indicate that it is in one of two states: Ready or Busy. If an instance's state is Ready, it is
+     * prepared to receive requests from the load balancer. If the instance's state is Busy, it will not receive
      * requests from the load balancer.
      * 
      * @param status
      *            A {@link RoleInstanceStatus} value that indicates whether the
      *            instance is ready or busy.
-     * @param expiration
-     *            A <code>java.util.Calendar</code> value that specifies the
+     * @param expiration_utc
+     *            A <code>java.util.Date</code> value that specifies the
      *            expiration date and time of the status.
      * 
      */
-    public static void setStatus(RoleInstanceStatus status, Calendar expiration) {
+    public static void setStatus(RoleInstanceStatus status, Date expiration_utc) {
         initialize();
 
         CurrentStatus currentStatus = CurrentStatus.STARTED;
 
         switch (status) {
-        case Busy:
-            currentStatus = CurrentStatus.BUSY;
-            break;
-        case Ready:
-            currentStatus = CurrentStatus.STARTED;
+            case Busy:
+                currentStatus = CurrentStatus.BUSY;
+                break;
+            case Ready:
+                currentStatus = CurrentStatus.STARTED;
         }
 
-        CurrentState newState = new AcquireCurrentState(clientId,
-                currentGoalState.get().getIncarnation(), currentStatus,
-                expiration);
+        Calendar expiration = Calendar.getInstance();
+        expiration.setTime(expiration_utc);
+        
+        CurrentState newState = new AcquireCurrentState(clientId, currentGoalState.get().getIncarnation(),
+                currentStatus, expiration);
 
         lastState.set(newState);
 
@@ -495,8 +466,7 @@ public final class RoleEnvironment {
     /**
      * Clears the status of the role instance.
      * <p>
-     * An instance may indicate that it has completed communicating status by
-     * calling this method.
+     * An instance may indicate that it has completed communicating status by calling this method.
      * 
      */
     public static void clearStatus() {
@@ -513,8 +483,7 @@ public final class RoleEnvironment {
      * Adds an event listener for the <code>Changed</code> event, which occurs
      * after a configuration change has been applied to a role instance.
      * <p>
-     * A <code>Changed</code> event is encapsulated in a
-     * {@link RoleEnvironmentChangedEvent} object.
+     * A <code>Changed</code> event is encapsulated in a {@link RoleEnvironmentChangedEvent} object.
      * 
      * @param listener
      *            A {@link RoleEnvironmentChangedListener} object that
@@ -522,8 +491,7 @@ public final class RoleEnvironment {
      * 
      * @see #removeRoleEnvironmentChangedListener
      */
-    public static synchronized void addRoleEnvironmentChangedListener(
-            RoleEnvironmentChangedListener listener) {
+    public static synchronized void addRoleEnvironmentChangedListener(RoleEnvironmentChangedListener listener) {
         initialize();
 
         changedListeners.add(listener);
@@ -538,8 +506,7 @@ public final class RoleEnvironment {
      * 
      * @see #addRoleEnvironmentChangedListener
      */
-    public static synchronized void removeRoleEnvironmentChangedListener(
-            RoleEnvironmentChangedListener listener) {
+    public static synchronized void removeRoleEnvironmentChangedListener(RoleEnvironmentChangedListener listener) {
         initialize();
 
         changedListeners.remove(listener);
@@ -550,22 +517,17 @@ public final class RoleEnvironment {
      * before a change to the service configuration is applied to the running
      * instances of the role.
      * <p>
-     * Service configuration changes are applied on-the-fly to running role
-     * instances. Configuration changes include changes to the service
-     * configuration changes and changes to the number of instances in the
-     * service.
+     * Service configuration changes are applied on-the-fly to running role instances. Configuration changes include
+     * changes to the service configuration changes and changes to the number of instances in the service.
      * <p>
-     * This event occurs after the new configuration file has been submitted to
-     * Windows Azure but before the changes have been applied to each running
-     * role instance. This event can be cancelled for a given instance to
-     * prevent the configuration change.
+     * This event occurs after the new configuration file has been submitted to Windows Azure but before the changes
+     * have been applied to each running role instance. This event can be cancelled for a given instance to prevent the
+     * configuration change.
      * <p>
-     * Note that cancelling this event causes the instance to be automatically
-     * recycled. When the instance is recycled, the configuration change is
-     * applied when it restarts.
+     * Note that cancelling this event causes the instance to be automatically recycled. When the instance is recycled,
+     * the configuration change is applied when it restarts.
      * <p>
-     * A <code>Changing</code> event is encapsulated in a
-     * {@link RoleEnvironmentChangingEvent} object.
+     * A <code>Changing</code> event is encapsulated in a {@link RoleEnvironmentChangingEvent} object.
      * 
      * @param listener
      *            A {@link RoleEnvironmentChangingListener} object that
@@ -573,8 +535,7 @@ public final class RoleEnvironment {
      * 
      * @see #removeRoleEnvironmentChangingListener
      */
-    public static synchronized void addRoleEnvironmentChangingListener(
-            RoleEnvironmentChangingListener listener) {
+    public static synchronized void addRoleEnvironmentChangingListener(RoleEnvironmentChangingListener listener) {
         initialize();
 
         changingListeners.add(listener);
@@ -589,8 +550,7 @@ public final class RoleEnvironment {
      * 
      * @see #addRoleEnvironmentChangingListener
      */
-    public static void removeRoleEnvironmentChangingListener(
-            RoleEnvironmentChangingListener listener) {
+    public static void removeRoleEnvironmentChangingListener(RoleEnvironmentChangingListener listener) {
         initialize();
 
         changingListeners.remove(listener);
@@ -606,8 +566,7 @@ public final class RoleEnvironment {
      * 
      * @see #removeRoleEnvironmentStoppingListener
      */
-    public static synchronized void addRoleEnvironmentStoppingListener(
-            RoleEnvironmentStoppingListener listener) {
+    public static synchronized void addRoleEnvironmentStoppingListener(RoleEnvironmentStoppingListener listener) {
         initialize();
 
         stoppingListeners.add(listener);
@@ -622,8 +581,7 @@ public final class RoleEnvironment {
      * 
      * @see #addRoleEnvironmentStoppingListener
      */
-    public static synchronized void removeRoleEnvironmentStoppingListener(
-            RoleEnvironmentStoppingListener listener) {
+    public static synchronized void removeRoleEnvironmentStoppingListener(RoleEnvironmentStoppingListener listener) {
         initialize();
 
         stoppingListeners.remove(listener);

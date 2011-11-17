@@ -17,7 +17,8 @@ class FileInputChannel implements InputChannel {
     public InputStream getInputStream(String name) {
         try {
             return new FileInputStream(name);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

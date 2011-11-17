@@ -27,25 +27,21 @@ class RuntimeVersionManager {
             public RuntimeClient createRuntimeClient(String path) {
                 RuntimeKernel kernel = RuntimeKernel.getKernel();
 
-                return new Protocol1RuntimeClient(kernel
-                        .getProtocol1RuntimeGoalStateClient(), kernel
+                return new Protocol1RuntimeClient(kernel.getProtocol1RuntimeGoalStateClient(), kernel
                         .getProtocol1RuntimeCurrentStateClient(), path);
             }
         });
     }
 
     public RuntimeClient getRuntimeClient(String versionEndpoint) {
-        Map<String, String> versionMap = protocolClient
-                .getVersionMap(versionEndpoint);
+        Map<String, String> versionMap = protocolClient.getVersionMap(versionEndpoint);
 
         for (RuntimeClientFactory factory : supportedVersionList) {
             if (versionMap.containsKey(factory.getVersion())) {
-                return factory.createRuntimeClient(versionMap.get(factory
-                        .getVersion()));
+                return factory.createRuntimeClient(versionMap.get(factory.getVersion()));
             }
         }
 
-        throw new RuntimeException(
-                "Server does not support any known protocol versions.");
+        throw new RuntimeException("Server does not support any known protocol versions.");
     }
 }

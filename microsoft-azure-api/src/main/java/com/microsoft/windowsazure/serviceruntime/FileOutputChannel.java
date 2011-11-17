@@ -17,7 +17,8 @@ class FileOutputChannel implements OutputChannel {
     public OutputStream getOutputStream(String name) {
         try {
             return new FileOutputStream(name);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

@@ -10,10 +10,8 @@ class Protocol1RuntimeClient implements RuntimeClient {
     private final Protocol1RuntimeGoalStateClient goalStateClient;
     private final Protocol1RuntimeCurrentStateClient currentStateClient;
 
-    public Protocol1RuntimeClient(
-            Protocol1RuntimeGoalStateClient goalStateClient,
-            Protocol1RuntimeCurrentStateClient currentStateClient,
-            String endpoint) {
+    public Protocol1RuntimeClient(Protocol1RuntimeGoalStateClient goalStateClient,
+            Protocol1RuntimeCurrentStateClient currentStateClient, String endpoint) {
         this.goalStateClient = goalStateClient;
         this.currentStateClient = currentStateClient;
 
@@ -26,8 +24,7 @@ class Protocol1RuntimeClient implements RuntimeClient {
     }
 
     @Override
-    public RoleEnvironmentData getRoleEnvironmentData()
-            throws InterruptedException {
+    public RoleEnvironmentData getRoleEnvironmentData() throws InterruptedException {
         return goalStateClient.getRoleEnvironmentData();
     }
 

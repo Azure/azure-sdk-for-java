@@ -16,10 +16,8 @@ class RoleEnvironmentData {
     private final Map<String, Role> roles;
     private final boolean isEmulated;
 
-    public RoleEnvironmentData(String deploymentId,
-            Map<String, String> configurationSettings,
-            Map<String, LocalResource> localResources,
-            RoleInstance currentInstance, Map<String, Role> roles,
+    public RoleEnvironmentData(String deploymentId, Map<String, String> configurationSettings,
+            Map<String, LocalResource> localResources, RoleInstance currentInstance, Map<String, Role> roles,
             boolean isEmulated) {
         this.deploymentId = deploymentId;
         this.configurationSettings = configurationSettings;

@@ -3,12 +3,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Represents a change to the topology of the service.
  * <p>
- * The service's topology refers to the number of instances deployed for each
- * role that the service defines.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
+ * The service's topology refers to the number of instances deployed for each role that the service defines.
  */
 public class RoleEnvironmentTopologyChange extends RoleEnvironmentChange {
 

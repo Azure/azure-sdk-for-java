@@ -4,11 +4,6 @@ import java.net.InetSocketAddress;
 
 /**
  * Represents an endpoint associated with a role instance.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
- * 
  */
 public final class RoleInstanceEndpoint {
 

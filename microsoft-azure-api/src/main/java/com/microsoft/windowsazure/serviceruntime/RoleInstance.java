@@ -4,11 +4,6 @@ import java.util.Map;
 
 /**
  * Represents an instance of a role.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
- * @author mariok
- * 
  */
 public final class RoleInstance {
     private final String id;
@@ -25,8 +20,7 @@ public final class RoleInstance {
      * @param updateDomain
      * @param endpoints
      */
-    RoleInstance(String id, int faultDomain, int updateDomain,
-            Map<String, RoleInstanceEndpoint> endpoints) {
+    RoleInstance(String id, int faultDomain, int updateDomain, Map<String, RoleInstanceEndpoint> endpoints) {
         this.id = id;
         this.faultDomain = faultDomain;
         this.updateDomain = updateDomain;
@@ -50,10 +44,9 @@ public final class RoleInstance {
     /**
      * Returns the ID of this instance.
      * <p>
-     * The returned ID is unique to the application domain of the role’s
-     * instance. If an instance is terminated and has been configured to restart
-     * automatically, the restarted instance will have the same ID as the
-     * terminated instance.
+     * The returned ID is unique to the application domain of the role’s instance. If an instance is terminated and has
+     * been configured to restart automatically, the restarted instance will have the same ID as the terminated
+     * instance.
      * 
      * @return A <code>String</code> object that represents the ID of this
      *         instance.
