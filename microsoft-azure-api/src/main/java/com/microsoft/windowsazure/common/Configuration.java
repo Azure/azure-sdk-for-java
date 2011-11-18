@@ -1,7 +1,13 @@
 package com.microsoft.windowsazure.common;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.sun.jersey.api.client.config.ClientConfig;
 
@@ -10,6 +16,8 @@ public class Configuration {
     private static Configuration instance;
     Map<String, Object> properties;
     Builder builder;
+
+    static Log log = LogFactory.getLog(Configuration.class);
 
     public Configuration() {
         this.properties = new HashMap<String, Object>();
@@ -36,8 +44,15 @@ public class Configuration {
     }
 
     public static Configuration getInstance() {
-        if (instance == null)
-            instance = Configuration.load();
+        if (instance == null) {
+            try {
+                instance = Configuration.load();
+            }
+            catch (IOException e) {
+                log.error("Unable to load META-INF/com.microsoft.windowsazure.properties", e);
+                instance = new Configuration();
+            }
+        }
         return instance;
     }
 
@@ -45,9 +60,19 @@ public class Configuration {
         Configuration.instance = instance;
     }
 
-    public static Configuration load() {
-        // TODO - load from somewhere
-        return new Configuration();
+    public static Configuration load() throws IOException {
+        Configuration config = new Configuration();
+
+        InputStream stream = Configuration.class.getClassLoader().getResourceAsStream("META-INF/com.microsoft.windowsazure.properties");
+        if (stream != null) {
+            Properties properties = new Properties();
+            properties.load(stream);
+            for (Object key : properties.keySet()) {
+                config.setProperty(key.toString(), properties.get(key));
+            }
+        }
+
+        return config;
     }
 
     public <T> T create(Class<T> service) throws Exception {

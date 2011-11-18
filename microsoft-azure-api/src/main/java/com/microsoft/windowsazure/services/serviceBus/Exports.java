@@ -3,7 +3,6 @@ package com.microsoft.windowsazure.services.serviceBus;
 import java.util.Map;
 
 import com.microsoft.windowsazure.common.Builder;
-import com.microsoft.windowsazure.services.serviceBus.client.MessagingClient;
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPropertiesMapper;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModelProvider;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MarshallerProvider;
@@ -20,7 +19,6 @@ public class Exports implements Builder.Exports {
         registry.add(ServiceBusService.class);
         registry.add(ServiceBusExceptionProcessor.class);
         registry.add(ServiceBusRestProxy.class);
-        registry.add(MessagingClient.class);
 
         // alter jersey client config for serviceBus
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {

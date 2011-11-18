@@ -5,25 +5,11 @@ import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
 public abstract class IntegrationTestBase {
-    protected Configuration createConfiguration() {
-        Configuration config = new Configuration();
-        ServiceBusConfiguration.configure(config, "lodejard", "owner", "Zo3QCZ5jLlJofibEiifZyz7B3x6a5Suv2YoS1JAWopA=");
-
-        // when mock running
-        //config.setProperty("serviceBus.uri", "http://localhost:8086");
-        //config.setProperty("wrapClient.uri", "http://localhost:8081/WRAPv0.9");
-
-        return config;
-    }
-
     @BeforeClass
     public static void initializeSystem() {
         System.out.println("initialize");
@@ -40,7 +26,7 @@ public abstract class IntegrationTestBase {
         System.setProperty("http.keepAlive", "false");
 
         boolean testAlphaExists = false;
-        ServiceBusContract service = createConfiguration().create(ServiceBusContract.class);
+        ServiceBusContract service = new ServiceBusService();
         for (Queue queue : iterateQueues(service)) {
             String queueName = queue.getName();
             if (queueName.startsWith("Test") || queueName.startsWith("test")) {

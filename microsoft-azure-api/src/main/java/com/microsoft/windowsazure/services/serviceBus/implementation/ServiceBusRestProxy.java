@@ -11,17 +11,33 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.auth.wrap.WrapFilter;
+
+import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
+import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
-import com.microsoft.windowsazure.services.serviceBus.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.Message;
-import com.microsoft.windowsazure.services.serviceBus.Queue;
-import com.microsoft.windowsazure.services.serviceBus.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.Topic;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
+
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -103,18 +119,23 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         sendMessage(path, message);
     }
 
-    public Message receiveQueueMessage(String queueName)
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
             throws ServiceException {
         return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
     }
 
-    public Message receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queuePath, ReceiveMessageOptions options) throws ServiceException {
 
         WebResource resource = getResource()
                 .path(queuePath)
                 .path("messages")
                 .path("head");
 
+        Message message = receiveMessage(options, resource);
+        return new ReceiveQueueMessageResult(message);
+    }
+
+    private Message receiveMessage(ReceiveMessageOptions options, WebResource resource) {
         if (options.getTimeout() != null) {
             resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
         }
@@ -135,36 +156,42 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         MediaType contentType = clientResult.getType();
         Date date = clientResult.getResponseDate();
 
-        Message result = new Message();
+        Message message = new Message();
         if (brokerProperties != null) {
-            result.setProperties(mapper.fromString(brokerProperties));
+            message.setProperties(mapper.fromString(brokerProperties));
         }
         if (contentType != null) {
-            result.setContentType(contentType.toString());
+            message.setContentType(contentType.toString());
         }
         if (location != null) {
-            result.getProperties().setLockLocation(location);
+            message.getProperties().setLockLocation(location);
         }
-        result.setDate(date);
-        result.setBody(clientResult.getEntityInputStream());
-        return result;
+        message.setDate(date);
+        message.setBody(clientResult.getEntityInputStream());
+        return message;
     }
 
     public void sendTopicMessage(String topicName, Message message) throws ServiceException {
         sendMessage(topicName, message);
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        return receiveSubscriptionMessage(topicName, subscriptionName, ReceiveMessageOptions.DEFAULT);
     }
 
-    public Message receiveSubscriptionMessage(String topicName,
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
             String subscriptionName, ReceiveMessageOptions options)
             throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        WebResource resource = getResource()
+                .path(topicName)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("messages")
+                .path("head");
+
+        Message message = receiveMessage(options, resource);
+        return new ReceiveSubscriptionMessageResult(message);
     }
 
     public void unlockMessage(Message message) throws ServiceException {
@@ -179,11 +206,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Queue createQueue(Queue entry) throws ServiceException {
-        return getResource()
+    public CreateQueueResult createQueue(Queue entry) throws ServiceException {
+        return new CreateQueueResult(getResource()
                 .path(entry.getName())
-                .type("application/atom+xml")//;type=entry;charset=utf-8")
-                .put(Queue.class, entry);
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Queue.class, entry));
     }
 
     public void deleteQueue(String queuePath) throws ServiceException {
@@ -192,10 +219,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Queue getQueue(String queuePath) throws ServiceException {
-        return getResource()
+    public GetQueueResult getQueue(String queuePath) throws ServiceException {
+        return new GetQueueResult(getResource()
                 .path(queuePath)
-                .get(Queue.class);
+                .get(Queue.class));
     }
 
     public ListQueuesResult listQueues() throws ServiceException {
@@ -211,11 +238,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public Topic createTopic(Topic entry) throws ServiceException {
-        return getResource()
+    public CreateTopicResult createTopic(Topic entry) throws ServiceException {
+        return new CreateTopicResult(getResource()
                 .path(entry.getName())
-                .type("application/atom+xml")//;type=entry;charset=utf-8")
-                .put(Topic.class, entry);
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Topic.class, entry));
     }
 
     public void deleteTopic(String TopicPath) throws ServiceException {
@@ -224,10 +251,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public Topic getTopic(String TopicPath) throws ServiceException {
-        return getResource()
+    public GetTopicResult getTopic(String TopicPath) throws ServiceException {
+        return new GetTopicResult(getResource()
                 .path(TopicPath)
-                .get(Topic.class);
+                .get(Topic.class));
     }
 
     public ListTopicsResult listTopics() throws ServiceException {
@@ -243,48 +270,93 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public void addSubscription(String topicPath, String subscriptionName,
-            Entry subscription) {
-        // TODO Auto-generated method stub
-
+    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) {
+        return new CreateSubscriptionResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscription.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Subscription.class, subscription));
     }
 
-    public void removeSubscription(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-
+    public void deleteSubscription(String topicPath, String subscriptionName) {
+        getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .delete();
     }
 
-    public Entry getSubscription(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-        return null;
+    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) {
+        return new GetSubscriptionResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .get(Subscription.class));
     }
 
-    public Feed getSubscriptions(String topicPath) {
-        // TODO Auto-generated method stub
-        return null;
+    public ListSubscriptionsResult listSubscriptions(String topicPath) {
+        Feed feed = getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .get(Feed.class);
+        ArrayList<Subscription> list = new ArrayList<Subscription>();
+        for (Entry entry : feed.getEntries()) {
+            list.add(new Subscription(entry));
+        }
+        ListSubscriptionsResult result = new ListSubscriptionsResult();
+        result.setItems(list);
+        return result;
     }
 
-    public void addRule(String topicPath, String subscriptionName,
-            String ruleName, Entry rule) {
-        // TODO Auto-generated method stub
-
+    public CreateRuleResult createRule(String topicPath, String subscriptionName,
+            Rule rule) {
+        return new CreateRuleResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(rule.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(Rule.class, rule));
     }
 
-    public void removeRule(String topicPath, String subscriptionName,
+    public void deleteRule(String topicPath, String subscriptionName,
             String ruleName) {
-        // TODO Auto-generated method stub
-
+        getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(ruleName)
+                .delete();
     }
 
-    public Entry getRule(String topicPath, String subscriptionName,
+    public GetRuleResult getRule(String topicPath, String subscriptionName,
             String ruleName) {
-        // TODO Auto-generated method stub
-        return null;
+        return new GetRuleResult(getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .path(ruleName)
+                .get(Rule.class));
     }
 
-    public Feed getRules(String topicPath, String subscriptionName) {
-        // TODO Auto-generated method stub
-        return null;
+    public ListRulesResult listRules(String topicPath, String subscriptionName) {
+        Feed feed = getResource()
+                .path(topicPath)
+                .path("subscriptions")
+                .path(subscriptionName)
+                .path("rules")
+                .get(Feed.class);
+        ArrayList<Rule> list = new ArrayList<Rule>();
+        for (Entry entry : feed.getEntries()) {
+            list.add(new Rule(entry));
+        }
+        ListRulesResult result = new ListRulesResult();
+        result.setItems(list);
+        return result;
     }
 
 }
