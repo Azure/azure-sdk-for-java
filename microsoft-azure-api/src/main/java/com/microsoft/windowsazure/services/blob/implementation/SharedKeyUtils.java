@@ -8,6 +8,8 @@ import java.util.Locale;
 import com.sun.jersey.api.client.ClientRequest;
 
 public class SharedKeyUtils {
+    public static final String AUTHORIZATION_FILTER_MARKER = SharedKeyUtils.class.getName();
+
     /*
      * Constructing the Canonicalized Headers String
      *
@@ -49,5 +51,68 @@ public class SharedKeyUtils {
 
     private static String nullEmpty(String value) {
         return value != null ? value : "";
+    }
+
+    public static List<QueryParam> getQueryParams(String queryString) {
+        ArrayList<QueryParam> result = new ArrayList<QueryParam>();
+
+        if (queryString != null) {
+            String[] params = queryString.split("&");
+            for (String param : params) {
+                result.add(getQueryParam(param));
+            }
+        }
+
+        return result;
+    }
+
+    private static QueryParam getQueryParam(String param) {
+        QueryParam result = new QueryParam();
+
+        int index = param.indexOf("=");
+        if (index < 0) {
+            result.setName(param);
+        }
+        else {
+            result.setName(param.substring(0, index));
+
+            String value = param.substring(index + 1);
+            int commaIndex = value.indexOf(',');
+            if (commaIndex < 0) {
+                result.addValue(value);
+            }
+            else {
+                for (String v : value.split(",")) {
+                    result.addValue(v);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static class QueryParam implements Comparable<QueryParam> {
+        private String name;
+        private final List<String> values = new ArrayList<String>();
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getValues() {
+            return values;
+        }
+
+        public void addValue(String value) {
+            values.add(value);
+        }
+
+        public int compareTo(QueryParam o) {
+            return this.name.compareTo(o.name);
+        }
     }
 }

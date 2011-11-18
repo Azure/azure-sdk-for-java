@@ -19,21 +19,6 @@ public class JerseyHelpers {
         }
     }
 
-    public static WebResource setCanonicalizedResource(WebResource webResource, String accountName, String operation) {
-        // Resource path
-        String value = "/" + accountName;
-        value += webResource.getURI().getPath();
-
-        // "comp" param
-        if (operation != null) {
-            value += "?comp=" + operation;
-        }
-
-        webResource.setProperty("canonicalizedResource", value);
-
-        return webResource;
-    }
-
     public static class EnumCommaStringBuilder {
         private final StringBuilder sb = new StringBuilder();
 

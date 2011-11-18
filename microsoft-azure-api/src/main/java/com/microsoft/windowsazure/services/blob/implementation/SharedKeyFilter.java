@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.blob.implementation;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
+import com.microsoft.windowsazure.services.blob.implementation.SharedKeyUtils.QueryParam;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -31,18 +31,23 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
 
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
-        // Only sign if no other filter has done it yet
-        if (cr.getHeaders().getFirst("Authorization") == null) {
-            sign(cr);
-        }
+        // Only sign if no other filter is handling authorization
+        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null) {
+            cr.getProperties().put(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER, null);
 
-        // Register ourselves as  listener so we are called back when the entity is
-        // written to the output stream by the next filter in line.
-        if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null) {
-            cr.getProperties().put(EntityStreamingListener.class.getName(), this);
-        }
+            // Register ourselves as  listener so we are called back when the entity is
+            // written to the output stream by the next filter in line.
+            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null) {
+                cr.getProperties().put(EntityStreamingListener.class.getName(), this);
+            }
 
+        }
         return this.getNext().handle(cr);
+    }
+
+    public void onBeforeStreamingEntity(ClientRequest clientRequest) {
+        // All headers should be known at this point, time to sign!
+        sign(clientRequest);
     }
 
     /*
@@ -66,13 +71,12 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         addOptionalDateHeader(cr);
 
         // build signed string
-        String stringToSign =
-                cr.getMethod() + "\n" + getHeader(cr, "Content-Encoding") + "\n" + getHeader(cr, "Content-Language")
-                        + "\n" + getHeader(cr, "Content-Length") + "\n" + getHeader(cr, "Content-MD5") + "\n"
-                        + getHeader(cr, "Content-Type") + "\n" + getHeader(cr, "Date") + "\n"
-                        + getHeader(cr, "If-Modified-Since") + "\n" + getHeader(cr, "If-Match") + "\n"
-                        + getHeader(cr, "If-None-Match") + "\n" + getHeader(cr, "If-Unmodified-Since") + "\n"
-                        + getHeader(cr, "Range") + "\n";
+        String stringToSign = cr.getMethod() + "\n" + getHeader(cr, "Content-Encoding") + "\n"
+                + getHeader(cr, "Content-Language") + "\n" + getHeader(cr, "Content-Length") + "\n"
+                + getHeader(cr, "Content-MD5") + "\n" + getHeader(cr, "Content-Type") + "\n" + getHeader(cr, "Date")
+                + "\n" + getHeader(cr, "If-Modified-Since") + "\n" + getHeader(cr, "If-Match") + "\n"
+                + getHeader(cr, "If-None-Match") + "\n" + getHeader(cr, "If-Unmodified-Since") + "\n"
+                + getHeader(cr, "Range") + "\n";
 
         stringToSign += getCanonicalizedHeaders(cr);
         stringToSign += getCanonicalizedResource(cr);
@@ -158,7 +162,7 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
 
         // 3. Retrieve all query parameters on the resource URI, including the comp parameter if it exists.
         // 6. URL-decode each query parameter name and value.
-        List<QueryParam> queryParams = getQueryParams(cr.getURI().getQuery());
+        List<QueryParam> queryParams = SharedKeyUtils.getQueryParams(cr.getURI().getQuery());
 
         // 4. Convert all parameter names to lowercase.
         for (QueryParam param : queryParams) {
@@ -191,75 +195,7 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         return result;
     }
 
-    private List<QueryParam> getQueryParams(String queryString) {
-        ArrayList<QueryParam> result = new ArrayList<QueryParam>();
-
-        if (queryString != null) {
-            String[] params = queryString.split("&");
-            for (String param : params) {
-                result.add(getQueryParam(param));
-            }
-        }
-
-        return result;
-    }
-
-    private QueryParam getQueryParam(String param) {
-        QueryParam result = new QueryParam();
-
-        int index = param.indexOf("=");
-        if (index < 0) {
-            result.setName(param);
-        }
-        else {
-            result.setName(param.substring(0, index));
-
-            String value = param.substring(index + 1);
-            int commaIndex = value.indexOf(',');
-            if (commaIndex < 0) {
-                result.addValue(value);
-            }
-            else {
-                for (String v : value.split(",")) {
-                    result.addValue(v);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private static class QueryParam implements Comparable<QueryParam> {
-        private String name;
-        private final List<String> values = new ArrayList<String>();
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<String> getValues() {
-            return values;
-        }
-
-        public void addValue(String value) {
-            values.add(value);
-        }
-
-        public int compareTo(QueryParam o) {
-            return this.name.compareTo(o.name);
-        }
-    }
-
     private String getHeader(ClientRequest cr, String headerKey) {
         return SharedKeyUtils.getHeader(cr, headerKey);
-    }
-
-    public void onBeforeStreamingEntity(ClientRequest clientRequest) {
-        // All headers should be known at this point, time to sign!
-        sign(clientRequest);
     }
 }

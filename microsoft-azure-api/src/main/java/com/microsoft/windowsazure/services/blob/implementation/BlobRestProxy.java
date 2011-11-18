@@ -71,8 +71,8 @@ public class BlobRestProxy implements BlobContract {
     private final SharedKeyFilter filter;
 
     @Inject
-    public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-            SharedKeyFilter filter) {
+    public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
+            @Named(BlobConfiguration.URL) String url, SharedKeyFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -83,8 +83,8 @@ public class BlobRestProxy implements BlobContract {
         channel.addFilter(filter);
     }
 
-    public BlobRestProxy(HttpURLConnectionClient client, ServiceFilter[] filters, String accountName, String url, SharedKeyFilter filter,
-            RFC1123DateConverter dateMapper) {
+    public BlobRestProxy(HttpURLConnectionClient client, ServiceFilter[] filters, String accountName, String url,
+            SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = client;
         this.filters = filters;
@@ -213,10 +213,6 @@ public class BlobRestProxy implements BlobContract {
         return webResource;
     }
 
-    private WebResource setCanonicalizedResource(WebResource webResource, String operation) {
-        return JerseyHelpers.setCanonicalizedResource(webResource, this.accountName, operation);
-    }
-
     private String getCopyBlobSourceName(String sourceContainer, String sourceBlob, CopyBlobOptions options) {
         // Specifies the name of the source blob, in one of the following
         // formats:
@@ -244,8 +240,8 @@ public class BlobRestProxy implements BlobContract {
     }
 
     public GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, "properties");
+        WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
+                .queryParam("comp", "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -258,9 +254,10 @@ public class BlobRestProxy implements BlobContract {
         setServiceProperties(serviceProperties, new BlobServiceOptions());
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path("/").queryParam("resType", "service").queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, "properties");
+    public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options)
+            throws ServiceException {
+        WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
+                .queryParam("comp", "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -274,7 +271,6 @@ public class BlobRestProxy implements BlobContract {
 
     public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, null);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
@@ -290,7 +286,6 @@ public class BlobRestProxy implements BlobContract {
 
     public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, null);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
@@ -302,7 +297,8 @@ public class BlobRestProxy implements BlobContract {
         return getContainerProperties(container, new BlobServiceOptions());
     }
 
-    public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options)
+            throws ServiceException {
         return getContainerPropertiesImpl(container, options, null);
     }
 
@@ -310,14 +306,15 @@ public class BlobRestProxy implements BlobContract {
         return getContainerMetadata(container, new BlobServiceOptions());
     }
 
-    public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options)
+            throws ServiceException {
         return getContainerPropertiesImpl(container, options, "metadata");
     }
 
-    private GetContainerPropertiesResult getContainerPropertiesImpl(String container, BlobServiceOptions options, String operation) throws ServiceException {
+    private GetContainerPropertiesResult getContainerPropertiesImpl(String container, BlobServiceOptions options,
+            String operation) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
         webResource = addOptionalQueryParam(webResource, "comp", operation);
-        webResource = setCanonicalizedResource(webResource, operation);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -337,8 +334,8 @@ public class BlobRestProxy implements BlobContract {
     }
 
     public GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "acl");
-        webResource = setCanonicalizedResource(webResource, "acl");
+        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+                .queryParam("comp", "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -362,8 +359,8 @@ public class BlobRestProxy implements BlobContract {
     }
 
     public void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "acl");
-        webResource = setCanonicalizedResource(webResource, "acl");
+        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+                .queryParam("comp", "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-public-access", acl.getPublicAccess());
@@ -378,9 +375,10 @@ public class BlobRestProxy implements BlobContract {
         setContainerMetadata(container, metadata, new SetContainerMetadataOptions());
     }
 
-    public void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container").queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, "metadata");
+    public void setContainerMetadata(String container, HashMap<String, String> metadata,
+            SetContainerMetadataOptions options) throws ServiceException {
+        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+                .queryParam("comp", "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
@@ -396,7 +394,6 @@ public class BlobRestProxy implements BlobContract {
 
     public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("comp", "list");
-        webResource = setCanonicalizedResource(webResource, "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
@@ -412,8 +409,8 @@ public class BlobRestProxy implements BlobContract {
     }
 
     public ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("comp", "list").queryParam("resType", "container");
-        webResource = setCanonicalizedResource(webResource, "list");
+        WebResource webResource = getResource(options).path(container).queryParam("comp", "list")
+                .queryParam("resType", "container");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
@@ -429,9 +426,9 @@ public class BlobRestProxy implements BlobContract {
         createPageBlob(container, blob, length, new CreateBlobOptions());
     }
 
-    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException {
+    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
-        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-type", "PageBlob");
@@ -448,9 +445,9 @@ public class BlobRestProxy implements BlobContract {
         createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
     }
 
-    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException {
+    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
-        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -465,9 +462,9 @@ public class BlobRestProxy implements BlobContract {
         return getBlobProperties(container, blob, new GetBlobPropertiesOptions());
     }
 
-    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException {
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
-        webResource = setCanonicalizedResource(webResource, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -484,9 +481,9 @@ public class BlobRestProxy implements BlobContract {
         return getBlobMetadata(container, blob, new GetBlobMetadataOptions());
     }
 
-    public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options) throws ServiceException {
+    public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, "metadata");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -508,9 +505,9 @@ public class BlobRestProxy implements BlobContract {
         return setBlobProperties(container, blob, new SetBlobPropertiesOptions());
     }
 
-    public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) throws ServiceException {
+    public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "properties");
-        webResource = setCanonicalizedResource(webResource, "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getCacheControl());
@@ -539,14 +536,14 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
-    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) throws ServiceException {
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata)
+            throws ServiceException {
         return setBlobMetadata(container, blob, metadata, new SetBlobMetadataOptions());
     }
 
-    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options)
-            throws ServiceException {
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata,
+            SetBlobMetadataOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
-        webResource = setCanonicalizedResource(webResource, "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -569,7 +566,6 @@ public class BlobRestProxy implements BlobContract {
 
     public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
-        webResource = setCanonicalizedResource(webResource, null);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -595,11 +591,11 @@ public class BlobRestProxy implements BlobContract {
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only" : "include");
+        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only"
+                : "include");
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         builder.delete();
@@ -609,9 +605,9 @@ public class BlobRestProxy implements BlobContract {
         return createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions());
     }
 
-    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob).queryParam("comp", "snapshot");
-        webResource = setCanonicalizedResource(webResource, "snapshot");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -630,18 +626,20 @@ public class BlobRestProxy implements BlobContract {
         return blobSnapshot;
     }
 
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) throws ServiceException {
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
+            throws ServiceException {
         copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
     }
 
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options) {
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob, CopyBlobOptions options) {
         WebResource webResource = getResource(options).path(destinationContainer).path(destinationBlob);
-        webResource = setCanonicalizedResource(webResource, null);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-source-lease-id", options.getSourceLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-copy-source", getCopyBlobSourceName(sourceContainer, sourceBlob, options));
+        builder = addOptionalHeader(builder, "x-ms-copy-source",
+                getCopyBlobSourceName(sourceContainer, sourceBlob, options));
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
         builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
@@ -654,7 +652,8 @@ public class BlobRestProxy implements BlobContract {
         return acquireLease(container, blob, new AcquireLeaseOptions());
     }
 
-    public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException {
+    public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options)
+            throws ServiceException {
         return putLeaseImpl("acquire", container, blob, null/* leaseId */, options, options.getAccessCondition());
     }
 
@@ -662,7 +661,8 @@ public class BlobRestProxy implements BlobContract {
         return renewLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
-    public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         return putLeaseImpl("renew", container, blob, leaseId, options, null/* accessCondition */);
     }
 
@@ -670,7 +670,8 @@ public class BlobRestProxy implements BlobContract {
         releaseLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
-    public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         putLeaseImpl("release", container, blob, leaseId, options, null/* accessCondition */);
     }
 
@@ -678,14 +679,14 @@ public class BlobRestProxy implements BlobContract {
         breakLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         putLeaseImpl("break", container, blob, leaseId, options, null/* accessCondition */);
     }
 
-    private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId, BlobServiceOptions options,
-            AccessCondition accessCondition) throws ServiceException {
+    private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId,
+            BlobServiceOptions options, AccessCondition accessCondition) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "lease");
-        webResource = setCanonicalizedResource(webResource, "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
@@ -705,24 +706,25 @@ public class BlobRestProxy implements BlobContract {
         return clearBlobPages(container, blob, range, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range,
+            CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("clear", container, blob, range, 0, null, options);
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream)
-            throws ServiceException {
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
+            InputStream contentStream) throws ServiceException {
         return createBlobPages(container, blob, range, length, contentStream, new CreateBlobPagesOptions());
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream,
-            CreateBlobPagesOptions options) throws ServiceException {
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
+            InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("update", container, blob, range, length, contentStream, options);
     }
 
-    private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob, PageRange range, long length,
-            InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
+    private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob,
+            PageRange range, long length, InputStream contentStream, CreateBlobPagesOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "page");
-        webResource = setCanonicalizedResource(webResource, "page");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, range.getStart(), range.getEnd());
@@ -750,9 +752,9 @@ public class BlobRestProxy implements BlobContract {
         return listBlobRegions(container, blob, new ListBlobRegionsOptions());
     }
 
-    public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) throws ServiceException {
+    public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "pagelist");
-        webResource = setCanonicalizedResource(webResource, "pagelist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
@@ -770,15 +772,15 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
-    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException {
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream)
+            throws ServiceException {
         createBlobBlock(container, blob, blockId, contentStream, new CreateBlobBlockOptions());
     }
 
-    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options)
-            throws ServiceException {
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream,
+            CreateBlobBlockOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "block");
         webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
-        webResource = setCanonicalizedResource(webResource, "block");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -792,9 +794,9 @@ public class BlobRestProxy implements BlobContract {
         commitBlobBlocks(container, blob, blockList, new CommitBlobBlocksOptions());
     }
 
-    public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException {
+    public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
-        webResource = setCanonicalizedResource(webResource, "blocklist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -814,9 +816,9 @@ public class BlobRestProxy implements BlobContract {
         return listBlobBlocks(container, blob, new ListBlobBlocksOptions());
     }
 
-    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) throws ServiceException {
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
+            throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
-        webResource = setCanonicalizedResource(webResource, "blocklist");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
 
