@@ -35,11 +35,11 @@ public abstract class IntegrationTestBase {
 
     @BeforeClass
     public static void initializeSystem() {
-        System.out.println("initialize");
+        //System.out.println("initialize");
     }
 
     @Before
     public void initialize() throws Exception {
-        System.out.println("initialize");
+        //System.out.println("initialize");
     }
 }
