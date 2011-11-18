@@ -171,6 +171,17 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
         // Write the entity (if any)
         Object entity = clientRequest.getEntity();
+
+        // If no entity and "PUT method, force an empty entity to force the underlying
+        // connection to set the "Content-Length" header to 0.
+        // This is needed because some web servers require a "Content-Length" field for
+        // all PUT method calls (unless chunked encoding is used).
+        if (entity == null && "PUT".equals(clientRequest.getMethod())) {
+            entity = new byte[0];
+            clientRequest.setEntity(entity);
+        }
+
+        // Send headers and entity on the wire
         if (entity != null) {
             urlConnection.setDoOutput(true);
 
@@ -186,9 +197,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
                         urlConnection.setFixedLengthStreamingMode((int) size);
                     }
                     else {
-                        Integer chunkedEncodingSize =
-                                (Integer) clientRequest.getProperties()
-                                        .get(ClientConfig.PROPERTY_CHUNKED_ENCODING_SIZE);
+                        Integer chunkedEncodingSize = (Integer) clientRequest.getProperties().get(
+                                ClientConfig.PROPERTY_CHUNKED_ENCODING_SIZE);
                         if (chunkedEncodingSize != null) {
                             inStreamingMode = true;
                             entityStreamingListener.onBeforeStreamingEntity(clientRequest);
@@ -217,8 +227,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private EntityStreamingListener getEntityStreamingListener(final ClientRequest clientRequest) {
-        EntityStreamingListener result =
-                (EntityStreamingListener) clientRequest.getProperties().get(EntityStreamingListener.class.getName());
+        EntityStreamingListener result = (EntityStreamingListener) clientRequest.getProperties().get(
+                EntityStreamingListener.class.getName());
 
         if (result != null)
             return result;
@@ -227,6 +237,14 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private void setContentLengthHeader(ClientRequest clientRequest, int size) {
+        // Skip if already set
+        if (clientRequest.getHeaders().getFirst("Content-Length") != null)
+            return;
+
+        // Skip if size is unknown
+        if (size < 0)
+            return;
+
         clientRequest.getHeaders().putSingle("Content-Length", size);
     }
 

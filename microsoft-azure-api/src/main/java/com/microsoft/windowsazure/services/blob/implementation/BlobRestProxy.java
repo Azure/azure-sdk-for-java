@@ -261,8 +261,7 @@ public class BlobRestProxy implements BlobContract {
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/xml").put(serviceProperties);
+        builder.put(serviceProperties);
     }
 
     public void createContainer(String container) throws ServiceException {
@@ -276,8 +275,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalHeader(builder, "x-ms-blob-public-access", options.getPublicAccess());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.put();
     }
 
     public void deleteContainer(String container) throws ServiceException {
@@ -367,8 +365,8 @@ public class BlobRestProxy implements BlobContract {
 
         ContainerACL.SignedIdentifiers si = new ContainerACL.SignedIdentifiers();
         si.setSignedIdentifiers(acl.getSignedIdentifiers());
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/xml").put(si);
+
+        builder.put(si);
     }
 
     public void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException {
@@ -384,8 +382,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, metadata);
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.put();
     }
 
     public ListContainersResult listContainers() throws ServiceException {
@@ -437,8 +434,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addPutBlobHeaders(options, builder);
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/octet-stream").put(new byte[0]);
+        builder.put();
     }
 
     public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
@@ -521,8 +517,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
 
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
@@ -550,8 +545,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, metadata);
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
@@ -614,8 +608,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
 
         CreateBlobSnapshotResult blobSnapshot = new CreateBlobSnapshotResult();
@@ -644,8 +637,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
         builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.put();
     }
 
     public AcquireLeaseResult acquireLease(String container, String blob) throws ServiceException {
@@ -694,7 +686,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalAccessContitionHeader(builder, accessCondition);
 
         // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.type("text/plain").put(ClientResponse.class, "");
+        ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
 
         AcquireLeaseResult result = new AcquireLeaseResult();
@@ -734,9 +726,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        Object content = (contentStream == null ? new byte[0] : contentStream);
-        ClientResponse response = builder.type("application/octet-stream").put(ClientResponse.class, content);
+        ClientResponse response = builder.put(ClientResponse.class, contentStream);
         ThrowIfError(response);
 
         CreateBlobPagesResult result = new CreateBlobPagesResult();
@@ -786,8 +776,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/octet-stream").put(contentStream);
+        builder.put(contentStream);
     }
 
     public void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException {
@@ -808,8 +797,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/xml").put(blockList);
+        builder.put(blockList);
     }
 
     public ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException {
