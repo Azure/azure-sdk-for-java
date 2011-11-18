@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.configuration;
+package com.microsoft.windowsazure.common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,6 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
-import com.microsoft.windowsazure.configuration.builder.DefaultBuilder;
 import com.sun.jersey.api.client.config.ClientConfig;
 
 public class Configuration {

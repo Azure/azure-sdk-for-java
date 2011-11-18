@@ -10,10 +10,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.http.ServiceFilter.Request;
-import com.microsoft.windowsazure.http.ServiceFilter.Response;
+    import com.microsoft.windowsazure.common.Configuration;
+    import com.microsoft.windowsazure.common.ServiceException;
+    import com.microsoft.windowsazure.common.ServiceFilter;
+    import com.microsoft.windowsazure.common.ServiceFilter.Request;
+    import com.microsoft.windowsazure.common.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
@@ -229,7 +230,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         final List<Response> responses = new ArrayList<Response>();
 
         ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
-            public Response handle(Request request, Next next) {
+            public Response handle(Request request, Next next) throws Exception {
                 requests.add(request);
                 Response response = next.handle(request);
                 responses.add(response);

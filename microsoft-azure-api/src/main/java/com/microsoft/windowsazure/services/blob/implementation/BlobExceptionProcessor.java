@@ -8,9 +8,9 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.blob.BlobServiceContract;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
@@ -55,21 +55,21 @@ import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class BlobServiceImpl implements BlobServiceContract {
-    private static Log log = LogFactory.getLog(BlobServiceImpl.class);
-    private final BlobServiceContract service;
+public class BlobExceptionProcessor implements BlobContract {
+    private static Log log = LogFactory.getLog(BlobExceptionProcessor.class);
+    private final BlobContract service;
 
     @Inject
-    public BlobServiceImpl(BlobServiceForJersey service) {
+    public BlobExceptionProcessor(BlobRestProxy service) {
         this.service = service;
     }
 
-    public BlobServiceImpl(BlobServiceContract service) {
+    public BlobExceptionProcessor(BlobContract service) {
         this.service = service;
     }
 
-    public BlobServiceContract withFilter(ServiceFilter filter) {
-        return new BlobServiceImpl(service.withFilter(filter));
+    public BlobContract withFilter(ServiceFilter filter) {
+        return new BlobExceptionProcessor(service.withFilter(filter));
     }
 
     private ServiceException processCatch(ServiceException e) {

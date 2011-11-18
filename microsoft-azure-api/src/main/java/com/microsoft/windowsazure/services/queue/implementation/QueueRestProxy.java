@@ -7,13 +7,12 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ClientFilterAdapter;
-import com.microsoft.windowsazure.http.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
-import com.microsoft.windowsazure.services.queue.QueueServiceContract;
+import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
@@ -27,13 +26,14 @@ import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
+import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class QueueServiceForJersey implements QueueServiceContract {
-    //private static Log log = LogFactory.getLog(QueueServiceForJersey.class);
+public class QueueRestProxy implements QueueContract {
+    //private static Log log = LogFactory.getLog(QueueRestProxy.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final Client channel;
@@ -44,7 +44,7 @@ public class QueueServiceForJersey implements QueueServiceContract {
     private final SharedKeyLiteFilter filter;
 
     @Inject
-    public QueueServiceForJersey(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName, @Named(QueueConfiguration.URL) String url,
+    public QueueRestProxy(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName, @Named(QueueConfiguration.URL) String url,
             SharedKeyLiteFilter filter) {
 
         this.channel = channel;
@@ -56,8 +56,7 @@ public class QueueServiceForJersey implements QueueServiceContract {
         channel.addFilter(filter);
     }
 
-    public QueueServiceForJersey(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter,
-            RFC1123DateConverter dateMapper) {
+    public QueueRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = channel;
         this.filters = filters;
@@ -67,10 +66,10 @@ public class QueueServiceForJersey implements QueueServiceContract {
         this.dateMapper = dateMapper;
     }
 
-    public QueueServiceContract withFilter(ServiceFilter filter) {
+    public QueueContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new QueueServiceForJersey(this.channel, newFilters, this.accountName, this.url, this.filter, this.dateMapper);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.filter, this.dateMapper);
     }
 
     private void ThrowIfError(ClientResponse r) {

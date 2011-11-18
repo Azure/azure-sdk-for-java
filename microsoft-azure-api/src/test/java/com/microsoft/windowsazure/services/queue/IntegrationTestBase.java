@@ -5,7 +5,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 
 public abstract class IntegrationTestBase {
     protected static Configuration createConfiguration() {

@@ -2,7 +2,7 @@ package com.microsoft.windowsazure.configuration.builder;
 
 import java.util.Map;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
+import com.microsoft.windowsazure.common.Builder;
 
 public class AlterClassWithProperties implements Builder.Alteration<ClassWithProperties> {
 

@@ -11,9 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ClientFilterAdapter;
-import com.microsoft.windowsazure.http.ServiceFilter;
+
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
@@ -35,6 +33,11 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscription
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
+
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

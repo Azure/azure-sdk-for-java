@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 
 public class ServiceBusConfiguration {
     public final static String URI = "serviceBus.uri";

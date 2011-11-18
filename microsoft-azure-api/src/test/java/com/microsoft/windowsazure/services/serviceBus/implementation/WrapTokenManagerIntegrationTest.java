@@ -4,7 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.configuration.Configuration;
+import com.microsoft.windowsazure.common.Configuration;
 
 public class WrapTokenManagerIntegrationTest {
     @Test

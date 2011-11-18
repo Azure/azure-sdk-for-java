@@ -2,8 +2,8 @@ package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.FilterableService;
+import com.microsoft.windowsazure.common.FilterableService;
+import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
@@ -18,7 +18,7 @@ import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
-public interface QueueServiceContract extends FilterableService<QueueServiceContract> {
+public interface QueueContract extends FilterableService<QueueContract> {
     GetServicePropertiesResult getServiceProperties() throws ServiceException;
 
     GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException;

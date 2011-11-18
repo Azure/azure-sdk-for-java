@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.http;
+package com.microsoft.windowsazure.common;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -7,10 +7,10 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedMap;
 
 public interface ServiceFilter {
-    Response handle(Request request, Next next);
+    Response handle(Request request, Next next) throws Exception;
 
     public interface Next {
-        Response handle(Request request);
+        Response handle(Request request) throws Exception;
     }
 
     public interface Request {
