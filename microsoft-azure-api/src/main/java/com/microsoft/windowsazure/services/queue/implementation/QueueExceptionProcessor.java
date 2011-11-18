@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.ServiceException;
-import com.microsoft.windowsazure.http.ServiceFilter;
-import com.microsoft.windowsazure.services.queue.QueueServiceContract;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
@@ -27,21 +27,21 @@ import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class QueueServiceImpl implements QueueServiceContract {
-    private static Log log = LogFactory.getLog(QueueServiceImpl.class);
-    private final QueueServiceContract service;
+public class QueueExceptionProcessor implements QueueContract {
+    private static Log log = LogFactory.getLog(QueueExceptionProcessor.class);
+    private final QueueContract service;
 
     @Inject
-    public QueueServiceImpl(QueueServiceForJersey service) {
+    public QueueExceptionProcessor(QueueRestProxy service) {
         this.service = service;
     }
 
-    public QueueServiceImpl(QueueServiceContract service) {
+    public QueueExceptionProcessor(QueueContract service) {
         this.service = service;
     }
 
-    public QueueServiceContract withFilter(ServiceFilter filter) {
-        return new QueueServiceImpl(service.withFilter(filter));
+    public QueueContract withFilter(ServiceFilter filter) {
+        return new QueueExceptionProcessor(service.withFilter(filter));
     }
 
     private ServiceException processCatch(ServiceException e) {

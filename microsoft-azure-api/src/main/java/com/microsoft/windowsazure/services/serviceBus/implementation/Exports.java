@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
+import com.microsoft.windowsazure.common.Builder;
 
 public class Exports implements Builder.Exports {
 

@@ -2,7 +2,7 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import java.util.Map;
 
-import com.microsoft.windowsazure.configuration.builder.Builder;
+import com.microsoft.windowsazure.common.Builder;
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPropertiesMapper;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModelProvider;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MarshallerProvider;
