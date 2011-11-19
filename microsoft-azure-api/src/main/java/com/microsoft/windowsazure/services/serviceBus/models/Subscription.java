@@ -94,11 +94,6 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
         return getModel().getMessageCount();
     }
 
-    public Subscription setMessageCount(Long value) {
-        getModel().setMessageCount(value);
-        return this;
-    }
-
     public Integer getMaxDeliveryCount() {
         return getModel().getMaxDeliveryCount();
     }
