@@ -111,8 +111,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     private static void createContainers(BlobContract service, String prefix, String[] list) throws Exception {
-        Set<String> containers = listContainers(service, testContainersPrefix);
-        for (String item : testContainers) {
+        Set<String> containers = listContainers(service, prefix);
+        for (String item : list) {
             if (!containers.contains(item)) {
                 service.createContainer(item);
             }
