@@ -16,9 +16,13 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.Queue;
@@ -55,8 +59,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         return ServiceExceptionFactory.process("serviceBus", e);
     }
 
-    public void sendQueueMessage(String path, Message message)
-            throws ServiceException {
+    public void sendQueueMessage(String path, Message message) throws ServiceException {
         try {
             next.sendQueueMessage(path, message);
         }
@@ -68,8 +71,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
-            throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName) throws ServiceException {
         try {
             return next.receiveQueueMessage(queueName);
         }
@@ -81,8 +83,8 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public ReceiveQueueMessageResult receiveQueueMessage(String queueName,
-            ReceiveMessageOptions options) throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName, ReceiveMessageOptions options)
+            throws ServiceException {
         try {
             return next.receiveQueueMessage(queueName, options);
         }
@@ -94,8 +96,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void sendTopicMessage(String path, Message message)
-            throws ServiceException {
+    public void sendTopicMessage(String path, Message message) throws ServiceException {
         try {
             next.sendTopicMessage(path, message);
         }
@@ -107,11 +108,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
-            String subscriptionName) throws ServiceException {
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName)
+            throws ServiceException {
         try {
-            return next.receiveSubscriptionMessage(topicName,
-                    subscriptionName);
+            return next.receiveSubscriptionMessage(topicName, subscriptionName);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -121,12 +121,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
-            String subscriptionName, ReceiveMessageOptions options)
-            throws ServiceException {
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName,
+            ReceiveMessageOptions options) throws ServiceException {
         try {
-            return next.receiveSubscriptionMessage(topicName,
-                    subscriptionName, options);
+            return next.receiveSubscriptionMessage(topicName, subscriptionName, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -256,7 +254,8 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) throws ServiceException {
+    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription)
+            throws ServiceException {
         try {
             return next.createSubscription(topicPath, subscription);
         }
@@ -268,8 +267,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void deleteSubscription(String topicPath, String subscriptionName)
-            throws ServiceException {
+    public void deleteSubscription(String topicPath, String subscriptionName) throws ServiceException {
         try {
             next.deleteSubscription(topicPath, subscriptionName);
         }
@@ -281,8 +279,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName)
-            throws ServiceException {
+    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) throws ServiceException {
         try {
             return next.getSubscription(topicPath, subscriptionName);
         }
@@ -306,8 +303,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateRuleResult createRule(String topicPath, String subscriptionName,
-            Rule rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicPath, String subscriptionName, Rule rule) throws ServiceException {
         try {
             return next.createRule(topicPath, subscriptionName, rule);
         }
@@ -319,8 +315,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void deleteRule(String topicPath, String subscriptionName,
-            String ruleName) throws ServiceException {
+    public void deleteRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException {
         try {
             next.deleteRule(topicPath, subscriptionName, ruleName);
         }
@@ -332,8 +327,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public GetRuleResult getRule(String topicPath, String subscriptionName,
-            String ruleName) throws ServiceException {
+    public GetRuleResult getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException {
         try {
             return next.getRule(topicPath, subscriptionName, ruleName);
         }
@@ -345,10 +339,59 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public ListRulesResult listRules(String topicPath, String subscriptionName)
-            throws ServiceException {
+    public ListRulesResult listRules(String topicPath, String subscriptionName) throws ServiceException {
         try {
             return next.listRules(topicPath, subscriptionName);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
+        try {
+            return next.listQueues(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
+        try {
+            return next.listTopics(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ListSubscriptionsResult listSubscriptions(String topicName, ListSubscriptionsOptions options)
+            throws ServiceException {
+        try {
+            return next.listSubscriptions(topicName, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    public ListRulesResult listRules(String topicName, String subscriptionName, ListRulesOptions options)
+            throws ServiceException {
+        try {
+            return next.listRules(topicName, subscriptionName, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
