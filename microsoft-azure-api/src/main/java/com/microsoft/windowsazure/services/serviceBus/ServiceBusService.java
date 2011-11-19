@@ -13,9 +13,13 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.Queue;
@@ -54,36 +58,31 @@ public class ServiceBusService implements ServiceBusContract {
         return next.withFilter(filter);
     }
 
-    public void sendQueueMessage(String queueName, Message message)
-            throws ServiceException {
+    public void sendQueueMessage(String queueName, Message message) throws ServiceException {
         next.sendQueueMessage(queueName, message);
     }
 
-    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
-            throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName) throws ServiceException {
         return next.receiveQueueMessage(queueName);
     }
 
-    public ReceiveQueueMessageResult receiveQueueMessage(String queueName,
-            ReceiveMessageOptions options) throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName, ReceiveMessageOptions options)
+            throws ServiceException {
         return next.receiveQueueMessage(queueName, options);
     }
 
-    public void sendTopicMessage(String topicName, Message message)
-            throws ServiceException {
+    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
         next.sendTopicMessage(topicName, message);
     }
 
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
-            String subscriptionName) throws ServiceException {
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName)
+            throws ServiceException {
         return next.receiveSubscriptionMessage(topicName, subscriptionName);
     }
 
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName,
-            String subscriptionName, ReceiveMessageOptions options)
-            throws ServiceException {
-        return next.receiveSubscriptionMessage(topicName, subscriptionName,
-                options);
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName,
+            ReceiveMessageOptions options) throws ServiceException {
+        return next.receiveSubscriptionMessage(topicName, subscriptionName, options);
     }
 
     public void unlockMessage(Message message) throws ServiceException {
@@ -126,17 +125,16 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listTopics();
     }
 
-    public CreateSubscriptionResult createSubscription(String topicName, Subscription subscription) throws ServiceException {
+    public CreateSubscriptionResult createSubscription(String topicName, Subscription subscription)
+            throws ServiceException {
         return next.createSubscription(topicName, subscription);
     }
 
-    public void deleteSubscription(String topicName, String subscriptionName)
-            throws ServiceException {
+    public void deleteSubscription(String topicName, String subscriptionName) throws ServiceException {
         next.deleteSubscription(topicName, subscriptionName);
     }
 
-    public GetSubscriptionResult getSubscription(String topicName, String subscriptionName)
-            throws ServiceException {
+    public GetSubscriptionResult getSubscription(String topicName, String subscriptionName) throws ServiceException {
         return next.getSubscription(topicName, subscriptionName);
     }
 
@@ -144,23 +142,37 @@ public class ServiceBusService implements ServiceBusContract {
         return next.listSubscriptions(topicName);
     }
 
-    public CreateRuleResult createRule(String topicName, String subscriptionName,
-            Rule rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicName, String subscriptionName, Rule rule) throws ServiceException {
         return next.createRule(topicName, subscriptionName, rule);
     }
 
-    public void deleteRule(String topicName, String subscriptionName,
-            String ruleName) throws ServiceException {
+    public void deleteRule(String topicName, String subscriptionName, String ruleName) throws ServiceException {
         next.deleteRule(topicName, subscriptionName, ruleName);
     }
 
-    public GetRuleResult getRule(String topicName, String subscriptionName,
-            String ruleName) throws ServiceException {
+    public GetRuleResult getRule(String topicName, String subscriptionName, String ruleName) throws ServiceException {
         return next.getRule(topicName, subscriptionName, ruleName);
     }
 
-    public ListRulesResult listRules(String topicName, String subscriptionName)
-            throws ServiceException {
+    public ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException {
         return next.listRules(topicName, subscriptionName);
+    }
+
+    public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
+        return next.listQueues(options);
+    }
+
+    public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
+        return next.listTopics(options);
+    }
+
+    public ListSubscriptionsResult listSubscriptions(String topicName, ListSubscriptionsOptions options)
+            throws ServiceException {
+        return next.listSubscriptions(topicName, options);
+    }
+
+    public ListRulesResult listRules(String topicName, String subscriptionName, ListRulesOptions options)
+            throws ServiceException {
+        return next.listRules(topicName, subscriptionName, options);
     }
 }

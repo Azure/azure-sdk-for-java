@@ -10,9 +10,13 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.serviceBus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListRulesOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.Queue;
@@ -52,6 +56,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
 
     ListQueuesResult listQueues() throws ServiceException;
 
+    ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException;
+
     CreateTopicResult createTopic(Topic topic) throws ServiceException;
 
     void deleteTopic(String topicName) throws ServiceException;
@@ -59,6 +65,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
     GetTopicResult getTopic(String topicName) throws ServiceException;
 
     ListTopicsResult listTopics() throws ServiceException;
+
+    ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException;
 
     CreateSubscriptionResult createSubscription(String topicName, Subscription subscription) throws ServiceException;
 
@@ -68,6 +76,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
 
     ListSubscriptionsResult listSubscriptions(String topicName) throws ServiceException;
 
+    ListSubscriptionsResult listSubscriptions(String topicName, ListSubscriptionsOptions options)
+            throws ServiceException;
+
     CreateRuleResult createRule(String topicName, String subscriptionName, Rule rule) throws ServiceException;
 
     void deleteRule(String topicName, String subscriptionName, String ruleName) throws ServiceException;
@@ -75,4 +86,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
     GetRuleResult getRule(String topicName, String subscriptionName, String ruleName) throws ServiceException;
 
     ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException;
+
+    ListRulesResult listRules(String topicName, String subscriptionName, ListRulesOptions options)
+            throws ServiceException;
 }
