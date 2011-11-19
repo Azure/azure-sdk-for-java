@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.blob.implementation;
+package com.microsoft.windowsazure.utils.jersey;
 
 import com.sun.jersey.api.client.ClientRequest;
 

@@ -17,16 +17,13 @@ public class RFC1123DateConverter {
         return getFormat().format(date);
     }
 
-    public Date parse(String date) throws ParseException {
-        return getFormat().parse(date);
-    }
-
-    public Date parseNoThrow(String date) {
+    public Date parse(String date) {
         try {
-            return parse(date);
+            return getFormat().parse(date);
         }
         catch (ParseException e) {
-            return null;
+            String msg = String.format("The value \"%s\" is not a valid RFC 1123 date.", date);
+            throw new IllegalArgumentException(msg, e);
         }
     }
 

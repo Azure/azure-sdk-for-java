@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.junit.AfterClass;
@@ -12,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
@@ -20,6 +21,7 @@ import com.microsoft.windowsazure.services.queue.models.ListMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesResult.QueueMessage;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesOptions;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
@@ -72,14 +74,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         // Create all test containers and their content
         Configuration config = createConfiguration();
         QueueContract service = config.create(QueueContract.class);
-        for (int i = 0; i < testQueues.length; i++) {
-            try {
-                service.createQueue(testQueues[i]);
-            }
-            catch (ServiceException e) {
-                // Ignore exception as the containers might not exists
-            }
-        }
+
+        createQueues(service, testQueuesPrefix, testQueues);
     }
 
     @AfterClass
@@ -87,23 +83,35 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         QueueContract service = config.create(QueueContract.class);
 
-        for (int i = 0; i < testQueues.length; i++) {
-            try {
-                service.deleteQueue(testQueues[i]);
-            }
-            catch (ServiceException e) {
-                // Ignore exception as the containers might not exists
-            }
-        }
+        deleteQueues(service, testQueuesPrefix, testQueues);
+        deleteQueues(service, createableQueuesPrefix, creatableQueues);
+    }
 
-        for (int i = 0; i < creatableQueues.length; i++) {
-            try {
-                service.deleteQueue(creatableQueues[i]);
-            }
-            catch (ServiceException e) {
-                // Ignore exception as the containers might not exists
+    private static void createQueues(QueueContract service, String prefix, String[] list) throws Exception {
+        Set<String> containers = listQueues(service, prefix);
+        for (String item : list) {
+            if (!containers.contains(item)) {
+                service.createQueue(item);
             }
         }
+    }
+
+    private static void deleteQueues(QueueContract service, String prefix, String[] list) throws Exception {
+        Set<String> containers = listQueues(service, prefix);
+        for (String item : list) {
+            if (containers.contains(item)) {
+                service.deleteQueue(item);
+            }
+        }
+    }
+
+    private static Set<String> listQueues(QueueContract service, String prefix) throws Exception {
+        HashSet<String> result = new HashSet<String>();
+        ListQueuesResult list = service.listQueues(new ListQueuesOptions().setPrefix(prefix));
+        for (Queue item : list.getQueues()) {
+            result.add(item.getName());
+        }
+        return result;
     }
 
     @Test
@@ -173,7 +181,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueContract service = config.create(QueueContract.class);
 
         // Act
-        service.createQueue(CREATABLE_QUEUE_2, new CreateQueueOptions().addMetadata("foo", "bar").addMetadata("test", "blah"));
+        service.createQueue(CREATABLE_QUEUE_2,
+                new CreateQueueOptions().addMetadata("foo", "bar").addMetadata("test", "blah"));
         GetQueueMetadataResult result = service.getQueueMetadata(CREATABLE_QUEUE_2);
         service.deleteQueue(CREATABLE_QUEUE_2);
 
@@ -211,9 +220,10 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         QueueContract service = config.create(QueueContract.class);
 
         // Act
-        ListQueuesResult result = service.listQueues(new ListQueuesOptions().setMaxResults(3).setPrefix(testQueuesPrefix));
-        ListQueuesResult result2 = service.listQueues(new ListQueuesOptions().setMarker(result.getNextMarker()).setPrefix(testQueuesPrefix)
-                .setIncludeMetadata(true));
+        ListQueuesResult result = service.listQueues(new ListQueuesOptions().setMaxResults(3).setPrefix(
+                testQueuesPrefix));
+        ListQueuesResult result2 = service.listQueues(new ListQueuesOptions().setMarker(result.getNextMarker())
+                .setPrefix(testQueuesPrefix).setIncludeMetadata(true));
 
         // Assert
         assertNotNull(result);
@@ -334,8 +344,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_3, "message2");
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_3, "message3");
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_3, "message4");
-        ListMessagesResult result = service.listMessages(TEST_QUEUE_FOR_MESSAGES_3, new ListMessagesOptions().setNumberOfMessages(4)
-                .setVisibilityTimeoutInSeconds(20));
+        ListMessagesResult result = service.listMessages(TEST_QUEUE_FOR_MESSAGES_3, new ListMessagesOptions()
+                .setNumberOfMessages(4).setVisibilityTimeoutInSeconds(20));
 
         // Assert
         assertNotNull(result);
@@ -380,7 +390,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result);
         assertEquals(1, result.getQueueMessages().size());
 
-        com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(0);
+        com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result
+                .getQueueMessages().get(0);
 
         assertNotNull(entry.getMessageId());
         assertNotNull(entry.getMessageText());
@@ -408,13 +419,15 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message2");
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message3");
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_5, "message4");
-        PeekMessagesResult result = service.peekMessages(TEST_QUEUE_FOR_MESSAGES_5, new PeekMessagesOptions().setNumberOfMessages(4));
+        PeekMessagesResult result = service.peekMessages(TEST_QUEUE_FOR_MESSAGES_5,
+                new PeekMessagesOptions().setNumberOfMessages(4));
 
         // Assert
         assertNotNull(result);
         assertEquals(4, result.getQueueMessages().size());
         for (int i = 0; i < 4; i++) {
-            com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result.getQueueMessages().get(i);
+            com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result
+                    .getQueueMessages().get(i);
 
             assertNotNull(entry.getMessageId());
             assertNotNull(entry.getMessageText());
@@ -461,8 +474,10 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message4");
 
         ListMessagesResult result = service.listMessages(TEST_QUEUE_FOR_MESSAGES_7);
-        service.deleteMessage(TEST_QUEUE_FOR_MESSAGES_7, result.getQueueMessages().get(0).getMessageId(), result.getQueueMessages().get(0).getPopReceipt());
-        ListMessagesResult result2 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_7, new ListMessagesOptions().setNumberOfMessages(32));
+        service.deleteMessage(TEST_QUEUE_FOR_MESSAGES_7, result.getQueueMessages().get(0).getMessageId(), result
+                .getQueueMessages().get(0).getPopReceipt());
+        ListMessagesResult result2 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_7,
+                new ListMessagesOptions().setNumberOfMessages(32));
 
         // Assert
         assertNotNull(result2);
@@ -483,8 +498,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_8, "message1");
 
         ListMessagesResult listResult1 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_8);
-        UpdateMessageResult updateResult = service.updateMessage(TEST_QUEUE_FOR_MESSAGES_8, listResult1.getQueueMessages().get(0).getMessageId(), listResult1
-                .getQueueMessages().get(0).getPopReceipt(), "new text", 0);
+        UpdateMessageResult updateResult = service.updateMessage(TEST_QUEUE_FOR_MESSAGES_8, listResult1
+                .getQueueMessages().get(0).getMessageId(), listResult1.getQueueMessages().get(0).getPopReceipt(),
+                "new text", 0);
         ListMessagesResult listResult2 = service.listMessages(TEST_QUEUE_FOR_MESSAGES_8);
 
         // Assert

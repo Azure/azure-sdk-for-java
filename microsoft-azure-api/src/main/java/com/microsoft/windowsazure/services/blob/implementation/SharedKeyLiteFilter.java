@@ -1,9 +1,7 @@
 package com.microsoft.windowsazure.services.blob.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import javax.inject.Named;
 
@@ -11,12 +9,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
+import com.microsoft.windowsazure.services.blob.implementation.SharedKeyUtils.QueryParam;
+import com.microsoft.windowsazure.utils.jersey.EntityStreamingListener;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class SharedKeyLiteFilter extends ClientFilter {
+public class SharedKeyLiteFilter extends ClientFilter implements EntityStreamingListener {
     private static Log log = LogFactory.getLog(SharedKeyLiteFilter.class);
 
     private final String accountName;
@@ -31,17 +31,23 @@ public class SharedKeyLiteFilter extends ClientFilter {
 
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+        // Only sign if no other filter is handling authorization
+        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null) {
+            cr.getProperties().put(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER, null);
 
-        // Only sign if no other filter has done it yet
-        if (cr.getHeaders().getFirst("Authorization") == null) {
-            sign(cr);
+            // Register ourselves as  listener so we are called back when the entity is
+            // written to the output stream by the next filter in line.
+            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null) {
+                cr.getProperties().put(EntityStreamingListener.class.getName(), this);
+            }
         }
 
         return this.getNext().handle(cr);
     }
 
-    private String nullEmpty(String value) {
-        return value != null ? value : "";
+    public void onBeforeStreamingEntity(ClientRequest clientRequest) {
+        // All headers should be known at this point, time to sign!
+        sign(clientRequest);
     }
 
     /*
@@ -95,25 +101,33 @@ public class SharedKeyLiteFilter extends ClientFilter {
      * CanonicalizedHeaders string by concatenating all headers in this list into a single string.
      */
     private String addCanonicalizedHeaders(ClientRequest cr) {
-        ArrayList<String> msHeaders = new ArrayList<String>();
-        for (String key : cr.getHeaders().keySet()) {
-            if (key.toLowerCase(Locale.US).startsWith("x-ms-")) {
-                msHeaders.add(key.toLowerCase(Locale.US));
-            }
-        }
-
-        Collections.sort(msHeaders);
-
-        String result = "";
-        for (String msHeader : msHeaders) {
-            result += msHeader + ":" + cr.getHeaders().getFirst(msHeader) + "\n";
-        }
-        return result;
+        return SharedKeyUtils.getCanonicalizedHeaders(cr);
     }
 
+    /**
+     * This format supports Shared Key and Shared Key Lite for all versions of the Table service, and Shared Key Lite
+     * for the 2009-09-19 version of the Blob and Queue services. This format is identical to that used with previous
+     * versions of the storage services. Construct the CanonicalizedResource string in this format as follows:
+     * 
+     * 1. Beginning with an empty string (""), append a forward slash (/), followed by the name of the account that owns
+     * the resource being accessed.
+     * 
+     * 2. Append the resource's encoded URI path. If the request URI addresses a component of the resource, append the
+     * appropriate query string. The query string should include the question mark and the comp parameter (for example,
+     * ?comp=metadata). No other parameters should be included on the query string.
+     */
     private String addCanonicalizedResource(ClientRequest cr) {
-        String canonicalizedResource = (String) cr.getProperties().get("canonicalizedResource");
-        return nullEmpty(canonicalizedResource);
+        String result = "/" + this.accountName;
+
+        result += cr.getURI().getPath();
+
+        List<QueryParam> queryParams = SharedKeyUtils.getQueryParams(cr.getURI().getQuery());
+        for (QueryParam p : queryParams) {
+            if ("comp".equals(p.getName())) {
+                result += "?" + p.getName() + "=" + p.getValues().get(0);
+            }
+        }
+        return result;
     }
 
     private String getHeader(ClientRequest cr, String headerKey) {

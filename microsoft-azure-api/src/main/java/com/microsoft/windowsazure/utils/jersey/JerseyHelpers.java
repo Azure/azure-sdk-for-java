@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.blob.implementation;
+package com.microsoft.windowsazure.utils.jersey;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,21 +17,6 @@ public class JerseyHelpers {
         if (r.getStatus() >= 300) {
             throw new UniformInterfaceException(r);
         }
-    }
-
-    public static WebResource setCanonicalizedResource(WebResource webResource, String accountName, String operation) {
-        // Resource path
-        String value = "/" + accountName;
-        value += webResource.getURI().getPath();
-
-        // "comp" param
-        if (operation != null) {
-            value += "?comp=" + operation;
-        }
-
-        webResource.setProperty("canonicalizedResource", value);
-
-        return webResource;
     }
 
     public static class EnumCommaStringBuilder {

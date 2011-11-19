@@ -29,5 +29,14 @@ public class Exports implements Builder.Exports {
                 return client;
             }
         });
+
+        registry.add(new Builder.Factory<HttpURLConnectionClient>() {
+            public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
+                ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
+                HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
+                //client.addFilter(new LoggingFilter());
+                return client;
+            }
+        });
     }
 }
