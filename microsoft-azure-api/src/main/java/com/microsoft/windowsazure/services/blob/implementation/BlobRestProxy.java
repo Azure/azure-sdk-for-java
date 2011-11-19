@@ -20,6 +20,7 @@ import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
+import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
@@ -345,7 +346,15 @@ public class BlobRestProxy implements BlobContract {
         ContainerACL.SignedIdentifiers si = response.getEntity(ContainerACL.SignedIdentifiers.class);
         ContainerACL acl = new ContainerACL();
         acl.setSignedIdentifiers(si.getSignedIdentifiers());
-        acl.setPublicAccess(response.getHeaders().getFirst("x-ms-blob-public-access"));
+        if ("container".equals(response.getHeaders().getFirst("x-ms-blob-public-access"))) {
+            acl.setPublicAccess(PublicAccessType.CONTAINER_AND_BLOBS);
+        }
+        else if ("blob".equals(response.getHeaders().getFirst("x-ms-blob-public-access"))) {
+            acl.setPublicAccess(PublicAccessType.BLOBS_ONLY);
+        }
+        else {
+            acl.setPublicAccess(PublicAccessType.NONE);
+        }
         acl.setEtag(response.getHeaders().getFirst("ETag"));
         acl.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
 
@@ -363,7 +372,12 @@ public class BlobRestProxy implements BlobContract {
                 .queryParam("comp", "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalHeader(builder, "x-ms-blob-public-access", acl.getPublicAccess());
+        if (acl.getPublicAccess() == PublicAccessType.BLOBS_ONLY) {
+            builder = addOptionalHeader(builder, "x-ms-blob-public-access", "blob");
+        }
+        else if (acl.getPublicAccess() == PublicAccessType.CONTAINER_AND_BLOBS) {
+            builder = addOptionalHeader(builder, "x-ms-blob-public-access", "container");
+        }
 
         ContainerACL.SignedIdentifiers si = new ContainerACL.SignedIdentifiers();
         si.setSignedIdentifiers(acl.getSignedIdentifiers());

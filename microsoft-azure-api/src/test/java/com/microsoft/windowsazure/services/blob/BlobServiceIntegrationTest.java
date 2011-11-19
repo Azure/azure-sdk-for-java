@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
+import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
@@ -285,7 +286,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createContainer(container);
 
         ContainerACL acl = new ContainerACL();
-        acl.setPublicAccess("blob");
+        acl.setPublicAccess(PublicAccessType.BLOBS_ONLY);
         acl.addSignedIdentifier("test", expiryStartDate, expiryEndDate, "rwd");
         service.setContainerACL(container, acl);
 
@@ -297,7 +298,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(acl2.getEtag());
         assertNotNull(acl2.getLastModified());
         assertNotNull(acl2.getPublicAccess());
-        assertEquals("blob", acl2.getPublicAccess());
+        assertEquals(PublicAccessType.BLOBS_ONLY, acl2.getPublicAccess());
         assertEquals(1, acl2.getSignedIdentifiers().size());
         assertEquals("test", acl2.getSignedIdentifiers().get(0).getId());
         assertEquals(expiryStartDate, acl2.getSignedIdentifiers().get(0).getAccessPolicy().getStart());
