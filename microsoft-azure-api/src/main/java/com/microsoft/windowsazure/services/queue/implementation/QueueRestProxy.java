@@ -249,7 +249,7 @@ public class QueueRestProxy implements QueueContract {
 
         UpdateMessageResult result = new UpdateMessageResult();
         result.setPopReceipt(response.getHeaders().getFirst("x-ms-popreceipt"));
-        result.setTimeNextVisible(dateMapper.parseNoThrow(response.getHeaders().getFirst("x-ms-time-next-visible")));
+        result.setTimeNextVisible(dateMapper.parse(response.getHeaders().getFirst("x-ms-time-next-visible")));
         return result;
     }
 

@@ -179,7 +179,7 @@ public class BlobRestProxy implements BlobContract {
     private GetBlobPropertiesResult getBlobPropertiesResultFromResponse(ClientResponse response) {
         // Properties
         BlobProperties properties = new BlobProperties();
-        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         properties.setBlobType(response.getHeaders().getFirst("x-ms-blob-type"));
         properties.setLeaseStatus(response.getHeaders().getFirst("x-ms-lease-status"));
 
@@ -323,7 +323,7 @@ public class BlobRestProxy implements BlobContract {
 
         GetContainerPropertiesResult properties = new GetContainerPropertiesResult();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
-        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         properties.setMetadata(getMetadataFromHeaders(response));
 
         return properties;
@@ -347,7 +347,7 @@ public class BlobRestProxy implements BlobContract {
         acl.setSignedIdentifiers(si.getSignedIdentifiers());
         acl.setPublicAccess(response.getHeaders().getFirst("x-ms-blob-public-access"));
         acl.setEtag(response.getHeaders().getFirst("ETag"));
-        acl.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        acl.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
 
         GetContainerACLResult result = new GetContainerACLResult();
         result.setValue(acl);
@@ -493,7 +493,7 @@ public class BlobRestProxy implements BlobContract {
 
         GetBlobMetadataResult properties = new GetBlobMetadataResult();
         properties.setEtag(response.getHeaders().getFirst("ETag"));
-        properties.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        properties.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         properties.setMetadata(getMetadataFromHeaders(response));
 
         return properties;
@@ -525,7 +525,7 @@ public class BlobRestProxy implements BlobContract {
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
 
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         if (response.getHeaders().getFirst("x-ms-blob-sequence-number") != null) {
             result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
         }
@@ -552,7 +552,7 @@ public class BlobRestProxy implements BlobContract {
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         return result;
     }
 
@@ -616,7 +616,7 @@ public class BlobRestProxy implements BlobContract {
         CreateBlobSnapshotResult blobSnapshot = new CreateBlobSnapshotResult();
         blobSnapshot.setEtag(response.getHeaders().getFirst("ETag"));
         blobSnapshot.setSnapshot(response.getHeaders().getFirst("x-ms-snapshot"));
-        blobSnapshot.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        blobSnapshot.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
 
         return blobSnapshot;
     }
@@ -733,7 +733,7 @@ public class BlobRestProxy implements BlobContract {
 
         CreateBlobPagesResult result = new CreateBlobPagesResult();
         result.setEtag(response.getHeaders().getFirst("ETag"));
-        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
         result.setContentMD5(response.getHeaders().getFirst("Content-MD5"));
         result.setSequenceNumber(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-sequence-number")));
 
@@ -759,7 +759,7 @@ public class BlobRestProxy implements BlobContract {
         ListBlobRegionsResult result = response.getEntity(ListBlobRegionsResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
 
         return result;
     }
@@ -822,7 +822,7 @@ public class BlobRestProxy implements BlobContract {
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentType(response.getHeaders().getFirst("Content-Type"));
         result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(dateMapper.parseNoThrow(response.getHeaders().getFirst("Last-Modified")));
+        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
 
         return result;
     }
