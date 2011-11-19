@@ -23,8 +23,7 @@ public class Exports implements Builder.Exports {
         // alter jersey client config for serviceBus
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
-            public ClientConfig alter(ClientConfig instance, Builder builder,
-                    Map<String, Object> properties) throws Exception {
+            public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 
                 // enable this feature for unattributed json object serialization
                 instance.getProperties().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);

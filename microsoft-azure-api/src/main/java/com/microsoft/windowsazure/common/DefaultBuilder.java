@@ -2,6 +2,7 @@ package com.microsoft.windowsazure.common;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.ServiceLoader;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
 
 public class DefaultBuilder implements Builder, Builder.Registry {
     Map<Class<?>, Factory<?>> factories;
@@ -50,7 +50,8 @@ public class DefaultBuilder implements Builder, Builder.Registry {
         for (Constructor<?> ctor : implementation.getConstructors()) {
             if (ctor.getAnnotation(Inject.class) != null) {
                 if (withInject != null) {
-                    throw new RuntimeException("Class must not have multple @Inject annotations: " + implementation.getName());
+                    throw new RuntimeException("Class must not have multple @Inject annotations: "
+                            + implementation.getName());
                 }
                 withInject = ctor;
             }
@@ -63,7 +64,8 @@ public class DefaultBuilder implements Builder, Builder.Registry {
             return withInject;
         }
         if (count != 1) {
-            throw new RuntimeException("Class without @Inject annotation must have one constructor: " + implementation.getName());
+            throw new RuntimeException("Class without @Inject annotation must have one constructor: "
+                    + implementation.getName());
         }
         return withoutInject;
     }
@@ -75,7 +77,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 
         addFactory(service, new Builder.Factory<T>() {
             @SuppressWarnings("unchecked")
-            public T create(String profile, Builder builder, Map<String, Object> properties) throws Exception {
+            public T create(String profile, Builder builder, Map<String, Object> properties) {
                 Object[] initargs = new Object[parameterTypes.length];
                 for (int i = 0; i != parameterTypes.length; ++i) {
 
@@ -106,7 +108,18 @@ public class DefaultBuilder implements Builder, Builder.Registry {
                     }
                 }
 
-                return (T) ctor.newInstance(initargs);
+                try {
+                    return (T) ctor.newInstance(initargs);
+                }
+                catch (InstantiationException e) {
+                    throw new ConfigurationException(e);
+                }
+                catch (IllegalAccessException e) {
+                    throw new ConfigurationException(e);
+                }
+                catch (InvocationTargetException e) {
+                    throw new ConfigurationException(e);
+                }
             }
         });
         return this;
@@ -143,7 +156,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T build(String profile, Class<T> service, Map<String, Object> properties) throws Exception {
+    public <T> T build(String profile, Class<T> service, Map<String, Object> properties) {
         Factory<T> factory = (Factory<T>) factories.get(service);
         if (factory == null) {
             throw new RuntimeException("Service or property not registered: " + profile + " " + service.getName());

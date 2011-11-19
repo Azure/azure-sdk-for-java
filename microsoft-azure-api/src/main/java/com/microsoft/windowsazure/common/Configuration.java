@@ -32,15 +32,7 @@ public class Configuration {
     }
 
     private void init() {
-        //		DefaultClientConfig clientConfig = new DefaultClientConfig();
-        //		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
-        try {
-            setProperty("ClientConfig", builder.build("", ClientConfig.class, properties));
-        }
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        setProperty("ClientConfig", builder.build("", ClientConfig.class, properties));
     }
 
     public static Configuration getInstance() {
@@ -63,7 +55,8 @@ public class Configuration {
     public static Configuration load() throws IOException {
         Configuration config = new Configuration();
 
-        InputStream stream = Configuration.class.getClassLoader().getResourceAsStream("META-INF/com.microsoft.windowsazure.properties");
+        InputStream stream = Configuration.class.getClassLoader().getResourceAsStream(
+                "META-INF/com.microsoft.windowsazure.properties");
         if (stream != null) {
             Properties properties = new Properties();
             properties.load(stream);
@@ -75,11 +68,11 @@ public class Configuration {
         return config;
     }
 
-    public <T> T create(Class<T> service) throws Exception {
+    public <T> T create(Class<T> service) {
         return builder.build("", service, properties);
     }
 
-    public <T> T create(String profile, Class<T> service) throws Exception {
+    public <T> T create(String profile, Class<T> service) {
         return builder.build(profile, service, properties);
     }
 

@@ -4,14 +4,14 @@ import java.util.Map;
 
 public interface Builder {
 
-    public abstract <T> T build(String profile, Class<T> service, Map<String, Object> properties) throws Exception;
+    public abstract <T> T build(String profile, Class<T> service, Map<String, Object> properties);
 
     public interface Factory<T> {
-        T create(String profile, Builder builder, Map<String, Object> properties) throws Exception;
+        T create(String profile, Builder builder, Map<String, Object> properties);
     }
 
     public interface Alteration<T> {
-        T alter(T instance, Builder builder, Map<String, Object> properties) throws Exception;
+        T alter(T instance, Builder builder, Map<String, Object> properties);
     }
 
     public interface Registry {
