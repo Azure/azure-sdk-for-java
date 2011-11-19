@@ -810,7 +810,15 @@ public class BlobRestProxy implements BlobContract {
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
-        webResource = addOptionalQueryParam(webResource, "blocklisttype", options.getListType());
+        if (options.isCommittedList() && options.isUncommittedList()) {
+            webResource = addOptionalQueryParam(webResource, "blocklisttype", "all");
+        }
+        else if (options.isCommittedList()) {
+            webResource = addOptionalQueryParam(webResource, "blocklisttype", "committed");
+        }
+        else if (options.isUncommittedList()) {
+            webResource = addOptionalQueryParam(webResource, "blocklisttype", "uncommitted");
+        }
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
