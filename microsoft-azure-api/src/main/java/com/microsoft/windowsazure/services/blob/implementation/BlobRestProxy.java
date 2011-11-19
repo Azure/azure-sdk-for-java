@@ -56,26 +56,23 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.util.Base64;
 
 public class BlobRestProxy implements BlobContract {
-    // private static Log log = LogFactory.getLog(BlobRestProxy.class);
-
     private static final String API_VERSION = "2011-08-18";
-    private final Client channel;
+    private final HttpURLConnectionClient channel;
     private final String accountName;
     private final String url;
     private final RFC1123DateConverter dateMapper;
     private final ServiceFilter[] filters;
-    private final SharedKeyLiteFilter filter;
+    private final SharedKeyFilter filter;
 
     @Inject
-    public BlobRestProxy(Client channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
-            SharedKeyLiteFilter filter) {
+    public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.URL) String url,
+            SharedKeyFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -86,9 +83,10 @@ public class BlobRestProxy implements BlobContract {
         channel.addFilter(filter);
     }
 
-    public BlobRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url, SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
+    public BlobRestProxy(HttpURLConnectionClient client, ServiceFilter[] filters, String accountName, String url, SharedKeyFilter filter,
+            RFC1123DateConverter dateMapper) {
 
-        this.channel = channel;
+        this.channel = client;
         this.filters = filters;
         this.accountName = accountName;
         this.url = url;

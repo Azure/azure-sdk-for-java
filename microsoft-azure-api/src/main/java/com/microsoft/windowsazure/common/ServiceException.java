@@ -14,6 +14,7 @@ public class ServiceException extends Exception {
     String errorCode;
     String errorMessage;
     Map<String, String> errorValues;
+    String rawResponseBody;
 
     public ServiceException() {
         init();
@@ -36,6 +37,14 @@ public class ServiceException extends Exception {
 
     private void init() {
         errorValues = new HashMap<String, String>();
+    }
+
+    @Override
+    public String getMessage() {
+        if (this.rawResponseBody == null)
+            return super.getMessage();
+        else
+            return super.getMessage() + "\nResponse Body: " + this.rawResponseBody;
     }
 
     public int getHttpStatusCode() {
@@ -94,4 +103,11 @@ public class ServiceException extends Exception {
         this.serviceName = serviceName;
     }
 
+    public void setRawResponseBody(String body) {
+        this.rawResponseBody = body;
+    }
+
+    public String getRawResponseBody() {
+        return rawResponseBody;
+    }
 }

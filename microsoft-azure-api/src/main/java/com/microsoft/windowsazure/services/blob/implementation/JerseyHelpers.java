@@ -37,12 +37,16 @@ public class JerseyHelpers {
     public static class EnumCommaStringBuilder {
         private final StringBuilder sb = new StringBuilder();
 
+        public void add(String representation) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(representation);
+        }
+
         public void addValue(boolean value, String representation) {
             if (value) {
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append(representation);
+                add(representation);
             }
         }
 

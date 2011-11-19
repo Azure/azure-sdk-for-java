@@ -3,7 +3,6 @@ package com.microsoft.windowsazure.services.blob.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Named;
@@ -23,7 +22,8 @@ public class SharedKeyLiteFilter extends ClientFilter {
     private final String accountName;
     private final HmacSHA256Sign signer;
 
-    public SharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName, @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
+    public SharedKeyLiteFilter(@Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
+            @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
 
         this.accountName = accountName;
         this.signer = new HmacSHA256Sign(accountKey);
@@ -74,19 +74,25 @@ public class SharedKeyLiteFilter extends ClientFilter {
         cr.getHeaders().putSingle("Authorization", "SharedKeyLite " + this.accountName + ":" + signature);
     }
 
-    /*
+    /**
      * Constructing the Canonicalized Headers String
-     *
+     * 
      * To construct the CanonicalizedHeaders portion of the signature string,
-     * follow these steps: 1. Retrieve all headers for the resource that begin
-     * with x-ms-, including the x-ms-date header. 2. Convert each HTTP header
-     * name to lowercase. 3. Sort the headers lexicographically by header name,
-     * in ascending order. Note that each header may appear only once in the
-     * string. 4. Unfold the string by replacing any breaking white space with a
-     * single space. 5. Trim any white space around the colon in the header. 6.
-     * Finally, append a new line character to each canonicalized header in the
-     * resulting list. Construct the CanonicalizedHeaders string by
-     * concatenating all headers in this list into a single string.
+     * follow these steps:
+     * 
+     * 1. Retrieve all headers for the resource that begin with x-ms-, including the x-ms-date header.
+     * 
+     * 2. Convert each HTTP header name to lowercase.
+     * 
+     * 3. Sort the headers lexicographically by header name in ascending order. Note that each header may appear only
+     * once in the string.
+     * 
+     * 4. Unfold the string by replacing any breaking white space with a single space.
+     * 
+     * 5. Trim any white space around the colon in the header.
+     * 
+     * 6. Finally, append a new line character to each canonicalized header in the resulting list. Construct the
+     * CanonicalizedHeaders string by concatenating all headers in this list into a single string.
      */
     private String addCanonicalizedHeaders(ClientRequest cr) {
         ArrayList<String> msHeaders = new ArrayList<String>();
@@ -95,6 +101,7 @@ public class SharedKeyLiteFilter extends ClientFilter {
                 msHeaders.add(key.toLowerCase(Locale.US));
             }
         }
+
         Collections.sort(msHeaders);
 
         String result = "";
@@ -110,11 +117,6 @@ public class SharedKeyLiteFilter extends ClientFilter {
     }
 
     private String getHeader(ClientRequest cr, String headerKey) {
-        List<Object> values = cr.getHeaders().get(headerKey);
-        if (values == null || values.size() != 1) {
-            return nullEmpty(null);
-        }
-
-        return nullEmpty(values.get(0).toString());
+        return SharedKeyUtils.getHeader(cr, headerKey);
     }
 }

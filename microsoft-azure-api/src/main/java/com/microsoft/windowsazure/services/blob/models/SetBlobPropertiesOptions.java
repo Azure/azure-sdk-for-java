@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-
 public class SetBlobPropertiesOptions extends BlobServiceOptions {
     private String leaseId;
     private String contentType;
@@ -71,8 +70,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
         return sequenceNumber;
     }
 
-    public SetBlobPropertiesOptions setSequenceNUmber(Long sequenceNUmber) {
-        this.sequenceNumber = sequenceNUmber;
+    public SetBlobPropertiesOptions setSequenceNumber(Long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
         return this;
     }
 
