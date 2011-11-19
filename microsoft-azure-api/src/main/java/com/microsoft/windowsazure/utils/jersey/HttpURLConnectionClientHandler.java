@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.blob.implementation;
+package com.microsoft.windowsazure.utils.jersey;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers.EnumCommaStringBuilder;
+import com.microsoft.windowsazure.utils.jersey.JerseyHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

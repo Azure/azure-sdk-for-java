@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.blob.implementation;
+package com.microsoft.windowsazure.utils.jersey;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
