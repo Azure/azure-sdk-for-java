@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.blob.implementation.HttpURLConnectionClient;
 import com.microsoft.windowsazure.services.blob.implementation.JerseyHelpers;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
@@ -27,7 +28,6 @@ import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -36,16 +36,16 @@ public class QueueRestProxy implements QueueContract {
     //private static Log log = LogFactory.getLog(QueueRestProxy.class);
 
     private static final String API_VERSION = "2011-08-18";
-    private final Client channel;
+    private final HttpURLConnectionClient channel;
     private final String accountName;
     private final String url;
     private final RFC1123DateConverter dateMapper;
     private final ServiceFilter[] filters;
-    private final SharedKeyLiteFilter filter;
+    private final SharedKeyFilter filter;
 
     @Inject
-    public QueueRestProxy(Client channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(QueueConfiguration.URL) String url, SharedKeyLiteFilter filter) {
+    public QueueRestProxy(HttpURLConnectionClient channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
+            @Named(QueueConfiguration.URL) String url, SharedKeyFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -56,8 +56,8 @@ public class QueueRestProxy implements QueueContract {
         channel.addFilter(filter);
     }
 
-    public QueueRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url,
-            SharedKeyLiteFilter filter, RFC1123DateConverter dateMapper) {
+    public QueueRestProxy(HttpURLConnectionClient channel, ServiceFilter[] filters, String accountName, String url,
+            SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = channel;
         this.filters = filters;
@@ -129,8 +129,7 @@ public class QueueRestProxy implements QueueContract {
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/xml").put(serviceProperties);
+        builder.put(serviceProperties);
     }
 
     public void createQueue(String queue) throws ServiceException {
@@ -144,8 +143,7 @@ public class QueueRestProxy implements QueueContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.put();
     }
 
     public void deleteQueue(String queue) throws ServiceException {
@@ -209,8 +207,7 @@ public class QueueRestProxy implements QueueContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("text/plain").put("");
+        builder.put();
     }
 
     public void createMessage(String queue, String messageText) throws ServiceException {
@@ -227,8 +224,7 @@ public class QueueRestProxy implements QueueContract {
         QueueMessage queueMessage = new QueueMessage();
         queueMessage.setMessageText(messageText);
 
-        // Note: Add content type here to enable proper HMAC signing
-        builder.type("application/xml").post(queueMessage);
+        builder.post(queueMessage);
     }
 
     public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
@@ -248,8 +244,7 @@ public class QueueRestProxy implements QueueContract {
         QueueMessage queueMessage = new QueueMessage();
         queueMessage.setMessageText(messageText);
 
-        // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.type("application/xml").put(ClientResponse.class, queueMessage);
+        ClientResponse response = builder.put(ClientResponse.class, queueMessage);
         ThrowIfError(response);
 
         UpdateMessageResult result = new UpdateMessageResult();
