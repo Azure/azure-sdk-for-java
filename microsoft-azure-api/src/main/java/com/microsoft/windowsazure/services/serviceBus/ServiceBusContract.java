@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
@@ -326,7 +326,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateRuleResult createRule(String topicName, String subscriptionName, Rule rule) throws ServiceException;
+    CreateRuleResult createRule(String topicName, String subscriptionName, RuleInfo rule) throws ServiceException;
 
     /**
      * Deletes a rule.

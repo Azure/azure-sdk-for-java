@@ -29,7 +29,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
@@ -303,7 +303,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateRuleResult createRule(String topicPath, String subscriptionName, Rule rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) throws ServiceException {
         try {
             return next.createRule(topicPath, subscriptionName, rule);
         }

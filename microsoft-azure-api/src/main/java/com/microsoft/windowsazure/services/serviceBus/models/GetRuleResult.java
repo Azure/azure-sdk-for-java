@@ -5,15 +5,15 @@ package com.microsoft.windowsazure.services.serviceBus.models;
  */
 public class GetRuleResult {
 
-	private Rule value;
+	private RuleInfo value;
 
 	/**
 	 * Creates an instance of the <code>GetRuleResult</code> class.
 	 * 
 	 * @param value
-	 *            A {@link Rule} object assigned as the value of the result.
+	 *            A {@link RuleInfo} object assigned as the value of the result.
 	 */
-	public GetRuleResult(Rule value) {
+	public GetRuleResult(RuleInfo value) {
 		this.setValue(value);
 	}
 
@@ -21,18 +21,18 @@ public class GetRuleResult {
 	 * Specfies the value of the result.
 	 * 
 	 * @param value
-	 *            A {@link Rule} object assigned as the value of the result.
+	 *            A {@link RuleInfo} object assigned as the value of the result.
 	 */
-	public void setValue(Rule value) {
+	public void setValue(RuleInfo value) {
 		this.value = value;
 	}
 
 	/**
 	 * Returns the value of the result.
 	 * 
-	 * @return A {@link Rule} object that represents the value of the result.
+	 * @return A {@link RuleInfo} object that represents the value of the result.
 	 */
-	public Rule getValue() {
+	public RuleInfo getValue() {
 		return value;
 	}
 

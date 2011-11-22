@@ -22,7 +22,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
@@ -338,7 +338,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
 
         // Act
-        Rule created = service.createRule(topicName, "sub", new Rule("MyRule1")).getValue();
+        RuleInfo created = service.createRule(topicName, "sub", new RuleInfo("MyRule1")).getValue();
 
         // Assert
         assertNotNull(created);
@@ -351,7 +351,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
         service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
-        service.createRule(topicName, "sub", new Rule("MyRule2"));
+        service.createRule(topicName, "sub", new RuleInfo("MyRule2"));
 
         // Act
         ListRulesResult result = service.listRules(topicName, "sub");
@@ -359,10 +359,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(result);
         assertEquals(2, result.getItems().size());
-        Rule rule0 = result.getItems().get(0);
-        Rule rule1 = result.getItems().get(1);
+        RuleInfo rule0 = result.getItems().get(0);
+        RuleInfo rule1 = result.getItems().get(1);
         if (rule0.getName() == "MyRule2") {
-            Rule swap = rule1;
+            RuleInfo swap = rule1;
             rule1 = rule0;
             rule0 = swap;
         }
@@ -380,7 +380,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
 
         // Act
-        Rule result = service.getRule(topicName, "sub", "$Default").getValue();
+        RuleInfo result = service.getRule(topicName, "sub", "$Default").getValue();
 
         // Assert
         assertNotNull(result);
@@ -393,8 +393,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestRulesMayBeDeleted";
         service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
-        service.createRule(topicName, "sub", new Rule("MyRule4"));
-        service.createRule(topicName, "sub", new Rule("MyRule5"));
+        service.createRule(topicName, "sub", new RuleInfo("MyRule4"));
+        service.createRule(topicName, "sub", new RuleInfo("MyRule5"));
 
         // Act
         service.deleteRule(topicName, "sub", "MyRule5");

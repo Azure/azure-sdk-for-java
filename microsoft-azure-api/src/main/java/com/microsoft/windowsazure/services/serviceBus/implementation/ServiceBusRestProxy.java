@@ -35,7 +35,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.common.ServiceException;
@@ -325,7 +325,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     public CreateRuleResult createRule(String topicPath, String subscriptionName,
-            Rule rule) {
+            RuleInfo rule) {
         return new CreateRuleResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
@@ -333,7 +333,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("rules")
                 .path(rule.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Rule.class, rule));
+                .put(RuleInfo.class, rule));
     }
 
     public void deleteRule(String topicPath, String subscriptionName,
@@ -355,7 +355,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(subscriptionName)
                 .path("rules")
                 .path(ruleName)
-                .get(Rule.class));
+                .get(RuleInfo.class));
     }
 
     public ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options) {
@@ -365,9 +365,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(subscriptionName)
                 .path("rules"))
                 .get(Feed.class);
-        ArrayList<Rule> list = new ArrayList<Rule>();
+        ArrayList<RuleInfo> list = new ArrayList<RuleInfo>();
         for (Entry entry : feed.getEntries()) {
-            list.add(new Rule(entry));
+            list.add(new RuleInfo(entry));
         }
         ListRulesResult result = new ListRulesResult();
         result.setItems(list);
