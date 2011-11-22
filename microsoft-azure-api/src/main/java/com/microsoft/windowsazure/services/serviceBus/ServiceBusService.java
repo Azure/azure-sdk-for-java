@@ -22,7 +22,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsRe
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
@@ -251,7 +251,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateQueueResult createQueue(Queue queue) throws ServiceException {
+    public CreateQueueResult createQueue(QueueInfo queue) throws ServiceException {
         return next.createQueue(queue);
     }
 

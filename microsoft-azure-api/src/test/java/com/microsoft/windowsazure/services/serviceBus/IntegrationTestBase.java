@@ -5,7 +5,7 @@ import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.Topic;
 
@@ -27,7 +27,7 @@ public abstract class IntegrationTestBase {
 
         boolean testAlphaExists = false;
         ServiceBusContract service = new ServiceBusService();
-        for (Queue queue : iterateQueues(service)) {
+        for (QueueInfo queue : iterateQueues(service)) {
             String queueName = queue.getName();
             if (queueName.startsWith("Test") || queueName.startsWith("test")) {
                 if (queueName.equalsIgnoreCase("TestAlpha")) {
@@ -49,7 +49,7 @@ public abstract class IntegrationTestBase {
             }
         }
         if (!testAlphaExists) {
-            service.createQueue(new Queue("TestAlpha"));
+            service.createQueue(new QueueInfo("TestAlpha"));
         }
     }
 }

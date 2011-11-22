@@ -20,7 +20,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
@@ -43,7 +43,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        Queue entry = service.getQueue("TestAlpha").getValue();
+        QueueInfo entry = service.getQueue("TestAlpha").getValue();
         ListQueuesResult feed = service.listQueues();
 
         // Assert
@@ -56,8 +56,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        Queue queue = new Queue("TestCreateQueueWorks").setMaxSizeInMegabytes(1024L);
-        Queue saved = service.createQueue(queue).getValue();
+        QueueInfo queue = new QueueInfo("TestCreateQueueWorks").setMaxSizeInMegabytes(1024L);
+        QueueInfo saved = service.createQueue(queue).getValue();
 
         // Assert
         assertNotNull(saved);
@@ -68,7 +68,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteQueueWorks() throws Exception {
         // Arrange
-        service.createQueue(new Queue("TestDeleteQueueWorks"));
+        service.createQueue(new QueueInfo("TestDeleteQueueWorks"));
 
         // Act
         service.deleteQueue("TestDeleteQueueWorks");
@@ -91,7 +91,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void receiveMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveMessageWorks";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new Message("Hello World"));
 
         // Act
@@ -108,7 +108,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
 
         // Act
@@ -125,7 +125,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void peekLockedMessageCanBeCompleted() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeCompleted";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
         Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
@@ -146,7 +146,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void peekLockedMessageCanBeUnlocked() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeUnlocked";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
         Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
@@ -168,7 +168,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void peekLockedMessageCanBeDeleted() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeDeleted";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new Message("Hello Again"));
         Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
@@ -190,7 +190,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void contentTypePassesThrough() throws Exception {
         // Arrange
         String queueName = "TestContentTypePassesThrough";
-        service.createQueue(new Queue(queueName));
+        service.createQueue(new QueueInfo(queueName));
 
         // Act
         service.sendQueueMessage(queueName, new Message("<data>Hello Again</data>").setContentType("text/xml"));
@@ -239,7 +239,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         });
 
         // Act 
-        Queue created = filtered.createQueue(new Queue("TestFilterCanSeeAndChangeRequestOrResponse")).getValue();
+        QueueInfo created = filtered.createQueue(new QueueInfo("TestFilterCanSeeAndChangeRequestOrResponse")).getValue();
 
         // Assert
         assertNotNull(created);

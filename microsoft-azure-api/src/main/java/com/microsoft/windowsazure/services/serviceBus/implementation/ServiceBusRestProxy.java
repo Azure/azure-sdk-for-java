@@ -31,7 +31,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsRe
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
@@ -211,11 +211,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .delete();
     }
 
-    public CreateQueueResult createQueue(Queue entry) throws ServiceException {
+    public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
         return new CreateQueueResult(getResource()
                 .path(entry.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Queue.class, entry));
+                .put(QueueInfo.class, entry));
     }
 
     public void deleteQueue(String queuePath) throws ServiceException {
@@ -227,16 +227,16 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     public GetQueueResult getQueue(String queuePath) throws ServiceException {
         return new GetQueueResult(getResource()
                 .path(queuePath)
-                .get(Queue.class));
+                .get(QueueInfo.class));
     }
 
     public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
         Feed feed = listOptions(options, getResource()
                 .path("$Resources/Queues"))
                 .get(Feed.class);
-        ArrayList<Queue> queues = new ArrayList<Queue>();
+        ArrayList<QueueInfo> queues = new ArrayList<QueueInfo>();
         for (Entry entry : feed.getEntries()) {
-            queues.add(new Queue(entry));
+            queues.add(new QueueInfo(entry));
         }
         ListQueuesResult result = new ListQueuesResult();
         result.setItems(queues);
