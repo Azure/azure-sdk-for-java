@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 /**
@@ -363,7 +363,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateSubscriptionResult createSubscription(String topicName, Subscription subscription)
+    public CreateSubscriptionResult createSubscription(String topicName, SubscriptionInfo subscription)
             throws ServiceException {
         return next.createSubscription(topicName, subscription);
     }

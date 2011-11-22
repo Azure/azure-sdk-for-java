@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class ListSubscriptionsResult {
 
-    private List<Subscription> items;
+    private List<SubscriptionInfo> items;
 
 	/**
 	 * Returns the items in the result list.
 	 * 
-	 * @return A <code>List</code> of {@link Subscription} objects that represent the
+	 * @return A <code>List</code> of {@link SubscriptionInfo} objects that represent the
 	 *         items in the result list.
 	 */
-    public List<Subscription> getItems() {
+    public List<SubscriptionInfo> getItems() {
         return items;
     }
 
@@ -23,10 +23,10 @@ public class ListSubscriptionsResult {
 	 * Specfies the items in the result list.
 	 * 
 	 * @param value
-	 *            A <code>List</code> object that contains the {@link Subscription}
+	 *            A <code>List</code> object that contains the {@link SubscriptionInfo}
 	 *            objects assigned as the value of the result.
 	 */
-    public void setItems(List<Subscription> items) {
+    public void setItems(List<SubscriptionInfo> items) {
         this.items = items;
     }
 }

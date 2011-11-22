@@ -36,7 +36,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
@@ -285,13 +285,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
-    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) {
+    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
         return new CreateSubscriptionResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscription.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Subscription.class, subscription));
+                .put(SubscriptionInfo.class, subscription));
     }
 
     public void deleteSubscription(String topicPath, String subscriptionName) {
@@ -307,7 +307,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscriptionName)
-                .get(Subscription.class));
+                .get(SubscriptionInfo.class));
     }
 
     public ListSubscriptionsResult listSubscriptions(String topicPath, ListSubscriptionsOptions options) {
@@ -315,9 +315,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(topicPath)
                 .path("subscriptions"))
                 .get(Feed.class);
-        ArrayList<Subscription> list = new ArrayList<Subscription>();
+        ArrayList<SubscriptionInfo> list = new ArrayList<SubscriptionInfo>();
         for (Entry entry : feed.getEntries()) {
-            list.add(new Subscription(entry));
+            list.add(new SubscriptionInfo(entry));
         }
         ListSubscriptionsResult result = new ListSubscriptionsResult();
         result.setItems(list);

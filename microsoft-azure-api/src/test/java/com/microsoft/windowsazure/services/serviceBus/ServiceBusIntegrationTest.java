@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.Message;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
@@ -254,7 +254,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createTopic(new TopicInfo(topicName));
 
         // Act
-        Subscription created = service.createSubscription(topicName, new Subscription("MySubscription")).getValue();
+        SubscriptionInfo created = service.createSubscription(topicName, new SubscriptionInfo("MySubscription")).getValue();
 
         // Assert
         assertNotNull(created);
@@ -266,7 +266,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestSubscriptionsCanBeListed";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("MySubscription2"));
+        service.createSubscription(topicName, new SubscriptionInfo("MySubscription2"));
 
         // Act
         ListSubscriptionsResult result = service.listSubscriptions(topicName);
@@ -282,10 +282,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestSubscriptionsDetailsMayBeFetched";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("MySubscription3"));
+        service.createSubscription(topicName, new SubscriptionInfo("MySubscription3"));
 
         // Act
-        Subscription result = service.getSubscription(topicName, "MySubscription3").getValue();
+        SubscriptionInfo result = service.getSubscription(topicName, "MySubscription3").getValue();
 
         // Assert
         assertNotNull(result);
@@ -297,8 +297,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestSubscriptionsMayBeDeleted";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("MySubscription4"));
-        service.createSubscription(topicName, new Subscription("MySubscription5"));
+        service.createSubscription(topicName, new SubscriptionInfo("MySubscription4"));
+        service.createSubscription(topicName, new SubscriptionInfo("MySubscription5"));
 
         // Act
         service.deleteSubscription(topicName, "MySubscription4");
@@ -315,7 +315,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestSubscriptionWillReceiveMessage";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("sub"));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
         service.sendTopicMessage(topicName, new Message("<p>Testing subscription</p>").setContentType("text/html"));
 
         // Act
@@ -335,7 +335,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestrulesCanBeCreatedOnSubscriptions";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("sub"));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
 
         // Act
         Rule created = service.createRule(topicName, "sub", new Rule("MyRule1")).getValue();
@@ -350,7 +350,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("sub"));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
         service.createRule(topicName, "sub", new Rule("MyRule2"));
 
         // Act
@@ -377,7 +377,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestruleDetailsMayBeFetched";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("sub"));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
 
         // Act
         Rule result = service.getRule(topicName, "sub", "$Default").getValue();
@@ -392,7 +392,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestRulesMayBeDeleted";
         service.createTopic(new TopicInfo(topicName));
-        service.createSubscription(topicName, new Subscription("sub"));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
         service.createRule(topicName, "sub", new Rule("MyRule4"));
         service.createRule(topicName, "sub", new Rule("MyRule5"));
 
