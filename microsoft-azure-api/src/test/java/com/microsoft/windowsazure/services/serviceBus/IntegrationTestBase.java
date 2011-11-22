@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 public abstract class IntegrationTestBase {
     @BeforeClass
@@ -42,7 +42,7 @@ public abstract class IntegrationTestBase {
                 }
             }
         }
-        for (Topic topic : iterateTopics(service)) {
+        for (TopicInfo topic : iterateTopics(service)) {
             String topicName = topic.getName();
             if (topicName.startsWith("Test") || topicName.startsWith("test")) {
                 service.deleteQueue(topicName);

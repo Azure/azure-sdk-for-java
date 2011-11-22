@@ -31,7 +31,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessage
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -206,7 +206,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateTopicResult createTopic(Topic topic) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         try {
             return next.createTopic(topic);
         }

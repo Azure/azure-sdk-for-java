@@ -25,7 +25,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessage
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 /**
  * 
@@ -211,7 +211,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateTopicResult createTopic(Topic topic) throws ServiceException;
+    CreateTopicResult createTopic(TopicInfo topic) throws ServiceException;
 
     /**
      * Deletes a topic.

@@ -24,7 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -208,9 +208,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
 
         // Act
-        Topic created = service.createTopic(new Topic().setName(topicName)).getValue();
+        TopicInfo created = service.createTopic(new TopicInfo().setName(topicName)).getValue();
         ListTopicsResult listed = service.listTopics();
-        Topic fetched = service.getTopic(topicName).getValue();
+        TopicInfo fetched = service.getTopic(topicName).getValue();
         service.deleteTopic(topicName);
         ListTopicsResult listed2 = service.listTopics();
 
@@ -251,7 +251,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void subscriptionsCanBeCreatedOnTopics() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsCanBeCreatedOnTopics";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
 
         // Act
         Subscription created = service.createSubscription(topicName, new Subscription("MySubscription")).getValue();
@@ -265,7 +265,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void subscriptionsCanBeListed() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsCanBeListed";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("MySubscription2"));
 
         // Act
@@ -281,7 +281,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void subscriptionsDetailsMayBeFetched() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsDetailsMayBeFetched";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("MySubscription3"));
 
         // Act
@@ -296,7 +296,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void subscriptionsMayBeDeleted() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsMayBeDeleted";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("MySubscription4"));
         service.createSubscription(topicName, new Subscription("MySubscription5"));
 
@@ -314,7 +314,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void subscriptionWillReceiveMessage() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionWillReceiveMessage";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("sub"));
         service.sendTopicMessage(topicName, new Message("<p>Testing subscription</p>").setContentType("text/html"));
 
@@ -334,7 +334,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void rulesCanBeCreatedOnSubscriptions() throws Exception {
         // Arrange
         String topicName = "TestrulesCanBeCreatedOnSubscriptions";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("sub"));
 
         // Act
@@ -349,7 +349,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void rulesCanBeListedAndDefaultRuleIsPrecreated() throws Exception {
         // Arrange
         String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("sub"));
         service.createRule(topicName, "sub", new Rule("MyRule2"));
 
@@ -376,7 +376,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void ruleDetailsMayBeFetched() throws Exception {
         // Arrange
         String topicName = "TestruleDetailsMayBeFetched";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("sub"));
 
         // Act
@@ -391,7 +391,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void rulesMayBeDeleted() throws Exception {
         // Arrange
         String topicName = "TestRulesMayBeDeleted";
-        service.createTopic(new Topic(topicName));
+        service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new Subscription("sub"));
         service.createRule(topicName, "sub", new Rule("MyRule4"));
         service.createRule(topicName, "sub", new Rule("MyRule5"));

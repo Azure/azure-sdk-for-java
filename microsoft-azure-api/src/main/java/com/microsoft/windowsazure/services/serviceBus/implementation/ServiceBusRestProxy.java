@@ -37,7 +37,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessage
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.Rule;
 import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
@@ -253,11 +253,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return path;
     }
 
-    public CreateTopicResult createTopic(Topic entry) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo entry) throws ServiceException {
         return new CreateTopicResult(getResource()
                 .path(entry.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Topic.class, entry));
+                .put(TopicInfo.class, entry));
     }
 
     public void deleteTopic(String TopicPath) throws ServiceException {
@@ -269,16 +269,16 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     public GetTopicResult getTopic(String TopicPath) throws ServiceException {
         return new GetTopicResult(getResource()
                 .path(TopicPath)
-                .get(Topic.class));
+                .get(TopicInfo.class));
     }
 
     public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
         Feed feed = listOptions(options, getResource()
                 .path("$Resources/Topics"))
                 .get(Feed.class);
-        ArrayList<Topic> Topics = new ArrayList<Topic>();
+        ArrayList<TopicInfo> Topics = new ArrayList<TopicInfo>();
         for (Entry entry : feed.getEntries()) {
-            Topics.add(new Topic(entry));
+            Topics.add(new TopicInfo(entry));
         }
         ListTopicsResult result = new ListTopicsResult();
         result.setItems(Topics);
