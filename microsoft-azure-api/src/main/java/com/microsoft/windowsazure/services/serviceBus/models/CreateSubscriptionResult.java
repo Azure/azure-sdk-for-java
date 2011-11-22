@@ -5,15 +5,15 @@ package com.microsoft.windowsazure.services.serviceBus.models;
  */
 public class CreateSubscriptionResult {
 
-    private Subscription value;
+    private SubscriptionInfo value;
 
 	/**
 	 * Creates an instance of the <code>CreateSubscriptionResult</code> class.
 	 * 
 	 * @param value
-	 *            A {@link Subscription} object assigned as the value of the result.
+	 *            A {@link SubscriptionInfo} object assigned as the value of the result.
 	 */    
-    public CreateSubscriptionResult(Subscription value) {
+    public CreateSubscriptionResult(SubscriptionInfo value) {
         this.setValue(value);
     }
 
@@ -21,19 +21,19 @@ public class CreateSubscriptionResult {
 	 * Specfies the value of the result.
 	 * 
 	 * @param value
-	 *            A {@link Subscription} object assigned as the value of the
+	 *            A {@link SubscriptionInfo} object assigned as the value of the
 	 *            result.
 	 */
-    public void setValue(Subscription value) {
+    public void setValue(SubscriptionInfo value) {
         this.value = value;
     }
 
 	/**
 	 * Returns the value of the result.
 	 * 
-	 * @return A {@link Subscription} object that represents the value of the result.
+	 * @return A {@link SubscriptionInfo} object that represents the value of the result.
 	 */
-    public Subscription getValue() {
+    public SubscriptionInfo getValue() {
         return value;
     }
 

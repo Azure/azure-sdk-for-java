@@ -1,17 +1,17 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
 import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 public class Util {
-    public static Iterable<Queue> iterateQueues(ServiceBusContract service)
+    public static Iterable<QueueInfo> iterateQueues(ServiceBusContract service)
             throws ServiceException {
         // TODO: iterate over link rel=next pagination
         return service.listQueues().getItems();
     }
 
-    public static Iterable<Topic> iterateTopics(ServiceBusContract service)
+    public static Iterable<TopicInfo> iterateTopics(ServiceBusContract service)
             throws ServiceException {
         // TODO: iterate over link rel=next pagination
         return service.listTopics().getItems();

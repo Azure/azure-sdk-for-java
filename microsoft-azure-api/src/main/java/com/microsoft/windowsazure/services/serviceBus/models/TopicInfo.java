@@ -11,11 +11,11 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescri
 /**
  * Represents a topic.
  */
-public class Topic extends EntryModel<TopicDescription> {
+public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Creates an instance of the <code>Topic</code> class.
      */
-    public Topic() {
+    public TopicInfo() {
         super(new Entry(), new TopicDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -28,7 +28,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * @param entry
      *            An <code>Entry</code> object that represents the entry for the topic.
      */
-    public Topic(Entry entry) {
+    public TopicInfo(Entry entry) {
         super(entry, entry.getContent().getTopicDescription());
     }
 
@@ -38,7 +38,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * @param name
      *            A <code>String</code> object that represents the name for the topic.
      */
-    public Topic(String name) {
+    public TopicInfo(String name) {
         this();
         setName(name);
     }
@@ -60,7 +60,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setName(String value) {
+    public TopicInfo setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
@@ -82,7 +82,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setDefaultMessageTimeToLive(Duration value) {
+    public TopicInfo setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
@@ -104,7 +104,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setMaxSizeInMegabytes(Long value) {
+    public TopicInfo setMaxSizeInMegabytes(Long value) {
         getModel().setMaxSizeInMegabytes(value);
         return this;
     }
@@ -126,7 +126,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setRequiresDuplicateDetection(Boolean value) {
+    public TopicInfo setRequiresDuplicateDetection(Boolean value) {
         getModel().setRequiresDuplicateDetection(value);
         return this;
     }
@@ -149,7 +149,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setDuplicateDetectionHistoryTimeWindow(Duration value) {
+    public TopicInfo setDuplicateDetectionHistoryTimeWindow(Duration value) {
         getModel().setDuplicateDetectionHistoryTimeWindow(value);
         return this;
     }
@@ -171,7 +171,7 @@ public class Topic extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public Topic setEnableBatchedOperations(Boolean value) {
+    public TopicInfo setEnableBatchedOperations(Boolean value) {
         getModel().setEnableBatchedOperations(value);
         return this;
     }

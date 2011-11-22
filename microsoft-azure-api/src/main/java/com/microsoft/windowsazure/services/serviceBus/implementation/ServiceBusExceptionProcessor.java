@@ -24,14 +24,14 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -59,7 +59,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         return ServiceExceptionFactory.process("serviceBus", e);
     }
 
-    public void sendQueueMessage(String path, Message message) throws ServiceException {
+    public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendQueueMessage(path, message);
         }
@@ -96,7 +96,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void sendTopicMessage(String path, Message message) throws ServiceException {
+    public void sendTopicMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendTopicMessage(path, message);
         }
@@ -134,7 +134,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.unlockMessage(message);
         }
@@ -146,7 +146,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.deleteMessage(message);
         }
@@ -158,7 +158,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateQueueResult createQueue(Queue queue) throws ServiceException {
+    public CreateQueueResult createQueue(QueueInfo queue) throws ServiceException {
         try {
             return next.createQueue(queue);
         }
@@ -206,7 +206,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateTopicResult createTopic(Topic topic) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         try {
             return next.createTopic(topic);
         }
@@ -254,7 +254,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription)
+    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription)
             throws ServiceException {
         try {
             return next.createSubscription(topicPath, subscription);
@@ -303,7 +303,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateRuleResult createRule(String topicPath, String subscriptionName, Rule rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) throws ServiceException {
         try {
             return next.createRule(topicPath, subscriptionName, rule);
         }

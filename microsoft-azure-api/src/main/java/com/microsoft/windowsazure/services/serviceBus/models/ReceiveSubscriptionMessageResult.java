@@ -5,15 +5,15 @@ package com.microsoft.windowsazure.services.serviceBus.models;
  */
 public class ReceiveSubscriptionMessageResult {
 
-    private Message value;
+    private BrokeredMessage value;
 
     /**
      * Creates an instance of the <code>ReceiveSubscriptionMessageResult</code> class.
      * 
      * @param value
-     *            A {@link Message} object assigned as the value of the result.
+     *            A {@link BrokeredMessage} object assigned as the value of the result.
      */
-    public ReceiveSubscriptionMessageResult(Message value) {
+    public ReceiveSubscriptionMessageResult(BrokeredMessage value) {
         this.setValue(value);
     }
 
@@ -21,18 +21,18 @@ public class ReceiveSubscriptionMessageResult {
      * Specifies the value of the result.
      * 
      * @param value
-     *            A {@link Message} object assigned as the value of the result.
+     *            A {@link BrokeredMessage} object assigned as the value of the result.
      */
-    public void setValue(Message value) {
+    public void setValue(BrokeredMessage value) {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link Message} object that represents the value of the result.
+     * @return A {@link BrokeredMessage} object that represents the value of the result.
      */
-    public Message getValue() {
+    public BrokeredMessage getValue() {
         return value;
     }
 

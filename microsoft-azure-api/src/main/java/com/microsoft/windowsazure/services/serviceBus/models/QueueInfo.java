@@ -11,12 +11,12 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescri
 /**
  * Represents a queue.
  */
-public class Queue extends EntryModel<QueueDescription> {
+public class QueueInfo extends EntryModel<QueueDescription> {
 
     /**
      * Creates an instance of the <code>Queue</code> class.
      */
-    public Queue() {
+    public QueueInfo() {
         super(new Entry(), new QueueDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -29,7 +29,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * @param entry
      *            An <code>Entry</code> object.
      */
-    public Queue(Entry entry) {
+    public QueueInfo(Entry entry) {
         super(entry, entry.getContent().getQueueDescription());
     }
 
@@ -39,7 +39,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * @param name
      *            A <code>String</code> object that represents the name of the queue.
      */
-    public Queue(String name) {
+    public QueueInfo(String name) {
         this();
         setName(name);
     }
@@ -61,7 +61,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setName(String value) {
+    public QueueInfo setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
@@ -83,7 +83,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setLockDuration(Duration value) {
+    public QueueInfo setLockDuration(Duration value) {
         getModel().setLockDuration(value);
         return this;
     }
@@ -105,7 +105,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setMaxSizeInMegabytes(Long value) {
+    public QueueInfo setMaxSizeInMegabytes(Long value) {
         getModel().setMaxSizeInMegabytes(value);
         return this;
     }
@@ -127,7 +127,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setRequiresDuplicateDetection(Boolean value) {
+    public QueueInfo setRequiresDuplicateDetection(Boolean value) {
         getModel().setRequiresDuplicateDetection(value);
         return this;
     }
@@ -149,7 +149,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setRequiresSession(Boolean value) {
+    public QueueInfo setRequiresSession(Boolean value) {
         getModel().setRequiresSession(value);
         return this;
     }
@@ -172,7 +172,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setDefaultMessageTimeToLive(Duration value) {
+    public QueueInfo setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
@@ -194,7 +194,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setDeadLetteringOnMessageExpiration(Boolean value) {
+    public QueueInfo setDeadLetteringOnMessageExpiration(Boolean value) {
         getModel().setDeadLetteringOnMessageExpiration(value);
         return this;
     }
@@ -219,7 +219,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setDuplicateDetectionHistoryTimeWindow(Duration value) {
+    public QueueInfo setDuplicateDetectionHistoryTimeWindow(Duration value) {
         getModel().setDuplicateDetectionHistoryTimeWindow(value);
         return this;
     }
@@ -241,7 +241,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setMaxDeliveryCount(Integer value) {
+    public QueueInfo setMaxDeliveryCount(Integer value) {
         getModel().setMaxDeliveryCount(value);
         return this;
     }
@@ -263,7 +263,7 @@ public class Queue extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public Queue setEnableBatchedOperations(Boolean value) {
+    public QueueInfo setEnableBatchedOperations(Boolean value) {
         getModel().setEnableBatchedOperations(value);
         return this;
     }

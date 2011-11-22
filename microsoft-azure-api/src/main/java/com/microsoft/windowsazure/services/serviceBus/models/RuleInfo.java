@@ -12,12 +12,12 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescrip
 /**
  * Represents a rule.
  */
-public class Rule extends EntryModel<RuleDescription> {
+public class RuleInfo extends EntryModel<RuleDescription> {
 
     /**
      * Creates an instance of the <code>Rule</code> class.
      */
-    public Rule() {
+    public RuleInfo() {
         super(new Entry(), new RuleDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -31,7 +31,7 @@ public class Rule extends EntryModel<RuleDescription> {
      *            An <code>Entry</code> object.
      * 
      */
-    public Rule(Entry entry) {
+    public RuleInfo(Entry entry) {
         super(entry, entry.getContent().getRuleDescription());
     }
 
@@ -42,7 +42,7 @@ public class Rule extends EntryModel<RuleDescription> {
      *            A <code>String</code> object that represents the name of the rule.
      * 
      */
-    public Rule(String name) {
+    public RuleInfo(String name) {
         this();
         setName(name);
     }
@@ -64,7 +64,7 @@ public class Rule extends EntryModel<RuleDescription> {
      * 
      * @return A <code>Rule</code> object that represents the updated rule.
      */
-    public Rule setName(String value) {
+    public RuleInfo setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
@@ -86,7 +86,7 @@ public class Rule extends EntryModel<RuleDescription> {
      * 
      * @return A <code>Rule</code> object that represents the updated rule.
      */
-    public Rule setFilter(Filter value) {
+    public RuleInfo setFilter(Filter value) {
         getModel().setFilter(value);
         return this;
     }
@@ -108,7 +108,7 @@ public class Rule extends EntryModel<RuleDescription> {
      * 
      * @return A <code>Rule</code> object that represents the updated rule.
      */
-    public Rule setAction(RuleAction value) {
+    public RuleInfo setAction(RuleAction value) {
         getModel().setAction(value);
         return this;
     }

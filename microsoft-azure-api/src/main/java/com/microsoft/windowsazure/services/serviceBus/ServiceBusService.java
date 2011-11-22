@@ -21,14 +21,14 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 /**
  * 
@@ -119,7 +119,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void sendQueueMessage(String queueName, Message message) throws ServiceException {
+    public void sendQueueMessage(String queueName, BrokeredMessage message) throws ServiceException {
         next.sendQueueMessage(queueName, message);
     }
 
@@ -169,7 +169,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
+    public void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException {
         next.sendTopicMessage(topicName, message);
     }
 
@@ -223,7 +223,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         next.unlockMessage(message);
     }
 
@@ -236,7 +236,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         next.deleteMessage(message);
     }
 
@@ -251,7 +251,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateQueueResult createQueue(Queue queue) throws ServiceException {
+    public CreateQueueResult createQueue(QueueInfo queue) throws ServiceException {
         return next.createQueue(queue);
     }
 
@@ -306,7 +306,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateTopicResult createTopic(Topic topic) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         return next.createTopic(topic);
     }
 
@@ -363,7 +363,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateSubscriptionResult createSubscription(String topicName, Subscription subscription)
+    public CreateSubscriptionResult createSubscription(String topicName, SubscriptionInfo subscription)
             throws ServiceException {
         return next.createSubscription(topicName, subscription);
     }
@@ -433,7 +433,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public CreateRuleResult createRule(String topicName, String subscriptionName, Rule rule) throws ServiceException {
+    public CreateRuleResult createRule(String topicName, String subscriptionName, RuleInfo rule) throws ServiceException {
         return next.createRule(topicName, subscriptionName, rule);
     }
 

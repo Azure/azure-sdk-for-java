@@ -12,12 +12,12 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Subscriptio
 /**
  * Represents a subscription.
  */
-public class Subscription extends EntryModel<SubscriptionDescription> {
+public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
 
     /**
      * Creates an instance of the <code>Subscription</code> class.
      */
-    public Subscription() {
+    public SubscriptionInfo() {
         super(new Entry(), new SubscriptionDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -30,7 +30,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * @param entry
      *            An <code>Entry</code> object.
      */
-    public Subscription(Entry entry) {
+    public SubscriptionInfo(Entry entry) {
         super(entry, entry.getContent().getSubscriptionDescription());
     }
 
@@ -40,7 +40,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * @param name
      *            A <code>String</code> object that represents the name of the subscription.
      */
-    public Subscription(String name) {
+    public SubscriptionInfo(String name) {
         this();
         setName(name);
     }
@@ -62,7 +62,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setName(String value) {
+    public SubscriptionInfo setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
@@ -84,7 +84,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setLockDuration(Duration value) {
+    public SubscriptionInfo setLockDuration(Duration value) {
         getModel().setLockDuration(value);
         return this;
     }
@@ -106,7 +106,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setRequiresSession(Boolean value) {
+    public SubscriptionInfo setRequiresSession(Boolean value) {
         getModel().setRequiresSession(value);
         return this;
     }
@@ -129,7 +129,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setDefaultMessageTimeToLive(Duration value) {
+    public SubscriptionInfo setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
@@ -151,7 +151,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setDeadLetteringOnMessageExpiration(Boolean value) {
+    public SubscriptionInfo setDeadLetteringOnMessageExpiration(Boolean value) {
         getModel().setDeadLetteringOnMessageExpiration(value);
         return this;
     }
@@ -173,7 +173,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setDeadLetteringOnFilterEvaluationExceptions(Boolean value) {
+    public SubscriptionInfo setDeadLetteringOnFilterEvaluationExceptions(Boolean value) {
         getModel().setDeadLetteringOnFilterEvaluationExceptions(value);
         return this;
     }
@@ -195,7 +195,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setDefaultRuleDescription(RuleDescription value) {
+    public SubscriptionInfo setDefaultRuleDescription(RuleDescription value) {
         getModel().setDefaultRuleDescription(value);
         return this;
     }
@@ -227,7 +227,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setMaxDeliveryCount(Integer value) {
+    public SubscriptionInfo setMaxDeliveryCount(Integer value) {
         getModel().setMaxDeliveryCount(value);
         return this;
     }
@@ -249,7 +249,7 @@ public class Subscription extends EntryModel<SubscriptionDescription> {
      * 
      * @return A <code>Subscription</code> object that represents the updated subscription.
      */
-    public Subscription setEnableBatchedOperations(Boolean value) {
+    public SubscriptionInfo setEnableBatchedOperations(Boolean value) {
         getModel().setEnableBatchedOperations(value);
         return this;
     }

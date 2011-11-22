@@ -30,14 +30,14 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
@@ -105,7 +105,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return resource;
     }
 
-    void sendMessage(String path, Message message) {
+    void sendMessage(String path, BrokeredMessage message) {
         Builder request = getResource()
                 .path(path)
                 .path("messages")
@@ -120,7 +120,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         request.post(message.getBody());
     }
 
-    public void sendQueueMessage(String path, Message message) throws ServiceException {
+    public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
         sendMessage(path, message);
     }
 
@@ -136,11 +136,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("messages")
                 .path("head");
 
-        Message message = receiveMessage(options, resource);
+        BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveQueueMessageResult(message);
     }
 
-    private Message receiveMessage(ReceiveMessageOptions options, WebResource resource) {
+    private BrokeredMessage receiveMessage(ReceiveMessageOptions options, WebResource resource) {
         if (options.getTimeout() != null) {
             resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
         }
@@ -161,7 +161,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         MediaType contentType = clientResult.getType();
         Date date = clientResult.getResponseDate();
 
-        Message message = new Message();
+        BrokeredMessage message = new BrokeredMessage();
         if (brokerProperties != null) {
             message.setProperties(mapper.fromString(brokerProperties));
         }
@@ -176,7 +176,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return message;
     }
 
-    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
+    public void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException {
         sendMessage(topicName, message);
     }
 
@@ -195,27 +195,27 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("messages")
                 .path("head");
 
-        Message message = receiveMessage(options, resource);
+        BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveSubscriptionMessageResult(message);
     }
 
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         getChannel()
                 .resource(message.getLockLocation())
                 .put("");
     }
 
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         getChannel()
                 .resource(message.getLockLocation())
                 .delete();
     }
 
-    public CreateQueueResult createQueue(Queue entry) throws ServiceException {
+    public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
         return new CreateQueueResult(getResource()
                 .path(entry.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Queue.class, entry));
+                .put(QueueInfo.class, entry));
     }
 
     public void deleteQueue(String queuePath) throws ServiceException {
@@ -227,16 +227,16 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     public GetQueueResult getQueue(String queuePath) throws ServiceException {
         return new GetQueueResult(getResource()
                 .path(queuePath)
-                .get(Queue.class));
+                .get(QueueInfo.class));
     }
 
     public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
         Feed feed = listOptions(options, getResource()
                 .path("$Resources/Queues"))
                 .get(Feed.class);
-        ArrayList<Queue> queues = new ArrayList<Queue>();
+        ArrayList<QueueInfo> queues = new ArrayList<QueueInfo>();
         for (Entry entry : feed.getEntries()) {
-            queues.add(new Queue(entry));
+            queues.add(new QueueInfo(entry));
         }
         ListQueuesResult result = new ListQueuesResult();
         result.setItems(queues);
@@ -253,11 +253,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return path;
     }
 
-    public CreateTopicResult createTopic(Topic entry) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo entry) throws ServiceException {
         return new CreateTopicResult(getResource()
                 .path(entry.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Topic.class, entry));
+                .put(TopicInfo.class, entry));
     }
 
     public void deleteTopic(String TopicPath) throws ServiceException {
@@ -269,29 +269,29 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     public GetTopicResult getTopic(String TopicPath) throws ServiceException {
         return new GetTopicResult(getResource()
                 .path(TopicPath)
-                .get(Topic.class));
+                .get(TopicInfo.class));
     }
 
     public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
         Feed feed = listOptions(options, getResource()
                 .path("$Resources/Topics"))
                 .get(Feed.class);
-        ArrayList<Topic> Topics = new ArrayList<Topic>();
+        ArrayList<TopicInfo> Topics = new ArrayList<TopicInfo>();
         for (Entry entry : feed.getEntries()) {
-            Topics.add(new Topic(entry));
+            Topics.add(new TopicInfo(entry));
         }
         ListTopicsResult result = new ListTopicsResult();
         result.setItems(Topics);
         return result;
     }
 
-    public CreateSubscriptionResult createSubscription(String topicPath, Subscription subscription) {
+    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
         return new CreateSubscriptionResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscription.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Subscription.class, subscription));
+                .put(SubscriptionInfo.class, subscription));
     }
 
     public void deleteSubscription(String topicPath, String subscriptionName) {
@@ -307,7 +307,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(topicPath)
                 .path("subscriptions")
                 .path(subscriptionName)
-                .get(Subscription.class));
+                .get(SubscriptionInfo.class));
     }
 
     public ListSubscriptionsResult listSubscriptions(String topicPath, ListSubscriptionsOptions options) {
@@ -315,9 +315,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(topicPath)
                 .path("subscriptions"))
                 .get(Feed.class);
-        ArrayList<Subscription> list = new ArrayList<Subscription>();
+        ArrayList<SubscriptionInfo> list = new ArrayList<SubscriptionInfo>();
         for (Entry entry : feed.getEntries()) {
-            list.add(new Subscription(entry));
+            list.add(new SubscriptionInfo(entry));
         }
         ListSubscriptionsResult result = new ListSubscriptionsResult();
         result.setItems(list);
@@ -325,7 +325,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     public CreateRuleResult createRule(String topicPath, String subscriptionName,
-            Rule rule) {
+            RuleInfo rule) {
         return new CreateRuleResult(getResource()
                 .path(topicPath)
                 .path("subscriptions")
@@ -333,7 +333,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("rules")
                 .path(rule.getName())
                 .type("application/atom+xml;type=entry;charset=utf-8")
-                .put(Rule.class, rule));
+                .put(RuleInfo.class, rule));
     }
 
     public void deleteRule(String topicPath, String subscriptionName,
@@ -355,7 +355,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(subscriptionName)
                 .path("rules")
                 .path(ruleName)
-                .get(Rule.class));
+                .get(RuleInfo.class));
     }
 
     public ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options) {
@@ -365,9 +365,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path(subscriptionName)
                 .path("rules"))
                 .get(Feed.class);
-        ArrayList<Rule> list = new ArrayList<Rule>();
+        ArrayList<RuleInfo> list = new ArrayList<RuleInfo>();
         for (Entry entry : feed.getEntries()) {
-            list.add(new Rule(entry));
+            list.add(new RuleInfo(entry));
         }
         ListRulesResult result = new ListRulesResult();
         result.setItems(list);

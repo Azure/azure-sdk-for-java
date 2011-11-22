@@ -18,14 +18,14 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
-import com.microsoft.windowsazure.services.serviceBus.models.Queue;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Rule;
-import com.microsoft.windowsazure.services.serviceBus.models.Subscription;
-import com.microsoft.windowsazure.services.serviceBus.models.Topic;
+import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
+import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
 /**
  * 
@@ -45,7 +45,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void sendQueueMessage(String queueName, Message message) throws ServiceException;
+    void sendQueueMessage(String queueName, BrokeredMessage message) throws ServiceException;
 
     /**
      * Receives a queue message.
@@ -89,7 +89,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void sendTopicMessage(String topicName, Message message) throws ServiceException;
+    void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException;
 
 
     /**
@@ -138,7 +138,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void unlockMessage(Message message) throws ServiceException;
+    void unlockMessage(BrokeredMessage message) throws ServiceException;
 
     /**
      * Deletes a message.
@@ -149,7 +149,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void deleteMessage(Message message) throws ServiceException;
+    void deleteMessage(BrokeredMessage message) throws ServiceException;
 
     /**
      * Creates a queue.
@@ -162,7 +162,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateQueueResult createQueue(Queue queue) throws ServiceException;
+    CreateQueueResult createQueue(QueueInfo queue) throws ServiceException;
 
     /**
      * Deletes a queue.
@@ -211,7 +211,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateTopicResult createTopic(Topic topic) throws ServiceException;
+    CreateTopicResult createTopic(TopicInfo topic) throws ServiceException;
 
     /**
      * Deletes a topic.
@@ -262,7 +262,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateSubscriptionResult createSubscription(String topicName, Subscription subscription) throws ServiceException;
+    CreateSubscriptionResult createSubscription(String topicName, SubscriptionInfo subscription) throws ServiceException;
 
     /**
      * Deletes a subscription.
@@ -326,7 +326,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateRuleResult createRule(String topicName, String subscriptionName, Rule rule) throws ServiceException;
+    CreateRuleResult createRule(String topicName, String subscriptionName, RuleInfo rule) throws ServiceException;
 
     /**
      * Deletes a rule.

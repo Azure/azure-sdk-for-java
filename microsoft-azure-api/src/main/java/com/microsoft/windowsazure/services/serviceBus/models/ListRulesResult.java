@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class ListRulesResult {
 
-    private List<Rule> items;
+    private List<RuleInfo> items;
 
 	/**
 	 * Returns the items in the result list.
 	 * 
-	 * @return A <code>List</code> of {@link Rule} objects that represent the
+	 * @return A <code>List</code> of {@link RuleInfo} objects that represent the
 	 *         items in the result list.
 	 */
-    public List<Rule> getItems() {
+    public List<RuleInfo> getItems() {
         return items;
     }
 
@@ -23,10 +23,10 @@ public class ListRulesResult {
 	 * Specfies the items in the result list.
 	 * 
 	 * @param value
-	 *            A <code>List</code> object that contains the {@link Rule}
+	 *            A <code>List</code> object that contains the {@link RuleInfo}
 	 *            objects assigned as the value of the result.
 	 */
-    public void setItems(List<Rule> items) {
+    public void setItems(List<RuleInfo> items) {
         this.items = items;
     }
 
