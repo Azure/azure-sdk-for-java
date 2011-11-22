@@ -24,7 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
@@ -59,7 +59,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         return ServiceExceptionFactory.process("serviceBus", e);
     }
 
-    public void sendQueueMessage(String path, Message message) throws ServiceException {
+    public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendQueueMessage(path, message);
         }
@@ -96,7 +96,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void sendTopicMessage(String path, Message message) throws ServiceException {
+    public void sendTopicMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendTopicMessage(path, message);
         }
@@ -134,7 +134,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.unlockMessage(message);
         }
@@ -146,7 +146,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.deleteMessage(message);
         }

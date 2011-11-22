@@ -18,7 +18,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
@@ -45,7 +45,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void sendQueueMessage(String queueName, Message message) throws ServiceException;
+    void sendQueueMessage(String queueName, BrokeredMessage message) throws ServiceException;
 
     /**
      * Receives a queue message.
@@ -89,7 +89,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void sendTopicMessage(String topicName, Message message) throws ServiceException;
+    void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException;
 
 
     /**
@@ -138,7 +138,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void unlockMessage(Message message) throws ServiceException;
+    void unlockMessage(BrokeredMessage message) throws ServiceException;
 
     /**
      * Deletes a message.
@@ -149,7 +149,7 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    void deleteMessage(Message message) throws ServiceException;
+    void deleteMessage(BrokeredMessage message) throws ServiceException;
 
     /**
      * Creates a queue.

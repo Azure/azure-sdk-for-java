@@ -19,7 +19,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
@@ -79,7 +79,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendMessageWorks() throws Exception {
         // Arrange
-        Message message = new Message("sendMessageWorks");
+        BrokeredMessage message = new BrokeredMessage("sendMessageWorks");
 
         // Act
         service.sendQueueMessage("TestAlpha", message);
@@ -92,10 +92,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String queueName = "TestReceiveMessageWorks";
         service.createQueue(new QueueInfo(queueName));
-        service.sendQueueMessage(queueName, new Message("Hello World"));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello World"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
         byte[] data = new byte[100];
         int size = message.getBody().read(data);
 
@@ -109,10 +109,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
         service.createQueue(new QueueInfo(queueName));
-        service.sendQueueMessage(queueName, new Message("Hello Again"));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
 
         // Act
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Assert
         byte[] data = new byte[100];
@@ -126,8 +126,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeCompleted";
         service.createQueue(new QueueInfo(queueName));
-        service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = message.getLockToken();
@@ -147,15 +147,15 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeUnlocked";
         service.createQueue(new QueueInfo(queueName));
-        service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+        BrokeredMessage peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.unlockMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -169,15 +169,15 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeDeleted";
         service.createQueue(new QueueInfo(queueName));
-        service.sendQueueMessage(queueName, new Message("Hello Again"));
-        Message peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+        BrokeredMessage peekedMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
 
         // Act
         String lockToken = peekedMessage.getLockToken();
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.deleteMessage(peekedMessage);
-        Message receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -193,9 +193,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createQueue(new QueueInfo(queueName));
 
         // Act
-        service.sendQueueMessage(queueName, new Message("<data>Hello Again</data>").setContentType("text/xml"));
+        service.sendQueueMessage(queueName, new BrokeredMessage("<data>Hello Again</data>").setContentType("text/xml"));
 
-        Message message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(message);
@@ -316,10 +316,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestSubscriptionWillReceiveMessage";
         service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
-        service.sendTopicMessage(topicName, new Message("<p>Testing subscription</p>").setContentType("text/html"));
+        service.sendTopicMessage(topicName, new BrokeredMessage("<p>Testing subscription</p>").setContentType("text/html"));
 
         // Act
-        Message message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS).getValue();
 
         // Assert
         assertNotNull(message);

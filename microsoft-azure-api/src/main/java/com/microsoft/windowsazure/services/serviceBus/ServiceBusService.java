@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
@@ -119,7 +119,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void sendQueueMessage(String queueName, Message message) throws ServiceException {
+    public void sendQueueMessage(String queueName, BrokeredMessage message) throws ServiceException {
         next.sendQueueMessage(queueName, message);
     }
 
@@ -169,7 +169,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
+    public void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException {
         next.sendTopicMessage(topicName, message);
     }
 
@@ -223,7 +223,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         next.unlockMessage(message);
     }
 
@@ -236,7 +236,7 @@ public class ServiceBusService implements ServiceBusContract {
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         next.deleteMessage(message);
     }
 

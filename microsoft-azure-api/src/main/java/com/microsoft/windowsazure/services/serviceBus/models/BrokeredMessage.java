@@ -9,7 +9,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPrope
 /**
  * Represents a service bus message.
  */
-public class Message {
+public class BrokeredMessage {
     BrokerProperties properties;
     InputStream body;
     String contentType;
@@ -18,7 +18,7 @@ public class Message {
     /**
      * Creates an instance of the <code>Message</code> class.
      */
-    public Message() {
+    public BrokeredMessage() {
         this.properties = new BrokerProperties();
     }
 
@@ -28,7 +28,7 @@ public class Message {
      * @param body
      *            An <code>InputStream</code> object that represents the body of the message.
      */
-    public Message(InputStream body) {
+    public BrokeredMessage(InputStream body) {
         this.properties = new BrokerProperties();
         this.body = body;
     }
@@ -39,7 +39,7 @@ public class Message {
      * @param body
      *            A byte array that represents the body of the message.
      */
-    public Message(byte[] body) {
+    public BrokeredMessage(byte[] body) {
         this.properties = new BrokerProperties();
         this.body = (body == null) ? null : new ByteArrayInputStream(body);
     }
@@ -51,12 +51,12 @@ public class Message {
      * @param body
      *            A <code>String</code> object that represents the body of the message.
      */
-    public Message(String body) {
+    public BrokeredMessage(String body) {
         this.properties = new BrokerProperties();
         this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
     }
 
-    Message(BrokerProperties properties, InputStream body) {
+    BrokeredMessage(BrokerProperties properties, InputStream body) {
         this.properties = properties;
         this.body = body;
     }
@@ -76,7 +76,7 @@ public class Message {
      * @param properties
      *            A {@link BrokerProperties} object that represents the properties of the message.
      */
-    public Message setProperties(BrokerProperties properties) {
+    public BrokeredMessage setProperties(BrokerProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -98,7 +98,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setBody(InputStream body) {
+    public BrokeredMessage setBody(InputStream body) {
         this.body = body;
         return this;
     }
@@ -120,7 +120,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setContentType(String contentType) {
+    public BrokeredMessage setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -142,7 +142,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setDate(Date date) {
+    public BrokeredMessage setDate(Date date) {
         this.date = date;
         return this;
     }
@@ -173,7 +173,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setMessageId(String messageId) {
+    public BrokeredMessage setMessageId(String messageId) {
         properties.setMessageId(messageId);
         return this;
     }
@@ -205,7 +205,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setTimeToLive(Double timeToLive) {
+    public BrokeredMessage setTimeToLive(Double timeToLive) {
         properties.setTimeToLive(timeToLive);
         return this;
     }
@@ -246,7 +246,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setCorrelationId(String correlationId) {
+    public BrokeredMessage setCorrelationId(String correlationId) {
         properties.setCorrelationId(correlationId);
         return this;
     }
@@ -269,7 +269,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setSessionId(String sessionId) {
+    public BrokeredMessage setSessionId(String sessionId) {
         properties.setSessionId(sessionId);
         return this;
     }
@@ -291,7 +291,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setLabel(String label) {
+    public BrokeredMessage setLabel(String label) {
         properties.setLabel(label);
         return this;
     }
@@ -313,7 +313,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setReplyTo(String replyTo) {
+    public BrokeredMessage setReplyTo(String replyTo) {
         properties.setReplyTo(replyTo);
         return this;
     }
@@ -335,7 +335,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setTo(String to) {
+    public BrokeredMessage setTo(String to) {
         properties.setTo(to);
         return this;
     }
@@ -357,7 +357,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
+    public BrokeredMessage setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
         properties.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
         return this;
     }
@@ -379,7 +379,7 @@ public class Message {
      * 
      * @return A <code>Message</code> object that represents the updated message.
      */
-    public Message setReplyToSessionId(String replyToSessionId) {
+    public BrokeredMessage setReplyToSessionId(String replyToSessionId) {
         properties.setReplyToSessionId(replyToSessionId);
         return this;
     }

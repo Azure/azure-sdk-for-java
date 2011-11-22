@@ -30,7 +30,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.Message;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
@@ -105,7 +105,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return resource;
     }
 
-    void sendMessage(String path, Message message) {
+    void sendMessage(String path, BrokeredMessage message) {
         Builder request = getResource()
                 .path(path)
                 .path("messages")
@@ -120,7 +120,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         request.post(message.getBody());
     }
 
-    public void sendQueueMessage(String path, Message message) throws ServiceException {
+    public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
         sendMessage(path, message);
     }
 
@@ -136,11 +136,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("messages")
                 .path("head");
 
-        Message message = receiveMessage(options, resource);
+        BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveQueueMessageResult(message);
     }
 
-    private Message receiveMessage(ReceiveMessageOptions options, WebResource resource) {
+    private BrokeredMessage receiveMessage(ReceiveMessageOptions options, WebResource resource) {
         if (options.getTimeout() != null) {
             resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
         }
@@ -161,7 +161,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         MediaType contentType = clientResult.getType();
         Date date = clientResult.getResponseDate();
 
-        Message message = new Message();
+        BrokeredMessage message = new BrokeredMessage();
         if (brokerProperties != null) {
             message.setProperties(mapper.fromString(brokerProperties));
         }
@@ -176,7 +176,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return message;
     }
 
-    public void sendTopicMessage(String topicName, Message message) throws ServiceException {
+    public void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException {
         sendMessage(topicName, message);
     }
 
@@ -195,17 +195,17 @@ public class ServiceBusRestProxy implements ServiceBusContract {
                 .path("messages")
                 .path("head");
 
-        Message message = receiveMessage(options, resource);
+        BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveSubscriptionMessageResult(message);
     }
 
-    public void unlockMessage(Message message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException {
         getChannel()
                 .resource(message.getLockLocation())
                 .put("");
     }
 
-    public void deleteMessage(Message message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException {
         getChannel()
                 .resource(message.getLockLocation())
                 .delete();
