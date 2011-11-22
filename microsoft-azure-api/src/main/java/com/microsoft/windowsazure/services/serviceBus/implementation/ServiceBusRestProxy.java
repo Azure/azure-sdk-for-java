@@ -213,7 +213,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
         return new CreateQueueResult(getResource()
-                .path(entry.getName())
+                .path(entry.getPath())
                 .type("application/atom+xml;type=entry;charset=utf-8")
                 .put(QueueInfo.class, entry));
     }
@@ -255,7 +255,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     public CreateTopicResult createTopic(TopicInfo entry) throws ServiceException {
         return new CreateTopicResult(getResource()
-                .path(entry.getName())
+                .path(entry.getPath())
                 .type("application/atom+xml;type=entry;charset=utf-8")
                 .put(TopicInfo.class, entry));
     }

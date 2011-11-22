@@ -28,7 +28,7 @@ public abstract class IntegrationTestBase {
         boolean testAlphaExists = false;
         ServiceBusContract service = new ServiceBusService();
         for (QueueInfo queue : iterateQueues(service)) {
-            String queueName = queue.getName();
+            String queueName = queue.getPath();
             if (queueName.startsWith("Test") || queueName.startsWith("test")) {
                 if (queueName.equalsIgnoreCase("TestAlpha")) {
                     testAlphaExists = true;
@@ -43,7 +43,7 @@ public abstract class IntegrationTestBase {
             }
         }
         for (TopicInfo topic : iterateTopics(service)) {
-            String topicName = topic.getName();
+            String topicName = topic.getPath();
             if (topicName.startsWith("Test") || topicName.startsWith("test")) {
                 service.deleteQueue(topicName);
             }

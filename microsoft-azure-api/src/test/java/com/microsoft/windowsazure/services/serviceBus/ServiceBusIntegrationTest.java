@@ -62,7 +62,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(saved);
         assertNotSame(queue, saved);
-        assertEquals("TestCreateQueueWorks", saved.getName());
+        assertEquals("TestCreateQueueWorks", saved.getPath());
     }
 
     @Test
@@ -208,7 +208,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
 
         // Act
-        TopicInfo created = service.createTopic(new TopicInfo().setName(topicName)).getValue();
+        TopicInfo created = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
         ListTopicsResult listed = service.listTopics();
         TopicInfo fetched = service.getTopic(topicName).getValue();
         service.deleteTopic(topicName);

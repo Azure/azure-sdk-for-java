@@ -35,12 +35,12 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Creates an instance of the <code>Topic</code> class using the specified name.
      * 
-     * @param name
+     * @param path
      *            A <code>String</code> object that represents the name for the topic.
      */
-    public TopicInfo(String name) {
+    public TopicInfo(String path) {
         this();
-        setName(name);
+        setPath(path);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return A <code>String</code> object that represents the name of the topic.
      */
-    public String getName() {
+    public String getPath() {
         return getEntry().getTitle();
     }
 
@@ -60,7 +60,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return A <code>Topic</code> object that represents the updated topic.
      */
-    public TopicInfo setName(String value) {
+    public TopicInfo setPath(String value) {
         getEntry().setTitle(value);
         return this;
     }
