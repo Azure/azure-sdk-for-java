@@ -13,7 +13,7 @@ import com.microsoft.windowsazure.services.blob.implementation.ContainerACLDateA
 public class ContainerACL {
     private String etag;
     private Date lastModified;
-    private String publicAccess; // "blob", "container" or null
+    private PublicAccessType publicAccess;
     private List<SignedIdentifier> signedIdentifiers = new ArrayList<SignedIdentifier>();
 
     public String getEtag() {
@@ -32,11 +32,11 @@ public class ContainerACL {
         this.lastModified = lastModified;
     }
 
-    public String getPublicAccess() {
+    public PublicAccessType getPublicAccess() {
         return publicAccess;
     }
 
-    public void setPublicAccess(String publicAccess) {
+    public void setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
     }
 
@@ -131,5 +131,9 @@ public class ContainerACL {
         public void setPermission(String permission) {
             this.permission = permission;
         }
+    }
+
+    public static enum PublicAccessType {
+        NONE, BLOBS_ONLY, CONTAINER_AND_BLOBS,
     }
 }

@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
+import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
@@ -285,7 +286,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createContainer(container);
 
         ContainerACL acl = new ContainerACL();
-        acl.setPublicAccess("blob");
+        acl.setPublicAccess(PublicAccessType.BLOBS_ONLY);
         acl.addSignedIdentifier("test", expiryStartDate, expiryEndDate, "rwd");
         service.setContainerACL(container, acl);
 
@@ -297,7 +298,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(acl2.getEtag());
         assertNotNull(acl2.getLastModified());
         assertNotNull(acl2.getPublicAccess());
-        assertEquals("blob", acl2.getPublicAccess());
+        assertEquals(PublicAccessType.BLOBS_ONLY, acl2.getPublicAccess());
         assertEquals(1, acl2.getSignedIdentifiers().size());
         assertEquals("test", acl2.getSignedIdentifiers().get(0).getId());
         assertEquals(expiryStartDate, acl2.getSignedIdentifiers().get(0).getAccessPolicy().getStart());
@@ -738,8 +739,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(new byte[512]));
         service.createBlobBlock(container, blob, "125", new ByteArrayInputStream(new byte[195]));
 
-        ListBlobBlocksResult result = service.listBlobBlocks(container, blob,
-                new ListBlobBlocksOptions().setListType("all"));
+        ListBlobBlocksResult result = service.listBlobBlocks(container, blob, new ListBlobBlocksOptions()
+                .setCommittedList(true).setUncommittedList(true));
 
         // Assert
         assertNotNull(result);
@@ -756,6 +757,43 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(512, result.getUncommittedBlocks().get(1).getBlockLength());
         assertEquals("125", result.getUncommittedBlocks().get(2).getBlockId());
         assertEquals(195, result.getUncommittedBlocks().get(2).getBlockLength());
+    }
+
+    @Test
+    public void listBlobBlocksWithOptionsWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = config.create(BlobContract.class);
+
+        // Act
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "test14";
+        service.createBlockBlob(container, blob, null);
+        service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(new byte[256]));
+
+        BlockList blockList = new BlockList();
+        blockList.addUncommittedEntry("123");
+        service.commitBlobBlocks(container, blob, blockList);
+
+        service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(new byte[512]));
+        service.createBlobBlock(container, blob, "125", new ByteArrayInputStream(new byte[195]));
+
+        ListBlobBlocksResult result1 = service.listBlobBlocks(container, blob, new ListBlobBlocksOptions()
+                .setCommittedList(true).setUncommittedList(true));
+        ListBlobBlocksResult result2 = service.listBlobBlocks(container, blob,
+                new ListBlobBlocksOptions().setCommittedList(true));
+        ListBlobBlocksResult result3 = service.listBlobBlocks(container, blob,
+                new ListBlobBlocksOptions().setUncommittedList(true));
+
+        // Assert
+        assertEquals(1, result1.getCommittedBlocks().size());
+        assertEquals(2, result1.getUncommittedBlocks().size());
+
+        assertEquals(1, result2.getCommittedBlocks().size());
+        assertEquals(0, result2.getUncommittedBlocks().size());
+
+        assertEquals(0, result3.getCommittedBlocks().size());
+        assertEquals(2, result3.getUncommittedBlocks().size());
     }
 
     @Test
@@ -779,8 +817,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         blockList.addUncommittedEntry(blockId1).addLatestEntry(blockId3);
         service.commitBlobBlocks(container, blob, blockList);
 
-        ListBlobBlocksResult result = service.listBlobBlocks(container, blob,
-                new ListBlobBlocksOptions().setListType("all"));
+        ListBlobBlocksResult result = service.listBlobBlocks(container, blob, new ListBlobBlocksOptions()
+                .setCommittedList(true).setUncommittedList(true));
 
         // Assert
         assertNotNull(result);

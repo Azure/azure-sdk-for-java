@@ -1,10 +1,10 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-
 public class ListBlobBlocksOptions extends BlobServiceOptions {
     private String leaseId;
     private String snapshot;
-    private String listType; // "committed", "uncommitted", "all"
+    private boolean committedList;
+    private boolean uncommittedList;
 
     public String getLeaseId() {
         return leaseId;
@@ -24,12 +24,21 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
         return this;
     }
 
-    public String getListType() {
-        return listType;
+    public boolean isCommittedList() {
+        return committedList;
     }
 
-    public ListBlobBlocksOptions setListType(String listType) {
-        this.listType = listType;
+    public ListBlobBlocksOptions setCommittedList(boolean committedList) {
+        this.committedList = committedList;
+        return this;
+    }
+
+    public boolean isUncommittedList() {
+        return uncommittedList;
+    }
+
+    public ListBlobBlocksOptions setUncommittedList(boolean uncommittedList) {
+        this.uncommittedList = uncommittedList;
         return this;
     }
 }
