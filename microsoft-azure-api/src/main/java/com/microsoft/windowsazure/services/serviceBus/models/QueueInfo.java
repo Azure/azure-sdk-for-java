@@ -36,12 +36,12 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Creates an instance of the <code>Queue</code> class using the specified name.
      * 
-     * @param name
+     * @param path
      *            A <code>String</code> object that represents the name of the queue.
      */
-    public QueueInfo(String name) {
+    public QueueInfo(String path) {
         this();
-        setName(name);
+        setPath(path);
     }
 
     /**
@@ -49,7 +49,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return A <code>String</code> object that represents the name of the queue.
      */
-    public String getName() {
+    public String getPath() {
         return getEntry().getTitle();
     }
 
@@ -61,7 +61,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return A <code>Queue</code> object that represents the updated queue.
      */
-    public QueueInfo setName(String value) {
+    public QueueInfo setPath(String value) {
         getEntry().setTitle(value);
         return this;
     }
