@@ -10,16 +10,15 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-    import com.microsoft.windowsazure.common.Configuration;
-    import com.microsoft.windowsazure.common.ServiceException;
-    import com.microsoft.windowsazure.common.ServiceFilter;
-    import com.microsoft.windowsazure.common.ServiceFilter.Request;
-    import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.common.ServiceFilter.Request;
+import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
@@ -30,12 +29,13 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusContract service;
 
-    static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete().setTimeout(5);
+    static ReceiveMessageOptions RECEIVE_AND_DELETE_5_SECONDS = new ReceiveMessageOptions().setReceiveAndDelete()
+            .setTimeout(5);
     static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
 
     @Before
     public void createService() throws Exception {
-        service = new ServiceBusService();
+        service = ServiceBusService.create();
     }
 
     @Test
@@ -155,7 +155,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.unlockMessage(peekedMessage);
-        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS)
+                .getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -177,7 +178,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         Date lockedUntil = peekedMessage.getLockedUntilUtc();
 
         service.deleteMessage(peekedMessage);
-        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage receivedMessage = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS)
+                .getValue();
 
         // Assert
         assertNotNull(lockToken);
@@ -230,6 +232,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         final List<Response> responses = new ArrayList<Response>();
 
         ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
+            @Override
             public Response handle(Request request, Next next) throws Exception {
                 requests.add(request);
                 Response response = next.handle(request);
@@ -239,7 +242,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         });
 
         // Act 
-        QueueInfo created = filtered.createQueue(new QueueInfo("TestFilterCanSeeAndChangeRequestOrResponse")).getValue();
+        QueueInfo created = filtered.createQueue(new QueueInfo("TestFilterCanSeeAndChangeRequestOrResponse"))
+                .getValue();
 
         // Assert
         assertNotNull(created);
@@ -254,7 +258,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createTopic(new TopicInfo(topicName));
 
         // Act
-        SubscriptionInfo created = service.createSubscription(topicName, new SubscriptionInfo("MySubscription")).getValue();
+        SubscriptionInfo created = service.createSubscription(topicName, new SubscriptionInfo("MySubscription"))
+                .getValue();
 
         // Assert
         assertNotNull(created);
@@ -316,10 +321,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String topicName = "TestSubscriptionWillReceiveMessage";
         service.createTopic(new TopicInfo(topicName));
         service.createSubscription(topicName, new SubscriptionInfo("sub"));
-        service.sendTopicMessage(topicName, new BrokeredMessage("<p>Testing subscription</p>").setContentType("text/html"));
+        service.sendTopicMessage(topicName,
+                new BrokeredMessage("<p>Testing subscription</p>").setContentType("text/html"));
 
         // Act
-        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, "sub", RECEIVE_AND_DELETE_5_SECONDS)
+                .getValue();
 
         // Assert
         assertNotNull(message);

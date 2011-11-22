@@ -26,7 +26,7 @@ public abstract class IntegrationTestBase {
         System.setProperty("http.keepAlive", "false");
 
         boolean testAlphaExists = false;
-        ServiceBusContract service = new ServiceBusService();
+        ServiceBusContract service = ServiceBusService.create();
         for (QueueInfo queue : iterateQueues(service)) {
             String queueName = queue.getPath();
             if (queueName.startsWith("Test") || queueName.startsWith("test")) {

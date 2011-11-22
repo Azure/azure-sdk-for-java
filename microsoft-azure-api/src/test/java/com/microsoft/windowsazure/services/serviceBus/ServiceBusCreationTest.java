@@ -5,15 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusService;
 
 public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayBeCreatedDirectlyViaSingletonConfig() throws Exception {
         ServiceBusConfiguration.configure("my-namespace", "my-identity", "my-shared-secret");
-        ServiceBusService service = new ServiceBusService();
+        ServiceBusContract service = ServiceBusService.create();
 
         assertNotNull(service);
         assertEquals(ServiceBusService.class, service.getClass());
@@ -28,7 +25,7 @@ public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayBeCreatedDirectlyWithConfig() throws Exception {
         Configuration config = newConfiguration();
-        ServiceBusContract service = new ServiceBusService(config);
+        ServiceBusContract service = ServiceBusService.create(config);
 
         assertNotNull(service);
         assertEquals(ServiceBusService.class, service.getClass());
@@ -37,7 +34,7 @@ public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayAlsoBeCreatedFromConfig() throws Exception {
         Configuration config = newConfiguration();
-        ServiceBusContract service = config.create(ServiceBusService.class);
+        ServiceBusContract service = config.create(ServiceBusContract.class);
 
         assertNotNull(service);
         assertEquals(ServiceBusService.class, service.getClass());
