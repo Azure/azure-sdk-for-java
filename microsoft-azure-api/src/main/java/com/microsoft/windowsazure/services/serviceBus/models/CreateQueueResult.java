@@ -20,7 +20,8 @@ public class CreateQueueResult {
 	/**
 	 * Specfies the value of the result.
 	 * 
-	 * @return A {@link Queue} object assigned as the value of the result.
+	 * @param value
+	 *            A {@link Queue} object assigned as the value of the result.
 	 */
 	public void setValue(Queue value) {
 		this.value = value;

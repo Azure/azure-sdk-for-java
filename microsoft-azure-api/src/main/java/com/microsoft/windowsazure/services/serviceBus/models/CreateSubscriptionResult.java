@@ -20,7 +20,9 @@ public class CreateSubscriptionResult {
 	/**
 	 * Specfies the value of the result.
 	 * 
-	 * @return A {@link Subscription} object assigned as the value of the result.
+	 * @param value
+	 *            A {@link Subscription} object assigned as the value of the
+	 *            result.
 	 */
     public void setValue(Subscription value) {
         this.value = value;

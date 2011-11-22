@@ -8,7 +8,13 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
+/**
+ * Represents a topic.
+ */
 public class Topic extends EntryModel<TopicDescription> {
+    /**
+     * Creates an instance of the <code>Topic</code> class.
+     */
     public Topic() {
         super(new Entry(), new TopicDescription());
         getEntry().setContent(new Content());
@@ -16,69 +22,165 @@ public class Topic extends EntryModel<TopicDescription> {
         getEntry().getContent().setTopicDescription(getModel());
     }
 
+    /**
+     * Creates an instance of the <code>Topic</code> class using the specified entry.
+     * 
+     * @param entry
+     *            An <code>Entry</code> object that represents the entry for the topic.
+     */
     public Topic(Entry entry) {
         super(entry, entry.getContent().getTopicDescription());
     }
 
+    /**
+     * Creates an instance of the <code>Topic</code> class using the specified name.
+     * 
+     * @param name
+     *            A <code>String</code> object that represents the name for the topic.
+     */
     public Topic(String name) {
         this();
         setName(name);
     }
 
+    /**
+     * Returns the name of the topic.
+     * 
+     * @return A <code>String</code> object that represents the name of the topic.
+     */
     public String getName() {
         return getEntry().getTitle();
     }
 
+    /**
+     * Sets the name of the topic.
+     * 
+     * @param value
+     *            A <code>String</code> that represents the name of the topic.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
 
+    /**
+     * Returns the default message time-to-live (TTL).
+     * 
+     * @return A <code>Duration</code> object that represents the default message TTL.
+     */
     public Duration getDefaultMessageTimeToLive() {
         return getModel().getDefaultMessageTimeToLive();
     }
 
+    /**
+     * Sets the default message time-to-live (TTL).
+     * 
+     * @param value
+     *            A <code>Duration</code> object that represents the default message TTL.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
 
+    /**
+     * Returns the maximum size of the topic.
+     * 
+     * @return The maximum size, in megabytes, of the topic.
+     */
     public Long getMaxSizeInMegabytes() {
         return getModel().getMaxSizeInMegabytes();
     }
 
+    /**
+     * Sets the maximum size of the topic.
+     * 
+     * @param value
+     *            The maximum size, in megabytes, of the topic.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setMaxSizeInMegabytes(Long value) {
         getModel().setMaxSizeInMegabytes(value);
         return this;
     }
 
+    /**
+     * Indicates whether duplicate message detection is required.
+     * 
+     * @return <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     */
     public Boolean isRequiresDuplicateDetection() {
         return getModel().isRequiresDuplicateDetection();
     }
 
+    /**
+     * Specifies whether duplicate message detection is required.
+     * 
+     * @param value
+     *            <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setRequiresDuplicateDetection(Boolean value) {
         getModel().setRequiresDuplicateDetection(value);
         return this;
     }
 
+    /**
+     * Returns the time span during which the service bus will detect message duplication.
+     * 
+     * @return A <code>Duration</code> object that represents the time span for
+     *         detecting message duplication.
+     */
     public Duration getDuplicateDetectionHistoryTimeWindow() {
         return getModel().getDuplicateDetectionHistoryTimeWindow();
     }
 
+    /**
+     * Sets the time span during which the service bus will detect message duplication.
+     * 
+     * @param value
+     *            A <code>Duration</code> object that represents the time span for detecting message duplication.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setDuplicateDetectionHistoryTimeWindow(Duration value) {
         getModel().setDuplicateDetectionHistoryTimeWindow(value);
         return this;
     }
 
+    /**
+     * Indicates whether batch operations are enabled.
+     * 
+     * @return <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     */
     public Boolean isEnableBatchedOperations() {
         return getModel().isEnableBatchedOperations();
     }
 
+    /**
+     * Specifies whether batch operations are enabled.
+     * 
+     * @param value
+     *            <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     * 
+     * @return A <code>Topic</code> object that represents the updated topic.
+     */
     public Topic setEnableBatchedOperations(Boolean value) {
         getModel().setEnableBatchedOperations(value);
         return this;
     }
 
+    /**
+     * Returns the size of the topic.
+     * 
+     * @return The size, in bytes, of the topic.
+     */
     public Long getSizeInBytes() {
         return getModel().getSizeInBytes();
     }

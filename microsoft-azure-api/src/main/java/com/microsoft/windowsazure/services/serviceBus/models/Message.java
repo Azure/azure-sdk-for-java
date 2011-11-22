@@ -23,12 +23,10 @@ public class Message {
     }
 
     /**
-     * Creates an instance of the <code>Message</code> class using the 
-     * specified <code>InputStream</code>.
+     * Creates an instance of the <code>Message</code> class using the specified <code>InputStream</code>.
      * 
      * @param body
-     *            An <code>InputStream</code> object that represents the body of
-     *            the message.
+     *            An <code>InputStream</code> object that represents the body of the message.
      */
     public Message(InputStream body) {
         this.properties = new BrokerProperties();
@@ -36,8 +34,7 @@ public class Message {
     }
 
     /**
-     * Creates an instance of the <code>Message</code> class using the specified
-     * byte array.
+     * Creates an instance of the <code>Message</code> class using the specified byte array.
      * 
      * @param body
      *            A byte array that represents the body of the message.
@@ -52,13 +49,11 @@ public class Message {
      * string.
      * 
      * @param body
-     *            A <code>String</code> object that represents the body of the
-     *            message.
+     *            A <code>String</code> object that represents the body of the message.
      */
     public Message(String body) {
         this.properties = new BrokerProperties();
-        this.body = (body == null) ? null : new ByteArrayInputStream(
-                body.getBytes());
+        this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
     }
 
     Message(BrokerProperties properties, InputStream body) {
@@ -69,8 +64,7 @@ public class Message {
     /**
      * Returns the properties of the message.
      * 
-     * @return A {@link BrokerProperties} object that represents the properties
-     *         of the message.
+     * @return A {@link BrokerProperties} object that represents the properties of the message.
      */
     public BrokerProperties getProperties() {
         return properties;
@@ -80,8 +74,7 @@ public class Message {
      * Sets the properties of the message.
      * 
      * @param properties
-     *            A {@link BrokerProperties} object that represents the
-     *            properties of the message.
+     *            A {@link BrokerProperties} object that represents the properties of the message.
      */
     public Message setProperties(BrokerProperties properties) {
         this.properties = properties;
@@ -91,8 +84,7 @@ public class Message {
     /**
      * Returns the body of the message.
      * 
-     * @return An <code>InputStream</code> object that represents the body of
-     *         the message.
+     * @return An <code>InputStream</code> object that represents the body of the message.
      */
     public InputStream getBody() {
         return body;
@@ -102,11 +94,9 @@ public class Message {
      * Specifies the body of the message.
      * 
      * @param body
-     *            An <code>InputStream</code> object that represents the body of
-     *            the message.
+     *            An <code>InputStream</code> object that represents the body of the message.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setBody(InputStream body) {
         this.body = body;
@@ -128,8 +118,7 @@ public class Message {
      * @param contentType
      *            A <code>String</code> object that represents the content type.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setContentType(String contentType) {
         this.contentType = contentType;
@@ -139,8 +128,7 @@ public class Message {
     /**
      * Returns the date/time of the message.
      * 
-     * @return A <code>Date</code> object that represents the date/time of the
-     *         object.
+     * @return A <code>Date</code> object that represents the date/time of the object.
      */
     public Date getDate() {
         return date;
@@ -150,11 +138,9 @@ public class Message {
      * Sets the date/time of the message.
      * 
      * @param date
-     *            A <code>Date</code> object that represents the date/time of
-     *            the object.
+     *            A <code>Date</code> object that represents the date/time of the object.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setDate(Date date) {
         this.date = date;
@@ -185,8 +171,7 @@ public class Message {
      * @param messageId
      *            A <code>String</code> object that represents the message ID.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setMessageId(String messageId) {
         properties.setMessageId(messageId);
@@ -218,8 +203,7 @@ public class Message {
      * @param timeToLive
      *            The time, in seconds, for the message to live.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setTimeToLive(Double timeToLive) {
         properties.setTimeToLive(timeToLive);
@@ -238,8 +222,7 @@ public class Message {
     /**
      * Returns the locked-until date/time.
      * 
-     * @return A <code>Date</code> object that represents the locked-until
-     *         date/time, in UTC format.
+     * @return A <code>Date</code> object that represents the locked-until date/time, in UTC format.
      */
     public Date getLockedUntilUtc() {
         return properties.getLockedUntilUtc();
@@ -259,11 +242,9 @@ public class Message {
      * Sets the correlation ID.
      * 
      * @param correlationId
-     *            A <code>String</code> object that represents the correlation
-     *            ID.
+     *            A <code>String</code> object that represents the correlation ID.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setCorrelationId(String correlationId) {
         properties.setCorrelationId(correlationId);
@@ -286,8 +267,7 @@ public class Message {
      * @param sessionId
      *            A <code>String</code> object that represents the session ID.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setSessionId(String sessionId) {
         properties.setSessionId(sessionId);
@@ -309,8 +289,7 @@ public class Message {
      * @param label
      *            A <code>String</code> object that represents the label.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setLabel(String label) {
         properties.setLabel(label);
@@ -320,8 +299,7 @@ public class Message {
     /**
      * Returns the Reply-To recipient of the message.
      * 
-     * @return A <code>String</code> object that represents the Reply-To
-     *         recipient.
+     * @return A <code>String</code> object that represents the Reply-To recipient.
      */
     public String getReplyTo() {
         return properties.getReplyTo();
@@ -331,11 +309,9 @@ public class Message {
      * Sets the Reply-To recipient for the message.
      * 
      * @param replyTo
-     *            A <code>String</code> object that represents the Reply-To
-     *            recipient.
+     *            A <code>String</code> object that represents the Reply-To recipient.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setReplyTo(String replyTo) {
         properties.setReplyTo(replyTo);
@@ -357,8 +333,7 @@ public class Message {
      * @param A
      *            <code>String</code> object that represents the To recipient.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setTo(String to) {
         properties.setTo(to);
@@ -368,8 +343,7 @@ public class Message {
     /**
      * Returns the scheduled enqueue date/time.
      * 
-     * @return A <code>Date</code> object that represents the date/time of the
-     *         message in UTC format.
+     * @return A <code>Date</code> object that represents the date/time of the message in UTC format.
      */
     public Date getScheduledEnqueueTimeUtc() {
         return properties.getScheduledEnqueueTimeUtc();
@@ -379,11 +353,9 @@ public class Message {
      * Sets the scheduled enqueue time.
      * 
      * @param scheduledEnqueueTimeUtc
-     *            A <code>Date</code> object that represents the date/time of
-     *            the message in UTC format.
+     *            A <code>Date</code> object that represents the date/time of the message in UTC format.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
         properties.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
@@ -393,8 +365,7 @@ public class Message {
     /**
      * Returns the session ID of the Reply To recipient.
      * 
-     * @return A <code>String</code> object that represents the session ID of
-     *         the Reply To recipient.
+     * @return A <code>String</code> object that represents the session ID of the Reply To recipient.
      */
     public String getReplyToSessionId() {
         return properties.getReplyToSessionId();
@@ -404,11 +375,9 @@ public class Message {
      * Sets the session ID of the Reply To recipient.
      * 
      * @param replyToSessionId
-     *            A <code>String</code> object that represents the session ID
-     *            of the Reply To recipient.
+     *            A <code>String</code> object that represents the session ID of the Reply To recipient.
      * 
-     * @return A <code>Message</code> object that reperesents the updated
-     *         message.
+     * @return A <code>Message</code> object that represents the updated message.
      */
     public Message setReplyToSessionId(String replyToSessionId) {
         properties.setReplyToSessionId(replyToSessionId);
@@ -418,8 +387,7 @@ public class Message {
     /**
      * Returns the message location.
      * 
-     * @return A <code>String</code> object that represents the message
-     *         location.
+     * @return A <code>String</code> object that represents the message location.
      */
     public String getMessageLocation() {
         return properties.getMessageLocation();
