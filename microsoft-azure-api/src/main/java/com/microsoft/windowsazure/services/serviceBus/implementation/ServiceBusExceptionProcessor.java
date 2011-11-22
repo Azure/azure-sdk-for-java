@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.common.ServiceException;
 import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
@@ -24,9 +25,9 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
@@ -50,6 +51,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         this.next = next;
     }
 
+    @Override
     public ServiceBusContract withFilter(ServiceFilter filter) {
         return new ServiceBusExceptionProcessor(next.withFilter(filter));
     }
@@ -59,6 +61,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         return ServiceExceptionFactory.process("serviceBus", e);
     }
 
+    @Override
     public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendQueueMessage(path, message);
@@ -71,6 +74,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ReceiveQueueMessageResult receiveQueueMessage(String queueName) throws ServiceException {
         try {
             return next.receiveQueueMessage(queueName);
@@ -83,6 +87,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ReceiveQueueMessageResult receiveQueueMessage(String queueName, ReceiveMessageOptions options)
             throws ServiceException {
         try {
@@ -96,6 +101,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void sendTopicMessage(String path, BrokeredMessage message) throws ServiceException {
         try {
             next.sendTopicMessage(path, message);
@@ -108,6 +114,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName)
             throws ServiceException {
         try {
@@ -121,6 +128,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName,
             ReceiveMessageOptions options) throws ServiceException {
         try {
@@ -134,6 +142,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void unlockMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.unlockMessage(message);
@@ -146,6 +155,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void deleteMessage(BrokeredMessage message) throws ServiceException {
         try {
             next.deleteMessage(message);
@@ -158,6 +168,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public CreateQueueResult createQueue(QueueInfo queue) throws ServiceException {
         try {
             return next.createQueue(queue);
@@ -170,6 +181,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void deleteQueue(String queuePath) throws ServiceException {
         try {
             next.deleteQueue(queuePath);
@@ -182,6 +194,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public GetQueueResult getQueue(String queuePath) throws ServiceException {
         try {
             return next.getQueue(queuePath);
@@ -194,6 +207,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListQueuesResult listQueues() throws ServiceException {
         try {
             return next.listQueues();
@@ -206,6 +220,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         try {
             return next.createTopic(topic);
@@ -218,6 +233,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void deleteTopic(String topicPath) throws ServiceException {
         try {
             next.deleteTopic(topicPath);
@@ -230,6 +246,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public GetTopicResult getTopic(String topicPath) throws ServiceException {
         try {
             return next.getTopic(topicPath);
@@ -242,6 +259,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListTopicsResult listTopics() throws ServiceException {
         try {
             return next.listTopics();
@@ -254,6 +272,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription)
             throws ServiceException {
         try {
@@ -267,6 +286,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void deleteSubscription(String topicPath, String subscriptionName) throws ServiceException {
         try {
             next.deleteSubscription(topicPath, subscriptionName);
@@ -279,6 +299,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) throws ServiceException {
         try {
             return next.getSubscription(topicPath, subscriptionName);
@@ -291,6 +312,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListSubscriptionsResult listSubscriptions(String topicPath) throws ServiceException {
         try {
             return next.listSubscriptions(topicPath);
@@ -303,7 +325,9 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
-    public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) throws ServiceException {
+    @Override
+    public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule)
+            throws ServiceException {
         try {
             return next.createRule(topicPath, subscriptionName, rule);
         }
@@ -315,6 +339,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public void deleteRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException {
         try {
             next.deleteRule(topicPath, subscriptionName, ruleName);
@@ -327,6 +352,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public GetRuleResult getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException {
         try {
             return next.getRule(topicPath, subscriptionName, ruleName);
@@ -339,6 +365,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListRulesResult listRules(String topicPath, String subscriptionName) throws ServiceException {
         try {
             return next.listRules(topicPath, subscriptionName);
@@ -351,6 +378,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
         try {
             return next.listQueues(options);
@@ -363,6 +391,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
         try {
             return next.listTopics(options);
@@ -375,6 +404,7 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListSubscriptionsResult listSubscriptions(String topicName, ListSubscriptionsOptions options)
             throws ServiceException {
         try {
@@ -388,10 +418,50 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
     public ListRulesResult listRules(String topicName, String subscriptionName, ListRulesOptions options)
             throws ServiceException {
         try {
             return next.listRules(topicName, subscriptionName, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void sendMessage(String path, BrokeredMessage message) throws ServiceException {
+        try {
+            next.sendMessage(path, message);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ReceiveMessageResult receiveMessage(String path) throws ServiceException {
+        try {
+            return next.receiveMessage(path);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ReceiveMessageResult receiveMessage(String path, ReceiveMessageOptions options) throws ServiceException {
+        try {
+            return next.receiveMessage(path, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
