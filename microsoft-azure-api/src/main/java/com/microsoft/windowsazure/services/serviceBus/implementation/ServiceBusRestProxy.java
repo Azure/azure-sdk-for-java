@@ -104,8 +104,8 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         if (message.getContentType() != null)
             request = request.type(message.getContentType());
 
-        if (message.getProperties() != null)
-            request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
+        if (message.getBrokerProperties() != null)
+            request = request.header("BrokerProperties", mapper.toString(message.getBrokerProperties()));
 
         request.post(message.getBody());
     }

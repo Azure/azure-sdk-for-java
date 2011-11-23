@@ -10,7 +10,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPrope
  * Represents a service bus message.
  */
 public class BrokeredMessage {
-    BrokerProperties properties;
+    BrokerProperties brokerProperties;
     InputStream body;
     String contentType;
     Date date;
@@ -19,7 +19,7 @@ public class BrokeredMessage {
      * Creates an instance of the <code>Message</code> class.
      */
     public BrokeredMessage() {
-        this.properties = new BrokerProperties();
+        this.brokerProperties = new BrokerProperties();
     }
 
     /**
@@ -29,7 +29,7 @@ public class BrokeredMessage {
      *            An <code>InputStream</code> object that represents the body of the message.
      */
     public BrokeredMessage(InputStream body) {
-        this.properties = new BrokerProperties();
+        this.brokerProperties = new BrokerProperties();
         this.body = body;
     }
 
@@ -40,7 +40,7 @@ public class BrokeredMessage {
      *            A byte array that represents the body of the message.
      */
     public BrokeredMessage(byte[] body) {
-        this.properties = new BrokerProperties();
+        this.brokerProperties = new BrokerProperties();
         this.body = (body == null) ? null : new ByteArrayInputStream(body);
     }
 
@@ -52,7 +52,7 @@ public class BrokeredMessage {
      *            A <code>String</code> object that represents the body of the message.
      */
     public BrokeredMessage(String body) {
-        this.properties = new BrokerProperties();
+        this.brokerProperties = new BrokerProperties();
         this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
     }
 
@@ -62,7 +62,7 @@ public class BrokeredMessage {
      * @param properties
      */
     public BrokeredMessage(BrokerProperties properties) {
-        this.properties = properties;
+        this.brokerProperties = properties;
     }
 
     /**
@@ -70,19 +70,8 @@ public class BrokeredMessage {
      * 
      * @return A {@link BrokerProperties} object that represents the properties of the message.
      */
-    public BrokerProperties getProperties() {
-        return properties;
-    }
-
-    /**
-     * Sets the properties of the message.
-     * 
-     * @param properties
-     *            A {@link BrokerProperties} object that represents the properties of the message.
-     */
-    public BrokeredMessage setProperties(BrokerProperties properties) {
-        this.properties = properties;
-        return this;
+    public BrokerProperties getBrokerProperties() {
+        return brokerProperties;
     }
 
     /**
@@ -157,7 +146,7 @@ public class BrokeredMessage {
      * @return The delivery count.
      */
     public Integer getDeliveryCount() {
-        return properties.getDeliveryCount();
+        return brokerProperties.getDeliveryCount();
     }
 
     /**
@@ -166,7 +155,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the message ID.
      */
     public String getMessageId() {
-        return properties.getMessageId();
+        return brokerProperties.getMessageId();
     }
 
     /**
@@ -178,7 +167,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setMessageId(String messageId) {
-        properties.setMessageId(messageId);
+        brokerProperties.setMessageId(messageId);
         return this;
     }
 
@@ -189,7 +178,7 @@ public class BrokeredMessage {
      * 
      */
     public Long getSequenceNumber() {
-        return properties.getSequenceNumber();
+        return brokerProperties.getSequenceNumber();
     }
 
     /**
@@ -198,7 +187,7 @@ public class BrokeredMessage {
      * @return The time, in seconds, for the message to live.
      */
     public Double getTimeToLive() {
-        return properties.getTimeToLive();
+        return brokerProperties.getTimeToLive();
     }
 
     /**
@@ -210,7 +199,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setTimeToLive(Double timeToLive) {
-        properties.setTimeToLive(timeToLive);
+        brokerProperties.setTimeToLive(timeToLive);
         return this;
     }
 
@@ -220,7 +209,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the lock token.
      */
     public String getLockToken() {
-        return properties.getLockToken();
+        return brokerProperties.getLockToken();
     }
 
     /**
@@ -229,7 +218,7 @@ public class BrokeredMessage {
      * @return A <code>Date</code> object that represents the locked-until date/time, in UTC format.
      */
     public Date getLockedUntilUtc() {
-        return properties.getLockedUntilUtc();
+        return brokerProperties.getLockedUntilUtc();
     }
 
     /**
@@ -239,7 +228,7 @@ public class BrokeredMessage {
      * 
      */
     public String getCorrelationId() {
-        return properties.getCorrelationId();
+        return brokerProperties.getCorrelationId();
     }
 
     /**
@@ -251,7 +240,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setCorrelationId(String correlationId) {
-        properties.setCorrelationId(correlationId);
+        brokerProperties.setCorrelationId(correlationId);
         return this;
     }
 
@@ -262,7 +251,7 @@ public class BrokeredMessage {
      * 
      */
     public String getSessionId() {
-        return properties.getSessionId();
+        return brokerProperties.getSessionId();
     }
 
     /**
@@ -274,7 +263,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setSessionId(String sessionId) {
-        properties.setSessionId(sessionId);
+        brokerProperties.setSessionId(sessionId);
         return this;
     }
 
@@ -284,7 +273,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the label.
      */
     public String getLabel() {
-        return properties.getLabel();
+        return brokerProperties.getLabel();
     }
 
     /**
@@ -296,7 +285,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setLabel(String label) {
-        properties.setLabel(label);
+        brokerProperties.setLabel(label);
         return this;
     }
 
@@ -306,7 +295,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the Reply-To recipient.
      */
     public String getReplyTo() {
-        return properties.getReplyTo();
+        return brokerProperties.getReplyTo();
     }
 
     /**
@@ -318,7 +307,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setReplyTo(String replyTo) {
-        properties.setReplyTo(replyTo);
+        brokerProperties.setReplyTo(replyTo);
         return this;
     }
 
@@ -328,7 +317,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the To recipient.
      */
     public String getTo() {
-        return properties.getTo();
+        return brokerProperties.getTo();
     }
 
     /**
@@ -340,7 +329,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setTo(String to) {
-        properties.setTo(to);
+        brokerProperties.setTo(to);
         return this;
     }
 
@@ -350,7 +339,7 @@ public class BrokeredMessage {
      * @return A <code>Date</code> object that represents the date/time of the message in UTC format.
      */
     public Date getScheduledEnqueueTimeUtc() {
-        return properties.getScheduledEnqueueTimeUtc();
+        return brokerProperties.getScheduledEnqueueTimeUtc();
     }
 
     /**
@@ -362,7 +351,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
-        properties.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
+        brokerProperties.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
         return this;
     }
 
@@ -372,7 +361,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the session ID of the Reply To recipient.
      */
     public String getReplyToSessionId() {
-        return properties.getReplyToSessionId();
+        return brokerProperties.getReplyToSessionId();
     }
 
     /**
@@ -384,7 +373,7 @@ public class BrokeredMessage {
      * @return A <code>Message</code> object that represents the updated message.
      */
     public BrokeredMessage setReplyToSessionId(String replyToSessionId) {
-        properties.setReplyToSessionId(replyToSessionId);
+        brokerProperties.setReplyToSessionId(replyToSessionId);
         return this;
     }
 
@@ -394,7 +383,7 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the message location.
      */
     public String getMessageLocation() {
-        return properties.getMessageLocation();
+        return brokerProperties.getMessageLocation();
     }
 
     /**
@@ -403,6 +392,6 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the lock location.
      */
     public String getLockLocation() {
-        return properties.getLockLocation();
+        return brokerProperties.getLockLocation();
     }
 }
