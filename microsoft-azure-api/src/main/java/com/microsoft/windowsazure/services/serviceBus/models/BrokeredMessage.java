@@ -56,9 +56,13 @@ public class BrokeredMessage {
         this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
     }
 
-    BrokeredMessage(BrokerProperties properties, InputStream body) {
+    /**
+     * Internal
+     * 
+     * @param properties
+     */
+    public BrokeredMessage(BrokerProperties properties) {
         this.properties = properties;
-        this.body = body;
     }
 
     /**

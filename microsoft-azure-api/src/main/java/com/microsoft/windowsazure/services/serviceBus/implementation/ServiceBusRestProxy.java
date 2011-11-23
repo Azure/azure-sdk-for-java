@@ -1,5 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -159,23 +160,36 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throw new RuntimeException("Unknown ReceiveMode");
         }
 
-        String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
-        String location = clientResult.getHeaders().getFirst("Location");
-        MediaType contentType = clientResult.getType();
-        Date date = clientResult.getResponseDate();
-
-        BrokeredMessage message = new BrokeredMessage();
-        if (brokerProperties != null) {
-            message.setProperties(mapper.fromString(brokerProperties));
+        BrokerProperties brokerProperties;
+        if (clientResult.getHeaders().containsKey("BrokerProperties")) {
+            brokerProperties = mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties"));
         }
+        else {
+            brokerProperties = new BrokerProperties();
+        }
+
+        String location = clientResult.getHeaders().getFirst("Location");
+        if (location != null) {
+            brokerProperties.setLockLocation(location);
+        }
+
+        BrokeredMessage message = new BrokeredMessage(brokerProperties);
+
+        MediaType contentType = clientResult.getType();
         if (contentType != null) {
             message.setContentType(contentType.toString());
         }
-        if (location != null) {
-            message.getProperties().setLockLocation(location);
+
+        Date date = clientResult.getResponseDate();
+        if (date != null) {
+            message.setDate(date);
         }
-        message.setDate(date);
-        message.setBody(clientResult.getEntityInputStream());
+
+        InputStream body = clientResult.getEntityInputStream();
+        if (body != null) {
+            message.setBody(body);
+        }
+
         return message;
     }
 
