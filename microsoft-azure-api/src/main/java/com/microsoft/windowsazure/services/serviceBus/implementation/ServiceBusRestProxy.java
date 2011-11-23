@@ -52,6 +52,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     private Client channel;
     private final String uri;
     private final BrokerPropertiesMapper mapper;
+    private final CustomPropertiesMapper customPropertiesMapper;
     static Log log = LogFactory.getLog(ServiceBusContract.class);
 
     ServiceFilter[] filters;
@@ -64,6 +65,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.filters = new ServiceFilter[0];
         this.uri = uri;
         this.mapper = mapper;
+        this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);
     }
 
@@ -72,6 +74,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.filters = filters;
         this.uri = uri;
         this.mapper = mapper;
+        this.customPropertiesMapper = new CustomPropertiesMapper();
     }
 
     @Override
@@ -106,6 +109,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
         if (message.getBrokerProperties() != null)
             request = request.header("BrokerProperties", mapper.toString(message.getBrokerProperties()));
+
+        for (java.util.Map.Entry<String, Object> entry : message.getProperties().entrySet()) {
+            request.header(entry.getKey(), customPropertiesMapper.toString(entry.getValue()));
+        }
 
         request.post(message.getBody());
     }
@@ -188,6 +195,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         InputStream body = clientResult.getEntityInputStream();
         if (body != null) {
             message.setBody(body);
+        }
+
+        for (String key : clientResult.getHeaders().keySet()) {
+            Object value = clientResult.getHeaders().getFirst(key);
+            message.setProperty(key, value);
         }
 
         return message;

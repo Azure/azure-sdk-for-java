@@ -170,6 +170,15 @@ public class BrokeredMessage {
     }
 
     /**
+     * Returns the user defined properties of the message.
+     * 
+     * @return A <code>Map</code> object that represents the user defined properties.
+     */
+    public Map<String, Object> getProperties() {
+        return customProperties;
+    }
+
+    /**
      * Returns the delivery count of the message.
      * 
      * @return The delivery count.
