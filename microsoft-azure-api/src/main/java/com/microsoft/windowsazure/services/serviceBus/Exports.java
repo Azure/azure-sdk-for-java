@@ -12,17 +12,18 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 public class Exports implements Builder.Exports {
+    @Override
     public void register(Builder.Registry registry) {
 
         // provide contract implementation
         registry.add(ServiceBusContract.class, ServiceBusExceptionProcessor.class);
-        registry.add(ServiceBusService.class);
         registry.add(ServiceBusExceptionProcessor.class);
         registry.add(ServiceBusRestProxy.class);
 
         // alter jersey client config for serviceBus
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
+            @Override
             public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 
                 // enable this feature for unattributed json object serialization
