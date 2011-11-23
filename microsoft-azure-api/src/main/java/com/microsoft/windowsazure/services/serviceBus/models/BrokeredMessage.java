@@ -3,6 +3,8 @@ package com.microsoft.windowsazure.services.serviceBus.models;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerProperties;
 
@@ -14,12 +16,13 @@ public class BrokeredMessage {
     InputStream body;
     String contentType;
     Date date;
+    Map<String, Object> customProperties;
 
     /**
      * Creates an instance of the <code>Message</code> class.
      */
     public BrokeredMessage() {
-        this.brokerProperties = new BrokerProperties();
+        this(new BrokerProperties());
     }
 
     /**
@@ -29,7 +32,7 @@ public class BrokeredMessage {
      *            An <code>InputStream</code> object that represents the body of the message.
      */
     public BrokeredMessage(InputStream body) {
-        this.brokerProperties = new BrokerProperties();
+        this(new BrokerProperties());
         this.body = body;
     }
 
@@ -40,7 +43,7 @@ public class BrokeredMessage {
      *            A byte array that represents the body of the message.
      */
     public BrokeredMessage(byte[] body) {
-        this.brokerProperties = new BrokerProperties();
+        this(new BrokerProperties());
         this.body = (body == null) ? null : new ByteArrayInputStream(body);
     }
 
@@ -52,7 +55,7 @@ public class BrokeredMessage {
      *            A <code>String</code> object that represents the body of the message.
      */
     public BrokeredMessage(String body) {
-        this.brokerProperties = new BrokerProperties();
+        this(new BrokerProperties());
         this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
     }
 
@@ -63,6 +66,7 @@ public class BrokeredMessage {
      */
     public BrokeredMessage(BrokerProperties properties) {
         this.brokerProperties = properties;
+        this.customProperties = new HashMap<String, Object>();
     }
 
     /**
@@ -137,6 +141,31 @@ public class BrokeredMessage {
      */
     public BrokeredMessage setDate(Date date) {
         this.date = date;
+        return this;
+    }
+
+    /**
+     * Returns a user defined property of the message.
+     * 
+     * @param name
+     *            A <code>String</code> object that represents the name of the property.
+     * @return An <code>Object</code> object that represents the value of the property.
+     */
+    public Object getProperty(String name) {
+        return customProperties.get(name);
+    }
+
+    /**
+     * Sets a user defined property of the message.
+     * 
+     * @param name
+     *            A <code>String</code> object that represents the name of the property.
+     * @param value
+     *            An <code>Object</code> object that represents the value of the property.
+     * @return A <code>Message</code> object that represents the updated message.
+     */
+    public BrokeredMessage setProperty(String name, Object value) {
+        customProperties.put(name, value);
         return this;
     }
 
