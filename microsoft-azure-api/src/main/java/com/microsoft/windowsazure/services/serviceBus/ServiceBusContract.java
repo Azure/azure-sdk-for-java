@@ -2,6 +2,7 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import com.microsoft.windowsazure.common.FilterableService;
 import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateSubscriptionResult;
@@ -18,9 +19,9 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsOp
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
@@ -91,7 +92,6 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      */
     void sendTopicMessage(String topicPath, BrokeredMessage message) throws ServiceException;
 
-
     /**
      * Receives a subscription message.
      * 
@@ -139,6 +139,48 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *                If a service exception is encountered.
      */
     void unlockMessage(BrokeredMessage message) throws ServiceException;
+
+    /**
+     * Sends a message.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path to which the message will be sent.
+     *            This may be the value of a queuePath or a topicPath.
+     * @param message
+     *            A <code>Message</code> object that represents the message to send.
+     * 
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    void sendMessage(String path, BrokeredMessage message) throws ServiceException;
+
+    /**
+     * Receives a message.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path from which a message will be received.
+     *            This may either be the value of queuePath or a combination of
+     *            the topicPath + "/subscriptions/" + subscriptionName.
+     * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    ReceiveMessageResult receiveMessage(String path) throws ServiceException;
+
+    /**
+     * Receives a message using the specified receive message options.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path from which a message will be received.
+     *            This may either be the value of queuePath or a combination of
+     *            the topicPath + "/subscriptions/" + subscriptionName.
+     * @param options
+     *            A <code>ReceiveMessageOptions</code> object that represents the receive message options.
+     * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    ReceiveMessageResult receiveMessage(String path, ReceiveMessageOptions options) throws ServiceException;
 
     /**
      * Deletes a message.
@@ -262,7 +304,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @exception ServiceException
      *                If a service exception is encountered.
      */
-    CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) throws ServiceException;
+    CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription)
+            throws ServiceException;
 
     /**
      * Deletes a subscription.
