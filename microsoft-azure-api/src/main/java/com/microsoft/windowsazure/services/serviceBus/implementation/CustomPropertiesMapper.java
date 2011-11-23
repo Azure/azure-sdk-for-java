@@ -1,6 +1,7 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,13 +12,10 @@ public class CustomPropertiesMapper {
     // Fri, 04 Mar 2011 08:49:37 GMT
     private static final String RFC_1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
-    public BrokerProperties fromString(String value) {
-        throw new RuntimeException();
-    }
-
     public String toString(Object value) {
-        if (value == null)
+        if (value == null) {
             return null;
+        }
 
         Class<? extends Object> type = value.getClass();
         if (type == Byte.class) {
@@ -62,6 +60,47 @@ public class CustomPropertiesMapper {
         }
         else {
             return value.toString();
+        }
+    }
+
+    public Object fromString(String value) throws ParseException {
+        if (value == null) {
+            return null;
+        }
+
+        if (value.endsWith(";byte")) {
+            return Byte.parseByte(value.substring(0, value.length() - ";byte".length()));
+        }
+        else if (value.endsWith(";char") && value.length() == "X;char".length()) {
+            return new Character(value.charAt(0));
+        }
+        else if (value.endsWith(";short")) {
+            return Short.parseShort(value.substring(0, value.length() - ";short".length()));
+        }
+        else if (value.endsWith(";int")) {
+            return Integer.parseInt(value.substring(0, value.length() - ";int".length()));
+        }
+        else if (value.endsWith(";long")) {
+            return Long.parseLong(value.substring(0, value.length() - ";long".length()));
+        }
+        else if (value.endsWith(";float")) {
+            return Float.parseFloat(value.substring(0, value.length() - ";float".length()));
+        }
+        else if (value.endsWith(";double")) {
+            return Double.parseDouble(value.substring(0, value.length() - ";double".length()));
+        }
+        else if (value.endsWith(";bool")) {
+            return Boolean.parseBoolean(value.substring(0, value.length() - ";bool".length()));
+        }
+        else if (value.endsWith(";uuid")) {
+            return UUID.fromString(value.substring(0, value.length() - ";uuid".length()));
+        }
+        else if (value.endsWith(";date")) {
+            SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
+            return format.parse(value.substring(0, value.length() - ";date".length()));
+        }
+        else {
+            return value;
         }
     }
 }
