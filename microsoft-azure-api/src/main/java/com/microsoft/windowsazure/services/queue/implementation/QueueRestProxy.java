@@ -45,7 +45,7 @@ public class QueueRestProxy implements QueueContract {
 
     @Inject
     public QueueRestProxy(HttpURLConnectionClient channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(QueueConfiguration.URL) String url, SharedKeyFilter filter) {
+            @Named(QueueConfiguration.URI) String url, SharedKeyFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
