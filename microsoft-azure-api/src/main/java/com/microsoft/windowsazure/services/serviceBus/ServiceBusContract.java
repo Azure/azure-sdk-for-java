@@ -140,10 +140,46 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      */
     void unlockMessage(BrokeredMessage message) throws ServiceException;
 
+    /**
+     * Sends a message.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path to which the message will be sent.
+     *            This may be the value of a queuePath or a topicPath.
+     * @param message
+     *            A <code>Message</code> object that represents the message to send.
+     * 
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     void sendMessage(String path, BrokeredMessage message) throws ServiceException;
 
+    /**
+     * Receives a message.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path from which a message will be received.
+     *            This may either be the value of queuePath or a combination of
+     *            the topicPath + "/subscriptions/" + subscriptionName.
+     * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     ReceiveMessageResult receiveMessage(String path) throws ServiceException;
 
+    /**
+     * Receives a message using the specified receive message options.
+     * 
+     * @param path
+     *            A <code>String</code> object that represents the path from which a message will be received.
+     *            This may either be the value of queuePath or a combination of
+     *            the topicPath + "/subscriptions/" + subscriptionName.
+     * @param options
+     *            A <code>ReceiveMessageOptions</code> object that represents the receive message options.
+     * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     ReceiveMessageResult receiveMessage(String path, ReceiveMessageOptions options) throws ServiceException;
 
     /**
