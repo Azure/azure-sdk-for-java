@@ -1,9 +1,13 @@
+/*
+ * QueueListingDetails.java
+ * 
+ * Copyright (c) 2011 Microsoft. All rights reserved.
+ */
 package com.microsoft.windowsazure.services.queue.client;
 
 /**
- * Specifies which details to include when listing the queues in this storage account.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
+ * Specifies which details to include when listing the queues in this storage
+ * account.
  */
 public enum QueueListingDetails {
     /**

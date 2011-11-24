@@ -35,8 +35,8 @@ final class BlobRequest {
      * @param metadata
      *            The metadata.
      */
-    public static void addMetadata(
-            final HttpURLConnection request, final HashMap<String, String> metadata, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
+            final OperationContext opContext) {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
 
@@ -50,8 +50,8 @@ final class BlobRequest {
      * @param value
      *            The metadata value.
      */
-    public static void addMetadata(
-            final HttpURLConnection request, final String name, final String value, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final String name, final String value,
+            final OperationContext opContext) {
         BaseRequest.addMetadata(request, name, value, opContext);
     }
 
@@ -81,11 +81,10 @@ final class BlobRequest {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public static HttpURLConnection copyFrom(
-            final URI uri, final int timeout, String source, final String sourceSnapshotID,
-            final AccessCondition sourceAccessCondition, final AccessCondition destinationAccessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+    public static HttpURLConnection copyFrom(final URI uri, final int timeout, String source,
+            final String sourceSnapshotID, final AccessCondition sourceAccessCondition,
+            final AccessCondition destinationAccessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
 
         if (sourceSnapshotID != null) {
             source = source.concat("?snapshot=");
@@ -129,9 +128,9 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    private static HttpURLConnection createURLConnection(
-            final URI uri, final int timeout, final UriQueryBuilder query, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    private static HttpURLConnection createURLConnection(final URI uri, final int timeout, final UriQueryBuilder query,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
         return BaseRequest.createURLConnection(uri, timeout, query, opContext);
     }
 
@@ -161,17 +160,15 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection delete(
-            final URI uri, final int timeout, final String snapshotVersion,
+    public static HttpURLConnection delete(final URI uri, final int timeout, final String snapshotVersion,
             final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
 
         if (snapshotVersion != null && deleteSnapshotsOption != DeleteSnapshotsOption.NONE) {
-            throw new IllegalArgumentException(
-                    String.format("The option '%s' must be 'None' to delete a specific snapshot specified by '%s'",
-                            "deleteSnapshotsOption",
-                            "snapshot"));
+            throw new IllegalArgumentException(String.format(
+                    "The option '%s' must be 'None' to delete a specific snapshot specified by '%s'",
+                    "deleteSnapshotsOption", "snapshot"));
         }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
@@ -229,15 +226,14 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection get(
-            final URI uri, final int timeout, final String snapshotVersion, final long offset, final long count,
-            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection get(final URI uri, final int timeout, final String snapshotVersion,
+            final long offset, final long count, final AccessCondition accessCondition,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
         final HttpURLConnection request = get(uri, timeout, snapshotVersion, accessCondition, blobOptions, opContext);
 
-        final String rangeHeaderValue =
-                String.format(Utility.LOCALE_US, Constants.HeaderConstants.RANGE_HEADER_FORMAT, offset, offset + count
-                        - 1);
+        final String rangeHeaderValue = String.format(Utility.LOCALE_US, Constants.HeaderConstants.RANGE_HEADER_FORMAT,
+                offset, offset + count - 1);
 
         request.setRequestProperty(Constants.HeaderConstants.STORAGE_RANGE_HEADER, rangeHeaderValue);
 
@@ -268,10 +264,9 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection get(
-            final URI uri, final int timeout, final String snapshotVersion, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection get(final URI uri, final int timeout, final String snapshotVersion,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         BaseRequest.addSnapshot(builder, snapshotVersion);
@@ -311,10 +306,10 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection getBlockList(
-            final URI uri, final int timeout, final String snapshotVersion, final BlockListingFilter blockFilter,
-            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
+    public static HttpURLConnection getBlockList(final URI uri, final int timeout, final String snapshotVersion,
+            final BlockListingFilter blockFilter, final AccessCondition accessCondition,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws StorageException,
+            IOException, URISyntaxException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
@@ -356,17 +351,16 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection getPageRanges(
-            final URI uri, final int timeout, final String snapshotVersion, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+    public static HttpURLConnection getPageRanges(final URI uri, final int timeout, final String snapshotVersion,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "pagelist");
         BaseRequest.addSnapshot(builder, snapshotVersion);
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
         request.setRequestMethod("GET");
 
         if (accessCondition != null) {
@@ -401,10 +395,9 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection getProperties(
-            final URI uri, final int timeout, final String snapshotVersion, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+    public static HttpURLConnection getProperties(final URI uri, final int timeout, final String snapshotVersion,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         BaseRequest.addSnapshot(builder, snapshotVersion);
@@ -441,16 +434,15 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection lease(
-            final URI uri, final int timeout, final LeaseAction action, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection lease(final URI uri, final int timeout, final LeaseAction action,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "lease");
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -485,10 +477,9 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      * */
-    public static HttpURLConnection list(
-            final URI uri, final int timeout, final BlobListingContext listingContext,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection list(final URI uri, final int timeout, final BlobListingContext listingContext,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException {
 
         final UriQueryBuilder builder = ContainerRequest.getContainerUriQueryBuilder();
         builder.add("comp", "list");
@@ -518,7 +509,8 @@ final class BlobRequest {
                 if (listingContext.getListingDetails().contains(BlobListingDetails.SNAPSHOTS)) {
                     if (!started) {
                         started = true;
-                    } else {
+                    }
+                    else {
                         sb.append(",");
                     }
 
@@ -528,7 +520,8 @@ final class BlobRequest {
                 if (listingContext.getListingDetails().contains(BlobListingDetails.UNCOMMITTED_BLOBS)) {
                     if (!started) {
                         started = true;
-                    } else {
+                    }
+                    else {
                         sb.append(",");
                     }
 
@@ -538,7 +531,8 @@ final class BlobRequest {
                 if (listingContext.getListingDetails().contains(BlobListingDetails.METADATA)) {
                     if (!started) {
                         started = true;
-                    } else {
+                    }
+                    else {
                         sb.append(",");
                     }
 
@@ -549,8 +543,8 @@ final class BlobRequest {
             }
         }
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setRequestMethod("GET");
 
@@ -585,10 +579,10 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection put(
-            final URI uri, final int timeout, final BlobProperties properties, final BlobType blobType,
-            final long pageBlobSize, final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection put(final URI uri, final int timeout, final BlobProperties properties,
+            final BlobType blobType, final long pageBlobSize, final AccessCondition accessCondition,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
         if (blobType == BlobType.UNSPECIFIED) {
             throw new IllegalArgumentException("The blob type cannot be undefined.");
         }
@@ -603,11 +597,9 @@ final class BlobRequest {
         BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL, properties.getCacheControl());
         BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_TYPE, properties.getContentType());
         BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_MD5, properties.getContentMD5());
-        BaseRequest.addOptionalHeader(request,
-                Constants.HeaderConstants.CONTENT_LANGUAGE,
+        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_LANGUAGE,
                 properties.getContentLanguage());
-        BaseRequest.addOptionalHeader(request,
-                Constants.HeaderConstants.CONTENT_ENCODING,
+        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_ENCODING,
                 properties.getContentEncoding());
 
         if (blobType == BlobType.PAGE_BLOB) {
@@ -618,7 +610,8 @@ final class BlobRequest {
             request.setRequestProperty(BlobConstants.SIZE, String.valueOf(pageBlobSize));
 
             properties.setLength(pageBlobSize);
-        } else {
+        }
+        else {
             request.setRequestProperty(BlobConstants.BLOB_TYPE_HEADER, BlobConstants.BLOCK_BLOB);
         }
 
@@ -653,16 +646,15 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection putBlock(
-            final URI uri, final int timeout, final String blockId, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection putBlock(final URI uri, final int timeout, final String blockId,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "block");
         builder.add("blockid", blockId);
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -696,16 +688,15 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection putBlockList(
-            final URI uri, final int timeout, final BlobProperties properties, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection putBlockList(final URI uri, final int timeout, final BlobProperties properties,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "blocklist");
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -714,8 +705,7 @@ final class BlobRequest {
             accessCondition.applyConditionToRequest(request);
         }
 
-        BaseRequest.addOptionalHeader(request,
-                Constants.HeaderConstants.CACHE_CONTROL_HEADER,
+        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
                 properties.getCacheControl());
         BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_ENCODING_HEADER, properties.getContentEncoding());
         BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
@@ -749,15 +739,14 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection putPage(
-            final URI uri, final int timeout, final PageProperties properties, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection putPage(final URI uri, final int timeout, final PageProperties properties,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "page");
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -799,10 +788,9 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection setMetadata(
-            final URI uri, final int timeout, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setMetadata(final URI uri, final int timeout,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         final HttpURLConnection request = BaseRequest.setMetadata(uri, timeout, null, opContext);
 
         if (accessCondition != null) {
@@ -837,15 +825,14 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection setProperties(
-            final URI uri, final int timeout, final BlobProperties properties, final Long newBlobSize,
-            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+    public static HttpURLConnection setProperties(final URI uri, final int timeout, final BlobProperties properties,
+            final Long newBlobSize, final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
             final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "properties");
 
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setFixedLengthStreamingMode(0);
         request.setDoOutput(true);
@@ -860,8 +847,7 @@ final class BlobRequest {
             properties.setLength(newBlobSize);
         }
 
-        BaseRequest.addOptionalHeader(request,
-                Constants.HeaderConstants.CACHE_CONTROL_HEADER,
+        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
                 properties.getCacheControl());
         BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_ENCODING_HEADER, properties.getContentEncoding());
         BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
@@ -893,14 +879,13 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection snapshot(
-            final URI uri, final int timeout, final AccessCondition accessCondition,
-            final BlobRequestOptions blobOptions, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection snapshot(final URI uri, final int timeout, final AccessCondition accessCondition,
+            final BlobRequestOptions blobOptions, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add(Constants.HeaderConstants.COMP, BlobConstants.SNAPSHOT);
-        final HttpURLConnection request =
-                BlobRequest.createURLConnection(uri, timeout, builder, blobOptions, opContext);
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
 
         request.setFixedLengthStreamingMode(0);
         request.setDoOutput(true);
@@ -939,9 +924,11 @@ final class BlobRequest {
         for (final BlockEntry block : blockList) {
             if (block.searchMode == BlockSearchMode.COMMITTED) {
                 xmlw.writeStartElement(BlobConstants.COMMITTED_ELEMENT);
-            } else if (block.searchMode == BlockSearchMode.UNCOMMITTED) {
+            }
+            else if (block.searchMode == BlockSearchMode.UNCOMMITTED) {
                 xmlw.writeStartElement(BlobConstants.UNCOMMITTED_ELEMENT);
-            } else if (block.searchMode == BlockSearchMode.LATEST) {
+            }
+            else if (block.searchMode == BlockSearchMode.LATEST) {
                 xmlw.writeStartElement(BlobConstants.LATEST_ELEMENT);
             }
 
@@ -956,7 +943,8 @@ final class BlobRequest {
         xmlw.writeEndDocument();
         try {
             return outWriter.toString().getBytes("UTF8");
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }

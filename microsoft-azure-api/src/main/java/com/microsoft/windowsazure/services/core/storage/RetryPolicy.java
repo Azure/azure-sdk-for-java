@@ -79,6 +79,6 @@ public abstract class RetryPolicy {
      * @return A {@link RetryResult} object that indicates whether the operation should be retried and how long to
      *         backoff.
      */
-    public abstract RetryResult shouldRetry(
-            int currentRetryCount, int statusCode, Exception lastException, OperationContext opContext);
+    public abstract RetryResult shouldRetry(int currentRetryCount, int statusCode, Exception lastException,
+            OperationContext opContext);
 }

@@ -45,7 +45,8 @@ final class CanonicalizerFactory {
     protected static Canonicalizer getBlobQueueFullCanonicalizer(final HttpURLConnection conn) {
         if (validateVersionIsSupported(conn)) {
             return BLOB_QUEUE_FULL_V2_INSTANCE;
-        } else {
+        }
+        else {
             throw new UnsupportedOperationException("Storage protocol version prior to 2009-09-19 are not supported.");
         }
     }
@@ -60,7 +61,8 @@ final class CanonicalizerFactory {
     protected static Canonicalizer getBlobQueueLiteCanonicalizer(final HttpURLConnection conn) {
         if (validateVersionIsSupported(conn)) {
             return BLOB_QUEUE_LITE_INSTANCE;
-        } else {
+        }
+        else {
             throw new UnsupportedOperationException(
                     "Versions before 2009-09-19 do not support Shared Key Lite for Blob And Queue.");
         }
@@ -76,7 +78,8 @@ final class CanonicalizerFactory {
     protected static Canonicalizer getTableLiteCanonicalizer(final HttpURLConnection conn) {
         if (validateVersionIsSupported(conn)) {
             return TABLE_LITE_INSTANCE;
-        } else {
+        }
+        else {
             throw new UnsupportedOperationException(
                     "Versions before 2009-09-19 do not support Shared Key Lite for Blob And Queue.");
         }
@@ -90,8 +93,8 @@ final class CanonicalizerFactory {
      * @return <Code>true</Code> if is greater or equal PDC 09'; otherwise, <Code>false</Code>.
      */
     private static Boolean validateVersionIsSupported(final HttpURLConnection conn) {
-        final String versionString =
-                Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.STORAGE_VERSION_HEADER);
+        final String versionString = Utility.getStandardHeaderValue(conn,
+                Constants.HeaderConstants.STORAGE_VERSION_HEADER);
 
         if (versionString.length() == 0 || versionString.length() == 0) {
             return true;
@@ -113,7 +116,8 @@ final class CanonicalizerFactory {
 
             return requestVersionCalendar.compareTo(versionThresholdCalendar) >= 0;
 
-        } catch (final ParseException e) {
+        }
+        catch (final ParseException e) {
             return false;
         }
     }

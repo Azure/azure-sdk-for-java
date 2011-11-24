@@ -39,11 +39,14 @@ public enum BlobType {
     public static BlobType parse(final String typeString) {
         if (Utility.isNullOrEmpty(typeString)) {
             return UNSPECIFIED;
-        } else if ("blockblob".equals(typeString.toLowerCase(Locale.US))) {
+        }
+        else if ("blockblob".equals(typeString.toLowerCase(Locale.US))) {
             return BLOCK_BLOB;
-        } else if ("pageblob".equals(typeString.toLowerCase(Locale.US))) {
+        }
+        else if ("pageblob".equals(typeString.toLowerCase(Locale.US))) {
             return PAGE_BLOB;
-        } else {
+        }
+        else {
             return UNSPECIFIED;
         }
     }

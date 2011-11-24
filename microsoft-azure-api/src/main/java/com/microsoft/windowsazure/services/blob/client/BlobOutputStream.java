@@ -167,7 +167,8 @@ public final class BlobOutputStream extends OutputStream {
         if (this.options.getStoreBlobContentMD5()) {
             try {
                 this.md5Digest = MessageDigest.getInstance("MD5");
-            } catch (final NoSuchAlgorithmException e) {
+            }
+            catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
@@ -195,9 +196,8 @@ public final class BlobOutputStream extends OutputStream {
     protected BlobOutputStream(final CloudBlockBlob parentBlob, final AccessCondition accessCondition,
             final BlobRequestOptions options, final OperationContext opContext) throws StorageException {
         this((CloudBlob) parentBlob, accessCondition, options, opContext);
-        this.blockIdSequenceNumber =
-                (long) (blockSequenceGenerator.nextInt(Integer.MAX_VALUE))
-                        + blockSequenceGenerator.nextInt(Integer.MAX_VALUE - 100000);
+        this.blockIdSequenceNumber = (long) (blockSequenceGenerator.nextInt(Integer.MAX_VALUE))
+                + blockSequenceGenerator.nextInt(Integer.MAX_VALUE - 100000);
         this.blockList = new ArrayList<BlockEntry>();
 
         this.streamType = BlobType.BLOCK_BLOB;
@@ -226,8 +226,8 @@ public final class BlobOutputStream extends OutputStream {
             throws StorageException {
         this(parentBlob, accessCondition, options, opContext);
         this.streamType = BlobType.PAGE_BLOB;
-        this.internalWriteThreshold =
-                (int) Math.min(this.parentBlobRef.blobServiceClient.getPageBlobStreamWriteSizeInBytes(), length);
+        this.internalWriteThreshold = (int) Math.min(
+                this.parentBlobRef.blobServiceClient.getPageBlobStreamWriteSizeInBytes(), length);
 
         if (length % BlobConstants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("Page blob length must be multiple of 512.");
@@ -286,7 +286,8 @@ public final class BlobOutputStream extends OutputStream {
 
         try {
             this.commit();
-        } catch (final StorageException e) {
+        }
+        catch (final StorageException e) {
             throw Utility.initIOException(e);
         }
     }
@@ -311,7 +312,8 @@ public final class BlobOutputStream extends OutputStream {
             final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
 
             blobRef.commitBlockList(this.blockList, this.accessCondition, this.options, this.opContext);
-        } else if (this.streamType == BlobType.PAGE_BLOB) {
+        }
+        else if (this.streamType == BlobType.PAGE_BLOB) {
             this.parentBlobRef.uploadProperties(this.accessCondition, this.options, this.opContext);
         }
     }
@@ -344,21 +346,19 @@ public final class BlobOutputStream extends OutputStream {
             final String blockID = Base64.encode(Utility.getBytesFromLong(this.blockIdSequenceNumber++));
             this.blockList.add(new BlockEntry(blockID, BlockSearchMode.UNCOMMITTED));
 
-            worker = new Callable<Void>() {                
+            worker = new Callable<Void>() {
                 public Void call() {
                     try {
-                        blobRef.uploadBlock(blockID,
-                                bufferRef,
-                                writeLength,
-                                BlobOutputStream.this.accessCondition,
-                                BlobOutputStream.this.options,
-                                BlobOutputStream.this.opContext);
-                    } catch (final IOException e) {
+                        blobRef.uploadBlock(blockID, bufferRef, writeLength, BlobOutputStream.this.accessCondition,
+                                BlobOutputStream.this.options, BlobOutputStream.this.opContext);
+                    }
+                    catch (final IOException e) {
                         synchronized (BlobOutputStream.this.lastErrorLock) {
                             BlobOutputStream.this.streamFaulted = true;
                             BlobOutputStream.this.lastError = e;
                         }
-                    } catch (final StorageException e) {
+                    }
+                    catch (final StorageException e) {
                         synchronized (BlobOutputStream.this.lastErrorLock) {
                             BlobOutputStream.this.streamFaulted = true;
                             BlobOutputStream.this.lastError = Utility.initIOException(e);
@@ -367,7 +367,8 @@ public final class BlobOutputStream extends OutputStream {
                     return null;
                 }
             };
-        } else if (this.streamType == BlobType.PAGE_BLOB) {
+        }
+        else if (this.streamType == BlobType.PAGE_BLOB) {
             final CloudPageBlob blobRef = (CloudPageBlob) this.parentBlobRef;
             long tempOffset = this.currentPageOffset;
             long tempLength = writeLength;
@@ -384,17 +385,16 @@ public final class BlobOutputStream extends OutputStream {
                 }
 
                 // Offset is currentOffset - extra data to page align write
-                final long bufferOffset =
-                        this.firstNonZeroBufferedByte - this.firstNonZeroBufferedByte % BlobConstants.PAGE_SIZE;
+                final long bufferOffset = this.firstNonZeroBufferedByte - this.firstNonZeroBufferedByte
+                        % BlobConstants.PAGE_SIZE;
 
                 tempOffset = this.currentPageOffset + bufferOffset;
 
                 // Find end of last full page - to do this Calculate the end of
                 // last full page of non zero
                 // data and subtract the bufferStarting offset calculated above
-                tempLength =
-                        (this.lastNonZeroBufferedByte - bufferOffset)
-                                + (BlobConstants.PAGE_SIZE - (this.lastNonZeroBufferedByte % BlobConstants.PAGE_SIZE));
+                tempLength = (this.lastNonZeroBufferedByte - bufferOffset)
+                        + (BlobConstants.PAGE_SIZE - (this.lastNonZeroBufferedByte % BlobConstants.PAGE_SIZE));
 
                 // Reset buffer markers.
                 this.firstNonZeroBufferedByte = -1;
@@ -418,18 +418,16 @@ public final class BlobOutputStream extends OutputStream {
             worker = new Callable<Void>() {
                 public Void call() {
                     try {
-                        blobRef.uploadPages(bufferRef,
-                                opOffset,
-                                opWriteLength,
-                                BlobOutputStream.this.accessCondition,
-                                BlobOutputStream.this.options,
-                                BlobOutputStream.this.opContext);
-                    } catch (final IOException e) {
+                        blobRef.uploadPages(bufferRef, opOffset, opWriteLength, BlobOutputStream.this.accessCondition,
+                                BlobOutputStream.this.options, BlobOutputStream.this.opContext);
+                    }
+                    catch (final IOException e) {
                         synchronized (BlobOutputStream.this.lastErrorLock) {
                             BlobOutputStream.this.streamFaulted = true;
                             BlobOutputStream.this.lastError = e;
                         }
-                    } catch (final StorageException e) {
+                    }
+                    catch (final StorageException e) {
                         synchronized (BlobOutputStream.this.lastErrorLock) {
                             BlobOutputStream.this.streamFaulted = true;
                             BlobOutputStream.this.lastError = Utility.initIOException(e);
@@ -458,9 +456,9 @@ public final class BlobOutputStream extends OutputStream {
 
         if (this.streamType == BlobType.PAGE_BLOB && this.currentBufferedBytes > 0
                 && (this.currentBufferedBytes % BlobConstants.PAGE_SIZE != 0)) {
-            throw new IOException(
-                    String.format("Page data must be a multiple of 512 bytes, buffer currently contains %d bytes.",
-                            this.currentBufferedBytes));
+            throw new IOException(String.format(
+                    "Page data must be a multiple of 512 bytes, buffer currently contains %d bytes.",
+                    this.currentBufferedBytes));
 
             // Non 512 byte remainder, uncomment to pad with bytes and commit.
             /*
@@ -483,9 +481,11 @@ public final class BlobOutputStream extends OutputStream {
         try {
             final Future<Void> future = this.completionService.take();
             future.get();
-        } catch (final InterruptedException e) {
+        }
+        catch (final InterruptedException e) {
             throw Utility.initIOException(e);
-        } catch (final ExecutionException e) {
+        }
+        catch (final ExecutionException e) {
             throw Utility.initIOException(e);
         }
 

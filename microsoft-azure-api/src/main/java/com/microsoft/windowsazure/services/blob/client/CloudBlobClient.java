@@ -112,8 +112,8 @@ public final class CloudBlobClient extends ServiceClient {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri)
-            throws URISyntaxException, StorageException {
+    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri) throws URISyntaxException,
+            StorageException {
         return this.getBlockBlobReference(blobAddressUri, null);
     }
 
@@ -164,8 +164,8 @@ public final class CloudBlobClient extends ServiceClient {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public CloudBlobContainer getContainerReference(final String containerAddress)
-            throws URISyntaxException, StorageException {
+    public CloudBlobContainer getContainerReference(final String containerAddress) throws URISyntaxException,
+            StorageException {
         Utility.assertNotNullOrEmpty("containerAddress", containerAddress);
         return new CloudBlobContainer(containerAddress, this);
     }
@@ -197,8 +197,8 @@ public final class CloudBlobClient extends ServiceClient {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getDirectoryReference(final String relativeAddress)
-            throws URISyntaxException, StorageException {
+    public CloudBlobDirectory getDirectoryReference(final String relativeAddress) throws URISyntaxException,
+            StorageException {
         Utility.assertNotNullOrEmpty("relativeAddress", relativeAddress);
 
         return new CloudBlobDirectory(relativeAddress, this);
@@ -333,8 +333,8 @@ public final class CloudBlobClient extends ServiceClient {
      *         client.
      */
     @DoesServiceRequest
-    public Iterable<CloudBlobContainer> listContainers(
-            final String prefix, final ContainerListingDetails detailsIncluded, final BlobRequestOptions options,
+    public Iterable<CloudBlobContainer> listContainers(final String prefix,
+            final ContainerListingDetails detailsIncluded, final BlobRequestOptions options,
             final OperationContext opContext) {
         return this.listContainersWithPrefix(prefix, detailsIncluded, options, opContext);
     }
@@ -364,24 +364,20 @@ public final class CloudBlobClient extends ServiceClient {
      * @throws StorageException
      */
     @DoesServiceRequest
-    ResultSegment<CloudBlobContainer> listContainersCore(
-            final String prefix, final ContainerListingDetails detailsIncluded, final int maxResults,
+    ResultSegment<CloudBlobContainer> listContainersCore(final String prefix,
+            final ContainerListingDetails detailsIncluded, final int maxResults,
             final ResultContinuation continuationToken, final RequestOptions options,
             final StorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> taskReference,
-            final OperationContext opContext)
-            throws IOException, URISyntaxException, XMLStreamException, InvalidKeyException, StorageException {
+            final OperationContext opContext) throws IOException, URISyntaxException, XMLStreamException,
+            InvalidKeyException, StorageException {
 
         Utility.assertContinuationType(continuationToken, ResultContinuationType.CONTAINER);
 
         final ListingContext listingContext = new ListingContext(prefix, maxResults);
         listingContext.setMarker(continuationToken != null ? continuationToken.getNextMarker() : null);
 
-        final HttpURLConnection listContainerRequest =
-                ContainerRequest.list(this.getEndpoint(),
-                        options.getTimeoutIntervalInMs(),
-                        listingContext,
-                        detailsIncluded,
-                        opContext);
+        final HttpURLConnection listContainerRequest = ContainerRequest.list(this.getEndpoint(),
+                options.getTimeoutIntervalInMs(), listingContext, detailsIncluded, opContext);
 
         this.getCredentials().signRequest(listContainerRequest, -1L);
 
@@ -403,8 +399,8 @@ public final class CloudBlobClient extends ServiceClient {
             newToken.setContinuationType(ResultContinuationType.CONTAINER);
         }
 
-        final ResultSegment<CloudBlobContainer> resSegment =
-                new ResultSegment<CloudBlobContainer>(response.getContainers(this), maxResults, newToken);
+        final ResultSegment<CloudBlobContainer> resSegment = new ResultSegment<CloudBlobContainer>(
+                response.getContainers(this), maxResults, newToken);
 
         return resSegment;
     }
@@ -471,16 +467,12 @@ public final class CloudBlobClient extends ServiceClient {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public ResultSegment<CloudBlobContainer> listContainersSegmented(
-            final String prefix, final ContainerListingDetails detailsIncluded, final int maxResults,
+    public ResultSegment<CloudBlobContainer> listContainersSegmented(final String prefix,
+            final ContainerListingDetails detailsIncluded, final int maxResults,
             final ResultContinuation continuationToken, final BlobRequestOptions options,
             final OperationContext opContext) throws StorageException {
 
-        return this.listContainersWithPrefixSegmented(prefix,
-                detailsIncluded,
-                maxResults,
-                continuationToken,
-                options,
+        return this.listContainersWithPrefixSegmented(prefix, detailsIncluded, maxResults, continuationToken, options,
                 opContext);
     }
 
@@ -505,9 +497,8 @@ public final class CloudBlobClient extends ServiceClient {
      *         begin with the specified prefix.
      */
     @DoesServiceRequest
-    protected Iterable<CloudBlobContainer> listContainersWithPrefix(
-            final String prefix, final ContainerListingDetails detailsIncluded, BlobRequestOptions options,
-            OperationContext opContext) {
+    protected Iterable<CloudBlobContainer> listContainersWithPrefix(final String prefix,
+            final ContainerListingDetails detailsIncluded, BlobRequestOptions options, OperationContext opContext) {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -519,29 +510,22 @@ public final class CloudBlobClient extends ServiceClient {
         opContext.initialize();
         options.applyDefaults(this);
 
-        final SegmentedStorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> impl =
-                new SegmentedStorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>>(options, null) {
-                    @Override
-                    public ResultSegment<CloudBlobContainer> execute(
-                            final CloudBlobClient client, final Void dontCare, final OperationContext opContext)
-                            throws Exception {
+        final SegmentedStorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> impl = new SegmentedStorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>>(
+                options, null) {
+            @Override
+            public ResultSegment<CloudBlobContainer> execute(final CloudBlobClient client, final Void dontCare,
+                    final OperationContext opContext) throws Exception {
 
-                        final ResultSegment<CloudBlobContainer> result =
-                                CloudBlobClient.this.listContainersCore(prefix,
-                                        detailsIncluded,
-                                        -1,
-                                        this.getToken(),
-                                        this.getRequestOptions(),
-                                        this,
-                                        opContext);
+                final ResultSegment<CloudBlobContainer> result = CloudBlobClient.this.listContainersCore(prefix,
+                        detailsIncluded, -1, this.getToken(), this.getRequestOptions(), this, opContext);
 
-                        // Note, setting the token on the SegmentedStorageOperation is
-                        // key, this is how the iterator
-                        // will share the token across executions
-                        this.setToken(result.getContinuationToken());
-                        return result;
-                    }
-                };
+                // Note, setting the token on the SegmentedStorageOperation is
+                // key, this is how the iterator
+                // will share the token across executions
+                this.setToken(result.getContinuationToken());
+                return result;
+            }
+        };
 
         return new LazySegmentedIterator<CloudBlobClient, Void, CloudBlobContainer>(impl, this, null,
                 options.getRetryPolicyFactory(), opContext);
@@ -576,8 +560,8 @@ public final class CloudBlobClient extends ServiceClient {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected ResultSegment<CloudBlobContainer> listContainersWithPrefixSegmented(
-            final String prefix, final ContainerListingDetails detailsIncluded, final int maxResults,
+    protected ResultSegment<CloudBlobContainer> listContainersWithPrefixSegmented(final String prefix,
+            final ContainerListingDetails detailsIncluded, final int maxResults,
             final ResultContinuation continuationToken, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -593,21 +577,15 @@ public final class CloudBlobClient extends ServiceClient {
 
         Utility.assertContinuationType(continuationToken, ResultContinuationType.CONTAINER);
 
-        final StorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> impl =
-                new StorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>>(options) {
-                    @Override
-                    public ResultSegment<CloudBlobContainer> execute(
-                            final CloudBlobClient client, final Void dontCare, final OperationContext opContext)
-                            throws Exception {
-                        return CloudBlobClient.this.listContainersCore(prefix,
-                                detailsIncluded,
-                                maxResults,
-                                continuationToken,
-                                this.getRequestOptions(),
-                                this,
-                                opContext);
-                    }
-                };
+        final StorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>> impl = new StorageOperation<CloudBlobClient, Void, ResultSegment<CloudBlobContainer>>(
+                options) {
+            @Override
+            public ResultSegment<CloudBlobContainer> execute(final CloudBlobClient client, final Void dontCare,
+                    final OperationContext opContext) throws Exception {
+                return CloudBlobClient.this.listContainersCore(prefix, detailsIncluded, maxResults, continuationToken,
+                        this.getRequestOptions(), this, opContext);
+            }
+        };
 
         return ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
     }

@@ -68,8 +68,8 @@ final class ListContainersResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public ArrayList<CloudBlobContainer> getContainers(final CloudBlobClient serviceClient)
-            throws XMLStreamException, StorageException {
+    public ArrayList<CloudBlobContainer> getContainers(final CloudBlobClient serviceClient) throws XMLStreamException,
+            StorageException {
         if (!this.isParsed) {
             this.parseResponse(serviceClient);
         }
@@ -122,25 +122,31 @@ final class ListContainersResponse {
                 if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MAX_RESULTS_ELEMENT)) {
                     tempParseString = Utility.readElementFromXMLReader(xmlr, Constants.MAX_RESULTS_ELEMENT);
                     this.maxResults = Integer.parseInt(tempParseString);
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MARKER_ELEMENT)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MARKER_ELEMENT)) {
                     this.marker = Utility.readElementFromXMLReader(xmlr, Constants.MARKER_ELEMENT);
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.NEXT_MARKER_ELEMENT)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.NEXT_MARKER_ELEMENT)) {
                     this.nextMarker = Utility.readElementFromXMLReader(xmlr, Constants.NEXT_MARKER_ELEMENT);
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.PREFIX_ELEMENT)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.PREFIX_ELEMENT)) {
                     this.prefix = Utility.readElementFromXMLReader(xmlr, Constants.PREFIX_ELEMENT);
-                } else if (eventType == XMLStreamConstants.START_ELEMENT
-                        && name.equals(BlobConstants.CONTAINERS_ELEMENT)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.CONTAINERS_ELEMENT)) {
                     try {
                         this.containers = BlobDeserializationHelper.readContainers(xmlr, serviceClient);
-                    } catch (final URISyntaxException e) {
+                    }
+                    catch (final URISyntaxException e) {
                         throw new XMLStreamException(e);
-                    } catch (final ParseException e) {
+                    }
+                    catch (final ParseException e) {
                         throw new XMLStreamException(e);
                     }
 
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.CONTAINERS_ELEMENT);
                     // eventType = xmlr.next();
-                } else if (eventType == XMLStreamConstants.END_ELEMENT && "EnumerationResults".equals(name)) {
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT && "EnumerationResults".equals(name)) {
                     break;
                 }
             }

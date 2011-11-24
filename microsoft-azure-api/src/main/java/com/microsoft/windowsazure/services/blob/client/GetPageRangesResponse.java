@@ -83,9 +83,11 @@ final class GetPageRangesResponse {
 
                 if (name.equals(BlobConstants.PAGE_RANGE_ELEMENT)) {
                     this.pageRanges = BlobDeserializationHelper.readPageRanges(xmlr);
-                } else if (name.equals(BlobConstants.PAGE_LIST_ELEMENT) && eventType == XMLStreamConstants.END_ELEMENT) {
+                }
+                else if (name.equals(BlobConstants.PAGE_LIST_ELEMENT) && eventType == XMLStreamConstants.END_ELEMENT) {
                     break;
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);

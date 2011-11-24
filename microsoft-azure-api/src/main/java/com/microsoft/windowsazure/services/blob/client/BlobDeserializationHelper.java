@@ -36,9 +36,9 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    protected static CloudBlob readBlob(
-            final XMLStreamReader xmlr, final CloudBlobClient serviceClient, final CloudBlobContainer container)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    protected static CloudBlob readBlob(final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
+            final CloudBlobContainer container) throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException {
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOB_ELEMENT);
 
         String blobName = Constants.EMPTY_STRING;
@@ -57,18 +57,23 @@ final class BlobDeserializationHelper {
             if (eventType == XMLStreamConstants.START_ELEMENT) {
                 if (name.equals(Constants.URL_ELEMENT)) {
                     urlString = Utility.readElementFromXMLReader(xmlr, Constants.URL_ELEMENT);
-                } else if (name.equals(BlobConstants.SNAPSHOT_ELEMENT)) {
+                }
+                else if (name.equals(BlobConstants.SNAPSHOT_ELEMENT)) {
                     snapshotID = Utility.readElementFromXMLReader(xmlr, BlobConstants.SNAPSHOT_ELEMENT);
-                } else if (name.equals(Constants.NAME_ELEMENT)) {
+                }
+                else if (name.equals(Constants.NAME_ELEMENT)) {
                     blobName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
-                } else if (name.equals(BlobConstants.PROPERTIES)) {
+                }
+                else if (name.equals(BlobConstants.PROPERTIES)) {
                     properties = BlobDeserializationHelper.readBlobProperties(xmlr);
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
-                } else if (name.equals(Constants.METADATA_ELEMENT)) {
+                }
+                else if (name.equals(Constants.METADATA_ELEMENT)) {
                     metadata = DeserializationHelper.parseMetadateFromXML(xmlr);
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
                 }
-            } else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.BLOB_ELEMENT)) {
+            }
+            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.BLOB_ELEMENT)) {
                 break;
             }
         }
@@ -87,15 +92,16 @@ final class BlobDeserializationHelper {
                 query = urlString.substring(blobNameSectionIndex + blobName.length() + 1);
             }
 
-            final URI blobURI =
-                    new URI(baseUri.getScheme(), baseUri.getAuthority(), baseUri.getRawPath().concat(blobName), query,
-                            null);
+            final URI blobURI = new URI(baseUri.getScheme(), baseUri.getAuthority(), baseUri.getRawPath().concat(
+                    blobName), query, null);
 
             if (properties.getBlobType() == BlobType.BLOCK_BLOB) {
                 retBlob = new CloudBlockBlob(blobURI, serviceClient, container);
-            } else if (properties.getBlobType() == BlobType.PAGE_BLOB) {
+            }
+            else if (properties.getBlobType() == BlobType.PAGE_BLOB) {
                 retBlob = new CloudPageBlob(blobURI, serviceClient, container);
-            } else {
+            }
+            else {
                 throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                         "The response recieved is invalid or improperly formatted.",
                         Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
@@ -106,7 +112,8 @@ final class BlobDeserializationHelper {
             retBlob.properties = properties;
             retBlob.metadata = metadata;
             return retBlob;
-        } else {
+        }
+        else {
             throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                     "The response recieved is invalid or improperly formatted.",
                     Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
@@ -149,15 +156,18 @@ final class BlobDeserializationHelper {
                 if (eventType == XMLStreamConstants.START_ELEMENT) {
                     if (name.equals(Constants.NAME_ELEMENT)) {
                         blockName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
-                    } else if (name.equals(BlobConstants.SIZE_ELEMENT)) {
+                    }
+                    else if (name.equals(BlobConstants.SIZE_ELEMENT)) {
                         final String sizeString = Utility.readElementFromXMLReader(xmlr, BlobConstants.SIZE_ELEMENT);
                         blockSize = Long.parseLong(sizeString);
-                    } else {
+                    }
+                    else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response recieved is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
-                } else if (eventType == XMLStreamConstants.END_ELEMENT) {
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT) {
                     final BlockEntry newBlock = new BlockEntry(blockName, searchMode);
                     newBlock.setSize(blockSize);
                     retBlocks.add(newBlock);
@@ -196,16 +206,20 @@ final class BlobDeserializationHelper {
                 if (name.equals(BlobConstants.PROPERTIES)) {
                     attributes.setProperties(BlobDeserializationHelper.readBlobContainerProperties(xmlr));
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
-                } else if (name.equals(Constants.URL_ELEMENT)) {
+                }
+                else if (name.equals(Constants.URL_ELEMENT)) {
                     attributes.setUri(new URI(Utility.readElementFromXMLReader(xmlr, Constants.URL_ELEMENT)));
-                } else if (name.equals(Constants.NAME_ELEMENT)) {
+                }
+                else if (name.equals(Constants.NAME_ELEMENT)) {
                     attributes.setName(Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT));
-                } else if (name.equals(Constants.METADATA_ELEMENT)) {
+                }
+                else if (name.equals(Constants.METADATA_ELEMENT)) {
                     // parse metadata
                     attributes.setMetadata(DeserializationHelper.parseMetadateFromXML(xmlr));
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
                 }
-            } else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.CONTAINER_ELEMENT)) {
+            }
+            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.CONTAINER_ELEMENT)) {
                 break;
             }
         }
@@ -236,10 +250,12 @@ final class BlobDeserializationHelper {
                 if (name.equals(Constants.LAST_MODIFIED_ELEMENT)) {
                     properties.setLastModified(Utility.parseRFC1123DateFromStringInGMT(Utility
                             .readElementFromXMLReader(xmlr, Constants.LAST_MODIFIED_ELEMENT)));
-                } else if (name.equals(Constants.ETAG_ELEMENT)) {
+                }
+                else if (name.equals(Constants.ETAG_ELEMENT)) {
                     properties.setEtag(Utility.readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT));
                 }
-            } else {
+            }
+            else {
                 // expect end of properties
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
                 break;
@@ -267,9 +283,9 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    public static ArrayList<ListBlobItem> readBlobItems(
-            final XMLStreamReader xmlr, final CloudBlobClient serviceClient, final CloudBlobContainer container)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    public static ArrayList<ListBlobItem> readBlobItems(final XMLStreamReader xmlr,
+            final CloudBlobClient serviceClient, final CloudBlobContainer container) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException {
         int eventType = xmlr.getEventType();
         final ArrayList<ListBlobItem> retBlobs = new ArrayList<ListBlobItem>();
 
@@ -283,14 +299,17 @@ final class BlobDeserializationHelper {
             if (eventType == XMLStreamConstants.START_ELEMENT) {
                 if (name.equals(BlobConstants.BLOB_ELEMENT)) {
                     retBlobs.add(BlobDeserializationHelper.readBlob(xmlr, serviceClient, container));
-                } else if (name.equals(BlobConstants.BLOB_PREFIX_ELEMENT)) {
+                }
+                else if (name.equals(BlobConstants.BLOB_PREFIX_ELEMENT)) {
                     retBlobs.add(BlobDeserializationHelper.readDirectory(xmlr, serviceClient, container));
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } else {
+            }
+            else {
                 break;
             }
         }
@@ -311,8 +330,8 @@ final class BlobDeserializationHelper {
      *             if a date value is not correctly encoded
      * @throws StorageException
      */
-    protected static BlobProperties readBlobProperties(final XMLStreamReader xmlr)
-            throws XMLStreamException, ParseException, StorageException {
+    protected static BlobProperties readBlobProperties(final XMLStreamReader xmlr) throws XMLStreamException,
+            ParseException, StorageException {
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.PROPERTIES);
         int eventType = xmlr.getEventType();
         final BlobProperties properties = new BlobProperties();
@@ -325,57 +344,73 @@ final class BlobDeserializationHelper {
                 if (name.equals(Constants.LAST_MODIFIED_ELEMENT)) {
                     properties.setLastModified(Utility.parseRFC1123DateFromStringInGMT(Utility
                             .readElementFromXMLReader(xmlr, Constants.LAST_MODIFIED_ELEMENT)));
-                } else if (name.equals(Constants.ETAG_ELEMENT)) {
+                }
+                else if (name.equals(Constants.ETAG_ELEMENT)) {
                     properties.setEtag(Utility.readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT));
-                } else if (name.equals(Constants.HeaderConstants.CONTENT_LENGTH)) {
-                    final String tempString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.HeaderConstants.CONTENT_LENGTH);
+                }
+                else if (name.equals(Constants.HeaderConstants.CONTENT_LENGTH)) {
+                    final String tempString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.HeaderConstants.CONTENT_LENGTH);
                     properties.setLength(Long.parseLong(tempString));
-                } else if (name.equals(Constants.HeaderConstants.CONTENT_TYPE)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CONTENT_TYPE)) {
                     properties.setContentType(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CONTENT_TYPE));
-                } else if (name.equals(Constants.HeaderConstants.CONTENT_ENCODING)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CONTENT_ENCODING)) {
                     properties.setContentEncoding(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CONTENT_ENCODING));
-                } else if (name.equals(Constants.HeaderConstants.CONTENT_LANGUAGE)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CONTENT_LANGUAGE)) {
                     properties.setContentLanguage(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CONTENT_LANGUAGE));
-                } else if (name.equals(Constants.HeaderConstants.CONTENT_MD5)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CONTENT_MD5)) {
                     properties.setContentMD5(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CONTENT_MD5));
-                } else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
                     properties.setCacheControl(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CACHE_CONTROL));
-                } else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
+                }
+                else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
                     properties.setCacheControl(Utility.readElementFromXMLReader(xmlr,
                             Constants.HeaderConstants.CACHE_CONTROL));
-                } else if (name.equals(BlobConstants.SEQUENCE_NUMBER)) {
+                }
+                else if (name.equals(BlobConstants.SEQUENCE_NUMBER)) {
                     // TODO what do we do with this?
                     Utility.readElementFromXMLReader(xmlr, BlobConstants.SEQUENCE_NUMBER);
-                } else if (name.equals(BlobConstants.BLOB_TYPE_ELEMENT)) {
+                }
+                else if (name.equals(BlobConstants.BLOB_TYPE_ELEMENT)) {
                     final String tempString = Utility.readElementFromXMLReader(xmlr, BlobConstants.BLOB_TYPE_ELEMENT);
                     if (tempString.equals(BlobConstants.BLOCK_BLOB_VALUE)) {
                         properties.setBlobType(BlobType.BLOCK_BLOB);
-                    } else if (tempString.equals(BlobConstants.PAGE_BLOB_VALUE)) {
-                        properties.setBlobType(BlobType.PAGE_BLOB);
-                    } else {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
-                } else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.LEASE_STATUS_ELEMENT);
-                    if (tempString.equals(Constants.LOCKED_VALUE.toLowerCase())) {
-                        properties.setLeaseStatus(LeaseStatus.LOCKED);
-                    } else if (tempString.equals(Constants.UNLOCKED_VALUE.toLowerCase())) {
-                        properties.setLeaseStatus(LeaseStatus.UNLOCKED);
-                    } else {
+                    else if (tempString.equals(BlobConstants.PAGE_BLOB_VALUE)) {
+                        properties.setBlobType(BlobType.PAGE_BLOB);
+                    }
+                    else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response recieved is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
                 }
-            } else if (eventType == XMLStreamConstants.END_ELEMENT) {
+                else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
+                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.LEASE_STATUS_ELEMENT);
+                    if (tempString.equals(Constants.LOCKED_VALUE.toLowerCase())) {
+                        properties.setLeaseStatus(LeaseStatus.LOCKED);
+                    }
+                    else if (tempString.equals(Constants.UNLOCKED_VALUE.toLowerCase())) {
+                        properties.setLeaseStatus(LeaseStatus.UNLOCKED);
+                    }
+                    else {
+                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                                "The response recieved is invalid or improperly formatted.",
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
+                }
+            }
+            else if (eventType == XMLStreamConstants.END_ELEMENT) {
                 // expect end of properties
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
                 break;
@@ -431,9 +466,9 @@ final class BlobDeserializationHelper {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static ArrayList<CloudBlobContainer> readContainers(
-            final XMLStreamReader xmlr, final CloudBlobClient serviceClient)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    public static ArrayList<CloudBlobContainer> readContainers(final XMLStreamReader xmlr,
+            final CloudBlobClient serviceClient) throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException {
         int eventType = xmlr.getEventType();
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.CONTAINERS_ELEMENT);
 
@@ -468,9 +503,9 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    protected static CloudBlobDirectory readDirectory(
-            final XMLStreamReader xmlr, final CloudBlobClient serviceClient, final CloudBlobContainer container)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    protected static CloudBlobDirectory readDirectory(final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
+            final CloudBlobContainer container) throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException {
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOB_PREFIX_ELEMENT);
 
         // Move to Name element
@@ -500,8 +535,8 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    public static ArrayList<PageRange> readPageRanges(final XMLStreamReader xmlr)
-            throws XMLStreamException, StorageException {
+    public static ArrayList<PageRange> readPageRanges(final XMLStreamReader xmlr) throws XMLStreamException,
+            StorageException {
         int eventType = xmlr.getEventType();
         final ArrayList<PageRange> retRanges = new ArrayList<PageRange>();
 
@@ -521,15 +556,18 @@ final class BlobDeserializationHelper {
                     if (name.equals(BlobConstants.START_ELEMENT)) {
                         final String sizeString = Utility.readElementFromXMLReader(xmlr, BlobConstants.START_ELEMENT);
                         startOffset = Long.parseLong(sizeString);
-                    } else if (name.equals(Constants.END_ELEMENT)) {
+                    }
+                    else if (name.equals(Constants.END_ELEMENT)) {
                         final String sizeString = Utility.readElementFromXMLReader(xmlr, Constants.END_ELEMENT);
                         endOffset = Long.parseLong(sizeString);
-                    } else {
+                    }
+                    else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response recieved is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
-                } else if (eventType == XMLStreamConstants.END_ELEMENT) {
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT) {
                     if (startOffset == -1 || endOffset == -1) {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response recieved is invalid or improperly formatted.",

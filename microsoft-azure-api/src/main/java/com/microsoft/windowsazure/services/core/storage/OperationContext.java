@@ -49,8 +49,7 @@ public final class OperationContext {
      * @see EventListenerMultiCaster
      * @see ResponseReceivedEvent
      */
-    private EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler =
-            new EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>>();
+    private EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler = new EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>>();
 
     /**
      * Reserved for internal use.
@@ -118,7 +117,8 @@ public final class OperationContext {
     public RequestResult getLastResult() {
         if (this.requestResults == null || this.requestResults.size() == 0) {
             return null;
-        } else {
+        }
+        else {
             return this.requestResults.get(this.requestResults.size() - 1);
         }
     }
@@ -147,9 +147,7 @@ public final class OperationContext {
     /**
      * @return the responseReceivedEventHandler
      */
-    public
-            EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>>
-            getResponseReceivedEventHandler() {
+    public EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
         return this.responseReceivedEventHandler;
     }
 
@@ -212,10 +210,8 @@ public final class OperationContext {
      * @param responseReceivedEventHandler
      *            the responseReceivedEventHandler to set
      */
-    public
-            void
-            setResponseReceivedEventHandler(
-                    final EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler) {
+    public void setResponseReceivedEventHandler(
+            final EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler) {
         this.responseReceivedEventHandler = responseReceivedEventHandler;
     }
 }

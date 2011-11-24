@@ -188,8 +188,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            object, that represents the current operation
      */
     @Override
-    public void signRequest(
-            final java.net.HttpURLConnection request, final long contentLength, final OperationContext opContext) {
+    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
         // No op
     }
 
@@ -217,8 +217,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            object, that represents the current operation
      */
     @Override
-    public void signRequestLite(
-            final java.net.HttpURLConnection request, final long contentLength, final OperationContext opContext) {
+    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
         // No op
     }
 

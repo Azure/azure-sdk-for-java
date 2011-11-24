@@ -142,9 +142,8 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void clearPages(
-            final long offset, final long length, final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException, IOException {
+    public void clearPages(final long offset, final long length, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         if (offset % BlobConstants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("Page start offset must be multiple of 512!");
         }
@@ -209,8 +208,7 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void create(
-            final long length, final AccessCondition accessCondition, BlobRequestOptions options,
+    public void create(final long length, final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
         if (length % BlobConstants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("Page blob length must be multiple of 512.");
@@ -226,40 +224,33 @@ public final class CloudPageBlob extends CloudBlob {
 
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.put(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.properties,
-                                        BlobType.PAGE_BLOB,
-                                        length,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.put(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, BlobType.PAGE_BLOB, length,
+                        accessCondition, blobOptions, opContext);
 
-                        BlobRequest.addMetadata(request, blob.metadata, opContext);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -303,9 +294,8 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public ArrayList<PageRange> downloadPageRanges(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public ArrayList<PageRange> downloadPageRanges(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -317,42 +307,33 @@ public final class CloudPageBlob extends CloudBlob {
 
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, ArrayList<PageRange>> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, ArrayList<PageRange>>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, ArrayList<PageRange>> impl = new StorageOperation<CloudBlobClient, CloudBlob, ArrayList<PageRange>>(
+                options) {
 
-                    @Override
-                    public ArrayList<PageRange> execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public ArrayList<PageRange> execute(final CloudBlobClient client, final CloudBlob blob,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.getPageRanges(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.getPageRanges(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
-                        return response.getPageRanges();
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
+                return response.getPageRanges();
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -395,9 +376,8 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public BlobOutputStream openOutputStream(
-            final long length, final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException {
+    public BlobOutputStream openOutputStream(final long length, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -441,50 +421,44 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    private void putPagesInternal(
-            final PageProperties pageProperties, final byte[] data, final long length, final String md5,
-            final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
-            throws StorageException {
+    private void putPagesInternal(final PageProperties pageProperties, final byte[] data, final long length,
+            final String md5, final AccessCondition accessCondition, final BlobRequestOptions options,
+            final OperationContext opContext) throws StorageException {
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.putPage(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        pageProperties,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.putPage(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), pageProperties, accessCondition, blobOptions, opContext);
 
-                        if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
-                            if (blobOptions.getUseTransactionalContentMD5()) {
-                                request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
-                            }
-
-                            client.getCredentials().signRequest(request, length);
-                            request.getOutputStream().write(data);
-                        } else {
-                            client.getCredentials().signRequest(request, 0L);
-                        }
-
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
-
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
-
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
+                if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
+                    if (blobOptions.getUseTransactionalContentMD5()) {
+                        request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                     }
-                };
+
+                    client.getCredentials().signRequest(request, length);
+                    request.getOutputStream().write(data);
+                }
+                else {
+                    client.getCredentials().signRequest(request, 0L);
+                }
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -535,8 +509,7 @@ public final class CloudPageBlob extends CloudBlob {
      */
     @Override
     @DoesServiceRequest
-    public void upload(
-            final InputStream sourceStream, final long length, final AccessCondition accessCondition,
+    public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         if (opContext == null) {
             opContext = new OperationContext();
@@ -561,7 +534,8 @@ public final class CloudPageBlob extends CloudBlob {
         if (length <= 4 * Constants.MB) {
             this.create(length, accessCondition, options, opContext);
             this.uploadPages(sourceStream, 0, length, accessCondition, options, opContext);
-        } else {
+        }
+        else {
             final OutputStream streamRef = this.openOutputStream(length, accessCondition, options, opContext);
             Utility.writeToOutputStream(sourceStream, streamRef, length, false, false, null, opContext);
             streamRef.close();
@@ -622,8 +596,7 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void uploadPages(
-            final InputStream sourceStream, final long offset, final long length,
+    public void uploadPages(final InputStream sourceStream, final long offset, final long length,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, IOException {
 
@@ -668,7 +641,8 @@ public final class CloudPageBlob extends CloudBlob {
                 final MessageDigest digest = MessageDigest.getInstance("MD5");
                 digest.update(data, 0, data.length);
                 md5 = Base64.encode(digest.digest());
-            } catch (final NoSuchAlgorithmException e) {
+            }
+            catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
                 throw Utility.generateNewUnexpectedStorageException(e);
             }

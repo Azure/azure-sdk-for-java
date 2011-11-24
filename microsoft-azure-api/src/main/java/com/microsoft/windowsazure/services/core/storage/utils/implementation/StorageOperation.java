@@ -119,8 +119,8 @@ public abstract class StorageOperation<C, P, R> {
      *            an object used to track the execution of the operation
      * @return the exception to throw.
      */
-    protected final StorageException materializeException(
-            final HttpURLConnection request, final OperationContext opContext) {
+    protected final StorageException materializeException(final HttpURLConnection request,
+            final OperationContext opContext) {
         if (this.getException() != null) {
             return this.getException();
         }

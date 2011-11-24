@@ -62,8 +62,8 @@ final class BlobConstants {
     /**
      * The header that specifies blob content MD5.
      */
-    public static final String BLOB_CONTENT_MD5_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "blob-content-md5";
+    public static final String BLOB_CONTENT_MD5_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-md5";
 
     /**
      * XML element for a blob.
@@ -78,8 +78,8 @@ final class BlobConstants {
     /**
      * The header that specifies public access to blobs.
      */
-    public static final String BLOB_PUBLIC_ACCESS_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "blob-public-access";
+    public static final String BLOB_PUBLIC_ACCESS_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-public-access";
 
     /**
      * XML element for a blob type.
@@ -88,8 +88,8 @@ final class BlobConstants {
     /**
      * The header for the blob type.
      */
-    public static final String BLOB_TYPE_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "blob-type";
+    public static final String BLOB_TYPE_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-type";
 
     /**
      * XML element for blobs.
@@ -139,29 +139,26 @@ final class BlobConstants {
     /**
      * The header that specifies blob content encoding.
      */
-    public static final String CONTENT_ENCODING_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "blob-content-encoding";
+    public static final String CONTENT_ENCODING_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-encoding";
 
     /**
      * The header that specifies blob content language.
      */
-    public static final String CONTENT_LANGUAGE_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "blob-content-language";
+    public static final String CONTENT_LANGUAGE_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-language";
 
     /**
      * The header that specifies blob content length.
      */
-    public static final String CONTENT_LENGTH_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "blob-content-length";
+    public static final String CONTENT_LENGTH_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-length";
 
     /**
      * The header that specifies blob content type.
      */
-    public static final String CONTENT_TYPE_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "blob-content-type";
+    public static final String CONTENT_TYPE_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-type";
 
     /**
      * The number of default concurrent requests for parallel operation.
@@ -176,26 +173,22 @@ final class BlobConstants {
     /**
      * The default write pages size, in bytes, used by blob stream for page blobs.
      */
-    public static final int DEFAULT_MINIMUM_PAGE_STREAM_WRITE_IN_BYTES =
-            4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
+    public static final int DEFAULT_MINIMUM_PAGE_STREAM_WRITE_IN_BYTES = 4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
      * The default minimum read size, in bytes, for streams.
      */
-    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES =
-            4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
+    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = 4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
      * The default maximum size, in bytes, of a blob before it must be separated into blocks.
      */
-    public static final int DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES =
-            32 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
+    public static final int DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES = 32 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
      * The default write block size, in bytes, used by blob streams.
      */
-    public static final int DEFAULT_WRITE_BLOCK_SIZE_IN_BYTES =
-            4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
+    public static final int DEFAULT_WRITE_BLOCK_SIZE_IN_BYTES = 4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
      * XML element for the end time of an access policy.
@@ -220,8 +213,7 @@ final class BlobConstants {
     /**
      * The maximum size, in bytes, of a blob before it must be separated into blocks.
      */
-    public static final int MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES =
-            64 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
+    public static final int MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES = 64 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
      * Specifies the page blob type.
@@ -251,8 +243,8 @@ final class BlobConstants {
     /**
      * The header that specifies page write mode.
      */
-    public static final String PAGE_WRITE =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "page-write";
+    public static final String PAGE_WRITE = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "page-write";
 
     /**
      * XML element for the permission of an access policy.
@@ -267,9 +259,8 @@ final class BlobConstants {
     /**
      * The header for specifying the sequence number.
      */
-    public static final String SEQUENCE_NUMBER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "blob-sequence-number";
+    public static final String SEQUENCE_NUMBER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-sequence-number";
 
     /**
      * XML element for a signed identifier.
@@ -284,9 +275,8 @@ final class BlobConstants {
     /**
      * The header for the blob content length.
      */
-    public static final String SIZE =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "blob-content-length";
+    public static final String SIZE = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-length";
 
     /**
      * XML element for the block length.
@@ -306,8 +296,8 @@ final class BlobConstants {
     /**
      * The header for snapshots.
      */
-    public static final String SNAPSHOT_HEADER =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER + "snapshot";
+    public static final String SNAPSHOT_HEADER = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "snapshot";
 
     /**
      * Specifies only snapshots are to be included.

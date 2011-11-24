@@ -84,11 +84,13 @@ final class AccessPolicyResponse {
                 if (eventType == XMLStreamConstants.START_ELEMENT
                         && name.equals(BlobConstants.SIGNED_IDENTIFIERS_ELEMENT)) {
                     this.readPolicies(xmlr);
-                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT
                         && name.equals(BlobConstants.SIGNED_IDENTIFIERS_ELEMENT)) {
                     break;
                 }
-            } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
+            }
+            else if (eventType == XMLStreamConstants.END_DOCUMENT) {
                 break;
             }
         }
@@ -120,7 +122,8 @@ final class AccessPolicyResponse {
                 if (eventType == XMLStreamConstants.START_ELEMENT
                         && name.equals(BlobConstants.SIGNED_IDENTIFIER_ELEMENT)) {
                     this.readSignedIdentifier(xmlr);
-                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT
                         && name.equals(BlobConstants.SIGNED_IDENTIFIERS_ELEMENT)) {
                     break;
                 }
@@ -153,15 +156,18 @@ final class AccessPolicyResponse {
                 final String name = xmlr.getName().toString();
 
                 if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.PERMISSION)) {
-                    retPolicy.setPermissions(SharedAccessPolicy.permissionsFromString(Utility
-                            .readElementFromXMLReader(xmlr, BlobConstants.PERMISSION)));
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.START)) {
+                    retPolicy.setPermissions(SharedAccessPolicy.permissionsFromString(Utility.readElementFromXMLReader(
+                            xmlr, BlobConstants.PERMISSION)));
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.START)) {
                     final String tempString = Utility.readElementFromXMLReader(xmlr, BlobConstants.START);
                     retPolicy.setSharedAccessStartTime(Utility.parseISO8061LongDateFromString(tempString));
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.EXPIRY)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.EXPIRY)) {
                     final String tempString = Utility.readElementFromXMLReader(xmlr, BlobConstants.EXPIRY);
                     retPolicy.setSharedAccessExpiryTime(Utility.parseISO8061LongDateFromString(tempString));
-                } else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.ACCESS_POLICY)) {
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.ACCESS_POLICY)) {
                     break;
                 }
             }
@@ -195,9 +201,11 @@ final class AccessPolicyResponse {
 
                 if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ID)) {
                     id = Utility.readElementFromXMLReader(xmlr, Constants.ID);
-                } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.ACCESS_POLICY)) {
+                }
+                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.ACCESS_POLICY)) {
                     policy = this.readPolicyFromXML(xmlr);
-                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                }
+                else if (eventType == XMLStreamConstants.END_ELEMENT
                         && name.equals(BlobConstants.SIGNED_IDENTIFIER_ELEMENT)) {
                     this.policies.put(id, policy);
                     break;

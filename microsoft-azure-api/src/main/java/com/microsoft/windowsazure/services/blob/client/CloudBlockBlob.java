@@ -130,9 +130,8 @@ public final class CloudBlockBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void commitBlockList(
-            final Iterable<BlockEntry> blockList, final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException {
+    public void commitBlockList(final Iterable<BlockEntry> blockList, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -143,58 +142,46 @@ public final class CloudBlockBlob extends CloudBlob {
 
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.putBlockList(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blob.properties,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
-                        BlobRequest.addMetadata(request, blob.metadata, opContext);
+                final HttpURLConnection request = BlobRequest.putBlockList(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blob.properties, accessCondition, blobOptions, opContext);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                        // Potential optimization, we can write this stream outside of
-                        // the StorageOperation, so it wont need to be rewritten for each retry. Because it would
-                        // need to be a final member this would require refactoring into an internal method which
-                        // receives the block list bytestream as a final param.
+                // Potential optimization, we can write this stream outside of
+                // the StorageOperation, so it wont need to be rewritten for each retry. Because it would
+                // need to be a final member this would require refactoring into an internal method which
+                // receives the block list bytestream as a final param.
 
-                        final byte[] blockListBytes = BlobRequest.writeBlockListToStream(blockList, opContext);
+                final byte[] blockListBytes = BlobRequest.writeBlockListToStream(blockList, opContext);
 
-                        final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(blockListBytes);
+                final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(blockListBytes);
 
-                        final StreamDescriptor descriptor =
-                                Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
+                final StreamDescriptor descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
 
-                        request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
+                request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
-                        client.getCredentials().signRequest(request, descriptor.getLength());
-                        Utility.writeToOutputStream(blockListInputStream,
-                                request.getOutputStream(),
-                                descriptor.getLength(),
-                                false,
-                                false,
-                                null,
-                                opContext);
+                client.getCredentials().signRequest(request, descriptor.getLength());
+                Utility.writeToOutputStream(blockListInputStream, request.getOutputStream(), descriptor.getLength(),
+                        false, false, null, opContext);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -243,9 +230,9 @@ public final class CloudBlockBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public ArrayList<BlockEntry> downloadBlockList(
-            final BlockListingFilter blockListingFilter, final AccessCondition accessCondition,
-            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+    public ArrayList<BlockEntry> downloadBlockList(final BlockListingFilter blockListingFilter,
+            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
         Utility.assertNotNull("blockListingFilter", blockListingFilter);
 
         if (opContext == null) {
@@ -259,43 +246,34 @@ public final class CloudBlockBlob extends CloudBlob {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, ArrayList<BlockEntry>> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, ArrayList<BlockEntry>>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, ArrayList<BlockEntry>> impl = new StorageOperation<CloudBlobClient, CloudBlob, ArrayList<BlockEntry>>(
+                options) {
 
-                    @Override
-                    public ArrayList<BlockEntry> execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public ArrayList<BlockEntry> execute(final CloudBlobClient client, final CloudBlob blob,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.getBlockList(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        blockListingFilter,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.getBlockList(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, blockListingFilter, accessCondition,
+                        blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        final GetBlockListResponse response = new GetBlockListResponse(request.getInputStream());
-                        return response.getBlocks();
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                final GetBlockListResponse response = new GetBlockListResponse(request.getInputStream());
+                return response.getBlocks();
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -331,9 +309,8 @@ public final class CloudBlockBlob extends CloudBlob {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public BlobOutputStream openOutputStream(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public BlobOutputStream openOutputStream(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -391,8 +368,7 @@ public final class CloudBlockBlob extends CloudBlob {
      */
     @Override
     @DoesServiceRequest
-    public void upload(
-            final InputStream sourceStream, final long length, final AccessCondition accessCondition,
+    public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         if (length < -1) {
             throw new IllegalArgumentException(
@@ -425,12 +401,8 @@ public final class CloudBlockBlob extends CloudBlob {
             // If the stream is of unknown length or we need to calculate
             // the MD5, then we we need to read the stream contents first
 
-            descriptor =
-                    Utility.analyzeStream(sourceStream,
-                            length,
-                            this.blobServiceClient.getSingleBlobPutThresholdInBytes(),
-                            true,
-                            options.getStoreBlobContentMD5());
+            descriptor = Utility.analyzeStream(sourceStream, length,
+                    this.blobServiceClient.getSingleBlobPutThresholdInBytes(), true, options.getStoreBlobContentMD5());
 
             if (descriptor.getMd5() != null && options.getStoreBlobContentMD5()) {
                 this.properties.setContentMD5(descriptor.getMd5());
@@ -442,7 +414,8 @@ public final class CloudBlockBlob extends CloudBlob {
         if (sourceStream.markSupported() && descriptor.getLength() != -1
                 && descriptor.getLength() < this.blobServiceClient.getSingleBlobPutThresholdInBytes()) {
             this.uploadFullBlob(sourceStream, descriptor.getLength(), accessCondition, options, opContext);
-        } else {
+        }
+        else {
             final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
             writeStream.write(sourceStream, length);
             writeStream.close();
@@ -499,8 +472,7 @@ public final class CloudBlockBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void uploadBlock(
-            final String blockId, final InputStream sourceStream, final long length,
+    public void uploadBlock(final String blockId, final InputStream sourceStream, final long length,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException, IOException {
         if (length < -1) {
@@ -538,23 +510,18 @@ public final class CloudBlockBlob extends CloudBlob {
         if (!sourceStream.markSupported()) {
             // needs buffering
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            descriptor =
-                    Utility.writeToOutputStream(sourceStream,
-                            byteStream,
-                            length,
-                            false,
-                            options.getUseTransactionalContentMD5(),
-                            null,
-                            opContext);
+            descriptor = Utility.writeToOutputStream(sourceStream, byteStream, length, false,
+                    options.getUseTransactionalContentMD5(), null, opContext);
 
             bufferedStreamReference = new ByteArrayInputStream(byteStream.toByteArray());
-        } else if (length < 0 || options.getUseTransactionalContentMD5()) {
+        }
+        else if (length < 0 || options.getUseTransactionalContentMD5()) {
             // If the stream is of unknown length or we need to calculate the
             // MD5, then we we need to read
             // the stream contents first
 
-            descriptor =
-                    Utility.analyzeStream(sourceStream, length, -1L, true, options.getUseTransactionalContentMD5());
+            descriptor = Utility
+                    .analyzeStream(sourceStream, length, -1L, true, options.getUseTransactionalContentMD5());
         }
 
         if (descriptor.getLength() > 4 * Constants.MB) {
@@ -562,13 +529,8 @@ public final class CloudBlockBlob extends CloudBlob {
                     "Invalid stream length, length must be less than or equal to 4 MB in size.");
         }
 
-        this.uploadBlockInternal(blockId,
-                descriptor.getMd5(),
-                bufferedStreamReference,
-                descriptor.getLength(),
-                accessCondition,
-                options,
-                opContext);
+        this.uploadBlockInternal(blockId, descriptor.getMd5(), bufferedStreamReference, descriptor.getLength(),
+                accessCondition, options, opContext);
     }
 
     /**
@@ -593,53 +555,41 @@ public final class CloudBlockBlob extends CloudBlob {
      * @throws IOException
      */
     @DoesServiceRequest
-    private void uploadBlockInternal(
-            final String blockId, final String md5, final InputStream sourceStream, final long length,
-            final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
-            throws StorageException, IOException {
+    private void uploadBlockInternal(final String blockId, final String md5, final InputStream sourceStream,
+            final long length, final AccessCondition accessCondition, final BlobRequestOptions options,
+            final OperationContext opContext) throws StorageException, IOException {
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.putBlock(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blockId,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.putBlock(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blockId, accessCondition, blobOptions, opContext);
 
-                        if (blobOptions.getUseTransactionalContentMD5()) {
-                            request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
-                        }
+                if (blobOptions.getUseTransactionalContentMD5()) {
+                    request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
+                }
 
-                        client.getCredentials().signRequest(request, length);
+                client.getCredentials().signRequest(request, length);
 
-                        Utility.writeToOutputStream(sourceStream,
-                                request.getOutputStream(),
-                                length,
-                                true,
-                                false,
-                                null,
-                                opContext);
+                Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length, true, false, null,
+                        opContext);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);

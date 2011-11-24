@@ -41,7 +41,8 @@ public final class RetryResult {
         if (this.isShouldRetry()) {
             try {
                 Thread.sleep(this.backOffIntervalInMs);
-            } catch (final InterruptedException e) {
+            }
+            catch (final InterruptedException e) {
                 // Restore the interrupted status
                 Thread.currentThread().interrupt();
             }

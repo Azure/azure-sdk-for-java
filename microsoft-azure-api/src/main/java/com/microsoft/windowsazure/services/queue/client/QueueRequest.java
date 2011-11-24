@@ -1,3 +1,8 @@
+/*
+ * QueueRequest.java
+ * 
+ * Copyright (c) 2011 Microsoft. All rights reserved.
+ */
 package com.microsoft.windowsazure.services.queue.client;
 
 import java.io.IOException;
@@ -21,36 +26,57 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Bas
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ListingContext;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to generate requests for queue objects.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
+ * RESERVED FOR INTERNAL USE. Provides a set of methods for constructing web
+ * requests for queue operations.
  */
 final class QueueRequest {
     /**
-     * Adds user-defined metadata to the request as one or more name-value pairs.
+     * Adds user-defined metadata to the web request as one or more name-value
+     * pairs.
      * 
      * @param request
-     *            The web request.
+     *            The <code>HttpURLConnection</code> web request to add the
+     *            metadata to.
      * @param metadata
-     *            The user-defined metadata.
-     * */
-    public static void addMetadata(
-            final HttpURLConnection request, final HashMap<String, String> metadata, final OperationContext opContext) {
+     *            A <code>HashMap</code> containing the user-defined metadata to
+     *            add.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     */
+    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
+            final OperationContext opContext) {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
 
     /**
-     * Constructs a request to clear messages.
+     * Constructs a web request to clear all the messages in the queue. Sign the
+     * web request with a length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws IOException
      * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
     public static HttpURLConnection clearMessages(final URI uri, final int timeout, final OperationContext opContext)
             throws URISyntaxException, IOException, StorageException {
@@ -63,15 +89,31 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to create a new queue. Sign with 0 length.
+     * Constructs a web request to create a new queue. Sign the web request with
+     * a length of 0.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
+     * @throws IOException
+     * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
     public static HttpURLConnection create(final URI uri, final int timeout, final OperationContext opContext)
             throws IOException, URISyntaxException, StorageException {
@@ -79,15 +121,31 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to delete the queue. Sign with no length specified.
+     * Constructs a web request to delete the queue. Sign the web request with a
+     * length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the container.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
+     * @throws IOException
+     * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
     public static HttpURLConnection delete(final URI uri, final int timeout, final OperationContext opContext)
             throws IOException, URISyntaxException, StorageException {
@@ -95,21 +153,38 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a request to delete a message.
+     * Constructs a web request to delete a message from the queue. Sign the web
+     * request with a length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
-     * @throws IOException
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param popReceipt
+     *            A <code>String</code> that contains the pop receipt value
+     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            delete.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws URISyntaxException
+     *             If the URI is not valid.
+     * @throws IOException
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection deleteMessage(
-            final URI uri, final int timeout, final String popReceipt, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection deleteMessage(final URI uri, final int timeout, final String popReceipt,
+            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("popreceipt", popReceipt);
@@ -122,41 +197,53 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to download user-defined metadata and ApproximateMessageCount for the queue.
+     * Constructs a web request to download user-defined metadata and the
+     * approximate message count for the queue. Sign the web request with a
+     * length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return a HttpURLConnection configured for the operation.
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
+     * @throws IOException
+     * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * */
-    public static HttpURLConnection downloadAttributes(
-            final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+     *             If a storage service error occurred during the operation.
+     */
+    public static HttpURLConnection downloadAttributes(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         return BaseRequest.getMetadata(uri, timeout, null, opContext);
     }
 
     /**
-     * Constructs a web request to delete the queue. Sign with no length specified.
+     * Generates the message request body from a string containing the message.
+     * The message must be encodable as UTF-8. To be included in a web request,
+     * this message request body must be written to the output stream of the web
+     * request.
      * 
-     * @param uri
-     *            The absolute URI to the container.
-     * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     * @param message
+     *            A <code>String<code> containing the message to wrap in a message request body.
+     * 
+     * @return An array of <code>byte</code> containing the message request body
+     *         encoded as UTF-8.
+     * 
+     * @throws XMLStreamException
      * @throws StorageException
-     * @throws IllegalArgumentException
-     */
-    public static HttpURLConnection exist(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
-        return BaseRequest.delete(uri, timeout, null, opContext);
-    }
-
-    /**
-     * Parse message request body.
-     * 
+     *             If the message cannot be encoded as UTF-8.
      */
     public static byte[] generateMessageRequestBody(final String message) throws XMLStreamException, StorageException {
         final StringWriter outWriter = new StringWriter();
@@ -178,34 +265,48 @@ final class QueueRequest {
         xmlw.writeEndDocument();
         try {
             return outWriter.toString().getBytes("UTF8");
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
 
     /**
-     * Constructs a request to return a listing of all queues in this storage account. Sign with no length specified.
+     * Constructs a web request to return a listing of all queues in this
+     * storage account. Sign the web request with a length of -1L.
      * 
      * @param uri
-     *            The absolute URI for the account.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the storage account.
      * @param timeout
-     *            The absolute URI for the account.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
      * @param listingContext
-     *            A set of parameters for the listing operation.
+     *            A {@link ListingContext} object that specifies parameters for
+     *            the listing operation, if any. May be <code>null</code>.
      * @param detailsIncluded
-     *            Additional details to return with the listing.
+     *            A {@link QueueListingDetails} object that specifies additional
+     *            details to return with the listing, if any. May be <code>null</code>.
      * @param opContext
-     *            a tracking object for the request
-     * @return a HttpURLConnection configured for the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws IOException
      * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection list(
-            final URI uri, final int timeout, final ListingContext listingContext,
-            final QueueListingDetails detailsIncluded, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection list(final URI uri, final int timeout, final ListingContext listingContext,
+            final QueueListingDetails detailsIncluded, final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "list");
@@ -236,21 +337,38 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a request to peek messages.
+     * Constructs a web request to retrieve a specified number of messages from
+     * the front of the queue without changing their visibility. Sign the web
+     * request with a length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param numberOfMessages
+     *            A nonzero value that specifies the number of messages to
+     *            retrieve from the queue, up to a maximum of 32.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws IOException
      * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection peekMessages(
-            final URI uri, final int timeout, final int numberOfMessages, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection peekMessages(final URI uri, final int timeout, final int numberOfMessages,
+            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("peekonly", "true");
@@ -267,19 +385,49 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to create a new message. Sign with 0 length.
+     * Constructs a web request to add a message to the back of the queue. Write
+     * the encoded message request body generated with a call to {@link #generateMessageRequestBody(String)} to the
+     * output stream of the
+     * request. Sign the web request with the length of the encoded message
+     * request body.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the length of time for the message to be invisible
+     *            in seconds, starting when it is added to the queue. A value of
+     *            0 will make the message visible immediately. The value must be
+     *            greater than or equal to 0, and cannot be larger than 7 days.
+     *            The visibility timeout of a message cannot be set to a value
+     *            greater than the time-to-live time.
+     * @param timeToLiveInSeconds
+     *            Specifies the time-to-live interval for the message, in
+     *            seconds. The maximum time-to-live allowed is 7 days. If this
+     *            parameter is 0, the default time-to-live of 7 days is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
+     * @throws IOException
+     * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection putMessage(
-            final URI uri, final int timeout, final int visibilityTimeoutInSeconds, final int timeToLiveInSeconds,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection putMessage(final URI uri, final int timeout, final int visibilityTimeoutInSeconds,
+            final int timeToLiveInSeconds, final OperationContext opContext) throws IOException, URISyntaxException,
+            StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
@@ -300,21 +448,46 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a request to retrieve messages.
+     * Constructs a web request to retrieve messages from the front of the
+     * queue. Sign the web request with a length of -1L.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param numberOfMessages
+     *            A nonzero value that specifies the number of messages to
+     *            retrieve from the queue, up to a maximum of 32.
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the visibility timeout value in seconds, relative to
+     *            server time, to make the retrieved messages invisible until
+     *            the visibility timeout expires. The value must be larger than
+     *            or equal to 0, and cannot be larger than 7 days. The
+     *            visibility timeout of a message can be set to a value later
+     *            than the expiry time, which will prevent the message from
+     *            being retrieved again whether it is processed or not.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws IOException
      * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection retrieveMessages(
-            final URI uri, final int timeout, final int numberOfMessages, final int visibilityTimeoutInSeconds,
-            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection retrieveMessages(final URI uri, final int timeout, final int numberOfMessages,
+            final int visibilityTimeoutInSeconds, final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
@@ -334,37 +507,86 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to set user-defined metadata for the queue, Sign with 0 Length.
+     * Constructs a web request to set user-defined metadata for the queue. Each
+     * call to this operation replaces all existing metadata attached to the
+     * queue. Use the {@link #addMetadata} method to specify the metadata to set
+     * on the queue. To remove all metadata from the queue, call this web
+     * request with no metadata added. Sign the web request with a length of 0.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return a HttpURLConnection configured for the operation.
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
+     * @throws IOException
+     * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * */
+     *             If a storage service error occurred during the operation.
+     */
     public static HttpURLConnection setMetadata(final URI uri, final int timeout, final OperationContext opContext)
             throws IOException, URISyntaxException, StorageException {
         return BaseRequest.setMetadata(uri, timeout, null, opContext);
     }
 
     /**
-     * Constructs a request to update message.
+     * Constructs a web request to update the visibility timeout of a message in
+     * the queue. Optionally updates the message content if a message request
+     * body is written to the output stream of the web request. The web request
+     * should be signed with the length of the encoded message request body if
+     * one is included, or a length of 0 if no message request body is included.
      * 
      * @param uri
-     *            The absolute URI to the queue.
+     *            A <code>URI</code> object that specifies the absolute URI to
+     *            the queue.
      * @param timeout
-     *            The server timeout interval.
-     * @return a HttpURLConnection configured for the operation.
+     *            The server response timeout interval in milliseconds. If the
+     *            operation does not complete within the specified timeout
+     *            interval, a timeout error is returned by the server. If the
+     *            timeout value is 0, the maximum timeout of 30 seconds is used.
+     * @param popReceipt
+     *            A <code>String</code> that contains the pop receipt value
+     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            update.
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the new visibility timeout value in seconds,
+     *            relative to server time, to make the retrieved messages
+     *            invisible until the visibility timeout expires. The value must
+     *            be larger than or equal to 0, and cannot be larger than 7
+     *            days. The visibility timeout of a message can be set to a
+     *            value later than the expiry time, which will prevent the
+     *            message from being retrieved again whether it is processed or
+     *            not.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * 
+     * @return An <code>HttpURLConnection</code> configured for the specified
+     *         operation.
+     * 
      * @throws IOException
      * @throws URISyntaxException
+     *             If the URI is not valid.
      * @throws StorageException
-     * @throws IllegalArgumentException
+     *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection updateMessage(
-            final URI uri, final int timeout, final String popReceipt, final int visibilityTimeoutInSeconds,
-            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection updateMessage(final URI uri, final int timeout, final String popReceipt,
+            final int visibilityTimeoutInSeconds, final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 

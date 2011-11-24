@@ -44,7 +44,8 @@ public final class StorageKey {
         byte[] utf8Bytes = null;
         try {
             utf8Bytes = stringToSign.getBytes("UTF8");
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }
 
@@ -75,7 +76,8 @@ public final class StorageKey {
         byte[] utf8Bytes = null;
         try {
             utf8Bytes = stringToSign.getBytes("UTF8");
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }
 
@@ -146,7 +148,8 @@ public final class StorageKey {
         this.key256 = new SecretKeySpec(this.key, "HmacSHA256");
         try {
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
-        } catch (final NoSuchAlgorithmException e) {
+        }
+        catch (final NoSuchAlgorithmException e) {
             throw new IllegalArgumentException();
         }
         this.hmacSha256.init(this.key256);
@@ -162,7 +165,8 @@ public final class StorageKey {
         this.key512 = new SecretKeySpec(this.key, "HmacSHA512");
         try {
             this.hmacSha512 = Mac.getInstance("HmacSHA512");
-        } catch (final NoSuchAlgorithmException e) {
+        }
+        catch (final NoSuchAlgorithmException e) {
             throw new IllegalArgumentException();
         }
         this.hmacSha512.init(this.key512);

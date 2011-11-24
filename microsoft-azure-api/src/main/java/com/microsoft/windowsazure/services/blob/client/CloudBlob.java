@@ -164,7 +164,8 @@ public abstract class CloudBlob implements ListBlobItem {
             if (this.snapshotID != null) {
                 throw new IllegalArgumentException(
                         "Snapshot query parameter is already defined in the blobUri. Either pass in a snapshotTime parameter or use a full URL with a snapshot query parameter.");
-            } else {
+            }
+            else {
                 this.snapshotID = snapshotID;
             }
         }
@@ -228,9 +229,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final String acquireLease(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final String acquireLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -242,42 +242,34 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, String> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, String>(options) {
-                    @Override
-                    public String execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, String> impl = new StorageOperation<CloudBlobClient, CloudBlob, String>(
+                options) {
+            @Override
+            public String execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.lease(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        LeaseAction.ACQUIRE,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, accessCondition,
+                        blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        blob.properties.setLeaseStatus(LeaseStatus.LOCKED);
+                blob.updatePropertiesFromResponse(request);
+                blob.properties.setLeaseStatus(LeaseStatus.LOCKED);
 
-                        return BlobResponse.getLeaseID(request, opContext);
-                    }
-                };
+                return BlobResponse.getLeaseID(request, opContext);
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -291,16 +283,18 @@ public abstract class CloudBlob implements ListBlobItem {
         if (this instanceof CloudBlockBlob && this.properties.getBlobType() != BlobType.BLOCK_BLOB) {
             throw new StorageException(
                     StorageErrorCodeStrings.INCORRECT_BLOB_TYPE,
-                    String.format("Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
-                            BlobType.BLOCK_BLOB,
-                            this.properties.getBlobType()), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    String.format(
+                            "Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
+                            BlobType.BLOCK_BLOB, this.properties.getBlobType()),
+                    Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
         }
         if (this instanceof CloudPageBlob && this.properties.getBlobType() != BlobType.PAGE_BLOB) {
             throw new StorageException(
                     StorageErrorCodeStrings.INCORRECT_BLOB_TYPE,
-                    String.format("Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
-                            BlobType.PAGE_BLOB,
-                            this.properties.getBlobType()), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    String.format(
+                            "Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
+                            BlobType.PAGE_BLOB, this.properties.getBlobType()),
+                    Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
 
         }
     }
@@ -340,9 +334,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final long breakLease(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final long breakLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -354,43 +347,35 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Long> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Long>(options) {
-                    @Override
-                    public Long execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Long> impl = new StorageOperation<CloudBlobClient, CloudBlob, Long>(
+                options) {
+            @Override
+            public Long execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.lease(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        LeaseAction.BREAK,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, accessCondition, blobOptions,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return -1L;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return -1L;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
+                blob.updatePropertiesFromResponse(request);
+                final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
 
-                        blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
-                        return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
-                    }
-                };
+                blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
+                return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -433,8 +418,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      */
     @DoesServiceRequest
-    public final void copyFromBlob(
-            final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
+    public final void copyFromBlob(final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -448,39 +432,32 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.copyFrom(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        sourceBlob.getCanonicalName(false),
-                                        blob.snapshotID,
-                                        sourceAccessCondition,
-                                        destinationAccessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.copyFrom(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), sourceBlob.getCanonicalName(false), blob.snapshotID,
+                        sourceAccessCondition, destinationAccessCondition, blobOptions, opContext);
 
-                        BlobRequest.addMetadata(request, sourceBlob.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0);
+                BlobRequest.addMetadata(request, sourceBlob.metadata, opContext);
+                client.getCredentials().signRequest(request, 0);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
+                blob.updatePropertiesFromResponse(request);
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -519,9 +496,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final CloudBlob createSnapshot(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final CloudBlob createSnapshot(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -533,43 +509,39 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, CloudBlob> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, CloudBlob>(options) {
-                    @Override
-                    public CloudBlob execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, CloudBlob> impl = new StorageOperation<CloudBlobClient, CloudBlob, CloudBlob>(
+                options) {
+            @Override
+            public CloudBlob execute(final CloudBlobClient client, final CloudBlob blob,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.snapshot(blob.getTransformedAddress(opContext), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
+                final HttpURLConnection request = BlobRequest.snapshot(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
-                        CloudBlob snapshot = null;
-                        final String snapshotTime = BlobResponse.getSnapshotTime(request, opContext);
-                        if (blob instanceof CloudBlockBlob) {
-                            snapshot = new CloudBlockBlob(blob.getUri(), snapshotTime, client);
-                        } else if (blob instanceof CloudPageBlob) {
-                            snapshot = new CloudPageBlob(blob.getUri(), snapshotTime, client);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+                CloudBlob snapshot = null;
+                final String snapshotTime = BlobResponse.getSnapshotTime(request, opContext);
+                if (blob instanceof CloudBlockBlob) {
+                    snapshot = new CloudBlockBlob(blob.getUri(), snapshotTime, client);
+                }
+                else if (blob instanceof CloudPageBlob) {
+                    snapshot = new CloudPageBlob(blob.getUri(), snapshotTime, client);
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return snapshot;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return snapshot;
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -610,8 +582,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void delete(
-            final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
+    public final void delete(final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
         Utility.assertNotNull("deleteSnapshotsOption", deleteSnapshotsOption);
 
@@ -626,35 +597,29 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.delete(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        deleteSnapshotsOption,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.delete(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, deleteSnapshotsOption,
+                        accessCondition, blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -707,9 +672,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final Boolean deleteIfExists(
-            final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
-            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+    public final Boolean deleteIfExists(final DeleteSnapshotsOption deleteSnapshotsOption,
+            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
         Utility.assertNotNull("deleteSnapshotsOption", deleteSnapshotsOption);
 
         if (opContext == null) {
@@ -723,45 +688,38 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Boolean> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Boolean>(options) {
-                    @Override
-                    public Boolean execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Boolean> impl = new StorageOperation<CloudBlobClient, CloudBlob, Boolean>(
+                options) {
+            @Override
+            public Boolean execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.delete(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        deleteSnapshotsOption,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.delete(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, deleteSnapshotsOption,
+                        accessCondition, blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        blob.updatePropertiesFromResponse(request);
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
-                            return true;
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                            return false;
-                        } else {
-                            this.setNonExceptionedRetryableFailure(true);
+                blob.updatePropertiesFromResponse(request);
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
+                    return true;
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return false;
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
 
-                            // return false instead of null to avoid SCA issues
-                            return false;
-                        }
-                    }
-                };
+                    // return false instead of null to avoid SCA issues
+                    return false;
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -803,9 +761,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void download(
-            final OutputStream outStream, final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException, IOException {
+    public final void download(final OutputStream outStream, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -817,81 +774,66 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.get(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.get(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
-                        final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext);
-                        this.setResult(opContext.getLastResult());
+                client.getCredentials().signRequest(request, -1L);
+                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext);
+                this.setResult(opContext.getLastResult());
 
-                        final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
-                        final Boolean validateMD5 =
-                                !blobOptions.getDisableContentMD5Validation() && !Utility.isNullOrEmpty(contentMD5);
+                final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+                final Boolean validateMD5 = !blobOptions.getDisableContentMD5Validation()
+                        && !Utility.isNullOrEmpty(contentMD5);
 
-                        final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
-                        final long expectedLength = Long.parseLong(contentLength);
+                final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
+                final long expectedLength = Long.parseLong(contentLength);
 
-                        final StreamDescriptor descriptor =
-                                Utility.writeToOutputStream(streamRef,
-                                        outStream,
-                                        -1,
-                                        false,
-                                        validateMD5,
-                                        this.getResult(),
-                                        opContext);
+                final StreamDescriptor descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                        validateMD5, this.getResult(), opContext);
 
-                        ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
+                ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
+                blob.updatePropertiesFromResponse(request);
 
-                        if (descriptor.getLength() != expectedLength) {
-                            throw new StorageException(
-                                    StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                    "An incorrect number of bytes was read from the connection. The connection may have been closed",
-                                    Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                        }
+                if (descriptor.getLength() != expectedLength) {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
+                            "An incorrect number of bytes was read from the connection. The connection may have been closed",
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                }
 
-                        if (validateMD5 && !contentMD5.equals(descriptor.getMd5())) {
-                            throw new StorageException(
-                                    StorageErrorCodeStrings.INVALID_MD5,
-                                    String.format("Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-                                            contentMD5,
-                                            descriptor.getMd5()), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                        }
+                if (validateMD5 && !contentMD5.equals(descriptor.getMd5())) {
+                    throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
+                            "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
+                            contentMD5, descriptor.getMd5()), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         try {
             // Executed with no retries so that the first failure will move out
             // to the read Stream.
             ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, RetryNoRetry.getInstance(), opContext);
             opContext.setIntermediateMD5(null);
-        } catch (final StorageException ex) {
+        }
+        catch (final StorageException ex) {
             // Check if users has any retries specified.
             final RetryPolicy dummyPolicy = options.getRetryPolicyFactory().createInstance(opContext);
-            if (!dummyPolicy.shouldRetry(0,
-                    opContext.getLastResult().getStatusCode(),
-                    (Exception) ex.getCause(),
+            if (!dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(), (Exception) ex.getCause(),
                     opContext).isShouldRetry()) {
                 opContext.setIntermediateMD5(null);
                 throw ex;
@@ -923,21 +865,22 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 // 3. Continue copying
-                final StreamDescriptor descriptor =
-                        Utility.writeToOutputStream(streamRef, outStream, -1, false, validateMd5, null, opContext);
+                final StreamDescriptor descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                        validateMd5, null, opContext);
 
                 if (validateMd5 && !this.properties.getContentMD5().equals(descriptor.getMd5())) {
-                    throw new StorageException(
-                            StorageErrorCodeStrings.INVALID_MD5,
-                            String.format("Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-                                    this.properties.getContentMD5(),
-                                    descriptor.getMd5()), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
+                            "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
+                            this.properties.getContentMD5(), descriptor.getMd5()),
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } catch (final IOException secondEx) {
+            }
+            catch (final IOException secondEx) {
                 opContext.setIntermediateMD5(null);
                 if (secondEx.getCause() != null && secondEx.getCause() instanceof StorageException) {
                     throw (StorageException) secondEx.getCause();
-                } else {
+                }
+                else {
                     throw secondEx;
                 }
             }
@@ -981,9 +924,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void downloadAttributes(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final void downloadAttributes(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -994,51 +936,46 @@ public abstract class CloudBlob implements ListBlobItem {
 
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
 
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.getProperties(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.getProperties(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        // Set attributes
-                        final BlobAttributes retrievedAttributes =
-                                BlobResponse.getAttributes(request, blob.getUri(), blob.snapshotID, opContext);
+                // Set attributes
+                final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                        blob.snapshotID, opContext);
 
-                        if (retrievedAttributes.getProperties().getBlobType() != blob.properties.getBlobType()) {
-                            throw new StorageException(
-                                    StorageErrorCodeStrings.INCORRECT_BLOB_TYPE,
-                                    String.format("Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
-                                            blob.properties.getBlobType(),
-                                            retrievedAttributes.getProperties().getBlobType()),
-                                    Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                        }
+                if (retrievedAttributes.getProperties().getBlobType() != blob.properties.getBlobType()) {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.INCORRECT_BLOB_TYPE,
+                            String.format(
+                                    "Incorrect Blob type, please use the correct Blob type to access a blob on the server. Expected %s, actual %s",
+                                    blob.properties.getBlobType(), retrievedAttributes.getProperties().getBlobType()),
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                }
 
-                        blob.properties = retrievedAttributes.getProperties();
-                        blob.metadata = retrievedAttributes.getMetadata();
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -1092,8 +1029,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void downloadRange(
-            final long offset, final int length, final byte[] buffer, final int bufferOffet,
+    public final void downloadRange(final long offset, final int length, final byte[] buffer, final int bufferOffet,
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
             throws StorageException {
         if (offset < 0 || length <= 0) {
@@ -1131,10 +1067,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *             an exception representing any error which occurred during the operation.
      */
     @DoesServiceRequest
-    protected final void downloadRangeInternal(
-            final long blobOffset, final int length, final byte[] buffer, final int bufferOffset,
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    protected final void downloadRangeInternal(final long blobOffset, final int length, final byte[] buffer,
+            final int bufferOffset, final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (blobOffset < 0 || length <= 0) {
             throw new IndexOutOfBoundsException();
         }
@@ -1154,94 +1089,85 @@ public abstract class CloudBlob implements ListBlobItem {
                     "Cannot specify x-ms-range-get-content-md5 header on ranges larger than 4 MB. Either use a BlobReadStream via openRead, or disable TransactionalMD5 checking via the BlobRequestOptions.");
         }
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.get(blob.getTransformedAddress(opContext),
-                                        blobOptions.getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        blobOffset,
-                                        length,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.get(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, blobOffset, length, accessCondition,
+                        blobOptions, opContext);
 
-                        if (blobOptions.getUseTransactionalContentMD5()) {
-                            request.setRequestProperty(Constants.HeaderConstants.RANGE_GET_CONTENT_MD5, "true");
-                        }
+                if (blobOptions.getUseTransactionalContentMD5()) {
+                    request.setRequestProperty(Constants.HeaderConstants.RANGE_GET_CONTENT_MD5, "true");
+                }
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        final InputStream sourceStream = ExecutionEngine.getInputStream(request, opContext);
-                        this.setResult(opContext.getLastResult());
+                final InputStream sourceStream = ExecutionEngine.getInputStream(request, opContext);
+                this.setResult(opContext.getLastResult());
 
-                        int totalRead = 0;
-                        int nextRead = buffer.length - bufferOffset;
-                        int count = sourceStream.read(buffer, bufferOffset, nextRead);
+                int totalRead = 0;
+                int nextRead = buffer.length - bufferOffset;
+                int count = sourceStream.read(buffer, bufferOffset, nextRead);
 
-                        while (count > 0) {
-                            totalRead += count;
-                            nextRead = buffer.length - (bufferOffset + totalRead);
+                while (count > 0) {
+                    totalRead += count;
+                    nextRead = buffer.length - (bufferOffset + totalRead);
 
-                            if (nextRead == 0) {
-                                // check for case where more data is returned
-                                if (sourceStream.read(new byte[1], 0, 1) != -1) {
-                                    throw new StorageException(
-                                            StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                            "An incorrect number of bytes was read from the connection. The connection may have been closed",
-                                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                                }
-                            }
-                            count = sourceStream.read(buffer, bufferOffset + totalRead, nextRead);
-                        }
-
-                        ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
-
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_PARTIAL) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
-
-                        blob.updatePropertiesFromResponse(request);
-                        final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
-                        final long expectedLength = Long.parseLong(contentLength);
-                        if (totalRead != expectedLength) {
+                    if (nextRead == 0) {
+                        // check for case where more data is returned
+                        if (sourceStream.read(new byte[1], 0, 1) != -1) {
                             throw new StorageException(
                                     StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
                                     "An incorrect number of bytes was read from the connection. The connection may have been closed",
                                     Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                         }
-
-                        if (blobOptions.getUseTransactionalContentMD5()) {
-                            final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
-
-                            try {
-                                final MessageDigest digest = MessageDigest.getInstance("MD5");
-                                digest.update(buffer, bufferOffset, length);
-                                final String calculatedMD5 = Base64.encode(digest.digest());
-                                if (!contentMD5.equals(calculatedMD5)) {
-                                    throw new StorageException(
-                                            StorageErrorCodeStrings.INVALID_MD5,
-                                            String.format("Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-                                                    contentMD5,
-                                                    calculatedMD5), Constants.HeaderConstants.HTTP_UNUSED_306, null,
-                                            null);
-                                }
-                            } catch (final NoSuchAlgorithmException e) {
-                                // This wont happen, throw fatal.
-                                throw Utility.generateNewUnexpectedStorageException(e);
-                            }
-                        }
-
-                        return null;
                     }
-                };
+                    count = sourceStream.read(buffer, bufferOffset + totalRead, nextRead);
+                }
+
+                ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_PARTIAL) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.updatePropertiesFromResponse(request);
+                final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
+                final long expectedLength = Long.parseLong(contentLength);
+                if (totalRead != expectedLength) {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
+                            "An incorrect number of bytes was read from the connection. The connection may have been closed",
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                }
+
+                if (blobOptions.getUseTransactionalContentMD5()) {
+                    final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+
+                    try {
+                        final MessageDigest digest = MessageDigest.getInstance("MD5");
+                        digest.update(buffer, bufferOffset, length);
+                        final String calculatedMD5 = Base64.encode(digest.digest());
+                        if (!contentMD5.equals(calculatedMD5)) {
+                            throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
+                                    "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
+                                    contentMD5, calculatedMD5), Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                        }
+                    }
+                    catch (final NoSuchAlgorithmException e) {
+                        // This wont happen, throw fatal.
+                        throw Utility.generateNewUnexpectedStorageException(e);
+                    }
+                }
+
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -1280,9 +1206,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             f a storage service error occurred.
      */
     @DoesServiceRequest
-    public final boolean exists(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final boolean exists(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -1294,45 +1219,39 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Boolean> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Boolean>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Boolean> impl = new StorageOperation<CloudBlobClient, CloudBlob, Boolean>(
+                options) {
 
-                    @Override
-                    public Boolean execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Boolean execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.getProperties(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.snapshotID,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.getProperties(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                            blob.updatePropertiesFromResponse(request);
-                            return Boolean.valueOf(true);
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                            return Boolean.valueOf(false);
-                        } else {
-                            this.setNonExceptionedRetryableFailure(true);
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                    blob.updatePropertiesFromResponse(request);
+                    return Boolean.valueOf(true);
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return Boolean.valueOf(false);
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
 
-                            // return false instead of null to avoid SCA issues
-                            return false;
-                        }
-                    }
-                };
+                    // return false instead of null to avoid SCA issues
+                    return false;
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1352,8 +1271,8 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final String generateSharedAccessSignature(final SharedAccessPolicy policy)
-            throws InvalidKeyException, StorageException {
+    public final String generateSharedAccessSignature(final SharedAccessPolicy policy) throws InvalidKeyException,
+            StorageException {
         return this.generateSharedAccessSignature(policy, null);
     }
 
@@ -1403,8 +1322,8 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final String generateSharedAccessSignature(final String groupPolicyIdentifier)
-            throws InvalidKeyException, StorageException {
+    public final String generateSharedAccessSignature(final String groupPolicyIdentifier) throws InvalidKeyException,
+            StorageException {
         return this.generateSharedAccessSignature(groupPolicyIdentifier, null);
     }
 
@@ -1460,9 +1379,9 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    private String generateSharedAccessSignatureCore(
-            final SharedAccessPolicy policy, final String groupPolicyIdentifier, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
+    private String generateSharedAccessSignatureCore(final SharedAccessPolicy policy,
+            final String groupPolicyIdentifier, OperationContext opContext) throws InvalidKeyException,
+            StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -1479,16 +1398,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
         final String resourceName = this.getCanonicalName(true);
 
-        final String signature =
-                SharedAccessSignatureHelper.generateSharedAccessSignatureHash(policy,
-                        groupPolicyIdentifier,
-                        resourceName,
-                        this.blobServiceClient,
-                        opContext);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHash(policy,
+                groupPolicyIdentifier, resourceName, this.blobServiceClient, opContext);
 
-        final UriQueryBuilder builder =
-                SharedAccessSignatureHelper
-                        .generateSharedAccessSignature(policy, groupPolicyIdentifier, "b", signature);
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignature(policy,
+                groupPolicyIdentifier, "b", signature);
 
         return builder.toString();
     }
@@ -1509,10 +1423,10 @@ public abstract class CloudBlob implements ListBlobItem {
         String canonicalName;
         if (this.blobServiceClient.isUsePathStyleUris()) {
             canonicalName = this.getUri().getRawPath();
-        } else {
-            canonicalName =
-                    PathUtility.getCanonicalPathFromCredentials(this.blobServiceClient.getCredentials(), this.getUri()
-                            .getRawPath());
+        }
+        else {
+            canonicalName = PathUtility.getCanonicalPathFromCredentials(this.blobServiceClient.getCredentials(), this
+                    .getUri().getRawPath());
         }
 
         if (!ignoreSnapshotTime && this.snapshotID != null) {
@@ -1534,8 +1448,8 @@ public abstract class CloudBlob implements ListBlobItem {
      */
     public final CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
-            final URI containerURI =
-                    PathUtility.getContainerURI(this.getUri(), this.blobServiceClient.isUsePathStyleUris());
+            final URI containerURI = PathUtility.getContainerURI(this.getUri(),
+                    this.blobServiceClient.isUsePathStyleUris());
             this.container = new CloudBlobContainer(containerURI, this.blobServiceClient);
         }
 
@@ -1578,10 +1492,8 @@ public abstract class CloudBlob implements ListBlobItem {
      */
     public final CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
-            final URI parentURI =
-                    PathUtility.getParentAddress(this.getUri(),
-                            this.blobServiceClient.getDirectoryDelimiter(),
-                            this.blobServiceClient.isUsePathStyleUris());
+            final URI parentURI = PathUtility.getParentAddress(this.getUri(),
+                    this.blobServiceClient.getDirectoryDelimiter(), this.blobServiceClient.isUsePathStyleUris());
             this.parent = new CloudBlobDirectory(parentURI, null, this.blobServiceClient);
         }
         return this.parent;
@@ -1609,9 +1521,11 @@ public abstract class CloudBlob implements ListBlobItem {
     public final URI getQualifiedUri() throws URISyntaxException, StorageException {
         if (this.isSnapshot()) {
             return PathUtility.addToQuery(this.getUri(), String.format("snapshot=%s", this.snapshotID));
-        } else if (this.blobServiceClient.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
+        }
+        else if (this.blobServiceClient.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
             return this.blobServiceClient.getCredentials().transformUri(this.getUri());
-        } else {
+        }
+        else {
             return this.getUri();
         }
     }
@@ -1651,17 +1565,19 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    protected final URI getTransformedAddress(final OperationContext opContext)
-            throws URISyntaxException, StorageException {
+    protected final URI getTransformedAddress(final OperationContext opContext) throws URISyntaxException,
+            StorageException {
         if (this.blobServiceClient.getCredentials().doCredentialsNeedTransformUri()) {
             if (this.getUri().isAbsolute()) {
                 return this.blobServiceClient.getCredentials().transformUri(this.getUri(), opContext);
-            } else {
+            }
+            else {
                 final StorageException ex = Utility.generateNewUnexpectedStorageException(null);
                 ex.getExtendedErrorInformation().setErrorMessage("Blob Object relative URIs not supported.");
                 throw ex;
             }
-        } else {
+        }
+        else {
             return this.getUri();
         }
     }
@@ -1723,9 +1639,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final BlobInputStream openInputStream(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final BlobInputStream openInputStream(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -1755,15 +1670,14 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * */
-    private void parseURIQueryStringAndVerify(
-            final URI completeUri, final CloudBlobClient existingClient, final boolean usePathStyleUris)
-            throws StorageException {
+    private void parseURIQueryStringAndVerify(final URI completeUri, final CloudBlobClient existingClient,
+            final boolean usePathStyleUris) throws StorageException {
         Utility.assertNotNull("resourceUri", completeUri);
 
         if (!completeUri.isAbsolute()) {
-            final String errorMessage =
-                    String.format("Address '%s' is not an absolute address. Relative addresses are not permitted in here.",
-                            completeUri.toString());
+            final String errorMessage = String.format(
+                    "Address '%s' is not an absolute address. Relative addresses are not permitted in here.",
+                    completeUri.toString());
             throw new IllegalArgumentException(errorMessage);
         }
 
@@ -1771,8 +1685,8 @@ public abstract class CloudBlob implements ListBlobItem {
 
         final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
 
-        final StorageCredentialsSharedAccessSignature sasCreds =
-                SharedAccessSignatureHelper.parseQuery(queryParameters);
+        final StorageCredentialsSharedAccessSignature sasCreds = SharedAccessSignatureHelper
+                .parseQuery(queryParameters);
 
         final String[] snapshotIDs = queryParameters.get(BlobConstants.SNAPSHOT);
         if (snapshotIDs != null && snapshotIDs.length > 0) {
@@ -1783,15 +1697,15 @@ public abstract class CloudBlob implements ListBlobItem {
             return;
         }
 
-        final Boolean sameCredentials =
-                existingClient == null ? false : Utility.areCredentialsEqual(sasCreds, existingClient.getCredentials());
+        final Boolean sameCredentials = existingClient == null ? false : Utility.areCredentialsEqual(sasCreds,
+                existingClient.getCredentials());
 
         if (existingClient == null || !sameCredentials) {
             try {
-                this.blobServiceClient =
-                        new CloudBlobClient(new URI(PathUtility.getServiceClientBaseAddress(this.getUri(),
-                                usePathStyleUris)), sasCreds);
-            } catch (final URISyntaxException e) {
+                this.blobServiceClient = new CloudBlobClient(new URI(PathUtility.getServiceClientBaseAddress(
+                        this.getUri(), usePathStyleUris)), sasCreds);
+            }
+            catch (final URISyntaxException e) {
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
         }
@@ -1813,15 +1727,17 @@ public abstract class CloudBlob implements ListBlobItem {
         String tempStr = request.getHeaderField(Constants.HeaderConstants.ETAG);
 
         // ETag
-        if (Utility.isNullOrEmpty(tempStr)) {
+        if (!Utility.isNullOrEmpty(tempStr)) {
             this.getProperties().setEtag(tempStr);
         }
 
         // Last Modified
-        final Calendar lastModifiedCalendar = Calendar.getInstance(Utility.LOCALE_US);
-        lastModifiedCalendar.setTimeZone(Utility.UTC_ZONE);
-        lastModifiedCalendar.setTime(new Date(request.getLastModified()));
-        this.getProperties().setLastModified(lastModifiedCalendar.getTime());
+        if (0 != request.getLastModified()) {
+            final Calendar lastModifiedCalendar = Calendar.getInstance(Utility.LOCALE_US);
+            lastModifiedCalendar.setTimeZone(Utility.UTC_ZONE);
+            lastModifiedCalendar.setTime(new Date(request.getLastModified()));
+            this.getProperties().setLastModified(lastModifiedCalendar.getTime());
+        }
 
         // using this instead of the request property since the request
         // property only returns an int.
@@ -1866,9 +1782,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void releaseLease(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final void releaseLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         Utility.assertNotNull("accessCondition", accessCondition);
         Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
 
@@ -1883,36 +1798,31 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.lease(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        LeaseAction.RELEASE,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RELEASE, accessCondition,
+                        blobOptions, opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -1952,9 +1862,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void renewLease(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final void renewLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         Utility.assertNotNull("accessCondition", accessCondition);
         Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
 
@@ -1969,35 +1878,30 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.lease(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        LeaseAction.RENEW,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RENEW, accessCondition, blobOptions,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -2078,9 +1982,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final long tryBreakLease(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final long tryBreakLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2092,55 +1995,47 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Long> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Long>(options) {
-                    @Override
-                    public Long execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Long> impl = new StorageOperation<CloudBlobClient, CloudBlob, Long>(
+                options) {
+            @Override
+            public Long execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.lease(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        LeaseAction.BREAK,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, accessCondition, blobOptions,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, 0L);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                            final StorageException potentialConflictException =
-                                    StorageException.translateException(request, null, opContext);
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
+                    final StorageException potentialConflictException = StorageException.translateException(request,
+                            null, opContext);
 
-                            if (!potentialConflictException.getExtendedErrorInformation().getErrorCode()
-                                    .equals(StorageErrorCodeStrings.LEASE_ALREADY_BROKEN)) {
-                                this.setException(potentialConflictException);
-                                this.setNonExceptionedRetryableFailure(true);
-                            }
-
-                            return -1L;
-                        }
-
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return -1L;
-                        }
-
-                        blob.updatePropertiesFromResponse(request);
-                        final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
-
-                        return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
+                    if (!potentialConflictException.getExtendedErrorInformation().getErrorCode()
+                            .equals(StorageErrorCodeStrings.LEASE_ALREADY_BROKEN)) {
+                        this.setException(potentialConflictException);
+                        this.setNonExceptionedRetryableFailure(true);
                     }
-                };
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+                    return -1L;
+                }
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return -1L;
+                }
+
+                blob.updatePropertiesFromResponse(request);
+                final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
+
+                return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
+            }
+        };
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -2189,9 +2084,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public abstract void upload(
-            InputStream sourceStream, long length, final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException, IOException;
+    public abstract void upload(InputStream sourceStream, long length, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException;
 
     /**
      * Uploads a blob in a single operation.
@@ -2217,9 +2111,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected final void uploadFullBlob(
-            final InputStream sourceStream, final long length, final AccessCondition accessCondition,
-            final BlobRequestOptions options, final OperationContext opContext) throws StorageException, IOException {
+    protected final void uploadFullBlob(final InputStream sourceStream, final long length,
+            final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
+            throws StorageException, IOException {
         // Mark sourceStream for current position.
         sourceStream.mark(Integer.MAX_VALUE);
 
@@ -2227,56 +2121,43 @@ public abstract class CloudBlob implements ListBlobItem {
             throw new IllegalArgumentException("Invalid stream length, specify a positive number of bytes");
         }
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.put(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.properties,
-                                        blob.properties.getBlobType(),
-                                        0,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.put(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, blob.properties.getBlobType(),
+                        0, accessCondition, blobOptions, opContext);
 
-                        BlobRequest.addMetadata(request, blob.metadata, opContext);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                        client.getCredentials().signRequest(request, length);
+                client.getCredentials().signRequest(request, length);
 
-                        final StreamDescriptor descriptor =
-                                Utility.writeToOutputStream(sourceStream,
-                                        request.getOutputStream(),
-                                        length,
-                                        true,
-                                        false,
-                                        null,
-                                        opContext);
+                final StreamDescriptor descriptor = Utility.writeToOutputStream(sourceStream,
+                        request.getOutputStream(), length, true, false, null, opContext);
 
-                        if (length != descriptor.getLength()) {
-                            throw new StorageException(
-                                    StorageErrorCodeStrings.INVALID_INPUT,
-                                    "An incorrect stream length was specified, resulting in an authentication failure. Please specify correct length, or -1.",
-                                    HttpURLConnection.HTTP_FORBIDDEN, null, null);
-                        }
+                if (length != descriptor.getLength()) {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.INVALID_INPUT,
+                            "An incorrect stream length was specified, resulting in an authentication failure. Please specify correct length, or -1.",
+                            HttpURLConnection.HTTP_FORBIDDEN, null, null);
+                }
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -2312,9 +2193,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void uploadMetadata(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final void uploadMetadata(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2326,32 +2206,30 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.setMetadata(blob.getTransformedAddress(opContext), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
+                final HttpURLConnection request = BlobRequest.setMetadata(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
 
-                        BlobRequest.addMetadata(request, blob.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0L);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
@@ -2386,9 +2264,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final void uploadProperties(
-            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public final void uploadProperties(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2400,37 +2277,31 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
 
-        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl =
-                new StorageOperation<CloudBlobClient, CloudBlob, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
-                            throws Exception {
-                        final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
-                        final HttpURLConnection request =
-                                BlobRequest.setProperties(blob.getTransformedAddress(opContext),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        blob.properties,
-                                        null,
-                                        accessCondition,
-                                        blobOptions,
-                                        opContext);
+                final HttpURLConnection request = BlobRequest.setProperties(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, null, accessCondition,
+                        blobOptions, opContext);
 
-                        BlobRequest.addMetadata(request, blob.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0L);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        blob.updatePropertiesFromResponse(request);
-                        return null;
-                    }
-                };
+                blob.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);

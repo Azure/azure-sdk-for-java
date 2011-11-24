@@ -30,9 +30,8 @@ final class BlobResponse extends BaseResponse {
      *            a tracking object for the request
      * @return the BlobAttributes from the given request
      */
-    public static BlobAttributes getAttributes(
-            final HttpURLConnection request, final URI resourceURI, final String snapshotID,
-            final OperationContext opContext) {
+    public static BlobAttributes getAttributes(final HttpURLConnection request, final URI resourceURI,
+            final String snapshotID, final OperationContext opContext) {
 
         final String blobType = request.getHeaderField(BlobConstants.BLOB_TYPE_HEADER);
         final BlobAttributes attributes = new BlobAttributes(BlobType.parse(blobType));
@@ -60,9 +59,11 @@ final class BlobResponse extends BaseResponse {
 
         if (!Utility.isNullOrEmpty(rangeHeader)) {
             properties.setLength(Long.parseLong(rangeHeader));
-        } else if (!Utility.isNullOrEmpty(xContentLengthHeader)) {
+        }
+        else if (!Utility.isNullOrEmpty(xContentLengthHeader)) {
             properties.setLength(Long.parseLong(xContentLengthHeader));
-        } else {
+        }
+        else {
             // using this instead of the request property since the request
             // property only returns an int.
             final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);

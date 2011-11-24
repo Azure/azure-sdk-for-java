@@ -69,9 +69,8 @@ public abstract class ServiceClient {
         Utility.assertNotNull("baseUri", baseUri);
 
         if (!baseUri.isAbsolute()) {
-            throw new IllegalArgumentException(
-                    String.format("Address '%s' is not an absolute address. Relative addresses are not permitted in here.",
-                            baseUri));
+            throw new IllegalArgumentException(String.format(
+                    "Address '%s' is not an absolute address. Relative addresses are not permitted in here.", baseUri));
         }
 
         this.retryPolicyFactory = new RetryExponentialRetry();
@@ -124,28 +123,26 @@ public abstract class ServiceClient {
         opContext.initialize();
         options.applyBaseDefaults(this);
 
-        final StorageOperation<ServiceClient, Void, ServiceProperties> impl =
-                new StorageOperation<ServiceClient, Void, ServiceProperties>(options) {
-                    @Override
-                    public ServiceProperties execute(
-                            final ServiceClient client, final Void v, final OperationContext opContext)
-                            throws Exception {
+        final StorageOperation<ServiceClient, Void, ServiceProperties> impl = new StorageOperation<ServiceClient, Void, ServiceProperties>(
+                options) {
+            @Override
+            public ServiceProperties execute(final ServiceClient client, final Void v, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                BaseRequest.getServiceProperties(client.getEndpoint(), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), null, opContext);
+                final HttpURLConnection request = BaseRequest.getServiceProperties(client.getEndpoint(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
 
-                        client.getCredentials().signRequest(request, -1);
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                client.getCredentials().signRequest(request, -1);
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        return BaseResponse.readServicePropertiesFromStream(request.getInputStream(), opContext);
-                    }
-                };
+                return BaseResponse.readServicePropertiesFromStream(request.getInputStream(), opContext);
+            }
+        };
 
         return ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
     }
@@ -282,9 +279,8 @@ public abstract class ServiceClient {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void uploadServiceProperties(
-            final ServiceProperties properties, RequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public void uploadServiceProperties(final ServiceProperties properties, RequestOptions options,
+            OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -302,44 +298,36 @@ public abstract class ServiceClient {
         Utility.assertNotNull("properties.Merics", properties.getMetrics());
         Utility.assertNotNull("properties.Merics.Configuration", properties.getMetrics().getMetricsLevel());
 
-        final StorageOperation<ServiceClient, Void, Void> impl =
-                new StorageOperation<ServiceClient, Void, Void>(options) {
-                    @Override
-                    public Void execute(final ServiceClient client, final Void v, final OperationContext opContext)
-                            throws Exception {
+        final StorageOperation<ServiceClient, Void, Void> impl = new StorageOperation<ServiceClient, Void, Void>(
+                options) {
+            @Override
+            public Void execute(final ServiceClient client, final Void v, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                BaseRequest.setServiceProperties(client.getEndpoint(), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), null, opContext);
+                final HttpURLConnection request = BaseRequest.setServiceProperties(client.getEndpoint(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
 
-                        final byte[] propertiesBytes =
-                                BaseRequest.serializeServicePropertiesToByteArray(properties, opContext);
+                final byte[] propertiesBytes = BaseRequest.serializeServicePropertiesToByteArray(properties, opContext);
 
-                        final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(propertiesBytes);
+                final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(propertiesBytes);
 
-                        final StreamDescriptor descriptor =
-                                Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
-                        request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
+                final StreamDescriptor descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
+                request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
-                        client.getCredentials().signRequest(request, descriptor.getLength());
-                        Utility.writeToOutputStream(blockListInputStream,
-                                request.getOutputStream(),
-                                descriptor.getLength(),
-                                false,
-                                false,
-                                null,
-                                opContext);
+                client.getCredentials().signRequest(request, descriptor.getLength());
+                Utility.writeToOutputStream(blockListInputStream, request.getOutputStream(), descriptor.getLength(),
+                        false, false, null, opContext);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
     }

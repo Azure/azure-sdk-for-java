@@ -49,10 +49,9 @@ public final class ExecutionEngine {
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
      */
-    protected static <CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> RESULT_TYPE execute(
-            final CLIENT_TYPE client, final PARENT_TYPE parentObject,
-            final StorageOperation<CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> task, final OperationContext opContext)
-            throws StorageException {
+    protected static <CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> RESULT_TYPE execute(final CLIENT_TYPE client,
+            final PARENT_TYPE parentObject, final StorageOperation<CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> task,
+            final OperationContext opContext) throws StorageException {
         return executeWithRetry(client, parentObject, task, RetryNoRetry.getInstance(), opContext);
     }
 
@@ -79,10 +78,9 @@ public final class ExecutionEngine {
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
      */
-    public static <CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> RESULT_TYPE executeWithRetry(
-            final CLIENT_TYPE client, final PARENT_TYPE parentObject,
-            final StorageOperation<CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> task, final RetryPolicyFactory policyFactory,
-            final OperationContext opContext) throws StorageException {
+    public static <CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> RESULT_TYPE executeWithRetry(final CLIENT_TYPE client,
+            final PARENT_TYPE parentObject, final StorageOperation<CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> task,
+            final RetryPolicyFactory policyFactory, final OperationContext opContext) throws StorageException {
 
         final RetryPolicy policy = policyFactory.createInstance(opContext);
         RetryResult retryRes;
@@ -102,7 +100,8 @@ public final class ExecutionEngine {
                 if (!task.isNonExceptionedRetryableFailure()) {
                     // Success return result, the rest of the return paths throw.
                     return result;
-                } else {
+                }
+                else {
                     // The task may have already parsed an exception.
                     translatedException = task.materializeException(getLastRequestObject(opContext), opContext);
                     setLastException(opContext, translatedException);
@@ -115,61 +114,68 @@ public final class ExecutionEngine {
                         throw translatedException;
                     }
                 }
-            } catch (final TimeoutException e) {
+            }
+            catch (final TimeoutException e) {
                 // Retryable
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
-            } catch (final SocketTimeoutException e) {
+            }
+            catch (final SocketTimeoutException e) {
                 // Retryable
-                translatedException =
-                        new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
-                                "The operation did not complete in the specified time.", -1, null, e);
+                translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
+                        "The operation did not complete in the specified time.", -1, null, e);
                 setLastException(opContext, translatedException);
-            } catch (final IOException e) {
+            }
+            catch (final IOException e) {
                 // Retryable
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
-            } catch (final XMLStreamException e) {
+            }
+            catch (final XMLStreamException e) {
                 // Retryable
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
-            } catch (final InvalidKeyException e) {
+            }
+            catch (final InvalidKeyException e) {
                 // Non Retryable, just throw
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
                 throw translatedException;
-            } catch (final URISyntaxException e) {
+            }
+            catch (final URISyntaxException e) {
                 // Non Retryable, just throw
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
                 throw translatedException;
-            } catch (final StorageException e) {
+            }
+            catch (final StorageException e) {
                 // Non Retryable, just throw
                 // do not translate StorageException
                 setLastException(opContext, e);
                 throw e;
-            } catch (final Exception e) {
+            }
+            catch (final Exception e) {
                 // Non Retryable, just throw
                 // TODO Should this be retried?
-                translatedException =
-                        StorageException.translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException
+                        .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
                 throw translatedException;
             }
 
             // Evaluate Retry Policy
-            retryRes =
-                    policy.shouldRetry(currentRetryCount, task.getResult().getStatusCode(), opContext.getLastResult()
-                            .getException(), opContext);
+            retryRes = policy.shouldRetry(currentRetryCount, task.getResult().getStatusCode(), opContext
+                    .getLastResult().getException(), opContext);
 
             if (!retryRes.isShouldRetry()) {
                 throw translatedException;
-            } else {
+            }
+            else {
                 retryRes.doSleep();
                 currentRetryCount++;
             }
@@ -195,7 +201,8 @@ public final class ExecutionEngine {
         opContext.getRequestResults().add(currResult);
         try {
             return request.getInputStream();
-        } catch (final IOException ex) {
+        }
+        catch (final IOException ex) {
             getResponseCode(currResult, request, opContext);
             throw ex;
         }
@@ -228,9 +235,8 @@ public final class ExecutionEngine {
      * @throws IOException
      *             if there is an error making the connection
      */
-    public static void getResponseCode(
-            final RequestResult currResult, final HttpURLConnection request, final OperationContext opContext)
-            throws IOException {
+    public static void getResponseCode(final RequestResult currResult, final HttpURLConnection request,
+            final OperationContext opContext) throws IOException {
         // Send the request
         currResult.setStatusCode(request.getResponseCode());
         currResult.setStatusMessage(request.getResponseMessage());

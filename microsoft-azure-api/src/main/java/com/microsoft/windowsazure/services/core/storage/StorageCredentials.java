@@ -42,22 +42,20 @@ public abstract class StorageCredentials {
      */
     protected static StorageCredentials tryParseCredentials(final HashMap<String, String> settings)
             throws InvalidKeyException {
-        final String accountName =
-                settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
-                        .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
+        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
+                .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
 
-        final String accountKey =
-                settings.get(CloudStorageAccount.ACCOUNT_KEY_NAME) != null ? settings
-                        .get(CloudStorageAccount.ACCOUNT_KEY_NAME) : null;
+        final String accountKey = settings.get(CloudStorageAccount.ACCOUNT_KEY_NAME) != null ? settings
+                .get(CloudStorageAccount.ACCOUNT_KEY_NAME) : null;
 
-        final String sasSignature =
-                settings.get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) != null ? settings
-                        .get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) : null;
+        final String sasSignature = settings.get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) != null ? settings
+                .get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) : null;
 
         if (accountName != null && accountKey != null && sasSignature == null) {
             if (Base64.validateIsBase64String(accountKey)) {
                 return new StorageCredentialsAccountAndKey(accountName, accountKey);
-            } else {
+            }
+            else {
                 throw new InvalidKeyException("Storage Key is not a valid base64 encoded string.");
             }
         }
@@ -85,8 +83,8 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StorageCredentials tryParseCredentials(final String connectionString)
-            throws InvalidKeyException, StorageException {
+    public static StorageCredentials tryParseCredentials(final String connectionString) throws InvalidKeyException,
+            StorageException {
         return tryParseCredentials(Utility.parseAccountString(connectionString));
     }
 
@@ -218,8 +216,8 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public abstract void signRequest(HttpURLConnection request, long contentLength)
-            throws InvalidKeyException, StorageException;
+    public abstract void signRequest(HttpURLConnection request, long contentLength) throws InvalidKeyException,
+            StorageException;
 
     /**
      * Signs a request using the specified operation context under the Shared Key authentication scheme.
@@ -254,8 +252,8 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If an unspecified storage exception occurs.
      */
-    public abstract void signRequestLite(HttpURLConnection request, long contentLength)
-            throws StorageException, InvalidKeyException;
+    public abstract void signRequestLite(HttpURLConnection request, long contentLength) throws StorageException,
+            InvalidKeyException;
 
     /**
      * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
@@ -321,6 +319,6 @@ public abstract class StorageCredentials {
      * @throws URISyntaxException
      *             If the resource URI is not properly formatted.
      */
-    public abstract URI transformUri(URI resourceUri, OperationContext opContext)
-            throws URISyntaxException, StorageException;
+    public abstract URI transformUri(URI resourceUri, OperationContext opContext) throws URISyntaxException,
+            StorageException;
 }

@@ -53,7 +53,7 @@ public final class StorageExtendedErrorInformation implements Serializable {
     /**
      * @return the errorMessage
      */
-    protected String getErrorMessage() {
+    public String getErrorMessage() {
         return this.errorMessage;
     }
 

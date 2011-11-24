@@ -207,11 +207,13 @@ public final class AccessCondition {
             if (!Utility.isNullOrEmpty(this.etag)) {
                 if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_MATCH)) {
                     request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_MATCH_HEADER, this.etag);
-                } else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
+                }
+                else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
                     request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_NONE_MATCH_HEADER, this.etag);
                 }
             }
-        } else {
+        }
+        else {
             if (!Utility.isNullOrEmpty(this.leaseID)) {
                 BaseRequest.addLeaseId(request, this.leaseID);
             }
@@ -341,7 +343,8 @@ public final class AccessCondition {
                 if (!this.etag.equals(etag) && !this.etag.equals("*")) {
                     return false;
                 }
-            } else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
+            }
+            else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
                 if (this.etag.equals(etag)) {
                     return false;
                 }

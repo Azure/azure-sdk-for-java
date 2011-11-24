@@ -198,8 +198,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            the operation.
      */
     @Override
-    public void signRequest(
-            final java.net.HttpURLConnection request, final long contentLength, final OperationContext opContext) {
+    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
         // No op
     }
 
@@ -232,8 +232,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            the operation.
      */
     @Override
-    public void signRequestLite(
-            final java.net.HttpURLConnection request, final long contentLength, final OperationContext opContext) {
+    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
         // No op
     }
 
@@ -291,8 +291,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *             If the resource URI is not properly formatted.
      */
     @Override
-    public URI transformUri(final URI resourceUri, final OperationContext opContext)
-            throws URISyntaxException, StorageException {
+    public URI transformUri(final URI resourceUri, final OperationContext opContext) throws URISyntaxException,
+            StorageException {
         return PathUtility.addToQuery(resourceUri, this.token);
     }
 }
