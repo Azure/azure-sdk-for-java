@@ -2,5 +2,5 @@ com.microsoft.windowsazure.services.blob.Exports
 com.microsoft.windowsazure.services.queue.Exports
 com.microsoft.windowsazure.services.serviceBus.Exports
 com.microsoft.windowsazure.services.serviceBus.implementation.Exports
-com.microsoft.windowsazure.utils.Exports
-com.microsoft.windowsazure.utils.jersey.Exports
+com.microsoft.windowsazure.services.core.utils.Exports
+com.microsoft.windowsazure.services.core.utils.jersey.Exports

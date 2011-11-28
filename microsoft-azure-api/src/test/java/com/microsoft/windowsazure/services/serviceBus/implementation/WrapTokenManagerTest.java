@@ -13,7 +13,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.utils.DateFactory;
+import com.microsoft.windowsazure.services.core.utils.DateFactory;
 
 public class WrapTokenManagerTest {
     private WrapContract contract;

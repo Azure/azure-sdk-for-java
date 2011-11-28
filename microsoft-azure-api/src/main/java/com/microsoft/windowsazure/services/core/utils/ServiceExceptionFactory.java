@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.utils;
+package com.microsoft.windowsazure.services.core.utils;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientResponse;
