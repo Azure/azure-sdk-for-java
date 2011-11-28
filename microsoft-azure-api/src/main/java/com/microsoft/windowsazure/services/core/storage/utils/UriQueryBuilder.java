@@ -67,11 +67,13 @@ public final class UriQueryBuilder {
         if (Utility.isNullOrEmpty(origRawQuery) && !Utility.isNullOrEmpty(rawFragment)) {
             final int bangDex = uriString.indexOf('#');
             retBuilder.append(uriString.substring(0, bangDex));
-        } else if (!Utility.isNullOrEmpty(origRawQuery)) {
+        }
+        else if (!Utility.isNullOrEmpty(origRawQuery)) {
             // has a query
             final int queryDex = uriString.indexOf('?');
             retBuilder.append(uriString.substring(0, queryDex));
-        } else {
+        }
+        else {
             // no fragment or query
             retBuilder.append(uriString);
             if (uri.getRawPath().length() <= 0) {
@@ -116,7 +118,8 @@ public final class UriQueryBuilder {
             list = new ArrayList<String>();
             list.add(value);
             this.parameters.put(key, list);
-        } else {
+        }
+        else {
             if (!list.contains(value)) {
                 list.add(value);
             }
@@ -138,7 +141,8 @@ public final class UriQueryBuilder {
                 for (final String val : this.parameters.get(key)) {
                     if (isFirstPair) {
                         isFirstPair = false;
-                    } else {
+                    }
+                    else {
                         outString.append("&");
                     }
 

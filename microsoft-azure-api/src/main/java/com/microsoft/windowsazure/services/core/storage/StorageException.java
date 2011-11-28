@@ -33,15 +33,16 @@ public final class StorageException extends Exception {
      * @return A {@link StorageExtendedErrorInformation} object that represents the error details for the specified
      *         request.
      */
-    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(
-            final HttpURLConnection request, final OperationContext opContext) {
+    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(final HttpURLConnection request,
+            final OperationContext opContext) {
         if (request == null) {
             return null;
         }
         try {
             final StorageErrorResponse response = new StorageErrorResponse(request.getErrorStream());
             return response.getExtendedErrorInformation();
-        } catch (final XMLStreamException e) {
+        }
+        catch (final XMLStreamException e) {
             return null;
         }
     }
@@ -61,8 +62,8 @@ public final class StorageException extends Exception {
      * 
      * @return A <code>StorageException</code> object that represents translated exception.
      */
-    public static StorageException translateException(
-            final HttpURLConnection request, final Exception cause, final OperationContext opContext) {
+    public static StorageException translateException(final HttpURLConnection request, final Exception cause,
+            final OperationContext opContext) {
         if (request == null) {
             return new StorageException("Client error",
                     "A Client side exception occurred, please check the inner exception for details",
@@ -77,7 +78,8 @@ public final class StorageException extends Exception {
         try {
             responseCode = request.getResponseCode();
             responseMessage = request.getResponseMessage();
-        } catch (final IOException e) {
+        }
+        catch (final IOException e) {
             // ignore errors
         }
 
@@ -87,9 +89,8 @@ public final class StorageException extends Exception {
 
         // 1. If extended information is available use it
         if (extendedError != null) {
-            translatedException =
-                    new StorageException(extendedError.getErrorCode(), responseMessage, responseCode, extendedError,
-                            cause);
+            translatedException = new StorageException(extendedError.getErrorCode(), responseMessage, responseCode,
+                    extendedError, cause);
 
             if (translatedException != null) {
                 return translatedException;
@@ -124,9 +125,8 @@ public final class StorageException extends Exception {
      * 
      * @return A <code>StorageException</code> object that represents translated exception.
      **/
-    protected static StorageException translateFromHttpStatus(
-            final int statusCode, final String statusDescription, final StorageExtendedErrorInformation details,
-            final Exception inner) {
+    protected static StorageException translateFromHttpStatus(final int statusCode, final String statusDescription,
+            final StorageExtendedErrorInformation details, final Exception inner) {
         switch (statusCode) {
             case HttpURLConnection.HTTP_FORBIDDEN:
                 return new StorageException(StorageErrorCode.ACCESS_DENIED.toString(), statusDescription, statusCode,

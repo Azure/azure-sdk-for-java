@@ -1,19 +1,21 @@
+/*
+ * MessageUpdateFields.java
+ * 
+ * Copyright (c) 2011 Microsoft. All rights reserved.
+ */
 package com.microsoft.windowsazure.services.queue.client;
 
 /**
- * 
- * Represents a set of flags for updating messages.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
+ * Flags for the values to set when updating messages.
  */
 public enum MessageUpdateFields {
     /**
-     * Update the message visibility timeout.
+     * Set to update the message visibility timeout.
      */
     VISIBILITY(1),
 
     /**
-     * Update the message content.
+     * Set to update the message content.
      */
     CONTENT(2);
 

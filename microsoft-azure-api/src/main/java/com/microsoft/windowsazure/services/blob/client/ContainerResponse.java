@@ -38,14 +38,14 @@ final class ContainerResponse extends BaseResponse {
      * @return the BlobContainerAttributes from the given request.
      * @throws StorageException
      */
-    public static
-            BlobContainerAttributes getAttributes(final HttpURLConnection request, final boolean usePathStyleUris)
-                    throws StorageException {
+    public static BlobContainerAttributes getAttributes(final HttpURLConnection request, final boolean usePathStyleUris)
+            throws StorageException {
         final BlobContainerAttributes containerAttributes = new BlobContainerAttributes();
         URI tempURI;
         try {
             tempURI = PathUtility.stripURIQueryAndFragment(request.getURL().toURI());
-        } catch (final URISyntaxException e) {
+        }
+        catch (final URISyntaxException e) {
             final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
             throw wrappedUnexpectedException;
         }

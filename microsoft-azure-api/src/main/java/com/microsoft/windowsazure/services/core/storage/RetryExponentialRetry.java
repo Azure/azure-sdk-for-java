@@ -102,8 +102,7 @@ public final class RetryExponentialRetry extends RetryPolicy implements RetryPol
      *         retried and how long to backoff.
      */
     @Override
-    public RetryResult shouldRetry(
-            final int currentRetryCount, final int statusCode, final Exception lastException,
+    public RetryResult shouldRetry(final int currentRetryCount, final int statusCode, final Exception lastException,
             final OperationContext opContext) {
 
         if (statusCode >= 400 && statusCode < 500) {
@@ -116,15 +115,15 @@ public final class RetryExponentialRetry extends RetryPolicy implements RetryPol
             // backoff, multiply by 2^n -1 for
             // exponential
             int incrementDelta = (int) (Math.pow(2, currentRetryCount) - 1);
-            final int boundedRandDelta =
-                    (int) (this.deltaBackoffIntervalInMs * 0.8)
-                            + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
-                                    - (int) (this.deltaBackoffIntervalInMs * 0.8));
+            final int boundedRandDelta = (int) (this.deltaBackoffIntervalInMs * 0.8)
+                    + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
+                            - (int) (this.deltaBackoffIntervalInMs * 0.8));
             incrementDelta *= boundedRandDelta;
 
             // Enforce max / min backoffs
             return new RetryResult(Math.min(this.resolvedMinBackoff + incrementDelta, this.resolvedMaxBackoff), true);
-        } else {
+        }
+        else {
             return new RetryResult(-1, false);
         }
     }

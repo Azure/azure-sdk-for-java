@@ -83,8 +83,7 @@ public class BaseResponse {
      *            the prefix for headers to be returned.
      * @return all the header/value pairs with the given prefix.
      */
-    private static
-            HashMap<String, String> getValuesByHeaderPrefix(final HttpURLConnection request, final String prefix) {
+    private static HashMap<String, String> getValuesByHeaderPrefix(final HttpURLConnection request, final String prefix) {
         final HashMap<String, String> retVals = new HashMap<String, String>();
         final Map<String, List<String>> headerMap = request.getHeaderFields();
         final int prefixLength = prefix.length();
@@ -112,8 +111,8 @@ public class BaseResponse {
      * @throws StorageException
      *             if unexpected xml is found.
      */
-    public static ServiceProperties readServicePropertiesFromStream(
-            final InputStream inStream, final OperationContext opContext) throws XMLStreamException, StorageException {
+    public static ServiceProperties readServicePropertiesFromStream(final InputStream inStream,
+            final OperationContext opContext) throws XMLStreamException, StorageException {
         return ServiceProperties.readServicePropertiesFromStream(inStream, opContext);
     }
 

@@ -34,21 +34,15 @@ final class BlobQueueFullCanonicalizer extends Canonicalizer {
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(
-            final HttpURLConnection conn, final String accountName, final Long contentLength,
+    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength,
             final OperationContext opContext) throws StorageException {
 
         if (contentLength < -1) {
             throw new InvalidParameterException("ContentLength must be set to -1 or positive Long value");
         }
 
-        return canonicalizeHttpRequest(conn.getURL(),
-                accountName,
-                conn.getRequestMethod(),
-                Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_TYPE),
-                contentLength,
-                null,
-                conn,
-                opContext);
+        return canonicalizeHttpRequest(conn.getURL(), accountName, conn.getRequestMethod(),
+                Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_TYPE), contentLength, null,
+                conn, opContext);
     }
 }

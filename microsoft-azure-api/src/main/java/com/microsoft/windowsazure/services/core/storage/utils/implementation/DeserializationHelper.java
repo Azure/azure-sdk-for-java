@@ -36,9 +36,11 @@ public final class DeserializationHelper {
 
             if (eventType == XMLStreamConstants.END_ELEMENT && Constants.METADATA_ELEMENT.equals(name)) {
                 break;
-            } else if (Constants.INVALID_METADATA_NAME.equals(name)) {
+            }
+            else if (Constants.INVALID_METADATA_NAME.equals(name)) {
                 // no op , skip
-            } else if (eventType == XMLStreamConstants.START_ELEMENT) {
+            }
+            else if (eventType == XMLStreamConstants.START_ELEMENT) {
                 final String tValue = Utility.readElementFromXMLReader(xmlr, name);
                 if (!Utility.isNullOrEmpty(tValue)) {
                     retVals.put(name, tValue);

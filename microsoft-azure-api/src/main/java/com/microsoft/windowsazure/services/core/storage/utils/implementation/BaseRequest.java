@@ -53,8 +53,8 @@ public final class BaseRequest {
      * @param metadata
      *            The metadata.
      */
-    public static void addMetadata(
-            final HttpURLConnection request, final HashMap<String, String> metadata, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
+            final OperationContext opContext) {
         if (metadata != null) {
             for (final Entry<String, String> entry : metadata.entrySet()) {
                 addMetadata(request, entry.getKey(), entry.getValue(), opContext);
@@ -74,8 +74,8 @@ public final class BaseRequest {
      * @param value
      *            The metadata value.
      */
-    public static void addMetadata(
-            final HttpURLConnection request, final String name, final String value, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final String name, final String value,
+            final OperationContext opContext) {
         Utility.assertNotNullOrEmpty("value", value);
 
         request.setRequestProperty(Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA + name, value);
@@ -131,9 +131,8 @@ public final class BaseRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection create(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection create(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -164,9 +163,8 @@ public final class BaseRequest {
      *             if there is an improperly formated URI
      * @throws StorageException
      */
-    public static HttpURLConnection createURLConnection(
-            final URI uri, final int timeoutInMs, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection createURLConnection(final URI uri, final int timeoutInMs, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -215,9 +213,8 @@ public final class BaseRequest {
      *             if there is an improperly formated URI
      * @throws StorageException
      */
-    public static HttpURLConnection delete(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection delete(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -246,9 +243,8 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection getMetadata(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws StorageException, IOException, URISyntaxException {
+    public static HttpURLConnection getMetadata(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -278,9 +274,8 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection getProperties(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getProperties(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -309,9 +304,8 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static HttpURLConnection getServiceProperties(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getServiceProperties(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -334,10 +328,8 @@ public final class BaseRequest {
      */
     public static String getUserAgent() {
         if (userAgent == null) {
-            userAgent =
-                    String.format("%s/%s",
-                            Constants.HeaderConstants.USER_AGENT_PREFIX,
-                            Constants.HeaderConstants.USER_AGENT_VERSION);
+            userAgent = String.format("%s/%s", Constants.HeaderConstants.USER_AGENT_PREFIX,
+                    Constants.HeaderConstants.USER_AGENT_VERSION);
         }
         return userAgent;
     }
@@ -354,9 +346,8 @@ public final class BaseRequest {
      *             if there is an error writing the content to the stream.
      * @throws StorageException
      */
-    public static byte[] serializeServicePropertiesToByteArray(
-            final ServiceProperties properties, final OperationContext opContext)
-            throws XMLStreamException, StorageException {
+    public static byte[] serializeServicePropertiesToByteArray(final ServiceProperties properties,
+            final OperationContext opContext) throws XMLStreamException, StorageException {
         return properties.serializeToByteArray(opContext);
     }
 
@@ -376,9 +367,8 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection setMetadata(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setMetadata(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
 
         if (builder == null) {
             builder = new UriQueryBuilder();
@@ -410,9 +400,8 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static HttpURLConnection setServiceProperties(
-            final URI uri, final int timeout, UriQueryBuilder builder, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setServiceProperties(final URI uri, final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         if (builder == null) {
             builder = new UriQueryBuilder();
         }
@@ -443,14 +432,13 @@ public final class BaseRequest {
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForBlobAndQueue(
-            final HttpURLConnection request, final Credentials credentials, final Long contentLength,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static void signRequestForBlobAndQueue(final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
         final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFullCanonicalizer(request);
 
-        final String stringToSign =
-                canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength, opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
+                opContext);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
@@ -476,15 +464,15 @@ public final class BaseRequest {
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForBlobAndQueueSharedKeyLite(
-            final HttpURLConnection request, final Credentials credentials, final Long contentLength,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static void signRequestForBlobAndQueueSharedKeyLite(final HttpURLConnection request,
+            final Credentials credentials, final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
 
         final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueLiteCanonicalizer(request);
 
-        final String stringToSign =
-                canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength, opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
+                opContext);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
@@ -511,15 +499,14 @@ public final class BaseRequest {
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForTableSharedKeyLite(
-            final HttpURLConnection request, final Credentials credentials, final Long contentLength,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static void signRequestForTableSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
 
         final Canonicalizer canonicalizer = CanonicalizerFactory.getTableLiteCanonicalizer(request);
 
-        final String stringToSign =
-                canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength, opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
+                opContext);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 

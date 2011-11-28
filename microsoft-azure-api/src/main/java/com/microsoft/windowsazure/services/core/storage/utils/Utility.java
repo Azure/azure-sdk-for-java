@@ -97,9 +97,8 @@ public final class Utility {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StreamDescriptor analyzeStream(
-            final InputStream sourceStream, long writeLength, long abandonLength, final boolean rewindSourceStream,
-            final boolean calculateMD5) throws IOException, StorageException {
+    public static StreamDescriptor analyzeStream(final InputStream sourceStream, long writeLength, long abandonLength,
+            final boolean rewindSourceStream, final boolean calculateMD5) throws IOException, StorageException {
         if (abandonLength < 0) {
             abandonLength = Long.MAX_VALUE;
         }
@@ -115,7 +114,8 @@ public final class Utility {
         if (calculateMD5) {
             try {
                 digest = MessageDigest.getInstance("MD5");
-            } catch (final NoSuchAlgorithmException e) {
+            }
+            catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
@@ -187,12 +187,14 @@ public final class Utility {
         }
 
         if (thisCred instanceof StorageCredentialsAccountAndKey) {
-            return ((StorageCredentialsAccountAndKey) thisCred).toString(true)
-                    .equals(((StorageCredentialsAccountAndKey) thatCred).toString(true));
-        } else if (thisCred instanceof StorageCredentialsSharedAccessSignature) {
-            return ((StorageCredentialsSharedAccessSignature) thisCred).getToken()
-                    .equals(((StorageCredentialsSharedAccessSignature) thatCred).getToken());
-        } else if (thisCred instanceof StorageCredentialsAnonymous) {
+            return ((StorageCredentialsAccountAndKey) thisCred).toString(true).equals(
+                    ((StorageCredentialsAccountAndKey) thatCred).toString(true));
+        }
+        else if (thisCred instanceof StorageCredentialsSharedAccessSignature) {
+            return ((StorageCredentialsSharedAccessSignature) thisCred).getToken().equals(
+                    ((StorageCredentialsSharedAccessSignature) thatCred).getToken());
+        }
+        else if (thisCred instanceof StorageCredentialsAnonymous) {
             return true;
         }
 
@@ -209,16 +211,15 @@ public final class Utility {
      *            A {@link ResultContinuationType} value that represents the continuation token type being asserted with
      *            the specified continuation token.
      */
-    public static void assertContinuationType(
-            final ResultContinuation continuationToken, final ResultContinuationType continuationType) {
+    public static void assertContinuationType(final ResultContinuation continuationToken,
+            final ResultContinuationType continuationType) {
         if (continuationToken != null) {
             if (!(continuationToken.getContinuationType() == ResultContinuationType.NONE || continuationToken
                     .getContinuationType() == continuationType)) {
-                final String errorMessage =
-                        String.format(Utility.LOCALE_US,
+                final String errorMessage = String
+                        .format(Utility.LOCALE_US,
                                 "The continuation type passed in is unexpected. Please verify that the correct continuation type is passed in. Expected {%s}, found {%s}",
-                                continuationToken.getContinuationType(),
-                                continuationType);
+                                continuationToken.getContinuationType(), continuationType);
                 throw new IllegalArgumentException(errorMessage);
             }
         }
@@ -255,6 +256,26 @@ public final class Utility {
 
         if (Utility.isNullOrEmpty(value)) {
             throw new IllegalArgumentException("The argument must not be an empty string or null:".concat(param));
+        }
+    }
+
+    /**
+     * Asserts that the specified integer is in the valid range.
+     * 
+     * @param param
+     *            A <code>String</code> that represents the name of the parameter, which becomes the exception message
+     *            text if the <code>value</code> parameter is out of bounds.
+     * @param value
+     *            The value of the specified parameter.
+     * @param min
+     *            The minimum value for the specified parameter.
+     * @param max
+     *            The maximum value for the specified parameter.
+     */
+    public static void assertInBounds(final String param, final int value, final int min, final int max) {
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(String.format(
+                    "The value of the parameter %s should be between %s and %s.", param, min, max));
         }
     }
 
@@ -307,7 +328,8 @@ public final class Utility {
 
         if (Utility.isNullOrEmpty(path) || baseURI.getHost().startsWith(knownAccountName)) {
             return false;
-        } else if (!Utility.isNullOrEmpty(path) && path.startsWith(knownAccountName)) {
+        }
+        else if (!Utility.isNullOrEmpty(path) && path.startsWith(knownAccountName)) {
             return true;
         }
 
@@ -324,10 +346,9 @@ public final class Utility {
      * @return A {@link StorageException} object that represents the unexpected storage exception being thrown.
      */
     public static StorageException generateNewUnexpectedStorageException(final Exception cause) {
-        final StorageException exceptionRef =
-                new StorageException(StorageErrorCode.NONE.toString(), "Unexpected internal storage client error.",
-                        306, // unused
-                        null, null);
+        final StorageException exceptionRef = new StorageException(StorageErrorCode.NONE.toString(),
+                "Unexpected internal storage client error.", 306, // unused
+                null, null);
         exceptionRef.initCause(cause);
         return exceptionRef;
     }
@@ -363,15 +384,16 @@ public final class Utility {
      * @return A {@link StorageExtendedErrorInformation} object that represents the extended error information from the
      *         request.
      */
-    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(
-            final HttpURLConnection request, final OperationContext opContext) {
+    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(final HttpURLConnection request,
+            final OperationContext opContext) {
         if (request == null) {
             return null;
         }
         try {
             final StorageErrorResponse response = new StorageErrorResponse(request.getErrorStream());
             return response.getExtendedErrorInformation();
-        } catch (final XMLStreamException e) {
+        }
+        catch (final XMLStreamException e) {
             return null;
         }
     }
@@ -656,10 +678,12 @@ public final class Utility {
                 }
 
                 return outBuilder.toString();
-            } else {
+            }
+            else {
                 return URLDecoder.decode(stringToDecode, "UTF-8");
             }
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
@@ -708,11 +732,13 @@ public final class Utility {
                 }
 
                 return outBuilder.toString();
-            } else {
+            }
+            else {
                 return tString;
             }
 
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
@@ -760,10 +786,12 @@ public final class Utility {
                 if (basePath.charAt(m) == '/') {
                     ellipsesCount++;
                 }
-            } else {
+            }
+            else {
                 if (basePath.charAt(m) != toPath.charAt(m)) {
                     break;
-                } else if (basePath.charAt(m) == '/') {
+                }
+                else if (basePath.charAt(m) == '/') {
                     truncatePtr = m + 1;
                 }
             }
@@ -772,7 +800,8 @@ public final class Utility {
         if (m == toPath.length()) {
             // No path difference, return query + fragment
             return new URI(null, null, null, toUri.getQuery(), toUri.getFragment()).toString();
-        } else {
+        }
+        else {
             toPath = toPath.substring(truncatePtr);
             final StringBuilder sb = new StringBuilder();
             while (ellipsesCount > 0) {
@@ -862,10 +891,9 @@ public final class Utility {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StreamDescriptor writeToOutputStream(
-            final InputStream sourceStream, final OutputStream outStream, long writeLength,
-            final boolean rewindSourceStream, final boolean calculateMD5, final RequestResult currentResult,
-            final OperationContext opContext) throws IOException, StorageException {
+    public static StreamDescriptor writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
+            long writeLength, final boolean rewindSourceStream, final boolean calculateMD5,
+            final RequestResult currentResult, final OperationContext opContext) throws IOException, StorageException {
         if (opContext != null) {
             opContext.setCurrentOperationByteCount(0);
         }
@@ -878,7 +906,8 @@ public final class Utility {
         if (calculateMD5 && opContext.getIntermediateMD5() == null) {
             try {
                 opContext.setIntermediateMD5(MessageDigest.getInstance("MD5"));
-            } catch (final NoSuchAlgorithmException e) {
+            }
+            catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
                 throw Utility.generateNewUnexpectedStorageException(e);
             }

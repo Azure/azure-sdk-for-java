@@ -51,7 +51,8 @@ public final class Base64 {
 
         if (data.endsWith("==")) {
             byteArrayLength -= 2;
-        } else if (data.endsWith("=")) {
+        }
+        else if (data.endsWith("=")) {
             byteArrayLength -= 1;
         }
 
@@ -80,13 +81,15 @@ public final class Base64 {
                 // two "==" pad chars, check bits 12-24
                 tVal &= 0x00FFF000;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
-            } else if (char4 == -2) {
+            }
+            else if (char4 == -2) {
                 // one pad char "=" , check bits 6-24.
                 tVal &= 0x00FFFFC0;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
 
-            } else {
+            }
+            else {
                 // No pads take all 3 bytes, bits 0-24
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
@@ -111,7 +114,8 @@ public final class Base64 {
 
         if (data.endsWith("==")) {
             byteArrayLength -= 2;
-        } else if (data.endsWith("=")) {
+        }
+        else if (data.endsWith("=")) {
             byteArrayLength -= 1;
         }
 
@@ -140,13 +144,15 @@ public final class Base64 {
                 // two "==" pad chars, check bits 12-24
                 tVal &= 0x00FFF000;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
-            } else if (char4 == -2) {
+            }
+            else if (char4 == -2) {
                 // one pad char "=" , check bits 6-24.
                 tVal &= 0x00FFFFC0;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
 
-            } else {
+            }
+            else {
                 // No pads take all 3 bytes, bits 0-24
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
@@ -173,10 +179,12 @@ public final class Base64 {
 
             if (j < data.length - dataRemainder) {
                 n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8) + (data[j + 2] & 0xFF);
-            } else {
+            }
+            else {
                 if (dataRemainder == 1) {
                     n = (data[j] & 0xFF) << 16;
-                } else if (dataRemainder == 2) {
+                }
+                else if (dataRemainder == 2) {
                     n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8);
                 }
             }
@@ -197,7 +205,8 @@ public final class Base64 {
         // append '=' to pad
         if (data.length % 3 == 1) {
             builder.replace(bLength - 2, bLength, "==");
-        } else if (data.length % 3 == 2) {
+        }
+        else if (data.length % 3 == 2) {
             builder.replace(bLength - 1, bLength, "=");
         }
 
@@ -221,10 +230,12 @@ public final class Base64 {
 
             if (j < data.length - dataRemainder) {
                 n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8) + (data[j + 2] & 0xFF);
-            } else {
+            }
+            else {
                 if (dataRemainder == 1) {
                     n = (data[j] & 0xFF) << 16;
-                } else if (dataRemainder == 2) {
+                }
+                else if (dataRemainder == 2) {
                     n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8);
                 }
             }
@@ -245,7 +256,8 @@ public final class Base64 {
         // append '=' to pad
         if (data.length % 3 == 1) {
             builder.replace(bLength - 2, bLength, "==");
-        } else if (data.length % 3 == 2) {
+        }
+        else if (data.length % 3 == 2) {
             builder.replace(bLength - 1, bLength, "=");
         }
 
@@ -272,7 +284,8 @@ public final class Base64 {
             if (DECODE_64[charByte] == -2) {
                 if (m < data.length() - 2) {
                     return false;
-                } else if (m == data.length() - 2 && DECODE_64[(byte) data.charAt(m + 1)] != -2) {
+                }
+                else if (m == data.length() - 2 && DECODE_64[(byte) data.charAt(m + 1)] != -2) {
                     return false;
                 }
             }

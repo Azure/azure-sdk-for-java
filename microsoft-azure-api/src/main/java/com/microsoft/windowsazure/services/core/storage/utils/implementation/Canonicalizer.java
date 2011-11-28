@@ -112,11 +112,9 @@ abstract class Canonicalizer {
      * @return A canonicalized string.
      * @throws StorageException
      */
-    protected static
-            String canonicalizeHttpRequest(
-                    final java.net.URL address, final String accountName, final String method,
-                    final String contentType, final long contentLength, final String date,
-                    final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+    protected static String canonicalizeHttpRequest(final java.net.URL address, final String accountName,
+            final String method, final String contentType, final long contentLength, final String date,
+            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
 
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
@@ -184,11 +182,9 @@ abstract class Canonicalizer {
      * @return A canonicalized string.
      * @throws StorageException
      */
-    protected static
-            String canonicalizeHttpRequestLite(
-                    final java.net.URL address, final String accountName, final String method,
-                    final String contentType, final long contentLength, final String date,
-                    final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+    protected static String canonicalizeHttpRequestLite(final java.net.URL address, final String accountName,
+            final String method, final String contentType, final long contentLength, final String date,
+            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
         final StringBuilder canonicalizedString = new StringBuilder(conn.getRequestMethod());
@@ -372,7 +368,6 @@ abstract class Canonicalizer {
      *            the OperationContext for the given request
      * @return a canonicalized string.
      */
-    protected abstract String canonicalize(
-            HttpURLConnection conn, String accountName, Long contentLength, OperationContext opContext)
-            throws StorageException;
+    protected abstract String canonicalize(HttpURLConnection conn, String accountName, Long contentLength,
+            OperationContext opContext) throws StorageException;
 }

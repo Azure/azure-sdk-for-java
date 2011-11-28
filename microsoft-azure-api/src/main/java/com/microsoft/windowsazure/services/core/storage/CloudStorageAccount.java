@@ -49,8 +49,7 @@ public final class CloudStorageAccount {
     /**
      * The default account key for the development storage.
      */
-    private static final String DEVSTORE_ACCOUNT_KEY =
-            "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+    private static final String DEVSTORE_ACCOUNT_KEY = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 
     /**
      * The default account name for the development storage.
@@ -107,12 +106,10 @@ public final class CloudStorageAccount {
      * @return The default blob endpoint.
      */
     private static String getDefaultBlobEndpoint(final HashMap<String, String> settings) {
-        final String scheme =
-                settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                        .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
-        final String accountName =
-                settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
-                        .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
+        final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
+                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
+        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
+                .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
 
         return getDefaultBlobEndpoint(scheme, accountName);
     }
@@ -138,13 +135,11 @@ public final class CloudStorageAccount {
      * @return The default queue endpoint.
      */
     private static String getDefaultQueueEndpoint(final HashMap<String, String> settings) {
-        final String scheme =
-                settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                        .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
+        final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
+                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
 
-        final String accountName =
-                settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
-                        .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
+        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
+                .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
 
         return getDefaultQueueEndpoint(scheme, accountName);
     }
@@ -170,12 +165,10 @@ public final class CloudStorageAccount {
      * @return The default table endpoint.
      */
     private static String getDefaultTableEndpoint(final HashMap<String, String> settings) {
-        final String scheme =
-                settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                        .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
-        final String accountName =
-                settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
-                        .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
+        final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
+                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) : Constants.HTTP;
+        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
+                .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
 
         return getDefaultTableEndpoint(scheme, accountName);
     }
@@ -202,7 +195,8 @@ public final class CloudStorageAccount {
         if (devStoreAccount == null) {
             try {
                 devStoreAccount = getDevelopmentStorageAccount(new URI("http://127.0.0.1"));
-            } catch (final URISyntaxException e) {
+            }
+            catch (final URISyntaxException e) {
                 // this wont happen since we know the uri above.
             }
         }
@@ -253,8 +247,8 @@ public final class CloudStorageAccount {
      * @throws URISyntaxException
      *             If the connection string specifies an invalid URI.
      */
-    public static CloudStorageAccount parse(final String connectionString)
-            throws URISyntaxException, InvalidKeyException {
+    public static CloudStorageAccount parse(final String connectionString) throws URISyntaxException,
+            InvalidKeyException {
         if (connectionString == null || connectionString.length() == 0) {
             throw new IllegalArgumentException("Invalid Connection String");
         }
@@ -311,7 +305,8 @@ public final class CloudStorageAccount {
 
             return getDevelopmentStorageAccount(devStoreProxyUri);
 
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -330,9 +325,8 @@ public final class CloudStorageAccount {
     private static CloudStorageAccount tryConfigureServiceAccount(final HashMap<String, String> settings)
             throws URISyntaxException, InvalidKeyException {
 
-        final String defaultEndpointSetting =
-                settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
-                        .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME).toLowerCase() : null;
+        final String defaultEndpointSetting = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME) != null ? settings
+                .get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME).toLowerCase() : null;
 
         if (defaultEndpointSetting != null && !defaultEndpointSetting.equals(Constants.HTTP)
                 && !defaultEndpointSetting.equals(Constants.HTTPS)) {
@@ -340,15 +334,12 @@ public final class CloudStorageAccount {
         }
 
         final StorageCredentials credentials = StorageCredentials.tryParseCredentials(settings);
-        final URI blobURI =
-                settings.containsKey(CloudStorageAccount.BLOB_ENDPOINT_NAME) ? new URI(
-                        settings.get(CloudStorageAccount.BLOB_ENDPOINT_NAME)) : null;
-        final URI queueURI =
-                settings.containsKey(CloudStorageAccount.QUEUE_ENDPOINT_NAME) ? new URI(
-                        settings.get(CloudStorageAccount.QUEUE_ENDPOINT_NAME)) : null;
-        final URI tableURI =
-                settings.containsKey(CloudStorageAccount.TABLE_ENDPOINT_NAME) ? new URI(
-                        settings.get(CloudStorageAccount.TABLE_ENDPOINT_NAME)) : null;
+        final URI blobURI = settings.containsKey(CloudStorageAccount.BLOB_ENDPOINT_NAME) ? new URI(
+                settings.get(CloudStorageAccount.BLOB_ENDPOINT_NAME)) : null;
+        final URI queueURI = settings.containsKey(CloudStorageAccount.QUEUE_ENDPOINT_NAME) ? new URI(
+                settings.get(CloudStorageAccount.QUEUE_ENDPOINT_NAME)) : null;
+        final URI tableURI = settings.containsKey(CloudStorageAccount.TABLE_ENDPOINT_NAME) ? new URI(
+                settings.get(CloudStorageAccount.TABLE_ENDPOINT_NAME)) : null;
 
         if (credentials != null) {
             // Automatic endpoint Case
@@ -490,9 +481,8 @@ public final class CloudStorageAccount {
             throws URISyntaxException {
         this(storageCredentials, new URI(getDefaultBlobEndpoint(useHttps ? Constants.HTTPS : Constants.HTTP,
                 storageCredentials.getAccountName())), new URI(getDefaultQueueEndpoint(useHttps ? Constants.HTTPS
-                : Constants.HTTP, storageCredentials.getAccountName())), new URI(
-                getDefaultTableEndpoint(useHttps ? Constants.HTTPS : Constants.HTTP,
-                        storageCredentials.getAccountName())));
+                : Constants.HTTP, storageCredentials.getAccountName())), new URI(getDefaultTableEndpoint(
+                useHttps ? Constants.HTTPS : Constants.HTTP, storageCredentials.getAccountName())));
     }
 
     /**
@@ -633,7 +623,8 @@ public final class CloudStorageAccount {
         final ArrayList<String> retVals = new ArrayList<String>();
         if (this == devStoreAccount) {
             retVals.add(String.format("%s=true", USE_DEVELOPMENT_STORAGE_NAME));
-        } else if (this.credentials != null && DEVSTORE_ACCOUNT_NAME.equals(this.credentials.getAccountName())
+        }
+        else if (this.credentials != null && DEVSTORE_ACCOUNT_NAME.equals(this.credentials.getAccountName())
                 && this.credentials.toString(true).equals(CloudStorageAccount.DEVSTORE_CREDENTIALS_IN_STRING)
                 && this.blobEndpoint != null
                 && this.getBlobEndpoint().getHost().equals(this.getQueueEndpoint().getHost())
@@ -643,7 +634,8 @@ public final class CloudStorageAccount {
             retVals.add(String.format("%s=true", USE_DEVELOPMENT_STORAGE_NAME));
             retVals.add(String.format("%s=%s://%s", DEVELOPMENT_STORAGE_PROXY_URI_NAME, this.getBlobEndpoint()
                     .getScheme(), this.getBlobEndpoint().getHost()));
-        } else if (this.getBlobEndpoint().getHost().endsWith(BLOB_BASE_DNS_NAME)
+        }
+        else if (this.getBlobEndpoint().getHost().endsWith(BLOB_BASE_DNS_NAME)
                 && this.getQueueEndpoint().getHost().endsWith(QUEUE_BASE_DNS_NAME)
                 && this.getTableEndpoint().getHost().endsWith(TABLE_BASE_DNS_NAME)
                 && this.getBlobEndpoint().getScheme().equals(this.getQueueEndpoint().getScheme())
@@ -652,7 +644,8 @@ public final class CloudStorageAccount {
             if (this.getCredentials() != null) {
                 retVals.add(this.getCredentials().toString(exportSecrets));
             }
-        } else {
+        }
+        else {
             if (this.getBlobEndpoint() != null) {
                 retVals.add(String.format("%s=%s", BLOB_ENDPOINT_NAME, this.getBlobEndpoint()));
             }

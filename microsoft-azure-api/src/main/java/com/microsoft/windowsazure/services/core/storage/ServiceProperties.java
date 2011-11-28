@@ -43,33 +43,39 @@ public final class ServiceProperties {
             if (eventType == XMLStreamConstants.START_ELEMENT) {
                 final String name = xmlr.getName().toString();
                 if (name.equals(Constants.AnalyticsConstants.VERSION_ELEMENT)) {
-                    retProps.getLogging().setVersion(Utility.readElementFromXMLReader(xmlr,
-                            Constants.AnalyticsConstants.VERSION_ELEMENT));
-                } else if (name.equals(Constants.AnalyticsConstants.DELETE_ELEMENT)) {
-                    tempParseString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.DELETE_ELEMENT);
+                    retProps.getLogging().setVersion(
+                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.VERSION_ELEMENT));
+                }
+                else if (name.equals(Constants.AnalyticsConstants.DELETE_ELEMENT)) {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.AnalyticsConstants.DELETE_ELEMENT);
                     if (Boolean.parseBoolean(tempParseString)) {
                         retProps.getLogging().getLogOperationTypes().add(LoggingOperations.DELETE);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.READ_ELEMENT)) {
+                }
+                else if (name.equals(Constants.AnalyticsConstants.READ_ELEMENT)) {
                     tempParseString = Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.READ_ELEMENT);
                     if (Boolean.parseBoolean(tempParseString)) {
                         retProps.getLogging().getLogOperationTypes().add(LoggingOperations.READ);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.WRITE_ELEMENT)) {
-                    tempParseString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.WRITE_ELEMENT);
+                }
+                else if (name.equals(Constants.AnalyticsConstants.WRITE_ELEMENT)) {
+                    tempParseString = Utility
+                            .readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.WRITE_ELEMENT);
                     if (Boolean.parseBoolean(tempParseString)) {
                         retProps.getLogging().getLogOperationTypes().add(LoggingOperations.WRITE);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.RETENTION_POLICY_ELEMENT)) {
+                }
+                else if (name.equals(Constants.AnalyticsConstants.RETENTION_POLICY_ELEMENT)) {
                     retProps.getLogging().setRetentionIntervalInDays(readRetentionPolicy(xmlr));
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } else {
+            }
+            else {
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.AnalyticsConstants.LOGGING_ELEMENT);
                 break;
             }
@@ -102,34 +108,41 @@ public final class ServiceProperties {
             if (eventType == XMLStreamConstants.START_ELEMENT) {
                 final String name = xmlr.getName().toString();
                 if (name.equals(Constants.AnalyticsConstants.VERSION_ELEMENT)) {
-                    retProps.getMetrics().setVersion(Utility.readElementFromXMLReader(xmlr,
-                            Constants.AnalyticsConstants.VERSION_ELEMENT));
-                } else if (name.equals(Constants.AnalyticsConstants.ENABLED_ELEMENT)) {
-                    tempParseString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.ENABLED_ELEMENT);
+                    retProps.getMetrics().setVersion(
+                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.VERSION_ELEMENT));
+                }
+                else if (name.equals(Constants.AnalyticsConstants.ENABLED_ELEMENT)) {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.AnalyticsConstants.ENABLED_ELEMENT);
 
                     if (Boolean.parseBoolean(tempParseString)) {
                         retProps.getMetrics()
-                                .setMetricsLevel(retProps.getMetrics().getMetricsLevel() != MetricsLevel.SERVICE_AND_API ? MetricsLevel.SERVICE
-                                        : MetricsLevel.SERVICE_AND_API);
-                    } else {
+                                .setMetricsLevel(
+                                        retProps.getMetrics().getMetricsLevel() != MetricsLevel.SERVICE_AND_API ? MetricsLevel.SERVICE
+                                                : MetricsLevel.SERVICE_AND_API);
+                    }
+                    else {
                         retProps.getMetrics().setMetricsLevel(MetricsLevel.DISABLED);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.INCLUDE_APIS_ELEMENT)) {
-                    tempParseString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.INCLUDE_APIS_ELEMENT);
+                }
+                else if (name.equals(Constants.AnalyticsConstants.INCLUDE_APIS_ELEMENT)) {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.AnalyticsConstants.INCLUDE_APIS_ELEMENT);
                     if (Boolean.parseBoolean(tempParseString)
                             && retProps.getMetrics().getMetricsLevel() != MetricsLevel.DISABLED) {
                         retProps.getMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.RETENTION_POLICY_ELEMENT)) {
+                }
+                else if (name.equals(Constants.AnalyticsConstants.RETENTION_POLICY_ELEMENT)) {
                     retProps.getMetrics().setRetentionIntervalInDays(readRetentionPolicy(xmlr));
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } else {
+            }
+            else {
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.AnalyticsConstants.METRICS_ELEMENT);
                 break;
             }
@@ -167,21 +180,23 @@ public final class ServiceProperties {
                     if (retVal != null) {
                         retVal = Integer.parseInt(tempParseString);
                     }
-                } else if (name.equals(Constants.AnalyticsConstants.ENABLED_ELEMENT)) {
-                    tempParseString =
-                            Utility.readElementFromXMLReader(xmlr, Constants.AnalyticsConstants.ENABLED_ELEMENT);
+                }
+                else if (name.equals(Constants.AnalyticsConstants.ENABLED_ELEMENT)) {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.AnalyticsConstants.ENABLED_ELEMENT);
 
                     if (!Boolean.parseBoolean(tempParseString)) {
                         retVal = null;
                     }
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } else {
-                xmlr.require(XMLStreamConstants.END_ELEMENT,
-                        null,
+            }
+            else {
+                xmlr.require(XMLStreamConstants.END_ELEMENT, null,
                         Constants.AnalyticsConstants.RETENTION_POLICY_ELEMENT);
                 break;
             }
@@ -203,8 +218,8 @@ public final class ServiceProperties {
      * @throws StorageException
      *             if unexpected xml is found.
      */
-    public static ServiceProperties readServicePropertiesFromStream(
-            final InputStream inStream, final OperationContext opContext) throws XMLStreamException, StorageException {
+    public static ServiceProperties readServicePropertiesFromStream(final InputStream inStream,
+            final OperationContext opContext) throws XMLStreamException, StorageException {
         final ServiceProperties retProps = new ServiceProperties();
 
         final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(inStream);
@@ -215,8 +230,7 @@ public final class ServiceProperties {
 
         // 1. get StorageServiceProperties Header
         eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT,
-                null,
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
                 Constants.AnalyticsConstants.STORAGE_SERVICE_PROPERTIES_ELEMENT);
 
         // check if there are more events in the input stream
@@ -227,18 +241,22 @@ public final class ServiceProperties {
                 if (name.equals(Constants.AnalyticsConstants.LOGGING_ELEMENT)) {
                     readLoggingProperties(retProps, xmlr);
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.AnalyticsConstants.LOGGING_ELEMENT);
-                } else if (name.equals(Constants.AnalyticsConstants.METRICS_ELEMENT)) {
+                }
+                else if (name.equals(Constants.AnalyticsConstants.METRICS_ELEMENT)) {
                     readMetricsProperties(retProps, xmlr);
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.AnalyticsConstants.METRICS_ELEMENT);
-                } else if (name.equals(Constants.AnalyticsConstants.DEFAULT_SERVICE_VERSION)) {
+                }
+                else if (name.equals(Constants.AnalyticsConstants.DEFAULT_SERVICE_VERSION)) {
                     retProps.setDefaultServiceVersion(Utility.readElementFromXMLReader(xmlr,
                             Constants.AnalyticsConstants.DEFAULT_SERVICE_VERSION));
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-            } else if (eventType == XMLStreamConstants.END_ELEMENT) {
+            }
+            else if (eventType == XMLStreamConstants.END_ELEMENT) {
                 if (xmlr.getName().toString().equals(Constants.AnalyticsConstants.STORAGE_SERVICE_PROPERTIES_ELEMENT)) {
                     break;
                 }
@@ -417,7 +435,8 @@ public final class ServiceProperties {
 
         try {
             return outWriter.toString().getBytes("UTF8");
-        } catch (final UnsupportedEncodingException e) {
+        }
+        catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }

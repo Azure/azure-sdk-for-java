@@ -88,7 +88,8 @@ final class GetBlockListResponse {
                         this.blocks.addAll(BlobDeserializationHelper.readBlobBlocks(xmlr, BlockSearchMode.COMMITTED));
                         xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.COMMITTED_BLOCKS_ELEMENT);
                     }
-                } else if (name.equals(BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT)) {
+                }
+                else if (name.equals(BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT)) {
                     // Move to block element
                     eventType = xmlr.next();
                     if (eventType == XMLStreamConstants.START_ELEMENT
@@ -96,9 +97,11 @@ final class GetBlockListResponse {
                         this.blocks.addAll(BlobDeserializationHelper.readBlobBlocks(xmlr, BlockSearchMode.UNCOMMITTED));
                         xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT);
                     }
-                } else if (name.equals(BlobConstants.BLOCK_LIST_ELEMENT) && eventType == XMLStreamConstants.END_ELEMENT) {
+                }
+                else if (name.equals(BlobConstants.BLOCK_LIST_ELEMENT) && eventType == XMLStreamConstants.END_ELEMENT) {
                     break;
-                } else {
+                }
+                else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response recieved is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);

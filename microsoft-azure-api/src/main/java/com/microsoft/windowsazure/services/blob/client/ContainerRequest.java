@@ -36,8 +36,8 @@ final class ContainerRequest {
      * @param metadata
      *            The user-defined metadata.
      * */
-    public static void addMetadata(
-            final HttpURLConnection request, final HashMap<String, String> metadata, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
+            final OperationContext opContext) {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
 
@@ -51,8 +51,8 @@ final class ContainerRequest {
      * @param value
      *            The metadata value.
      * */
-    public static void addMetadata(
-            final HttpURLConnection request, final String name, final String value, final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request, final String name, final String value,
+            final OperationContext opContext) {
         BaseRequest.addMetadata(request, name, value, opContext);
     }
 
@@ -86,9 +86,8 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    private static HttpURLConnection createURLConnection(
-            final URI uri, final int timeout, final UriQueryBuilder query, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    private static HttpURLConnection createURLConnection(final URI uri, final int timeout, final UriQueryBuilder query,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         return BaseRequest.createURLConnection(uri, timeout, query, opContext);
     }
 
@@ -142,7 +141,8 @@ final class ContainerRequest {
         final UriQueryBuilder uriBuilder = new UriQueryBuilder();
         try {
             uriBuilder.add("restype", "container");
-        } catch (final IllegalArgumentException e) {
+        }
+        catch (final IllegalArgumentException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
         return uriBuilder;
@@ -200,10 +200,9 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection list(
-            final URI uri, final int timeout, final ListingContext listingContext,
-            final ContainerListingDetails detailsIncluded, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection list(final URI uri, final int timeout, final ListingContext listingContext,
+            final ContainerListingDetails detailsIncluded, final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException {
 
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "list");
@@ -245,9 +244,9 @@ final class ContainerRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
-    public static HttpURLConnection setAcl(
-            final URI uri, final int timeout, final BlobContainerPublicAccessType publicAccess,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setAcl(final URI uri, final int timeout,
+            final BlobContainerPublicAccessType publicAccess, final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException {
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "acl");
 
@@ -289,9 +288,8 @@ final class ContainerRequest {
      *            The account credentials.
      * @throws StorageException
      * */
-    public static void signRequest(
-            final HttpURLConnection request, final Credentials credentials, final Long contentLength,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static void signRequest(final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         BaseRequest.signRequestForBlobAndQueue(request, credentials, contentLength, opContext);
     }
 
@@ -305,9 +303,8 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws InvalidKeyException
      * */
-    public static void signRequestForSharedKeyLite(
-            final HttpURLConnection request, final Credentials credentials, final Long contentLength,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static void signRequestForSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
         BaseRequest.signRequestForBlobAndQueueSharedKeyLite(request, credentials, contentLength, opContext);
     }
 
@@ -330,10 +327,9 @@ final class ContainerRequest {
         final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
 
         if (sharedAccessPolicies.keySet().size() > BlobConstants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
-            final String errorMessage =
-                    String.format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container.",
-                            sharedAccessPolicies.keySet().size(),
-                            BlobConstants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
+            final String errorMessage = String
+                    .format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container.",
+                            sharedAccessPolicies.keySet().size(), BlobConstants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
 
             throw new IllegalArgumentException(errorMessage);
         }

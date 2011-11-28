@@ -32,9 +32,9 @@ final class SharedAccessSignatureHelper {
      * @throws IllegalArgumentException
      * @throws StorageException
      */
-    protected static UriQueryBuilder generateSharedAccessSignature(
-            final SharedAccessPolicy policy, final String groupPolicyIdentifier, final String resourceType,
-            final String signature) throws StorageException {
+    protected static UriQueryBuilder generateSharedAccessSignature(final SharedAccessPolicy policy,
+            final String groupPolicyIdentifier, final String resourceType, final String signature)
+            throws StorageException {
         Utility.assertNotNullOrEmpty("resourceType", resourceType);
         Utility.assertNotNull("signature", signature);
 
@@ -91,10 +91,9 @@ final class SharedAccessSignatureHelper {
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    protected static String generateSharedAccessSignatureHash(
-            final SharedAccessPolicy policy, final String groupPolicyIdentifier, final String resourceName,
-            final CloudBlobClient client, final OperationContext opContext)
-            throws InvalidKeyException, StorageException {
+    protected static String generateSharedAccessSignatureHash(final SharedAccessPolicy policy,
+            final String groupPolicyIdentifier, final String resourceName, final CloudBlobClient client,
+            final OperationContext opContext) throws InvalidKeyException, StorageException {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
 
@@ -103,14 +102,10 @@ final class SharedAccessSignatureHelper {
         if (policy == null) {
             // Revokable access
             Utility.assertNotNullOrEmpty("groupPolicyIdentifier", groupPolicyIdentifier);
-            stringToSign =
-                    String.format("%s\n%s\n%s\n%s\n%s",
-                            Constants.EMPTY_STRING,
-                            Constants.EMPTY_STRING,
-                            Constants.EMPTY_STRING,
-                            resourceName,
-                            groupPolicyIdentifier);
-        } else {
+            stringToSign = String.format("%s\n%s\n%s\n%s\n%s", Constants.EMPTY_STRING, Constants.EMPTY_STRING,
+                    Constants.EMPTY_STRING, resourceName, groupPolicyIdentifier);
+        }
+        else {
             // Non Revokable access
             if (policy.getSharedAccessExpiryTime() == null) {
                 throw new IllegalArgumentException("Policy Expiry time is mandatory and cannot be null");
@@ -120,13 +115,11 @@ final class SharedAccessSignatureHelper {
                 throw new IllegalArgumentException("Policy permissions are mandatory and cannot be null");
             }
 
-            stringToSign =
-                    String.format("%s\n%s\n%s\n%s\n%s",
-                            SharedAccessPolicy.permissionsToString(policy.getPermissions()),
-                            Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()),
-                            Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()),
-                            resourceName,
-                            groupPolicyIdentifier == null ? Constants.EMPTY_STRING : groupPolicyIdentifier);
+            stringToSign = String.format("%s\n%s\n%s\n%s\n%s",
+                    SharedAccessPolicy.permissionsToString(policy.getPermissions()),
+                    Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()),
+                    Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()), resourceName,
+                    groupPolicyIdentifier == null ? Constants.EMPTY_STRING : groupPolicyIdentifier);
         }
 
         stringToSign = Utility.safeDecode(stringToSign);
@@ -166,22 +159,28 @@ final class SharedAccessSignatureHelper {
             if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_START)) {
                 signedStart = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_EXPIRY)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_EXPIRY)) {
                 signedExpiry = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_PERMISSIONS)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_PERMISSIONS)) {
                 sigendPermissions = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_RESOURCE)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_RESOURCE)) {
                 signedResource = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_IDENTIFIER)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_IDENTIFIER)) {
                 signedIdentifier = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNATURE)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNATURE)) {
                 signature = entry.getValue()[0];
                 sasParameterFound = true;
-            } else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_VERSION)) {
+            }
+            else if (lowerKey.equals(BlobConstants.QueryConstants.SIGNED_VERSION)) {
                 signedVersion = entry.getValue()[0];
                 sasParameterFound = true;
             }

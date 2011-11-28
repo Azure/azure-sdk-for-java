@@ -94,16 +94,12 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
                 || (!this.currentSegmentIterator.hasNext() && this.currentSegment != null && this.currentSegment
                         .getHasMoreResults())) {
             try {
-                this.currentSegment =
-                        ExecutionEngine.executeWithRetry(this.client,
-                                this.parentObject,
-                                this.segmentGenerator,
-                                this.policyFactory,
-                                this.opContext);
-            } catch (final StorageException e) {
-                final NoSuchElementException ex =
-                        new NoSuchElementException(
-                                "An error occurred while enumerating the result, check the original exception for details.");
+                this.currentSegment = ExecutionEngine.executeWithRetry(this.client, this.parentObject,
+                        this.segmentGenerator, this.policyFactory, this.opContext);
+            }
+            catch (final StorageException e) {
+                final NoSuchElementException ex = new NoSuchElementException(
+                        "An error occurred while enumerating the result, check the original exception for details.");
                 ex.initCause(e);
                 throw ex;
             }

@@ -42,11 +42,14 @@ public enum LeaseStatus {
     public static LeaseStatus parse(final String typeString) {
         if (Utility.isNullOrEmpty(typeString)) {
             return UNSPECIFIED;
-        } else if ("unlocked".equals(typeString.toLowerCase(Locale.US))) {
+        }
+        else if ("unlocked".equals(typeString.toLowerCase(Locale.US))) {
             return UNLOCKED;
-        } else if ("locked".equals(typeString.toLowerCase(Locale.US))) {
+        }
+        else if ("locked".equals(typeString.toLowerCase(Locale.US))) {
             return LOCKED;
-        } else {
+        }
+        else {
             return UNSPECIFIED;
         }
     }

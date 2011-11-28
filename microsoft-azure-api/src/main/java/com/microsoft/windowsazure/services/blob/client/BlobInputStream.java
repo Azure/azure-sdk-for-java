@@ -152,8 +152,8 @@ public final class BlobInputStream extends InputStream {
         final String retrievedContentMD5Value = attributesRequest.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
 
         // Will validate it if it was returned
-        this.validateBlobMd5 =
-                !options.getDisableContentMD5Validation() && !Utility.isNullOrEmpty(retrievedContentMD5Value);
+        this.validateBlobMd5 = !options.getDisableContentMD5Validation()
+                && !Utility.isNullOrEmpty(retrievedContentMD5Value);
 
         // Validates the first option, and sets future requests to use if match
         // request option.
@@ -163,7 +163,7 @@ public final class BlobInputStream extends InputStream {
         String previousLeaseId = null;
         if (accessCondition != null) {
             previousLeaseId = accessCondition.getLeaseID();
-            
+
             if (!accessCondition.verifyConditional(this.parentBlobRef.getProperties().getEtag(), this.parentBlobRef
                     .getProperties().getLastModified())) {
                 throw new StorageException(StorageErrorCode.CONDITION_FAILED.toString(),
@@ -180,7 +180,8 @@ public final class BlobInputStream extends InputStream {
         if (this.validateBlobMd5) {
             try {
                 this.md5Digest = MessageDigest.getInstance("MD5");
-            } catch (final NoSuchAlgorithmException e) {
+            }
+            catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
@@ -188,9 +189,10 @@ public final class BlobInputStream extends InputStream {
 
         if (this.parentBlobRef.getProperties().getBlobType() == BlobType.PAGE_BLOB
                 && this.options.getUseSparsePageBlob()) {
-            this.pageBlobRanges =
-                    ((CloudPageBlob) parentBlob).downloadPageRanges(this.accessCondition, options, opContext);
-        } else if (this.parentBlobRef.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
+            this.pageBlobRanges = ((CloudPageBlob) parentBlob).downloadPageRanges(this.accessCondition, options,
+                    opContext);
+        }
+        else if (this.parentBlobRef.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
             if (this.options.getUseSparsePageBlob()) {
                 throw new IllegalArgumentException(
                         "The UseSparsePageBlob option is not applicable of Block Blob streams.");
@@ -270,7 +272,8 @@ public final class BlobInputStream extends InputStream {
                         if (startRange != null) {
                             resolvedReadStart = startRange.getStartOffset();
                             resolvedReadEnd = startRange.getEndOffset() + 1;
-                        } else {
+                        }
+                        else {
                             break;
                         }
                     }
@@ -291,38 +294,30 @@ public final class BlobInputStream extends InputStream {
                     resolvedReadEnd = Math.min(resolvedReadEnd, this.currentAbsoluteReadPosition + readLength);
 
                     final int bufferOffset = (int) (resolvedReadStart - this.currentAbsoluteReadPosition);
-                    final int opReadLength =
-                            (int) Math.min(readLength - bufferOffset, resolvedReadEnd - resolvedReadStart);
+                    final int opReadLength = (int) Math.min(readLength - bufferOffset, resolvedReadEnd
+                            - resolvedReadStart);
 
                     // Do read
                     if (opReadLength > 0) {
-                        this.parentBlobRef.downloadRangeInternal(resolvedReadStart,
-                                opReadLength,
-                                byteBuffer,
-                                bufferOffset,
-                                this.accessCondition,
-                                this.options,
-                                this.opContext);
+                        this.parentBlobRef.downloadRangeInternal(resolvedReadStart, opReadLength, byteBuffer,
+                                bufferOffset, this.accessCondition, this.options, this.opContext);
                     }
                 }
 
                 // ELSE=> no op, buffer already contains zeros.
 
-            } else {
+            }
+            else {
                 // Non sparse read, do entire read length
-                this.parentBlobRef.downloadRangeInternal(this.currentAbsoluteReadPosition,
-                        readLength,
-                        byteBuffer,
-                        0,
-                        this.accessCondition,
-                        this.options,
-                        this.opContext);
+                this.parentBlobRef.downloadRangeInternal(this.currentAbsoluteReadPosition, readLength, byteBuffer, 0,
+                        this.accessCondition, this.options, this.opContext);
             }
 
             this.currentBuffer = new ByteArrayInputStream(byteBuffer);
             this.bufferSize = readLength;
             this.bufferStartOffset = this.currentAbsoluteReadPosition;
-        } catch (final StorageException e) {
+        }
+        catch (final StorageException e) {
             this.streamFaulted = true;
             this.lastError = Utility.initIOException(e);
             throw this.lastError;
@@ -513,12 +508,13 @@ public final class BlobInputStream extends InputStream {
                     // Reached end of stream, validate md5.
                     final String calculatedMd5 = Base64.encode(this.md5Digest.digest());
                     if (!calculatedMd5.equals(this.parentBlobRef.getProperties().getContentMD5())) {
-                        this.lastError =
-                                Utility.initIOException(new StorageException(
+                        this.lastError = Utility
+                                .initIOException(new StorageException(
                                         StorageErrorCodeStrings.INVALID_MD5,
-                                        String.format("Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-                                                this.parentBlobRef.getProperties().getContentMD5(),
-                                                calculatedMd5), Constants.HeaderConstants.HTTP_UNUSED_306, null, null));
+                                        String.format(
+                                                "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
+                                                this.parentBlobRef.getProperties().getContentMD5(), calculatedMd5),
+                                        Constants.HeaderConstants.HTTP_UNUSED_306, null, null));
                         this.streamFaulted = true;
                         throw this.lastError;
                     }

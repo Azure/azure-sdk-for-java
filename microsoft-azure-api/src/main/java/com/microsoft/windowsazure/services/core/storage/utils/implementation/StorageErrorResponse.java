@@ -75,18 +75,20 @@ public final class StorageErrorResponse {
             final String name = xmlr.getName().toString();
 
             if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_EXCEPTION_MESSAGE)) {
-                final String errorExceptionMessage =
-                        Utility.readElementFromXMLReader(xmlr, Constants.ERROR_EXCEPTION_MESSAGE);
+                final String errorExceptionMessage = Utility.readElementFromXMLReader(xmlr,
+                        Constants.ERROR_EXCEPTION_MESSAGE);
                 this.errorInfo.getAdditionalDetails().put(Constants.ERROR_EXCEPTION_MESSAGE,
                         new String[] { errorExceptionMessage });
 
-            } else if (eventType == XMLStreamConstants.START_ELEMENT
+            }
+            else if (eventType == XMLStreamConstants.START_ELEMENT
                     && name.equals(Constants.ERROR_EXCEPTION_STACK_TRACE)) {
-                final String errorExceptionStack =
-                        Utility.readElementFromXMLReader(xmlr, Constants.ERROR_EXCEPTION_STACK_TRACE);
+                final String errorExceptionStack = Utility.readElementFromXMLReader(xmlr,
+                        Constants.ERROR_EXCEPTION_STACK_TRACE);
                 this.errorInfo.getAdditionalDetails().put(Constants.ERROR_EXCEPTION_STACK_TRACE,
                         new String[] { errorExceptionStack });
-            } else if (eventType == XMLStreamConstants.END_ELEMENT) {
+            }
+            else if (eventType == XMLStreamConstants.END_ELEMENT) {
                 break;
             }
         }
@@ -122,13 +124,16 @@ public final class StorageErrorResponse {
 
             if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_CODE)) {
                 this.errorInfo.setErrorCode(Utility.readElementFromXMLReader(xmlr, Constants.ERROR_CODE));
-            } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_MESSAGE)) {
+            }
+            else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_MESSAGE)) {
                 this.errorInfo.setErrorMessage(Utility.readElementFromXMLReader(xmlr, Constants.ERROR_MESSAGE));
-            } else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_EXCEPTION)) {
+            }
+            else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_EXCEPTION)) {
                 // get error exception
                 this.parseErrorException(xmlr);
                 xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.ERROR_EXCEPTION);
-            } else if (eventType == XMLStreamConstants.START_ELEMENT) {
+            }
+            else if (eventType == XMLStreamConstants.START_ELEMENT) {
                 // get additional details
                 tempParseString = Utility.readElementFromXMLReader(xmlr, name);
 

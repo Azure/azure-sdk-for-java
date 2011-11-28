@@ -63,16 +63,14 @@ public final class RetryLinearRetry extends RetryPolicy implements RetryPolicyFa
      *         retried and how long to backoff.
      */
     @Override
-    public RetryResult shouldRetry(
-            final int currentRetryCount, final int statusCode, final Exception lastException,
+    public RetryResult shouldRetry(final int currentRetryCount, final int statusCode, final Exception lastException,
             final OperationContext opContext) {
         if (statusCode >= 400 && statusCode < 500) {
             return new RetryResult(0, false);
         }
 
-        final int backoff =
-                Math.max(Math.min(this.deltaBackoffIntervalInMs, RetryPolicy.DEFAULT_MAX_BACKOFF),
-                        RetryPolicy.DEFAULT_MIN_BACKOFF);
+        final int backoff = Math.max(Math.min(this.deltaBackoffIntervalInMs, RetryPolicy.DEFAULT_MAX_BACKOFF),
+                RetryPolicy.DEFAULT_MIN_BACKOFF);
 
         return new RetryResult(backoff, currentRetryCount < this.maximumAttempts);
     }

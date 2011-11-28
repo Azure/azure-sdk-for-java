@@ -58,8 +58,7 @@ public final class RetryNoRetry extends RetryPolicy implements RetryPolicyFactor
      * 
      */
     @Override
-    public RetryResult shouldRetry(
-            final int currentRetryCount, final int statusCode, final Exception lastException,
+    public RetryResult shouldRetry(final int currentRetryCount, final int statusCode, final Exception lastException,
             final OperationContext opContext) {
         return new RetryResult(0, false);
     }

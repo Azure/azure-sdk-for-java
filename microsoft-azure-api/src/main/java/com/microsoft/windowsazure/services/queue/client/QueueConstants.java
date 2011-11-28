@@ -1,3 +1,8 @@
+/*
+ * QueueConstants.java
+ * 
+ * Copyright (c) 2011 Microsoft. All rights reserved.
+ */
 package com.microsoft.windowsazure.services.queue.client;
 
 /**
@@ -8,6 +13,21 @@ final class QueueConstants {
      * Default client side timeout, in milliseconds, for queue service.
      */
     public static final int DEFAULT_QUEUE_CLIENT_TIMEOUT_IN_MS = 30 * 1000;
+
+    /**
+     * The maximum message size in bytes.
+     */
+    public static final long MAX_MESSAGE_SIZE = 64 * com.microsoft.windowsazure.services.core.storage.Constants.KB;
+
+    /**
+     * The maximum number of messages that can be peeked or retrieved at a time.
+     */
+    public static final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
+
+    /**
+     * The maximum amount of time a message is kept inside the queue, in seconds.
+     */
+    public static final int MAX_TIME_TO_LIVE_IN_SECONDS = 7 * 24 * 60 * 60;
 
     /**
      * XML element for a queue.
@@ -72,9 +92,8 @@ final class QueueConstants {
     /**
      * The header that specifies the approximate message count of a queue.
      */
-    public static final String APPROXIMATE_MESSAGES_COUNT =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "approximate-messages-count";
+    public static final String APPROXIMATE_MESSAGES_COUNT = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "approximate-messages-count";
 
     /**
      * Private Default Ctor.

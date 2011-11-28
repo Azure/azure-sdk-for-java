@@ -253,9 +253,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If a storage service error occurred.
      */
     @Override
-    public void signRequest(
-            final java.net.HttpURLConnection request, final long contentLength, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
+    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws InvalidKeyException, StorageException {
         opContext = opContext == null ? new OperationContext() : opContext;
         BaseRequest.signRequestForBlobAndQueue(request, this.credentials, contentLength, opContext);
     }
@@ -297,9 +296,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If a storage service error occurred.
      */
     @Override
-    public void signRequestLite(
-            final java.net.HttpURLConnection request, final long contentLength, OperationContext opContext)
-            throws StorageException, InvalidKeyException {
+    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws StorageException, InvalidKeyException {
         opContext = opContext == null ? new OperationContext() : opContext;
         BaseRequest.signRequestForTableSharedKeyLite(request, this.credentials, contentLength, opContext);
     }
@@ -314,11 +312,9 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      */
     @Override
     public String toString(final Boolean exportSecrets) {
-        return String.format("%s=%s;%s=%s",
-                CloudStorageAccount.ACCOUNT_NAME_NAME,
-                this.getAccountName(),
-                CloudStorageAccount.ACCOUNT_KEY_NAME,
-                exportSecrets ? this.credentials.getKey().getBase64EncodedKey() : "[key hidden]");
+        return String.format("%s=%s;%s=%s", CloudStorageAccount.ACCOUNT_NAME_NAME, this.getAccountName(),
+                CloudStorageAccount.ACCOUNT_KEY_NAME, exportSecrets ? this.credentials.getKey().getBase64EncodedKey()
+                        : "[key hidden]");
     }
 
     /**

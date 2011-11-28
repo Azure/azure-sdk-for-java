@@ -109,8 +109,8 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri)
-            throws URISyntaxException, StorageException {
+    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri) throws URISyntaxException,
+            StorageException {
         return this.getBlockBlobReference(blobAddressUri, null);
     }
 
@@ -134,8 +134,8 @@ public final class CloudBlobDirectory implements ListBlobItem {
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
 
-        final URI address =
-                PathUtility.appendPathToUri(this.uri, blobAddressUri, this.blobServiceClient.getDirectoryDelimiter());
+        final URI address = PathUtility.appendPathToUri(this.uri, blobAddressUri,
+                this.blobServiceClient.getDirectoryDelimiter());
 
         final CloudBlockBlob retBlob = new CloudBlockBlob(address, snapshotID, this.blobServiceClient);
         retBlob.setContainer(this.container);
@@ -198,8 +198,8 @@ public final class CloudBlobDirectory implements ListBlobItem {
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
 
-        final URI address =
-                PathUtility.appendPathToUri(this.uri, blobAddressUri, this.blobServiceClient.getDirectoryDelimiter());
+        final URI address = PathUtility.appendPathToUri(this.uri, blobAddressUri,
+                this.blobServiceClient.getDirectoryDelimiter());
 
         final CloudPageBlob retBlob = new CloudPageBlob(address, snapshotID, this.blobServiceClient);
         retBlob.setContainer(this.container);
@@ -219,10 +219,8 @@ public final class CloudBlobDirectory implements ListBlobItem {
      */
     public CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
-            final URI parentURI =
-                    PathUtility.getParentAddress(this.uri,
-                            this.blobServiceClient.getDirectoryDelimiter(),
-                            this.blobServiceClient.isUsePathStyleUris());
+            final URI parentURI = PathUtility.getParentAddress(this.uri,
+                    this.blobServiceClient.getDirectoryDelimiter(), this.blobServiceClient.isUsePathStyleUris());
             this.parent = new CloudBlobDirectory(parentURI, null, this.blobServiceClient);
         }
         return this.parent;
@@ -241,7 +239,8 @@ public final class CloudBlobDirectory implements ListBlobItem {
             try {
                 final String containerUri = this.getContainer().getUri().toString().concat("/");
                 this.prefix = Utility.safeRelativize(new URI(containerUri), this.uri);
-            } catch (final URISyntaxException e) {
+            }
+            catch (final URISyntaxException e) {
                 final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
                 throw wrappedUnexpectedException;
             }
@@ -273,12 +272,12 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getSubDirectoryReference(final String relativeAddress)
-            throws StorageException, URISyntaxException {
+    public CloudBlobDirectory getSubDirectoryReference(final String relativeAddress) throws StorageException,
+            URISyntaxException {
         Utility.assertNotNullOrEmpty("relativeAddress", relativeAddress);
 
-        final URI address =
-                PathUtility.appendPathToUri(this.uri, relativeAddress, this.blobServiceClient.getDirectoryDelimiter());
+        final URI address = PathUtility.appendPathToUri(this.uri, relativeAddress,
+                this.blobServiceClient.getDirectoryDelimiter());
 
         return new CloudBlobDirectory(address, this, this.blobServiceClient);
     }
@@ -359,16 +358,12 @@ public final class CloudBlobDirectory implements ListBlobItem {
      *             If the resource URI is invalid.
      */
     @DoesServiceRequest
-    public Iterable<ListBlobItem> listBlobs(
-            String prefix, final boolean useFlatBlobListing, final EnumSet<BlobListingDetails> listingDetails,
-            final BlobRequestOptions options, final OperationContext opContext)
-            throws URISyntaxException, StorageException {
+    public Iterable<ListBlobItem> listBlobs(String prefix, final boolean useFlatBlobListing,
+            final EnumSet<BlobListingDetails> listingDetails, final BlobRequestOptions options,
+            final OperationContext opContext) throws URISyntaxException, StorageException {
         prefix = prefix == null ? Constants.EMPTY_STRING : prefix;
-        return this.getContainer().listBlobs(this.getPrefix().concat(prefix),
-                useFlatBlobListing,
-                listingDetails,
-                options,
-                opContext);
+        return this.getContainer().listBlobs(this.getPrefix().concat(prefix), useFlatBlobListing, listingDetails,
+                options, opContext);
     }
 
     /**
@@ -445,17 +440,12 @@ public final class CloudBlobDirectory implements ListBlobItem {
      *             If the resource URI is invalid.
      */
     @DoesServiceRequest
-    public ResultSegment<ListBlobItem> listBlobsSegmented(
-            String prefix, final boolean useFlatBlobListing, final EnumSet<BlobListingDetails> listingDetails,
-            final int maxResults, final ResultContinuation continuationToken, final BlobRequestOptions options,
+    public ResultSegment<ListBlobItem> listBlobsSegmented(String prefix, final boolean useFlatBlobListing,
+            final EnumSet<BlobListingDetails> listingDetails, final int maxResults,
+            final ResultContinuation continuationToken, final BlobRequestOptions options,
             final OperationContext opContext) throws StorageException, URISyntaxException {
         prefix = prefix == null ? Constants.EMPTY_STRING : prefix;
-        return this.getContainer().listBlobsSegmented(this.getPrefix().concat(prefix),
-                useFlatBlobListing,
-                listingDetails,
-                maxResults,
-                continuationToken,
-                options,
-                opContext);
+        return this.getContainer().listBlobsSegmented(this.getPrefix().concat(prefix), useFlatBlobListing,
+                listingDetails, maxResults, continuationToken, options, opContext);
     }
 }
