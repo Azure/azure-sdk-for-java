@@ -12,18 +12,10 @@ import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 public abstract class IntegrationTestBase {
     @BeforeClass
     public static void initializeSystem() {
-        System.out.println("initialize");
-        System.setProperty("http.proxyHost", "itgproxy");
-        System.setProperty("http.proxyPort", "80");
-        System.setProperty("http.keepAlive", "false");
     }
 
     @Before
     public void initialize() throws Exception {
-        System.out.println("initialize");
-        System.setProperty("http.proxyHost", "itgproxy");
-        System.setProperty("http.proxyPort", "80");
-        System.setProperty("http.keepAlive", "false");
 
         boolean testAlphaExists = false;
         ServiceBusContract service = ServiceBusService.create();
