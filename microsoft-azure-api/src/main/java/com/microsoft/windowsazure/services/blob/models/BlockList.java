@@ -37,7 +37,8 @@ public class BlockList {
         return this;
     }
 
-    @XmlElementRefs({ @XmlElementRef(name = "Committed", type = CommittedEntry.class), @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
+    @XmlElementRefs({ @XmlElementRef(name = "Committed", type = CommittedEntry.class),
+            @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
             @XmlElementRef(name = "Latest", type = LatestEntry.class) })
     @XmlMixed
     public List<Entry> getEntries() {

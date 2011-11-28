@@ -61,7 +61,8 @@ public class QueueService implements QueueContract {
         next.setServiceProperties(serviceProperties);
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options)
+            throws ServiceException {
         next.setServiceProperties(serviceProperties, options);
     }
 
@@ -101,7 +102,8 @@ public class QueueService implements QueueContract {
         next.setQueueMetadata(queue, metadata);
     }
 
-    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException {
+    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
+            throws ServiceException {
         next.setQueueMetadata(queue, metadata, options);
     }
 
@@ -113,13 +115,13 @@ public class QueueService implements QueueContract {
         next.createMessage(queue, messageText, options);
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
-            throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds) throws ServiceException {
         return next.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds);
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
-            QueueServiceOptions options) throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
         return next.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
     }
 
@@ -127,7 +129,8 @@ public class QueueService implements QueueContract {
         next.deleteMessage(queue, messageId, popReceipt);
     }
 
-    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
+            throws ServiceException {
         next.deleteMessage(queue, messageId, popReceipt, options);
     }
 

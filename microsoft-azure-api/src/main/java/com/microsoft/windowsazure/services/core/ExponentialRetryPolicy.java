@@ -46,7 +46,8 @@ public class ExponentialRetryPolicy extends RetryPolicy {
         // exponential
         int incrementDelta = (int) (Math.pow(2, currentRetryCount) - 1);
         int boundedRandDelta = (int) (this.deltaBackoffIntervalInMs * 0.8)
-                + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2) - (int) (this.deltaBackoffIntervalInMs * 0.8));
+                + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
+                        - (int) (this.deltaBackoffIntervalInMs * 0.8));
         incrementDelta *= boundedRandDelta;
 
         // Enforce max / min backoffs

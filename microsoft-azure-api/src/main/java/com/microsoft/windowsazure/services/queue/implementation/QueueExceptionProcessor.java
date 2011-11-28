@@ -85,7 +85,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties, options);
         }
@@ -205,7 +206,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException {
+    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.setQueueMetadata(queue, metadata, options);
         }
@@ -241,8 +243,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
-            throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds) throws ServiceException {
         try {
             return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds);
         }
@@ -254,10 +256,11 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
-            QueueServiceOptions options) throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
         try {
-            return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
+            return service
+                    .updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -327,7 +330,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.deleteMessage(queue, messageId, popReceipt, options);
         }

@@ -26,7 +26,8 @@ public class ListBlobsResult {
     private int maxResults;
 
     @XmlElementWrapper(name = "Blobs")
-    @XmlElementRefs({ @XmlElementRef(name = "BlobPrefix", type = BlobPrefixEntry.class), @XmlElementRef(name = "Blob", type = BlobEntry.class) })
+    @XmlElementRefs({ @XmlElementRef(name = "BlobPrefix", type = BlobPrefixEntry.class),
+            @XmlElementRef(name = "Blob", type = BlobEntry.class) })
     public List<ListBlobsEntry> getEntries() {
         ArrayList<ListBlobsEntry> result = new ArrayList<ListBlobsEntry>();
         result.addAll(this.blobPrefixes);

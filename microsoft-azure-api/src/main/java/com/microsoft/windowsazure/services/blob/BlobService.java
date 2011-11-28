@@ -89,7 +89,8 @@ public class BlobService implements BlobContract {
         next.setServiceProperties(serviceProperties);
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options)
+            throws ServiceException {
         next.setServiceProperties(serviceProperties, options);
     }
 
@@ -121,7 +122,8 @@ public class BlobService implements BlobContract {
         return next.getContainerProperties(container);
     }
 
-    public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options)
+            throws ServiceException {
         return next.getContainerProperties(container, options);
     }
 
@@ -129,7 +131,8 @@ public class BlobService implements BlobContract {
         return next.getContainerMetadata(container);
     }
 
-    public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options) throws ServiceException {
+    public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options)
+            throws ServiceException {
         return next.getContainerMetadata(container, options);
     }
 
@@ -153,7 +156,8 @@ public class BlobService implements BlobContract {
         next.setContainerMetadata(container, metadata);
     }
 
-    public void setContainerMetadata(String container, HashMap<String, String> metadata, SetContainerMetadataOptions options) throws ServiceException {
+    public void setContainerMetadata(String container, HashMap<String, String> metadata,
+            SetContainerMetadataOptions options) throws ServiceException {
         next.setContainerMetadata(container, metadata, options);
     }
 
@@ -169,7 +173,8 @@ public class BlobService implements BlobContract {
         next.createPageBlob(container, blob, length);
     }
 
-    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException {
+    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options)
+            throws ServiceException {
         next.createPageBlob(container, blob, length, options);
     }
 
@@ -177,7 +182,8 @@ public class BlobService implements BlobContract {
         next.createBlockBlob(container, blob, contentStream);
     }
 
-    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options) throws ServiceException {
+    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+            throws ServiceException {
         next.createBlockBlob(container, blob, contentStream, options);
     }
 
@@ -185,26 +191,28 @@ public class BlobService implements BlobContract {
         return next.clearBlobPages(container, blob, range);
     }
 
-    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range, CreateBlobPagesOptions options) throws ServiceException {
+    public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range,
+            CreateBlobPagesOptions options) throws ServiceException {
         return next.clearBlobPages(container, blob, range, options);
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream)
-            throws ServiceException {
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
+            InputStream contentStream) throws ServiceException {
         return next.createBlobPages(container, blob, range, length, contentStream);
     }
 
-    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length, InputStream contentStream,
-            CreateBlobPagesOptions options) throws ServiceException {
+    public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
+            InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         return next.createBlobPages(container, blob, range, length, contentStream, options);
     }
 
-    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream) throws ServiceException {
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream)
+            throws ServiceException {
         next.createBlobBlock(container, blob, blockId, contentStream);
     }
 
-    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options)
-            throws ServiceException {
+    public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream,
+            CreateBlobBlockOptions options) throws ServiceException {
         next.createBlobBlock(container, blob, blockId, contentStream, options);
     }
 
@@ -212,7 +220,8 @@ public class BlobService implements BlobContract {
         next.commitBlobBlocks(container, blob, blockList);
     }
 
-    public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException {
+    public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options)
+            throws ServiceException {
         next.commitBlobBlocks(container, blob, blockList, options);
     }
 
@@ -220,7 +229,8 @@ public class BlobService implements BlobContract {
         return next.listBlobBlocks(container, blob);
     }
 
-    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options) throws ServiceException {
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
+            throws ServiceException {
         return next.listBlobBlocks(container, blob, options);
     }
 
@@ -228,7 +238,8 @@ public class BlobService implements BlobContract {
         return next.getBlobProperties(container, blob);
     }
 
-    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options) throws ServiceException {
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
+            throws ServiceException {
         return next.getBlobProperties(container, blob, options);
     }
 
@@ -236,7 +247,8 @@ public class BlobService implements BlobContract {
         return next.getBlobMetadata(container, blob);
     }
 
-    public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options) throws ServiceException {
+    public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options)
+            throws ServiceException {
         return next.getBlobMetadata(container, blob, options);
     }
 
@@ -244,7 +256,8 @@ public class BlobService implements BlobContract {
         return next.listBlobRegions(container, blob);
     }
 
-    public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options) throws ServiceException {
+    public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
+            throws ServiceException {
         return next.listBlobRegions(container, blob, options);
     }
 
@@ -252,16 +265,18 @@ public class BlobService implements BlobContract {
         return next.setBlobProperties(container, blob);
     }
 
-    public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options) throws ServiceException {
+    public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
+            throws ServiceException {
         return next.setBlobProperties(container, blob, options);
     }
 
-    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata) throws ServiceException {
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata)
+            throws ServiceException {
         return next.setBlobMetadata(container, blob, metadata);
     }
 
-    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata, SetBlobMetadataOptions options)
-            throws ServiceException {
+    public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata,
+            SetBlobMetadataOptions options) throws ServiceException {
         return next.setBlobMetadata(container, blob, metadata, options);
     }
 
@@ -285,16 +300,18 @@ public class BlobService implements BlobContract {
         return next.createBlobSnapshot(container, blob);
     }
 
-    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options) throws ServiceException {
+    public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options)
+            throws ServiceException {
         return next.createBlobSnapshot(container, blob, options);
     }
 
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob) throws ServiceException {
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
+            throws ServiceException {
         next.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob);
     }
 
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob, CopyBlobOptions options)
-            throws ServiceException {
+    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob, CopyBlobOptions options) throws ServiceException {
         next.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, options);
     }
 
@@ -302,7 +319,8 @@ public class BlobService implements BlobContract {
         return next.acquireLease(container, blob);
     }
 
-    public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options) throws ServiceException {
+    public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options)
+            throws ServiceException {
         return next.acquireLease(container, blob, options);
     }
 
@@ -310,7 +328,8 @@ public class BlobService implements BlobContract {
         return next.renewLease(container, blob, leaseId);
     }
 
-    public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         return next.renewLease(container, blob, leaseId, options);
     }
 
@@ -318,7 +337,8 @@ public class BlobService implements BlobContract {
         next.releaseLease(container, blob, leaseId);
     }
 
-    public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         next.releaseLease(container, blob, leaseId, options);
     }
 
@@ -326,7 +346,8 @@ public class BlobService implements BlobContract {
         next.breakLease(container, blob, leaseId);
     }
 
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         next.breakLease(container, blob, leaseId, options);
     }
 }

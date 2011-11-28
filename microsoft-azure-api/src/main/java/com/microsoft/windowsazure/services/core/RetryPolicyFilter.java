@@ -36,7 +36,8 @@ public class RetryPolicyFilter implements ServiceFilter {
             }
 
             int backoffTime = retryPolicy.calculateBackoff(retryCount, response, error);
-            log.info(String.format("Request failed. Backing off for %1s milliseconds before retrying (retryCount=%2d)", backoffTime, retryCount));
+            log.info(String.format("Request failed. Backing off for %1s milliseconds before retrying (retryCount=%2d)",
+                    backoffTime, retryCount));
             backoff(backoffTime);
         }
     }

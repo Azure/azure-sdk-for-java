@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-
 public class ListBlobRegionsOptions extends BlobServiceOptions {
     private String leaseId;
     private String snapshot;

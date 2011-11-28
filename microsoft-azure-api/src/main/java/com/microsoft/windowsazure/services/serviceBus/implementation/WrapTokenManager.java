@@ -21,8 +21,8 @@ public class WrapTokenManager {
     private ActiveToken activeToken;
 
     @Inject
-    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri, @Named("wrap.scope") String scope,
-            @Named("wrap.name") String name, @Named("wrap.password") String password) {
+    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri,
+            @Named("wrap.scope") String scope, @Named("wrap.name") String name, @Named("wrap.password") String password) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.uri = uri;
