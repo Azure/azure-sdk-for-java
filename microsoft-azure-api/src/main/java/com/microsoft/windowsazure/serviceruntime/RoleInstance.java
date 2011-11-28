@@ -44,7 +44,7 @@ public final class RoleInstance {
     /**
      * Returns the ID of this instance.
      * <p>
-     * The returned ID is unique to the application domain of the role’s instance. If an instance is terminated and has
+     * The returned ID is unique to the application domain of the role's instance. If an instance is terminated and has
      * been configured to restart automatically, the restarted instance will have the same ID as the terminated
      * instance.
      * 
