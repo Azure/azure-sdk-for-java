@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyUtils.QueryParam;
-import com.microsoft.windowsazure.utils.jersey.EntityStreamingListener;
+import com.microsoft.windowsazure.services.core.utils.pipeline.EntityStreamingListener;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

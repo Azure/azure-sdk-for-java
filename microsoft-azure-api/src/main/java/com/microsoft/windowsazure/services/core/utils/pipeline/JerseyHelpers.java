@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.utils.jersey;
+package com.microsoft.windowsazure.services.core.utils.pipeline;
 
 import java.util.HashMap;
 import java.util.List;

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.utils.jersey.Base64StringAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.Base64StringAdapter;
 
 @XmlRootElement(name = "BlockList")
 public class ListBlobBlocksResult {
