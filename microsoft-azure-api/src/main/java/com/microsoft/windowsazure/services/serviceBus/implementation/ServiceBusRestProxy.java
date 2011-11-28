@@ -1,5 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,6 +52,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     private Client channel;
     private final String uri;
     private final BrokerPropertiesMapper mapper;
+    private final CustomPropertiesMapper customPropertiesMapper;
     static Log log = LogFactory.getLog(ServiceBusContract.class);
 
     ServiceFilter[] filters;
@@ -63,6 +65,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.filters = new ServiceFilter[0];
         this.uri = uri;
         this.mapper = mapper;
+        this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);
     }
 
@@ -71,6 +74,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.filters = filters;
         this.uri = uri;
         this.mapper = mapper;
+        this.customPropertiesMapper = new CustomPropertiesMapper();
     }
 
     @Override
@@ -103,8 +107,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         if (message.getContentType() != null)
             request = request.type(message.getContentType());
 
-        if (message.getProperties() != null)
-            request = request.header("BrokerProperties", mapper.toString(message.getProperties()));
+        if (message.getBrokerProperties() != null)
+            request = request.header("BrokerProperties", mapper.toString(message.getBrokerProperties()));
+
+        for (java.util.Map.Entry<String, Object> entry : message.getProperties().entrySet()) {
+            request.header(entry.getKey(), customPropertiesMapper.toString(entry.getValue()));
+        }
 
         request.post(message.getBody());
     }
@@ -159,23 +167,41 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throw new RuntimeException("Unknown ReceiveMode");
         }
 
-        String brokerProperties = clientResult.getHeaders().getFirst("BrokerProperties");
-        String location = clientResult.getHeaders().getFirst("Location");
-        MediaType contentType = clientResult.getType();
-        Date date = clientResult.getResponseDate();
-
-        BrokeredMessage message = new BrokeredMessage();
-        if (brokerProperties != null) {
-            message.setProperties(mapper.fromString(brokerProperties));
+        BrokerProperties brokerProperties;
+        if (clientResult.getHeaders().containsKey("BrokerProperties")) {
+            brokerProperties = mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties"));
         }
+        else {
+            brokerProperties = new BrokerProperties();
+        }
+
+        String location = clientResult.getHeaders().getFirst("Location");
+        if (location != null) {
+            brokerProperties.setLockLocation(location);
+        }
+
+        BrokeredMessage message = new BrokeredMessage(brokerProperties);
+
+        MediaType contentType = clientResult.getType();
         if (contentType != null) {
             message.setContentType(contentType.toString());
         }
-        if (location != null) {
-            message.getProperties().setLockLocation(location);
+
+        Date date = clientResult.getResponseDate();
+        if (date != null) {
+            message.setDate(date);
         }
-        message.setDate(date);
-        message.setBody(clientResult.getEntityInputStream());
+
+        InputStream body = clientResult.getEntityInputStream();
+        if (body != null) {
+            message.setBody(body);
+        }
+
+        for (String key : clientResult.getHeaders().keySet()) {
+            Object value = clientResult.getHeaders().getFirst(key);
+            message.setProperty(key, value);
+        }
+
         return message;
     }
 
