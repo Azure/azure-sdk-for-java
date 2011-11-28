@@ -120,6 +120,11 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         QueueContract service = QueueService.create(config);
 
+        // Don't run this test with emulator, as v1.6 doesn't support this method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
+
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();
 
@@ -137,6 +142,11 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         QueueContract service = QueueService.create(config);
+
+        // Don't run this test with emulator, as v1.6 doesn't support this method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
 
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();

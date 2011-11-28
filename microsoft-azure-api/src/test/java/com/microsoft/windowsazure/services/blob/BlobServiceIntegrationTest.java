@@ -144,6 +144,11 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
 
+        // Don't run this test with emulator, as v1.6 doesn't support this method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
+
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();
 
@@ -161,6 +166,11 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
+
+        // Don't run this test with emulator, as v1.6 doesn't support this method
+        if (isRunningWithEmulator(config)) {
+            return;
+        }
 
         // Act
         ServiceProperties props = service.getServiceProperties().getValue();
