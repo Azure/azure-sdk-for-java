@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.utils;
+package com.microsoft.windowsazure.services.core.utils;
 
 import java.util.Date;
 

@@ -7,8 +7,9 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
@@ -23,7 +24,6 @@ import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.QueueServiceOptions;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
-import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -85,7 +85,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties, options);
         }
@@ -205,7 +206,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException {
+    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.setQueueMetadata(queue, metadata, options);
         }
@@ -241,8 +243,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
-            throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds) throws ServiceException {
         try {
             return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds);
         }
@@ -254,10 +256,11 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
-            QueueServiceOptions options) throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
         try {
-            return service.updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
+            return service
+                    .updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -327,7 +330,8 @@ public class QueueExceptionProcessor implements QueueContract {
         }
     }
 
-    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
+            throws ServiceException {
         try {
             service.deleteMessage(queue, messageId, popReceipt, options);
         }

@@ -6,8 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.management.timer.Timer;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.utils.DateFactory;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.utils.DateFactory;
 
 public class WrapTokenManager {
 
@@ -21,8 +21,8 @@ public class WrapTokenManager {
     private ActiveToken activeToken;
 
     @Inject
-    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri, @Named("wrap.scope") String scope,
-            @Named("wrap.name") String name, @Named("wrap.password") String password) {
+    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri,
+            @Named("wrap.scope") String scope, @Named("wrap.name") String name, @Named("wrap.password") String password) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.uri = uri;

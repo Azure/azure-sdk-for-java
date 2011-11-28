@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.utils.jersey.Base64StringAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.Base64StringAdapter;
 
 @XmlRootElement(name = "BlockList")
 public class BlockList {
@@ -37,7 +37,8 @@ public class BlockList {
         return this;
     }
 
-    @XmlElementRefs({ @XmlElementRef(name = "Committed", type = CommittedEntry.class), @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
+    @XmlElementRefs({ @XmlElementRef(name = "Committed", type = CommittedEntry.class),
+            @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
             @XmlElementRef(name = "Latest", type = LatestEntry.class) })
     @XmlMixed
     public List<Entry> getEntries() {

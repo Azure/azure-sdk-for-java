@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -14,8 +14,7 @@ public class WrapFilter extends ClientFilter {
     }
 
     @Override
-    public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
 
         String accessToken;
         try {
@@ -26,8 +25,7 @@ public class WrapFilter extends ClientFilter {
             throw new ClientHandlerException(e);
         }
 
-        cr.getHeaders().add("Authorization",
-                "WRAP access_token=\"" + accessToken + "\"");
+        cr.getHeaders().add("Authorization", "WRAP access_token=\"" + accessToken + "\"");
 
         return this.getNext().handle(cr);
     }

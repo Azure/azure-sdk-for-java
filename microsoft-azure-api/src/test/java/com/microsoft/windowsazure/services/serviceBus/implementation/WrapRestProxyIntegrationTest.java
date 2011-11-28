@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 import com.sun.jersey.api.client.Client;
 

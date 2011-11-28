@@ -209,7 +209,6 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         return getModel().getMessageCount();
     }
 
-
     /**
      * Returns the maximum delivery count for the subscription.
      * 

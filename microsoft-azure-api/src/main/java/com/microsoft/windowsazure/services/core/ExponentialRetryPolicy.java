@@ -1,9 +1,9 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
 import java.util.Arrays;
 import java.util.Random;
 
-import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 
 public class ExponentialRetryPolicy extends RetryPolicy {
     private final int deltaBackoffIntervalInMs;
@@ -46,7 +46,8 @@ public class ExponentialRetryPolicy extends RetryPolicy {
         // exponential
         int incrementDelta = (int) (Math.pow(2, currentRetryCount) - 1);
         int boundedRandDelta = (int) (this.deltaBackoffIntervalInMs * 0.8)
-                + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2) - (int) (this.deltaBackoffIntervalInMs * 0.8));
+                + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
+                        - (int) (this.deltaBackoffIntervalInMs * 0.8));
         incrementDelta *= boundedRandDelta;
 
         // Enforce max / min backoffs

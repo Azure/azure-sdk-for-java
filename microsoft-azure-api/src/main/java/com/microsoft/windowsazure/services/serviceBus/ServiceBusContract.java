@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
-import com.microsoft.windowsazure.common.FilterableService;
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;

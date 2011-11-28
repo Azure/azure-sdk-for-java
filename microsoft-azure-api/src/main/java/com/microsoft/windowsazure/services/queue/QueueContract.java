@@ -2,8 +2,8 @@ package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.common.FilterableService;
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
@@ -45,21 +45,23 @@ public interface QueueContract extends FilterableService<QueueContract> {
 
     void setQueueMetadata(String queue, HashMap<String, String> metadata) throws ServiceException;
 
-    void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options) throws ServiceException;
+    void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
+            throws ServiceException;
 
     void createMessage(String queue, String messageText) throws ServiceException;
 
     void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException;
 
-    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds)
-            throws ServiceException;
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds) throws ServiceException;
 
-    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText, int visibilityTimeoutInSeconds,
-            QueueServiceOptions options) throws ServiceException;
+    UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException;
 
     void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException;
 
-    void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options) throws ServiceException;
+    void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
+            throws ServiceException;
 
     ListMessagesResult listMessages(String queue) throws ServiceException;
 

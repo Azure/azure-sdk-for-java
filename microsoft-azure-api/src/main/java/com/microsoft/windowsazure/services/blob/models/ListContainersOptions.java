@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.blob.models;
 
-
 public class ListContainersOptions extends BlobServiceOptions {
     private String prefix;
     private String marker;
