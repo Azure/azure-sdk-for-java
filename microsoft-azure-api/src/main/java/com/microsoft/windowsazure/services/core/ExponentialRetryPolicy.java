@@ -1,9 +1,9 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
 import java.util.Arrays;
 import java.util.Random;
 
-import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 
 public class ExponentialRetryPolicy extends RetryPolicy {
     private final int deltaBackoffIntervalInMs;

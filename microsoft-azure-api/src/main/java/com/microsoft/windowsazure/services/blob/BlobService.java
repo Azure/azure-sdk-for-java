@@ -5,9 +5,6 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
@@ -48,6 +45,9 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
+import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 
 public class BlobService implements BlobContract {
     final BlobContract next;

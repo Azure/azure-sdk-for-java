@@ -1,10 +1,10 @@
 package com.microsoft.windowsazure.services.blob;
 
-import com.microsoft.windowsazure.common.Builder;
 import com.microsoft.windowsazure.services.blob.implementation.BlobExceptionProcessor;
 import com.microsoft.windowsazure.services.blob.implementation.BlobRestProxy;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter;
+import com.microsoft.windowsazure.services.core.Builder;
 
 public class Exports implements Builder.Exports {
     public void register(Builder.Registry registry) {

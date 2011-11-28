@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

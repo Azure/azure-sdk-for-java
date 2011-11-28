@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
-import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.services.core.Configuration;
 
 /**
  * Provides functionality to create a service bus configuration.

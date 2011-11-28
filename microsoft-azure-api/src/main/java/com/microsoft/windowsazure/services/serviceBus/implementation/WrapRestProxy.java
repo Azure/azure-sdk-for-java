@@ -6,7 +6,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;

@@ -8,8 +8,6 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
@@ -51,6 +49,8 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;

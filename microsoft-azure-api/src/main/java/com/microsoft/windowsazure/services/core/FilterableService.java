@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
 
 public interface FilterableService<T> {

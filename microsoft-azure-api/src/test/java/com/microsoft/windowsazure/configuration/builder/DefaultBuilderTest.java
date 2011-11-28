@@ -10,7 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.common.DefaultBuilder;
+import com.microsoft.windowsazure.services.core.DefaultBuilder;
 
 public class DefaultBuilderTest {
 

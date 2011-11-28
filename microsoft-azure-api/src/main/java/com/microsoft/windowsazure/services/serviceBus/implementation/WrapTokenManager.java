@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.management.timer.Timer;
 
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.utils.DateFactory;
 
 public class WrapTokenManager {

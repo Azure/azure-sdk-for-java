@@ -6,9 +6,9 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.common.ServiceFilter;
-import com.microsoft.windowsazure.common.ServiceFilter.Request;
-import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

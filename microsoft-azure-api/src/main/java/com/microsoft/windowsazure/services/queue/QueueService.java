@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.common.Configuration;
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;

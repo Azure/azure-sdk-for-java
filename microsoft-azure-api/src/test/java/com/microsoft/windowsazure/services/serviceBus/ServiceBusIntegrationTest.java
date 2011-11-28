@@ -10,10 +10,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
-import com.microsoft.windowsazure.common.ServiceFilter.Request;
-import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;

@@ -3,8 +3,8 @@ package com.microsoft.windowsazure.utils.jersey;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.microsoft.windowsazure.common.Builder;
-import com.microsoft.windowsazure.common.Builder.Registry;
+import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;

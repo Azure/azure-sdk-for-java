@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
@@ -55,6 +53,8 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.utils.jersey.ClientFilterAdapter;
 import com.microsoft.windowsazure.utils.jersey.HttpURLConnectionClient;
 import com.microsoft.windowsazure.utils.jersey.JerseyHelpers;

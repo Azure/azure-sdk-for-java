@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.utils;
 
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;

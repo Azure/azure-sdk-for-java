@@ -1,6 +1,6 @@
 package com.microsoft.windowsazure.services.queue;
 
-import com.microsoft.windowsazure.common.Builder;
+import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.queue.implementation.QueueExceptionProcessor;
 import com.microsoft.windowsazure.services.queue.implementation.QueueRestProxy;
 import com.microsoft.windowsazure.services.queue.implementation.SharedKeyFilter;

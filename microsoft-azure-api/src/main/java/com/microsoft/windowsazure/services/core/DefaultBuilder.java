@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;

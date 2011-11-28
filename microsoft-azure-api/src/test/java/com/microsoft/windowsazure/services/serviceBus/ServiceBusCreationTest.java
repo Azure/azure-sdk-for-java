@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.common.Configuration;
+import com.microsoft.windowsazure.services.core.Configuration;
 
 public class ServiceBusCreationTest {
     @Test

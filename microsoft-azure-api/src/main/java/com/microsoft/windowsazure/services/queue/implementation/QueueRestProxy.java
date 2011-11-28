@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;

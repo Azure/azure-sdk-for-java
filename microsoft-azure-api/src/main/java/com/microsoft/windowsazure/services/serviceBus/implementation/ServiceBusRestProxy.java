@@ -12,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.common.ServiceException;
-import com.microsoft.windowsazure.common.ServiceFilter;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;

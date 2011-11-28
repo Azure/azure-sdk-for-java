@@ -2,8 +2,8 @@ package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.common.FilterableService;
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;

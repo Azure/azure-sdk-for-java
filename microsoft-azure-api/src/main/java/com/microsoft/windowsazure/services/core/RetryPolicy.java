@@ -1,6 +1,6 @@
-package com.microsoft.windowsazure.common;
+package com.microsoft.windowsazure.services.core;
 
-import com.microsoft.windowsazure.common.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 
 public abstract class RetryPolicy {
     public static final int DEFAULT_CLIENT_BACKOFF = 1000 * 30;

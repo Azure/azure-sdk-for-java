@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.common.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
