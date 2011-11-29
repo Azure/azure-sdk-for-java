@@ -394,7 +394,6 @@ public final class PathUtility {
             final int equalDex = valuePairs[m].indexOf("=");
 
             if (equalDex < 0 || equalDex == valuePairs[m].length() - 1) {
-                // TODO should throw here?
                 continue;
             }
 

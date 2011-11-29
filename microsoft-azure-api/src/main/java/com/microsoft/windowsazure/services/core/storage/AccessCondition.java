@@ -275,7 +275,7 @@ public final class AccessCondition {
      *            the etag to set
      */
     public void setIfMatch(String etag) {
-        this.etag = etag;
+        this.etag = normalizeEtag(etag);
         this.ifMatchHeaderType = Constants.HeaderConstants.IF_MATCH;
     }
 
@@ -292,7 +292,7 @@ public final class AccessCondition {
      *            the etag to set
      */
     public void setIfNoneMatch(String etag) {
-        this.etag = etag;
+        this.etag = normalizeEtag(etag);
         this.ifMatchHeaderType = Constants.HeaderConstants.IF_NONE_MATCH;
     }
 
@@ -352,5 +352,24 @@ public final class AccessCondition {
         }
 
         return true;
+    }
+
+    /**
+     * Normalizes an Etag to be quoted, unless it is *
+     * 
+     * @param inTag
+     *            the etag to normalize
+     * @return the quoted etag
+     */
+    private static String normalizeEtag(String inTag) {
+        if (Utility.isNullOrEmpty(inTag) || inTag.equals("*")) {
+            return inTag;
+        }
+        else if (inTag.startsWith("\"") && inTag.endsWith("\"")) {
+            return inTag;
+        }
+        else {
+            return String.format("\"%s\"", inTag);
+        }
     }
 }

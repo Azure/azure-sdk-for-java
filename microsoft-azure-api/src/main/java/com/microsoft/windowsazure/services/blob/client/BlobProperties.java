@@ -94,7 +94,8 @@ public final class BlobProperties {
         this.leaseStatus = other.leaseStatus;
         this.length = other.length;
         this.lastModified = other.lastModified;
-        // TODO why not copy cachecontrol, contentmd5?
+        this.contentMD5 = other.contentMD5;
+        this.cacheControl = other.cacheControl;
     }
 
     /**
