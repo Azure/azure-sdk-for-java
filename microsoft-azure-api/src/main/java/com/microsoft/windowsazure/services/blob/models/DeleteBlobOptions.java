@@ -6,6 +6,12 @@ public class DeleteBlobOptions extends BlobServiceOptions {
     private boolean deleteSnaphotsOnly;
     private AccessCondition accessCondition;
 
+    @Override
+    public DeleteBlobOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getSnapshot() {
         return snapshot;
     }

@@ -5,6 +5,12 @@ import java.util.HashMap;
 public class CreateQueueOptions extends QueueServiceOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
+    @Override
+    public CreateQueueOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public HashMap<String, String> getMetadata() {
         return metadata;
     }

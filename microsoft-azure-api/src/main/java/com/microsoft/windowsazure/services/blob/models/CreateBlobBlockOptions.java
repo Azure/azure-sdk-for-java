@@ -4,6 +4,12 @@ public class CreateBlobBlockOptions extends BlobServiceOptions {
     private String leaseId;
     private String contentMD5;
 
+    @Override
+    public CreateBlobBlockOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getLeaseId() {
         return leaseId;
     }

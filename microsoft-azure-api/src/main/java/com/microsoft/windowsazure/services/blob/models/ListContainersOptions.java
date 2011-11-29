@@ -6,6 +6,12 @@ public class ListContainersOptions extends BlobServiceOptions {
     private int maxResults;
     private boolean includeMetadata;
 
+    @Override
+    public ListContainersOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getPrefix() {
         return prefix;
     }

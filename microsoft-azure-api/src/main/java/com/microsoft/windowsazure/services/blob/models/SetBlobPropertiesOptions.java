@@ -12,6 +12,12 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
     private Long sequenceNumber;
     private AccessCondition accessCondition;
 
+    @Override
+    public SetBlobPropertiesOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getContentType() {
         return contentType;
     }

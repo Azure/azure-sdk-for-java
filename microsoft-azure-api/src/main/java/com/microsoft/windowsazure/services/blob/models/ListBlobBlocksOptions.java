@@ -6,6 +6,12 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
     private boolean committedList;
     private boolean uncommittedList;
 
+    @Override
+    public ListBlobBlocksOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getLeaseId() {
         return leaseId;
     }

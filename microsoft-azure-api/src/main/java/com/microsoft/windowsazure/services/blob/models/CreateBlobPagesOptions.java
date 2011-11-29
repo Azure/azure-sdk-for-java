@@ -5,6 +5,12 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
     private String contentMD5;
     private AccessCondition accessCondition;
 
+    @Override
+    public CreateBlobPagesOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getLeaseId() {
         return leaseId;
     }

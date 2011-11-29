@@ -4,6 +4,12 @@ public class CreateMessageOptions extends QueueServiceOptions {
     private Integer visibilityTimeoutInSeconds;
     private Integer timeToLiveInSeconds;
 
+    @Override
+    public CreateMessageOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public Integer getVisibilityTimeoutInSeconds() {
         return visibilityTimeoutInSeconds;
     }

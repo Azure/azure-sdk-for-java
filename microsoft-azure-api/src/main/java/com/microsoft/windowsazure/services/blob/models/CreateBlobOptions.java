@@ -18,6 +18,12 @@ public class CreateBlobOptions extends BlobServiceOptions {
     private Long sequenceNumber;
     private AccessCondition accessCondition;
 
+    @Override
+    public CreateBlobOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getContentType() {
         return contentType;
     }

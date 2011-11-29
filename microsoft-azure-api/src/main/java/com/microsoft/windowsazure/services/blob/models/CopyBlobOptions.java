@@ -10,6 +10,12 @@ public class CopyBlobOptions extends BlobServiceOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private AccessCondition sourceAccessCondition;
 
+    @Override
+    public CopyBlobOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getSourceSnapshot() {
         return sourceSnapshot;
     }
