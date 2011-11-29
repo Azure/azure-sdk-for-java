@@ -4,7 +4,19 @@ import com.microsoft.windowsazure.services.core.Configuration;
 
 public abstract class IntegrationTestBase {
     protected static Configuration createConfiguration() {
-        return Configuration.getInstance();
+        Configuration config = Configuration.getInstance();
+        OverrideWithEnv(config, BlobConfiguration.ACCOUNT_NAME);
+        OverrideWithEnv(config, BlobConfiguration.ACCOUNT_KEY);
+        OverrideWithEnv(config, BlobConfiguration.URI);
+        return config;
+    }
+
+    private static void OverrideWithEnv(Configuration config, String key) {
+        String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
     }
 
     protected static boolean isRunningWithEmulator(Configuration config) {
