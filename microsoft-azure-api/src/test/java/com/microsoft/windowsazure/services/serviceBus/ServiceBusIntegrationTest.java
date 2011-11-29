@@ -6,15 +6,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.Builder.Alteration;
+import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
+import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
@@ -25,6 +34,8 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
@@ -36,13 +47,27 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     @Before
     public void createService() throws Exception {
-        Configuration config = Configuration.getInstance();
+        // reinitialize configuration from known state
+        Configuration config = Configuration.load();
         overrideWithEnv(config, ServiceBusConfiguration.URI);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_SCOPE);
-        service = ServiceBusService.create(config);
+
+        // add LoggingFilter to any pipeline that is created
+        Registry builder = (Registry) config.getBuilder();
+        builder.alter(Client.class, new Alteration<Client>() {
+            @Override
+            public Client alter(Client instance, Builder builder, Map<String, Object> properties) {
+                instance.addFilter(new LoggingFilter());
+                return instance;
+            }
+        });
+
+        // applied as default configuration 
+        Configuration.setInstance(config);
+        service = ServiceBusService.create();
     }
 
     private static void overrideWithEnv(Configuration config, String key) {
@@ -427,5 +452,32 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(result);
         assertEquals(1, result.getItems().size());
         assertEquals("MyRule4", result.getItems().get(0).getName());
+    }
+
+    @Test
+    public void rulesMayHaveActionAndFilter() throws ServiceException {
+        // Arrange
+        String topicName = "TestRulesMayHaveAnActionAndFilter";
+        service.createTopic(new TopicInfo(topicName));
+        service.createSubscription(topicName, new SubscriptionInfo("sub"));
+
+        // Act
+        RuleInfo ruleOne = service.createRule(topicName, "sub", new RuleInfo("One").withCorrelationIdFilter("my-id"))
+                .getValue();
+        RuleInfo ruleTwo = service.createRule(topicName, "sub",
+                new RuleInfo("Two").withTrueSqlExpressionFilter("my-true-expression")).getValue();
+        RuleInfo ruleThree = service.createRule(topicName, "sub",
+                new RuleInfo("Three").withFalseSqlExpressionFilter("my-false-expression")).getValue();
+        RuleInfo ruleFour = service.createRule(topicName, "sub", new RuleInfo("Four").withEmptyRuleAction()).getValue();
+        RuleInfo ruleFive = service.createRule(topicName, "sub", new RuleInfo("Five").withSqlRuleAction("SET x = 5"))
+                .getValue();
+
+        // Assert
+        assertEquals(CorrelationFilter.class, ruleOne.getFilter().getClass());
+        assertEquals(TrueFilter.class, ruleTwo.getFilter().getClass());
+        assertEquals(FalseFilter.class, ruleThree.getFilter().getClass());
+        assertEquals(EmptyRuleAction.class, ruleFour.getAction().getClass());
+        assertEquals(SqlRuleAction.class, ruleFive.getAction().getClass());
+
     }
 }
