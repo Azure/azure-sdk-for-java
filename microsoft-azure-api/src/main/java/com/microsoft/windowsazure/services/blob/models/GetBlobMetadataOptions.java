@@ -5,6 +5,12 @@ public class GetBlobMetadataOptions extends BlobServiceOptions {
     private String leaseId;
     private AccessCondition accessCondition;
 
+    @Override
+    public GetBlobMetadataOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getSnapshot() {
         return snapshot;
     }

@@ -8,6 +8,12 @@ public class GetBlobOptions extends BlobServiceOptions {
     private Long rangeEnd;
     private AccessCondition accessCondition;
 
+    @Override
+    public GetBlobOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getSnapshot() {
         return snapshot;
     }

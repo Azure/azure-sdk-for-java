@@ -6,6 +6,12 @@ public class CreateContainerOptions extends BlobServiceOptions {
     private String publicAccess;
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
+    @Override
+    public CreateContainerOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public HashMap<String, String> getMetadata() {
         return metadata;
     }

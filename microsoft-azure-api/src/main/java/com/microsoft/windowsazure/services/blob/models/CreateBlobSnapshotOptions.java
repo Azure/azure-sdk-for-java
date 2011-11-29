@@ -7,6 +7,12 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions {
     private String leaseId;
     private AccessCondition accessCondition;
 
+    @Override
+    public CreateBlobSnapshotOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public HashMap<String, String> getMetadata() {
         return metadata;
     }

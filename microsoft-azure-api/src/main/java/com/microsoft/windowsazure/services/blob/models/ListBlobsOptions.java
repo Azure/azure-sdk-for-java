@@ -9,6 +9,12 @@ public class ListBlobsOptions extends BlobServiceOptions {
     private boolean includeSnapshots;
     private boolean includeUncommittedBlobs;
 
+    @Override
+    public ListBlobsOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getPrefix() {
         return prefix;
     }

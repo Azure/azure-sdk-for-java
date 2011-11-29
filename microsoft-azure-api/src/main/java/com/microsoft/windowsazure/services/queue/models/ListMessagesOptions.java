@@ -4,6 +4,12 @@ public class ListMessagesOptions extends QueueServiceOptions {
     private Integer numberOfMessages;
     private Integer visibilityTimeoutInSeconds;
 
+    @Override
+    public ListMessagesOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public Integer getNumberOfMessages() {
         return numberOfMessages;
     }

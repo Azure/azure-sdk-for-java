@@ -12,6 +12,12 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
     private String leaseId;
     private AccessCondition accessCondition;
 
+    @Override
+    public CommitBlobBlocksOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getBlobContentType() {
         return blobContentType;
     }

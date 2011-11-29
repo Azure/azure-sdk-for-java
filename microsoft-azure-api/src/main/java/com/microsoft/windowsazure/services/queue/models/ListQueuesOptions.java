@@ -6,6 +6,12 @@ public class ListQueuesOptions extends QueueServiceOptions {
     private int maxResults;
     private boolean includeMetadata;
 
+    @Override
+    public ListQueuesOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getPrefix() {
         return prefix;
     }

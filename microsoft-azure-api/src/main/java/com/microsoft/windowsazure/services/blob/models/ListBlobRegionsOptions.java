@@ -7,6 +7,12 @@ public class ListBlobRegionsOptions extends BlobServiceOptions {
     private Long rangeEnd;
     private AccessCondition accessCondition;
 
+    @Override
+    public ListBlobRegionsOptions setTimeout(Integer timeout) {
+        super.setTimeout(timeout);
+        return this;
+    }
+
     public String getLeaseId() {
         return leaseId;
     }
