@@ -8,15 +8,17 @@ public class CreateBlobBlockOptions extends BlobServiceOptions {
         return leaseId;
     }
 
-    public void setLeaseId(String leaseId) {
+    public CreateBlobBlockOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
+        return this;
     }
 
     public String getContentMD5() {
         return contentMD5;
     }
 
-    public void setContentMD5(String contentMD5) {
+    public CreateBlobBlockOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
+        return this;
     }
 }
