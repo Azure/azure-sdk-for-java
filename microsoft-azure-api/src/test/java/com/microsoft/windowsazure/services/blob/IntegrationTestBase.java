@@ -5,13 +5,13 @@ import com.microsoft.windowsazure.services.core.Configuration;
 public abstract class IntegrationTestBase {
     protected static Configuration createConfiguration() {
         Configuration config = Configuration.getInstance();
-        OverrideWithEnv(config, BlobConfiguration.ACCOUNT_NAME);
-        OverrideWithEnv(config, BlobConfiguration.ACCOUNT_KEY);
-        OverrideWithEnv(config, BlobConfiguration.URI);
+        overrideWithEnv(config, BlobConfiguration.ACCOUNT_NAME);
+        overrideWithEnv(config, BlobConfiguration.ACCOUNT_KEY);
+        overrideWithEnv(config, BlobConfiguration.URI);
         return config;
     }
 
-    private static void OverrideWithEnv(Configuration config, String key) {
+    private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
         if (value == null)
             return;

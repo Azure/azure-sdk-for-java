@@ -37,15 +37,15 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Before
     public void createService() throws Exception {
         Configuration config = Configuration.getInstance();
-        OverrideWithEnv(config, ServiceBusConfiguration.URI);
-        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
-        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
-        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
-        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_SCOPE);
+        overrideWithEnv(config, ServiceBusConfiguration.URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_SCOPE);
         service = ServiceBusService.create(config);
     }
 
-    private static void OverrideWithEnv(Configuration config, String key) {
+    private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
         if (value == null)
             return;
