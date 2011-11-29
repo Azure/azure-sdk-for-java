@@ -12,6 +12,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 public abstract class IntegrationTestBase {
     @BeforeClass
     public static void initializeSystem() {
+        System.setProperty("http.keepAlive", "false");
     }
 
     @Before
