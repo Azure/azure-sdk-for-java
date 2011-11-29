@@ -33,12 +33,6 @@ public class ServiceBusConfiguration {
     public final static String WRAP_PASSWORD = "serviceBus.wrap.password";
 
     /**
-     * Defines the configuration wrap scope constant.
-     * 
-     */
-    public final static String WRAP_SCOPE = "serviceBus.wrap.scope";
-
-    /**
      * Creates a service bus configuration using the specified namespace, name, and password.
      * 
      * @param namespace
@@ -124,7 +118,6 @@ public class ServiceBusConfiguration {
 
         configuration.setProperty(profile + WRAP_NAME, authenticationName);
         configuration.setProperty(profile + WRAP_PASSWORD, authenticationPassword);
-        configuration.setProperty(profile + WRAP_SCOPE, "http://" + namespace + ".servicebus.windows.net/");
 
         return configuration;
     }

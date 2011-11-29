@@ -53,7 +53,6 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_SCOPE);
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();

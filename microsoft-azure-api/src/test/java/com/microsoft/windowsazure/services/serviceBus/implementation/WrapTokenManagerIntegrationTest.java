@@ -17,8 +17,8 @@ public class WrapTokenManagerIntegrationTest {
         WrapTokenManager client = config.create("serviceBus", WrapTokenManager.class);
 
         // Act
-        String wrapScope = (String) config.getProperty(ServiceBusConfiguration.WRAP_SCOPE);
-        String accessToken = client.getAccessToken(new URI(wrapScope));
+        URI serviceBusURI = new URI((String) config.getProperty(ServiceBusConfiguration.URI));
+        String accessToken = client.getAccessToken(serviceBusURI);
 
         // Assert
         Assert.assertNotNull(accessToken);
