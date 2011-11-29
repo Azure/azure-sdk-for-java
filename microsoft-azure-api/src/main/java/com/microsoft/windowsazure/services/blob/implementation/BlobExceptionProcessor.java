@@ -21,6 +21,7 @@ import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
 import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.DeleteContainerOptions;
@@ -30,7 +31,6 @@ import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerACLResult;
 import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetServicePropertiesResult;
@@ -68,6 +68,7 @@ public class BlobExceptionProcessor implements BlobContract {
         this.service = service;
     }
 
+    @Override
     public BlobContract withFilter(ServiceFilter filter) {
         return new BlobExceptionProcessor(service.withFilter(filter));
     }
@@ -77,6 +78,7 @@ public class BlobExceptionProcessor implements BlobContract {
         return ServiceExceptionFactory.process("blob", e);
     }
 
+    @Override
     public GetServicePropertiesResult getServiceProperties() throws ServiceException {
         try {
             return service.getServiceProperties();
@@ -89,6 +91,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException {
         try {
             return service.getServiceProperties(options);
@@ -101,6 +104,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options)
             throws ServiceException {
         try {
@@ -114,6 +118,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties);
@@ -126,6 +131,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListContainersResult listContainers() throws ServiceException {
         try {
             return service.listContainers();
@@ -138,6 +144,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
         try {
             return service.listContainers(options);
@@ -150,6 +157,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createContainer(String container) throws ServiceException {
         try {
             service.createContainer(container);
@@ -162,6 +170,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
         try {
             service.createContainer(container, options);
@@ -174,6 +183,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void deleteContainer(String container) throws ServiceException {
         try {
             service.deleteContainer(container);
@@ -186,6 +196,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
         try {
             service.deleteContainer(container, options);
@@ -198,6 +209,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerProperties(String container) throws ServiceException {
         try {
             return service.getContainerProperties(container);
@@ -210,6 +222,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options)
             throws ServiceException {
         try {
@@ -223,6 +236,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerMetadata(String container) throws ServiceException {
         try {
             return service.getContainerMetadata(container);
@@ -235,6 +249,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options)
             throws ServiceException {
         try {
@@ -248,6 +263,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerACLResult getContainerACL(String container) throws ServiceException {
         try {
             return service.getContainerACL(container);
@@ -260,6 +276,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException {
         try {
             return service.getContainerACL(container, options);
@@ -272,6 +289,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setContainerACL(String container, ContainerACL acl) throws ServiceException {
         try {
             service.setContainerACL(container, acl);
@@ -284,6 +302,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException {
         try {
             service.setContainerACL(container, acl, options);
@@ -296,6 +315,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException {
         try {
             service.setContainerMetadata(container, metadata);
@@ -308,6 +328,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void setContainerMetadata(String container, HashMap<String, String> metadata,
             SetContainerMetadataOptions options) throws ServiceException {
         try {
@@ -321,6 +342,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobsResult listBlobs(String container) throws ServiceException {
         try {
             return service.listBlobs(container);
@@ -333,6 +355,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException {
         try {
             return service.listBlobs(container, options);
@@ -345,6 +368,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createPageBlob(String container, String blob, int length) throws ServiceException {
         try {
             service.createPageBlob(container, blob, length);
@@ -357,6 +381,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createPageBlob(String container, String blob, int length, CreateBlobOptions options)
             throws ServiceException {
         try {
@@ -370,6 +395,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
         try {
             service.createBlockBlob(container, blob, contentStream);
@@ -382,6 +408,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
             throws ServiceException {
         try {
@@ -395,6 +422,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range) throws ServiceException {
         try {
             return service.clearBlobPages(container, blob, range);
@@ -407,6 +435,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range,
             CreateBlobPagesOptions options) throws ServiceException {
         try {
@@ -420,6 +449,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
             InputStream contentStream) throws ServiceException {
         try {
@@ -433,6 +463,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
             InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         try {
@@ -446,6 +477,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream)
             throws ServiceException {
         try {
@@ -459,6 +491,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream,
             CreateBlobBlockOptions options) throws ServiceException {
         try {
@@ -472,6 +505,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException {
         try {
             service.commitBlobBlocks(container, blob, blockList);
@@ -484,6 +518,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options)
             throws ServiceException {
         try {
@@ -497,6 +532,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException {
         try {
             return service.listBlobBlocks(container, blob);
@@ -509,6 +545,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
             throws ServiceException {
         try {
@@ -522,6 +559,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException {
         try {
             return service.getBlobProperties(container, blob);
@@ -534,6 +572,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
             throws ServiceException {
         try {
@@ -547,6 +586,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobMetadataResult getBlobMetadata(String container, String blob) throws ServiceException {
         try {
             return service.getBlobMetadata(container, blob);
@@ -559,6 +599,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options)
             throws ServiceException {
         try {
@@ -572,6 +613,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobRegionsResult listBlobRegions(String container, String blob) throws ServiceException {
         try {
             return service.listBlobRegions(container, blob);
@@ -584,6 +626,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
             throws ServiceException {
         try {
@@ -597,6 +640,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
             throws ServiceException {
         try {
@@ -610,18 +654,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
-    public SetBlobPropertiesResult setBlobProperties(String container, String blob) throws ServiceException {
-        try {
-            return service.setBlobProperties(container, blob);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
+    @Override
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata)
             throws ServiceException {
         try {
@@ -635,6 +668,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata,
             SetBlobMetadataOptions options) throws ServiceException {
         try {
@@ -648,6 +682,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobResult getBlob(String container, String blob) throws ServiceException {
         try {
             return service.getBlob(container, blob);
@@ -660,6 +695,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         try {
             return service.getBlob(container, blob, options);
@@ -672,6 +708,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void deleteBlob(String container, String blob) throws ServiceException {
         try {
             service.deleteBlob(container, blob);
@@ -684,6 +721,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
         try {
             service.deleteBlob(container, blob, options);
@@ -696,6 +734,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
         try {
             return service.createBlobSnapshot(container, blob);
@@ -708,6 +747,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options)
             throws ServiceException {
         try {
@@ -721,6 +761,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
             throws ServiceException {
         try {
@@ -734,6 +775,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
             String sourceBlob, CopyBlobOptions options) throws ServiceException {
         try {
@@ -747,6 +789,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public AcquireLeaseResult acquireLease(String container, String blob) throws ServiceException {
         try {
             return service.acquireLease(container, blob);
@@ -759,6 +802,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options)
             throws ServiceException {
         try {
@@ -772,6 +816,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public AcquireLeaseResult renewLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             return service.renewLease(container, blob, leaseId);
@@ -784,6 +829,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         try {
@@ -797,6 +843,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void releaseLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             service.releaseLease(container, blob, leaseId);
@@ -809,6 +856,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         try {
@@ -822,6 +870,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void breakLease(String container, String blob, String leaseId) throws ServiceException {
         try {
             service.breakLease(container, blob, leaseId);
@@ -834,6 +883,7 @@ public class BlobExceptionProcessor implements BlobContract {
         }
     }
 
+    @Override
     public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         try {

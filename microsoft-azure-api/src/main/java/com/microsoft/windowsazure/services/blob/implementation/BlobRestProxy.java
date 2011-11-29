@@ -97,6 +97,7 @@ public class BlobRestProxy implements BlobContract {
         this.dateMapper = dateMapper;
     }
 
+    @Override
     public BlobContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
@@ -238,10 +239,12 @@ public class BlobRestProxy implements BlobContract {
         return sourceName;
     }
 
+    @Override
     public GetServicePropertiesResult getServiceProperties() throws ServiceException {
         return getServiceProperties(new BlobServiceOptions());
     }
 
+    @Override
     public GetServicePropertiesResult getServiceProperties(BlobServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
                 .queryParam("comp", "properties");
@@ -253,10 +256,12 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
         setServiceProperties(serviceProperties, new BlobServiceOptions());
     }
 
+    @Override
     public void setServiceProperties(ServiceProperties serviceProperties, BlobServiceOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
@@ -267,10 +272,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put(serviceProperties);
     }
 
+    @Override
     public void createContainer(String container) throws ServiceException {
         createContainer(container, new CreateContainerOptions());
     }
 
+    @Override
     public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
 
@@ -281,10 +288,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put();
     }
 
+    @Override
     public void deleteContainer(String container) throws ServiceException {
         deleteContainer(container, new DeleteContainerOptions());
     }
 
+    @Override
     public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
 
@@ -294,19 +303,23 @@ public class BlobRestProxy implements BlobContract {
         builder.delete();
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerProperties(String container) throws ServiceException {
         return getContainerProperties(container, new BlobServiceOptions());
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerProperties(String container, BlobServiceOptions options)
             throws ServiceException {
         return getContainerPropertiesImpl(container, options, null);
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerMetadata(String container) throws ServiceException {
         return getContainerMetadata(container, new BlobServiceOptions());
     }
 
+    @Override
     public GetContainerPropertiesResult getContainerMetadata(String container, BlobServiceOptions options)
             throws ServiceException {
         return getContainerPropertiesImpl(container, options, "metadata");
@@ -330,10 +343,12 @@ public class BlobRestProxy implements BlobContract {
         return properties;
     }
 
+    @Override
     public GetContainerACLResult getContainerACL(String container) throws ServiceException {
         return getContainerACL(container, new BlobServiceOptions());
     }
 
+    @Override
     public GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
                 .queryParam("comp", "acl");
@@ -363,10 +378,12 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public void setContainerACL(String container, ContainerACL acl) throws ServiceException {
         setContainerACL(container, acl, new BlobServiceOptions());
     }
 
+    @Override
     public void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
                 .queryParam("comp", "acl");
@@ -385,10 +402,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put(si);
     }
 
+    @Override
     public void setContainerMetadata(String container, HashMap<String, String> metadata) throws ServiceException {
         setContainerMetadata(container, metadata, new SetContainerMetadataOptions());
     }
 
+    @Override
     public void setContainerMetadata(String container, HashMap<String, String> metadata,
             SetContainerMetadataOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
@@ -401,10 +420,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put();
     }
 
+    @Override
     public ListContainersResult listContainers() throws ServiceException {
         return listContainers(new ListContainersOptions());
     }
 
+    @Override
     public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam("comp", "list");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
@@ -417,10 +438,12 @@ public class BlobRestProxy implements BlobContract {
         return builder.get(ListContainersResult.class);
     }
 
+    @Override
     public ListBlobsResult listBlobs(String container) throws ServiceException {
         return listBlobs(container, new ListBlobsOptions());
     }
 
+    @Override
     public ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).queryParam("comp", "list")
                 .queryParam("resType", "container");
@@ -435,10 +458,12 @@ public class BlobRestProxy implements BlobContract {
         return builder.get(ListBlobsResult.class);
     }
 
+    @Override
     public void createPageBlob(String container, String blob, int length) throws ServiceException {
         createPageBlob(container, blob, length, new CreateBlobOptions());
     }
 
+    @Override
     public void createPageBlob(String container, String blob, int length, CreateBlobOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
@@ -453,10 +478,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put();
     }
 
+    @Override
     public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
         createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
     }
 
+    @Override
     public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
@@ -470,10 +497,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put(contentObject);
     }
 
+    @Override
     public GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException {
         return getBlobProperties(container, blob, new GetBlobPropertiesOptions());
     }
 
+    @Override
     public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
@@ -489,10 +518,12 @@ public class BlobRestProxy implements BlobContract {
         return getBlobPropertiesResultFromResponse(response);
     }
 
+    @Override
     public GetBlobMetadataResult getBlobMetadata(String container, String blob) throws ServiceException {
         return getBlobMetadata(container, blob, new GetBlobMetadataOptions());
     }
 
+    @Override
     public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
@@ -513,10 +544,7 @@ public class BlobRestProxy implements BlobContract {
         return properties;
     }
 
-    public SetBlobPropertiesResult setBlobProperties(String container, String blob) throws ServiceException {
-        return setBlobProperties(container, blob, new SetBlobPropertiesOptions());
-    }
-
+    @Override
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "properties");
@@ -547,11 +575,13 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata)
             throws ServiceException {
         return setBlobMetadata(container, blob, metadata, new SetBlobMetadataOptions());
     }
 
+    @Override
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata,
             SetBlobMetadataOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
@@ -570,10 +600,12 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public GetBlobResult getBlob(String container, String blob) throws ServiceException {
         return getBlob(container, blob, new GetBlobOptions());
     }
 
+    @Override
     public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
@@ -594,10 +626,12 @@ public class BlobRestProxy implements BlobContract {
         return blobResult;
     }
 
+    @Override
     public void deleteBlob(String container, String blob) throws ServiceException {
         deleteBlob(container, blob, new DeleteBlobOptions());
     }
 
+    @Override
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
@@ -611,10 +645,12 @@ public class BlobRestProxy implements BlobContract {
         builder.delete();
     }
 
+    @Override
     public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob) throws ServiceException {
         return createBlobSnapshot(container, blob, new CreateBlobSnapshotOptions());
     }
 
+    @Override
     public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container + "/" + blob).queryParam("comp", "snapshot");
@@ -635,11 +671,13 @@ public class BlobRestProxy implements BlobContract {
         return blobSnapshot;
     }
 
+    @Override
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
             throws ServiceException {
         copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
     }
 
+    @Override
     public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
             String sourceBlob, CopyBlobOptions options) {
         WebResource webResource = getResource(options).path(destinationContainer).path(destinationBlob);
@@ -656,37 +694,45 @@ public class BlobRestProxy implements BlobContract {
         builder.put();
     }
 
+    @Override
     public AcquireLeaseResult acquireLease(String container, String blob) throws ServiceException {
         return acquireLease(container, blob, new AcquireLeaseOptions());
     }
 
+    @Override
     public AcquireLeaseResult acquireLease(String container, String blob, AcquireLeaseOptions options)
             throws ServiceException {
         return putLeaseImpl("acquire", container, blob, null/* leaseId */, options, options.getAccessCondition());
     }
 
+    @Override
     public AcquireLeaseResult renewLease(String container, String blob, String leaseId) throws ServiceException {
         return renewLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
+    @Override
     public AcquireLeaseResult renewLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         return putLeaseImpl("renew", container, blob, leaseId, options, null/* accessCondition */);
     }
 
+    @Override
     public void releaseLease(String container, String blob, String leaseId) throws ServiceException {
         releaseLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
+    @Override
     public void releaseLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         putLeaseImpl("release", container, blob, leaseId, options, null/* accessCondition */);
     }
 
+    @Override
     public void breakLease(String container, String blob, String leaseId) throws ServiceException {
         breakLease(container, blob, leaseId, new BlobServiceOptions());
     }
 
+    @Override
     public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
             throws ServiceException {
         putLeaseImpl("break", container, blob, leaseId, options, null/* accessCondition */);
@@ -710,20 +756,24 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range) throws ServiceException {
         return clearBlobPages(container, blob, range, new CreateBlobPagesOptions());
     }
 
+    @Override
     public CreateBlobPagesResult clearBlobPages(String container, String blob, PageRange range,
             CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("clear", container, blob, range, 0, null, options);
     }
 
+    @Override
     public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
             InputStream contentStream) throws ServiceException {
         return createBlobPages(container, blob, range, length, contentStream, new CreateBlobPagesOptions());
     }
 
+    @Override
     public CreateBlobPagesResult createBlobPages(String container, String blob, PageRange range, long length,
             InputStream contentStream, CreateBlobPagesOptions options) throws ServiceException {
         return updatePageBlobPagesImpl("update", container, blob, range, length, contentStream, options);
@@ -754,10 +804,12 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public ListBlobRegionsResult listBlobRegions(String container, String blob) throws ServiceException {
         return listBlobRegions(container, blob, new ListBlobRegionsOptions());
     }
 
+    @Override
     public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "pagelist");
@@ -778,11 +830,13 @@ public class BlobRestProxy implements BlobContract {
         return result;
     }
 
+    @Override
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream)
             throws ServiceException {
         createBlobBlock(container, blob, blockId, contentStream, new CreateBlobBlockOptions());
     }
 
+    @Override
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream,
             CreateBlobBlockOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "block");
@@ -795,10 +849,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put(contentStream);
     }
 
+    @Override
     public void commitBlobBlocks(String container, String blob, BlockList blockList) throws ServiceException {
         commitBlobBlocks(container, blob, blockList, new CommitBlobBlocksOptions());
     }
 
+    @Override
     public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
@@ -816,10 +872,12 @@ public class BlobRestProxy implements BlobContract {
         builder.put(blockList);
     }
 
+    @Override
     public ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException {
         return listBlobBlocks(container, blob, new ListBlobBlocksOptions());
     }
 
+    @Override
     public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
