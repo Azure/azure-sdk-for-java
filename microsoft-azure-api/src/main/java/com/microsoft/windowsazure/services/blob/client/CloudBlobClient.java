@@ -75,7 +75,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            client.
      */
     public CloudBlobClient(final URI baseUri) {
-        this(baseUri, null);
+        this(baseUri, StorageCredentialsAnonymous.ANONYMOUS);
     }
 
     /**
@@ -90,11 +90,6 @@ public final class CloudBlobClient extends ServiceClient {
      */
     public CloudBlobClient(final URI baseUri, StorageCredentials credentials) {
         super(baseUri, credentials);
-
-        if (credentials == null) {
-            credentials = StorageCredentialsAnonymous.ANONYMOUS;
-        }
-
         this.directoryDelimiter = BlobConstants.DEFAULT_DELIMITER;
         this.streamMinimumReadSizeInBytes = BlobConstants.DEFAULT_MINIMUM_READ_SIZE_IN_BYTES;
     }

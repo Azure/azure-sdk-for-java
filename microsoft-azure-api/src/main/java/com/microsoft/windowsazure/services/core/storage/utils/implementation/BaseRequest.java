@@ -178,10 +178,11 @@ public final class BaseRequest {
         final HttpURLConnection retConnection = (HttpURLConnection) resourceUrl.openConnection();
 
         retConnection.setReadTimeout(timeoutInMs);
+
         // Note : accept behavior, java by default sends Accept behavior
-        // as text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+        // as text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2 This will need to be set for table requests.
         //
-        // to override set retConnection.setRequestProperty("Accept",
+        // To override set retConnection.setRequestProperty("Accept",
         // "application/atom+xml");
 
         retConnection.setRequestProperty(Constants.HeaderConstants.STORAGE_VERSION_HEADER,
@@ -476,7 +477,7 @@ public final class BaseRequest {
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
-        // V2 add logging
+        // VNext add logging
         // System.out.println(String.format("Signing %s\r\n%s\r\n",
         // stringToSign, computedBase64Signature));
         request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
@@ -510,8 +511,8 @@ public final class BaseRequest {
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
-        // TODO V2 add logging
-        System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
+        // TODO Vnext add logging
+        // System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
         request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
                 String.format("%s %s:%s", "SharedKeyLite", credentials.getAccountName(), computedBase64Signature));
     }

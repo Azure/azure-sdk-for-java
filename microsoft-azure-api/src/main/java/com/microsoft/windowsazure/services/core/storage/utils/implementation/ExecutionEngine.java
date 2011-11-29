@@ -161,7 +161,6 @@ public final class ExecutionEngine {
             }
             catch (final Exception e) {
                 // Non Retryable, just throw
-                // TODO Should this be retried?
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);

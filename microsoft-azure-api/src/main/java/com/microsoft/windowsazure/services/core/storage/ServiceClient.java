@@ -67,19 +67,18 @@ public abstract class ServiceClient {
      */
     public ServiceClient(final URI baseUri, final StorageCredentials credentials) {
         Utility.assertNotNull("baseUri", baseUri);
-
         if (!baseUri.isAbsolute()) {
             throw new IllegalArgumentException(String.format(
                     "Address '%s' is not an absolute address. Relative addresses are not permitted in here.", baseUri));
         }
 
+        this.credentials = credentials == null ? StorageCredentialsAnonymous.ANONYMOUS : credentials;
+
         this.retryPolicyFactory = new RetryExponentialRetry();
         this.timeoutInMs = Constants.DEFAULT_TIMEOUT_IN_MS;
 
-        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri, credentials.getAccountName());
+        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri, this.credentials.getAccountName());
         this.endpoint = baseUri;
-
-        this.credentials = credentials;
     }
 
     /**

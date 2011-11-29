@@ -12,7 +12,7 @@ public final class MetricsProperties {
     private String version = "1.0";
 
     /**
-     * A used to enable Metric and API logging // todo do xref see to enum values.
+     * A {@link MetricsLevel} level used to enable Metric and API logging
      */
     private MetricsLevel metricsLevel = com.microsoft.windowsazure.services.core.storage.MetricsLevel.DISABLED;
 

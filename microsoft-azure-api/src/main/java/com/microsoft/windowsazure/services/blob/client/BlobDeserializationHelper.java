@@ -378,7 +378,6 @@ final class BlobDeserializationHelper {
                             Constants.HeaderConstants.CACHE_CONTROL));
                 }
                 else if (name.equals(BlobConstants.SEQUENCE_NUMBER)) {
-                    // TODO what do we do with this?
                     Utility.readElementFromXMLReader(xmlr, BlobConstants.SEQUENCE_NUMBER);
                 }
                 else if (name.equals(BlobConstants.BLOB_TYPE_ELEMENT)) {
