@@ -3,7 +3,9 @@ package com.microsoft.windowsazure.services.serviceBus.implementation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -59,6 +61,15 @@ public class WrapTokenManager {
 
         if (active != null && now.before(active.getExpiresUtc())) {
             return active.getWrapResponse().getAccessToken();
+        }
+
+        // sweep expired tokens out of collection
+        Iterator<Entry<String, ActiveToken>> iterator = activeTokens.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, ActiveToken> entry = iterator.next();
+            if (!now.before(entry.getValue().getExpiresUtc())) {
+                iterator.remove();
+            }
         }
 
         WrapAccessTokenResult wrapResponse = getContract().wrapAccessToken(uri, name, password, scope);
