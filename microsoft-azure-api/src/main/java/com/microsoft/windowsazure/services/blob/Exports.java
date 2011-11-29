@@ -7,9 +7,9 @@ import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilt
 import com.microsoft.windowsazure.services.core.Builder;
 
 public class Exports implements Builder.Exports {
+    @Override
     public void register(Builder.Registry registry) {
         registry.add(BlobContract.class, BlobExceptionProcessor.class);
-        registry.add(BlobService.class);
         registry.add(BlobExceptionProcessor.class);
         registry.add(BlobRestProxy.class);
         registry.add(SharedKeyLiteFilter.class);

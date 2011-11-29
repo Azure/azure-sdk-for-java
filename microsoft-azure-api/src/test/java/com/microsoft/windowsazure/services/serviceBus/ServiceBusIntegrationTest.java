@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
@@ -35,7 +36,21 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     @Before
     public void createService() throws Exception {
-        service = ServiceBusService.create();
+        Configuration config = Configuration.getInstance();
+        OverrideWithEnv(config, ServiceBusConfiguration.URI);
+        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
+        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
+        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        OverrideWithEnv(config, ServiceBusConfiguration.WRAP_SCOPE);
+        service = ServiceBusService.create(config);
+    }
+
+    private static void OverrideWithEnv(Configuration config, String key) {
+        String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
     }
 
     @Test

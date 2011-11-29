@@ -75,7 +75,7 @@ public class BlobRestProxy implements BlobContract {
 
     @Inject
     public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.URL) String url, SharedKeyFilter filter) {
+            @Named(BlobConfiguration.URI) String url, SharedKeyFilter filter) {
 
         this.channel = channel;
         this.accountName = accountName;
