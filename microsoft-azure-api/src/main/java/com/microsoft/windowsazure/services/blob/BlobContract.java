@@ -145,8 +145,6 @@ public interface BlobContract extends FilterableService<BlobContract> {
     ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
             throws ServiceException;
 
-    SetBlobPropertiesResult setBlobProperties(String container, String blob) throws ServiceException;
-
     SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
             throws ServiceException;
 
