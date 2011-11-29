@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
 
 public class ServiceBusCreationTest {
     @Test
@@ -13,7 +14,7 @@ public class ServiceBusCreationTest {
         ServiceBusContract service = ServiceBusService.create();
 
         assertNotNull(service);
-        assertEquals(ServiceBusService.class, service.getClass());
+        assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
 
     public Configuration newConfiguration() {
@@ -28,7 +29,7 @@ public class ServiceBusCreationTest {
         ServiceBusContract service = ServiceBusService.create(config);
 
         assertNotNull(service);
-        assertEquals(ServiceBusService.class, service.getClass());
+        assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
 
     @Test
@@ -37,7 +38,7 @@ public class ServiceBusCreationTest {
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
         assertNotNull(service);
-        assertEquals(ServiceBusService.class, service.getClass());
+        assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
 
     @Test
