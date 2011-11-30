@@ -10,7 +10,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.ServiceBusE
 public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayBeCreatedDirectlyViaSingletonConfig() throws Exception {
-        ServiceBusConfiguration.configure("my-namespace", "my-identity", "my-shared-secret");
+        ServiceBusConfiguration.configureWithWrapAuthentication("my-namespace", "my-identity", "my-shared-secret");
         ServiceBusContract service = ServiceBusService.create();
 
         assertNotNull(service);
@@ -19,7 +19,7 @@ public class ServiceBusCreationTest {
 
     public Configuration newConfiguration() {
         Configuration config = new Configuration();
-        ServiceBusConfiguration.configure(config, "my-namespace", "my-identity", "my-shared-secret");
+        ServiceBusConfiguration.configureWithWrapAuthentication(config, "my-namespace", "my-identity", "my-shared-secret");
         return config;
     }
 
