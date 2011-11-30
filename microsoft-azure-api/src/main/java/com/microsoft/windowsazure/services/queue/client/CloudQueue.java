@@ -35,8 +35,8 @@ public final class CloudQueue {
      *            The <code>Iterable</code> collection of {@link CloudQueueMessage} objects to get the first message
      *            from.
      * 
-     * @return The first {@link CloudQueueMessage} from the list of queue
-     *         messages, or <code>null</code> if the list is empty.
+     * @return The first {@link CloudQueueMessage} from the list of queue messages, or <code>null</code> if the list is
+     *         empty.
      */
     static CloudQueueMessage getFirstOrNull(final Iterable<CloudQueueMessage> messages) {
         for (final CloudQueueMessage m : messages) {
@@ -59,7 +59,7 @@ public final class CloudQueue {
     /**
      * A reference to the queue's associated service client.
      */
-    private CloudQueueClient queueServiceClient;
+    private final CloudQueueClient queueServiceClient;
 
     /**
      * The queue's Metadata collection.
@@ -77,22 +77,18 @@ public final class CloudQueue {
     private URI messageRequestAddress;
 
     /**
-     * A flag indicating whether or not the message should be encoded in
-     * base-64.
+     * A flag indicating whether or not the message should be encoded in base-64.
      */
     Boolean shouldEncodeMessage;
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the
-     * specified address and client.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified address and client.
      * 
      * @param queueAddress
-     *            A <code>String</code> that represents either the absolute URI
-     *            to the queue, or the queue name.
+     *            A <code>String</code> that represents either the absolute URI to the queue, or the queue name.
      * @param client
-     *            A {@link CloudQueueClient} object that represents the
-     *            associated service client, and that specifies the endpoint for
-     *            the Queue service.
+     *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
+     *            the endpoint for the Queue service.
      * 
      * @throws URISyntaxException
      *             If the resource URI is invalid.
@@ -102,16 +98,13 @@ public final class CloudQueue {
     }
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the
-     * specified queue URI and client.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI and client.
      * 
      * @param uri
-     *            A <code>java.net.URI</code> object that represents the
-     *            absolute URI of the queue.
+     *            A <code>java.net.URI</code> object that represents the absolute URI of the queue.
      * @param client
-     *            A {@link CloudQueueClient} object that represents the
-     *            associated service client, and that specifies the endpoint for
-     *            the Queue service.
+     *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
+     *            the endpoint for the Queue service.
      */
     public CloudQueue(final URI uri, final CloudQueueClient client) {
         this.uri = uri;
@@ -124,8 +117,7 @@ public final class CloudQueue {
      * Adds a message to the back of the queue with the default options.
      * 
      * @param message
-     *            A {@link CloudQueueMessage} object that specifies the message
-     *            to add.
+     *            A {@link CloudQueueMessage} object that specifies the message to add.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -139,32 +131,26 @@ public final class CloudQueue {
      * Adds a message to the back of the queue with the specified options.
      * 
      * @param message
-     *            A {@link CloudQueueMessage} object that specifies the message
-     *            to add.
+     *            A {@link CloudQueueMessage} object that specifies the message to add.
      * 
      * @param timeToLiveInSeconds
-     *            The maximum time to allow the message to be in the queue. A
-     *            value of zero will set the time-to-live to the service default
-     *            value of seven days.
+     *            The maximum time to allow the message to be in the queue. A value of zero will set the time-to-live to
+     *            the service default value of seven days.
      * 
      * @param initialVisibilityDelayInSeconds
-     *            The length of time during which the message will be invisible,
-     *            starting when it is added to the queue, or 0 to make the
-     *            message visible immediately. This value must be greater than
-     *            or equal to zero and less than or equal to the time-to-live
-     *            value.
+     *            The length of time during which the message will be invisible, starting when it is added to the queue,
+     *            or 0 to make the message visible immediately. This value must be greater than or equal to zero and
+     *            less than or equal to the time-to-live value.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -240,19 +226,16 @@ public final class CloudQueue {
     }
 
     /**
-     * Clears all messages from the queue, using the specified request options
-     * and operation context.
+     * Clears all messages from the queue, using the specified request options and operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -308,19 +291,16 @@ public final class CloudQueue {
     }
 
     /**
-     * Creates the queue in the storage service using the specified request
-     * options and operation context.
+     * Creates the queue in the storage service using the specified request options and operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -366,11 +346,10 @@ public final class CloudQueue {
     }
 
     /**
-     * Creates the queue in the storage service using default request options if
-     * it does not already exist.
+     * Creates the queue in the storage service using default request options if it does not already exist.
      * 
-     * @return A value of <code>true</code> if the queue is created in the
-     *         storage service, otherwise <code>false</code>.
+     * @return A value of <code>true</code> if the queue is created in the storage service, otherwise <code>false</code>
+     *         .
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -381,22 +360,20 @@ public final class CloudQueue {
     }
 
     /**
-     * Creates the queue in the storage service with the specified request
-     * options and operation context if it does not already exist.
+     * Creates the queue in the storage service with the specified request options and operation context if it does not
+     * already exist.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return A value of <code>true</code> if the queue is created in the
-     *         storage service, otherwise <code>false</code>.
+     * @return A value of <code>true</code> if the queue is created in the storage service, otherwise <code>false</code>
+     *         .
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -429,8 +406,10 @@ public final class CloudQueue {
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
-                    this.setNonExceptionedRetryableFailure(true);
                     return true;
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+                    return false;
                 }
                 else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                     final StorageException potentialConflictException = StorageException.translateException(request,
@@ -441,6 +420,9 @@ public final class CloudQueue {
                         this.setException(potentialConflictException);
                         this.setNonExceptionedRetryableFailure(true);
                     }
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
                 }
 
                 return false;
@@ -463,19 +445,16 @@ public final class CloudQueue {
     }
 
     /**
-     * Deletes the queue from the storage service, using the specified request
-     * options and operation context.
+     * Deletes the queue from the storage service, using the specified request options and operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -521,8 +500,8 @@ public final class CloudQueue {
     /**
      * Deletes the queue from the storage service if it exists.
      * 
-     * @return A value of <code>true</code> if the queue existed in the storage
-     *         service and has been deleted, otherwise <code>false</code>.
+     * @return A value of <code>true</code> if the queue existed in the storage service and has been deleted, otherwise
+     *         <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -533,22 +512,20 @@ public final class CloudQueue {
     }
 
     /**
-     * Deletes the queue from the storage service using the specified request
-     * options and operation context, if it exists.
+     * Deletes the queue from the storage service using the specified request options and operation context, if it
+     * exists.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return A value of <code>true</code> if the queue existed in the storage
-     *         service and has been deleted, otherwise <code>false</code>.
+     * @return A value of <code>true</code> if the queue existed in the storage service and has been deleted, otherwise
+     *         <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -600,8 +577,7 @@ public final class CloudQueue {
      * Deletes the specified message from the queue.
      * 
      * @param message
-     *            A {@link CloudQueueMessage} object that specifies the message
-     *            to delete.
+     *            A {@link CloudQueueMessage} object that specifies the message to delete.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -612,24 +588,20 @@ public final class CloudQueue {
     }
 
     /**
-     * Deletes the specified message from the queue, using the specified request
-     * options and operation context.
+     * Deletes the specified message from the queue, using the specified request options and operation context.
      * 
      * @param message
-     *            A {@link CloudQueueMessage} object that specifies the message
-     *            to delete.
+     *            A {@link CloudQueueMessage} object that specifies the message to delete.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -690,19 +662,17 @@ public final class CloudQueue {
     }
 
     /**
-     * Downloads the queue's metadata and approximate message count value, using
-     * the specified request options and operation context.
+     * Downloads the queue's metadata and approximate message count value, using the specified request options and
+     * operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueue}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueue}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -749,11 +719,9 @@ public final class CloudQueue {
     }
 
     /**
-     * Returns a value that indicates whether the queue exists in the storage
-     * service.
+     * Returns a value that indicates whether the queue exists in the storage service.
      * 
-     * @return <code>true</code> if the queue exists in the storage service,
-     *         otherwise <code>false</code>.
+     * @return <code>true</code> if the queue exists in the storage service, otherwise <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -764,22 +732,19 @@ public final class CloudQueue {
     }
 
     /**
-     * Returns a value that indicates whether the queue exists in the storage
-     * service, using the specified request options and operation context.
+     * Returns a value that indicates whether the queue exists in the storage service, using the specified request
+     * options and operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return <code>true</code> if the queue exists in the storage service,
-     *         otherwise <code>false</code>.
+     * @return <code>true</code> if the queue exists in the storage service, otherwise <code>false</code>.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -829,12 +794,10 @@ public final class CloudQueue {
     }
 
     /**
-     * Gets the approximate messages count of the queue. This value is
-     * initialized by a request to {@link #downloadAttributes} and represents
-     * the approximate message count when that request completed.
+     * Gets the approximate messages count of the queue. This value is initialized by a request to
+     * {@link #downloadAttributes} and represents the approximate message count when that request completed.
      * 
-     * @return A <code>Long</code> object that represents the approximate
-     *         messages count of the queue.
+     * @return A <code>Long</code> object that represents the approximate messages count of the queue.
      */
     public long getApproximateMessageCount() {
         return this.approximateMessageCount;
@@ -870,12 +833,10 @@ public final class CloudQueue {
 
     /**
      * Gets the metadata collection for the queue as stored in this <code>CloudQueue</code> object. This value is
-     * initialized with the
-     * metadata from the queue by a call to {@link #downloadAttributes}, and is
-     * set on the queue with a call to {@link #uploadMetadata}.
+     * initialized with the metadata from the queue by a call to {@link #downloadAttributes}, and is set on the queue
+     * with a call to {@link #uploadMetadata}.
      * 
-     * @return A <code>java.util.HashMap</code> object that represents the
-     *         metadata for the queue.
+     * @return A <code>java.util.HashMap</code> object that represents the metadata for the queue.
      */
     public HashMap<String, String> getMetadata() {
         return this.metadata;
@@ -884,8 +845,7 @@ public final class CloudQueue {
     /**
      * Gets the name of the queue.
      * 
-     * @return A <code>String</code> object that represents the name of the
-     *         queue.
+     * @return A <code>String</code> object that represents the name of the queue.
      */
     public String getName() {
         return this.name;
@@ -894,8 +854,7 @@ public final class CloudQueue {
     /**
      * Gets the queue service client associated with this queue.
      * 
-     * @return A {@link CloudQueueClient} object that represents the service
-     *         client associated with this queue.
+     * @return A {@link CloudQueueClient} object that represents the service client associated with this queue.
      */
     public CloudQueueClient getServiceClient() {
         return this.queueServiceClient;
@@ -904,8 +863,7 @@ public final class CloudQueue {
     /**
      * Gets the value indicating whether the message should be base-64 encoded.
      * 
-     * @return A <code>Boolean</code> that represents whether the message should
-     *         be base-64 encoded.
+     * @return A <code>Boolean</code> that represents whether the message should be base-64 encoded.
      */
     public Boolean getShouldEncodeMessage() {
         return this.shouldEncodeMessage;
@@ -914,19 +872,17 @@ public final class CloudQueue {
     /**
      * Gets the absolute URI for this queue.
      * 
-     * @return A <code>java.net.URI</code> object that represents the URI for
-     *         this queue.
+     * @return A <code>java.net.URI</code> object that represents the URI for this queue.
      */
     public URI getUri() {
         return this.uri;
     }
 
     /**
-     * Peeks a message from the queue. A peek request retrieves a message from
-     * the front of the queue without changing its visibility.
+     * Peeks a message from the queue. A peek request retrieves a message from the front of the queue without changing
+     * its visibility.
      * 
-     * @return An {@link CloudQueueMessage} object that represents a message in
-     *         this queue.
+     * @return An {@link CloudQueueMessage} object that represents a message in this queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -937,23 +893,19 @@ public final class CloudQueue {
     }
 
     /**
-     * Peeks a message from the queue, using the specified request options and
-     * operation context. A peek request retrieves a message from the front of
-     * the queue without changing its visibility.
+     * Peeks a message from the queue, using the specified request options and operation context. A peek request
+     * retrieves a message from the front of the queue without changing its visibility.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return An {@link CloudQueueMessage} object that represents the requested
-     *         message from the queue.
+     * @return An {@link CloudQueueMessage} object that represents the requested message from the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -965,15 +917,14 @@ public final class CloudQueue {
     }
 
     /**
-     * Peeks a specified number of messages from the queue. A peek request
-     * retrieves messages from the front of the queue without changing their
-     * visibility.
+     * Peeks a specified number of messages from the queue. A peek request retrieves messages from the front of the
+     * queue without changing their visibility.
      * 
      * @param numberOfMessages
      *            The number of messages to retrieve.
      * 
-     * @return An enumerable collection of {@link CloudQueueMessage} objects
-     *         that represents the requested messages from the queue.
+     * @return An enumerable collection of {@link CloudQueueMessage} objects that represents the requested messages from
+     *         the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -984,26 +935,23 @@ public final class CloudQueue {
     }
 
     /**
-     * Peeks a set of messages from the queue, using the specified request
-     * options and operation context. A peek request retrieves messages from the
-     * front of the queue without changing their visibility.
+     * Peeks a set of messages from the queue, using the specified request options and operation context. A peek request
+     * retrieves messages from the front of the queue without changing their visibility.
      * 
      * @param numberOfMessages
      *            The number of messages to retrieve.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return An enumerable collection of {@link CloudQueueMessage} objects
-     *         that represents the requested messages from the queue.
+     * @return An enumerable collection of {@link CloudQueueMessage} objects that represents the requested messages from
+     *         the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1053,12 +1001,10 @@ public final class CloudQueue {
     }
 
     /**
-     * Retrieves a message from the front of the queue using the default request
-     * options. This operation marks the retrieved message as invisible in the
-     * queue for the default visibility timeout period.
+     * Retrieves a message from the front of the queue using the default request options. This operation marks the
+     * retrieved message as invisible in the queue for the default visibility timeout period.
      * 
-     * @return An {@link CloudQueueMessage} object that represents a message in
-     *         this queue.
+     * @return An {@link CloudQueueMessage} object that represents a message in this queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1069,27 +1015,22 @@ public final class CloudQueue {
     }
 
     /**
-     * Retrieves a message from the front of the queue, using the specified
-     * request options and operation context. This operation marks the retrieved
-     * message as invisible in the queue for the specified visibility timeout
-     * period.
+     * Retrieves a message from the front of the queue, using the specified request options and operation context. This
+     * operation marks the retrieved message as invisible in the queue for the specified visibility timeout period.
      * 
      * @param visibilityTimeoutInSeconds
      *            Specifies the visibility timeout for the message, in seconds.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return An {@link CloudQueueMessage} object that represents a message in
-     *         this queue.
+     * @return An {@link CloudQueueMessage} object that represents a message in this queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1101,16 +1042,14 @@ public final class CloudQueue {
     }
 
     /**
-     * Retrieves the specified number of messages from the front of the queue
-     * using the default request options. This operation marks the retrieved
-     * messages as invisible in the queue for the default visibility timeout
-     * period.
+     * Retrieves the specified number of messages from the front of the queue using the default request options. This
+     * operation marks the retrieved messages as invisible in the queue for the default visibility timeout period.
      * 
      * @param numberOfMessages
      *            The number of messages to retrieve.
      * 
-     * @return An enumerable collection of {@link CloudQueueMessage} objects
-     *         that represents the retrieved messages from the queue.
+     * @return An enumerable collection of {@link CloudQueueMessage} objects that represents the retrieved messages from
+     *         the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1121,31 +1060,27 @@ public final class CloudQueue {
     }
 
     /**
-     * Retrieves the specified number of messages from the front of the queue
-     * using the specified request options and operation context. This operation
-     * marks the retrieved messages as invisible in the queue for the default
+     * Retrieves the specified number of messages from the front of the queue using the specified request options and
+     * operation context. This operation marks the retrieved messages as invisible in the queue for the default
      * visibility timeout period.
      * 
      * @param numberOfMessages
      *            The number of messages to retrieve.
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the visibility timeout for the retrieved messages,
-     *            in seconds.
+     *            Specifies the visibility timeout for the retrieved messages, in seconds.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
-     * @return An enumerable collection of {@link CloudQueueMessage} objects
-     *         that represents the messages retrieved from the queue.
+     * @return An enumerable collection of {@link CloudQueueMessage} objects that represents the messages retrieved from
+     *         the queue.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1197,14 +1132,12 @@ public final class CloudQueue {
     }
 
     /**
-     * Sets the metadata collection of name-value pairs to be set on the queue
-     * with an {@link #uploadMetadata} call. This collection will overwrite any
-     * existing queue metadata. If this is set to an empty collection, the queue
+     * Sets the metadata collection of name-value pairs to be set on the queue with an {@link #uploadMetadata} call.
+     * This collection will overwrite any existing queue metadata. If this is set to an empty collection, the queue
      * metadata will be cleared on an {@link #uploadMetadata} call.
      * 
      * @param metadata
-     *            A <code>java.util.HashMap</code> object that represents the
-     *            metadata being assigned to the queue.
+     *            A <code>java.util.HashMap</code> object that represents the metadata being assigned to the queue.
      */
     public void setMetadata(final HashMap<String, String> metadata) {
         this.metadata = metadata;
@@ -1214,23 +1147,20 @@ public final class CloudQueue {
      * Sets the name of the queue.
      * 
      * @param name
-     *            A <code>String</code> that represents the name being assigned
-     *            to the queue.
+     *            A <code>String</code> that represents the name being assigned to the queue.
      */
     void setName(final String name) {
         this.name = name;
     }
 
     /**
-     * Updates the specified message in the queue with a new visibility timeout
-     * value in seconds.
+     * Updates the specified message in the queue with a new visibility timeout value in seconds.
      * 
      * @param message
      *            The {@link CloudQueueMessage} to update in the queue.
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the new visibility timeout for the message, in
-     *            seconds.
+     *            Specifies the new visibility timeout for the message, in seconds.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1241,31 +1171,27 @@ public final class CloudQueue {
     }
 
     /**
-     * Updates a message in the queue, using the specified request options and
-     * operation context.
+     * Updates a message in the queue, using the specified request options and operation context.
      * 
      * @param message
      *            The {@link CloudQueueMessage} to update in the queue.
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the new visibility timeout for the message, in
-     *            seconds.
+     *            Specifies the new visibility timeout for the message, in seconds.
      * 
      * @param messageUpdateFields
-     *            An <code>EnumSet</code> of {@link MessageUpdateFields} values
-     *            that specifies which parts of the message are to be updated.
+     *            An <code>EnumSet</code> of {@link MessageUpdateFields} values that specifies which parts of the
+     *            message are to be updated.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1333,8 +1259,7 @@ public final class CloudQueue {
     }
 
     /**
-     * Uploads the metadata in the <code>CloudQueue</code> object to the queue,
-     * using the default request options.
+     * Uploads the metadata in the <code>CloudQueue</code> object to the queue, using the default request options.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
@@ -1345,20 +1270,18 @@ public final class CloudQueue {
     }
 
     /**
-     * Uploads the metadata in the <code>CloudQueue</code> object to the queue,
-     * using the specified request options and operation context.
+     * Uploads the metadata in the <code>CloudQueue</code> object to the queue, using the specified request options and
+     * operation context.
      * 
      * @param options
-     *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
-     *            the associated service client ( {@link CloudQueueClient}).
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context
-     *            for the current operation. This object is used to track
-     *            requests to the storage service, and to provide additional
-     *            runtime information about the operation.
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.

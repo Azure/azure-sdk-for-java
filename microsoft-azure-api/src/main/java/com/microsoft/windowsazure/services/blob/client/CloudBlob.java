@@ -303,7 +303,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * Breaks the lease but ensures that another client cannot acquire a new lease until the current lease period has
      * expired.
      * 
-     * @return The time, in seconds, remaining in the lease period, or -1 if the lease has already been broken.
+     * @return The time, in seconds, remaining in the lease period.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -328,7 +328,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return The time, in seconds, remaining in the lease period, or -1 if the lease has already been broken.
+     * @return The time, in seconds, remaining in the lease period.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
