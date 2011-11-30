@@ -3,11 +3,16 @@ package com.microsoft.windowsazure.services.serviceBus.models;
 import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
+import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Filter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
+import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
 
 /**
  * Represents a rule.
@@ -113,4 +118,35 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return this;
     }
 
+    public RuleInfo withCorrelationIdFilter(String correlationId) {
+        CorrelationFilter filter = new CorrelationFilter();
+        filter.setCorrelationId(correlationId);
+        return setFilter(filter);
+    }
+
+    public RuleInfo withTrueSqlExpressionFilter(String sqlExpression) {
+        TrueFilter filter = new TrueFilter();
+        filter.setSqlExpression(sqlExpression);
+        filter.setCompatibilityLevel(20);
+        return setFilter(filter);
+    }
+
+    public RuleInfo withFalseSqlExpressionFilter(String sqlExpression) {
+        FalseFilter filter = new FalseFilter();
+        filter.setSqlExpression(sqlExpression);
+        filter.setCompatibilityLevel(20);
+        return setFilter(filter);
+    }
+
+    public RuleInfo withEmptyRuleAction() {
+        EmptyRuleAction action = new EmptyRuleAction();
+        return setAction(action);
+    }
+
+    public RuleInfo withSqlRuleAction(String sqlExpression) {
+        SqlRuleAction action = new SqlRuleAction();
+        action.setSqlExpression(sqlExpression);
+        action.setCompatibilityLevel(20);
+        return setAction(action);
+    }
 }
