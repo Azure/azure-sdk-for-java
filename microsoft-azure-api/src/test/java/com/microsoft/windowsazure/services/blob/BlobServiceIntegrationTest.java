@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1421,6 +1422,96 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(Error);
         assertEquals(400, Error.getHttpStatusCode());
         assertEquals(3, observer.requestCount);
+    }
+
+    private class NonResetableInputStream extends FilterInputStream {
+
+        protected NonResetableInputStream(InputStream in) {
+            super(in);
+        }
+
+        @Override
+        public boolean markSupported() {
+            return false;
+        }
+    }
+
+    @Test
+    public void retryPolicyThrowsOnInvalidInputStream() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        service = service.withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(100/*deltaBackoff*/,
+                3/*maximumAttempts*/, new int[] { 400, 500, 503 })));
+
+        Exception error = null;
+        try {
+            String content = "foo";
+            InputStream contentStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
+            InputStream stream = new NonResetableInputStream(contentStream);
+
+            service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "testretry", stream);
+        }
+        catch (Exception e) {
+            error = e;
+        }
+
+        // Assert
+        assertNotNull(error);
+    }
+
+    private class ResetableInputStream extends FilterInputStream {
+        private boolean resetCalled;
+
+        protected ResetableInputStream(InputStream in) {
+            super(in);
+        }
+
+        @Override
+        public void reset() throws IOException {
+            super.reset();
+            setResetCalled(true);
+        }
+
+        public boolean isResetCalled() {
+            return resetCalled;
+        }
+
+        public void setResetCalled(boolean resetCalled) {
+            this.resetCalled = resetCalled;
+        }
+    }
+
+    @Test
+    public void retryPolicyCallsResetOnValidInputStream() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        service = service.withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(100/*deltaBackoff*/,
+                3/*maximumAttempts*/, new int[] { 403 })));
+
+        ServiceException error = null;
+        ResetableInputStream stream = null;
+        try {
+            String content = "foo";
+            InputStream contentStream = new ByteArrayInputStream(content.getBytes("UTF-8"));
+            stream = new ResetableInputStream(contentStream);
+
+            service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "invalidblobname @#$#@$@", stream);
+        }
+        catch (ServiceException e) {
+            error = e;
+        }
+
+        // Assert
+        assertNotNull(error);
+        assertEquals(403, error.getHttpStatusCode());
+        assertNotNull(stream);
+        assertTrue(stream.isResetCalled());
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
