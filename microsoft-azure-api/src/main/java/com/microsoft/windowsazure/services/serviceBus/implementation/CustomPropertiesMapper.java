@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.UUID;
 
 public class CustomPropertiesMapper {
     // Fri, 04 Mar 2011 08:49:37 GMT
@@ -19,47 +18,41 @@ public class CustomPropertiesMapper {
 
         Class<? extends Object> type = value.getClass();
         if (type == Byte.class) {
-            return value.toString() + ";byte";
-        }
-        else if (type == Character.class) {
-            return value.toString() + ";char";
+            return value.toString();
         }
         else if (type == Short.class) {
-            return value.toString() + ";short";
+            return value.toString();
         }
         else if (type == Integer.class) {
-            return value.toString() + ";int";
+            return value.toString();
         }
         else if (type == Long.class) {
-            return value.toString() + ";long";
+            return value.toString();
         }
         else if (type == Float.class) {
-            return value.toString() + ";float";
+            return value.toString();
         }
         else if (type == Double.class) {
-            return value.toString() + ";double";
+            return value.toString();
         }
         else if (type == Boolean.class) {
-            return value.toString() + ";bool";
-        }
-        else if (type == UUID.class) {
-            return value.toString() + ";uuid";
+            return value.toString();
         }
         else if (Calendar.class.isAssignableFrom(type)) {
             DateFormat format = new SimpleDateFormat(RFC_1123);
             Calendar calendar = (Calendar) value;
             format.setTimeZone(calendar.getTimeZone());
             String formatted = format.format(calendar.getTime());
-            return formatted + ";date";
+            return "\"" + formatted + "\"";
         }
         else if (Date.class.isAssignableFrom(type)) {
             DateFormat format = new SimpleDateFormat(RFC_1123);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             String formatted = format.format((Date) value);
-            return formatted + ";date";
+            return "\"" + formatted + "\"";
         }
         else {
-            return value.toString();
+            return "\"" + value.toString() + "\"";
         }
     }
 
@@ -68,39 +61,50 @@ public class CustomPropertiesMapper {
             return null;
         }
 
-        if (value.endsWith(";byte")) {
-            return Byte.parseByte(value.substring(0, value.length() - ";byte".length()));
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            String text = value.substring(1, value.length() - 1);
+            if (isRFC1123(text)) {
+                SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
+                return format.parse(text);
+            }
+
+            return text;
         }
-        else if (value.endsWith(";char") && value.length() == "X;char".length()) {
-            return new Character(value.charAt(0));
+        else if ("true".equals(value)) {
+            return Boolean.TRUE;
         }
-        else if (value.endsWith(";short")) {
-            return Short.parseShort(value.substring(0, value.length() - ";short".length()));
+        else if ("false".equals(value)) {
+            return Boolean.FALSE;
         }
-        else if (value.endsWith(";int")) {
-            return Integer.parseInt(value.substring(0, value.length() - ";int".length()));
-        }
-        else if (value.endsWith(";long")) {
-            return Long.parseLong(value.substring(0, value.length() - ";long".length()));
-        }
-        else if (value.endsWith(";float")) {
-            return Float.parseFloat(value.substring(0, value.length() - ";float".length()));
-        }
-        else if (value.endsWith(";double")) {
-            return Double.parseDouble(value.substring(0, value.length() - ";double".length()));
-        }
-        else if (value.endsWith(";bool")) {
-            return Boolean.parseBoolean(value.substring(0, value.length() - ";bool".length()));
-        }
-        else if (value.endsWith(";uuid")) {
-            return UUID.fromString(value.substring(0, value.length() - ";uuid".length()));
-        }
-        else if (value.endsWith(";date")) {
-            SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
-            return format.parse(value.substring(0, value.length() - ";date".length()));
+        else if (isInteger(value)) {
+            return Integer.parseInt(value);
         }
         else {
-            return value;
+            return Double.parseDouble(value);
+        }
+    }
+
+    private boolean isRFC1123(String text) {
+        if (text.length() != RFC_1123.length()) {
+            return false;
+        }
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
+            format.parse(text);
+            return true;
+        }
+        catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private boolean isInteger(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
         }
     }
 }

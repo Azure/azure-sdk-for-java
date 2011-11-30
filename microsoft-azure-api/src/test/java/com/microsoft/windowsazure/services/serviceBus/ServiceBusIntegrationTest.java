@@ -480,4 +480,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertEquals(SqlRuleAction.class, ruleFive.getAction().getClass());
 
     }
+
+    @Test
+    public void messagesMayHaveCustomProperties() throws ServiceException {
+        // Arrange
+        String queueName = "TestMessagesMayHaveCustomProperties";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        service.sendQueueMessage(queueName, new BrokeredMessage("").setProperty("hello", "world")
+                .setProperty("foo", 42));
+        BrokeredMessage message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+
+        // Assert
+        assertEquals("world", message.getProperty("hello"));
+        assertEquals(42, message.getProperty("foo"));
+    }
 }
