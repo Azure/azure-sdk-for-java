@@ -1,3 +1,17 @@
+/**
+ * Copyright 2011 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.microsoft.windowsazure.services.blob.client;
 
 import java.io.IOException;
@@ -36,8 +50,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * 
  * Represents a Windows Azure blob. This is the base class for the {@link CloudBlockBlob} and {@link CloudPageBlob}
  * classes.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class CloudBlob implements ListBlobItem {
     /**
@@ -1446,6 +1458,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public final CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
             final URI containerURI = PathUtility.getContainerURI(this.getUri(),
@@ -1490,6 +1503,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public final CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
             final URI parentURI = PathUtility.getParentAddress(this.getUri(),
@@ -1587,6 +1601,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @return A <code>java.net.URI</code> object that represents the URI for the blob.
      */
+    @Override
     public final URI getUri() {
         return this.uri;
     }

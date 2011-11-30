@@ -1,3 +1,17 @@
+/**
+ * Copyright 2011 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.microsoft.windowsazure.services.blob.client;
 
 import java.net.URI;
@@ -18,8 +32,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  * <p>
  * Containers, which are encapsulated as {@link CloudBlobContainer} objects, hold directories, and directories hold
  * block blobs and page blobs. Directories can also contain sub-directories.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudBlobDirectory implements ListBlobItem {
 
@@ -152,6 +164,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
             final URI containerURI = PathUtility.getContainerURI(this.uri, this.blobServiceClient.isUsePathStyleUris());
@@ -217,6 +230,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
             final URI parentURI = PathUtility.getParentAddress(this.uri,
@@ -287,6 +301,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * 
      * @return A <code>java.net.URI</code> object that represents the URI for this directory.
      */
+    @Override
     public URI getUri() {
         return this.uri;
     }
