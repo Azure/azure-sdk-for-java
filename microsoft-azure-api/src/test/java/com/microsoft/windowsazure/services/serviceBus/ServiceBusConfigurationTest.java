@@ -14,7 +14,7 @@ public class ServiceBusConfigurationTest {
         Configuration config = new Configuration();
 
         // Act
-        ServiceBusConfiguration.configure(config, "alpha", "beta", "gamma");
+        ServiceBusConfiguration.configureWithWrapAuthentication(config, "alpha", "beta", "gamma");
 
         // Assert
         assertEquals("https://alpha.servicebus.windows.net/",
@@ -35,7 +35,7 @@ public class ServiceBusConfigurationTest {
         Configuration config = new Configuration();
 
         // Act
-        ServiceBusConfiguration.configure("backup", config, "alpha", "beta", "gamma");
+        ServiceBusConfiguration.configureWithWrapAuthentication("backup", config, "alpha", "beta", "gamma");
 
         // Assert
         assertEquals("https://alpha.servicebus.windows.net/",

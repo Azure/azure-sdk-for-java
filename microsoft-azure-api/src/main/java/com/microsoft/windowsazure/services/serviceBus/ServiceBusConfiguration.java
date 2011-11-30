@@ -55,8 +55,8 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configure(String namespace, String authenticationName, String authenticationPassword) {
-        return configure(null, Configuration.getInstance(), namespace, authenticationName, authenticationPassword);
+    public static Configuration configureWithWrapAuthentication(String namespace, String authenticationName, String authenticationPassword) {
+        return configureWithWrapAuthentication(null, Configuration.getInstance(), namespace, authenticationName, authenticationPassword);
     }
 
     /**
@@ -79,9 +79,9 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configure(Configuration configuration, String namespace, String authenticationName,
+    public static Configuration configureWithWrapAuthentication(Configuration configuration, String namespace, String authenticationName,
             String authenticationPassword) {
-        return configure(null, configuration, namespace, authenticationName, authenticationPassword);
+        return configureWithWrapAuthentication(null, configuration, namespace, authenticationName, authenticationPassword);
     }
 
     /**
@@ -107,7 +107,7 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configure(String profile, Configuration configuration, String namespace,
+    public static Configuration configureWithWrapAuthentication(String profile, Configuration configuration, String namespace,
             String authenticationName, String authenticationPassword) {
 
         if (profile == null) {
