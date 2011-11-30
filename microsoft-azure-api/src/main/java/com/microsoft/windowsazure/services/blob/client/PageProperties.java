@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.blob.client;
 
 /**
  * RESERVED FOR INTERNAL USE. Represents properties for writing to a page blob.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class PageProperties {
 

@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents the metrics properties for the analytics service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class MetricsProperties {
     /**

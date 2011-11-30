@@ -23,8 +23,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Lea
 
 /**
  * RESERVED FOR INTERNAL USE. Provides a set of methods for constructing requests for blob operations.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class BlobRequest {
     /**

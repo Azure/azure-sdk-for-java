@@ -7,8 +7,6 @@ import java.util.ArrayList;
  * 
  * @param <T>
  *            The type of the result that the segment contains.
- * 
- *            Copyright (c)2011 Microsoft. All rights reserved.
  */
 public class ResultSegment<T> {
     /**

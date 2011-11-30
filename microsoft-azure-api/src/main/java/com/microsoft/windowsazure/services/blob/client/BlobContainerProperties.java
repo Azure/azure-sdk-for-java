@@ -6,8 +6,6 @@ import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 
 /**
  * Represents the system properties for a container.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobContainerProperties {
 

@@ -15,8 +15,6 @@ import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
 
 /**
  * Reserved for internal use. Provides a client for accessing the Windows Azure Storage service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class ServiceClient {
 

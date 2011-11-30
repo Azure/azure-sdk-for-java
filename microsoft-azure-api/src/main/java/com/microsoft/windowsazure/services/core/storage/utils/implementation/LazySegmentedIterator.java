@@ -19,8 +19,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  *            The type of the parent object, i.e. CloudBlobClient for ListContainers etc.
  * @param <ENTITY_TYPE>
  *            The type of the objects the resulting iterable objects
- * 
- *            Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> implements Iterator<ENTITY_TYPE>,
         Iterable<ENTITY_TYPE> {
@@ -88,6 +86,7 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     /**
      * Indicates if the iterator has another element.
      */
+    @Override
     @DoesServiceRequest
     public boolean hasNext() {
         while (this.currentSegment == null
@@ -116,6 +115,7 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     /**
      * Gets a reference to the iterator.
      */
+    @Override
     public Iterator<ENTITY_TYPE> iterator() {
         return this;
     }
@@ -123,6 +123,7 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     /**
      * Returns the next element.
      */
+    @Override
     public ENTITY_TYPE next() {
         return this.currentSegmentIterator.next();
     }
@@ -130,6 +131,7 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     /**
      * Removes an element, not supported
      */
+    @Override
     public void remove() {
         // read only, no-op
         throw new UnsupportedOperationException();

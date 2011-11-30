@@ -14,8 +14,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * Represents the analytics properties for the service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class ServiceProperties {
     /**

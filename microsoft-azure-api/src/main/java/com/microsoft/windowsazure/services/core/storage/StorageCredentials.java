@@ -15,8 +15,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * Represents a set of credentials used to authenticate access to a Windows Azure storage account. This is the base
  * class for the {@link StorageCredentialsAccountAndKey} and {@link StorageCredentialsSharedAccessSignature} classes.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class StorageCredentials {
 

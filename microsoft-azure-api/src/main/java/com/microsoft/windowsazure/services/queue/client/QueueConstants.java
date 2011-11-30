@@ -1,8 +1,3 @@
-/*
- * QueueConstants.java
- * 
- * Copyright (c) 2011 Microsoft. All rights reserved.
- */
 package com.microsoft.windowsazure.services.queue.client;
 
 /**

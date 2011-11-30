@@ -9,8 +9,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * Specifies the type of a blob.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum BlobType {
     /**

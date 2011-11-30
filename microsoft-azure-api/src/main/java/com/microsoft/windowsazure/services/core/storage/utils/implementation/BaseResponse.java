@@ -16,8 +16,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
  * RESERVED FOR INTERNAL USE. The base response class for the protocol layer
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public class BaseResponse {
     /**

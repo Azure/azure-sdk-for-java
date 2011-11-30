@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 /**
  * RESERVED FOR INTERNAL USE. Represents a container's attributes, including its properties and metadata.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class BlobContainerAttributes {
     /**

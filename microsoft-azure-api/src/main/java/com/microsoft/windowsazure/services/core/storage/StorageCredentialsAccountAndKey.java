@@ -13,8 +13,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Bas
 /**
  * Represents storage account credentials, based on storage account and access key, for accessing the Windows Azure
  * storage services.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageCredentialsAccountAndKey extends StorageCredentials {
 

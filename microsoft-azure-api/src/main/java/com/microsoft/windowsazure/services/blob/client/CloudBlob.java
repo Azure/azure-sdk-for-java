@@ -36,8 +36,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * 
  * Represents a Windows Azure blob. This is the base class for the {@link CloudBlockBlob} and {@link CloudPageBlob}
  * classes.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class CloudBlob implements ListBlobItem {
     /**
@@ -1446,6 +1444,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public final CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
             final URI containerURI = PathUtility.getContainerURI(this.getUri(),
@@ -1490,6 +1489,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public final CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
             final URI parentURI = PathUtility.getParentAddress(this.getUri(),
@@ -1587,6 +1587,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @return A <code>java.net.URI</code> object that represents the URI for the blob.
      */
+    @Override
     public final URI getUri() {
         return this.uri;
     }

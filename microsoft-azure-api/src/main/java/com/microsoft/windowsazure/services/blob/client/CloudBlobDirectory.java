@@ -18,8 +18,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  * <p>
  * Containers, which are encapsulated as {@link CloudBlobContainer} objects, hold directories, and directories hold
  * block blobs and page blobs. Directories can also contain sub-directories.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudBlobDirectory implements ListBlobItem {
 
@@ -152,6 +150,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
             final URI containerURI = PathUtility.getContainerURI(this.uri, this.blobServiceClient.isUsePathStyleUris());
@@ -217,6 +216,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Override
     public CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
             final URI parentURI = PathUtility.getParentAddress(this.uri,
@@ -287,6 +287,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * 
      * @return A <code>java.net.URI</code> object that represents the URI for this directory.
      */
+    @Override
     public URI getUri() {
         return this.uri;
     }

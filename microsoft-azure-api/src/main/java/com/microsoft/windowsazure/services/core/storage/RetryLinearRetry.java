@@ -5,8 +5,6 @@ package com.microsoft.windowsazure.services.core.storage;
  * retries.
  * 
  * This class extends the {@link RetryPolicy} class and implements the {@link RetryPolicyFactory} interface.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class RetryLinearRetry extends RetryPolicy implements RetryPolicyFactory {
 
@@ -40,6 +38,7 @@ public final class RetryLinearRetry extends RetryPolicy implements RetryPolicyFa
      * 
      * @return A {@link RetryPolicy} object that represents the retry policy for the current request attempt.
      */
+    @Override
     public RetryPolicy createInstance(final OperationContext opContext) {
         return new RetryLinearRetry(this.deltaBackoffIntervalInMs, this.maximumAttempts);
     }

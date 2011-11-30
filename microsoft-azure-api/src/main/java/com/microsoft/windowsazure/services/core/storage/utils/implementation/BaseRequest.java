@@ -22,8 +22,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. The Base Request class for the protocol layer.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BaseRequest {
     /**

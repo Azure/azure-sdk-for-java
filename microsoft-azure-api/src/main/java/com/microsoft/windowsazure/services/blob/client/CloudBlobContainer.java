@@ -36,8 +36,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * <p>
  * Containers hold directories, which are encapsulated as {@link CloudBlobDirectory} objects, and directories hold block
  * blobs and page blobs. Directories can also contain sub-directories.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudBlobContainer {
 

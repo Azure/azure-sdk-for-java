@@ -1,18 +1,13 @@
-/**
- * 
- */
 package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents the result of a retry policy evaluation.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class RetryResult {
     /**
      * Represents the backoff interval in milliseconds.
      */
-    private int backOffIntervalInMs;
+    private final int backOffIntervalInMs;
 
     /**
      * Indicates whether to retry the operation. Set to <code>true</code> to retry; otherwise, <code>false</code>.

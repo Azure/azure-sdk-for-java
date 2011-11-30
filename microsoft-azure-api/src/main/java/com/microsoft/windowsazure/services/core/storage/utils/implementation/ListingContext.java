@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 /**
  * RESERVED FOR INTERNAL USE. A class which holds the current context of a listing
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public class ListingContext {
 

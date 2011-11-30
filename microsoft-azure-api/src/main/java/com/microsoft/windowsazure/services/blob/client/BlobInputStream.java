@@ -21,8 +21,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * Provides an input stream to read a given blob resource.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobInputStream extends InputStream {
     /**

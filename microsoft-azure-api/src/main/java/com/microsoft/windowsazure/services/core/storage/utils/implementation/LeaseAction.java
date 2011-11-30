@@ -4,8 +4,6 @@ import com.microsoft.windowsazure.services.core.storage.Constants;
 
 /**
  * RESERVED FOR INTERNAL USE. Describes actions that can be performed on a lease.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum LeaseAction {
 

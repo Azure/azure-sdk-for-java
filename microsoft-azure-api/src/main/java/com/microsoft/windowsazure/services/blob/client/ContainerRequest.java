@@ -25,7 +25,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Lis
 /**
  * RESERVED FOR INTERNAL USE. A class used to generate requests for contianer objects.
  * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class ContainerRequest {
     /**

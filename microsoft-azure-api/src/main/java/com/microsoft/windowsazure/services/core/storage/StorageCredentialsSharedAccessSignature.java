@@ -7,8 +7,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 
 /**
  * Represents storage credentials for delegated access to Blob service resources via a shared access signature.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageCredentialsSharedAccessSignature extends StorageCredentials {
 

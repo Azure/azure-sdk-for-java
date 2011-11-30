@@ -8,8 +8,6 @@ import java.util.Random;
  * 
  * This class extends the {@link com.microsoft.windowsazure.services.core.storage.RetryPolicy} class and implements the
  * {@link com.microsoft.windowsazure.services.core.storage.RetryPolicyFactory} interface.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class RetryExponentialRetry extends RetryPolicy implements RetryPolicyFactory {
 
@@ -78,6 +76,7 @@ public final class RetryExponentialRetry extends RetryPolicy implements RetryPol
      * 
      * @return A {@link RetryPolicy} object that represents the retry policy for the current request attempt.
      */
+    @Override
     public RetryPolicy createInstance(final OperationContext opContext) {
         return new RetryExponentialRetry(this.resolvedMinBackoff, this.deltaBackoffIntervalInMs,
                 this.resolvedMaxBackoff, this.maximumAttempts);

@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents error code strings that are common to all storage services.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageErrorCodeStrings {
     /**

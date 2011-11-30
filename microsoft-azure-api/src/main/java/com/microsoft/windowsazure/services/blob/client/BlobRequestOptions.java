@@ -7,8 +7,6 @@ import com.microsoft.windowsazure.services.core.storage.RequestOptions;
 
 /**
  * Represents a set of options that may be specified on a request.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobRequestOptions extends RequestOptions {
 

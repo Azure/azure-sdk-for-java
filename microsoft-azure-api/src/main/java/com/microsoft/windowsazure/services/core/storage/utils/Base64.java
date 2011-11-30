@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage.utils;
 
 /**
  * RESERVED FOR INTERNAL USE. Provides Base64 encoding, decoding, and validation functionality.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class Base64 {
     /**

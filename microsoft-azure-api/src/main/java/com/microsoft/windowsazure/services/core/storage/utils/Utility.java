@@ -40,8 +40,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 
 /**
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class Utility {
     /**

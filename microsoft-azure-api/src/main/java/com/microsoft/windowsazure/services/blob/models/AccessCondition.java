@@ -6,8 +6,6 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConver
 
 /**
  * Represents a set of access conditions to be used for operations against the storage services.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class AccessCondition {
 

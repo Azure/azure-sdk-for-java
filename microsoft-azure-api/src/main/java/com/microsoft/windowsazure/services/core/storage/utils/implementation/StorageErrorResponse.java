@@ -12,8 +12,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /***
  * RESERVED FOR INTERNAL USE. A class to help parse the Error details from an input stream.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageErrorResponse {
     /**

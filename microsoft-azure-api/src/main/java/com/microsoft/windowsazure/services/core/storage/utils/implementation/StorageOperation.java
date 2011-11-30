@@ -16,8 +16,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  *            The type of the parent object, i.e. CloudBlobContainer for downloadAttributes etc.
  * @param <R>
  *            The type of the expected result
- * 
- *            Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class StorageOperation<C, P, R> {
 

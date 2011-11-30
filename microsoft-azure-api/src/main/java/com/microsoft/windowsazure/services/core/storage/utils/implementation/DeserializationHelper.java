@@ -11,8 +11,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. An internal helper class used to parse objects from responses.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class DeserializationHelper {
     /**

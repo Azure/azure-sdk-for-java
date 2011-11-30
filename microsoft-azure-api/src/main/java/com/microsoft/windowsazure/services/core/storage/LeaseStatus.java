@@ -12,8 +12,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  * <p>
  * You can check the lease status of a blob to determine whether it currently has an active lease (locked for
  * exclusive-write access), or whether it is available for exclusive-write access.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum LeaseStatus {
     /**

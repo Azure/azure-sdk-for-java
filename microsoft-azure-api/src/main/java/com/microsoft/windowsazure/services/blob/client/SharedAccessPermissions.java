@@ -4,8 +4,6 @@ import java.util.EnumSet;
 
 /**
  * Specifies the set of possible permissions for a shared access policy.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum SharedAccessPermissions {
     /**

@@ -10,8 +10,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
  * RESERVED FOR INTERNAL USE. A helper class to help modify the query string of a URI
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class UriQueryBuilder {
     /**

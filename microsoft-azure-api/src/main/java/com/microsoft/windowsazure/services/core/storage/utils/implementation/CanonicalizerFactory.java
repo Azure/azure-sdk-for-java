@@ -16,8 +16,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * RESERVED FOR INTERNAL USE. Retrieve appropriate version of CanonicalizationStrategy based on the webrequest for Blob
  * and Queue.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class CanonicalizerFactory {
     /**

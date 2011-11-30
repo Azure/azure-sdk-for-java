@@ -3,8 +3,6 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * 
  * Represents error codes that may be returned by the Windows Azure storage services or the storage client library.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum StorageErrorCode {
     /**

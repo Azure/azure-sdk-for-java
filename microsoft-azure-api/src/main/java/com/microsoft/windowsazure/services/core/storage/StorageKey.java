@@ -16,8 +16,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
 /**
  * Represents a container for a storage key.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageKey {
     /**

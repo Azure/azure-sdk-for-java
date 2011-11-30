@@ -22,8 +22,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * RESERVED FOR INTERNAL USE. This is a Version 2 Canoncicalization strategy conforming to the PDC 2009-09-19
  * specification
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 abstract class Canonicalizer {
 

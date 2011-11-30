@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents an event that is fired when a response is received.
- * 
- * Copyright (c)2011 Microsoft
  */
 public final class ResponseReceivedEvent {
 
@@ -11,13 +9,13 @@ public final class ResponseReceivedEvent {
      * Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as a
      * connection object.
      */
-    private Object connectionObject;
+    private final Object connectionObject;
 
     /**
      * Represents a context for the current operation. This object is used to track requests to the storage service, and
      * to provide additional runtime information about the operation.
      */
-    private OperationContext opContext;
+    private final OperationContext opContext;
 
     /**
      * Creates an instance of the <code>ResponseReceivedEvent</code> class.

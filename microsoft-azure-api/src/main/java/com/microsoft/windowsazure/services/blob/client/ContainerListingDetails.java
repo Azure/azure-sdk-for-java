@@ -3,7 +3,6 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Specifies which details to include when listing the containers in this storage account.
  * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum ContainerListingDetails {
     /**

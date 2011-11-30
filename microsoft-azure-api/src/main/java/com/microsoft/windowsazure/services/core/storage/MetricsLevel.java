@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Enumeration representing the state of metrics collection in a service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum MetricsLevel {
     /**

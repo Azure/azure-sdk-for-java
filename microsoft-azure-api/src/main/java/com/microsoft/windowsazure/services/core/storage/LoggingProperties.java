@@ -4,8 +4,6 @@ import java.util.EnumSet;
 
 /**
  * Represents the logging properties for the analytics service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class LoggingProperties {
 

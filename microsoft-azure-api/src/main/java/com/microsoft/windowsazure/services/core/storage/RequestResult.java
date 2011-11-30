@@ -7,8 +7,6 @@ import java.util.Date;
 
 /**
  * Represents the result of a physical request.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class RequestResult {
 

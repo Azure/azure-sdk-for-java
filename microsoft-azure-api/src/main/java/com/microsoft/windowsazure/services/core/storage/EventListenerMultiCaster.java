@@ -9,8 +9,6 @@ import java.util.ArrayList;
  *            An object that represents the type of the event.
  * @param <EVENT_LISTENTER_TYPE>
  *            An object that represents the type of the event listener.
- * 
- *            Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class EventListenerMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE extends EventListener<EVENT_TYPE>> {
 

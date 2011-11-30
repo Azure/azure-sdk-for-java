@@ -1,8 +1,3 @@
-/*
- * QueueRequestOptions.java
- * 
- * Copyright (c) 2011 Microsoft. All rights reserved.
- */
 package com.microsoft.windowsazure.services.queue.client;
 
 import com.microsoft.windowsazure.services.core.storage.RequestOptions;

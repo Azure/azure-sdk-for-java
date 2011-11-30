@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 /**
  * Represents the current logical operation. A logical operation has potentially a one-to-many relationship with
  * individual physical requests.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class OperationContext {
 
@@ -39,7 +37,7 @@ public final class OperationContext {
      * Represents request results, in the form of an <code>ArrayList</code> object that contains the
      * {@link RequestResult} objects, for each physical request that is made.
      */
-    private ArrayList<RequestResult> requestResults;
+    private final ArrayList<RequestResult> requestResults;
 
     /**
      * Represents an event that is triggered when a response is received from the storage service while processing a

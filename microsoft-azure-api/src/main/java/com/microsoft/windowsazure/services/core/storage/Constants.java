@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Defines constants for use with blob operations, HTTP headers, and query strings.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class Constants {
     /**

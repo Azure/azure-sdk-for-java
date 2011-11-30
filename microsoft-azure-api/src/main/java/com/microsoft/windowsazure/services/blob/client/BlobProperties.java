@@ -7,8 +7,6 @@ import com.microsoft.windowsazure.services.core.storage.LeaseStatus;
 
 /**
  * Represents the system properties for a blob.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobProperties {
 

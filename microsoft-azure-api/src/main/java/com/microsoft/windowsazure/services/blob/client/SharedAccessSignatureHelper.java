@@ -13,8 +13,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. Contains helper methods for implementing shared access signatures.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class SharedAccessSignatureHelper {
     /**

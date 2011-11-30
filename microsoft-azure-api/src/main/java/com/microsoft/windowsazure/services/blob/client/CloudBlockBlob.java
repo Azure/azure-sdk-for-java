@@ -22,8 +22,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 /**
  * Represents a blob that is uploaded as a set of blocks.
  * 
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudBlockBlob extends CloudBlob {
 

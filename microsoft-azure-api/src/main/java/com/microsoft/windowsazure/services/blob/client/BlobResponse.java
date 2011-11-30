@@ -12,8 +12,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Bas
 
 /**
  * RESERVED FOR INTERNAL USE. A class for parsing various responses from the blob service
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class BlobResponse extends BaseResponse {
 

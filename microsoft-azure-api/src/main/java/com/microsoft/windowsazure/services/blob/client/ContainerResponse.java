@@ -12,8 +12,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Bas
 
 /**
  * RESERVED FOR INTERNAL USE. A class used to parse the response from container operations
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class ContainerResponse extends BaseResponse {
 

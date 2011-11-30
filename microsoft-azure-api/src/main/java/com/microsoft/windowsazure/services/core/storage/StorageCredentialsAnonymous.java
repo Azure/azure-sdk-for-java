@@ -8,9 +8,6 @@ import java.net.URI;
 /**
  * *RESERVED FOR INTERNAL USE* Represents credentials for anonymous access. This class is used by the internal
  * implementation (not a public class, so its comments are not built into the Javadoc output).
- * 
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageCredentialsAnonymous extends StorageCredentials {
 

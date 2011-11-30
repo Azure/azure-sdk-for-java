@@ -8,8 +8,6 @@ import com.microsoft.windowsazure.services.core.storage.Constants;
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
  * signature.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class SharedAccessPolicy {
 

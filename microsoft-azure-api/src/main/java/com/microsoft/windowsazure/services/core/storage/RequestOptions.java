@@ -5,8 +5,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents the options to use while processing a given request.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public class RequestOptions {
 

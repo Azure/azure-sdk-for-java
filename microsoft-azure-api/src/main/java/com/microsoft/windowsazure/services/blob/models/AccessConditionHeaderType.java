@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.blob.models;
 
 /**
  * Specifies the kinds of conditional headers that may be set for a request.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum AccessConditionHeaderType {
     /**

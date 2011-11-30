@@ -26,8 +26,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * The class is an append-only stream for writing into storage.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobOutputStream extends OutputStream {
     /**
@@ -347,6 +345,7 @@ public final class BlobOutputStream extends OutputStream {
             this.blockList.add(new BlockEntry(blockID, BlockSearchMode.UNCOMMITTED));
 
             worker = new Callable<Void>() {
+                @Override
                 public Void call() {
                     try {
                         blobRef.uploadBlock(blockID, bufferRef, writeLength, BlobOutputStream.this.accessCondition,
@@ -416,6 +415,7 @@ public final class BlobOutputStream extends OutputStream {
             this.currentPageOffset += writeLength;
 
             worker = new Callable<Void>() {
+                @Override
                 public Void call() {
                     try {
                         blobRef.uploadPages(bufferRef, opOffset, opWriteLength, BlobOutputStream.this.accessCondition,

@@ -16,8 +16,6 @@ import java.util.HashMap;
  * </ul>
  * For more information on managing container permissions, see <a
  * href='http://go.microsoft.com/fwlink/?LinkID=224643&clcid=0x409'>Managing Access to Containers and Blobs</a>.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlobContainerPermissions {
 

@@ -5,8 +5,6 @@ import com.microsoft.windowsazure.services.blob.client.CloudBlobDirectory;
 /**
  * Represents a continuation token for listing operations. Continuation tokens are used in methods that return a
  * {@link ResultSegment} object, such as {@link CloudBlobDirectory#listBlobsSegmented}.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class ResultContinuation {
     /**

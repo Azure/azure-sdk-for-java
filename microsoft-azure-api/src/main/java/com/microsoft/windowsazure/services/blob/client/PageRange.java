@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.blob.client;
 
 /**
  * Represents a range of pages in a page blob.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class PageRange {
     /**

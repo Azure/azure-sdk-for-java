@@ -22,7 +22,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 /**
  * Represents a Windows Azure page blob.
  * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudPageBlob extends CloudBlob {
 

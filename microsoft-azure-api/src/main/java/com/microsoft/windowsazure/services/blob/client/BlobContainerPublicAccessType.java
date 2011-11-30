@@ -3,8 +3,6 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Specifies the level of public access that is allowed on the container.
  * 
- * Copyright (c)2011 Microsoft. All rights reserved.
- * 
  */
 public enum BlobContainerPublicAccessType {
     /**

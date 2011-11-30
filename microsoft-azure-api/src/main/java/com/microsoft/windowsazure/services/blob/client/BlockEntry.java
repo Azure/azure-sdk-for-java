@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.blob.client;
 
 /**
  * A class which is used to list and commit blocks of a {@link CloudBlockBlob}.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class BlockEntry {
     /**

@@ -33,8 +33,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * This class provides a point of access to the Blob service. The service client encapsulates the base URI for the Blob
  * service. If the service client will be used for authenticated access, it also encapsulates the credentials for
  * accessing the storage account.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudBlobClient extends ServiceClient {
     /**

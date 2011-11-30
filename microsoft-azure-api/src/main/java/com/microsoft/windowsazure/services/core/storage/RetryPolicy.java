@@ -5,8 +5,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Abstract class that represents a retry policy.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class RetryPolicy {
 

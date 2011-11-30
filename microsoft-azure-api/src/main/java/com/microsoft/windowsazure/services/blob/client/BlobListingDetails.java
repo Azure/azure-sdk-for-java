@@ -6,7 +6,6 @@ package com.microsoft.windowsazure.services.blob.client;
  * By default, committed blocks are always returned. Use the values in this enum to include snapshots, metadata, and/or
  * uncommitted blocks.
  * <p>
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum BlobListingDetails {
     /**

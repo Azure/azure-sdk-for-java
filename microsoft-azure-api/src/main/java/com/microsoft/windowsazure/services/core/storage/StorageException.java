@@ -9,8 +9,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 
 /**
  * Represents an exception for the Windows Azure storage service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageException extends Exception {
 

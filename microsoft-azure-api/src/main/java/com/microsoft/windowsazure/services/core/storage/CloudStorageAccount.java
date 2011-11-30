@@ -13,8 +13,6 @@ import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
 
 /**
  * Represents a Windows Azure storage account.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class CloudStorageAccount {
     /**

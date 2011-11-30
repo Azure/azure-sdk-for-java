@@ -11,8 +11,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
  * RESERVED FOR INTERNAL USE. A class to help modify paths
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class PathUtility {
     /**

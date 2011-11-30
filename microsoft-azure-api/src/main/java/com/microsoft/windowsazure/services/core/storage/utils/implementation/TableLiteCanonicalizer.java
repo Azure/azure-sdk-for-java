@@ -14,8 +14,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Table Service
  * under the Shared Key Lite authentication scheme.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 class TableLiteCanonicalizer extends Canonicalizer {
     /**

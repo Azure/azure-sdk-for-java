@@ -6,8 +6,6 @@ package com.microsoft.windowsazure.services.core.storage;
  * 
  * @param <T>
  *            The type of the event to be received.
- * 
- *            Copyright (c)2011 Microsoft. All rights reserved.
  */
 public abstract class EventListener<T> {
     /**

@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 /**
  * Represents extended error information returned by the Windows Azure storage service.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class StorageExtendedErrorInformation implements Serializable {
     /**

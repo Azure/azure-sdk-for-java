@@ -23,8 +23,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
  * RESERVED FOR INTERNAL USE. A class that handles execution of StorageOperations and enforces retry policies.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class ExecutionEngine {
 

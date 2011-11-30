@@ -7,8 +7,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
  * Represents an item that may be returned by a blob listing operation.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public interface ListBlobItem {
 

@@ -15,8 +15,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. A class for parsing a list containers response stream.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class ListContainersResponse {
 

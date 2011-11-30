@@ -7,8 +7,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
 /**
  * Represents the credentials used to sign a request against the storage services.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public final class Credentials {
     /**

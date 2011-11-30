@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.blob.client;
 
 /**
  * Specifies which block lists should be searched to find a specified block.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public enum BlockSearchMode {
     /**

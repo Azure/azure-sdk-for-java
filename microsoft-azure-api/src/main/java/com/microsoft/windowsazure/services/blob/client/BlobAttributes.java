@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 /**
  * RESERVED FOR INTERNAL USE. Represents a blob's attributes.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class BlobAttributes {
 

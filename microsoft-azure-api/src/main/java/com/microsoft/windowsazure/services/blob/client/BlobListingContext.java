@@ -6,8 +6,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Lis
 
 /**
  * RESERVED FOR INTERNAL USE. Provides the listing context for blobs including the delimiter and listingdetails
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 final class BlobListingContext extends ListingContext {
 

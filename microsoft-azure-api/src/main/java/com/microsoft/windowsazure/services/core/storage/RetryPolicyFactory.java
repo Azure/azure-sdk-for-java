@@ -5,8 +5,6 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * Represents a retry policy factory that creates a new {@link RetryPolicy} object per transaction.
- * 
- * Copyright (c)2011 Microsoft. All rights reserved.
  */
 public interface RetryPolicyFactory {
 
