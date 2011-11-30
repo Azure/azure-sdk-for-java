@@ -1,6 +1,7 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -199,7 +200,16 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
         for (String key : clientResult.getHeaders().keySet()) {
             Object value = clientResult.getHeaders().getFirst(key);
-            message.setProperty(key, value);
+            try {
+                value = customPropertiesMapper.fromString(value.toString());
+                message.setProperty(key, value);
+            }
+            catch (ParseException e) {
+                //log.warn("Unable to parse custom header", e);
+            }
+            catch (NumberFormatException e) {
+                //log.warn("Unable to parse custom header", e);
+            }
         }
 
         return message;
