@@ -1,6 +1,12 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -16,19 +22,18 @@ public class WrapTokenManager {
     private final String uri;
     private final String name;
     private final String password;
-    private final String scope;
 
-    private ActiveToken activeToken;
+    private final Map<String, ActiveToken> activeTokens;
 
     @Inject
     public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri,
-            @Named("wrap.scope") String scope, @Named("wrap.name") String name, @Named("wrap.password") String password) {
+            @Named("wrap.name") String name, @Named("wrap.password") String password) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.uri = uri;
-        this.scope = scope;
         this.name = name;
         this.password = password;
+        activeTokens = new ConcurrentHashMap<String, ActiveToken>();
     }
 
     /**
@@ -46,12 +51,25 @@ public class WrapTokenManager {
         this.contract = contract;
     }
 
-    public String getAccessToken() throws ServiceException {
+    public String getAccessToken(URI targetUri) throws ServiceException, URISyntaxException {
         Date now = dateFactory.getDate();
-        ActiveToken active = this.activeToken;
+
+        URI scopeUri = new URI("http", targetUri.getAuthority(), targetUri.getPath(), null, null);
+        String scope = scopeUri.toString();
+
+        ActiveToken active = this.activeTokens.get(scope);
 
         if (active != null && now.before(active.getExpiresUtc())) {
             return active.getWrapResponse().getAccessToken();
+        }
+
+        // sweep expired tokens out of collection
+        Iterator<Entry<String, ActiveToken>> iterator = activeTokens.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, ActiveToken> entry = iterator.next();
+            if (!now.before(entry.getValue().getExpiresUtc())) {
+                iterator.remove();
+            }
         }
 
         WrapAccessTokenResult wrapResponse = getContract().wrapAccessToken(uri, name, password, scope);
@@ -60,7 +78,7 @@ public class WrapTokenManager {
         ActiveToken acquired = new ActiveToken();
         acquired.setWrapResponse(wrapResponse);
         acquired.setExpiresUtc(expiresUtc);
-        this.activeToken = acquired;
+        this.activeTokens.put(scope, acquired);
 
         return wrapResponse.getAccessToken();
     }

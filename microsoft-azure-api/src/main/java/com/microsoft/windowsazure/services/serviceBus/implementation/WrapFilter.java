@@ -1,5 +1,7 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import java.net.URISyntaxException;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
@@ -7,7 +9,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class WrapFilter extends ClientFilter {
-    private WrapTokenManager tokenManager;
+    private final WrapTokenManager tokenManager;
 
     public WrapFilter(WrapTokenManager tokenManager) {
         this.tokenManager = tokenManager;
@@ -18,9 +20,13 @@ public class WrapFilter extends ClientFilter {
 
         String accessToken;
         try {
-            accessToken = tokenManager.getAccessToken();
+            accessToken = tokenManager.getAccessToken(cr.getURI());
         }
         catch (ServiceException e) {
+            // must wrap exception because of base class signature
+            throw new ClientHandlerException(e);
+        }
+        catch (URISyntaxException e) {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
         }

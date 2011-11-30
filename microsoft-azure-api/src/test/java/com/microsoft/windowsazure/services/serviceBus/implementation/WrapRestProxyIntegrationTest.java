@@ -2,6 +2,8 @@ package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
@@ -19,7 +21,7 @@ public class WrapRestProxyIntegrationTest {
         String uri = (String) config.getProperty(ServiceBusConfiguration.WRAP_URI);
         String name = (String) config.getProperty(ServiceBusConfiguration.WRAP_NAME);
         String password = (String) config.getProperty(ServiceBusConfiguration.WRAP_PASSWORD);
-        String scope = (String) config.getProperty(ServiceBusConfiguration.WRAP_SCOPE);
+        String scope = new URI("http", new URI(uri).getAuthority(), new URI(uri).getPath(), null, null).toString();
         WrapAccessTokenResult result = contract.wrapAccessToken(uri, name, password, scope);
 
         // Assert
