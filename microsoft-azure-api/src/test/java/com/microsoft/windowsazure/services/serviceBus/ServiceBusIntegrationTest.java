@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
@@ -477,12 +478,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Act
         RuleInfo ruleOne = service.createRule(topicName, "sub", new RuleInfo("One").withCorrelationIdFilter("my-id"))
                 .getValue();
-        RuleInfo ruleTwo = service.createRule(topicName, "sub",
-                new RuleInfo("Two").withTrueSqlExpressionFilter("my-true-expression")).getValue();
-        RuleInfo ruleThree = service.createRule(topicName, "sub",
-                new RuleInfo("Three").withFalseSqlExpressionFilter("my-false-expression")).getValue();
+        RuleInfo ruleTwo = service.createRule(topicName, "sub", new RuleInfo("Two").withTrueFilter()).getValue();
+        RuleInfo ruleThree = service.createRule(topicName, "sub", new RuleInfo("Three").withFalseFilter()).getValue();
         RuleInfo ruleFour = service.createRule(topicName, "sub", new RuleInfo("Four").withEmptyRuleAction()).getValue();
         RuleInfo ruleFive = service.createRule(topicName, "sub", new RuleInfo("Five").withSqlRuleAction("SET x = 5"))
+                .getValue();
+        RuleInfo ruleSix = service.createRule(topicName, "sub", new RuleInfo("Six").withSqlExpressionFilter("x != 5"))
                 .getValue();
 
         // Assert
@@ -491,6 +492,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertEquals(FalseFilter.class, ruleThree.getFilter().getClass());
         assertEquals(EmptyRuleAction.class, ruleFour.getAction().getClass());
         assertEquals(SqlRuleAction.class, ruleFive.getAction().getClass());
+        assertEquals(SqlFilter.class, ruleSix.getFilter().getClass());
 
     }
 
