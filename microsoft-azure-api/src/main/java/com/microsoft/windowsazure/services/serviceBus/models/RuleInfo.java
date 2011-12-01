@@ -11,6 +11,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter
 import com.microsoft.windowsazure.services.serviceBus.implementation.Filter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
+import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
 
@@ -124,16 +125,21 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return setFilter(filter);
     }
 
-    public RuleInfo withTrueSqlExpressionFilter(String sqlExpression) {
-        TrueFilter filter = new TrueFilter();
+    public RuleInfo withSqlExpressionFilter(String sqlExpression) {
+        SqlFilter filter = new SqlFilter();
         filter.setSqlExpression(sqlExpression);
         filter.setCompatibilityLevel(20);
         return setFilter(filter);
     }
 
-    public RuleInfo withFalseSqlExpressionFilter(String sqlExpression) {
+    public RuleInfo withTrueFilter() {
+        TrueFilter filter = new TrueFilter();
+        filter.setCompatibilityLevel(20);
+        return setFilter(filter);
+    }
+
+    public RuleInfo withFalseFilter() {
         FalseFilter filter = new FalseFilter();
-        filter.setSqlExpression(sqlExpression);
         filter.setCompatibilityLevel(20);
         return setFilter(filter);
     }
