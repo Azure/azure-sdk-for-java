@@ -32,10 +32,12 @@ public class WrapRestProxyIntegrationTest {
         WrapContract contract = new WrapRestProxy(config.create(Client.class));
 
         // Act
+        String serviceBusUri = (String) config.getProperty(ServiceBusConfiguration.URI);
         String uri = (String) config.getProperty(ServiceBusConfiguration.WRAP_URI);
         String name = (String) config.getProperty(ServiceBusConfiguration.WRAP_NAME);
         String password = (String) config.getProperty(ServiceBusConfiguration.WRAP_PASSWORD);
-        String scope = new URI("http", new URI(uri).getAuthority(), new URI(uri).getPath(), null, null).toString();
+        String scope = new URI("http", new URI(serviceBusUri).getAuthority(), new URI(serviceBusUri).getPath(), null,
+                null).toString();
         WrapAccessTokenResult result = contract.wrapAccessToken(uri, name, password, scope);
 
         // Assert
