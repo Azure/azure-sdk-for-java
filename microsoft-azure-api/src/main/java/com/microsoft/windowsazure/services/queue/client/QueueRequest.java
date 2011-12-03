@@ -166,7 +166,8 @@ final class QueueRequest {
      *            timeout value is 0, the maximum timeout of 30 seconds is used.
      * @param popReceipt
      *            A <code>String</code> that contains the pop receipt value
-     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            returned from an earlier call to
+     *            {@link CloudQueueMessage#getPopReceipt} for the message to
      *            delete.
      * @param opContext
      *            An {@link OperationContext} object that represents the context
@@ -236,7 +237,8 @@ final class QueueRequest {
      * request.
      * 
      * @param message
-     *            A <code>String<code> containing the message to wrap in a message request body.
+     *            A
+     *            <code>String<code> containing the message to wrap in a message request body.
      * 
      * @return An array of <code>byte</code> containing the message request body
      *         encoded as UTF-8.
@@ -265,8 +267,7 @@ final class QueueRequest {
         xmlw.writeEndDocument();
         try {
             return outWriter.toString().getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
@@ -288,7 +289,8 @@ final class QueueRequest {
      *            the listing operation, if any. May be <code>null</code>.
      * @param detailsIncluded
      *            A {@link QueueListingDetails} object that specifies additional
-     *            details to return with the listing, if any. May be <code>null</code>.
+     *            details to return with the listing, if any. May be
+     *            <code>null</code>.
      * @param opContext
      *            An {@link OperationContext} object that represents the context
      *            for the current operation. This object is used to track
@@ -386,8 +388,8 @@ final class QueueRequest {
 
     /**
      * Constructs a web request to add a message to the back of the queue. Write
-     * the encoded message request body generated with a call to {@link #generateMessageRequestBody(String)} to the
-     * output stream of the
+     * the encoded message request body generated with a call to
+     * {@link #generateMessageRequestBody(String)} to the output stream of the
      * request. Sign the web request with the length of the encoded message
      * request body.
      * 
@@ -556,7 +558,8 @@ final class QueueRequest {
      *            timeout value is 0, the maximum timeout of 30 seconds is used.
      * @param popReceipt
      *            A <code>String</code> that contains the pop receipt value
-     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            returned from an earlier call to
+     *            {@link CloudQueueMessage#getPopReceipt} for the message to
      *            update.
      * @param visibilityTimeoutInSeconds
      *            Specifies the new visibility timeout value in seconds,
