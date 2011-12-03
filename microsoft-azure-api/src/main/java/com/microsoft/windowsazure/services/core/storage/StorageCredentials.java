@@ -97,7 +97,7 @@ public abstract class StorageCredentials {
     // signature string; otherwise, <Code>false</Code>
     //
     /** Reserved. */
-    public abstract Boolean canCredentialsComputeHmac();
+    public abstract boolean canCredentialsComputeHmac();
 
     //
     // RESERVED, for internal use only. Gets a value indicating whether a
@@ -108,7 +108,7 @@ public abstract class StorageCredentials {
     // credentials; otherwise, <Code>false</Code>
     //
     /** Reserved. */
-    public abstract Boolean canCredentialsSignRequest();
+    public abstract boolean canCredentialsSignRequest();
 
     //
     // RESERVED, for internal use only. Gets a value indicating whether a
@@ -119,7 +119,7 @@ public abstract class StorageCredentials {
     // credentials; otherwise, <code>false</code>
     //
     /** Reserved. */
-    public abstract Boolean canCredentialsSignRequestLite();
+    public abstract boolean canCredentialsSignRequestLite();
 
     /**
      * Computes a signature for the specified string using the HMAC-SHA256 algorithm.
@@ -193,7 +193,7 @@ public abstract class StorageCredentials {
     // <Code>false</Code>
     //
     /** Reserved. */
-    public abstract Boolean doCredentialsNeedTransformUri();
+    public abstract boolean doCredentialsNeedTransformUri();
 
     /**
      * Returns the associated account name for the credentials.
@@ -282,7 +282,7 @@ public abstract class StorageCredentials {
      *            <code>true</code> to include sensitive data in the return string; otherwise, <code>false</code>.
      * @return A <code>String</code> that represents this object, optionally including sensitive data.
      */
-    public abstract String toString(Boolean exportSecrets);
+    public abstract String toString(boolean exportSecrets);
 
     /**
      * Transforms a resource URI into a shared access signature URI, by appending a shared access token.

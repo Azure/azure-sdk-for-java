@@ -477,7 +477,7 @@ public final class CloudStorageAccount {
     // won't ever really happen.
 
     // Also eclipse's auto formatting below is horrible
-    public CloudStorageAccount(final StorageCredentialsAccountAndKey storageCredentials, final Boolean useHttps)
+    public CloudStorageAccount(final StorageCredentialsAccountAndKey storageCredentials, final boolean useHttps)
             throws URISyntaxException {
         this(storageCredentials, new URI(getDefaultBlobEndpoint(useHttps ? Constants.HTTPS : Constants.HTTP,
                 storageCredentials.getAccountName())), new URI(getDefaultQueueEndpoint(useHttps ? Constants.HTTPS
@@ -615,7 +615,7 @@ public final class CloudStorageAccount {
      * @param exportSecrets
      *            <code>true</code> to include sensitive data in the string; otherwise, <code>false</code>.
      */
-    public String toString(final Boolean exportSecrets) {
+    public String toString(final boolean exportSecrets) {
         if (this.credentials != null && Utility.isNullOrEmpty(this.credentials.getAccountName())) {
             return this.credentials.toString(exportSecrets);
         }

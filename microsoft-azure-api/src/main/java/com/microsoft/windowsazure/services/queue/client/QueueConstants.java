@@ -25,6 +25,11 @@ final class QueueConstants {
     public static final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
 
     /**
+     * Default visibility time out for the retrieve message operation.
+     */
+    public static final int DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS = 30;
+
+    /**
      * The maximum amount of time a message is kept inside the queue, in seconds.
      */
     public static final int MAX_TIME_TO_LIVE_IN_SECONDS = 7 * 24 * 60 * 60;

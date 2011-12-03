@@ -218,7 +218,6 @@ public final class CloudBlobContainer {
                 // Set attributes
                 final BlobContainerAttributes attributes = ContainerResponse.getAttributes(request,
                         client.isUsePathStyleUris());
-                container.setMetadata(attributes.getMetadata());
                 container.properties = attributes.getProperties();
                 container.name = attributes.getName();
                 return null;
@@ -238,7 +237,7 @@ public final class CloudBlobContainer {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public Boolean createIfNotExist() throws StorageException {
+    public boolean createIfNotExist() throws StorageException {
         return this.createIfNotExist(null, null);
     }
 
@@ -260,7 +259,7 @@ public final class CloudBlobContainer {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public Boolean createIfNotExist(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+    public boolean createIfNotExist(BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -290,7 +289,6 @@ public final class CloudBlobContainer {
                     // Set attributes
                     final BlobContainerAttributes attributes = ContainerResponse.getAttributes(request,
                             client.isUsePathStyleUris());
-                    container.metadata = attributes.getMetadata();
                     container.properties = attributes.getProperties();
                     container.name = attributes.getName();
                     return true;
@@ -394,7 +392,7 @@ public final class CloudBlobContainer {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public Boolean deleteIfExists() throws StorageException {
+    public boolean deleteIfExists() throws StorageException {
         return this.deleteIfExists(null, null);
     }
 
@@ -416,7 +414,7 @@ public final class CloudBlobContainer {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public Boolean deleteIfExists(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+    public boolean deleteIfExists(BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }

@@ -495,9 +495,7 @@ final class QueueRequest {
             builder.add("numofmessages", Integer.toString(numberOfMessages));
         }
 
-        if (visibilityTimeoutInSeconds != 0) {
-            builder.add("visibilitytimeout", Integer.toString(visibilityTimeoutInSeconds));
-        }
+        builder.add("visibilitytimeout", Integer.toString(visibilityTimeoutInSeconds));
 
         final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
 

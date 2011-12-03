@@ -54,22 +54,22 @@ public final class CloudQueue {
     /**
      * The absolute <code>URI</code> of the queue.
      */
-    URI uri;
+    private URI uri;
 
     /**
      * A reference to the queue's associated service client.
      */
-    private final CloudQueueClient queueServiceClient;
+    private CloudQueueClient queueServiceClient;
 
     /**
      * The queue's Metadata collection.
      */
-    HashMap<String, String> metadata;
+    private HashMap<String, String> metadata;
 
     /**
      * The queue's approximate message count, as reported by the server.
      */
-    long approximateMessageCount;
+    private long approximateMessageCount;
 
     /**
      * The <code for the messages of the queue.
@@ -79,7 +79,7 @@ public final class CloudQueue {
     /**
      * A flag indicating whether or not the message should be encoded in base-64.
      */
-    Boolean shouldEncodeMessage;
+    private boolean shouldEncodeMessage;
 
     /**
      * Creates an instance of the <code>CloudQueue</code> class using the specified address and client.
@@ -355,7 +355,7 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean createIfNotExist() throws StorageException {
+    public boolean createIfNotExist() throws StorageException {
         return this.createIfNotExist(null, null);
     }
 
@@ -379,7 +379,7 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean createIfNotExist(QueueRequestOptions options, OperationContext opContext) throws StorageException {
+    public boolean createIfNotExist(QueueRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -507,7 +507,7 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean deleteIfExists() throws StorageException {
+    public boolean deleteIfExists() throws StorageException {
         return this.deleteIfExists(null, null);
     }
 
@@ -531,7 +531,7 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean deleteIfExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
+    public boolean deleteIfExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -609,6 +609,7 @@ public final class CloudQueue {
     @DoesServiceRequest
     public void deleteMessage(final CloudQueueMessage message, QueueRequestOptions options, OperationContext opContext)
             throws StorageException {
+        Utility.assertNotNull("message", message);
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -727,8 +728,8 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean exist() throws StorageException {
-        return this.exist(null, null);
+    public boolean exists() throws StorageException {
+        return this.exists(null, null);
     }
 
     /**
@@ -750,7 +751,7 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Boolean exist(QueueRequestOptions options, OperationContext opContext) throws StorageException {
+    public boolean exists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -865,7 +866,7 @@ public final class CloudQueue {
      * 
      * @return A <code>Boolean</code> that represents whether the message should be base-64 encoded.
      */
-    public Boolean getShouldEncodeMessage() {
+    public boolean getShouldEncodeMessage() {
         return this.shouldEncodeMessage;
     }
 
@@ -1011,7 +1012,7 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public CloudQueueMessage retrieveMessage() throws StorageException {
-        return this.retrieveMessage(0, null, null);
+        return this.retrieveMessage(QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS, null, null);
     }
 
     /**
@@ -1056,7 +1057,8 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public Iterable<CloudQueueMessage> retrieveMessages(final int numberOfMessages) throws StorageException {
-        return this.retrieveMessages(numberOfMessages, 0, null, null);
+        return this.retrieveMessages(numberOfMessages, QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS,
+                null, null);
     }
 
     /**
@@ -1090,6 +1092,8 @@ public final class CloudQueue {
             final int visibilityTimeoutInSeconds, QueueRequestOptions options, OperationContext opContext)
             throws StorageException {
         Utility.assertInBounds("numberOfMessages", numberOfMessages, 1, QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK);
+        Utility.assertInBounds("visibilityTimeoutInSeconds", visibilityTimeoutInSeconds, 0,
+                QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1141,6 +1145,16 @@ public final class CloudQueue {
      */
     public void setMetadata(final HashMap<String, String> metadata) {
         this.metadata = metadata;
+    }
+
+    /**
+     * Sets the flag indicating whether the message should be base-64 encoded.
+     * 
+     * @param shouldEncodeMessage
+     *            The value indicates whether the message should be base-64 encoded.
+     */
+    public void setShouldEncodeMessage(final boolean shouldEncodeMessage) {
+        this.shouldEncodeMessage = shouldEncodeMessage;
     }
 
     /**
@@ -1249,6 +1263,10 @@ public final class CloudQueue {
                     this.setNonExceptionedRetryableFailure(true);
                     return null;
                 }
+
+                message.popReceipt = request.getHeaderField("x-ms-popreceipt");
+                message.nextVisibleTime = Utility.parseRFC1123DateFromStringInGMT(request
+                        .getHeaderField("x-ms-time-next-visible"));
 
                 return null;
             }

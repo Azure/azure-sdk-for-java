@@ -271,7 +271,7 @@ public final class Base64 {
      *            the string, as a <code>String</code> object, to validate
      * @return <code>true</code> if <code>data</code> is a valid Base64 string, otherwise <code>false</code>
      */
-    public static Boolean validateIsBase64String(final String data) {
+    public static boolean validateIsBase64String(final String data) {
 
         if (data == null || data.length() % 4 != 0) {
             return false;
