@@ -652,7 +652,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      */
     @DoesServiceRequest
-    public final Boolean deleteIfExists() throws StorageException {
+    public final boolean deleteIfExists() throws StorageException {
         return this.deleteIfExists(DeleteSnapshotsOption.NONE, null, null, null);
     }
 
@@ -684,7 +684,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final Boolean deleteIfExists(final DeleteSnapshotsOption deleteSnapshotsOption,
+    public final boolean deleteIfExists(final DeleteSnapshotsOption deleteSnapshotsOption,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         Utility.assertNotNull("deleteSnapshotsOption", deleteSnapshotsOption);

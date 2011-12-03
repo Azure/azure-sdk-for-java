@@ -52,7 +52,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsComputeHmac() {
+    public boolean canCredentialsComputeHmac() {
         return false;
     }
 
@@ -65,7 +65,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequest() {
+    public boolean canCredentialsSignRequest() {
         return false;
     }
 
@@ -78,7 +78,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequestLite() {
+    public boolean canCredentialsSignRequestLite() {
         return false;
     }
 
@@ -154,7 +154,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean doCredentialsNeedTransformUri() {
+    public boolean doCredentialsNeedTransformUri() {
         return false;
     }
 
@@ -238,7 +238,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * @return a string representation of the credentials, optionally including sensitive data.
      */
     @Override
-    public String toString(final Boolean exportSecrets) {
+    public String toString(final boolean exportSecrets) {
         return Constants.EMPTY_STRING;
     }
 

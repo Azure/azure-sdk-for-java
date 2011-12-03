@@ -67,7 +67,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsComputeHmac() {
+    public boolean canCredentialsComputeHmac() {
         return true;
     }
 
@@ -80,7 +80,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequest() {
+    public boolean canCredentialsSignRequest() {
         return true;
     }
 
@@ -93,7 +93,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequestLite() {
+    public boolean canCredentialsSignRequestLite() {
         return true;
     }
 
@@ -181,7 +181,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     //
     /** Reserved. */
     @Override
-    public Boolean doCredentialsNeedTransformUri() {
+    public boolean doCredentialsNeedTransformUri() {
         return false;
     }
 
@@ -320,7 +320,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @return A <code>String</code> that represents this object, optionally including sensitive data.
      */
     @Override
-    public String toString(final Boolean exportSecrets) {
+    public String toString(final boolean exportSecrets) {
         return String.format("%s=%s;%s=%s", CloudStorageAccount.ACCOUNT_NAME_NAME, this.getAccountName(),
                 CloudStorageAccount.ACCOUNT_KEY_NAME, exportSecrets ? this.credentials.getKey().getBase64EncodedKey()
                         : "[key hidden]");

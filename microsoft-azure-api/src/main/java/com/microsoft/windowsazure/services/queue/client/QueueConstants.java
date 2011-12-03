@@ -32,6 +32,11 @@ final class QueueConstants {
      * The maximum number of messages that can be peeked or retrieved at a time.
      */
     public static final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
+    
+    /**
+     * Default visibility time out for the retrieve message operation.
+     */
+    public static final int DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS = 30;
 
     /**
      * The maximum amount of time a message is kept inside the queue, in seconds.
@@ -101,8 +106,9 @@ final class QueueConstants {
     /**
      * The header that specifies the approximate message count of a queue.
      */
-    public static final String APPROXIMATE_MESSAGES_COUNT = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-            + "approximate-messages-count";
+    public static final String APPROXIMATE_MESSAGES_COUNT =
+            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+                    + "approximate-messages-count";
 
     /**
      * Private Default Ctor.

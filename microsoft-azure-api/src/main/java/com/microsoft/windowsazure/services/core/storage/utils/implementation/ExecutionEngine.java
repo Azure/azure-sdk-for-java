@@ -146,10 +146,11 @@ public final class ExecutionEngine {
                 setLastException(opContext, translatedException);
             }
             catch (final XMLStreamException e) {
-                // Retryable
+                // Non Retryable, just throw
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
+                throw translatedException;
             }
             catch (final InvalidKeyException e) {
                 // Non Retryable, just throw

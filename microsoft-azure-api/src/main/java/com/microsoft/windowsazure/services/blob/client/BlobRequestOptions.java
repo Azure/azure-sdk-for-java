@@ -106,28 +106,28 @@ public final class BlobRequestOptions extends RequestOptions {
     /**
      * @return the disableContentMD5Validation
      */
-    protected Boolean getDisableContentMD5Validation() {
+    protected boolean getDisableContentMD5Validation() {
         return this.disableContentMD5Validation;
     }
 
     /**
      * @return the storeBlobContentMD5
      */
-    public Boolean getStoreBlobContentMD5() {
+    public boolean getStoreBlobContentMD5() {
         return this.storeBlobContentMD5;
     }
 
     /**
      * @return the useSparsePageBlob
      */
-    public Boolean getUseSparsePageBlob() {
+    public boolean getUseSparsePageBlob() {
         return this.useSparsePageBlob;
     }
 
     /**
      * @return the useTransactionalContentMD5
      */
-    public Boolean getUseTransactionalContentMD5() {
+    public boolean getUseTransactionalContentMD5() {
         return this.useTransactionalContentMD5;
     }
 
@@ -143,7 +143,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * @param disableContentMD5Validation
      *            the disableContentMD5Validation to set
      */
-    public void setDisableContentMD5Validation(final Boolean disableContentMD5Validation) {
+    public void setDisableContentMD5Validation(final boolean disableContentMD5Validation) {
         this.disableContentMD5Validation = disableContentMD5Validation;
     }
 
@@ -151,7 +151,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * @param storeBlobContentMD5
      *            the storeBlobContentMD5 to set
      */
-    public void setStoreBlobContentMD5(final Boolean storeBlobContentMD5) {
+    public void setStoreBlobContentMD5(final boolean storeBlobContentMD5) {
         this.storeBlobContentMD5 = storeBlobContentMD5;
     }
 
@@ -159,7 +159,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * @param useSparsePageBlob
      *            the useSparsePageBlob to set
      */
-    public void setUseSparsePageBlob(final Boolean useSparsePageBlob) {
+    public void setUseSparsePageBlob(final boolean useSparsePageBlob) {
         this.useSparsePageBlob = useSparsePageBlob;
     }
 
@@ -167,7 +167,7 @@ public final class BlobRequestOptions extends RequestOptions {
      * @param useTransactionalContentMD5
      *            the useTransactionalContentMD5 to set
      */
-    public void setUseTransactionalContentMD5(final Boolean useTransactionalContentMD5) {
+    public void setUseTransactionalContentMD5(final boolean useTransactionalContentMD5) {
         this.useTransactionalContentMD5 = useTransactionalContentMD5;
     }
 }

@@ -49,7 +49,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsComputeHmac() {
+    public boolean canCredentialsComputeHmac() {
         return false;
     }
 
@@ -62,7 +62,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequest() {
+    public boolean canCredentialsSignRequest() {
         return false;
     }
 
@@ -75,7 +75,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public Boolean canCredentialsSignRequestLite() {
+    public boolean canCredentialsSignRequestLite() {
         return false;
     }
 
@@ -157,7 +157,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public Boolean doCredentialsNeedTransformUri() {
+    public boolean doCredentialsNeedTransformUri() {
         return true;
     }
 
@@ -257,7 +257,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      * @return A <code>String</code> that represents this object, optionally including sensitive data.
      */
     @Override
-    public String toString(final Boolean exportSecrets) {
+    public String toString(final boolean exportSecrets) {
         return String.format("%s=%s", CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME, exportSecrets ? this.token
                 : "[signature hidden]");
     }
