@@ -71,8 +71,8 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
-import com.microsoft.windowsazure.services.core.utils.pipeline.JerseyHelpers;
-import com.microsoft.windowsazure.services.core.utils.pipeline.JerseyHelpers.EnumCommaStringBuilder;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -119,39 +119,39 @@ public class BlobRestProxy implements BlobContract {
     }
 
     private void ThrowIfError(ClientResponse r) {
-        JerseyHelpers.ThrowIfError(r);
+        PipelineHelpers.ThrowIfError(r);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
-        return JerseyHelpers.addOptionalQueryParam(webResource, key, value);
+        return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
-        return JerseyHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
+        return PipelineHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
     }
 
     private Builder addOptionalHeader(Builder builder, String name, Object value) {
-        return JerseyHelpers.addOptionalHeader(builder, name, value);
+        return PipelineHelpers.addOptionalHeader(builder, name, value);
     }
 
     private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
-        return JerseyHelpers.addOptionalMetadataHeader(builder, metadata);
+        return PipelineHelpers.addOptionalMetadataHeader(builder, metadata);
     }
 
     private Builder addOptionalRangeHeader(Builder builder, Long rangeStart, Long rangeEnd) {
-        return JerseyHelpers.addOptionalRangeHeader(builder, rangeStart, rangeEnd);
+        return PipelineHelpers.addOptionalRangeHeader(builder, rangeStart, rangeEnd);
     }
 
     private Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return JerseyHelpers.addOptionalAccessContitionHeader(builder, accessCondition);
+        return PipelineHelpers.addOptionalAccessContitionHeader(builder, accessCondition);
     }
 
     private Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return JerseyHelpers.addOptionalSourceAccessContitionHeader(builder, accessCondition);
+        return PipelineHelpers.addOptionalSourceAccessContitionHeader(builder, accessCondition);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
-        return JerseyHelpers.getMetadataFromHeaders(response);
+        return PipelineHelpers.getMetadataFromHeaders(response);
     }
 
     private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {

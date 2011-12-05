@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
-import com.microsoft.windowsazure.services.core.utils.pipeline.JerseyHelpers;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
@@ -88,23 +88,23 @@ public class QueueRestProxy implements QueueContract {
     }
 
     private void ThrowIfError(ClientResponse r) {
-        JerseyHelpers.ThrowIfError(r);
+        PipelineHelpers.ThrowIfError(r);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
-        return JerseyHelpers.addOptionalQueryParam(webResource, key, value);
+        return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
-        return JerseyHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
+        return PipelineHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
     }
 
     private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
-        return JerseyHelpers.addOptionalMetadataHeader(builder, metadata);
+        return PipelineHelpers.addOptionalMetadataHeader(builder, metadata);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
-        return JerseyHelpers.getMetadataFromHeaders(response);
+        return PipelineHelpers.getMetadataFromHeaders(response);
     }
 
     private WebResource getResource(QueueServiceOptions options) {

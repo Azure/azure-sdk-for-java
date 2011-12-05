@@ -26,7 +26,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class JerseyHelpers {
+public class PipelineHelpers {
     public static void ThrowIfError(ClientResponse r) {
         if (r.getStatus() >= 300) {
             throw new UniformInterfaceException(r);
