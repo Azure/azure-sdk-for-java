@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.JerseyHelpers.EnumCommaStringBuilder;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
