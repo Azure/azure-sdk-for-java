@@ -1,0 +1,32 @@
+/**
+ * Copyright 2011 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.microsoft.windowsazure.services.table;
+
+import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.table.implementation.SharedKeyFilter;
+import com.microsoft.windowsazure.services.table.implementation.SharedKeyLiteFilter;
+import com.microsoft.windowsazure.services.table.implementation.TableExceptionProcessor;
+import com.microsoft.windowsazure.services.table.implementation.TableRestProxy;
+
+public class Exports implements Builder.Exports {
+    @Override
+    public void register(Builder.Registry registry) {
+        registry.add(TableContract.class, TableExceptionProcessor.class);
+        registry.add(TableExceptionProcessor.class);
+        registry.add(TableRestProxy.class);
+        registry.add(SharedKeyLiteFilter.class);
+        registry.add(SharedKeyFilter.class);
+    }
+}
