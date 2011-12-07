@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 
 import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
-import com.microsoft.windowsazure.services.core.storage.utils.StreamDescriptor;
+import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseRequest;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
@@ -322,7 +322,7 @@ public abstract class ServiceClient {
 
                 final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(propertiesBytes);
 
-                final StreamDescriptor descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
+                final StreamMd5AndLength descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
                 client.getCredentials().signRequest(request, descriptor.getLength());

@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.core.storage.utils;
 /**
  * RESERVED FOR INTERNAL USE. Represents a stream descriptor that contains the stream size and MD5 hash.
  */
-public final class StreamDescriptor {
+public final class StreamMd5AndLength {
     /**
      * Contains the MD5 hash for the stream data.
      */

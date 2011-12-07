@@ -102,14 +102,14 @@ public final class Utility {
      * @param calculateMD5
      *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
      * 
-     * @return A {@link StreamDescriptor} object that contains the stream length, and optionally the MD5 hash.
+     * @return A {@link StreamMd5AndLength} object that contains the stream length, and optionally the MD5 hash.
      * 
      * @throws IOException
      *             If an I/O error occurs.
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StreamDescriptor analyzeStream(final InputStream sourceStream, long writeLength, long abandonLength,
+    public static StreamMd5AndLength analyzeStream(final InputStream sourceStream, long writeLength, long abandonLength,
             final boolean rewindSourceStream, final boolean calculateMD5) throws IOException, StorageException {
         if (abandonLength < 0) {
             abandonLength = Long.MAX_VALUE;
@@ -137,7 +137,7 @@ public final class Utility {
             writeLength = Long.MAX_VALUE;
         }
 
-        final StreamDescriptor retVal = new StreamDescriptor();
+        final StreamMd5AndLength retVal = new StreamMd5AndLength();
         int count = -1;
         final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
 
@@ -896,14 +896,14 @@ public final class Utility {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return A {@link StreamDescriptor} object that contains the output stream length, and optionally the MD5 hash.
+     * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
      * 
      * @throws IOException
      *             If an I/O error occurs.
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StreamDescriptor writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
+    public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5,
             final RequestResult currentResult, final OperationContext opContext) throws IOException, StorageException {
         if (opContext != null) {
@@ -925,7 +925,7 @@ public final class Utility {
             }
         }
 
-        final StreamDescriptor retVal = new StreamDescriptor();
+        final StreamMd5AndLength retVal = new StreamMd5AndLength();
 
         if (writeLength < 0) {
             writeLength = Long.MAX_VALUE;
