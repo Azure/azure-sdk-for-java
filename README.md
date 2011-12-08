@@ -32,7 +32,7 @@ within your project you can also have them installed by the Java package manager
 <h2>Usage</h2>
 <p>To use this SDK to call Windows Azure services, you need to first create an
 account.  To host your Java code in Windows Azure, you additionally need to download
-the full Windows Azure SDK for Java – which includes packaging, emulation, and
+the full Windows Azure SDK for Java - which includes packaging, emulation, and
 deployment tools.</p>
 
 <h2>Code Samples</h2>
