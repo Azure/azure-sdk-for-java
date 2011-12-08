@@ -3,31 +3,53 @@
 you to take advantage of Azure scalable cloud computing resources: table and blob
 storage, messaging through Service Bus.</p>
 
-<p>The SDK components available in this respository are:</p>
-<ul>
-    <li>Client Libraries for Windows Azure Service Runtime, Storage Services and
-    Service Bus</li>
-    <li>Code Samples</li>
-    <li>Basic Tests</li>
-</ul>
 <p>For documentation please see the <a href="http://www.windowsazure.com/en-us/develop/java/">
 Windows Azure Java Developer Center</a></p>
+
+<h1>Features</h1>
+<ul>
+<li>Blob
+<ul>
+<li>Create/Read/Update/Delete Blobs</li>
+</ul></li>
+<li>Queue
+<ul>
+<li>Create/Delete Queues</li>
+<li>Insert/Peek Queue Messages</li>
+<li>Advanced Queue Operations</li>
+</ul></li>
+<li>Service Bus
+<ul>
+<li>Use either the Queue or Topic/Subscription Model</li>
+</ul></li>
+<li>Service Runtime
+<ul>
+<li>Retrieve information about the state of your Azure Compute instances</li>
+</ul></li>
+</ul>
 
 <h1>Getting Started</h1>
 <h2>Download</h2>
 <h3>Option 1: Via Git</h3>
 <p>To get the source code of the SDK via git just type:<br/>
 <pre>git clone git://github.com/WindowsAzure/azure-sdk-for-java.git
-cd ./azure-sdk-for-java</pre>
+cd ./azure-sdk-for-java
+mvn compile</pre>
 
 <h3>Option 2: Via Maven</h3>
 <p>To get the binaries of this library as distributed by Microsoft, ready for use
 within your project you can also have them installed by the Java package manager Maven.<br/>
-<pre><dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.1.0</version>
-</dependency></pre></p>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;com.microsoft.windowsazure&lt;/groupId&gt;
+  &lt;artifactId&gt;microsoft-windowsazure-api&lt;/artifactId&gt;
+  &lt;version&gt;0.1.0&lt;/version&gt;
+&lt;/dependency&gt;</pre></p>
+
+<h2>Minimum Requirements</h2>
+<ul>
+<li>Java 1.6</li>
+<li>(Optional) Maven</li>
+</ul>
 
 <h2>Usage</h2>
 <p>To use this SDK to call Windows Azure services, you need to first create an
@@ -37,7 +59,8 @@ deployment tools.</p>
 
 <h2>Code Samples</h2>
 <p>The following is a quick example on how to set up a Azure blob using the API
-and uploading a file to it.<br/>
+and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed <a href="http://www.windowsazure.com/en-us/develop/java/">
+here</a>.<br/>
 
 <pre>import com.microsoft.windowsazure.services.core.storage.*;
 import com.microsoft.windowsazure.services.blob.client.*;
@@ -71,7 +94,7 @@ public class BlobSample {
             // Upload an image file.
             blob = container.getBlockBlobReference("image1.jpg");
             File fileReference = new File ("c:\\myimages\\image1.jpg");
-blob.upload(new FileInputStream(fileReference), fileReference.length());
+            blob.upload(new FileInputStream(fileReference), fileReference.length());
         }
         catch (FileNotFoundException fileNotFoundException)
         {
@@ -95,11 +118,6 @@ blob.upload(new FileInputStream(fileReference), fileReference.length());
     }
 }
 </pre></p>
-
-<h1>Minimum Requirements</h1>
-<ul>
-    <li>Java 1.6</li>
-</ul>
 
 <h1>Need Help?</h1>
 <p>Be sure to check out the Windows Azure <a href="http://go.microsoft.com/fwlink/?LinkId=234489">
