@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.table;
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
+import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 
@@ -28,4 +30,8 @@ public interface TableContract extends FilterableService<TableContract> {
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
     void setServiceProperties(ServiceProperties serviceProperties, TableServiceOptions options) throws ServiceException;
+
+    QueryTablesResult queryTables() throws ServiceException;
+
+    QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException;
 }

@@ -30,6 +30,8 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
+import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.sun.jersey.api.client.ClientResponse;
@@ -137,5 +139,25 @@ public class TableRestProxy implements TableContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         builder.put(serviceProperties);
+    }
+
+    @Override
+    public QueryTablesResult queryTables() throws ServiceException {
+        return queryTables(new QueryTablesOptions());
+    }
+
+    @Override
+    public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
+        WebResource webResource = getResource(options).path("Tables" + options.getQuery());
+
+        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
+
+        QueryTablesResult result = new QueryTablesResult();
+        result.setContinuationToken(response.getHeaders().getFirst("x-ms-continuation-NextTableName"));
+
+        return result;
     }
 }

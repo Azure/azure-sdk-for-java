@@ -24,6 +24,8 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
+import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -96,6 +98,32 @@ public class TableExceptionProcessor implements TableContract {
             throws ServiceException {
         try {
             service.setServiceProperties(serviceProperties, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryTablesResult queryTables() throws ServiceException {
+        try {
+            return service.queryTables();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
+        try {
+            return service.queryTables(options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
