@@ -54,11 +54,11 @@ public final class OperationContext {
      * Represents an event that is triggered when a response is received from the storage service while processing a
      * request.
      * 
-     * @see EventListener
-     * @see EventListenerMultiCaster
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
      * @see ResponseReceivedEvent
      */
-    private EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler = new EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>>();
+    private StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler = new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>();
 
     /**
      * Reserved for internal use.
@@ -156,7 +156,7 @@ public final class OperationContext {
     /**
      * @return the responseReceivedEventHandler
      */
-    public EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
+    public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
         return this.responseReceivedEventHandler;
     }
 
@@ -220,7 +220,7 @@ public final class OperationContext {
      *            the responseReceivedEventHandler to set
      */
     public void setResponseReceivedEventHandler(
-            final EventListenerMultiCaster<ResponseReceivedEvent, EventListener<ResponseReceivedEvent>> responseReceivedEventHandler) {
+            final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler) {
         this.responseReceivedEventHandler = responseReceivedEventHandler;
     }
 }

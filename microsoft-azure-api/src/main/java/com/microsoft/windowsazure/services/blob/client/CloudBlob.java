@@ -39,7 +39,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
-import com.microsoft.windowsazure.services.core.storage.utils.StreamDescriptor;
+import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
 import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
@@ -807,7 +807,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
 
-                final StreamDescriptor descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
                         validateMD5, this.getResult(), opContext);
 
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
@@ -877,7 +877,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 // 3. Continue copying
-                final StreamDescriptor descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
                         validateMd5, null, opContext);
 
                 if (validateMd5 && !this.properties.getContentMD5().equals(descriptor.getMd5())) {
@@ -2152,7 +2152,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, length);
 
-                final StreamDescriptor descriptor = Utility.writeToOutputStream(sourceStream,
+                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(sourceStream,
                         request.getOutputStream(), length, true, false, null, opContext);
 
                 if (length != descriptor.getLength()) {

@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * @param <EVENT_LISTENTER_TYPE>
  *            An object that represents the type of the event listener.
  */
-public final class EventListenerMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE extends EventListener<EVENT_TYPE>> {
+public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE extends StorageEvent<EVENT_TYPE>> {
 
     /**
      * Holds the list of listeners.
@@ -48,7 +48,7 @@ public final class EventListenerMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE ext
      *            An <code>EVENTTYPE</code>object that represents the event being multi-casted.
      */
     public synchronized void fireEvent(final EVENT_TYPE event) {
-        for (final EventListener<EVENT_TYPE> listener : this.listeners) {
+        for (final StorageEvent<EVENT_TYPE> listener : this.listeners) {
             listener.eventOccurred(event);
         }
     }

@@ -28,7 +28,7 @@ import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
-import com.microsoft.windowsazure.services.core.storage.utils.StreamDescriptor;
+import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
@@ -175,7 +175,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(blockListBytes);
 
-                final StreamDescriptor descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
+                final StreamMd5AndLength descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
 
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
@@ -400,7 +400,7 @@ public final class CloudBlockBlob extends CloudBlob {
         // Mark sourceStream for current position.
         sourceStream.mark(Integer.MAX_VALUE);
 
-        StreamDescriptor descriptor = new StreamDescriptor();
+        StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
 
         // If the stream is rewindable and the length is unknown or we need to
@@ -516,7 +516,7 @@ public final class CloudBlockBlob extends CloudBlob {
         sourceStream.mark(Integer.MAX_VALUE);
 
         InputStream bufferedStreamReference = sourceStream;
-        StreamDescriptor descriptor = new StreamDescriptor();
+        StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
 
         if (!sourceStream.markSupported()) {
