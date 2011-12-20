@@ -809,16 +809,15 @@ public abstract class CloudBlob implements ListBlobItem {
                 final long expectedLength = Long.parseLong(contentLength);
 
                 blob.updatePropertiesFromResponse(request);
-
-                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
-                        validateMD5, this.getResult(), opContext);
-
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
                     return null;
                 }
+
+                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                        validateMD5, this.getResult(), opContext);
 
                 if (descriptor.getLength() != expectedLength) {
                     throw new StorageException(
@@ -847,6 +846,7 @@ public abstract class CloudBlob implements ListBlobItem {
             // Check if users has any retries specified, Or if the exception is retryable
             final RetryPolicy dummyPolicy = options.getRetryPolicyFactory().createInstance(opContext);
             if (ex.getHttpStatusCode() == Constants.HeaderConstants.HTTP_UNUSED_306
+                    || ex.getHttpStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED
                     || !dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(),
                             (Exception) ex.getCause(), opContext).isShouldRetry()) {
                 opContext.setIntermediateMD5(null);
@@ -862,7 +862,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
             AccessCondition etagLockCondition = new AccessCondition();
             etagLockCondition.setIfMatch(this.getProperties().getEtag());
-            etagLockCondition.setLeaseID(accessCondition.getLeaseID());
+            if (accessCondition != null) {
+                etagLockCondition.setLeaseID(accessCondition.getLeaseID());
+            }
 
             // 1. Open Read Stream
             final BlobInputStream streamRef = this.openInputStream(etagLockCondition, options, opContext);
