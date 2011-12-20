@@ -862,7 +862,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
             AccessCondition etagLockCondition = new AccessCondition();
             etagLockCondition.setIfMatch(this.getProperties().getEtag());
-            etagLockCondition.setLeaseID(accessCondition.getLeaseID());
+            if (accessCondition != null) {
+                etagLockCondition.setLeaseID(accessCondition.getLeaseID());
+            }
 
             // 1. Open Read Stream
             final BlobInputStream streamRef = this.openInputStream(etagLockCondition, options, opContext);
