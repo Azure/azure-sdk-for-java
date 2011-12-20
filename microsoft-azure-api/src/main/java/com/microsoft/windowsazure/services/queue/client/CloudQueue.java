@@ -428,7 +428,7 @@ public final class CloudQueue {
                     StorageExtendedErrorInformation extendedInfo = potentialConflictException
                             .getExtendedErrorInformation();
                     if (extendedInfo == null) {
-                        // If we cant validate the error then the error must be surfaced to the user.
+                        // If we can't validate the error then the error must be surfaced to the user.
                         throw potentialConflictException;
                     }
 
