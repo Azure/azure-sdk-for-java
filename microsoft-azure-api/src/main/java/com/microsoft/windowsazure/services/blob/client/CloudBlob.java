@@ -844,10 +844,11 @@ public abstract class CloudBlob implements ListBlobItem {
             opContext.setIntermediateMD5(null);
         }
         catch (final StorageException ex) {
-            // Check if users has any retries specified.
+            // Check if users has any retries specified, Or if the exception is retryable
             final RetryPolicy dummyPolicy = options.getRetryPolicyFactory().createInstance(opContext);
-            if (!dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(), (Exception) ex.getCause(),
-                    opContext).isShouldRetry()) {
+            if (ex.getHttpStatusCode() == Constants.HeaderConstants.HTTP_UNUSED_306
+                    || !dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(),
+                            (Exception) ex.getCause(), opContext).isShouldRetry()) {
                 opContext.setIntermediateMD5(null);
                 throw ex;
             }
