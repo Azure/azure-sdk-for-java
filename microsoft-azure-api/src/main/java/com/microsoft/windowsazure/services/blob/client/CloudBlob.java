@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.client;
 
@@ -37,6 +37,7 @@ import com.microsoft.windowsazure.services.core.storage.RetryPolicy;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.core.storage.StorageExtendedErrorInformation;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
@@ -807,9 +808,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
 
-                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
-                        validateMD5, this.getResult(), opContext);
-
+                blob.updatePropertiesFromResponse(request);
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
@@ -817,7 +816,8 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                        validateMD5, this.getResult(), opContext);
 
                 if (descriptor.getLength() != expectedLength) {
                     throw new StorageException(
@@ -843,10 +843,12 @@ public abstract class CloudBlob implements ListBlobItem {
             opContext.setIntermediateMD5(null);
         }
         catch (final StorageException ex) {
-            // Check if users has any retries specified.
+            // Check if users has any retries specified, Or if the exception is retryable
             final RetryPolicy dummyPolicy = options.getRetryPolicyFactory().createInstance(opContext);
-            if (!dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(), (Exception) ex.getCause(),
-                    opContext).isShouldRetry()) {
+            if (ex.getHttpStatusCode() == Constants.HeaderConstants.HTTP_UNUSED_306
+                    || ex.getHttpStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED
+                    || !dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(),
+                            (Exception) ex.getCause(), opContext).isShouldRetry()) {
                 opContext.setIntermediateMD5(null);
                 throw ex;
             }
@@ -855,8 +857,17 @@ public abstract class CloudBlob implements ListBlobItem {
             // be outside the operation above as it would get retried resulting
             // in a nested retry
 
+            // Copy access condition, and update etag. This will potentially replace the if match value, but not on the
+            // users object.
+
+            AccessCondition etagLockCondition = new AccessCondition();
+            etagLockCondition.setIfMatch(this.getProperties().getEtag());
+            if (accessCondition != null) {
+                etagLockCondition.setLeaseID(accessCondition.getLeaseID());
+            }
+
             // 1. Open Read Stream
-            final BlobInputStream streamRef = this.openInputStream(accessCondition, options, opContext);
+            final BlobInputStream streamRef = this.openInputStream(etagLockCondition, options, opContext);
 
             // Cache value indicating if we need
             final boolean validateMd5 = streamRef.getValidateBlobMd5();
@@ -2029,8 +2040,15 @@ public abstract class CloudBlob implements ListBlobItem {
                     final StorageException potentialConflictException = StorageException.translateException(request,
                             null, opContext);
 
-                    if (!potentialConflictException.getExtendedErrorInformation().getErrorCode()
-                            .equals(StorageErrorCodeStrings.LEASE_ALREADY_BROKEN)) {
+                    StorageExtendedErrorInformation extendedInfo = potentialConflictException
+                            .getExtendedErrorInformation();
+
+                    if (extendedInfo == null) {
+                        // If we cant validate the error then the error must be surfaced to the user.
+                        throw potentialConflictException;
+                    }
+
+                    if (!extendedInfo.getErrorCode().equals(StorageErrorCodeStrings.LEASE_ALREADY_BROKEN)) {
                         this.setException(potentialConflictException);
                         this.setNonExceptionedRetryableFailure(true);
                     }

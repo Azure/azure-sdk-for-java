@@ -1,16 +1,7 @@
-/**
- * Copyright 2011 Microsoft Corporation
+/*
+ * CloudQueue.java
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (c) 2011 Microsoft. All rights reserved.
  */
 package com.microsoft.windowsazure.services.queue.client;
 
@@ -26,6 +17,7 @@ import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.core.storage.StorageExtendedErrorInformation;
 import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
@@ -63,12 +55,12 @@ public final class CloudQueue {
     /**
      * The absolute <code>URI</code> of the queue.
      */
-    private URI uri;
+    private final URI uri;
 
     /**
      * A reference to the queue's associated service client.
      */
-    private CloudQueueClient queueServiceClient;
+    private final CloudQueueClient queueServiceClient;
 
     /**
      * The queue's Metadata collection.
@@ -165,21 +157,17 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public void addMessage(
-            final CloudQueueMessage message, final int timeToLiveInSeconds, final int initialVisibilityDelayInSeconds,
-            QueueRequestOptions options, OperationContext opContext) throws StorageException {
+    public void addMessage(final CloudQueueMessage message, final int timeToLiveInSeconds,
+            final int initialVisibilityDelayInSeconds, QueueRequestOptions options, OperationContext opContext)
+            throws StorageException {
         Utility.assertNotNull("message", message);
         Utility.assertNotNull("messageContent", message.getMessageContentAsByte());
-        Utility.assertInBounds("timeToLiveInSeconds",
-                timeToLiveInSeconds,
-                0,
+        Utility.assertInBounds("timeToLiveInSeconds", timeToLiveInSeconds, 0,
                 QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
 
-        final int realTimeToLiveInSeconds =
-                timeToLiveInSeconds == 0 ? QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS : timeToLiveInSeconds;
-        Utility.assertInBounds("initialVisibilityDelayInSeconds",
-                initialVisibilityDelayInSeconds,
-                0,
+        final int realTimeToLiveInSeconds = timeToLiveInSeconds == 0 ? QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS
+                : timeToLiveInSeconds;
+        Utility.assertInBounds("initialVisibilityDelayInSeconds", initialVisibilityDelayInSeconds, 0,
                 realTimeToLiveInSeconds - 1);
 
         final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage);
@@ -195,42 +183,35 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.putMessage(queue.getMessageRequestAddress(),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        initialVisibilityDelayInSeconds,
-                                        timeToLiveInSeconds,
-                                        opContext);
+                final HttpURLConnection request = QueueRequest.putMessage(queue.getMessageRequestAddress(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), initialVisibilityDelayInSeconds,
+                        timeToLiveInSeconds, opContext);
 
-                        final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
+                final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                        client.getCredentials().signRequest(request, messageBytes.length);
-                        final OutputStream outStreamRef = request.getOutputStream();
-                        outStreamRef.write(messageBytes);
+                client.getCredentials().signRequest(request, messageBytes.length);
+                final OutputStream outStreamRef = request.getOutputStream();
+                outStreamRef.write(messageBytes);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -273,34 +254,29 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.clearMessages(queue.getMessageRequestAddress(), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.clearMessages(queue.getMessageRequestAddress(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -343,36 +319,30 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.create(queue.uri,
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        opContext);
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
+                final HttpURLConnection request = QueueRequest.create(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        QueueRequest.addMetadata(request, queue.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0L);
+                QueueRequest.addMetadata(request, queue.metadata, opContext);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED
-                                && this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED
+                        && this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -422,48 +392,51 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl = new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(
+                options) {
 
-                    @Override
-                    public Boolean execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.create(queue.uri,
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        opContext);
+            @Override
+            public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
+                final HttpURLConnection request = QueueRequest.create(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        QueueRequest.addMetadata(request, queue.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0L);
+                QueueRequest.addMetadata(request, queue.metadata, opContext);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
-                            return true;
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-                            return false;
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
-                            final StorageException potentialConflictException =
-                                    StorageException.translateException(request, null, opContext);
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
+                    return true;
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+                    return false;
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
+                    final StorageException potentialConflictException = StorageException.translateException(request,
+                            null, opContext);
 
-                            if (!potentialConflictException.getExtendedErrorInformation().getErrorCode()
-                                    .equals(StorageErrorCodeStrings.QUEUE_ALREADY_EXISTS)) {
-                                this.setException(potentialConflictException);
-                                this.setNonExceptionedRetryableFailure(true);
-                            }
-                        } else {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
-
-                        return false;
+                    StorageExtendedErrorInformation extendedInfo = potentialConflictException
+                            .getExtendedErrorInformation();
+                    if (extendedInfo == null) {
+                        // If we can't validate the error then the error must be surfaced to the user.
+                        throw potentialConflictException;
                     }
-                };
 
-        return ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+                    if (!extendedInfo.getErrorCode().equals(StorageErrorCodeStrings.QUEUE_ALREADY_EXISTS)) {
+                        this.setException(potentialConflictException);
+                        this.setNonExceptionedRetryableFailure(true);
+                    }
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                return false;
+            }
+        };
+
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -506,33 +479,27 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.delete(queue.uri,
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        opContext);
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
+                final HttpURLConnection request = QueueRequest.delete(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
 
     }
@@ -583,36 +550,32 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(options) {
-                    @Override
-                    public Boolean execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.delete(queue.uri,
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        opContext);
+        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl = new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(
+                options) {
+            @Override
+            public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
+                final HttpURLConnection request = QueueRequest.delete(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-                            return true;
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                            return false;
-                        } else {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return false;
-                        }
-                    }
-                };
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
+                    return true;
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return false;
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return false;
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
 
     }
@@ -668,34 +631,30 @@ public final class CloudQueue {
         final String messageId = message.getId();
         final String messagePopReceipt = message.getPopReceipt();
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.deleteMessage(queue.getIndividualMessageAddress(messageId), this
-                                        .getRequestOptions().getTimeoutIntervalInMs(), messagePopReceipt, opContext);
+                final HttpURLConnection request = QueueRequest.deleteMessage(
+                        queue.getIndividualMessageAddress(messageId),
+                        this.getRequestOptions().getTimeoutIntervalInMs(), messagePopReceipt, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -739,36 +698,31 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), opContext);
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
+                final HttpURLConnection request = QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        queue.metadata = BaseResponse.getMetadata(request);
-                        queue.approximateMessageCount = QueueResponse.getApproximateMessageCount(request);
-                        return null;
-                    }
-                };
+                queue.metadata = BaseResponse.getMetadata(request);
+                queue.approximateMessageCount = QueueResponse.getApproximateMessageCount(request);
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -816,37 +770,34 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Boolean> impl = new StorageOperation<CloudQueueClient, CloudQueue, Boolean>(
+                options) {
 
-                    @Override
-                    public Boolean execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
-                        final HttpURLConnection request =
-                                QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), opContext);
+            @Override
+            public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
+                final HttpURLConnection request = QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                            return Boolean.valueOf(true);
-                        } else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                            return Boolean.valueOf(false);
-                        } else {
-                            this.setNonExceptionedRetryableFailure(true);
-                            // return false instead of null to avoid SCA issues
-                            return false;
-                        }
-                    }
-                };
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                    return Boolean.valueOf(true);
+                }
+                else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return Boolean.valueOf(false);
+                }
+                else {
+                    this.setNonExceptionedRetryableFailure(true);
+                    // return false instead of null to avoid SCA issues
+                    return false;
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1014,9 +965,8 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Iterable<CloudQueueMessage> peekMessages(
-            final int numberOfMessages, QueueRequestOptions options, OperationContext opContext)
-            throws StorageException {
+    public Iterable<CloudQueueMessage> peekMessages(final int numberOfMessages, QueueRequestOptions options,
+            OperationContext opContext) throws StorageException {
         Utility.assertInBounds("numberOfMessages", numberOfMessages, 1, QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK);
 
         if (opContext == null) {
@@ -1030,36 +980,31 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>> impl = new StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>>(
+                options) {
 
-                    @Override
-                    public ArrayList<CloudQueueMessage> execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public ArrayList<CloudQueueMessage> execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.peekMessages(queue.getMessageRequestAddress(), this.getRequestOptions()
-                                        .getTimeoutIntervalInMs(), numberOfMessages, opContext);
+                final HttpURLConnection request = QueueRequest.peekMessages(queue.getMessageRequestAddress(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        } else {
-                            return QueueDeserializationHelper.readMessages(request.getInputStream(),
-                                    queue.shouldEncodeMessage);
-                        }
-                    }
-                };
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+                else {
+                    return QueueDeserializationHelper.readMessages(request.getInputStream(), queue.shouldEncodeMessage);
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1074,8 +1019,7 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public CloudQueueMessage retrieveMessage() throws StorageException {
-        return this.retrieveMessage(QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS, 
-                null, null);
+        return this.retrieveMessage(QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS, null, null);
     }
 
     /**
@@ -1100,9 +1044,8 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public CloudQueueMessage retrieveMessage(
-            final int visibilityTimeoutInSeconds, final QueueRequestOptions options, final OperationContext opContext)
-            throws StorageException {
+    public CloudQueueMessage retrieveMessage(final int visibilityTimeoutInSeconds, final QueueRequestOptions options,
+            final OperationContext opContext) throws StorageException {
         return getFirstOrNull(this.retrieveMessages(1, visibilityTimeoutInSeconds, null, null));
     }
 
@@ -1121,7 +1064,7 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public Iterable<CloudQueueMessage> retrieveMessages(final int numberOfMessages) throws StorageException {
-        return this.retrieveMessages(numberOfMessages, QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS, 
+        return this.retrieveMessages(numberOfMessages, QueueConstants.DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS,
                 null, null);
     }
 
@@ -1152,13 +1095,11 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public Iterable<CloudQueueMessage> retrieveMessages(
-            final int numberOfMessages, final int visibilityTimeoutInSeconds, QueueRequestOptions options,
-            OperationContext opContext) throws StorageException {
+    public Iterable<CloudQueueMessage> retrieveMessages(final int numberOfMessages,
+            final int visibilityTimeoutInSeconds, QueueRequestOptions options, OperationContext opContext)
+            throws StorageException {
         Utility.assertInBounds("numberOfMessages", numberOfMessages, 1, QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK);
-        Utility.assertInBounds("visibilityTimeoutInSeconds",
-                visibilityTimeoutInSeconds,
-                0,
+        Utility.assertInBounds("visibilityTimeoutInSeconds", visibilityTimeoutInSeconds, 0,
                 QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
 
         if (opContext == null) {
@@ -1172,39 +1113,32 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>> impl = new StorageOperation<CloudQueueClient, CloudQueue, ArrayList<CloudQueueMessage>>(
+                options) {
 
-                    @Override
-                    public ArrayList<CloudQueueMessage> execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public ArrayList<CloudQueueMessage> execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.retrieveMessages(queue.getMessageRequestAddress(),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        numberOfMessages,
-                                        visibilityTimeoutInSeconds,
-                                        opContext);
+                final HttpURLConnection request = QueueRequest.retrieveMessages(queue.getMessageRequestAddress(), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, visibilityTimeoutInSeconds,
+                        opContext);
 
-                        client.getCredentials().signRequest(request, -1L);
+                client.getCredentials().signRequest(request, -1L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        } else {
-                            return QueueDeserializationHelper.readMessages(request.getInputStream(),
-                                    queue.shouldEncodeMessage);
-                        }
-                    }
-                };
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+                else {
+                    return QueueDeserializationHelper.readMessages(request.getInputStream(), queue.shouldEncodeMessage);
+                }
+            }
+        };
 
-        return ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1219,7 +1153,7 @@ public final class CloudQueue {
     public void setMetadata(final HashMap<String, String> metadata) {
         this.metadata = metadata;
     }
-    
+
     /**
      * Sets the flag indicating whether the message should be base-64 encoded.
      * 
@@ -1284,17 +1218,14 @@ public final class CloudQueue {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public void updateMessage(
-            final CloudQueueMessage message, final int visibilityTimeoutInSeconds,
+    public void updateMessage(final CloudQueueMessage message, final int visibilityTimeoutInSeconds,
             final EnumSet<MessageUpdateFields> messageUpdateFields, QueueRequestOptions options,
             OperationContext opContext) throws StorageException {
         Utility.assertNotNull("message", message);
         Utility.assertNotNullOrEmpty("messageId", message.id);
         Utility.assertNotNullOrEmpty("popReceipt", message.popReceipt);
 
-        Utility.assertInBounds("visibilityTimeoutInSeconds",
-                visibilityTimeoutInSeconds,
-                0,
+        Utility.assertInBounds("visibilityTimeoutInSeconds", visibilityTimeoutInSeconds, 0,
                 QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
 
         final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage);
@@ -1310,51 +1241,45 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.updateMessage(queue.getIndividualMessageAddress(message.getId()),
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        message.getPopReceipt(),
-                                        visibilityTimeoutInSeconds,
-                                        opContext);
+                final HttpURLConnection request = QueueRequest.updateMessage(queue.getIndividualMessageAddress(message
+                        .getId()), this.getRequestOptions().getTimeoutIntervalInMs(), message.getPopReceipt(),
+                        visibilityTimeoutInSeconds, opContext);
 
-                        if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
-                            final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
+                if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
+                    final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                            client.getCredentials().signRequest(request, messageBytes.length);
-                            final OutputStream outStreamRef = request.getOutputStream();
-                            outStreamRef.write(messageBytes);
-                        } else {
-                            request.setFixedLengthStreamingMode(0);
-                            client.getCredentials().signRequest(request, 0L);
-                        }
+                    client.getCredentials().signRequest(request, messageBytes.length);
+                    final OutputStream outStreamRef = request.getOutputStream();
+                    outStreamRef.write(messageBytes);
+                }
+                else {
+                    request.setFixedLengthStreamingMode(0);
+                    client.getCredentials().signRequest(request, 0L);
+                }
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                            return null;
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
-                        message.popReceipt = request.getHeaderField("x-ms-popreceipt");
-                        message.nextVisibleTime = Utility.parseRFC1123DateFromStringInGMT(request
-                                .getHeaderField("x-ms-time-next-visible"));
-                        
-                        return null;
-                    }
-                };
+                message.popReceipt = request.getHeaderField("x-ms-popreceipt");
+                message.nextVisibleTime = Utility.parseRFC1123DateFromStringInGMT(request
+                        .getHeaderField("x-ms-time-next-visible"));
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+                return null;
+            }
+        };
+
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1399,36 +1324,30 @@ public final class CloudQueue {
         opContext.initialize();
         options.applyDefaults(this.queueServiceClient);
 
-        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl =
-                new StorageOperation<CloudQueueClient, CloudQueue, Void>(options) {
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
 
-                    @Override
-                    public Void execute(
-                            final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
-                            throws Exception {
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
 
-                        final HttpURLConnection request =
-                                QueueRequest.setMetadata(queue.uri,
-                                        this.getRequestOptions().getTimeoutIntervalInMs(),
-                                        opContext);
+                final HttpURLConnection request = QueueRequest.setMetadata(queue.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), opContext);
 
-                        QueueRequest.addMetadata(request, queue.metadata, opContext);
-                        client.getCredentials().signRequest(request, 0L);
+                QueueRequest.addMetadata(request, queue.metadata, opContext);
+                client.getCredentials().signRequest(request, 0L);
 
-                        this.setResult(ExecutionEngine.processRequest(request, opContext));
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                        if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
-                            this.setNonExceptionedRetryableFailure(true);
-                        }
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
-        ExecutionEngine.executeWithRetry(this.queueServiceClient,
-                this,
-                impl,
-                options.getRetryPolicyFactory(),
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
 
     }

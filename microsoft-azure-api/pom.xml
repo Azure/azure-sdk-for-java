@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.2</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -27,6 +27,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
   </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
@@ -138,6 +145,20 @@
         <version>2.8</version>
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization</excludePackageNames>
+          <bottom><![CDATA[<code>/**
+<br/>* Copyright 2011 Microsoft Corporation
+<br/>*
+<br/>* Licensed under the Apache License, Version 2.0 (the "License");
+<br/>* you may not use this file except in compliance with the License.
+<br/>* You may obtain a copy of the License at
+<br/>* http://www.apache.org/licenses/LICENSE-2.0
+<br/>*
+<br/>* Unless required by applicable law or agreed to in writing, software
+<br/>* distributed under the License is distributed on an "AS IS" BASIS,
+<br/>* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<br/>* See the License for the specific language governing permissions and
+<br/>* limitations under the License.
+<br/>*/</code>]]></bottom>
         </configuration>
       </plugin>
 
