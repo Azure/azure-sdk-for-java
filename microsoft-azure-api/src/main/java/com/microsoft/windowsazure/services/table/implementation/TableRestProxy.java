@@ -15,8 +15,6 @@
 package com.microsoft.windowsazure.services.table.implementation;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -86,16 +84,8 @@ public class TableRestProxy implements TableContract {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
-    private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
-        return PipelineHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
-    }
-
-    private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
-        return PipelineHelpers.addOptionalMetadataHeader(builder, metadata);
-    }
-
-    private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
-        return PipelineHelpers.getMetadataFromHeaders(response);
+    private Builder addOptionalHeader(Builder builder, String name, Object value) {
+        return PipelineHelpers.addOptionalHeader(builder, name, value);
     }
 
     private WebResource getResource(TableServiceOptions options) {
@@ -148,7 +138,7 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path("Tables" + options.getQuery());
+        WebResource webResource = getResource(options).path("Tables" + getTableQuery(options.getQuery()));
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -159,5 +149,12 @@ public class TableRestProxy implements TableContract {
         result.setContinuationToken(response.getHeaders().getFirst("x-ms-continuation-NextTableName"));
 
         return result;
+    }
+
+    private String getTableQuery(String query) {
+        if (query == null || query.length() == 0)
+            return "";
+
+        return "(" + query + ")";
     }
 }

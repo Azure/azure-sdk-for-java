@@ -55,6 +55,7 @@ public class SharedKeyFilter extends com.microsoft.windowsazure.services.blob.im
         if (log.isDebugEnabled()) {
             log.debug(String.format("String to sign: \"%s\"", stringToSign));
         }
+        //TODO: Remove or comment the following line
         System.out.println(String.format("String to sign: \"%s\"", stringToSign));
 
         String signature = this.getSigner().sign(stringToSign);
