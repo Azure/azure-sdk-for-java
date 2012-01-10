@@ -33,29 +33,6 @@ public class PipelineHelpers {
         }
     }
 
-    public static class EnumCommaStringBuilder {
-        private final StringBuilder sb = new StringBuilder();
-
-        public void add(String representation) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(representation);
-        }
-
-        public void addValue(boolean value, String representation) {
-            if (value) {
-                add(representation);
-            }
-        }
-
-        public String getValue() {
-            if (sb.length() == 0)
-                return null;
-            return sb.toString();
-        }
-    }
-
     public static WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
         if (value != null) {
             webResource = webResource.queryParam(key, value.toString());

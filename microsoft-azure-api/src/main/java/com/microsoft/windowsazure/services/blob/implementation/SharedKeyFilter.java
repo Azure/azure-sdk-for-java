@@ -122,7 +122,7 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         String date = getHeader(cr, "Date");
         if (date == "") {
             date = new RFC1123DateConverter().format(new Date());
-            cr.getHeaders().add("Date", date);
+            cr.getHeaders().putSingle("Date", date);
         }
     }
 

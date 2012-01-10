@@ -24,7 +24,7 @@ import java.util.TimeZone;
 /*
  * "not quite" ISO 8601 date time conversion routines
  */
-public class ContainerACLDateConverter {
+public class ISO8601DateConverter {
     // Note: because of the trailing "0000000", this is not quite ISO 8601 compatible
     private static final String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'";
 

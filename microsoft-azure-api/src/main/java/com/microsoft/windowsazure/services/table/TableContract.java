@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.table;
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
+import com.microsoft.windowsazure.services.table.models.GetTableResult;
+import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -30,6 +32,22 @@ public interface TableContract extends FilterableService<TableContract> {
     void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException;
 
     void setServiceProperties(ServiceProperties serviceProperties, TableServiceOptions options) throws ServiceException;
+
+    void createTable(String table) throws ServiceException;
+
+    void createTable(String table, TableServiceOptions options) throws ServiceException;
+
+    void deleteTable(String table) throws ServiceException;
+
+    void deleteTable(String table, TableServiceOptions options) throws ServiceException;
+
+    GetTableResult getTable(String table) throws ServiceException;
+
+    GetTableResult getTable(String table, TableServiceOptions options) throws ServiceException;
+
+    QueryTablesResult listTables() throws ServiceException;
+
+    QueryTablesResult listTables(ListTablesOptions options) throws ServiceException;
 
     QueryTablesResult queryTables() throws ServiceException;
 

@@ -24,6 +24,8 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
+import com.microsoft.windowsazure.services.table.models.GetTableResult;
+import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -51,7 +53,7 @@ public class TableExceptionProcessor implements TableContract {
 
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
-        return ServiceExceptionFactory.process("blob", e);
+        return ServiceExceptionFactory.process("table", e);
     }
 
     @Override
@@ -108,6 +110,84 @@ public class TableExceptionProcessor implements TableContract {
     }
 
     @Override
+    public void createTable(String table) throws ServiceException {
+        try {
+            service.createTable(table);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void createTable(String table, TableServiceOptions options) throws ServiceException {
+        try {
+            service.createTable(table, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetTableResult getTable(String table) throws ServiceException {
+        try {
+            return service.getTable(table);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetTableResult getTable(String table, TableServiceOptions options) throws ServiceException {
+        try {
+            return service.getTable(table, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteTable(String table) throws ServiceException {
+        try {
+            service.deleteTable(table);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteTable(String table, TableServiceOptions options) throws ServiceException {
+        try {
+            service.deleteTable(table, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
     public QueryTablesResult queryTables() throws ServiceException {
         try {
             return service.queryTables();
@@ -124,6 +204,32 @@ public class TableExceptionProcessor implements TableContract {
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
         try {
             return service.queryTables(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryTablesResult listTables() throws ServiceException {
+        try {
+            return service.listTables();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryTablesResult listTables(ListTablesOptions options) throws ServiceException {
+        try {
+            return service.listTables(options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

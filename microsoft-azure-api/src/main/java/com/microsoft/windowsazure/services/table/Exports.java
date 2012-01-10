@@ -15,10 +15,13 @@
 package com.microsoft.windowsazure.services.table;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.table.implementation.AtomReaderWriter;
+import com.microsoft.windowsazure.services.table.implementation.DefaultXMLStreamFactory;
 import com.microsoft.windowsazure.services.table.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.table.implementation.SharedKeyLiteFilter;
 import com.microsoft.windowsazure.services.table.implementation.TableExceptionProcessor;
 import com.microsoft.windowsazure.services.table.implementation.TableRestProxy;
+import com.microsoft.windowsazure.services.table.implementation.XMLStreamFactory;
 
 public class Exports implements Builder.Exports {
     @Override
@@ -28,5 +31,7 @@ public class Exports implements Builder.Exports {
         registry.add(TableRestProxy.class);
         registry.add(SharedKeyLiteFilter.class);
         registry.add(SharedKeyFilter.class);
+        registry.add(XMLStreamFactory.class, DefaultXMLStreamFactory.class);
+        registry.add(AtomReaderWriter.class);
     }
 }
