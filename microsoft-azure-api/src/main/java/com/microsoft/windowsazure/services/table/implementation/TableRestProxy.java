@@ -388,6 +388,22 @@ public class TableRestProxy implements TableContract {
     @Override
     public UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options)
             throws ServiceException {
+        return updateOrMergeEntityCore(table, entity, "PUT", options);
+    }
+
+    @Override
+    public UpdateEntityResult mergeEntity(String table, Entity entity) throws ServiceException {
+        return updateEntity(table, entity, new TableServiceOptions());
+    }
+
+    @Override
+    public UpdateEntityResult mergeEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        return updateOrMergeEntityCore(table, entity, "MERGE", options);
+    }
+
+    private UpdateEntityResult updateOrMergeEntityCore(String table, Entity entity, String verb,
+            TableServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(
                 getEntityPath(table, entity.getPartitionKey(), entity.getRowKey()));
 
@@ -397,7 +413,7 @@ public class TableRestProxy implements TableContract {
 
         builder = builder.entity(atomReaderWriter.generateEntityEntry(entity), "application/atom+xml");
 
-        ClientResponse response = builder.put(ClientResponse.class);
+        ClientResponse response = builder.method(verb, ClientResponse.class);
         ThrowIfError(response);
 
         UpdateEntityResult result = new UpdateEntityResult();
