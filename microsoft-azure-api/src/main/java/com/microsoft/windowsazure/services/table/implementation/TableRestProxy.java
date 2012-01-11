@@ -413,6 +413,17 @@ public class TableRestProxy implements TableContract {
         return putOrMergeEntityCore(table, entity, "PUT", false/*includeEtag*/, options);
     }
 
+    @Override
+    public UpdateEntityResult insertOrMergeEntity(String table, Entity entity) throws ServiceException {
+        return insertOrReplaceEntity(table, entity, new TableServiceOptions());
+    }
+
+    @Override
+    public UpdateEntityResult insertOrMergeEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        return putOrMergeEntityCore(table, entity, "MERGE", false/*includeEtag*/, options);
+    }
+
     private UpdateEntityResult putOrMergeEntityCore(String table, Entity entity, String verb, boolean includeEtag,
             TableServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(
