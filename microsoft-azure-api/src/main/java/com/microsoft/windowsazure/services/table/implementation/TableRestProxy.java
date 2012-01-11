@@ -388,7 +388,7 @@ public class TableRestProxy implements TableContract {
     @Override
     public UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options)
             throws ServiceException {
-        return updateOrMergeEntityCore(table, entity, "PUT", options);
+        return putOrMergeEntityCore(table, entity, "PUT", true/*includeEtag*/, options);
     }
 
     @Override
@@ -399,17 +399,30 @@ public class TableRestProxy implements TableContract {
     @Override
     public UpdateEntityResult mergeEntity(String table, Entity entity, TableServiceOptions options)
             throws ServiceException {
-        return updateOrMergeEntityCore(table, entity, "MERGE", options);
+        return putOrMergeEntityCore(table, entity, "MERGE", true/*includeEtag*/, options);
     }
 
-    private UpdateEntityResult updateOrMergeEntityCore(String table, Entity entity, String verb,
+    @Override
+    public UpdateEntityResult insertOrReplaceEntity(String table, Entity entity) throws ServiceException {
+        return insertOrReplaceEntity(table, entity, new TableServiceOptions());
+    }
+
+    @Override
+    public UpdateEntityResult insertOrReplaceEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        return putOrMergeEntityCore(table, entity, "PUT", false/*includeEtag*/, options);
+    }
+
+    private UpdateEntityResult putOrMergeEntityCore(String table, Entity entity, String verb, boolean includeEtag,
             TableServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(
                 getEntityPath(table, entity.getPartitionKey(), entity.getRowKey()));
 
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
-        builder = addIfMatchHeader(builder, entity.getEtag());
+        if (includeEtag) {
+            builder = addIfMatchHeader(builder, entity.getEtag());
+        }
 
         builder = builder.entity(atomReaderWriter.generateEntityEntry(entity), "application/atom+xml");
 

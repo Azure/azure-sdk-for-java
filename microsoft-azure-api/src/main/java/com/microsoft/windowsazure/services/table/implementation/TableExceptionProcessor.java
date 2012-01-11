@@ -325,6 +325,33 @@ public class TableExceptionProcessor implements TableContract {
     }
 
     @Override
+    public UpdateEntityResult insertOrReplaceEntity(String table, Entity entity) throws ServiceException {
+        try {
+            return service.insertOrReplaceEntity(table, entity);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public UpdateEntityResult insertOrReplaceEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        try {
+            return service.insertOrReplaceEntity(table, entity, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
     public void deleteEntity(String table, String partitionKey, String rowKey) throws ServiceException {
         try {
             service.deleteEntity(table, partitionKey, rowKey);

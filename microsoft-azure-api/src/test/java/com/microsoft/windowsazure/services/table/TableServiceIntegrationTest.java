@@ -330,6 +330,28 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void insertOrReplaceEntityWorks() throws Exception {
+        System.out.println("insertOrReplaceEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        // Act
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("insertOrReplaceEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        service.insertOrReplaceEntity(TEST_TABLE_2, entity);
+        entity.setProperty("test4", EdmType.INT32, 5);
+        entity.setProperty("test6", EdmType.INT32, 6);
+        service.insertOrReplaceEntity(TEST_TABLE_2, entity);
+
+        // Assert
+    }
+
+    @Test
     public void mergeEntityWorks() throws Exception {
         System.out.println("mergeEntityWorks()");
 

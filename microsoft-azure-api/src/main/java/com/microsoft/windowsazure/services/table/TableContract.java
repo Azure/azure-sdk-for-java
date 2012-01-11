@@ -69,6 +69,11 @@ public interface TableContract extends FilterableService<TableContract> {
 
     UpdateEntityResult mergeEntity(String table, Entity entity, TableServiceOptions options) throws ServiceException;
 
+    UpdateEntityResult insertOrReplaceEntity(String table, Entity entity) throws ServiceException;
+
+    UpdateEntityResult insertOrReplaceEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException;
+
     void deleteEntity(String table, String partitionKey, String rowKey) throws ServiceException;
 
     void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
