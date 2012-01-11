@@ -23,6 +23,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
+import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
@@ -287,6 +288,33 @@ public class TableExceptionProcessor implements TableContract {
             throws ServiceException {
         try {
             return service.updateEntity(table, entity, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteEntity(String table, String partitionKey, String rowKey) throws ServiceException {
+        try {
+            service.deleteEntity(table, partitionKey, rowKey);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
+            throws ServiceException {
+        try {
+            service.deleteEntity(table, partitionKey, rowKey, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

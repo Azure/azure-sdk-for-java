@@ -25,6 +25,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
@@ -324,6 +325,49 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         result.getEntity().setProperty("test4", EdmType.INT32, 5);
         service.updateEntity(TEST_TABLE_2, result.getEntity());
+
+        // Assert
+    }
+
+    @Test
+    public void deleteEntityWorks() throws Exception {
+        System.out.println("deleteEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        // Act
+        InsertEntityResult result = service.insertEntity(
+                TEST_TABLE_2,
+                new Entity().setPartitionKey("001").setRowKey("deleteEntityWorks")
+                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                        .setProperty("test5", EdmType.DATETIME, new Date()));
+
+        service.deleteEntity(TEST_TABLE_2, result.getEntity().getPartitionKey(), result.getEntity().getRowKey());
+
+        // Assert
+    }
+
+    @Test
+    public void deleteEntityWithETagWorks() throws Exception {
+        System.out.println("deleteEntityWithETagWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        // Act
+        InsertEntityResult result = service.insertEntity(
+                TEST_TABLE_2,
+                new Entity().setPartitionKey("001").setRowKey("deleteEntityWithETagWorks")
+                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                        .setProperty("test5", EdmType.DATETIME, new Date()));
+
+        service.deleteEntity(TEST_TABLE_2, result.getEntity().getPartitionKey(), result.getEntity().getRowKey(),
+                new DeleteEntityOptions().setEtag(result.getEntity().getEtag()));
 
         // Assert
     }

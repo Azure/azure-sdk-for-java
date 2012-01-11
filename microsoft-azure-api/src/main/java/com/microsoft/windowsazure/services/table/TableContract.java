@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.table;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
@@ -63,4 +64,9 @@ public interface TableContract extends FilterableService<TableContract> {
     UpdateEntityResult updateEntity(String table, Entity entity) throws ServiceException;
 
     UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options) throws ServiceException;
+
+    void deleteEntity(String table, String partitionKey, String rowKey) throws ServiceException;
+
+    void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
+            throws ServiceException;
 }

@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.BinaryFilterExpression;
 import com.microsoft.windowsazure.services.table.models.ConstantFilterExpression;
+import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.FilterExpression;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
@@ -116,6 +117,10 @@ public class TableRestProxy implements TableContract {
             list.add(encodeODataURIValue(value));
         }
         return list;
+    }
+
+    private String getEntityPath(String table, String partitionKey, String rowKey) {
+        return table + "(" + "PartitionKey='" + partitionKey + "',RowKey='" + rowKey + "')";
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
@@ -384,7 +389,7 @@ public class TableRestProxy implements TableContract {
     public UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options)
             throws ServiceException {
         WebResource webResource = getResource(options).path(
-                table + "(" + "PartitionKey='" + entity.getPartitionKey() + "',RowKey='" + entity.getRowKey() + "')");
+                getEntityPath(table, entity.getPartitionKey(), entity.getRowKey()));
 
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
@@ -399,5 +404,23 @@ public class TableRestProxy implements TableContract {
         result.setEtag(response.getHeaders().getFirst("ETag"));
 
         return result;
+    }
+
+    @Override
+    public void deleteEntity(String table, String partitionKey, String rowKey) throws ServiceException {
+        deleteEntity(table, partitionKey, rowKey, new DeleteEntityOptions());
+    }
+
+    @Override
+    public void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
+            throws ServiceException {
+        WebResource webResource = getResource(options).path(getEntityPath(table, partitionKey, rowKey));
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+        builder = addIfMatchHeader(builder, options.getEtag());
+
+        ClientResponse response = builder.delete(ClientResponse.class);
+        ThrowIfError(response);
     }
 }
