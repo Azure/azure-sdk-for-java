@@ -25,10 +25,13 @@ import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
+import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -396,6 +399,59 @@ public class TableExceptionProcessor implements TableContract {
             throws ServiceException {
         try {
             service.deleteEntity(table, partitionKey, rowKey, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetEntityResult getEntity(String table, String partitionKey, String rowKey) throws ServiceException {
+        try {
+            return service.getEntity(table, partitionKey, rowKey);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetEntityResult getEntity(String table, String partitionKey, String rowKey, TableServiceOptions options)
+            throws ServiceException {
+        try {
+            return service.getEntity(table, partitionKey, rowKey, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryEntitiesResult queryEntities(String table) throws ServiceException {
+        try {
+            return service.queryEntities(table);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
+        try {
+            return service.queryEntities(table, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

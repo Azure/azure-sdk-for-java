@@ -117,26 +117,40 @@ public class AtomReaderWriter {
         }
     }
 
-    public Entity parseEntityEntry(InputStream stream) {
+    public List<Entity> parseEntityEntries(InputStream stream) {
         try {
             XMLStreamReader xmlr = xmlStreamFactory.getReader(stream);
-            Entity result = new Entity();
 
             expect(xmlr, XMLStreamConstants.START_DOCUMENT);
+            expect(xmlr, XMLStreamConstants.START_ELEMENT, "feed");
 
-            result.setEtag(xmlr.getAttributeValue(null, "etag"));
-            expect(xmlr, XMLStreamConstants.START_ELEMENT, "entry");
-
-            while (!isEndElement(xmlr, "entry")) {
-                if (isStartElement(xmlr, "properties")) {
-                    result.setProperties(parseEntryProperties(xmlr));
+            List<Entity> result = new ArrayList<Entity>();
+            while (!isEndElement(xmlr, "feed")) {
+                // Process "entry" elements only
+                if (isStartElement(xmlr, "entry")) {
+                    result.add(parseEntityEntry(xmlr));
                 }
                 else {
                     nextSignificant(xmlr);
                 }
             }
 
-            expect(xmlr, XMLStreamConstants.END_ELEMENT, "entry");
+            expect(xmlr, XMLStreamConstants.END_ELEMENT, "feed");
+            expect(xmlr, XMLStreamConstants.END_DOCUMENT);
+
+            return result;
+        }
+        catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Entity parseEntityEntry(InputStream stream) {
+        try {
+            XMLStreamReader xmlr = xmlStreamFactory.getReader(stream);
+
+            expect(xmlr, XMLStreamConstants.START_DOCUMENT);
+            Entity result = parseEntityEntry(xmlr);
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
@@ -207,6 +221,26 @@ public class AtomReaderWriter {
                 Map<String, Property> properties = parseEntryProperties(xmlr);
 
                 result.setName((String) properties.get("TableName").getValue());
+            }
+            else {
+                nextSignificant(xmlr);
+            }
+        }
+
+        expect(xmlr, XMLStreamConstants.END_ELEMENT, "entry");
+
+        return result;
+    }
+
+    private Entity parseEntityEntry(XMLStreamReader xmlr) throws XMLStreamException {
+        Entity result = new Entity();
+
+        result.setEtag(xmlr.getAttributeValue(null, "etag"));
+        expect(xmlr, XMLStreamConstants.START_ELEMENT, "entry");
+
+        while (!isEndElement(xmlr, "entry")) {
+            if (isStartElement(xmlr, "properties")) {
+                result.setProperties(parseEntryProperties(xmlr));
             }
             else {
                 nextSignificant(xmlr);

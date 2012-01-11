@@ -28,9 +28,11 @@ import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
+import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
@@ -40,7 +42,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String createableTablesPrefix = "csdktest";
     private static String TEST_TABLE_1;
     private static String TEST_TABLE_2;
-    //private static String TEST_TABLE_3;
+    private static String TEST_TABLE_3;
     //private static String TEST_TABLE_4;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
@@ -64,7 +66,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         TEST_TABLE_1 = testTables[0];
         TEST_TABLE_2 = testTables[1];
-        //TEST_TABLE_3 = testTables[2];
+        TEST_TABLE_3 = testTables[2];
         //TEST_TABLE_4 = testTables[3];
 
         CREATABLE_TABLE_1 = creatableTables[0];
@@ -273,21 +275,20 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
 
         // Act
-        InsertEntityResult result = service.insertEntity(
-                TEST_TABLE_2,
-                new Entity().setPartitionKey("001").setRowKey("002").setProperty("test", EdmType.BOOLEAN, true)
-                        .setProperty("test2", EdmType.STRING, "value").setProperty("test3", EdmType.INT32, 3)
-                        .setProperty("test4", EdmType.INT64, 12345678901L)
-                        .setProperty("test5", EdmType.DATETIME, new Date()));
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
 
         // Assert
         assertNotNull(result);
         assertNotNull(result.getEntity());
 
         assertEquals("001", result.getEntity().getPartitionKey());
-        assertEquals("002", result.getEntity().getRowKey());
+        assertEquals("insertEntityWorks", result.getEntity().getRowKey());
         assertNotNull(result.getEntity().getTimestamp());
         assertNotNull(result.getEntity().getEtag());
 
@@ -314,15 +315,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("updateEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
 
         // Act
-        InsertEntityResult result = service.insertEntity(
-                TEST_TABLE_2,
-                new Entity().setPartitionKey("001").setRowKey("updateEntityWorks")
-                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
-                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                        .setProperty("test5", EdmType.DATETIME, new Date()));
-
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
         result.getEntity().setProperty("test4", EdmType.INT32, 5);
         service.updateEntity(TEST_TABLE_2, result.getEntity());
 
@@ -336,13 +335,12 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
-
-        // Act
         Entity entity = new Entity().setPartitionKey("001").setRowKey("insertOrReplaceEntityWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
                 .setProperty("test5", EdmType.DATETIME, new Date());
 
+        // Act
         service.insertOrReplaceEntity(TEST_TABLE_2, entity);
         entity.setProperty("test4", EdmType.INT32, 5);
         entity.setProperty("test6", EdmType.INT32, 6);
@@ -358,13 +356,12 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
-
-        // Act
         Entity entity = new Entity().setPartitionKey("001").setRowKey("insertOrMergeEntityWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
                 .setProperty("test5", EdmType.DATETIME, new Date());
 
+        // Act
         service.insertOrMergeEntity(TEST_TABLE_2, entity);
         entity.setProperty("test4", EdmType.INT32, 5);
         entity.setProperty("test6", EdmType.INT32, 6);
@@ -380,14 +377,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("mergeEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
 
         // Act
-        InsertEntityResult result = service.insertEntity(
-                TEST_TABLE_2,
-                new Entity().setPartitionKey("001").setRowKey("mergeEntityWorks")
-                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
-                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                        .setProperty("test5", EdmType.DATETIME, new Date()));
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
 
         result.getEntity().setProperty("test4", EdmType.INT32, 5);
         result.getEntity().setProperty("test6", EdmType.INT32, 6);
@@ -403,14 +399,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("deleteEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
 
         // Act
-        InsertEntityResult result = service.insertEntity(
-                TEST_TABLE_2,
-                new Entity().setPartitionKey("001").setRowKey("deleteEntityWorks")
-                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
-                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                        .setProperty("test5", EdmType.DATETIME, new Date()));
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
 
         service.deleteEntity(TEST_TABLE_2, result.getEntity().getPartitionKey(), result.getEntity().getRowKey());
 
@@ -424,18 +419,103 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("deleteEntityWithETagWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
 
         // Act
-        InsertEntityResult result = service.insertEntity(
-                TEST_TABLE_2,
-                new Entity().setPartitionKey("001").setRowKey("deleteEntityWithETagWorks")
-                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
-                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                        .setProperty("test5", EdmType.DATETIME, new Date()));
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
 
         service.deleteEntity(TEST_TABLE_2, result.getEntity().getPartitionKey(), result.getEntity().getRowKey(),
                 new DeleteEntityOptions().setEtag(result.getEntity().getEtag()));
 
         // Assert
+    }
+
+    @Test
+    public void getEntityWorks() throws Exception {
+        System.out.println("getEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("getEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        // Act
+        InsertEntityResult insertResult = service.insertEntity(TEST_TABLE_2, entity);
+        GetEntityResult result = service.getEntity(TEST_TABLE_2, insertResult.getEntity().getPartitionKey(),
+                insertResult.getEntity().getRowKey());
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEntity());
+
+        assertEquals("001", result.getEntity().getPartitionKey());
+        assertEquals("getEntityWorks", result.getEntity().getRowKey());
+        assertNotNull(result.getEntity().getTimestamp());
+        assertNotNull(result.getEntity().getEtag());
+
+        assertNotNull(result.getEntity().getProperty("test"));
+        assertEquals(true, result.getEntity().getProperty("test").getValue());
+
+        assertNotNull(result.getEntity().getProperty("test2"));
+        assertEquals("value", result.getEntity().getProperty("test2").getValue());
+
+        assertNotNull(result.getEntity().getProperty("test3"));
+        assertEquals(3, result.getEntity().getProperty("test3").getValue());
+
+        assertNotNull(result.getEntity().getProperty("test4"));
+        assertEquals(12345678901L, result.getEntity().getProperty("test4").getValue());
+
+        assertNotNull(result.getEntity().getProperty("test5"));
+        assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
+    }
+
+    @Test
+    public void queryEntityWorks() throws Exception {
+        System.out.println("queryEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntityWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        // Act
+        service.insertEntity(TEST_TABLE_3, entity);
+        QueryEntitiesResult result = service.queryEntities(TEST_TABLE_3);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEntities());
+        assertEquals(1, result.getEntities().size());
+
+        assertNotNull(result.getEntities().get(0));
+
+        assertEquals("001", result.getEntities().get(0).getPartitionKey());
+        assertEquals("queryEntityWorks", result.getEntities().get(0).getRowKey());
+        assertNotNull(result.getEntities().get(0).getTimestamp());
+        assertNotNull(result.getEntities().get(0).getEtag());
+
+        assertNotNull(result.getEntities().get(0).getProperty("test"));
+        assertEquals(true, result.getEntities().get(0).getProperty("test").getValue());
+
+        assertNotNull(result.getEntities().get(0).getProperty("test2"));
+        assertEquals("value", result.getEntities().get(0).getProperty("test2").getValue());
+
+        assertNotNull(result.getEntities().get(0).getProperty("test3"));
+        assertEquals(3, result.getEntities().get(0).getProperty("test3").getValue());
+
+        assertNotNull(result.getEntities().get(0).getProperty("test4"));
+        assertEquals(12345678901L, result.getEntities().get(0).getProperty("test4").getValue());
+
+        assertNotNull(result.getEntities().get(0).getProperty("test5"));
+        assertTrue(result.getEntities().get(0).getProperty("test5").getValue() instanceof Date);
     }
 }

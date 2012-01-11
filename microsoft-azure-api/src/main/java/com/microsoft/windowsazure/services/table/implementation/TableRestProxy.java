@@ -37,12 +37,15 @@ import com.microsoft.windowsazure.services.table.models.ConstantFilterExpression
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.FilterExpression;
+import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.LitteralFilterExpression;
 import com.microsoft.windowsazure.services.table.models.QueryBuilder;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -462,5 +465,51 @@ public class TableRestProxy implements TableContract {
 
         ClientResponse response = builder.delete(ClientResponse.class);
         ThrowIfError(response);
+    }
+
+    @Override
+    public GetEntityResult getEntity(String table, String partitionKey, String rowKey) throws ServiceException {
+        return getEntity(table, partitionKey, rowKey, new TableServiceOptions());
+    }
+
+    @Override
+    public GetEntityResult getEntity(String table, String partitionKey, String rowKey, TableServiceOptions options)
+            throws ServiceException {
+        WebResource webResource = getResource(options).path(getEntityPath(table, partitionKey, rowKey));
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
+
+        GetEntityResult result = new GetEntityResult();
+        result.setEntity(atomReaderWriter.parseEntityEntry(response.getEntityInputStream()));
+
+        return result;
+    }
+
+    @Override
+    public QueryEntitiesResult queryEntities(String table) throws ServiceException {
+        return queryEntities(table, new QueryEntitiesOptions());
+    }
+
+    @Override
+    public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
+        WebResource webResource = getResource(options).path(table);
+        webResource = addOptionalQuery(webResource, options.getQuery());
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+
+        ClientResponse response = builder.get(ClientResponse.class);
+        ThrowIfError(response);
+
+        QueryEntitiesResult result = new QueryEntitiesResult();
+        result.setNextPartitionKey(response.getHeaders().getFirst("x-ms-continuation-NextPartitionKey"));
+        result.setNextRowKey(response.getHeaders().getFirst("x-ms-continuation-NextRowKey"));
+        result.setEntities(atomReaderWriter.parseEntityEntries(response.getEntityInputStream()));
+
+        return result;
     }
 }

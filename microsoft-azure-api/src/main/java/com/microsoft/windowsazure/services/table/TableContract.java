@@ -18,10 +18,13 @@ import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
+import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -83,4 +86,13 @@ public interface TableContract extends FilterableService<TableContract> {
 
     void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
             throws ServiceException;
+
+    GetEntityResult getEntity(String table, String partitionKey, String rowKey) throws ServiceException;
+
+    GetEntityResult getEntity(String table, String partitionKey, String rowKey, TableServiceOptions options)
+            throws ServiceException;
+
+    QueryEntitiesResult queryEntities(String table) throws ServiceException;
+
+    QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException;
 }
