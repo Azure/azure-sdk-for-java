@@ -284,17 +284,23 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(result);
         assertNotNull(result.getEntity());
+
         assertEquals("001", result.getEntity().getPartitionKey());
         assertEquals("002", result.getEntity().getRowKey());
         assertNotNull(result.getEntity().getTimestamp());
+
         assertNotNull(result.getEntity().getProperty("test"));
         assertEquals(true, result.getEntity().getProperty("test").getValue());
+
         assertNotNull(result.getEntity().getProperty("test2"));
         assertEquals("value", result.getEntity().getProperty("test2").getValue());
+
         assertNotNull(result.getEntity().getProperty("test3"));
         assertEquals(3, result.getEntity().getProperty("test3").getValue());
+
         assertNotNull(result.getEntity().getProperty("test4"));
         assertEquals(12345678901L, result.getEntity().getProperty("test4").getValue());
+
         assertNotNull(result.getEntity().getProperty("test5"));
         assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
     }
