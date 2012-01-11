@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
+import com.microsoft.windowsazure.services.table.models.UpdateEntityResult;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -259,6 +260,33 @@ public class TableExceptionProcessor implements TableContract {
             throws ServiceException {
         try {
             return service.insertEntity(table, entity, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public UpdateEntityResult updateEntity(String table, Entity entity) throws ServiceException {
+        try {
+            return service.updateEntity(table, entity);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        try {
+            return service.updateEntity(table, entity, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

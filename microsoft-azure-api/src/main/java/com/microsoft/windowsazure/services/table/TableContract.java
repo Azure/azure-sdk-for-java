@@ -25,6 +25,7 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
+import com.microsoft.windowsazure.services.table.models.UpdateEntityResult;
 
 public interface TableContract extends FilterableService<TableContract> {
     GetServicePropertiesResult getServiceProperties() throws ServiceException;
@@ -58,4 +59,8 @@ public interface TableContract extends FilterableService<TableContract> {
     InsertEntityResult insertEntity(String table, Entity entity) throws ServiceException;
 
     InsertEntityResult insertEntity(String table, Entity entity, TableServiceOptions options) throws ServiceException;
+
+    UpdateEntityResult updateEntity(String table, Entity entity) throws ServiceException;
+
+    UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options) throws ServiceException;
 }

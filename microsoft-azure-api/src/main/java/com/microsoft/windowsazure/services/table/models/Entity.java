@@ -5,7 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Entity {
+    private String etag;
     private Map<String, Property> properties = new HashMap<String, Property>();
+
+    public String getEtag() {
+        return etag;
+    }
+
+    public Entity setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 
     public String getPartitionKey() {
         Property p = getProperty("PartitionKey");

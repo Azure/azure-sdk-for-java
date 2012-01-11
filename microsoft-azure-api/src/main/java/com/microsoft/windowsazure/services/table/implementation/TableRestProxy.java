@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.microsoft.windowsazure.services.table.models.UnaryFilterExpression;
+import com.microsoft.windowsazure.services.table.models.UpdateEntityResult;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -200,6 +201,11 @@ public class TableRestProxy implements TableContract {
         builder = addOptionalHeader(builder, "MaxDataServiceVersion", "2.0;NetFx");
         builder = addOptionalHeader(builder, "Accept", "application/atom+xml,application/xml");
         builder = addOptionalHeader(builder, "Accept-Charset", "UTF-8");
+        return builder;
+    }
+
+    private WebResource.Builder addIfMatchHeader(WebResource.Builder builder, String eTag) {
+        builder = addOptionalHeader(builder, "If-Match", eTag == null ? "*" : eTag);
         return builder;
     }
 
@@ -365,6 +371,32 @@ public class TableRestProxy implements TableContract {
 
         InsertEntityResult result = new InsertEntityResult();
         result.setEntity(atomReaderWriter.parseEntityEntry(response.getEntityInputStream()));
+
+        return result;
+    }
+
+    @Override
+    public UpdateEntityResult updateEntity(String table, Entity entity) throws ServiceException {
+        return updateEntity(table, entity, new TableServiceOptions());
+    }
+
+    @Override
+    public UpdateEntityResult updateEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        WebResource webResource = getResource(options).path(
+                table + "(" + "PartitionKey='" + entity.getPartitionKey() + "',RowKey='" + entity.getRowKey() + "')");
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+        builder = addIfMatchHeader(builder, entity.getEtag());
+
+        builder = builder.entity(atomReaderWriter.generateEntityEntry(entity), "application/atom+xml");
+
+        ClientResponse response = builder.put(ClientResponse.class);
+        ThrowIfError(response);
+
+        UpdateEntityResult result = new UpdateEntityResult();
+        result.setEtag(response.getHeaders().getFirst("ETag"));
 
         return result;
     }

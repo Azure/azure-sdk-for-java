@@ -288,6 +288,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("001", result.getEntity().getPartitionKey());
         assertEquals("002", result.getEntity().getRowKey());
         assertNotNull(result.getEntity().getTimestamp());
+        assertNotNull(result.getEntity().getEtag());
 
         assertNotNull(result.getEntity().getProperty("test"));
         assertEquals(true, result.getEntity().getProperty("test").getValue());
@@ -303,5 +304,27 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntity().getProperty("test5"));
         assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
+    }
+
+    @Test
+    public void updateEntityWorks() throws Exception {
+        System.out.println("updateEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        // Act
+        InsertEntityResult result = service.insertEntity(
+                TEST_TABLE_2,
+                new Entity().setPartitionKey("001").setRowKey("updateEntityWorks")
+                        .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                        .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                        .setProperty("test5", EdmType.DATETIME, new Date()));
+
+        result.getEntity().setProperty("test4", EdmType.INT32, 5);
+        service.updateEntity(TEST_TABLE_2, result.getEntity());
+
+        // Assert
     }
 }
