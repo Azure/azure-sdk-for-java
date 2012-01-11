@@ -21,7 +21,7 @@ public class DefaultXMLStreamFactory implements XMLStreamFactory {
     @Override
     public XMLStreamWriter getWriter(OutputStream stream) {
         try {
-            return xmlOutputFactory.createXMLStreamWriter(stream);
+            return xmlOutputFactory.createXMLStreamWriter(stream, "UTF-8");
         }
         catch (XMLStreamException e) {
             throw new RuntimeException(e);

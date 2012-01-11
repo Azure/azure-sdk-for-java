@@ -56,7 +56,7 @@ public class SharedKeyFilter extends com.microsoft.windowsazure.services.blob.im
             log.debug(String.format("String to sign: \"%s\"", stringToSign));
         }
         //TODO: Remove or comment the following line
-        System.out.println(String.format("String to sign: \"%s\"", stringToSign));
+        //System.out.println(String.format("String to sign: \"%s\"", stringToSign));
 
         String signature = this.getSigner().sign(stringToSign);
         cr.getHeaders().putSingle("Authorization", "SharedKey " + this.getAccountName() + ":" + signature);

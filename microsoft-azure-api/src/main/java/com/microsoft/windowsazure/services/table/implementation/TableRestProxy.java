@@ -34,9 +34,11 @@ import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
 import com.microsoft.windowsazure.services.table.models.BinaryFilterExpression;
 import com.microsoft.windowsazure.services.table.models.ConstantFilterExpression;
+import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.FilterExpression;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
+import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.LitteralFilterExpression;
 import com.microsoft.windowsazure.services.table.models.QueryBuilder;
@@ -260,7 +262,7 @@ public class TableRestProxy implements TableContract {
         ThrowIfError(response);
 
         GetTableResult result = new GetTableResult();
-        result.setTable(atomReaderWriter.parseTableEntry(response.getEntityInputStream()));
+        result.setTableEntry(atomReaderWriter.parseTableEntry(response.getEntityInputStream()));
         return result;
     }
 
@@ -320,7 +322,7 @@ public class TableRestProxy implements TableContract {
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
 
-        builder.entity(atomReaderWriter.getTableNameEntry(table), "application/atom+xml");
+        builder.entity(atomReaderWriter.generateTableEntry(table), "application/atom+xml");
 
         ClientResponse response = builder.post(ClientResponse.class);
         ThrowIfError(response);
@@ -341,5 +343,29 @@ public class TableRestProxy implements TableContract {
 
         ClientResponse response = builder.delete(ClientResponse.class);
         ThrowIfError(response);
+    }
+
+    @Override
+    public InsertEntityResult insertEntity(String table, Entity entity) throws ServiceException {
+        return insertEntity(table, entity, new TableServiceOptions());
+    }
+
+    @Override
+    public InsertEntityResult insertEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        WebResource webResource = getResource(options).path(table);
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+
+        builder = builder.entity(atomReaderWriter.generateEntityEntry(entity), "application/atom+xml");
+
+        ClientResponse response = builder.post(ClientResponse.class);
+        ThrowIfError(response);
+
+        InsertEntityResult result = new InsertEntityResult();
+        result.setEntity(atomReaderWriter.parseEntityEntry(response.getEntityInputStream()));
+
+        return result;
     }
 }

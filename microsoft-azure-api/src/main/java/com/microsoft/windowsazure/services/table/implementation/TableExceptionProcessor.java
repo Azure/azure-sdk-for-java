@@ -23,8 +23,10 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
+import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
+import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
@@ -230,6 +232,33 @@ public class TableExceptionProcessor implements TableContract {
     public QueryTablesResult listTables(ListTablesOptions options) throws ServiceException {
         try {
             return service.listTables(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public InsertEntityResult insertEntity(String table, Entity entity) throws ServiceException {
+        try {
+            return service.insertEntity(table, entity);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public InsertEntityResult insertEntity(String table, Entity entity, TableServiceOptions options)
+            throws ServiceException {
+        try {
+            return service.insertEntity(table, entity, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

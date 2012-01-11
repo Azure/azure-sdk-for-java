@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.table;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.table.models.EdmType;
+import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
+import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -35,11 +39,11 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String createableTablesPrefix = "csdktest";
     private static String TEST_TABLE_1;
     private static String TEST_TABLE_2;
-    private static String TEST_TABLE_3;
-    private static String TEST_TABLE_4;
+    //private static String TEST_TABLE_3;
+    //private static String TEST_TABLE_4;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
-    private static String CREATABLE_TABLE_3;
+    //private static String CREATABLE_TABLE_3;
     private static String[] creatableTables;
     private static String[] testTables;
 
@@ -59,12 +63,12 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         TEST_TABLE_1 = testTables[0];
         TEST_TABLE_2 = testTables[1];
-        TEST_TABLE_3 = testTables[2];
-        TEST_TABLE_4 = testTables[3];
+        //TEST_TABLE_3 = testTables[2];
+        //TEST_TABLE_4 = testTables[3];
 
         CREATABLE_TABLE_1 = creatableTables[0];
         CREATABLE_TABLE_2 = creatableTables[1];
-        CREATABLE_TABLE_3 = creatableTables[2];
+        //CREATABLE_TABLE_3 = creatableTables[2];
 
         // Create all test containers and their content
         Configuration config = createConfiguration();
@@ -255,10 +259,43 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TableContract service = TableService.create(config);
 
         // Act
-        System.out.println("getTable() test");
         GetTableResult result = service.getTable(TEST_TABLE_1);
 
         // Assert
         assertNotNull(result);
+    }
+
+    @Test
+    public void insertEntityWorks() throws Exception {
+        System.out.println("insertEntityWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        // Act
+        InsertEntityResult result = service.insertEntity(
+                TEST_TABLE_2,
+                new Entity().setPartitionKey("001").setRowKey("002").setProperty("test", EdmType.BOOLEAN, true)
+                        .setProperty("test2", EdmType.STRING, "value").setProperty("test3", EdmType.INT32, 3)
+                        .setProperty("test4", EdmType.INT64, 12345678901L)
+                        .setProperty("test5", EdmType.DATETIME, new Date()));
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEntity());
+        assertEquals("001", result.getEntity().getPartitionKey());
+        assertEquals("002", result.getEntity().getRowKey());
+        assertNotNull(result.getEntity().getTimestamp());
+        assertNotNull(result.getEntity().getProperty("test"));
+        assertEquals(true, result.getEntity().getProperty("test").getValue());
+        assertNotNull(result.getEntity().getProperty("test2"));
+        assertEquals("value", result.getEntity().getProperty("test2").getValue());
+        assertNotNull(result.getEntity().getProperty("test3"));
+        assertEquals(3, result.getEntity().getProperty("test3").getValue());
+        assertNotNull(result.getEntity().getProperty("test4"));
+        assertEquals(12345678901L, result.getEntity().getProperty("test4").getValue());
+        assertNotNull(result.getEntity().getProperty("test5"));
+        assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
     }
 }

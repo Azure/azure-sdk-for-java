@@ -1,13 +1,13 @@
 package com.microsoft.windowsazure.services.table.models;
 
 public class GetTableResult {
-    private TableEntry table;
+    private TableEntry tableEntry;
 
-    public TableEntry getTable() {
-        return table;
+    public TableEntry getTableEntry() {
+        return tableEntry;
     }
 
-    public void setTable(TableEntry table) {
-        this.table = table;
+    public void setTableEntry(TableEntry tableEntry) {
+        this.tableEntry = tableEntry;
     }
 }

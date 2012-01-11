@@ -1,48 +1,77 @@
 package com.microsoft.windowsazure.services.table.implementation;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
+import com.microsoft.windowsazure.services.table.EdmValueConverter;
+import com.microsoft.windowsazure.services.table.models.Entity;
+import com.microsoft.windowsazure.services.table.models.Property;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
 
 public class AtomReaderWriter {
     private final XMLStreamFactory xmlStreamFactory;
     private final DateFactory dateFactory;
     private final ISO8601DateConverter iso8601DateConverter;
+    private final EdmValueConverter edmValueConverter;
 
     @Inject
     public AtomReaderWriter(XMLStreamFactory xmlStreamFactory, DateFactory dateFactory,
-            ISO8601DateConverter iso8601DateConverter) {
+            ISO8601DateConverter iso8601DateConverter, EdmValueConverter edmValueConverter) {
         this.xmlStreamFactory = xmlStreamFactory;
         this.dateFactory = dateFactory;
         this.iso8601DateConverter = iso8601DateConverter;
+        this.edmValueConverter = edmValueConverter;
     }
 
-    public InputStream getTableNameEntry(String table) {
-        String entity = String.format("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"
-                + "<entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" "
-                + "xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\""
-                + " xmlns=\"http://www.w3.org/2005/Atom\"> " + "<title /> " + "<updated>%s</updated>" + "<author>"
-                + "  <name/> " + "</author> " + "  <id/> " + "  <content type=\"application/xml\">"
-                + "    <m:properties>" + "      <d:TableName>%s</d:TableName>" + "    </m:properties>"
-                + "  </content> " + "</entry>", iso8601DateConverter.format(dateFactory.getDate()), table);
+    public InputStream generateTableEntry(String table) {
+        final String tableTemp = table;
+        return generateEntry(new PropertiesWriter() {
+            @Override
+            public void write(XMLStreamWriter writer) throws XMLStreamException {
+                writer.writeStartElement("d:TableName");
+                writer.writeCharacters(tableTemp);
+                writer.writeEndElement(); // d:TableName
+            }
+        });
+    }
 
-        try {
-            return new ByteArrayInputStream(entity.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+    public InputStream generateEntityEntry(Entity entity) {
+        final Entity entityTemp = entity;
+        return generateEntry(new PropertiesWriter() {
+            @Override
+            public void write(XMLStreamWriter writer) throws XMLStreamException {
+                for (Entry<String, Property> entry : entityTemp.getProperties().entrySet()) {
+                    writer.writeStartElement("d:" + entry.getKey());
+
+                    String edmType = entry.getValue().getEdmType();
+                    if (edmType != null) {
+                        writer.writeAttribute("m:type", edmType);
+                    }
+
+                    String value = edmValueConverter.serialize(edmType, entry.getValue().getValue());
+                    if (value != null) {
+                        writer.writeCharacters(value);
+                    }
+
+                    writer.writeEndElement(); // property name
+
+                }
+            }
+        });
     }
 
     public List<TableEntry> parseTableEntries(InputStream stream) {
@@ -88,19 +117,105 @@ public class AtomReaderWriter {
         }
     }
 
+    public Entity parseEntityEntry(InputStream stream) {
+        try {
+            XMLStreamReader xmlr = xmlStreamFactory.getReader(stream);
+
+            expect(xmlr, XMLStreamConstants.START_DOCUMENT);
+            Map<String, Property> properties = parseEntryProperties(xmlr);
+            expect(xmlr, XMLStreamConstants.END_DOCUMENT);
+
+            return new Entity().setProperties(properties);
+        }
+        catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private interface PropertiesWriter {
+        void write(XMLStreamWriter writer) throws XMLStreamException;
+    }
+
+    private InputStream generateEntry(PropertiesWriter propertiesWriter) {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            XMLStreamWriter writer = xmlStreamFactory.getWriter(stream);
+            writer.writeStartDocument("utf-8", "1.0");
+
+            writer.writeStartElement("entry");
+            writer.writeAttribute("xmlns:d", "http://schemas.microsoft.com/ado/2007/08/dataservices");
+            writer.writeAttribute("xmlns:m", "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata");
+            writer.writeAttribute("xmlns", "http://www.w3.org/2005/Atom");
+
+            writer.writeStartElement("title");
+            writer.writeEndElement(); // title
+
+            writer.writeStartElement("updated");
+            writer.writeCharacters(iso8601DateConverter.format(dateFactory.getDate()));
+            writer.writeEndElement(); // updated
+
+            writer.writeStartElement("author");
+            writer.writeStartElement("name");
+            writer.writeEndElement(); // name
+            writer.writeEndElement(); // author
+
+            writer.writeStartElement("id");
+            writer.writeEndElement(); // id
+
+            writer.writeStartElement("content");
+            writer.writeAttribute("type", "application/xml");
+
+            writer.writeStartElement("m:properties");
+            propertiesWriter.write(writer);
+            writer.writeEndElement(); // m:properties
+
+            writer.writeEndElement(); // content
+
+            writer.writeEndElement(); // entry
+
+            writer.writeEndDocument();
+            writer.close();
+
+            return new ByteArrayInputStream(stream.toByteArray());
+        }
+        catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private TableEntry parseTableEntry(XMLStreamReader xmlr) throws XMLStreamException {
+        Map<String, Property> properties = parseEntryProperties(xmlr);
+
         TableEntry result = new TableEntry();
+        result.setName((String) properties.get("TableName").getValue());
+        return result;
+    }
+
+    private Map<String, Property> parseEntryProperties(XMLStreamReader xmlr) throws XMLStreamException {
+        Map<String, Property> result = new HashMap<String, Property>();
 
         expect(xmlr, XMLStreamConstants.START_ELEMENT, "entry");
 
         while (!isEndElement(xmlr, "entry")) {
 
-            if (isStartElement(xmlr, "TableName")) {
-                xmlr.next();
-                result.setName(xmlr.getText());
-
+            if (isStartElement(xmlr, "properties")) {
                 nextSignificant(xmlr);
-                expect(xmlr, XMLStreamConstants.END_ELEMENT, "TableName");
+
+                while (!isEndElement(xmlr, "properties")) {
+                    String name = xmlr.getLocalName();
+                    String edmType = xmlr.getAttributeValue(null, "type");
+
+                    xmlr.next();
+                    String serializedValue = xmlr.getText();
+                    Object value = edmValueConverter.deserialize(edmType, serializedValue);
+
+                    result.put(name, new Property().setEdmType(edmType).setValue(value));
+
+                    nextSignificant(xmlr);
+                    expect(xmlr, XMLStreamConstants.END_ELEMENT, name);
+                }
+
+                expect(xmlr, XMLStreamConstants.END_ELEMENT, "properties");
             }
             else {
                 nextSignificant(xmlr);
