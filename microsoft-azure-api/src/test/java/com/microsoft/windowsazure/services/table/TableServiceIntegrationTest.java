@@ -28,10 +28,13 @@ import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
+import com.microsoft.windowsazure.services.table.models.Filter;
 import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
+import com.microsoft.windowsazure.services.table.models.Query;
+import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
@@ -43,7 +46,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_TABLE_1;
     private static String TEST_TABLE_2;
     private static String TEST_TABLE_3;
-    //private static String TEST_TABLE_4;
+    private static String TEST_TABLE_4;
+    private static String TEST_TABLE_5;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
     //private static String CREATABLE_TABLE_3;
@@ -67,7 +71,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TEST_TABLE_1 = testTables[0];
         TEST_TABLE_2 = testTables[1];
         TEST_TABLE_3 = testTables[2];
-        //TEST_TABLE_4 = testTables[3];
+        TEST_TABLE_4 = testTables[3];
+        TEST_TABLE_5 = testTables[4];
 
         CREATABLE_TABLE_1 = creatableTables[0];
         CREATABLE_TABLE_2 = creatableTables[1];
@@ -476,13 +481,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void queryEntityWorks() throws Exception {
-        System.out.println("queryEntityWorks()");
+    public void queryEntitiesWorks() throws Exception {
+        System.out.println("queryEntitiesWorks()");
 
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
-        Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntityWorks")
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntitiesWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
                 .setProperty("test5", EdmType.DATETIME, new Date());
@@ -499,7 +504,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result.getEntities().get(0));
 
         assertEquals("001", result.getEntities().get(0).getPartitionKey());
-        assertEquals("queryEntityWorks", result.getEntities().get(0).getRowKey());
+        assertEquals("queryEntitiesWorks", result.getEntities().get(0).getRowKey());
         assertNotNull(result.getEntities().get(0).getTimestamp());
         assertNotNull(result.getEntities().get(0).getEtag());
 
@@ -517,5 +522,74 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntities().get(0).getProperty("test5"));
         assertTrue(result.getEntities().get(0).getProperty("test5").getValue() instanceof Date);
+    }
+
+    @Test
+    public void queryEntitiesWithPaginationWorks() throws Exception {
+        System.out.println("queryEntitiesWithPaginationWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_4;
+        int numberOfEntries = 20;
+        for (int i = 0; i < numberOfEntries; i++) {
+            Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntitiesWithPaginationWorks-" + i)
+                    .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                    .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                    .setProperty("test5", EdmType.DATETIME, new Date());
+
+            service.insertEntity(table, entity);
+        }
+
+        // Act
+        int entryCount = 0;
+        String nextPartitionKey = null;
+        String nextRowKey = null;
+        while (true) {
+            QueryEntitiesResult result = service.queryEntities(table,
+                    new QueryEntitiesOptions().setNextPartitionKey(nextPartitionKey).setNextRowKey(nextRowKey));
+
+            entryCount += result.getEntities().size();
+
+            if (nextPartitionKey == null)
+                break;
+
+            nextPartitionKey = result.getNextPartitionKey();
+            nextRowKey = result.getNextRowKey();
+        }
+
+        // Assert
+        assertEquals(numberOfEntries, entryCount);
+    }
+
+    @Test
+    public void queryEntitiesWithFilterWorks() throws Exception {
+        System.out.println("queryEntitiesWithFilterWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_5;
+        int numberOfEntries = 5;
+        for (int i = 0; i < numberOfEntries; i++) {
+            Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntitiesWithFilterWorks-" + i)
+                    .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                    .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                    .setProperty("test5", EdmType.DATETIME, new Date());
+
+            service.insertEntity(table, entity);
+        }
+
+        // Act
+        QueryEntitiesResult result = service.queryEntities(
+                table,
+                new QueryEntitiesOptions().setQuery(new Query().setFilter(Filter.eq(Filter.litteral("RowKey"),
+                        Filter.constant("queryEntitiesWithFilterWorks-3")))));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntities().size());
+        assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
     }
 }
