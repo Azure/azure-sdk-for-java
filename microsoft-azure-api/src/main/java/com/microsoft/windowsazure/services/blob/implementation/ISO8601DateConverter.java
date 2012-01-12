@@ -27,17 +27,32 @@ import java.util.TimeZone;
 public class ISO8601DateConverter {
     // Note: because of the trailing "0000000", this is not quite ISO 8601 compatible
     private static final String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'";
+    private static final String SHORT_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public String format(Date date) {
         return getFormat().format(date);
     }
 
     public Date parse(String date) throws ParseException {
-        return getFormat().parse(date);
+        if (date == null)
+            return null;
+
+        // Sometimes, the date comes back without the ".SSSSSSS" part (presumably when the decimal value
+        // of the date is "0". Use the short format in that case.
+        if (date.indexOf('.') < 0)
+            return getShortFormat().parse(date);
+        else
+            return getFormat().parse(date);
     }
 
     private DateFormat getFormat() {
         DateFormat iso8601Format = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
+        iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return iso8601Format;
+    }
+
+    private DateFormat getShortFormat() {
+        DateFormat iso8601Format = new SimpleDateFormat(SHORT_DATETIME_PATTERN, Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format;
     }
