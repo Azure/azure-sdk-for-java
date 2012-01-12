@@ -32,25 +32,25 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnection
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
-import com.microsoft.windowsazure.services.table.models.BinaryFilterExpression;
-import com.microsoft.windowsazure.services.table.models.ConstantFilterExpression;
+import com.microsoft.windowsazure.services.table.models.BinaryFilter;
+import com.microsoft.windowsazure.services.table.models.ConstantFilter;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
-import com.microsoft.windowsazure.services.table.models.FilterExpression;
+import com.microsoft.windowsazure.services.table.models.Filter;
 import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
 import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
-import com.microsoft.windowsazure.services.table.models.LitteralFilterExpression;
-import com.microsoft.windowsazure.services.table.models.QueryBuilder;
+import com.microsoft.windowsazure.services.table.models.LitteralFilter;
+import com.microsoft.windowsazure.services.table.models.Query;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
-import com.microsoft.windowsazure.services.table.models.UnaryFilterExpression;
+import com.microsoft.windowsazure.services.table.models.UnaryFilter;
 import com.microsoft.windowsazure.services.table.models.UpdateEntityResult;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -130,13 +130,13 @@ public class TableRestProxy implements TableContract {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
-    private WebResource addOptionalQuery(WebResource webResource, QueryBuilder query) {
+    private WebResource addOptionalQuery(WebResource webResource, Query query) {
         if (query == null)
             return webResource;
 
-        if (query.getFields() != null && query.getFields().size() > 0) {
+        if (query.getSelectFields() != null && query.getSelectFields().size() > 0) {
             webResource = addOptionalQueryParam(webResource, "$select",
-                    CommaStringBuilder.join(encodeODataURIValues(query.getFields())));
+                    CommaStringBuilder.join(encodeODataURIValues(query.getSelectFields())));
         }
 
         if (query.getTop() != null) {
@@ -147,54 +147,45 @@ public class TableRestProxy implements TableContract {
             webResource = addOptionalQueryParam(webResource, "$filter", buildFilterExpression(query.getFilter()));
         }
 
-        if (query.getOrderBy() != null) {
+        if (query.getOrderByFields() != null) {
             webResource = addOptionalQueryParam(webResource, "$orderby",
-                    CommaStringBuilder.join(encodeODataURIValues(query.getOrderBy())));
-        }
-
-        if (query.getNextPartitionKey() != null) {
-            webResource = addOptionalQueryParam(webResource, "NextPartitionKey",
-                    encodeODataURIValue(query.getNextPartitionKey()));
-        }
-
-        if (query.getNextRowKey() != null) {
-            webResource = addOptionalQueryParam(webResource, "NextRowKey", encodeODataURIValue(query.getNextRowKey()));
+                    CommaStringBuilder.join(encodeODataURIValues(query.getOrderByFields())));
         }
 
         return webResource;
     }
 
-    private String buildFilterExpression(FilterExpression filter) {
+    private String buildFilterExpression(Filter filter) {
         StringBuilder sb = new StringBuilder();
         buildFilterExpression(filter, sb);
         return sb.toString();
     }
 
-    private void buildFilterExpression(FilterExpression filter, StringBuilder sb) {
+    private void buildFilterExpression(Filter filter, StringBuilder sb) {
         if (filter == null)
             return;
 
-        if (filter instanceof LitteralFilterExpression) {
-            sb.append(((LitteralFilterExpression) filter).getLitteral());
+        if (filter instanceof LitteralFilter) {
+            sb.append(((LitteralFilter) filter).getLitteral());
         }
-        else if (filter instanceof ConstantFilterExpression) {
+        else if (filter instanceof ConstantFilter) {
             sb.append("'");
-            sb.append(((ConstantFilterExpression) filter).getValue());
+            sb.append(((ConstantFilter) filter).getValue());
             sb.append("'");
         }
-        else if (filter instanceof UnaryFilterExpression) {
-            sb.append(((UnaryFilterExpression) filter).getOperator());
+        else if (filter instanceof UnaryFilter) {
+            sb.append(((UnaryFilter) filter).getOperator());
             sb.append("(");
-            buildFilterExpression(((UnaryFilterExpression) filter).getOperand(), sb);
+            buildFilterExpression(((UnaryFilter) filter).getOperand(), sb);
             sb.append(")");
         }
-        else if (filter instanceof BinaryFilterExpression) {
+        else if (filter instanceof BinaryFilter) {
             sb.append("(");
-            buildFilterExpression(((BinaryFilterExpression) filter).getLeft(), sb);
+            buildFilterExpression(((BinaryFilter) filter).getLeft(), sb);
             sb.append(" ");
-            sb.append(((BinaryFilterExpression) filter).getOperator());
+            sb.append(((BinaryFilter) filter).getOperator());
             sb.append(" ");
-            buildFilterExpression(((BinaryFilterExpression) filter).getRight(), sb);
+            buildFilterExpression(((BinaryFilter) filter).getRight(), sb);
             sb.append(")");
         }
     }
@@ -288,15 +279,12 @@ public class TableRestProxy implements TableContract {
     @Override
     public QueryTablesResult listTables(ListTablesOptions options) throws ServiceException {
         // Append Max char to end '{' is 1 + 'z' in AsciiTable ==> uppperBound is prefix + '{'
-        FilterExpression filter = FilterExpression.and(
-                FilterExpression.ge(FilterExpression.litteral("TableName"),
-                        FilterExpression.constant(options.getPrefix())),
-                FilterExpression.le(FilterExpression.litteral("TableName"),
-                        FilterExpression.constant(options.getPrefix() + "{")));
+        Filter filter = Filter.and(Filter.ge(Filter.litteral("TableName"), Filter.constant(options.getPrefix())),
+                Filter.le(Filter.litteral("TableName"), Filter.constant(options.getPrefix() + "{")));
 
         QueryTablesOptions queryTableOptions = new QueryTablesOptions();
         queryTableOptions.setTimeout(options.getTimeout());
-        queryTableOptions.setQuery(new QueryBuilder().setFilter(filter));
+        queryTableOptions.setQuery(new Query().setFilter(filter));
         return queryTables(queryTableOptions);
     }
 
@@ -309,6 +297,7 @@ public class TableRestProxy implements TableContract {
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("Tables");
         webResource = addOptionalQuery(webResource, options.getQuery());
+        webResource = addOptionalQueryParam(webResource, "NextTableName", options.getNextTableName());
 
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
@@ -317,7 +306,7 @@ public class TableRestProxy implements TableContract {
         ThrowIfError(response);
 
         QueryTablesResult result = new QueryTablesResult();
-        result.setContinuationToken(response.getHeaders().getFirst("x-ms-continuation-NextTableName"));
+        result.setNextTableName(response.getHeaders().getFirst("x-ms-continuation-NextTableName"));
         result.setTables(atomReaderWriter.parseTableEntries(response.getEntityInputStream()));
 
         return result;
@@ -498,6 +487,9 @@ public class TableRestProxy implements TableContract {
     public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path(table);
         webResource = addOptionalQuery(webResource, options.getQuery());
+        webResource = addOptionalQueryParam(webResource, "NextPartitionKey",
+                encodeODataURIValue(options.getNextPartitionKey()));
+        webResource = addOptionalQueryParam(webResource, "NextRowKey", encodeODataURIValue(options.getNextRowKey()));
 
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);

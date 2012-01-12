@@ -1,13 +1,13 @@
 package com.microsoft.windowsazure.services.table.models;
 
-public class LitteralFilterExpression extends FilterExpression {
+public class LitteralFilter extends Filter {
     private String litteral;
 
     public String getLitteral() {
         return litteral;
     }
 
-    public LitteralFilterExpression setLitteral(String litteral) {
+    public LitteralFilter setLitteral(String litteral) {
         this.litteral = litteral;
         return this;
     }

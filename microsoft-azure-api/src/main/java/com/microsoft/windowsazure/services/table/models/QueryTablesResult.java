@@ -3,15 +3,15 @@ package com.microsoft.windowsazure.services.table.models;
 import java.util.List;
 
 public class QueryTablesResult {
-    private String continuationToken;
+    private String nextTableName;
     private List<TableEntry> tables;
 
-    public String getContinuationToken() {
-        return continuationToken;
+    public String getNextTableName() {
+        return nextTableName;
     }
 
-    public void setContinuationToken(String continuationToken) {
-        this.continuationToken = continuationToken;
+    public void setNextTableName(String nextTableName) {
+        this.nextTableName = nextTableName;
     }
 
     public List<TableEntry> getTables() {

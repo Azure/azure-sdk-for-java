@@ -1,13 +1,13 @@
 package com.microsoft.windowsazure.services.table.models;
 
-public class ConstantFilterExpression extends FilterExpression {
+public class ConstantFilter extends Filter {
     private Object value;
 
     public Object getValue() {
         return value;
     }
 
-    public ConstantFilterExpression setValue(Object value) {
+    public ConstantFilter setValue(Object value) {
         this.value = value;
         return this;
     }
