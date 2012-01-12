@@ -48,6 +48,7 @@ import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
+import com.microsoft.windowsazure.services.table.models.RawStringFilter;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.microsoft.windowsazure.services.table.models.UnaryFilter;
@@ -187,6 +188,9 @@ public class TableRestProxy implements TableContract {
             sb.append(" ");
             buildFilterExpression(((BinaryFilter) filter).getRight(), sb);
             sb.append(")");
+        }
+        else if (filter instanceof RawStringFilter) {
+            sb.append(((RawStringFilter) filter).getRawString());
         }
     }
 

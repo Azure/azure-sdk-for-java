@@ -44,4 +44,8 @@ public class Filter {
     public static LitteralFilter litteral(String value) {
         return new LitteralFilter().setLitteral(value);
     }
+
+    public static RawStringFilter rawString(String value) {
+        return new RawStringFilter().setRawString(value);
+    }
 }

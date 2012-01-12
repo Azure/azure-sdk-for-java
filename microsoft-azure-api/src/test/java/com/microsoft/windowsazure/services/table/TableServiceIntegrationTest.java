@@ -581,15 +581,27 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             service.insertEntity(table, entity);
         }
 
-        // Act
-        QueryEntitiesResult result = service.queryEntities(
-                table,
-                new QueryEntitiesOptions().setQuery(new Query().setFilter(Filter.eq(Filter.litteral("RowKey"),
-                        Filter.constant("queryEntitiesWithFilterWorks-3")))));
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table,
+                    new QueryEntitiesOptions().setQuery(new Query().setFilter(Filter.eq(Filter.litteral("RowKey"),
+                            Filter.constant("queryEntitiesWithFilterWorks-3")))));
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(1, result.getEntities().size());
-        assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
+                    .setFilter(Filter.rawString("RowKey eq 'queryEntitiesWithFilterWorks-3'"))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+        }
     }
 }
