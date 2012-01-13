@@ -25,6 +25,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.table.models.BatchOperations;
+import com.microsoft.windowsazure.services.table.models.BatchResult;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
@@ -48,6 +53,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_TABLE_3;
     private static String TEST_TABLE_4;
     private static String TEST_TABLE_5;
+    private static String TEST_TABLE_6;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
     //private static String CREATABLE_TABLE_3;
@@ -56,6 +62,9 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
+        //System.setProperty("http.proxyHost", "127.0.0.1");
+        //System.setProperty("http.proxyPort", "8888");
+
         // Setup container names array (list of container names used by
         // integration tests)
         testTables = new String[10];
@@ -73,6 +82,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TEST_TABLE_3 = testTables[2];
         TEST_TABLE_4 = testTables[3];
         TEST_TABLE_5 = testTables[4];
+        TEST_TABLE_6 = testTables[5];
 
         CREATABLE_TABLE_1 = creatableTables[0];
         CREATABLE_TABLE_2 = creatableTables[1];
@@ -82,6 +92,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
 
+        deleteAllTables(service, testTables);
+        deleteAllTables(service, creatableTables);
         createTables(service, testTablesPrefix, testTables);
     }
 
@@ -95,6 +107,9 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     private static void createTables(TableContract service, String prefix, String[] list) throws Exception {
+        // Retry creating every table as long as we get "409 - Table being deleted" error
+        service = service.withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(new int[] { 409 })));
+
         Set<String> containers = listTables(service, prefix);
         for (String item : list) {
             if (!containers.contains(item)) {
@@ -108,6 +123,17 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         for (String item : list) {
             if (containers.contains(item)) {
                 service.deleteTable(item);
+            }
+        }
+    }
+
+    private static void deleteAllTables(TableContract service, String[] list) throws Exception {
+        for (String item : list) {
+            try {
+                service.deleteTable(item);
+            }
+            catch (ServiceException e) {
+                // Ignore
             }
         }
     }
@@ -603,5 +629,26 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             assertEquals(1, result.getEntities().size());
             assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
         }
+    }
+
+    @Test
+    public void batchWorks() throws Exception {
+        System.out.println("batchWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        // Act
+        BatchResult result = service.batch(new BatchOperations().addInsertEntity(table, entity));
+
+        // Assert
+        assertNotNull(result);
     }
 }

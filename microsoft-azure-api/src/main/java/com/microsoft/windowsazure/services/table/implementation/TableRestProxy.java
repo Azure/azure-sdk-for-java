@@ -14,12 +14,17 @@
  */
 package com.microsoft.windowsazure.services.table.implementation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.internet.MimeMultipart;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
@@ -32,6 +37,10 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnection
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
+import com.microsoft.windowsazure.services.table.models.BatchOperations;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.InsertOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.Operation;
+import com.microsoft.windowsazure.services.table.models.BatchResult;
 import com.microsoft.windowsazure.services.table.models.BinaryFilter;
 import com.microsoft.windowsazure.services.table.models.ConstantFilter;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
@@ -67,11 +76,12 @@ public class TableRestProxy implements TableContract {
     private final ServiceFilter[] filters;
     private final SharedKeyFilter filter;
     private final AtomReaderWriter atomReaderWriter;
+    private final MimeReaderWriter mimeReaderWriter;
 
     @Inject
     public TableRestProxy(HttpURLConnectionClient channel, @Named(TableConfiguration.URI) String url,
             SharedKeyFilter filter, DateFactory dateFactory, ISO8601DateConverter iso8601DateConverter,
-            AtomReaderWriter atomReaderWriter) {
+            AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter) {
 
         this.channel = channel;
         this.url = url;
@@ -81,12 +91,13 @@ public class TableRestProxy implements TableContract {
         this.filters = new ServiceFilter[0];
         this.dateFactory = dateFactory;
         this.atomReaderWriter = atomReaderWriter;
+        this.mimeReaderWriter = mimeReaderWriter;
         channel.addFilter(filter);
     }
 
     public TableRestProxy(HttpURLConnectionClient channel, ServiceFilter[] filters, String url, SharedKeyFilter filter,
-            DateFactory dateFactory, AtomReaderWriter atomReaderWriter, RFC1123DateConverter dateMapper,
-            ISO8601DateConverter iso8601DateConverter) {
+            DateFactory dateFactory, AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter,
+            RFC1123DateConverter dateMapper, ISO8601DateConverter iso8601DateConverter) {
 
         this.channel = channel;
         this.filters = filters;
@@ -94,6 +105,7 @@ public class TableRestProxy implements TableContract {
         this.filter = filter;
         this.dateFactory = dateFactory;
         this.atomReaderWriter = atomReaderWriter;
+        this.mimeReaderWriter = mimeReaderWriter;
         this.dateMapper = dateMapper;
         this.iso8601DateConverter = iso8601DateConverter;
     }
@@ -103,7 +115,7 @@ public class TableRestProxy implements TableContract {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
         return new TableRestProxy(this.channel, newFilters, this.url, this.filter, this.dateFactory,
-                this.atomReaderWriter, this.dateMapper, this.iso8601DateConverter);
+                this.atomReaderWriter, this.mimeReaderWriter, this.dateMapper, this.iso8601DateConverter);
     }
 
     private void ThrowIfError(ClientResponse r) {
@@ -508,4 +520,88 @@ public class TableRestProxy implements TableContract {
 
         return result;
     }
+
+    @Override
+    public BatchResult batch(BatchOperations operations) throws ServiceException {
+        return batch(operations, new TableServiceOptions());
+    }
+
+    @Override
+    public BatchResult batch(BatchOperations operations, TableServiceOptions options) throws ServiceException {
+        WebResource webResource = getResource(options).path("$batch");
+
+        WebResource.Builder builder = webResource.getRequestBuilder();
+        builder = addTableRequestHeaders(builder);
+
+        MimeMultipart entity = createMimeMultipart(operations);
+        builder = builder.type(entity.getContentType());
+
+        ClientResponse response = builder.post(ClientResponse.class, entity);
+        ThrowIfError(response);
+
+        return null;
+    }
+
+    private MimeMultipart createMimeMultipart(BatchOperations operations) {
+        try {
+            List<String> bodyPartContents = new ArrayList<String>();
+            int contentId = 1;
+            for (Operation operation : operations.getOperations()) {
+
+                String bodyPartContent = null;
+                // INSERT
+                if (operation instanceof InsertOperation) {
+                    InsertOperation op = (InsertOperation) operation;
+
+                    //TODO: Review code to make sure encoding is correct 
+                    InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
+                    byte[] bytes = inputStreamToByteArray(stream);
+                    String content = new String(bytes, "UTF-8");
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(String.format("POST %s HTTP/1.1\r\n", channel.resource(url).path(op.getTable()).getURI()));
+                    sb.append(String.format("Content-ID: %d\r\n", contentId++));
+                    sb.append("Content-Type: application/atom+xml;type=entry\r\n");
+                    sb.append(String.format("Content-Length: %d\r\n", content.length()));
+                    sb.append("\r\n");
+                    sb.append(content);
+
+                    bodyPartContent = sb.toString();
+                }
+
+                if (bodyPartContent != null) {
+                    bodyPartContents.add(bodyPartContent);
+                }
+            }
+
+            return mimeReaderWriter.getMimeMultipart(bodyPartContents);
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private byte[] inputStreamToByteArray(InputStream inputStream) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            byte[] buffer = new byte[1024];
+            try {
+                while (true) {
+                    int n = inputStream.read(buffer);
+                    if (n == -1)
+                        break;
+                    outputStream.write(buffer, 0, n);
+                }
+            }
+            finally {
+                inputStream.close();
+            }
+            return outputStream.toByteArray();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

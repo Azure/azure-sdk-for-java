@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.table;
+package com.microsoft.windowsazure.services.table.implementation;
 
 import static org.junit.Assert.*;
 
@@ -24,9 +24,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
-import com.microsoft.windowsazure.services.table.implementation.AtomReaderWriter;
-import com.microsoft.windowsazure.services.table.implementation.DefaultEdmValueConterter;
-import com.microsoft.windowsazure.services.table.implementation.DefaultXMLStreamFactory;
+import com.microsoft.windowsazure.services.table.IntegrationTestBase;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
 
 public class AtomReaderWriterTests extends IntegrationTestBase {

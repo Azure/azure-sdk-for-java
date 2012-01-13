@@ -23,6 +23,8 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.table.TableContract;
+import com.microsoft.windowsazure.services.table.models.BatchOperations;
+import com.microsoft.windowsazure.services.table.models.BatchResult;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetEntityResult;
@@ -452,6 +454,32 @@ public class TableExceptionProcessor implements TableContract {
     public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
         try {
             return service.queryEntities(table, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public BatchResult batch(BatchOperations operations) throws ServiceException {
+        try {
+            return service.batch(operations);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public BatchResult batch(BatchOperations operations, TableServiceOptions options) throws ServiceException {
+        try {
+            return service.batch(operations, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

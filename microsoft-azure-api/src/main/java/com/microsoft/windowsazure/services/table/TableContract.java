@@ -16,6 +16,8 @@ package com.microsoft.windowsazure.services.table;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.table.models.BatchOperations;
+import com.microsoft.windowsazure.services.table.models.BatchResult;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.Entity;
 import com.microsoft.windowsazure.services.table.models.GetEntityResult;
@@ -95,4 +97,8 @@ public interface TableContract extends FilterableService<TableContract> {
     QueryEntitiesResult queryEntities(String table) throws ServiceException;
 
     QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException;
+
+    BatchResult batch(BatchOperations operations) throws ServiceException;
+
+    BatchResult batch(BatchOperations operations, TableServiceOptions options) throws ServiceException;
 }
