@@ -556,19 +556,61 @@ public class TableRestProxy implements TableContract {
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
 
-        MimeMultipart entity = createMimeMultipart(operations);
+        MimeMultipart entity = createBatchRequestBody(operations);
         builder = builder.type(entity.getContentType());
 
         ClientResponse response = builder.post(ClientResponse.class, entity);
         ThrowIfError(response);
 
         BatchResult result = new BatchResult();
-        result.setEntries(parseMimeMultipart(response, operations));
+        result.setEntries(parseBatchResponse(response, operations));
 
         return result;
     }
 
-    private List<Entry> parseMimeMultipart(ClientResponse response, BatchOperations operations) {
+    private MimeMultipart createBatchRequestBody(BatchOperations operations) {
+        List<DataSource> bodyPartContents = new ArrayList<DataSource>();
+        int contentId = 1;
+        for (Operation operation : operations.getOperations()) {
+
+            DataSource bodyPartContent = null;
+            // INSERT
+            if (operation instanceof InsertEntityOperation) {
+                InsertEntityOperation op = (InsertEntityOperation) operation;
+
+                //
+                // Stream content into byte[] so that we have the length
+                //
+                InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
+                byte[] bytes = inputStreamToByteArray(stream);
+
+                //
+                // Create body of MIME part as the HTTP request
+                //
+                InternetHeaders headers = new InternetHeaders();
+                headers.addHeader("Content-ID", Integer.toString(contentId++));
+                headers.addHeader("Content-Type", "application/atom+xml;type=entry");
+                headers.addHeader("Content-Length", Integer.toString(bytes.length));
+
+                //TODO: Review code to make sure encoding is correct 
+                ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
+                httpReaderWriter.appendMethod(httpRequest, "POST", channel.resource(url).path(op.getTable()).getURI());
+                httpReaderWriter.appendHeaders(httpRequest, headers);
+                httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(bytes));
+
+                bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
+                        "application/http");
+            }
+
+            if (bodyPartContent != null) {
+                bodyPartContents.add(bodyPartContent);
+            }
+        }
+
+        return mimeReaderWriter.getMimeMultipart(bodyPartContents);
+    }
+
+    private List<Entry> parseBatchResponse(ClientResponse response, BatchOperations operations) {
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
 
@@ -627,48 +669,6 @@ public class TableRestProxy implements TableContract {
         return result;
     }
 
-    private MimeMultipart createMimeMultipart(BatchOperations operations) {
-        List<DataSource> bodyPartContents = new ArrayList<DataSource>();
-        int contentId = 1;
-        for (Operation operation : operations.getOperations()) {
-
-            DataSource bodyPartContent = null;
-            // INSERT
-            if (operation instanceof InsertEntityOperation) {
-                InsertEntityOperation op = (InsertEntityOperation) operation;
-
-                //
-                // Stream content into byte[] so that we have the length
-                //
-                InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
-                byte[] bytes = inputStreamToByteArray(stream);
-
-                //
-                // Create body of MIME part as the HTTP request
-                //
-                InternetHeaders headers = new InternetHeaders();
-                headers.addHeader("Content-ID", Integer.toString(contentId++));
-                headers.addHeader("Content-Type", "application/atom+xml;type=entry");
-                headers.addHeader("Content-Length", Integer.toString(bytes.length));
-
-                //TODO: Review code to make sure encoding is correct 
-                ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
-                httpReaderWriter.appendMethod(httpRequest, "POST", channel.resource(url).path(op.getTable()).getURI());
-                httpReaderWriter.appendHeaders(httpRequest, headers);
-                httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(bytes));
-
-                bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
-                        "application/http");
-            }
-
-            if (bodyPartContent != null) {
-                bodyPartContents.add(bodyPartContent);
-            }
-        }
-
-        return mimeReaderWriter.getMimeMultipart(bodyPartContents);
-    }
-
     private byte[] inputStreamToByteArray(InputStream inputStream) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -691,5 +691,4 @@ public class TableRestProxy implements TableContract {
             throw new RuntimeException(e);
         }
     }
-
 }

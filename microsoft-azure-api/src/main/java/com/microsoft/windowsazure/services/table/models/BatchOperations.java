@@ -40,14 +40,15 @@ public class BatchOperations {
     }
 
     public BatchOperations addDeleteEntity(String table, String partitionKey, String rowKey) {
-        this.operations.add(new DeleteEntityOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey));
+        this.operations
+                .add(new DeleteEntityOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey));
         return this;
     }
 
-    public abstract class Operation {
+    public static abstract class Operation {
     }
 
-    public class InsertEntityOperation extends Operation {
+    public static class InsertEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -70,7 +71,7 @@ public class BatchOperations {
         }
     }
 
-    public class UpdateEntityOperation extends Operation {
+    public static class UpdateEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -93,7 +94,7 @@ public class BatchOperations {
         }
     }
 
-    public class MergeEntityOperation extends Operation {
+    public static class MergeEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -116,7 +117,7 @@ public class BatchOperations {
         }
     }
 
-    public class InsertOrReplaceEntityOperation extends Operation {
+    public static class InsertOrReplaceEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -139,7 +140,7 @@ public class BatchOperations {
         }
     }
 
-    public class InsertOrMergeEntityOperation extends Operation {
+    public static class InsertOrMergeEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -162,7 +163,7 @@ public class BatchOperations {
         }
     }
 
-    public class DeleteEntityOperation extends Operation {
+    public static class DeleteEntityOperation extends Operation {
         private String table;
         private String partitionKey;
         private String rowKey;
