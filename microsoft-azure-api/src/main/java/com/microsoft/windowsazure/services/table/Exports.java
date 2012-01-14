@@ -18,6 +18,7 @@ import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.table.implementation.AtomReaderWriter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultEdmValueConterter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultXMLStreamFactory;
+import com.microsoft.windowsazure.services.table.implementation.HttpReaderWriter;
 import com.microsoft.windowsazure.services.table.implementation.MimeReaderWriter;
 import com.microsoft.windowsazure.services.table.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.table.implementation.SharedKeyLiteFilter;
@@ -36,6 +37,7 @@ public class Exports implements Builder.Exports {
         registry.add(XMLStreamFactory.class, DefaultXMLStreamFactory.class);
         registry.add(AtomReaderWriter.class);
         registry.add(MimeReaderWriter.class);
+        registry.add(HttpReaderWriter.class);
         registry.add(EdmValueConverter.class, DefaultEdmValueConterter.class);
     }
 }

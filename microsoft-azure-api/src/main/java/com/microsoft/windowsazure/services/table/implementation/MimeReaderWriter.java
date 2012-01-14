@@ -3,15 +3,19 @@ package com.microsoft.windowsazure.services.table.implementation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.inject.Inject;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.MultipartDataSource;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimePartDataSource;
 
 public class MimeReaderWriter {
 
@@ -19,16 +23,20 @@ public class MimeReaderWriter {
     public MimeReaderWriter() {
     }
 
-    public MimeMultipart getMimeMultipart(List<String> bodyPartContents) {
+    public MimeMultipart getMimeMultipart(List<DataSource> bodyPartContents) {
         try {
             return getMimeMultipartCore(bodyPartContents);
         }
         catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private MimeMultipart getMimeMultipartCore(List<String> bodyPartContents) throws MessagingException {
+    private MimeMultipart getMimeMultipartCore(List<DataSource> bodyPartContents) throws MessagingException,
+            IOException {
         // Create unique part boundary strings
         String batchId = String.format("batch_%s", UUID.randomUUID().toString());
         String changeSet = String.format("changeset_%s", UUID.randomUUID().toString());
@@ -38,14 +46,11 @@ public class MimeReaderWriter {
         //
         MimeMultipart changeSets = new MimeMultipart(new SetBoundaryMultipartDataSource(changeSet));
 
-        for (String bodyPart : bodyPartContents) {
+        for (DataSource bodyPart : bodyPartContents) {
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
 
-            mimeBodyPart.setContent(bodyPart, "application/http");
-
-            //Note: Both content type and encoding need to be set *after* setting content, because
-            //      MimeBodyPart implementation replaces them when calling "setContent".
-            mimeBodyPart.setHeader("Content-Type", "application/http");
+            mimeBodyPart.setDataHandler(new DataHandler(bodyPart));
+            mimeBodyPart.setHeader("Content-Type", bodyPart.getContentType());
             mimeBodyPart.setHeader("Content-Transfer-Encoding", "binary");
 
             changeSets.addBodyPart(mimeBodyPart);
@@ -109,5 +114,34 @@ public class MimeReaderWriter {
         public BodyPart getBodyPart(int index) throws MessagingException {
             return null;
         }
+    }
+
+    public List<DataSource> parseParts(final InputStream entityInputStream, final String contentType) {
+        try {
+            return parsePartsCore(entityInputStream, contentType);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<DataSource> parsePartsCore(InputStream entityInputStream, String contentType)
+            throws MessagingException, IOException {
+        DataSource ds = new InputStreamDataSource(entityInputStream, contentType);
+        MimeMultipart batch = new MimeMultipart(ds);
+        MimeBodyPart batchBody = (MimeBodyPart) batch.getBodyPart(0);
+
+        MimeMultipart changeSets = new MimeMultipart(new MimePartDataSource(batchBody));
+
+        List<DataSource> result = new ArrayList<DataSource>();
+        for (int i = 0; i < changeSets.getCount(); i++) {
+            BodyPart part = changeSets.getBodyPart(i);
+
+            result.add(new InputStreamDataSource(part.getInputStream(), part.getContentType()));
+        }
+        return result;
     }
 }

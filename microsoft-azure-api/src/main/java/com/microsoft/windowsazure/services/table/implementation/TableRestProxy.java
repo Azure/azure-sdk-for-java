@@ -14,16 +14,20 @@
  */
 package com.microsoft.windowsazure.services.table.implementation;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.activation.DataSource;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.Header;
+import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeMultipart;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
@@ -32,15 +36,27 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
+import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.table.TableConfiguration;
 import com.microsoft.windowsazure.services.table.TableContract;
+import com.microsoft.windowsazure.services.table.implementation.HttpReaderWriter.StatusLine;
 import com.microsoft.windowsazure.services.table.models.BatchOperations;
-import com.microsoft.windowsazure.services.table.models.BatchOperations.InsertOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.DeleteEntityOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.InsertEntityOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.InsertOrMergeEntityOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.InsertOrReplaceEntityOperation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.MergeEntityOperation;
 import com.microsoft.windowsazure.services.table.models.BatchOperations.Operation;
+import com.microsoft.windowsazure.services.table.models.BatchOperations.UpdateEntityOperation;
 import com.microsoft.windowsazure.services.table.models.BatchResult;
+import com.microsoft.windowsazure.services.table.models.BatchResult.DeleteEntity;
+import com.microsoft.windowsazure.services.table.models.BatchResult.Entry;
+import com.microsoft.windowsazure.services.table.models.BatchResult.Error;
+import com.microsoft.windowsazure.services.table.models.BatchResult.InsertEntity;
+import com.microsoft.windowsazure.services.table.models.BatchResult.UpdateEntity;
 import com.microsoft.windowsazure.services.table.models.BinaryFilter;
 import com.microsoft.windowsazure.services.table.models.ConstantFilter;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
@@ -63,8 +79,10 @@ import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.microsoft.windowsazure.services.table.models.UnaryFilter;
 import com.microsoft.windowsazure.services.table.models.UpdateEntityResult;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.core.header.InBoundHeaders;
 
 public class TableRestProxy implements TableContract {
     private static final String API_VERSION = "2011-08-18";
@@ -77,11 +95,12 @@ public class TableRestProxy implements TableContract {
     private final SharedKeyFilter filter;
     private final AtomReaderWriter atomReaderWriter;
     private final MimeReaderWriter mimeReaderWriter;
+    private final HttpReaderWriter httpReaderWriter;
 
     @Inject
     public TableRestProxy(HttpURLConnectionClient channel, @Named(TableConfiguration.URI) String url,
             SharedKeyFilter filter, DateFactory dateFactory, ISO8601DateConverter iso8601DateConverter,
-            AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter) {
+            AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter, HttpReaderWriter httpReaderWriter) {
 
         this.channel = channel;
         this.url = url;
@@ -92,12 +111,14 @@ public class TableRestProxy implements TableContract {
         this.dateFactory = dateFactory;
         this.atomReaderWriter = atomReaderWriter;
         this.mimeReaderWriter = mimeReaderWriter;
+        this.httpReaderWriter = httpReaderWriter;
         channel.addFilter(filter);
     }
 
     public TableRestProxy(HttpURLConnectionClient channel, ServiceFilter[] filters, String url, SharedKeyFilter filter,
             DateFactory dateFactory, AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter,
-            RFC1123DateConverter dateMapper, ISO8601DateConverter iso8601DateConverter) {
+            HttpReaderWriter httpReaderWriter, RFC1123DateConverter dateMapper,
+            ISO8601DateConverter iso8601DateConverter) {
 
         this.channel = channel;
         this.filters = filters;
@@ -106,6 +127,7 @@ public class TableRestProxy implements TableContract {
         this.dateFactory = dateFactory;
         this.atomReaderWriter = atomReaderWriter;
         this.mimeReaderWriter = mimeReaderWriter;
+        this.httpReaderWriter = httpReaderWriter;
         this.dateMapper = dateMapper;
         this.iso8601DateConverter = iso8601DateConverter;
     }
@@ -115,7 +137,8 @@ public class TableRestProxy implements TableContract {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
         return new TableRestProxy(this.channel, newFilters, this.url, this.filter, this.dateFactory,
-                this.atomReaderWriter, this.mimeReaderWriter, this.dateMapper, this.iso8601DateConverter);
+                this.atomReaderWriter, this.mimeReaderWriter, this.httpReaderWriter, this.dateMapper,
+                this.iso8601DateConverter);
     }
 
     private void ThrowIfError(ClientResponse r) {
@@ -539,46 +562,111 @@ public class TableRestProxy implements TableContract {
         ClientResponse response = builder.post(ClientResponse.class, entity);
         ThrowIfError(response);
 
-        return null;
+        BatchResult result = new BatchResult();
+        result.setEntries(parseMimeMultipart(response, operations));
+
+        return result;
+    }
+
+    private List<Entry> parseMimeMultipart(ClientResponse response, BatchOperations operations) {
+        List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
+                .getFirst("Content-Type"));
+
+        if (parts.size() != operations.getOperations().size()) {
+            throw new UniformInterfaceException(String.format(
+                    "Batch response from server does not contain the correct amount "
+                            + "of parts (expecting %d, received %d instead)", parts.size(), operations.getOperations()
+                            .size()), response);
+        }
+
+        List<Entry> result = new ArrayList<Entry>();
+        for (int i = 0; i < parts.size(); i++) {
+            DataSource ds = parts.get(i);
+            Operation operation = operations.getOperations().get(i);
+
+            StatusLine status = httpReaderWriter.parseStatusLine(ds);
+            InternetHeaders headers = httpReaderWriter.parseHeaders(ds);
+            InputStream content = httpReaderWriter.parseEntity(ds);
+
+            if (status.getStatus() >= 400) {
+                // Create dummy client response with status, headers and content
+                InBoundHeaders inBoundHeaders = new InBoundHeaders();
+
+                Enumeration<Header> e = headers.getAllHeaders();
+                while (e.hasMoreElements()) {
+                    Header header = e.nextElement();
+                    inBoundHeaders.putSingle(header.getName(), header.getValue());
+                }
+
+                ClientResponse dummyResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content, null);
+
+                // Wrap into a ServiceException
+                UniformInterfaceException exception = new UniformInterfaceException(dummyResponse);
+                ServiceException serviceException = new ServiceException(exception);
+                serviceException = ServiceExceptionFactory.process("table", serviceException);
+                Error error = new Error().setError(serviceException);
+
+                result.add(error);
+            }
+            else if (operation instanceof InsertEntityOperation) {
+                InsertEntity opResult = new InsertEntity().setEntity(atomReaderWriter.parseEntityEntry(content));
+                result.add(opResult);
+            }
+            else if ((operation instanceof UpdateEntityOperation) || (operation instanceof MergeEntityOperation)
+                    || (operation instanceof InsertOrReplaceEntityOperation)
+                    || (operation instanceof InsertOrMergeEntityOperation)) {
+                UpdateEntity opResult = new UpdateEntity().setEtag(headers.getHeader("ETag", null));
+                result.add(opResult);
+            }
+            else if (operation instanceof DeleteEntityOperation) {
+                DeleteEntity opResult = new DeleteEntity();
+                result.add(opResult);
+            }
+        }
+
+        return result;
     }
 
     private MimeMultipart createMimeMultipart(BatchOperations operations) {
-        try {
-            List<String> bodyPartContents = new ArrayList<String>();
-            int contentId = 1;
-            for (Operation operation : operations.getOperations()) {
+        List<DataSource> bodyPartContents = new ArrayList<DataSource>();
+        int contentId = 1;
+        for (Operation operation : operations.getOperations()) {
 
-                String bodyPartContent = null;
-                // INSERT
-                if (operation instanceof InsertOperation) {
-                    InsertOperation op = (InsertOperation) operation;
+            DataSource bodyPartContent = null;
+            // INSERT
+            if (operation instanceof InsertEntityOperation) {
+                InsertEntityOperation op = (InsertEntityOperation) operation;
 
-                    //TODO: Review code to make sure encoding is correct 
-                    InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
-                    byte[] bytes = inputStreamToByteArray(stream);
-                    String content = new String(bytes, "UTF-8");
+                //
+                // Stream content into byte[] so that we have the length
+                //
+                InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
+                byte[] bytes = inputStreamToByteArray(stream);
 
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(String.format("POST %s HTTP/1.1\r\n", channel.resource(url).path(op.getTable()).getURI()));
-                    sb.append(String.format("Content-ID: %d\r\n", contentId++));
-                    sb.append("Content-Type: application/atom+xml;type=entry\r\n");
-                    sb.append(String.format("Content-Length: %d\r\n", content.length()));
-                    sb.append("\r\n");
-                    sb.append(content);
+                //
+                // Create body of MIME part as the HTTP request
+                //
+                InternetHeaders headers = new InternetHeaders();
+                headers.addHeader("Content-ID", Integer.toString(contentId++));
+                headers.addHeader("Content-Type", "application/atom+xml;type=entry");
+                headers.addHeader("Content-Length", Integer.toString(bytes.length));
 
-                    bodyPartContent = sb.toString();
-                }
+                //TODO: Review code to make sure encoding is correct 
+                ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
+                httpReaderWriter.appendMethod(httpRequest, "POST", channel.resource(url).path(op.getTable()).getURI());
+                httpReaderWriter.appendHeaders(httpRequest, headers);
+                httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(bytes));
 
-                if (bodyPartContent != null) {
-                    bodyPartContents.add(bodyPartContent);
-                }
+                bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
+                        "application/http");
             }
 
-            return mimeReaderWriter.getMimeMultipart(bodyPartContents);
+            if (bodyPartContent != null) {
+                bodyPartContents.add(bodyPartContent);
+            }
         }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+
+        return mimeReaderWriter.getMimeMultipart(bodyPartContents);
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) {

@@ -15,39 +15,39 @@ public class BatchOperations {
     }
 
     public BatchOperations addInsertEntity(String table, Entity entity) {
-        this.operations.add(new InsertOperation().setTable(table).setEntity(entity));
+        this.operations.add(new InsertEntityOperation().setTable(table).setEntity(entity));
         return this;
     }
 
     public BatchOperations addUpdateEntity(String table, Entity entity) {
-        this.operations.add(new UpdateOperation().setTable(table).setEntity(entity));
+        this.operations.add(new UpdateEntityOperation().setTable(table).setEntity(entity));
         return this;
     }
 
     public BatchOperations addMergeEntity(String table, Entity entity) {
-        this.operations.add(new MergeOperation().setTable(table).setEntity(entity));
+        this.operations.add(new MergeEntityOperation().setTable(table).setEntity(entity));
         return this;
     }
 
     public BatchOperations addInsertOrReplaceEntity(String table, Entity entity) {
-        this.operations.add(new InsertOrReplaceOperation().setTable(table).setEntity(entity));
+        this.operations.add(new InsertOrReplaceEntityOperation().setTable(table).setEntity(entity));
         return this;
     }
 
     public BatchOperations addInsertOrMergeEntity(String table, Entity entity) {
-        this.operations.add(new InsertOrMergeOperation().setTable(table).setEntity(entity));
+        this.operations.add(new InsertOrMergeEntityOperation().setTable(table).setEntity(entity));
         return this;
     }
 
     public BatchOperations addDeleteEntity(String table, String partitionKey, String rowKey) {
-        this.operations.add(new DeleteOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey));
+        this.operations.add(new DeleteEntityOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey));
         return this;
     }
 
     public abstract class Operation {
     }
 
-    public class InsertOperation extends Operation {
+    public class InsertEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -55,7 +55,7 @@ public class BatchOperations {
             return table;
         }
 
-        public InsertOperation setTable(String table) {
+        public InsertEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -64,13 +64,13 @@ public class BatchOperations {
             return entity;
         }
 
-        public InsertOperation setEntity(Entity entity) {
+        public InsertEntityOperation setEntity(Entity entity) {
             this.entity = entity;
             return this;
         }
     }
 
-    public class UpdateOperation extends Operation {
+    public class UpdateEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -78,7 +78,7 @@ public class BatchOperations {
             return table;
         }
 
-        public UpdateOperation setTable(String table) {
+        public UpdateEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -87,13 +87,13 @@ public class BatchOperations {
             return entity;
         }
 
-        public UpdateOperation setEntity(Entity entity) {
+        public UpdateEntityOperation setEntity(Entity entity) {
             this.entity = entity;
             return this;
         }
     }
 
-    public class MergeOperation extends Operation {
+    public class MergeEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -101,7 +101,7 @@ public class BatchOperations {
             return table;
         }
 
-        public MergeOperation setTable(String table) {
+        public MergeEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -110,13 +110,13 @@ public class BatchOperations {
             return entity;
         }
 
-        public MergeOperation setEntity(Entity entity) {
+        public MergeEntityOperation setEntity(Entity entity) {
             this.entity = entity;
             return this;
         }
     }
 
-    public class InsertOrReplaceOperation extends Operation {
+    public class InsertOrReplaceEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -124,7 +124,7 @@ public class BatchOperations {
             return table;
         }
 
-        public InsertOrReplaceOperation setTable(String table) {
+        public InsertOrReplaceEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -133,13 +133,13 @@ public class BatchOperations {
             return entity;
         }
 
-        public InsertOrReplaceOperation setEntity(Entity entity) {
+        public InsertOrReplaceEntityOperation setEntity(Entity entity) {
             this.entity = entity;
             return this;
         }
     }
 
-    public class InsertOrMergeOperation extends Operation {
+    public class InsertOrMergeEntityOperation extends Operation {
         private String table;
         private Entity entity;
 
@@ -147,7 +147,7 @@ public class BatchOperations {
             return table;
         }
 
-        public InsertOrMergeOperation setTable(String table) {
+        public InsertOrMergeEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -156,13 +156,13 @@ public class BatchOperations {
             return entity;
         }
 
-        public InsertOrMergeOperation setEntity(Entity entity) {
+        public InsertOrMergeEntityOperation setEntity(Entity entity) {
             this.entity = entity;
             return this;
         }
     }
 
-    public class DeleteOperation extends Operation {
+    public class DeleteEntityOperation extends Operation {
         private String table;
         private String partitionKey;
         private String rowKey;
@@ -171,7 +171,7 @@ public class BatchOperations {
             return table;
         }
 
-        public DeleteOperation setTable(String table) {
+        public DeleteEntityOperation setTable(String table) {
             this.table = table;
             return this;
         }
@@ -180,7 +180,7 @@ public class BatchOperations {
             return partitionKey;
         }
 
-        public DeleteOperation setPartitionKey(String partitionKey) {
+        public DeleteEntityOperation setPartitionKey(String partitionKey) {
             this.partitionKey = partitionKey;
             return this;
         }
@@ -189,7 +189,7 @@ public class BatchOperations {
             return rowKey;
         }
 
-        public DeleteOperation setRowKey(String rowKey) {
+        public DeleteEntityOperation setRowKey(String rowKey) {
             this.rowKey = rowKey;
             return this;
         }

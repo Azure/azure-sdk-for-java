@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.table.models.BatchOperations;
 import com.microsoft.windowsazure.services.table.models.BatchResult;
+import com.microsoft.windowsazure.services.table.models.BatchResult.InsertEntity;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
@@ -650,5 +651,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(InsertEntity.class, result.getEntries().get(0).getClass());
     }
 }
