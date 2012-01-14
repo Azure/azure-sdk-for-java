@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -574,32 +575,41 @@ public class TableRestProxy implements TableContract {
         for (Operation operation : operations.getOperations()) {
 
             DataSource bodyPartContent = null;
-            // INSERT
             if (operation instanceof InsertEntityOperation) {
                 InsertEntityOperation op = (InsertEntityOperation) operation;
-
-                //
-                // Stream content into byte[] so that we have the length
-                //
-                InputStream stream = atomReaderWriter.generateEntityEntry(op.getEntity());
-                byte[] bytes = inputStreamToByteArray(stream);
-
-                //
-                // Create body of MIME part as the HTTP request
-                //
-                InternetHeaders headers = new InternetHeaders();
-                headers.addHeader("Content-ID", Integer.toString(contentId++));
-                headers.addHeader("Content-Type", "application/atom+xml;type=entry");
-                headers.addHeader("Content-Length", Integer.toString(bytes.length));
-
-                //TODO: Review code to make sure encoding is correct 
-                ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
-                httpReaderWriter.appendMethod(httpRequest, "POST", channel.resource(url).path(op.getTable()).getURI());
-                httpReaderWriter.appendHeaders(httpRequest, headers);
-                httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(bytes));
-
-                bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
-                        "application/http");
+                bodyPartContent = createBatchInsertOrUpdateEntityPart(op.getTable(), op.getEntity(), "POST",
+                        false/*includeEtag*/, contentId);
+                contentId++;
+            }
+            else if (operation instanceof UpdateEntityOperation) {
+                UpdateEntityOperation op = (UpdateEntityOperation) operation;
+                bodyPartContent = createBatchInsertOrUpdateEntityPart(op.getTable(), op.getEntity(), "PUT",
+                        true/*includeEtag*/, contentId);
+                contentId++;
+            }
+            else if (operation instanceof MergeEntityOperation) {
+                MergeEntityOperation op = (MergeEntityOperation) operation;
+                bodyPartContent = createBatchInsertOrUpdateEntityPart(op.getTable(), op.getEntity(), "MERGE",
+                        true/*includeEtag*/, contentId);
+                contentId++;
+            }
+            else if (operation instanceof InsertOrReplaceEntityOperation) {
+                InsertOrReplaceEntityOperation op = (InsertOrReplaceEntityOperation) operation;
+                bodyPartContent = createBatchInsertOrUpdateEntityPart(op.getTable(), op.getEntity(), "PUT",
+                        false/*includeEtag*/, contentId);
+                contentId++;
+            }
+            else if (operation instanceof InsertOrMergeEntityOperation) {
+                InsertOrMergeEntityOperation op = (InsertOrMergeEntityOperation) operation;
+                bodyPartContent = createBatchInsertOrUpdateEntityPart(op.getTable(), op.getEntity(), "MERGE",
+                        false/*includeEtag*/, contentId);
+                contentId++;
+            }
+            else if (operation instanceof DeleteEntityOperation) {
+                DeleteEntityOperation op = (DeleteEntityOperation) operation;
+                bodyPartContent = createBatchDeleteEntityPart(op.getTable(), op.getPartitionKey(), op.getRowKey(),
+                        op.getEtag(), contentId);
+                contentId++;
             }
 
             if (bodyPartContent != null) {
@@ -608,6 +618,69 @@ public class TableRestProxy implements TableContract {
         }
 
         return mimeReaderWriter.getMimeMultipart(bodyPartContents);
+    }
+
+    private DataSource createBatchInsertOrUpdateEntityPart(String table, Entity entity, String verb,
+            boolean includeEtag, int contentId) {
+
+        URI path;
+        if ("POST".equals(verb)) {
+            path = channel.resource(url).path(table).getURI();
+        }
+        else {
+            path = channel.resource(url).path(getEntityPath(table, entity.getPartitionKey(), entity.getRowKey()))
+                    .getURI();
+        }
+
+        //
+        // Stream content into byte[] so that we have the length
+        //
+        InputStream stream = atomReaderWriter.generateEntityEntry(entity);
+        byte[] bytes = inputStreamToByteArray(stream);
+
+        //
+        // Create body of MIME part as the HTTP request
+        //
+        InternetHeaders headers = new InternetHeaders();
+        headers.addHeader("Content-ID", Integer.toString(contentId));
+        headers.addHeader("Content-Type", "application/atom+xml;type=entry");
+        headers.addHeader("Content-Length", Integer.toString(bytes.length));
+        if (includeEtag) {
+            headers.addHeader("If-Match", entity.getEtag());
+        }
+
+        //TODO: Review code to make sure encoding is correct 
+        ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
+        httpReaderWriter.appendMethod(httpRequest, verb, path);
+        httpReaderWriter.appendHeaders(httpRequest, headers);
+        httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(bytes));
+
+        DataSource bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
+                "application/http");
+        return bodyPartContent;
+    }
+
+    private DataSource createBatchDeleteEntityPart(String table, String partitionKey, String rowKey, String etag,
+            int contentId) {
+
+        URI path = channel.resource(url).path(getEntityPath(table, partitionKey, rowKey)).getURI();
+
+        //
+        // Create body of MIME part as the HTTP request
+        //
+        InternetHeaders headers = new InternetHeaders();
+        headers.addHeader("Content-ID", Integer.toString(contentId));
+        headers.addHeader("If-Match", etag == null ? "*" : etag);
+
+        //TODO: Review code to make sure encoding is correct 
+        ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
+        httpReaderWriter.appendMethod(httpRequest, "DELETE", path);
+        httpReaderWriter.appendHeaders(httpRequest, headers);
+        httpReaderWriter.appendEntity(httpRequest, new ByteArrayInputStream(new byte[0]));
+
+        DataSource bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
+                "application/http");
+        return bodyPartContent;
     }
 
     private List<Entry> parseBatchResponse(ClientResponse response, BatchOperations operations) {

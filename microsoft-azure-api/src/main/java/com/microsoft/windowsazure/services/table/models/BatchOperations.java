@@ -39,9 +39,9 @@ public class BatchOperations {
         return this;
     }
 
-    public BatchOperations addDeleteEntity(String table, String partitionKey, String rowKey) {
-        this.operations
-                .add(new DeleteEntityOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey));
+    public BatchOperations addDeleteEntity(String table, String partitionKey, String rowKey, String etag) {
+        this.operations.add(new DeleteEntityOperation().setTable(table).setPartitionKey(partitionKey).setRowKey(rowKey)
+                .setEtag(etag));
         return this;
     }
 
@@ -167,6 +167,7 @@ public class BatchOperations {
         private String table;
         private String partitionKey;
         private String rowKey;
+        private String etag;
 
         public String getTable() {
             return table;
@@ -192,6 +193,15 @@ public class BatchOperations {
 
         public DeleteEntityOperation setRowKey(String rowKey) {
             this.rowKey = rowKey;
+            return this;
+        }
+
+        public String getEtag() {
+            return etag;
+        }
+
+        public DeleteEntityOperation setEtag(String etag) {
+            this.etag = etag;
             return this;
         }
     }

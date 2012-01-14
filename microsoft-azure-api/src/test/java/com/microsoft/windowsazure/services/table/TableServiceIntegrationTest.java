@@ -30,7 +30,9 @@ import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.table.models.BatchOperations;
 import com.microsoft.windowsazure.services.table.models.BatchResult;
+import com.microsoft.windowsazure.services.table.models.BatchResult.DeleteEntity;
 import com.microsoft.windowsazure.services.table.models.BatchResult.InsertEntity;
+import com.microsoft.windowsazure.services.table.models.BatchResult.UpdateEntity;
 import com.microsoft.windowsazure.services.table.models.DeleteEntityOptions;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.microsoft.windowsazure.services.table.models.Entity;
@@ -56,6 +58,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_TABLE_5;
     private static String TEST_TABLE_6;
     private static String TEST_TABLE_7;
+    private static String TEST_TABLE_8;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
     //private static String CREATABLE_TABLE_3;
@@ -86,6 +89,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TEST_TABLE_5 = testTables[4];
         TEST_TABLE_6 = testTables[5];
         TEST_TABLE_7 = testTables[6];
+        TEST_TABLE_8 = testTables[7];
 
         CREATABLE_TABLE_1 = creatableTables[0];
         CREATABLE_TABLE_2 = creatableTables[1];
@@ -635,20 +639,21 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void batchWorks() throws Exception {
-        System.out.println("batchWorks()");
+    public void batchInsertWorks() throws Exception {
+        System.out.println("batchInsertWorks()");
 
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
         String table = TEST_TABLE_6;
         String partitionKey = "001";
-        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchWorks")
+
+        // Act
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchInsertWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
                 .setProperty("test5", EdmType.DATETIME, new Date());
 
-        // Act
         BatchResult result = service.batch(new BatchOperations().addInsertEntity(table, entity));
 
         // Assert
@@ -658,7 +663,129 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void batchMultipleWorks() throws Exception {
+    public void batchUpdateWorks() throws Exception {
+        System.out.println("batchUpdateWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchUpdateWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+        entity = service.insertEntity(table, entity).getEntity();
+
+        // Act
+        entity.setProperty("test", EdmType.BOOLEAN, false);
+        BatchResult result = service.batch(new BatchOperations().addUpdateEntity(table, entity));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(UpdateEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchMergeWorks() throws Exception {
+        System.out.println("batchMergeWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchMergeWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+        entity = service.insertEntity(table, entity).getEntity();
+
+        // Act
+        BatchResult result = service.batch(new BatchOperations().addMergeEntity(table, entity));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(UpdateEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchInsertOrReplaceWorks() throws Exception {
+        System.out.println("batchInsertOrReplaceWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+
+        // Act
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchInsertOrReplaceWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        BatchResult result = service.batch(new BatchOperations().addInsertOrReplaceEntity(table, entity));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(UpdateEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchInsertOrMergeWorks() throws Exception {
+        System.out.println("batchInsertOrMergeWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+
+        // Act
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchInsertOrMergeWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        BatchResult result = service.batch(new BatchOperations().addInsertOrMergeEntity(table, entity));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(UpdateEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchDeleteWorks() throws Exception {
+        System.out.println("batchDeleteWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_6;
+        String partitionKey = "001";
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchDeleteWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+        entity = service.insertEntity(table, entity).getEntity();
+
+        // Act
+        BatchResult result = service.batch(new BatchOperations().addDeleteEntity(table, entity.getPartitionKey(),
+                entity.getRowKey(), entity.getEtag()));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getEntries().size());
+        assertEquals(DeleteEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchLotsOfInsertsWorks() throws Exception {
         System.out.println("batchMultipleWorks()");
 
         // Arrange
@@ -709,5 +836,78 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             assertNotNull(entity.getProperty("test5"));
             assertTrue(entity.getProperty("test5").getValue() instanceof Date);
         }
+    }
+
+    @Test
+    public void batchAllOperationsTogetherWorks() throws Exception {
+        System.out.println("batchAllOperationsWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_8;
+        String partitionKey = "001";
+
+        // Insert a few entities to allow updating them in batch
+        Entity entity1 = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks-" + 1)
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        entity1 = service.insertEntity(table, entity1).getEntity();
+
+        Entity entity2 = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks-" + 2)
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        entity2 = service.insertEntity(table, entity2).getEntity();
+
+        Entity entity3 = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks-" + 3)
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        entity3 = service.insertEntity(table, entity3).getEntity();
+
+        Entity entity4 = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks-" + 4)
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+
+        entity4 = service.insertEntity(table, entity4).getEntity();
+
+        // Act
+        BatchOperations batchOperations = new BatchOperations();
+
+        Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks")
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+        batchOperations.addInsertEntity(table, entity);
+
+        batchOperations.addDeleteEntity(table, entity1.getPartitionKey(), entity1.getRowKey(), entity1.getEtag());
+
+        batchOperations.addUpdateEntity(table, entity2.setProperty("test", EdmType.INT32, 5));
+        batchOperations.addMergeEntity(table, entity3.setProperty("test", EdmType.INT32, 5));
+        batchOperations.addInsertOrReplaceEntity(table, entity4.setProperty("test", EdmType.INT32, 5));
+
+        Entity entity5 = new Entity().setPartitionKey(partitionKey).setRowKey("batchAllOperationsWorks-" + 5)
+                .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                .setProperty("test5", EdmType.DATETIME, new Date());
+        batchOperations.addInsertOrMergeEntity(table, entity5);
+
+        BatchResult result = service.batch(batchOperations);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(batchOperations.getOperations().size(), result.getEntries().size());
+        assertEquals(InsertEntity.class, result.getEntries().get(0).getClass());
+        assertEquals(DeleteEntity.class, result.getEntries().get(1).getClass());
+        assertEquals(UpdateEntity.class, result.getEntries().get(2).getClass());
+        assertEquals(UpdateEntity.class, result.getEntries().get(3).getClass());
+        assertEquals(UpdateEntity.class, result.getEntries().get(4).getClass());
+        assertEquals(UpdateEntity.class, result.getEntries().get(5).getClass());
     }
 }
