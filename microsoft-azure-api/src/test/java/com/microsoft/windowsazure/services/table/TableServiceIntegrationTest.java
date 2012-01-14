@@ -55,6 +55,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_TABLE_4;
     private static String TEST_TABLE_5;
     private static String TEST_TABLE_6;
+    private static String TEST_TABLE_7;
     private static String CREATABLE_TABLE_1;
     private static String CREATABLE_TABLE_2;
     //private static String CREATABLE_TABLE_3;
@@ -84,6 +85,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TEST_TABLE_4 = testTables[3];
         TEST_TABLE_5 = testTables[4];
         TEST_TABLE_6 = testTables[5];
+        TEST_TABLE_7 = testTables[6];
 
         CREATABLE_TABLE_1 = creatableTables[0];
         CREATABLE_TABLE_2 = creatableTables[1];
@@ -653,5 +655,59 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(result);
         assertEquals(1, result.getEntries().size());
         assertEquals(InsertEntity.class, result.getEntries().get(0).getClass());
+    }
+
+    @Test
+    public void batchMultipleWorks() throws Exception {
+        System.out.println("batchMultipleWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_7;
+        String partitionKey = "001";
+        int insertCount = 100;
+
+        // Act
+        BatchOperations batchOperations = new BatchOperations();
+        for (int i = 0; i < insertCount; i++) {
+
+            Entity entity = new Entity().setPartitionKey(partitionKey).setRowKey("batchWorks-" + i)
+                    .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
+                    .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
+                    .setProperty("test5", EdmType.DATETIME, new Date());
+
+            batchOperations.addInsertEntity(table, entity);
+        }
+        BatchResult result = service.batch(batchOperations);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(insertCount, result.getEntries().size());
+        for (int i = 0; i < insertCount; i++) {
+            assertEquals(InsertEntity.class, result.getEntries().get(i).getClass());
+
+            Entity entity = ((InsertEntity) result.getEntries().get(i)).getEntity();
+
+            assertEquals("001", entity.getPartitionKey());
+            assertEquals("batchWorks-" + i, entity.getRowKey());
+            assertNotNull(entity.getTimestamp());
+            assertNotNull(entity.getEtag());
+
+            assertNotNull(entity.getProperty("test"));
+            assertEquals(true, entity.getProperty("test").getValue());
+
+            assertNotNull(entity.getProperty("test2"));
+            assertEquals("value", entity.getProperty("test2").getValue());
+
+            assertNotNull(entity.getProperty("test3"));
+            assertEquals(3, entity.getProperty("test3").getValue());
+
+            assertNotNull(entity.getProperty("test4"));
+            assertEquals(12345678901L, entity.getProperty("test4").getValue());
+
+            assertNotNull(entity.getProperty("test5"));
+            assertTrue(entity.getProperty("test5").getValue() instanceof Date);
+        }
     }
 }
