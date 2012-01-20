@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.storage;
 
@@ -287,7 +287,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "Client v0.1";
+        public static final String USER_AGENT_VERSION = "Client v0.1.1";
     }
 
     /**
@@ -424,6 +424,12 @@ public final class Constants {
      * Number of default concurrent requests for parallel operation.
      */
     public static final int MAXIMUM_SEGMENTED_RESULTS = 5000;
+
+    /**
+     * The maximum size, in bytes, of a given stream mark operation.
+     */
+    // Note if BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES is updated then this needs to be as well.
+    public static final int MAX_MARK_LENGTH = 64 * MB;
 
     /**
      * XML element for the metadata.

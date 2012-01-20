@@ -2,22 +2,24 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.storage.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -79,6 +81,11 @@ public final class Utility {
     /**
      * Stores a reference to the ISO8061 date/time pattern.
      */
+    public static final String ISO8061_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
+
+    /**
+     * Stores a reference to the ISO8061 date/time pattern.
+     */
     public static final String ISO8061_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
@@ -109,8 +116,9 @@ public final class Utility {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public static StreamMd5AndLength analyzeStream(final InputStream sourceStream, long writeLength, long abandonLength,
-            final boolean rewindSourceStream, final boolean calculateMD5) throws IOException, StorageException {
+    public static StreamMd5AndLength analyzeStream(final InputStream sourceStream, long writeLength,
+            long abandonLength, final boolean rewindSourceStream, final boolean calculateMD5) throws IOException,
+            StorageException {
         if (abandonLength < 0) {
             abandonLength = Long.MAX_VALUE;
         }
@@ -119,7 +127,8 @@ public final class Utility {
             if (!sourceStream.markSupported()) {
                 throw new IllegalArgumentException("Input stream must be markable!");
             }
-            sourceStream.mark(Integer.MAX_VALUE);
+
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
         MessageDigest digest = null;
@@ -171,7 +180,7 @@ public final class Utility {
 
         if (rewindSourceStream) {
             sourceStream.reset();
-            sourceStream.mark(Integer.MAX_VALUE);
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
         return retVal;
@@ -305,6 +314,7 @@ public final class Utility {
      */
     public static XMLStreamReader createXMLStreamReaderFromStream(final InputStream streamRef)
             throws XMLStreamException {
+        // TODO optimization keep this static
         XMLInputFactory xmlif = null;
 
         xmlif = XMLInputFactory.newInstance();
@@ -315,6 +325,32 @@ public final class Utility {
         xmlif.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
 
         return xmlif.createXMLStreamReader(streamRef);
+    }
+
+    /**
+     * Creates an XML stream reader from the specified input stream.
+     * 
+     * @param reader
+     *            An <code>InputStreamReader</code> object that represents the input reader to use as the source.
+     * 
+     * @return A <code>java.xml.stream.XMLStreamReader</code> object that represents the XML stream reader created from
+     *         the specified input stream.
+     * 
+     * @throws XMLStreamException
+     *             If the XML stream reader could not be created.
+     */
+    public static XMLStreamReader createXMLStreamReaderFromReader(final Reader reader) throws XMLStreamException {
+        // TODO optimization keep this static
+        XMLInputFactory xmlif = null;
+
+        xmlif = XMLInputFactory.newInstance();
+        xmlif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.TRUE);
+        xmlif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        // set the IS_COALESCING property to true , if application desires to
+        // get whole text data as one event.
+        xmlif.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+
+        return xmlif.createXMLStreamReader(reader);
     }
 
     /**
@@ -419,6 +455,12 @@ public final class Utility {
         final DateFormat rfc1123Format = new SimpleDateFormat(RFC1123_PATTERN, LOCALE_US);
         rfc1123Format.setTimeZone(GMT_ZONE);
         return rfc1123Format.format(new Date());
+    }
+
+    public static String getTimeByZoneAndFormat(Date date, TimeZone zone, String format) {
+        final DateFormat formatter = new SimpleDateFormat(format, LOCALE_US);
+        formatter.setTimeZone(zone);
+        return formatter.format(date);
     }
 
     /**
@@ -625,6 +667,28 @@ public final class Utility {
      */
     public static String readElementFromXMLReader(final XMLStreamReader xmlr, final String elementName)
             throws XMLStreamException {
+        return readElementFromXMLReader(xmlr, elementName, true);
+    }
+
+    /**
+     * Reads character data for the specified XML element from an XML stream reader. This method will read start events,
+     * characters, and end events from a stream.
+     * 
+     * @param xmlr
+     *            An <code>XMLStreamReader</code> object that represents the source XML stream reader.
+     * 
+     * @param elementName
+     *            A <code>String</code> that represents XML element name.
+     * @param returnNullOnEmpty
+     *            If true, returns null when a empty string is read, otherwise EmptyString ("") is returned.
+     * 
+     * @return A <code>String</code> that represents the character data for the specified element.
+     * 
+     * @throws XMLStreamException
+     *             If an XML stream failure occurs.
+     */
+    public static String readElementFromXMLReader(final XMLStreamReader xmlr, final String elementName,
+            boolean returnNullOnEmpty) throws XMLStreamException {
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, elementName);
         int eventType = xmlr.next();
         final StringBuilder retVal = new StringBuilder();
@@ -644,7 +708,12 @@ public final class Utility {
         }
 
         xmlr.require(XMLStreamConstants.END_ELEMENT, null, elementName);
-        return retVal.length() == 0 ? null : retVal.toString();
+        if (retVal.length() == 0) {
+            return returnNullOnEmpty ? null : Constants.EMPTY_STRING;
+        }
+        else {
+            return retVal.toString();
+        }
     }
 
     /**
@@ -885,8 +954,8 @@ public final class Utility {
      * @param writeLength
      *            The number of bytes to read from the stream.
      * @param rewindSourceStream
-     *            <code>true</code> if the input stream should be rewound after it is read; otherwise,
-     *            <code>false</code>.
+     *            <code>true</code> if the input stream should be rewound <strong>before</strong> it is read; otherwise,
+     *            <code>false</code> *
      * @param calculateMD5
      *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
      * @param currentResult
@@ -905,14 +974,17 @@ public final class Utility {
      */
     public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5,
-            final RequestResult currentResult, final OperationContext opContext) throws IOException, StorageException {
+            final RequestResult currentResult, OperationContext opContext) throws IOException, StorageException {
         if (opContext != null) {
             opContext.setCurrentOperationByteCount(0);
+        }
+        else {
+            opContext = new OperationContext();
         }
 
         if (rewindSourceStream && sourceStream.markSupported()) {
             sourceStream.reset();
-            sourceStream.mark(Integer.MAX_VALUE);
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
         if (calculateMD5 && opContext.getIntermediateMD5() == null) {
@@ -955,7 +1027,8 @@ public final class Utility {
         outStream.flush();
 
         if (calculateMD5) {
-            retVal.setMd5(Base64.encode(opContext.getIntermediateMD5().digest()));
+            retVal.setDigest(opContext.getIntermediateMD5());
+            //    retVal.setMd5(Base64.encode(opContext.getIntermediateMD5().digest()));
         }
 
         return retVal;
@@ -966,5 +1039,66 @@ public final class Utility {
      */
     private Utility() {
         // No op
+    }
+
+    public static void checkNullaryCtor(Class<?> clazzType) {
+        Constructor<?> ctor = null;
+        try {
+            ctor = clazzType.getDeclaredConstructor((Class<?>[]) null);
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Class type must have contain a nullary constructor.");
+        }
+
+        if (ctor == null) {
+            throw new IllegalArgumentException("Class type must have contain a nullary constructor.");
+        }
+    }
+
+    public static Date parseDate(String dateString) {
+        try {
+            if (dateString.length() == 28) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_LONG_PATTERN, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 20) {
+                // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_PATTERN, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 17) {
+                // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
+                return Utility.parseDateFromString(dateString, Utility.ISO8061_PATTERN_NO_SECONDS, Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 27) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 26) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 25) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 24) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 23) {
+                // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Utility.UTC_ZONE);
+            }
+            else if (dateString.length() == 22) {
+                // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
+                return Utility.parseDateFromString(dateString, "yyyy-MM-dd'T'HH:mm:ss.S'Z'", Utility.UTC_ZONE);
+            }
+            else {
+                throw new IllegalArgumentException(String.format("Invalid Date String: %s", dateString));
+            }
+        }
+        catch (final ParseException e) {
+            throw new IllegalArgumentException(String.format("Invalid Date String: %s", dateString), e);
+        }
     }
 }

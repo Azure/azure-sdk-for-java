@@ -2,16 +2,17 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.microsoft.windowsazure.services.queue.client;
 
 /**
@@ -32,7 +33,7 @@ final class QueueConstants {
      * The maximum number of messages that can be peeked or retrieved at a time.
      */
     public static final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
-    
+
     /**
      * Default visibility time out for the retrieve message operation.
      */
@@ -106,9 +107,8 @@ final class QueueConstants {
     /**
      * The header that specifies the approximate message count of a queue.
      */
-    public static final String APPROXIMATE_MESSAGES_COUNT =
-            com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
-                    + "approximate-messages-count";
+    public static final String APPROXIMATE_MESSAGES_COUNT = com.microsoft.windowsazure.services.core.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "approximate-messages-count";
 
     /**
      * Private Default Ctor.

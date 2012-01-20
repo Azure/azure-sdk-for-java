@@ -2,18 +2,19 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.storage;
 
+import java.net.HttpURLConnection;
 import java.util.Random;
 
 /**
@@ -117,16 +118,14 @@ public final class RetryExponentialRetry extends RetryPolicy implements RetryPol
     @Override
     public RetryResult shouldRetry(final int currentRetryCount, final int statusCode, final Exception lastException,
             final OperationContext opContext) {
-
-        if (statusCode >= 400 && statusCode < 500) {
-            return new RetryResult(0, false);
+        if (statusCode >= 400 && statusCode < 500 || statusCode == HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                || statusCode == HttpURLConnection.HTTP_VERSION) {
+            return new RetryResult(-1, false);
         }
 
         if (currentRetryCount < this.maximumAttempts) {
-
             // Calculate backoff Interval between 80% and 120% of the desired
-            // backoff, multiply by 2^n -1 for
-            // exponential
+            // backoff, multiply by 2^n -1 for exponential
             int incrementDelta = (int) (Math.pow(2, currentRetryCount) - 1);
             final int boundedRandDelta = (int) (this.deltaBackoffIntervalInMs * 0.8)
                     + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
