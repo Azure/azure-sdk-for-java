@@ -126,7 +126,6 @@ Developer Forums on Stack Overflow</a> if you have trouble with the provided cod
 <h1>Contribute Code or Provide Feedback</h1>
 <p>If you would like to become an active contributor to this project please follow the instructions provided in <a href="http://windowsazure.github.com/guidelines.html">Windows Azure Projects Contribution Guidelines</a>.</p>
 <p>If you encounter any bugs with the library please file an issue in the <a href="https://github.com/WindowsAzure/azure-sdk-for-java/issues">Issues</a> section of the project.</p>
-<p>Finally, if you have any comments or questions, please check out our <a href="http://stackoverflow.com/questions/tagged/azure">StackOverflow forum</a> and join the conversation.</p>
 
 <h1>Learn More</h1>
 <ul>
