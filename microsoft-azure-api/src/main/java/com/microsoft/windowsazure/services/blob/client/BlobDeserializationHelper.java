@@ -117,7 +117,7 @@ final class BlobDeserializationHelper {
             }
             else {
                 throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                        "The response recieved is invalid or improperly formatted.",
+                        "The response received is invalid or improperly formatted.",
                         Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
             }
 
@@ -129,7 +129,7 @@ final class BlobDeserializationHelper {
         }
         else {
             throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                    "The response recieved is invalid or improperly formatted.",
+                    "The response received is invalid or improperly formatted.",
                     Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
         }
     }
@@ -177,7 +177,7 @@ final class BlobDeserializationHelper {
                     }
                     else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
+                                "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
                 }
@@ -319,7 +319,7 @@ final class BlobDeserializationHelper {
                 }
                 else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                            "The response recieved is invalid or improperly formatted.",
+                            "The response received is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
             }
@@ -404,7 +404,7 @@ final class BlobDeserializationHelper {
                     }
                     else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
+                                "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
                 }
@@ -418,7 +418,7 @@ final class BlobDeserializationHelper {
                     }
                     else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
+                                "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
                 }
@@ -576,14 +576,14 @@ final class BlobDeserializationHelper {
                     }
                     else {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
+                                "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
                 }
                 else if (eventType == XMLStreamConstants.END_ELEMENT) {
                     if (startOffset == -1 || endOffset == -1) {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                                "The response recieved is invalid or improperly formatted.",
+                                "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
 

@@ -955,7 +955,7 @@ public final class Utility {
      *            The number of bytes to read from the stream.
      * @param rewindSourceStream
      *            <code>true</code> if the input stream should be rewound <strong>before</strong> it is read; otherwise,
-     *            <code>false</code> *
+     *            <code>false</code>
      * @param calculateMD5
      *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
      * @param currentResult
@@ -1028,7 +1028,6 @@ public final class Utility {
 
         if (calculateMD5) {
             retVal.setDigest(opContext.getIntermediateMD5());
-            //    retVal.setMd5(Base64.encode(opContext.getIntermediateMD5().digest()));
         }
 
         return retVal;

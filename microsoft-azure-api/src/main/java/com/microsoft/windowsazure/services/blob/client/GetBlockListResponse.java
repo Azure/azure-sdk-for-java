@@ -115,7 +115,7 @@ final class GetBlockListResponse {
                 }
                 else {
                     throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
-                            "The response recieved is invalid or improperly formatted.",
+                            "The response received is invalid or improperly formatted.",
                             Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
             }
