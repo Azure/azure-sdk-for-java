@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.client;
 
@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 
 /**
  * Represents a Windows Azure page blob.
- * 
  */
 public final class CloudPageBlob extends CloudBlob {
 
@@ -541,8 +540,10 @@ public final class CloudPageBlob extends CloudBlob {
             throw new IllegalArgumentException("Blob Level MD5 is not supported for PageBlob");
         }
 
-        // Mark sourceStream for current position.
-        sourceStream.mark(Integer.MAX_VALUE);
+        if (sourceStream.markSupported()) {
+            // Mark sourceStream for current position.
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
+        }
 
         if (length <= 4 * Constants.MB) {
             this.create(length, accessCondition, options, opContext);

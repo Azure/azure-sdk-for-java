@@ -1,0 +1,19 @@
+2012.01.31. Version 0.1.3
+ * Updated User Agent to v0.1.1
+ * Updated License Headers
+ * Blob Client Mark bug fix
+ * Retry Logic updated in Blob and Queue Client to not retry
+ * Error Response parsing updated for Table compatibility
+ * MD5 is delay calculated on copy streams
+ * Date parsing support for various number of fractional decimals
+ * StorageErrorResponse updated to support lower case xml for tables
+
+2011.12.22. Version 0.1.2
+ * Fixed CloudBlob.download to lock to ETag during a resume
+ * Ensured that Client Side Exceptions are not resumed
+
+2011.12.14 Version 0.1.1
+ * Commenting/documentation changes
+
+2011.12.09 Version 0.1.0
+ * Initial Release
