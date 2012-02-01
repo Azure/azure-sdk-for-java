@@ -2,19 +2,20 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.io.InputStream;
+import java.io.Reader;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -39,19 +40,37 @@ public final class StorageErrorResponse {
     private boolean isParsed;
 
     /**
-     * Holds a reference to the input stream to read from.
+     * Holds a reference to the xml reader to parse error details from.
      */
-    private final InputStream streamRef;
+    private XMLStreamReader xmlr = null;
+
+    // true to support table.
+    private boolean useLowerCaseElementNames = false;
 
     /**
      * Initializes the StorageErrorResponse object.
      * 
      * @param stream
      *            the input stream to read error details from.
+     * @throws XMLStreamException
      */
-    public StorageErrorResponse(final InputStream stream) {
-        this.streamRef = stream;
+    public StorageErrorResponse(final InputStream stream) throws XMLStreamException {
+        this.xmlr = Utility.createXMLStreamReaderFromStream(stream);
         this.errorInfo = new StorageExtendedErrorInformation();
+    }
+
+    /**
+     * Initializes the StorageErrorResponse object.
+     * 
+     * @param reader
+     *            the input stream to read error details from.
+     * @throws XMLStreamException
+     */
+    public StorageErrorResponse(final Reader reader) throws XMLStreamException {
+        this.xmlr = Utility.createXMLStreamReaderFromReader(reader);
+        this.errorInfo = new StorageExtendedErrorInformation();
+        // TODO fix me with more elegant table solution
+        this.useLowerCaseElementNames = true;
     }
 
     /**
@@ -84,6 +103,10 @@ public final class StorageErrorResponse {
 
         while (xmlr.hasNext()) {
             eventType = xmlr.next();
+            if (eventType == XMLStreamConstants.CHARACTERS) {
+                continue;
+            }
+
             final String name = xmlr.getName().toString();
 
             if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_EXCEPTION_MESSAGE)) {
@@ -115,45 +138,61 @@ public final class StorageErrorResponse {
      *             if an xml exception occurs
      */
     private void parseResponse() throws XMLStreamException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(this.streamRef);
         String tempParseString;
 
         // Start document
-        int eventType = xmlr.getEventType();
-        xmlr.require(XMLStreamConstants.START_DOCUMENT, null, null);
+        int eventType = this.xmlr.getEventType();
+        this.xmlr.require(XMLStreamConstants.START_DOCUMENT, null, null);
 
         // 1. get Error Root Header
-        eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.ERROR_ROOT_ELEMENT);
+        eventType = this.xmlr.next();
+        this.xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                this.useLowerCaseElementNames ? Constants.ERROR_ROOT_ELEMENT.toLowerCase()
+                        : Constants.ERROR_ROOT_ELEMENT);
 
-        while (xmlr.hasNext()) {
-            eventType = xmlr.next();
+        while (this.xmlr.hasNext()) {
+            eventType = this.xmlr.next();
+            if (eventType == XMLStreamConstants.CHARACTERS) {
+                continue;
+            }
+
             if (eventType == XMLStreamConstants.END_ELEMENT) {
                 break;
             }
 
-            final String name = xmlr.getName().toString();
+            String name = this.xmlr.getName().getLocalPart().toString();
+            name = this.useLowerCaseElementNames ? name.toLowerCase() : name;
 
-            if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_CODE)) {
-                this.errorInfo.setErrorCode(Utility.readElementFromXMLReader(xmlr, Constants.ERROR_CODE));
-            }
-            else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_MESSAGE)) {
-                this.errorInfo.setErrorMessage(Utility.readElementFromXMLReader(xmlr, Constants.ERROR_MESSAGE));
-            }
-            else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ERROR_EXCEPTION)) {
-                // get error exception
-                this.parseErrorException(xmlr);
-                xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.ERROR_EXCEPTION);
-            }
-            else if (eventType == XMLStreamConstants.START_ELEMENT) {
-                // get additional details
-                tempParseString = Utility.readElementFromXMLReader(xmlr, name);
+            if (eventType == XMLStreamConstants.START_ELEMENT) {
 
-                this.errorInfo.getAdditionalDetails().put(name, new String[] { tempParseString });
+                if (name.equals(this.useLowerCaseElementNames ? Constants.ERROR_CODE.toLowerCase()
+                        : Constants.ERROR_CODE)) {
+                    this.errorInfo.setErrorCode(Utility.readElementFromXMLReader(this.xmlr,
+                            this.useLowerCaseElementNames ? Constants.ERROR_CODE.toLowerCase() : Constants.ERROR_CODE));
+                }
+                else if (name.equals(this.useLowerCaseElementNames ? Constants.ERROR_MESSAGE.toLowerCase()
+                        : Constants.ERROR_MESSAGE)) {
+                    this.errorInfo.setErrorMessage(Utility.readElementFromXMLReader(this.xmlr,
+                            this.useLowerCaseElementNames ? Constants.ERROR_MESSAGE.toLowerCase()
+                                    : Constants.ERROR_MESSAGE));
+                }
+                else if (name.equals(this.useLowerCaseElementNames ? Constants.ERROR_EXCEPTION.toLowerCase()
+                        : Constants.ERROR_EXCEPTION)) {
+                    // get error exception
+                    this.parseErrorException(this.xmlr);
+                    this.xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            this.useLowerCaseElementNames ? Constants.ERROR_EXCEPTION.toLowerCase()
+                                    : Constants.ERROR_EXCEPTION);
+                }
+                else {
+                    // get additional details
+                    tempParseString = Utility.readElementFromXMLReader(this.xmlr, name);
 
-                xmlr.require(XMLStreamConstants.END_ELEMENT, null, null);
+                    this.errorInfo.getAdditionalDetails().put(name, new String[] { tempParseString });
+
+                    this.xmlr.require(XMLStreamConstants.END_ELEMENT, null, null);
+                }
             }
-
         }
     }
 }

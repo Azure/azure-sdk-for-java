@@ -1,8 +1,18 @@
-/*
- * CloudQueue.java
+/**
+ * Copyright 2011 Microsoft Corporation
  * 
- * Copyright (c) 2011 Microsoft. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.microsoft.windowsazure.services.queue.client;
 
 import java.io.OutputStream;
@@ -55,22 +65,22 @@ public final class CloudQueue {
     /**
      * The absolute <code>URI</code> of the queue.
      */
-    private final URI uri;
+    URI uri;
 
     /**
      * A reference to the queue's associated service client.
      */
-    private final CloudQueueClient queueServiceClient;
+    private CloudQueueClient queueServiceClient;
 
     /**
      * The queue's Metadata collection.
      */
-    private HashMap<String, String> metadata;
+    HashMap<String, String> metadata;
 
     /**
      * The queue's approximate message count, as reported by the server.
      */
-    private long approximateMessageCount;
+    long approximateMessageCount;
 
     /**
      * The <code for the messages of the queue.
@@ -80,7 +90,7 @@ public final class CloudQueue {
     /**
      * A flag indicating whether or not the message should be encoded in base-64.
      */
-    private boolean shouldEncodeMessage;
+    boolean shouldEncodeMessage;
 
     /**
      * Creates an instance of the <code>CloudQueue</code> class using the specified address and client.
@@ -419,7 +429,7 @@ public final class CloudQueue {
                     StorageExtendedErrorInformation extendedInfo = potentialConflictException
                             .getExtendedErrorInformation();
                     if (extendedInfo == null) {
-                        // If we can't validate the error then the error must be surfaced to the user.
+                        // If we cant validate the error then the error must be surfaced to the user.
                         throw potentialConflictException;
                     }
 

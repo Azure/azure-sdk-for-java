@@ -845,7 +845,8 @@ public abstract class CloudBlob implements ListBlobItem {
         catch (final StorageException ex) {
             // Check if users has any retries specified, Or if the exception is retryable
             final RetryPolicy dummyPolicy = options.getRetryPolicyFactory().createInstance(opContext);
-            if (ex.getHttpStatusCode() == Constants.HeaderConstants.HTTP_UNUSED_306
+            if ((ex.getHttpStatusCode() == Constants.HeaderConstants.HTTP_UNUSED_306 && !ex.getErrorCode().equals(
+                    StorageErrorCodeStrings.OUT_OF_RANGE_INPUT))
                     || ex.getHttpStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED
                     || !dummyPolicy.shouldRetry(0, opContext.getLastResult().getStatusCode(),
                             (Exception) ex.getCause(), opContext).isShouldRetry()) {
@@ -2148,10 +2149,12 @@ public abstract class CloudBlob implements ListBlobItem {
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
             throws StorageException, IOException {
         // Mark sourceStream for current position.
-        sourceStream.mark(Integer.MAX_VALUE);
+        sourceStream.mark(Constants.MAX_MARK_LENGTH);
 
-        if (length < 0) {
-            throw new IllegalArgumentException("Invalid stream length, specify a positive number of bytes");
+        if (length < 0 || length > BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES) {
+            throw new IllegalArgumentException(String.format(
+                    "Invalid stream length; stream must be between 0 and %s MB in length.",
+                    BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES / Constants.MB));
         }
 
         final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(

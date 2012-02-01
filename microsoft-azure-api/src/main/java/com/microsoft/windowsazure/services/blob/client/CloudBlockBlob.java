@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.client;
 
@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 
 /**
  * Represents a blob that is uploaded as a set of blocks.
- * 
  */
 public final class CloudBlockBlob extends CloudBlob {
 
@@ -175,7 +174,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(blockListBytes);
 
-                final StreamMd5AndLength descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L, true, true);
+                final StreamMd5AndLength descriptor = Utility.analyzeStream(blockListInputStream, -1L, -1L,
+                        true /* rewindSourceStream */, true /* calculateMD5 */);
 
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
@@ -397,11 +397,14 @@ public final class CloudBlockBlob extends CloudBlob {
 
         opContext.initialize();
         options.applyDefaults(this.blobServiceClient);
-        // Mark sourceStream for current position.
-        sourceStream.mark(Integer.MAX_VALUE);
 
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
+
+        if (sourceStream.markSupported()) {
+            // Mark sourceStream for current position.
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
+        }
 
         // If the stream is rewindable and the length is unknown or we need to
         // set md5, then analyze the stream.
@@ -414,7 +417,8 @@ public final class CloudBlockBlob extends CloudBlob {
             // the MD5, then we we need to read the stream contents first
 
             descriptor = Utility.analyzeStream(sourceStream, length,
-                    this.blobServiceClient.getSingleBlobPutThresholdInBytes(), true, options.getStoreBlobContentMD5());
+                    this.blobServiceClient.getSingleBlobPutThresholdInBytes(), true /* rewindSourceStream */,
+                    options.getStoreBlobContentMD5());
 
             if (descriptor.getMd5() != null && options.getStoreBlobContentMD5()) {
                 this.properties.setContentMD5(descriptor.getMd5());
@@ -512,8 +516,10 @@ public final class CloudBlockBlob extends CloudBlob {
             throw new IllegalArgumentException("Invalid blockID, BlockID must be a valid Base64 String.");
         }
 
-        // Mark sourceStream for current position.
-        sourceStream.mark(Integer.MAX_VALUE);
+        if (sourceStream.markSupported()) {
+            // Mark sourceStream for current position.
+            sourceStream.mark(Constants.MAX_MARK_LENGTH);
+        }
 
         InputStream bufferedStreamReference = sourceStream;
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
@@ -522,18 +528,17 @@ public final class CloudBlockBlob extends CloudBlob {
         if (!sourceStream.markSupported()) {
             // needs buffering
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            descriptor = Utility.writeToOutputStream(sourceStream, byteStream, length, false,
+            descriptor = Utility.writeToOutputStream(sourceStream, byteStream, length, false /* rewindSourceStream */,
                     options.getUseTransactionalContentMD5(), null, opContext);
 
             bufferedStreamReference = new ByteArrayInputStream(byteStream.toByteArray());
         }
         else if (length < 0 || options.getUseTransactionalContentMD5()) {
             // If the stream is of unknown length or we need to calculate the
-            // MD5, then we we need to read
-            // the stream contents first
+            // MD5, then we we need to read the stream contents first
 
-            descriptor = Utility
-                    .analyzeStream(sourceStream, length, -1L, true, options.getUseTransactionalContentMD5());
+            descriptor = Utility.analyzeStream(sourceStream, length, -1L, true /* rewindSourceStream */,
+                    options.getUseTransactionalContentMD5());
         }
 
         if (descriptor.getLength() > 4 * Constants.MB) {
@@ -587,9 +592,8 @@ public final class CloudBlockBlob extends CloudBlob {
                 }
 
                 client.getCredentials().signRequest(request, length);
-
-                Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length, true, false, null,
-                        opContext);
+                Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length,
+                        true /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
