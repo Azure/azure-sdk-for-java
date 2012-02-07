@@ -33,7 +33,7 @@ Windows Azure Java Developer Center</a></p>
 <h3>Option 1: Via Git</h3>
 <p>To get the source code of the SDK via git just type:<br/>
 <pre>git clone git://github.com/WindowsAzure/azure-sdk-for-java.git
-cd ./azure-sdk-for-java
+cd ./azure-sdk-for-java/microsoft-azure-api
 mvn compile</pre>
 
 <h3>Option 2: Via Maven</h3>
