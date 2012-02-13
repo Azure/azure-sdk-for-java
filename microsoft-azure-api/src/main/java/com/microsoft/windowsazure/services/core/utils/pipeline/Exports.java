@@ -22,7 +22,6 @@ import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class Exports implements Builder.Exports {
 
@@ -53,7 +52,7 @@ public class Exports implements Builder.Exports {
             public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
                 HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
-                client.addFilter(new LoggingFilter());
+                //client.addFilter(new LoggingFilter());
                 return client;
             }
         });
