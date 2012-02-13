@@ -98,7 +98,7 @@ public class BrokerPropertiesMapperTest {
         assertEquals("corid", properties.getCorrelationId());
         assertEquals("sesid", properties.getSessionId());
         assertEquals(5, (int) properties.getDeliveryCount());
-        assertTrue(Math.abs(lockedUntilDelta) < 500);
+        assertTrue(Math.abs(lockedUntilDelta) < 2000);
         assertEquals("loctok", properties.getLockToken());
         assertEquals("mesid", properties.getMessageId());
         assertEquals("lab", properties.getLabel());
@@ -106,7 +106,7 @@ public class BrokerPropertiesMapperTest {
         assertEquals(7, (long) properties.getSequenceNumber());
         assertEquals(8.123, properties.getTimeToLive(), .001);
         assertEquals("to", properties.getTo());
-        assertTrue(Math.abs(schedTimeDelta) < 500);
+        assertTrue(Math.abs(schedTimeDelta) < 2000);
         assertEquals("reptosesid", properties.getReplyToSessionId());
         assertEquals("mesloc", properties.getMessageLocation());
         assertEquals("locloc", properties.getLockLocation());

@@ -390,14 +390,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(3, results.getMaxResults());
 
         // Act
-        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setMarker(results
-                .getNextMarker()));
+        ListContainersResult results2 = service.listContainers(new ListContainersOptions().setPrefix(
+                testContainersPrefix).setMarker(results.getNextMarker()));
 
         // Assert
         assertNotNull(results2);
-        assertEquals(testContainers.length - 3, results2.getContainers().size());
         assertNotNull(results2.getNextMarker());
         assertEquals(0, results2.getMaxResults());
+
+        // Act
+        ListContainersResult results3 = service.listContainers(new ListContainersOptions()
+                .setPrefix(testContainersPrefix));
+
+        // Assert
+        assertEquals(results.getContainers().size() + results2.getContainers().size(), results3.getContainers().size());
     }
 
     @Test
