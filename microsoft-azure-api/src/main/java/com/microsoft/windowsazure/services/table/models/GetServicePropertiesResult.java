@@ -12,24 +12,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.microsoft.windowsazure.services.blob.implementation;
+package com.microsoft.windowsazure.services.table.models;
 
-import java.util.Date;
+public class GetServicePropertiesResult {
+    private ServiceProperties value;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-/*
- * JAXB adapter for a "not quite" ISO 8601 date time element
- */
-public class ContainerACLDateAdapter extends XmlAdapter<String, Date> {
-
-    @Override
-    public Date unmarshal(String arg0) throws Exception {
-        return new ISO8601DateConverter().parse(arg0);
+    public ServiceProperties getValue() {
+        return value;
     }
 
-    @Override
-    public String marshal(Date arg0) throws Exception {
-        return new ISO8601DateConverter().format(arg0);
+    public void setValue(ServiceProperties value) {
+        this.value = value;
     }
 }
