@@ -28,6 +28,10 @@ public class WrapTokenManagerIntegrationTest {
     public void wrapClientWillAcquireAccessToken() throws Exception {
         // Arrange
         Configuration config = Configuration.getInstance();
+        overrideWithEnv(config, ServiceBusConfiguration.URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
         WrapTokenManager client = config.create("serviceBus", WrapTokenManager.class);
 
         // Act
@@ -36,5 +40,13 @@ public class WrapTokenManagerIntegrationTest {
 
         // Assert
         Assert.assertNotNull(accessToken);
+    }
+
+    private static void overrideWithEnv(Configuration config, String key) {
+        String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
     }
 }

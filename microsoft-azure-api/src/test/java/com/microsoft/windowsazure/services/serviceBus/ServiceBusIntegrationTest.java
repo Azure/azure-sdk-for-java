@@ -63,11 +63,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Before
     public void createService() throws Exception {
         // reinitialize configuration from known state
-        Configuration config = Configuration.load();
-        overrideWithEnv(config, ServiceBusConfiguration.URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        Configuration config = createConfiguration();
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
@@ -82,14 +78,6 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // applied as default configuration 
         Configuration.setInstance(config);
         service = ServiceBusService.create();
-    }
-
-    private static void overrideWithEnv(Configuration config, String key) {
-        String value = System.getenv(key);
-        if (value == null)
-            return;
-
-        config.setProperty(key, value);
     }
 
     @Test

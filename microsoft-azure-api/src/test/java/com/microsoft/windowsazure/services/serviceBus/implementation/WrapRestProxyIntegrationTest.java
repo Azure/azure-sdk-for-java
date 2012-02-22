@@ -29,6 +29,10 @@ public class WrapRestProxyIntegrationTest {
     public void serviceCanBeCalledToCreateAccessToken() throws Exception {
         // Arrange
         Configuration config = Configuration.getInstance();
+        overrideWithEnv(config, ServiceBusConfiguration.URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
         WrapContract contract = new WrapRestProxy(config.create(Client.class));
 
         // Act
@@ -43,5 +47,13 @@ public class WrapRestProxyIntegrationTest {
         // Assert
         assertNotNull(result);
         assertNotNull(result.getAccessToken());
+    }
+
+    private static void overrideWithEnv(Configuration config, String key) {
+        String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
     }
 }

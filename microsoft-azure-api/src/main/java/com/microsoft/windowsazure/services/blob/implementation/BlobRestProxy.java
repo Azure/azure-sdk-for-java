@@ -69,10 +69,10 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -155,18 +155,18 @@ public class BlobRestProxy implements BlobContract {
     }
 
     private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeSnapshots(), "snapshots");
         sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
     private WebResource addOptionalContainerIncludeQueryParam(ListContainersOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
