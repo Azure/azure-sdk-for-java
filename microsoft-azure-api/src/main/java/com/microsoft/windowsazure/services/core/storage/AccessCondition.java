@@ -40,9 +40,8 @@ public final class AccessCondition {
      * Returns an access condition such that an operation will be performed only if the resource's ETag value matches
      * the specified ETag value.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Match</i> conditional header. If
-     * this access condition is set, the operation is performed only if the ETag of the resource matches the specified
-     * ETag.
+     * Setting this access condition modifies the request to include the HTTP <i>If-Match</i> conditional header. If this
+     * access condition is set, the operation is performed only if the ETag of the resource matches the specified ETag.
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
@@ -84,8 +83,8 @@ public final class AccessCondition {
      * Returns an access condition such that an operation will be performed only if the resource's ETag value does not
      * match the specified ETag value.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-None-Match</i> conditional header.
-     * If this access condition is set, the operation is performed only if the ETag of the resource does not match the
+     * Setting this access condition modifies the request to include the HTTP <i>If-None-Match</i> conditional header. If
+     * this access condition is set, the operation is performed only if the ETag of the resource does not match the
      * specified ETag.
      * <p>
      * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
