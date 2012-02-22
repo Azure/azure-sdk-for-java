@@ -189,6 +189,11 @@ public final class StorageErrorCodeStrings {
     public static final String SERVER_BUSY = "ServerBusy";
 
     /**
+     * Table Already Exists
+     */
+    public static final String TABLE_ALREADY_EXISTS = "TableAlreadyExists";
+
+    /**
      * One or more header values are not supported.
      */
     public static final String UNSUPPORTED_HEADER = "UnsupportedHeader";

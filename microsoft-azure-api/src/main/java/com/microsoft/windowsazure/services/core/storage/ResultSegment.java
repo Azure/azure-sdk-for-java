@@ -39,9 +39,9 @@ public class ResultSegment<T> {
     private final int pageSize;
 
     /**
-     * Holds the Iterable collection of results.
+     * Holds the ArrayList of results.
      */
-    private final Iterable<T> results;
+    private final ArrayList<T> results;
 
     /**
      * Reserved for internal use. Creates an instance of the <code>ResultSegment</code> class.
@@ -115,11 +115,11 @@ public class ResultSegment<T> {
     }
 
     /**
-     * Returns an enumerable set of results from the blob service.
+     * Returns an enumerable set of results from the service.
      * 
-     * @return The results retrieved from the blob service.
+     * @return The results retrieved from the service.
      */
-    public Iterable<T> getResults() {
+    public ArrayList<T> getResults() {
         return this.results;
     }
 }

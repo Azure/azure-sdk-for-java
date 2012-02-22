@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import com.microsoft.windowsazure.services.core.storage.RetryPolicyFactory;
 import com.microsoft.windowsazure.services.core.storage.RetryResult;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.table.client.TableServiceException;
 
 /**
  * RESERVED FOR INTERNAL USE. A class that handles execution of StorageOperations and enforces retry policies.
@@ -165,6 +167,17 @@ public final class ExecutionEngine {
                         .translateException(getLastRequestObject(opContext), e, opContext);
                 setLastException(opContext, translatedException);
                 throw translatedException;
+            }
+            catch (final TableServiceException e) {
+                task.getResult().setStatusCode(e.getHttpStatusCode());
+                task.getResult().setStatusMessage(e.getMessage());
+                setLastException(opContext, e);
+                if (!e.isRetryable()) {
+                    throw e;
+                }
+                else {
+                    translatedException = e;
+                }
             }
             catch (final StorageException e) {
                 // Non Retryable, just throw
