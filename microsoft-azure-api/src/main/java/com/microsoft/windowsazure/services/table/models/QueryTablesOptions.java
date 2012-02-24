@@ -3,6 +3,7 @@ package com.microsoft.windowsazure.services.table.models;
 public class QueryTablesOptions extends TableServiceOptions {
     private String nextTableName;
     private Query query;
+    private String prefix;
 
     @Override
     public QueryTablesOptions setTimeout(Integer timeout) {
@@ -25,6 +26,15 @@ public class QueryTablesOptions extends TableServiceOptions {
 
     public QueryTablesOptions setNextTableName(String nextTableName) {
         this.nextTableName = nextTableName;
+        return this;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public QueryTablesOptions setPrefix(String prefix) {
+        this.prefix = prefix;
         return this;
     }
 }

@@ -67,7 +67,6 @@ import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
-import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.LitteralFilter;
 import com.microsoft.windowsazure.services.table.models.Query;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
@@ -312,32 +311,42 @@ public class TableRestProxy implements TableContract {
     }
 
     @Override
-    public QueryTablesResult listTables() throws ServiceException {
-        return listTables(new ListTablesOptions());
-    }
-
-    @Override
-    public QueryTablesResult listTables(ListTablesOptions options) throws ServiceException {
-        // Append Max char to end '{' is 1 + 'z' in AsciiTable ==> uppperBound is prefix + '{'
-        Filter filter = Filter.and(Filter.ge(Filter.litteral("TableName"), Filter.constant(options.getPrefix())),
-                Filter.le(Filter.litteral("TableName"), Filter.constant(options.getPrefix() + "{")));
-
-        QueryTablesOptions queryTableOptions = new QueryTablesOptions();
-        queryTableOptions.setTimeout(options.getTimeout());
-        queryTableOptions.setQuery(new Query().setFilter(filter));
-        return queryTables(queryTableOptions);
-    }
-
-    @Override
     public QueryTablesResult queryTables() throws ServiceException {
         return queryTables(new QueryTablesOptions());
     }
 
     @Override
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
+
+        Query query = options.getQuery();
+        String nextTableName = options.getNextTableName();
+        String prefix = options.getPrefix();
+
+        if (prefix != null) {
+            // Append Max char to end '{' is 1 + 'z' in AsciiTable ==> upperBound is prefix + '{'
+            Filter prefixFilter = Filter.and(Filter.ge(Filter.litteral("TableName"), Filter.constant(prefix)),
+                    Filter.le(Filter.litteral("TableName"), Filter.constant(prefix + "{")));
+
+            // a new query is needed if prefix alone is passed in
+            if (query == null) {
+                query = new Query();
+            }
+
+            // examine the existing filter on the query
+            if (query.getFilter() == null) {
+                // use the prefix filter if the query filter is null
+                query.setFilter(prefixFilter);
+            }
+            else {
+                // combine and use the prefix filter if the query filter exists
+                Filter combinedFilter = Filter.and(query.getFilter(), prefixFilter);
+                query.setFilter(combinedFilter);
+            }
+        }
+
         WebResource webResource = getResource(options).path("Tables");
-        webResource = addOptionalQuery(webResource, options.getQuery());
-        webResource = addOptionalQueryParam(webResource, "NextTableName", options.getNextTableName());
+        webResource = addOptionalQuery(webResource, query);
+        webResource = addOptionalQueryParam(webResource, "NextTableName", nextTableName);
 
         WebResource.Builder builder = webResource.getRequestBuilder();
         builder = addTableRequestHeaders(builder);
