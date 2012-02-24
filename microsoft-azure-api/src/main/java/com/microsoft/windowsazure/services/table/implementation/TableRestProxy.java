@@ -466,6 +466,10 @@ public class TableRestProxy implements TableContract {
         if (includeEtag) {
             builder = addIfMatchHeader(builder, entity.getEtag());
         }
+        if (verb == "MERGE") {
+            builder = builder.header("X-HTTP-Method", "MERGE");
+            verb = "POST";
+        }
 
         builder = builder.entity(atomReaderWriter.generateEntityEntry(entity), "application/atom+xml");
 
