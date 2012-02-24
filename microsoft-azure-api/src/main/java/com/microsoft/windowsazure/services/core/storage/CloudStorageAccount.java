@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
+import com.microsoft.windowsazure.services.table.client.CloudTableClient;
 
 /**
  * Represents a Windows Azure storage account.
@@ -536,6 +537,26 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException("CloudQueueClient requires a credential that can sign request");
         }
         return new CloudQueueClient(this.getQueueEndpoint(), this.getCredentials());
+    }
+
+    /**
+     * Creates a new table service client.
+     * 
+     * @return A client object that uses the Table service endpoint.
+     */
+    public CloudTableClient createCloudTableClient() {
+        if (this.getTableEndpoint() == null) {
+            throw new IllegalArgumentException("No table endpoint configured.");
+        }
+
+        if (this.credentials == null) {
+            throw new IllegalArgumentException("No credentials provided.");
+        }
+
+        if (!this.credentials.canCredentialsSignRequest()) {
+            throw new IllegalArgumentException("CloudTableClient requires a credential that can sign request");
+        }
+        return new CloudTableClient(this.getTableEndpoint(), this.getCredentials());
     }
 
     /**
