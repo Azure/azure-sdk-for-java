@@ -40,10 +40,10 @@ import com.microsoft.windowsazure.services.table.models.Filter;
 import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
-import com.microsoft.windowsazure.services.table.models.ListTablesOptions;
 import com.microsoft.windowsazure.services.table.models.Query;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
+import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
@@ -117,7 +117,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Retry creating every table as long as we get "409 - Table being deleted" error
         service = service.withFilter(new RetryPolicyFilter(new ExponentialRetryPolicy(new int[] { 409 })));
 
-        Set<String> containers = listTables(service, prefix);
+        Set<String> containers = queryTables(service, prefix);
         for (String item : list) {
             if (!containers.contains(item)) {
                 service.createTable(item);
@@ -126,7 +126,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     private static void deleteTables(TableContract service, String prefix, String[] list) throws Exception {
-        Set<String> containers = listTables(service, prefix);
+        Set<String> containers = queryTables(service, prefix);
         for (String item : list) {
             if (containers.contains(item)) {
                 service.deleteTable(item);
@@ -145,9 +145,9 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    private static Set<String> listTables(TableContract service, String prefix) throws Exception {
+    private static Set<String> queryTables(TableContract service, String prefix) throws Exception {
         HashSet<String> result = new HashSet<String>();
-        QueryTablesResult list = service.listTables(new ListTablesOptions().setPrefix(prefix));
+        QueryTablesResult list = service.queryTables(new QueryTablesOptions().setPrefix(prefix));
         for (TableEntry item : list.getTables()) {
             result.add(item.getName());
         }
@@ -268,26 +268,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listTablesWorks() throws Exception {
-        // Arrange
-        Configuration config = createConfiguration();
-        TableContract service = TableService.create(config);
-
-        // Act
-        QueryTablesResult result = service.listTables();
-
-        // Assert
-        assertNotNull(result);
-    }
-
-    @Test
     public void queryTablesWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
 
         // Act
-        QueryTablesResult result = service.listTables(new ListTablesOptions().setPrefix(testTablesPrefix));
+        QueryTablesResult result = service.queryTables(new QueryTablesOptions().setPrefix(testTablesPrefix));
 
         // Assert
         assertNotNull(result);
