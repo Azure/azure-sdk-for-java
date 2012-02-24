@@ -33,6 +33,10 @@ public class ISO8601DateConverter {
         return getFormat().format(date);
     }
 
+    public String shortFormat(Date date) {
+        return getShortFormat().format(date);
+    }
+
     public Date parse(String date) throws ParseException {
         if (date == null)
             return null;
