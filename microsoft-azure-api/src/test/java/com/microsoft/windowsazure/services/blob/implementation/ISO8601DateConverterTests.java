@@ -20,8 +20,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
-
 public class ISO8601DateConverterTests {
     @Test
     public void shortFormatWorks() throws Exception {
@@ -47,5 +45,20 @@ public class ISO8601DateConverterTests {
 
         // Assert
         assertNotNull(result);
+    }
+
+    @Test
+    public void shortFormatRoundTrips() throws Exception {
+        // Arrange
+        ISO8601DateConverter converter = new ISO8601DateConverter();
+        String value = "2012-01-12T00:35:58Z";
+
+        // Act
+        Date result = converter.parse(value);
+        String value2 = converter.shortFormat(result);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(value, value2);
     }
 }
