@@ -39,8 +39,8 @@ public abstract class StorageCredentials {
      *            Either include an account name with an account key (specifying values for
      *            {@link CloudStorageAccount#ACCOUNT_NAME_NAME} and {@link CloudStorageAccount#ACCOUNT_KEY_NAME} ), or a
      *            shared access signature (specifying a value for
-     *            {@link CloudStorageAccount#SHARED_ACCESS_SIGNATURE_NAME} ). If you use an account name and account
-     *            key, do not include a shared access signature, and vice versa.
+     *            {@link CloudStorageAccount#SHARED_ACCESS_SIGNATURE_NAME} ). If you use an account name and account key,
+     *            do not include a shared access signature, and vice versa.
      * 
      * @return A {@link StorageCredentials} object representing the storage credentials determined from the name/value
      *         pairs.
@@ -81,8 +81,8 @@ public abstract class StorageCredentials {
      * @param connectionString
      *            A <code>String</code> that contains the key/value pairs that represent the storage credentials.
      *            <p>
-     *            The format for the connection string is in the pattern "<i>keyname=value</i>". Multiple key/value
-     *            pairs can be separated by a semi-colon, for example, "<i>keyname1=value1;keyname2=value2</i>".
+     *            The format for the connection string is in the pattern "<i>keyname=value</i>". Multiple key/value pairs
+     *            can be separated by a semi-colon, for example, "<i>keyname1=value1;keyname2=value2</i>".
      * 
      * @return A {@link StorageCredentials} object representing the storage credentials determined from the connection
      *         string.
