@@ -1,4 +1,10 @@
-2012.01.31. Version 0.1.3
+2012.02.28 Version 0.2.0
+ * Added Support for Azure Table in com.microsoft.windowsazure.services.table
+ * Added Tests for Azure Table
+ * Added a dependency on apache commons-lang3 3.1
+ * UserAgent updated to v1.1.2
+
+2012.01.31 Version 0.1.3
  * Updated User Agent to v0.1.1
  * Updated License Headers
  * Blob Client Mark bug fix
@@ -8,7 +14,7 @@
  * Date parsing support for various number of fractional decimals
  * StorageErrorResponse updated to support lower case xml for tables
 
-2011.12.22. Version 0.1.2
+2011.12.22 Version 0.1.2
  * Fixed CloudBlob.download to lock to ETag during a resume
  * Ensured that Client Side Exceptions are not resumed
 
