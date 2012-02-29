@@ -19,6 +19,7 @@ import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -33,7 +34,8 @@ public abstract class IntegrationTestBase {
     public void initialize() throws Exception {
 
         boolean testAlphaExists = false;
-        ServiceBusContract service = ServiceBusService.create();
+        Configuration config = createConfiguration();
+        ServiceBusContract service = ServiceBusService.create(config);
         for (QueueInfo queue : iterateQueues(service)) {
             String queueName = queue.getPath();
             if (queueName.startsWith("Test") || queueName.startsWith("test")) {
@@ -58,5 +60,22 @@ public abstract class IntegrationTestBase {
         if (!testAlphaExists) {
             service.createQueue(new QueueInfo("TestAlpha"));
         }
+    }
+
+    protected static Configuration createConfiguration() throws Exception {
+        Configuration config = Configuration.load();
+        overrideWithEnv(config, ServiceBusConfiguration.URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
+        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        return config;
+    }
+
+    private static void overrideWithEnv(Configuration config, String key) {
+        String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
     }
 }

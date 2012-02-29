@@ -85,7 +85,7 @@ class XmlRoleEnvironmentDataDeserializer implements RoleEnvironmentDataDeseriali
         for (RoleInfo roleInfo : environmentInfo.getRoles().getRole()) {
             Map<String, RoleInstance> instances = translateRoleInstances(roleInfo.getInstances());
 
-            if (roleInfo.getName() == currentRole) {
+            if (roleInfo.getName().equals(currentRole)) {
                 instances.put(currentInstance.getId(), currentInstance);
             }
 
