@@ -96,8 +96,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
 
     /**
      * Computes a signature for the specified string using the HMAC-SHA256 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
-     * so the method merely returns <code>null</code>.
+     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so
+     * the method merely returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
@@ -130,8 +130,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
 
     /**
      * Computes a signature for the specified string using the HMAC-SHA512 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
-     * so the method merely returns <code>null</code>.
+     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so
+     * the method merely returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
