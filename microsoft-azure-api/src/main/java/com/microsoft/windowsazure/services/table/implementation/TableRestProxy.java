@@ -205,9 +205,47 @@ public class TableRestProxy implements TableContract {
             sb.append(((LitteralFilter) filter).getLitteral());
         }
         else if (filter instanceof ConstantFilter) {
-            sb.append("'");
-            sb.append(((ConstantFilter) filter).getValue());
-            sb.append("'");
+            // Look up http://www.odata.org/developers/protocols/overview
+            Object value = ((ConstantFilter) filter).getValue();
+            if (value == null) {
+                sb.append("null");
+            }
+            else if (value.getClass() == Long.class) {
+                sb.append(value + "L");
+            }
+            else if (value.getClass() == Date.class) {
+                ISO8601DateConverter dc = new ISO8601DateConverter();
+                sb.append("datetime'");
+                sb.append(dc.format((Date) value));
+                sb.append("'");
+            }
+            else if (value.getClass() == String.class) {
+                // Need to special case guids, which argues for using UUID.
+                try {
+                    UUID.fromString((String) value);
+                    // Looks like guid
+                    sb.append("(guid'" + value + "')");
+                }
+                catch (Exception ex) {
+                    // Not guid 
+                    sb.append("'");
+                    sb.append(((String) value).replace("'", "''"));
+                    sb.append("'");
+
+                }
+            }
+            else if (value.getClass() == byte[].class) {
+                byte[] x = (byte[]) value;
+                sb.append("binary'");
+                for (int j = 0; j < x.length; j++) {
+                    sb.append(BASE_16_CHARS.charAt((x[j] & 0xF0) >>> 4));
+                    sb.append(BASE_16_CHARS.charAt((x[j] & 0x0F)));
+                }
+                sb.append("'");
+            }
+            else {
+                sb.append(value);
+            }
         }
         else if (filter instanceof UnaryFilter) {
             sb.append(((UnaryFilter) filter).getOperator());
