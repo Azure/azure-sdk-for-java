@@ -80,6 +80,9 @@ public class AtomReaderWriter {
                     if (value != null) {
                         writer.writeCharacters(value);
                     }
+                    else {
+                        writer.writeAttribute("m:null", "true");
+                    }
 
                     writer.writeEndElement(); // property name
 
@@ -276,12 +279,21 @@ public class AtomReaderWriter {
             String edmType = xmlr.getAttributeValue(null, "type");
 
             xmlr.next();
-            String serializedValue = xmlr.getText();
+
+            // Use concatenation instead of StringBuilder as most text is just one element.
+            String serializedValue = "";
+            while (!xmlr.isEndElement()) {
+                serializedValue += xmlr.getText();
+                xmlr.next();
+            }
+
             Object value = edmValueConverter.deserialize(edmType, serializedValue);
 
             result.put(name, new Property().setEdmType(edmType).setValue(value));
 
-            nextSignificant(xmlr);
+            if (!xmlr.isEndElement()) {
+                nextSignificant(xmlr);
+            }
             expect(xmlr, XMLStreamConstants.END_ELEMENT, name);
         }
 
