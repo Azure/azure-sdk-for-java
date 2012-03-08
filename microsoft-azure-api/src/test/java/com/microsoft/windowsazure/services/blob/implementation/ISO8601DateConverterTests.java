@@ -55,7 +55,7 @@ public class ISO8601DateConverterTests {
 
         // Act
         Date result = converter.parse(value);
-        String value2 = converter.shortFormat(result);
+        String value2 = converter.format(result);
 
         // Assert
         assertNotNull(result);
