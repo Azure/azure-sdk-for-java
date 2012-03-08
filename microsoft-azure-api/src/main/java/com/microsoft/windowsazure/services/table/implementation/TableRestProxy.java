@@ -159,7 +159,16 @@ public class TableRestProxy implements TableContract {
     }
 
     private String getEntityPath(String table, String partitionKey, String rowKey) {
-        return table + "(" + "PartitionKey='" + partitionKey + "',RowKey='" + rowKey + "')";
+        String ret = "error";
+        try {
+            ret = table + "(" + "PartitionKey='"
+                    + URLEncoder.encode(partitionKey, "UTF-8").replace("+", "%20").replace("'", "%27") + "',RowKey='"
+                    + URLEncoder.encode(rowKey, "UTF-8").replace("+", "%20").replace("'", "%27") + "')";
+            System.out.println("ret : " + ret);
+        }
+        catch (UnsupportedEncodingException e) {
+        }
+        return ret;
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {

@@ -77,7 +77,7 @@ public class SharedKeyFilter extends com.microsoft.windowsazure.services.blob.im
     private String getCanonicalizedResource(ClientRequest cr) {
         String result = "/" + this.getAccountName();
 
-        result += cr.getURI().getPath();
+        result += cr.getURI().getRawPath();
 
         List<QueryParam> queryParams = SharedKeyUtils.getQueryParams(cr.getURI().getQuery());
         for (QueryParam p : queryParams) {
