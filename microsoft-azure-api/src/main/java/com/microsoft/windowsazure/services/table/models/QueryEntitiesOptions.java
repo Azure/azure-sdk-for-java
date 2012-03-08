@@ -19,12 +19,6 @@ public class QueryEntitiesOptions extends TableServiceOptions {
     public String nextPartitionKey;
     public String nextRowKey;
 
-    @Override
-    public QueryEntitiesOptions setTimeout(Integer timeout) {
-        super.setTimeout(timeout);
-        return this;
-    }
-
     public Query getQuery() {
         return query;
     }

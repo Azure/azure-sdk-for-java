@@ -249,7 +249,6 @@ public class TableRestProxy implements TableContract {
 
     private WebResource getResource(TableServiceOptions options) {
         WebResource webResource = channel.resource(url).path("/");
-        webResource = addOptionalQueryParam(webResource, "timeout", options.getTimeout());
         for (ServiceFilter filter : filters) {
             webResource.addFilter(new ClientFilterAdapter(filter));
         }
