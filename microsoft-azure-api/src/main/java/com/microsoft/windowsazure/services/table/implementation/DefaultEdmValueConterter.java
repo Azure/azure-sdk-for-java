@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.table.EdmValueConverter;
 import com.microsoft.windowsazure.services.table.models.EdmType;
+import com.sun.jersey.core.util.Base64;
 
 public class DefaultEdmValueConterter implements EdmValueConverter {
 
@@ -40,6 +41,9 @@ public class DefaultEdmValueConterter implements EdmValueConverter {
         String serializedValue;
         if (value instanceof Date) {
             serializedValue = iso8601DateConverter.shortFormat((Date) value);
+        }
+        else if (value instanceof byte[]) {
+            serializedValue = new String(Base64.encode((byte[]) value));
         }
         else {
             serializedValue = value.toString();
@@ -72,6 +76,9 @@ public class DefaultEdmValueConterter implements EdmValueConverter {
         }
         else if (EdmType.INT64.equals(edmType)) {
             return Long.parseLong(value);
+        }
+        else if (EdmType.BINARY.equals(edmType)) {
+            return Base64.decode(value);
         }
 
         return value;
