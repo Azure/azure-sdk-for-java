@@ -100,6 +100,7 @@ public class CreateMessageOptions extends QueueServiceOptions {
      * @param timeToLiveInSeconds
      *            The maximum time to allow the message to be in the queue, in seconds.
      * @return
+     *         A reference to this {@link CreateMessageOptions} instance.
      */
     public CreateMessageOptions setTimeToLiveInSeconds(Integer timeToLiveInSeconds) {
         this.timeToLiveInSeconds = timeToLiveInSeconds;

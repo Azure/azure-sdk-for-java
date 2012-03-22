@@ -147,7 +147,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
      * listQueues} request.
      * 
      * @return
-     *         {@link true} to return metadata.
+     *         <code>true</code> to return metadata.
      */
     public boolean isIncludeMetadata() {
         return includeMetadata;
@@ -158,7 +158,7 @@ public class ListQueuesOptions extends QueueServiceOptions {
      * listQueues} request.
      * 
      * @param includeMetadata
-     *            {@link true} to return metadata.
+     *            <code>true</code> to return metadata.
      * @return
      *         A reference to this {@link ListQueuesOptions} instance.
      */

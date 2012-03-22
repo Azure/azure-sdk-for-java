@@ -131,12 +131,12 @@ public class ServiceProperties {
         }
 
         /**
-         * Gets a flag indicating whether queue write operations are logged. If this value is {@link true} then all
+         * Gets a flag indicating whether queue write operations are logged. If this value is <code>true</code> then all
          * requests that write to the Queue service will be logged. These requests include adding a message, updating a
          * message, setting queue metadata, and creating a queue.
          * 
          * @return
-         *         {@link true} if queue write operations are logged, otherwise {@link false}.
+         *         <code>true</code> if queue write operations are logged, otherwise <code>false</code>.
          */
         @XmlElement(name = "Write")
         public boolean isWrite() {
@@ -144,24 +144,24 @@ public class ServiceProperties {
         }
 
         /**
-         * Sets a flag indicating whether queue write operations are logged. If this value is {@link true} then all
+         * Sets a flag indicating whether queue write operations are logged. If this value is <code>true</code> then all
          * requests that write to the Queue service will be logged. These requests include adding a message, updating a
          * message, setting queue metadata, and creating a queue.
          * 
          * @param write
-         *            {@link true} to enable logging of queue write operations, otherwise {@link false}.
+         *            <code>true</code> to enable logging of queue write operations, otherwise <code>false</code>.
          */
         public void setWrite(boolean write) {
             this.write = write;
         }
 
         /**
-         * Gets a flag indicating whether queue read operations are logged. If this value is {@link true} then all
+         * Gets a flag indicating whether queue read operations are logged. If this value is <code>true</code> then all
          * requests that read from the Queue service will be logged. These requests include listing queues, getting
          * queue metadata, listing messages, and peeking messages.
          * 
          * @return
-         *         {@link true} if queue read operations are logged, otherwise {@link false}.
+         *         <code>true</code> if queue read operations are logged, otherwise <code>false</code>.
          */
         @XmlElement(name = "Read")
         public boolean isRead() {
@@ -169,24 +169,24 @@ public class ServiceProperties {
         }
 
         /**
-         * Sets a flag indicating whether queue read operations are logged. If this value is {@link true} then all
+         * Sets a flag indicating whether queue read operations are logged. If this value is <code>true</code> then all
          * requests that read from the Queue service will be logged. These requests include listing queues, getting
          * queue metadata, listing messages, and peeking messages.
          * 
          * @param read
-         *            {@link true} to enable logging of queue read operations, otherwise {@link false}.
+         *            <code>true</code> to enable logging of queue read operations, otherwise <code>false</code>.
          */
         public void setRead(boolean read) {
             this.read = read;
         }
 
         /**
-         * Gets a flag indicating whether queue delete operations are logged. If this value is {@link true} then all
-         * requests that delete from the Queue service will be logged. These requests include deleting queues, deleting
-         * messages, and clearing messages.
+         * Gets a flag indicating whether queue delete operations are logged. If this value is <code>true</code> then
+         * all requests that delete from the Queue service will be logged. These requests include deleting queues,
+         * deleting messages, and clearing messages.
          * 
          * @return
-         *         {@link true} if queue delete operations are logged, otherwise {@link false}.
+         *         <code>true</code> if queue delete operations are logged, otherwise <code>false</code>.
          */
         @XmlElement(name = "Delete")
         public boolean isDelete() {
@@ -194,12 +194,12 @@ public class ServiceProperties {
         }
 
         /**
-         * Sets a flag indicating whether queue delete operations are logged. If this value is {@link true} then all
-         * requests that delete from the Queue service will be logged. These requests include deleting queues, deleting
-         * messages, and clearing messages.
+         * Sets a flag indicating whether queue delete operations are logged. If this value is <code>true</code> then
+         * all requests that delete from the Queue service will be logged. These requests include deleting queues,
+         * deleting messages, and clearing messages.
          * 
          * @param delete
-         *            {@link true} to enable logging of queue delete operations, otherwise {@link false}.
+         *            <code>true</code> to enable logging of queue delete operations, otherwise <code>false</code>.
          */
         public void setDelete(boolean delete) {
             this.delete = delete;
@@ -266,10 +266,11 @@ public class ServiceProperties {
 
         /**
          * Gets a flag indicating whether metrics should generate summary statistics for called API operations. If this
-         * value is {@link true} then all Queue service REST API operations will be included in the metrics.
+         * value is <code>true</code> then all Queue service REST API operations will be included in the metrics.
          * 
          * @return
-         *         {@link true} if Queue service REST API operations are included in metrics, otherwise {@link false}.
+         *         <code>true</code> if Queue service REST API operations are included in metrics, otherwise
+         *         <code>false</code>.
          */
         @XmlElement(name = "IncludeAPIs")
         public Boolean isIncludeAPIs() {
@@ -278,10 +279,11 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether metrics should generate summary statistics for called API operations. If this
-         * value is {@link true} then all Queue service REST API operations will be included in the metrics.
+         * value is <code>true</code> then all Queue service REST API operations will be included in the metrics.
          * 
          * @param includeAPIs
-         *            {@link true} to include Queue service REST API operations in metrics, otherwise {@link false}.
+         *            <code>true</code> to include Queue service REST API operations in metrics, otherwise
+         *            <code>false</code>.
          */
         public void setIncludeAPIs(Boolean includeAPIs) {
             this.includeAPIs = includeAPIs;
@@ -302,7 +304,7 @@ public class ServiceProperties {
          * Sets a flag indicating whether to enable metrics for the Queue storage service.
          * 
          * @param enabled
-         *            {@link true} to enable metrics for the Queue storage service, otherwise {@link false}.
+         *            <code>true</code> to enable metrics for the Queue storage service, otherwise <code>false</code>.
          */
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
@@ -321,8 +323,7 @@ public class ServiceProperties {
 
         /**
          * Sets the Storage Analytics version number to associate with this {@link Metrics} instance. The current
-         * supported
-         * version number is "1.0".
+         * supported version number is "1.0".
          * <p>
          * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/hh343268.aspx">Storage Analytics
          * Overview</a> documentation on MSDN for more information.
@@ -349,6 +350,7 @@ public class ServiceProperties {
          * be deleted. The value may be null if a retention policy is not enabled.
          * 
          * @return
+         *         The number of days that metrics or logging data should be retained.
          */
         @XmlElement(name = "Days")
         public Integer getDays() {
@@ -371,7 +373,7 @@ public class ServiceProperties {
          * Gets a flag indicating whether a retention policy is enabled for the storage service.
          * 
          * @return
-         *         {@link true} if data retention is enabled, otherwise {@link false}.
+         *         <code>true</code> if data retention is enabled, otherwise <code>false</code>.
          */
         @XmlElement(name = "Enabled")
         public boolean isEnabled() {
@@ -382,7 +384,7 @@ public class ServiceProperties {
          * Sets a flag indicating whether a retention policy is enabled for the storage service.
          * 
          * @param enabled
-         *            Set {@link true} to enable data retention.
+         *            Set <code>true</code> to enable data retention.
          */
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
