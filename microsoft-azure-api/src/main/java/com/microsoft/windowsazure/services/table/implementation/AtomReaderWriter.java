@@ -291,9 +291,6 @@ public class AtomReaderWriter {
 
             result.put(name, new Property().setEdmType(edmType).setValue(value));
 
-            if (!xmlr.isEndElement()) {
-                nextSignificant(xmlr);
-            }
             expect(xmlr, XMLStreamConstants.END_ELEMENT, name);
         }
 
