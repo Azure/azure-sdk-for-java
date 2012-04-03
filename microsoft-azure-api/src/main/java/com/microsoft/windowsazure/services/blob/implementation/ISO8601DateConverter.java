@@ -69,9 +69,9 @@ public class ISO8601DateConverter {
             Float secondDecimal = Float.parseFloat(secondDecimalString);
             int milliseconds = Math.round(secondDecimal * 1000);
             long timeInMS = timeWithSecondGranularity + milliseconds;
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(timeInMS);
-            return cal.getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeInMS);
+            return calendar.getTime();
         }
         else {
             throw new IllegalArgumentException(String.format("Invalid Date String: %s", date));
