@@ -21,8 +21,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.List;
+import java.util.UUID;
 
 import javax.activation.DataSource;
 import javax.inject.Inject;
@@ -205,41 +208,45 @@ public class TableRestProxy implements TableContract {
             sb.append(((LitteralFilter) filter).getLitteral());
         }
         else if (filter instanceof ConstantFilter) {
-            // Look up http://www.odata.org/developers/protocols/overview
             Object value = ((ConstantFilter) filter).getValue();
             if (value == null) {
                 sb.append("null");
             }
             else if (value.getClass() == Long.class) {
-                sb.append(value + "L");
+                sb.append(value);
+                sb.append("L");
             }
             else if (value.getClass() == Date.class) {
-                ISO8601DateConverter dc = new ISO8601DateConverter();
+                ISO8601DateConverter dateConverter = new ISO8601DateConverter();
                 sb.append("datetime'");
-                sb.append(dc.format((Date) value));
+                sb.append(dateConverter.format((Date) value));
                 sb.append("'");
             }
+            else if (value.getClass() == UUID.class) {
+                sb.append("(guid'");
+                sb.append(value);
+                sb.append("')");
+            }
             else if (value.getClass() == String.class) {
-                // Need to special case guids, which argues for using UUID.
-                try {
-                    UUID.fromString((String) value);
-                    // Looks like guid
-                    sb.append("(guid'" + value + "')");
-                }
-                catch (Exception ex) {
-                    // Not guid 
-                    sb.append("'");
-                    sb.append(((String) value).replace("'", "''"));
-                    sb.append("'");
-
-                }
+                sb.append("'");
+                sb.append(((String) value).replace("'", "''"));
+                sb.append("'");
             }
             else if (value.getClass() == byte[].class) {
-                byte[] x = (byte[]) value;
-                sb.append("binary'");
-                for (int j = 0; j < x.length; j++) {
-                    sb.append(BASE_16_CHARS.charAt((x[j] & 0xF0) >>> 4));
-                    sb.append(BASE_16_CHARS.charAt((x[j] & 0x0F)));
+                sb.append("X'");
+                byte[] byteArray = (byte[]) value;
+                Formatter formatter = new Formatter(sb);
+                for (byte b : byteArray) {
+                    formatter.format("%02x", b);
+                }
+                sb.append("'");
+            }
+            else if (value.getClass() == Byte[].class) {
+                sb.append("X'");
+                Byte[] byteArray = (Byte[]) value;
+                Formatter formatter = new Formatter(sb);
+                for (Byte b : byteArray) {
+                    formatter.format("%02x", b);
                 }
                 sb.append("'");
             }

@@ -592,13 +592,16 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         TableContract service = TableService.create(config);
         String table = TEST_TABLE_5;
         int numberOfEntries = 5;
+        Entity[] entities = new Entity[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
-            Entity entity = new Entity().setPartitionKey("001").setRowKey("queryEntitiesWithFilterWorks-" + i)
-                    .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
-                    .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                    .setProperty("test5", EdmType.DATETIME, new Date());
+            entities[i] = new Entity().setPartitionKey("001").setRowKey("queryEntitiesWithFilterWorks-" + i)
+                    .setProperty("test", EdmType.BOOLEAN, (i % 2 == 0))
+                    .setProperty("test2", EdmType.STRING, "'value'" + i).setProperty("test3", EdmType.INT32, i)
+                    .setProperty("test4", EdmType.INT64, 12345678901L + i)
+                    .setProperty("test5", EdmType.DATETIME, new Date(i * 1000))
+                    .setProperty("test6", EdmType.GUID, UUID.randomUUID());
 
-            service.insertEntity(table, entity);
+            service.insertEntity(table, entities[i]);
         }
 
         {
@@ -617,6 +620,63 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             // Act
             QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
                     .setFilter(Filter.rawString("RowKey eq 'queryEntitiesWithFilterWorks-3'"))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(
+                    table,
+                    new QueryEntitiesOptions().setQuery(new Query().setFilter(Filter.eq(Filter.litteral("test"),
+                            Filter.constant(true)))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(3, result.getEntities().size());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
+                    .setFilter(Filter.eq(Filter.litteral("test2"), Filter.constant("'value'3")))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
+                    .setFilter(Filter.eq(Filter.litteral("test4"), Filter.constant(12345678903L)))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-2", result.getEntities().get(0).getRowKey());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
+                    .setFilter(Filter.eq(Filter.litteral("test5"), Filter.constant(new Date(3000))))));
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(1, result.getEntities().size());
+            assertEquals("queryEntitiesWithFilterWorks-3", result.getEntities().get(0).getRowKey());
+        }
+
+        {
+            // Act
+            QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setQuery(new Query()
+                    .setFilter(Filter.eq(Filter.litteral("test6"),
+                            Filter.constant(entities[3].getPropertyValue("test6"))))));
 
             // Assert
             assertNotNull(result);
