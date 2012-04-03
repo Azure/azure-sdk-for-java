@@ -18,7 +18,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -159,16 +161,17 @@ public class TableRestProxy implements TableContract {
     }
 
     private String getEntityPath(String table, String partitionKey, String rowKey) {
-        String ret = "error";
+        return table + "(" + "PartitionKey='" + safeEncode(partitionKey) + "',RowKey='" + safeEncode(rowKey) + "')";
+    }
+
+    private String safeEncode(String input) {
+        String fixSingleQuotes = input.replace("'", "''");
         try {
-            ret = table + "(" + "PartitionKey='"
-                    + URLEncoder.encode(partitionKey, "UTF-8").replace("+", "%20").replace("'", "%27") + "',RowKey='"
-                    + URLEncoder.encode(rowKey, "UTF-8").replace("+", "%20").replace("'", "%27") + "')";
-            System.out.println("ret : " + ret);
+            return URLEncoder.encode(fixSingleQuotes, "UTF-8").replace("+", "%20");
         }
         catch (UnsupportedEncodingException e) {
+            return fixSingleQuotes;
         }
-        return ret;
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {

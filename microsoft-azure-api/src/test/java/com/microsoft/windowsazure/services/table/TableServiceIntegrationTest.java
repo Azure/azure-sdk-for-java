@@ -438,6 +438,32 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void deleteEntityTroublesomeKeyWorks() throws Exception {
+        System.out.println("deleteEntityTroublesomeKeyWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        Entity entity1 = new Entity().setPartitionKey("001").setRowKey("key with spaces");
+        Entity entity2 = new Entity().setPartitionKey("001").setRowKey("key'with'quotes");
+        Entity entity3 = new Entity().setPartitionKey("001").setRowKey("keyWithUnicode \uB2E4");
+        Entity entity4 = new Entity().setPartitionKey("001").setRowKey("key 'with'' \uB2E4");
+
+        // Act
+        InsertEntityResult result1 = service.insertEntity(TEST_TABLE_2, entity1);
+        InsertEntityResult result2 = service.insertEntity(TEST_TABLE_2, entity2);
+        InsertEntityResult result3 = service.insertEntity(TEST_TABLE_2, entity3);
+        InsertEntityResult result4 = service.insertEntity(TEST_TABLE_2, entity4);
+
+        service.deleteEntity(TEST_TABLE_2, result1.getEntity().getPartitionKey(), result1.getEntity().getRowKey());
+        service.deleteEntity(TEST_TABLE_2, result2.getEntity().getPartitionKey(), result2.getEntity().getRowKey());
+        service.deleteEntity(TEST_TABLE_2, result3.getEntity().getPartitionKey(), result3.getEntity().getRowKey());
+        service.deleteEntity(TEST_TABLE_2, result4.getEntity().getPartitionKey(), result4.getEntity().getRowKey());
+
+        // Assert
+    }
+
+    @Test
     public void deleteEntityWithETagWorks() throws Exception {
         System.out.println("deleteEntityWithETagWorks()");
 
