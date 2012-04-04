@@ -196,7 +196,7 @@ public class AtomReaderWriter {
             writer.writeEndElement(); // title
 
             writer.writeStartElement("updated");
-            writer.writeCharacters(iso8601DateConverter.shortFormat(dateFactory.getDate()));
+            writer.writeCharacters(iso8601DateConverter.format(dateFactory.getDate()));
             writer.writeEndElement(); // updated
 
             writer.writeStartElement("author");
