@@ -461,6 +461,27 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         service.deleteEntity(TEST_TABLE_2, result4.getEntity().getPartitionKey(), result4.getEntity().getRowKey());
 
         // Assert
+        try {
+            service.getEntity(TEST_TABLE_2, result1.getEntity().getPartitionKey(), result1.getEntity().getRowKey());
+            assertFalse("Expect an exception when getting an entity that does not exist", true);
+        }
+        catch (ServiceException e) {
+            assertEquals("expect getHttpStatusCode", 404, e.getHttpStatusCode());
+
+        }
+
+        QueryEntitiesResult assertResult2 = service.queryEntities(
+                TEST_TABLE_2,
+                new QueryEntitiesOptions().setQuery(new Query().setFilter(Filter.eq(Filter.litteral("RowKey"),
+                        Filter.constant("key'with'quotes")))));
+
+        assertEquals(0, assertResult2.getEntities().size());
+
+        QueryEntitiesResult assertResult3 = service.queryEntities(TEST_TABLE_2);
+        for (Entity entity : assertResult3.getEntities()) {
+            assertFalse("Entity3 should be removed from the table", entity3.getRowKey().equals(entity.getRowKey()));
+            assertFalse("Entity4 should be removed from the table", entity4.getRowKey().equals(entity.getRowKey()));
+        }
     }
 
     @Test
