@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
