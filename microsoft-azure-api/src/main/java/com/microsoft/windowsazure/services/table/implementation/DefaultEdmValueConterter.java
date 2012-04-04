@@ -40,7 +40,7 @@ public class DefaultEdmValueConterter implements EdmValueConverter {
 
         String serializedValue;
         if (value instanceof Date) {
-            serializedValue = iso8601DateConverter.shortFormat((Date) value);
+            serializedValue = iso8601DateConverter.format((Date) value);
         }
         else if (value instanceof byte[]) {
             serializedValue = new String(Base64.encode((byte[]) value));

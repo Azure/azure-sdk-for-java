@@ -30,6 +30,6 @@ public class ContainerACLDateAdapter extends XmlAdapter<String, Date> {
 
     @Override
     public String marshal(Date arg0) throws Exception {
-        return new ISO8601DateConverter().format(arg0);
+        return new ISO8601DateConverter().shortFormat(arg0);
     }
 }
