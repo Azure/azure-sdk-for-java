@@ -19,12 +19,6 @@ public class QueryTablesOptions extends TableServiceOptions {
     private Query query;
     private String prefix;
 
-    @Override
-    public QueryTablesOptions setTimeout(Integer timeout) {
-        super.setTimeout(timeout);
-        return this;
-    }
-
     public Query getQuery() {
         return query;
     }
