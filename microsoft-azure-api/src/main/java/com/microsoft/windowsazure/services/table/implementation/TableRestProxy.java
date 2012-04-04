@@ -88,6 +88,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.header.InBoundHeaders;
+import com.sun.jersey.core.util.ReaderWriter;
 
 public class TableRestProxy implements TableContract {
     private static final String API_VERSION = "2011-08-18";
@@ -662,7 +663,13 @@ public class TableRestProxy implements TableContract {
         ThrowIfError(response);
 
         BatchResult result = new BatchResult();
-        result.setEntries(parseBatchResponse(response, operations));
+
+        try {
+            result.setEntries(parseBatchResponse(response, operations));
+        }
+        catch (IOException e) {
+            throw new ServiceException(e);
+        }
 
         return result;
     }
@@ -781,7 +788,14 @@ public class TableRestProxy implements TableContract {
         return bodyPartContent;
     }
 
-    private List<Entry> parseBatchResponse(ClientResponse response, BatchOperations operations) {
+    private List<Entry> parseBatchResponse(ClientResponse response, BatchOperations operations) throws IOException {
+        // Default stream cannot be reset, but it is needed by multiple parts of this method.
+        // Replace the default response stream with one that can be read multiple times.
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        InputStream inputStream = response.getEntityInputStream();
+        ReaderWriter.writeTo(inputStream, byteArrayOutputStream);
+        response.setEntityInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
 
