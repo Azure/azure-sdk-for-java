@@ -706,11 +706,10 @@ public class TableRestProxy implements TableContract {
     private List<Entry> parseBatchResponse(ClientResponse response, BatchOperations operations) throws IOException {
         // Default stream cannot be reset, but it is needed by multiple parts of this method.
         // Replace the default response stream with one that can be read multiple times.
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        InputStream in = response.getEntityInputStream();
-        ReaderWriter.writeTo(in, out);
-        byte[] requestEntity = out.toByteArray();
-        response.setEntityInputStream(new ByteArrayInputStream(requestEntity));
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        InputStream inputStream = response.getEntityInputStream();
+        ReaderWriter.writeTo(inputStream, byteArrayOutputStream);
+        response.setEntityInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
 
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
