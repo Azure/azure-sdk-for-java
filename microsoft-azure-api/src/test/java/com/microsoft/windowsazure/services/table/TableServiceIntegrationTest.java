@@ -300,10 +300,11 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        byte[] binaryData = new byte[] { 1, 2, 3, 4 };
         Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                .setProperty("test5", EdmType.DATETIME, new Date());
+                .setProperty("test5", EdmType.DATETIME, new Date()).setProperty("test6", EdmType.BINARY, binaryData);
 
         // Act
         InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
@@ -331,6 +332,14 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntity().getProperty("test5"));
         assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
+
+        assertNotNull(result.getEntity().getProperty("test6"));
+        assertTrue(result.getEntity().getProperty("test6").getValue() instanceof byte[]);
+        byte[] returnedBinaryData = (byte[]) result.getEntity().getProperty("test6").getValue();
+        assertEquals(binaryData.length, returnedBinaryData.length);
+        for (int i = 0; i < binaryData.length; i++) {
+            assertEquals(binaryData[i], returnedBinaryData[i]);
+        }
     }
 
     @Test
@@ -465,10 +474,11 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
+        byte[] binaryData = new byte[] { 1, 2, 3, 4 };
         Entity entity = new Entity().setPartitionKey("001").setRowKey("getEntityWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                .setProperty("test5", EdmType.DATETIME, new Date());
+                .setProperty("test5", EdmType.DATETIME, new Date()).setProperty("test6", EdmType.BINARY, binaryData);
 
         // Act
         InsertEntityResult insertResult = service.insertEntity(TEST_TABLE_2, entity);
@@ -498,6 +508,14 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntity().getProperty("test5"));
         assertTrue(result.getEntity().getProperty("test5").getValue() instanceof Date);
+
+        assertNotNull(result.getEntity().getProperty("test6"));
+        assertTrue(result.getEntity().getProperty("test6").getValue() instanceof byte[]);
+        byte[] returnedBinaryData = (byte[]) result.getEntity().getProperty("test6").getValue();
+        assertEquals(binaryData.length, returnedBinaryData.length);
+        for (int i = 0; i < binaryData.length; i++) {
+            assertEquals(binaryData[i], returnedBinaryData[i]);
+        }
     }
 
     @Test

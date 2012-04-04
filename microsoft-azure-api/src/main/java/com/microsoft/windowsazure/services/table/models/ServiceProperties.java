@@ -42,9 +42,9 @@ public class ServiceProperties {
 
     public static class Logging {
         private String version;
-        private Boolean delete;
-        private Boolean read;
-        private Boolean write;
+        private boolean delete;
+        private boolean read;
+        private boolean write;
         private RetentionPolicy retentionPolicy;
 
         @XmlElement(name = "RetentionPolicy")

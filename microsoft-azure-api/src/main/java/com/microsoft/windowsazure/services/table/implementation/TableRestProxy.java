@@ -249,7 +249,6 @@ public class TableRestProxy implements TableContract {
 
     private WebResource getResource(TableServiceOptions options) {
         WebResource webResource = channel.resource(url).path("/");
-        webResource = addOptionalQueryParam(webResource, "timeout", options.getTimeout());
         for (ServiceFilter filter : filters) {
             webResource.addFilter(new ClientFilterAdapter(filter));
         }
@@ -282,6 +281,9 @@ public class TableRestProxy implements TableContract {
     @Override
     public void setServiceProperties(ServiceProperties serviceProperties, TableServiceOptions options)
             throws ServiceException {
+        if (serviceProperties == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
                 .queryParam("comp", "properties");
 
@@ -297,6 +299,9 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public GetTableResult getTable(String table, TableServiceOptions options) throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path("Tables" + "('" + table + "')");
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -369,6 +374,9 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public void createTable(String table, TableServiceOptions options) throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path("Tables");
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -387,6 +395,9 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public void deleteTable(String table, TableServiceOptions options) throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path("Tables" + "('" + table + "')");
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -405,6 +416,9 @@ public class TableRestProxy implements TableContract {
     @Override
     public InsertEntityResult insertEntity(String table, Entity entity, TableServiceOptions options)
             throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(table);
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -434,7 +448,7 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public UpdateEntityResult mergeEntity(String table, Entity entity) throws ServiceException {
-        return updateEntity(table, entity, new TableServiceOptions());
+        return mergeEntity(table, entity, new TableServiceOptions());
     }
 
     @Override
@@ -456,7 +470,7 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public UpdateEntityResult insertOrMergeEntity(String table, Entity entity) throws ServiceException {
-        return insertOrReplaceEntity(table, entity, new TableServiceOptions());
+        return insertOrMergeEntity(table, entity, new TableServiceOptions());
     }
 
     @Override
@@ -467,6 +481,9 @@ public class TableRestProxy implements TableContract {
 
     private UpdateEntityResult putOrMergeEntityCore(String table, Entity entity, String verb, boolean includeEtag,
             TableServiceOptions options) throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(
                 getEntityPath(table, entity.getPartitionKey(), entity.getRowKey()));
 
@@ -499,6 +516,9 @@ public class TableRestProxy implements TableContract {
     @Override
     public void deleteEntity(String table, String partitionKey, String rowKey, DeleteEntityOptions options)
             throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(getEntityPath(table, partitionKey, rowKey));
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -517,6 +537,9 @@ public class TableRestProxy implements TableContract {
     @Override
     public GetEntityResult getEntity(String table, String partitionKey, String rowKey, TableServiceOptions options)
             throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(getEntityPath(table, partitionKey, rowKey));
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -538,6 +561,11 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
+        if (table == null)
+            throw new NullPointerException();
+        if (options == null)
+            options = new QueryEntitiesOptions();
+
         WebResource webResource = getResource(options).path(table);
         webResource = addOptionalQuery(webResource, options.getQuery());
         webResource = addOptionalQueryParam(webResource, "NextPartitionKey",

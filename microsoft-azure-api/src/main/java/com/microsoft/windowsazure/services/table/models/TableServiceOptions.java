@@ -15,15 +15,4 @@
 package com.microsoft.windowsazure.services.table.models;
 
 public class TableServiceOptions {
-    // Nullable because it is optional
-    private Integer timeout;
-
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public TableServiceOptions setTimeout(Integer timeout) {
-        this.timeout = timeout;
-        return this;
-    }
 }
