@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.implementation;
 
@@ -44,6 +44,18 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         this.signer = new HmacSHA256Sign(accountKey);
     }
 
+    protected String getHeader(ClientRequest cr, String headerKey) {
+        return SharedKeyUtils.getHeader(cr, headerKey);
+    }
+
+    protected HmacSHA256Sign getSigner() {
+        return signer;
+    }
+
+    protected String getAccountName() {
+        return accountName;
+    }
+
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
         // Only sign if no other filter is handling authorization
@@ -60,6 +72,7 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         return this.getNext().handle(cr);
     }
 
+    @Override
     public void onBeforeStreamingEntity(ClientRequest clientRequest) {
         // All headers should be known at this point, time to sign!
         sign(clientRequest);
@@ -105,11 +118,11 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         cr.getHeaders().putSingle("Authorization", "SharedKey " + this.accountName + ":" + signature);
     }
 
-    private void addOptionalDateHeader(ClientRequest cr) {
+    protected void addOptionalDateHeader(ClientRequest cr) {
         String date = getHeader(cr, "Date");
         if (date == "") {
             date = new RFC1123DateConverter().format(new Date());
-            cr.getHeaders().add("Date", date);
+            cr.getHeaders().putSingle("Date", date);
         }
     }
 
@@ -208,9 +221,5 @@ public class SharedKeyFilter extends ClientFilter implements EntityStreamingList
         }
 
         return result;
-    }
-
-    private String getHeader(ClientRequest cr, String headerKey) {
-        return SharedKeyUtils.getHeader(cr, headerKey);
     }
 }

@@ -25,11 +25,11 @@ public class ContainerACLDateAdapter extends XmlAdapter<String, Date> {
 
     @Override
     public Date unmarshal(String arg0) throws Exception {
-        return new ContainerACLDateConverter().parse(arg0);
+        return new ISO8601DateConverter().parse(arg0);
     }
 
     @Override
     public String marshal(Date arg0) throws Exception {
-        return new ContainerACLDateConverter().format(arg0);
+        return new ISO8601DateConverter().format(arg0);
     }
 }
