@@ -35,6 +35,9 @@ import javax.inject.Named;
 import javax.mail.Header;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeMultipart;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
@@ -621,6 +624,7 @@ public class TableRestProxy implements TableContract {
     public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
         if (table == null)
             throw new NullPointerException();
+
         if (options == null)
             options = new QueryEntitiesOptions();
 
@@ -799,14 +803,14 @@ public class TableRestProxy implements TableContract {
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
 
-        if (parts.size() != operations.getOperations().size()) {
+        if (parts.size() == 0 || parts.size() > operations.getOperations().size()) {
             throw new UniformInterfaceException(String.format(
                     "Batch response from server does not contain the correct amount "
                             + "of parts (expecting %d, received %d instead)", parts.size(), operations.getOperations()
                             .size()), response);
         }
 
-        List<Entry> result = new ArrayList<Entry>();
+        Entry[] entries = new Entry[operations.getOperations().size()];
         for (int i = 0; i < parts.size(); i++) {
             DataSource ds = parts.get(i);
             Operation operation = operations.getOperations().get(i);
@@ -814,11 +818,15 @@ public class TableRestProxy implements TableContract {
             StatusLine status = httpReaderWriter.parseStatusLine(ds);
             InternetHeaders headers = httpReaderWriter.parseHeaders(ds);
             InputStream content = httpReaderWriter.parseEntity(ds);
+            ByteArrayOutputStream contentByteArrayOutputStream = new ByteArrayOutputStream();
+            ReaderWriter.writeTo(content, contentByteArrayOutputStream);
+            content = new ByteArrayInputStream(contentByteArrayOutputStream.toByteArray());
 
             if (status.getStatus() >= 400) {
                 // Create dummy client response with status, headers and content
                 InBoundHeaders inBoundHeaders = new InBoundHeaders();
 
+                @SuppressWarnings("unchecked")
                 Enumeration<Header> e = headers.getAllHeaders();
                 while (e.hasMoreElements()) {
                     Header header = e.nextElement();
@@ -833,22 +841,51 @@ public class TableRestProxy implements TableContract {
                 serviceException = ServiceExceptionFactory.process("table", serviceException);
                 Error error = new Error().setError(serviceException);
 
-                result.add(error);
+                // Parse the message to find which operation caused this error.
+                try {
+                    XMLInputFactory xmlStreamFactory = XMLInputFactory.newFactory();
+                    content.reset();
+                    XMLStreamReader xmlStreamReader = xmlStreamFactory.createXMLStreamReader(content);
+
+                    while (xmlStreamReader.hasNext()) {
+                        xmlStreamReader.next();
+                        if (xmlStreamReader.isStartElement() && "message".equals(xmlStreamReader.getLocalName())) {
+                            xmlStreamReader.next();
+                            // Process "message" elements only
+                            String message = xmlStreamReader.getText();
+                            int colonIndex = message.indexOf(':');
+                            String errorOpId = message.substring(0, colonIndex);
+                            int opId = Integer.parseInt(errorOpId);
+                            entries[opId] = error;
+                            break;
+                        }
+                    }
+                    xmlStreamReader.close();
+                }
+                catch (XMLStreamException e1) {
+                    throw new UniformInterfaceException(
+                            "Batch response from server does not contain XML in the expected format", response);
+                }
             }
             else if (operation instanceof InsertEntityOperation) {
                 InsertEntity opResult = new InsertEntity().setEntity(atomReaderWriter.parseEntityEntry(content));
-                result.add(opResult);
+                entries[i] = opResult;
             }
             else if ((operation instanceof UpdateEntityOperation) || (operation instanceof MergeEntityOperation)
                     || (operation instanceof InsertOrReplaceEntityOperation)
                     || (operation instanceof InsertOrMergeEntityOperation)) {
                 UpdateEntity opResult = new UpdateEntity().setEtag(headers.getHeader("ETag", null));
-                result.add(opResult);
+                entries[i] = opResult;
             }
             else if (operation instanceof DeleteEntityOperation) {
                 DeleteEntity opResult = new DeleteEntity();
-                result.add(opResult);
+                entries[i] = opResult;
             }
+        }
+
+        List<Entry> result = new ArrayList<Entry>();
+        for (int i = 0; i < entries.length; i++) {
+            result.add(entries[i]);
         }
 
         return result;
