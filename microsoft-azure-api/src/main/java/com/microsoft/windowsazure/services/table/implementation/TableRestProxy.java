@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Formatter;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,9 @@ import javax.inject.Named;
 import javax.mail.Header;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeMultipart;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
@@ -88,6 +92,10 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.header.InBoundHeaders;
+import com.sun.jersey.core.spi.component.ProviderFactory;
+import com.sun.jersey.core.spi.component.ProviderServices;
+import com.sun.jersey.core.spi.factory.MessageBodyFactory;
+import com.sun.jersey.spi.inject.ClientSide;
 import com.sun.jersey.core.util.ReaderWriter;
 
 public class TableRestProxy implements TableContract {
@@ -621,6 +629,7 @@ public class TableRestProxy implements TableContract {
     public QueryEntitiesResult queryEntities(String table, QueryEntitiesOptions options) throws ServiceException {
         if (table == null)
             throw new NullPointerException();
+
         if (options == null)
             options = new QueryEntitiesOptions();
 
@@ -799,14 +808,7 @@ public class TableRestProxy implements TableContract {
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
 
-        if (parts.size() != operations.getOperations().size()) {
-            throw new UniformInterfaceException(String.format(
-                    "Batch response from server does not contain the correct amount "
-                            + "of parts (expecting %d, received %d instead)", parts.size(), operations.getOperations()
-                            .size()), response);
-        }
-
-        List<Entry> result = new ArrayList<Entry>();
+        Entry[] entries = new Entry[operations.getOperations().size()];
         for (int i = 0; i < parts.size(); i++) {
             DataSource ds = parts.get(i);
             Operation operation = operations.getOperations().get(i);
@@ -825,7 +827,13 @@ public class TableRestProxy implements TableContract {
                     inBoundHeaders.putSingle(header.getName(), header.getValue());
                 }
 
-                ClientResponse dummyResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content, null);
+                ProviderServices providerServices = new ProviderServices(ClientSide.class, new ProviderFactory(null),
+                        new HashSet<Class<?>>(), new HashSet<Class<?>>());
+                MessageBodyFactory bodyContext = new MessageBodyFactory(providerServices, false);
+                // TODO: This call causes lots of warnings from Jersey. Need to figure out how to silence them.
+                bodyContext.init();
+                ClientResponse dummyResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content,
+                        bodyContext);
 
                 // Wrap into a ServiceException
                 UniformInterfaceException exception = new UniformInterfaceException(dummyResponse);
@@ -833,22 +841,49 @@ public class TableRestProxy implements TableContract {
                 serviceException = ServiceExceptionFactory.process("table", serviceException);
                 Error error = new Error().setError(serviceException);
 
-                result.add(error);
+                // Parse the message to find which operation caused this error.
+                try {
+                    XMLInputFactory xmlStreamFactory = XMLInputFactory.newFactory();
+                    XMLStreamReader xmlr = xmlStreamFactory.createXMLStreamReader(new ByteArrayInputStream(
+                            serviceException.getRawResponseBody().getBytes()));
+                    while (xmlr.hasNext()) {
+                        xmlr.next();
+                        if (xmlr.isStartElement() && "message".equals(xmlr.getLocalName())) {
+                            xmlr.next();
+                            // Process "message" elements only
+                            String message = xmlr.getText();
+                            int colonIndex = message.indexOf(':');
+                            String errorOpId = message.substring(0, colonIndex);
+                            int opId = Integer.parseInt(errorOpId);
+                            entries[opId] = error;
+                        }
+                    }
+                    xmlr.close();
+                }
+                catch (XMLStreamException e1) {
+                    // TODO: What to throw here?
+                }
+
             }
             else if (operation instanceof InsertEntityOperation) {
                 InsertEntity opResult = new InsertEntity().setEntity(atomReaderWriter.parseEntityEntry(content));
-                result.add(opResult);
+                entries[i] = opResult;
             }
             else if ((operation instanceof UpdateEntityOperation) || (operation instanceof MergeEntityOperation)
                     || (operation instanceof InsertOrReplaceEntityOperation)
                     || (operation instanceof InsertOrMergeEntityOperation)) {
                 UpdateEntity opResult = new UpdateEntity().setEtag(headers.getHeader("ETag", null));
-                result.add(opResult);
+                entries[i] = opResult;
             }
             else if (operation instanceof DeleteEntityOperation) {
                 DeleteEntity opResult = new DeleteEntity();
-                result.add(opResult);
+                entries[i] = opResult;
             }
+        }
+
+        List<Entry> result = new ArrayList<Entry>();
+        for (int i = 0; i < entries.length; i++) {
+            result.add(entries[i]);
         }
 
         return result;
