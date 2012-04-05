@@ -1023,4 +1023,52 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(UpdateEntity.class, result.getEntries().get(4).getClass());
         assertEquals(UpdateEntity.class, result.getEntries().get(5).getClass());
     }
+
+    @Test
+    public void batchNegativeWorks() throws Exception {
+        System.out.println("batchNegativeWorks()");
+
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        String table = TEST_TABLE_8;
+        String partitionKey = "001";
+
+        // Insert an entity the modify it outside of the batch
+        Entity entity1 = new Entity().setPartitionKey(partitionKey).setRowKey("batchNegativeWorks1")
+                .setProperty("test", EdmType.INT32, 1);
+        Entity entity2 = new Entity().setPartitionKey(partitionKey).setRowKey("batchNegativeWorks2")
+                .setProperty("test", EdmType.INT32, 2);
+        Entity entity3 = new Entity().setPartitionKey(partitionKey).setRowKey("batchNegativeWorks3")
+                .setProperty("test", EdmType.INT32, 3);
+
+        entity1 = service.insertEntity(table, entity1).getEntity();
+        entity2 = service.insertEntity(table, entity2).getEntity();
+        entity2.setProperty("test", EdmType.INT32, -2);
+        service.updateEntity(table, entity2);
+
+        // Act
+        BatchOperations batchOperations = new BatchOperations();
+
+        // The entity1 still has the original etag from the first submit, 
+        // so this update should fail, because another update was already made.
+        entity1.setProperty("test", EdmType.INT32, 3);
+        batchOperations.addDeleteEntity(table, entity1.getPartitionKey(), entity1.getRowKey(), entity1.getEtag());
+        batchOperations.addUpdateEntity(table, entity2);
+        batchOperations.addInsertEntity(table, entity3);
+
+        BatchResult result = service.batch(batchOperations);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(batchOperations.getOperations().size(), result.getEntries().size());
+        assertNull("First result should be null", result.getEntries().get(0));
+        assertNotNull("Second result should not be null", result.getEntries().get(1));
+        assertEquals("Second result type", com.microsoft.windowsazure.services.table.models.BatchResult.Error.class,
+                result.getEntries().get(1).getClass());
+        com.microsoft.windowsazure.services.table.models.BatchResult.Error error = (com.microsoft.windowsazure.services.table.models.BatchResult.Error) result
+                .getEntries().get(1);
+        assertEquals("Second result status code", 412, error.getError().getHttpStatusCode());
+        assertNull("Third result should be null", result.getEntries().get(2));
+    }
 }
