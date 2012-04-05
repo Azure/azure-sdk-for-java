@@ -27,9 +27,17 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 public class PipelineHelpers {
-    public static void ThrowIfError(ClientResponse r) {
-        if (r.getStatus() >= 400) {
-            throw new UniformInterfaceException(r);
+    public static void ThrowIfNotSuccess(ClientResponse clientResponse) {
+        int statusCode = clientResponse.getStatus();
+
+        if ((statusCode < 200) || (statusCode >= 300)) {
+            throw new UniformInterfaceException(clientResponse);
+        }
+    }
+
+    public static void ThrowIfError(ClientResponse clientResponse) {
+        if (clientResponse.getStatus() >= 400) {
+            throw new UniformInterfaceException(clientResponse);
         }
     }
 
