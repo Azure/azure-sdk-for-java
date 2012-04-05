@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Formatter;
 import java.util.List;
 import java.util.UUID;
@@ -92,10 +91,6 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.core.header.InBoundHeaders;
-import com.sun.jersey.core.spi.component.ProviderFactory;
-import com.sun.jersey.core.spi.component.ProviderServices;
-import com.sun.jersey.core.spi.factory.MessageBodyFactory;
-import com.sun.jersey.spi.inject.ClientSide;
 import com.sun.jersey.core.util.ReaderWriter;
 
 public class TableRestProxy implements TableContract {
@@ -808,6 +803,13 @@ public class TableRestProxy implements TableContract {
         List<DataSource> parts = mimeReaderWriter.parseParts(response.getEntityInputStream(), response.getHeaders()
                 .getFirst("Content-Type"));
 
+        if (parts.size() == 0 || parts.size() > operations.getOperations().size()) {
+            throw new UniformInterfaceException(String.format(
+                    "Batch response from server does not contain the correct amount "
+                            + "of parts (expecting %d, received %d instead)", parts.size(), operations.getOperations()
+                            .size()), response);
+        }
+
         Entry[] entries = new Entry[operations.getOperations().size()];
         for (int i = 0; i < parts.size(); i++) {
             DataSource ds = parts.get(i);
@@ -816,24 +818,22 @@ public class TableRestProxy implements TableContract {
             StatusLine status = httpReaderWriter.parseStatusLine(ds);
             InternetHeaders headers = httpReaderWriter.parseHeaders(ds);
             InputStream content = httpReaderWriter.parseEntity(ds);
+            ByteArrayOutputStream contentByteArrayOutputStream = new ByteArrayOutputStream();
+            ReaderWriter.writeTo(content, contentByteArrayOutputStream);
+            content = new ByteArrayInputStream(contentByteArrayOutputStream.toByteArray());
 
             if (status.getStatus() >= 400) {
                 // Create dummy client response with status, headers and content
                 InBoundHeaders inBoundHeaders = new InBoundHeaders();
 
+                @SuppressWarnings("unchecked")
                 Enumeration<Header> e = headers.getAllHeaders();
                 while (e.hasMoreElements()) {
                     Header header = e.nextElement();
                     inBoundHeaders.putSingle(header.getName(), header.getValue());
                 }
 
-                ProviderServices providerServices = new ProviderServices(ClientSide.class, new ProviderFactory(null),
-                        new HashSet<Class<?>>(), new HashSet<Class<?>>());
-                MessageBodyFactory bodyContext = new MessageBodyFactory(providerServices, false);
-                // TODO: This call causes lots of warnings from Jersey. Need to figure out how to silence them.
-                bodyContext.init();
-                ClientResponse dummyResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content,
-                        bodyContext);
+                ClientResponse dummyResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content, null);
 
                 // Wrap into a ServiceException
                 UniformInterfaceException exception = new UniformInterfaceException(dummyResponse);
@@ -844,26 +844,28 @@ public class TableRestProxy implements TableContract {
                 // Parse the message to find which operation caused this error.
                 try {
                     XMLInputFactory xmlStreamFactory = XMLInputFactory.newFactory();
-                    XMLStreamReader xmlr = xmlStreamFactory.createXMLStreamReader(new ByteArrayInputStream(
-                            serviceException.getRawResponseBody().getBytes()));
-                    while (xmlr.hasNext()) {
-                        xmlr.next();
-                        if (xmlr.isStartElement() && "message".equals(xmlr.getLocalName())) {
-                            xmlr.next();
+                    content.reset();
+                    XMLStreamReader xmlStreamReader = xmlStreamFactory.createXMLStreamReader(content);
+
+                    while (xmlStreamReader.hasNext()) {
+                        xmlStreamReader.next();
+                        if (xmlStreamReader.isStartElement() && "message".equals(xmlStreamReader.getLocalName())) {
+                            xmlStreamReader.next();
                             // Process "message" elements only
-                            String message = xmlr.getText();
+                            String message = xmlStreamReader.getText();
                             int colonIndex = message.indexOf(':');
                             String errorOpId = message.substring(0, colonIndex);
                             int opId = Integer.parseInt(errorOpId);
                             entries[opId] = error;
+                            break;
                         }
                     }
-                    xmlr.close();
+                    xmlStreamReader.close();
                 }
                 catch (XMLStreamException e1) {
-                    // TODO: What to throw here?
+                    throw new UniformInterfaceException(
+                            "Batch response from server does not contain XML in the expected format", response);
                 }
-
             }
             else if (operation instanceof InsertEntityOperation) {
                 InsertEntity opResult = new InsertEntity().setEntity(atomReaderWriter.parseEntityEntry(content));

@@ -92,6 +92,7 @@ public class HttpReaderWriter {
     public void appendHeaders(OutputStream stream, InternetHeaders headers) {
         try {
             // Headers
+            @SuppressWarnings("unchecked")
             Enumeration<Header> e = headers.getAllHeaders();
             while (e.hasMoreElements()) {
                 Header header = e.nextElement();
