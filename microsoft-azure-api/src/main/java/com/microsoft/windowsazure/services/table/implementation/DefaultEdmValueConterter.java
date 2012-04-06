@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.table.implementation;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -79,6 +80,9 @@ public class DefaultEdmValueConterter implements EdmValueConverter {
         }
         else if (EdmType.BINARY.equals(edmType)) {
             return Base64.decode(value);
+        }
+        else if (EdmType.GUID.equals(edmType)) {
+            return UUID.fromString(value);
         }
 
         return value;

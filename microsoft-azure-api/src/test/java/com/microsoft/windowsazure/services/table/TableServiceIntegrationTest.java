@@ -302,10 +302,12 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
         byte[] binaryData = new byte[] { 1, 2, 3, 4 };
+        UUID uuid = UUID.randomUUID();
         Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityWorks")
                 .setProperty("test", EdmType.BOOLEAN, true).setProperty("test2", EdmType.STRING, "value")
                 .setProperty("test3", EdmType.INT32, 3).setProperty("test4", EdmType.INT64, 12345678901L)
-                .setProperty("test5", EdmType.DATETIME, new Date()).setProperty("test6", EdmType.BINARY, binaryData);
+                .setProperty("test5", EdmType.DATETIME, new Date()).setProperty("test6", EdmType.BINARY, binaryData)
+                .setProperty("test7", EdmType.GUID, uuid);
 
         // Act
         InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
@@ -341,6 +343,10 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < binaryData.length; i++) {
             assertEquals(binaryData[i], returnedBinaryData[i]);
         }
+
+        assertNotNull(result.getEntity().getProperty("test7"));
+        assertTrue(result.getEntity().getProperty("test7").getValue() instanceof UUID);
+        assertEquals(uuid.toString(), result.getEntity().getProperty("test7").getValue().toString());
     }
 
     @Test
