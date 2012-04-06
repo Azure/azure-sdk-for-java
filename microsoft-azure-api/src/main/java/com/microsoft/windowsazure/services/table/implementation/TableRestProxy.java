@@ -380,8 +380,7 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
-
-        Query query = options.getQuery();
+        Query query = new Query();
         String nextTableName = options.getNextTableName();
         String prefix = options.getPrefix();
 
@@ -389,22 +388,7 @@ public class TableRestProxy implements TableContract {
             // Append Max char to end '{' is 1 + 'z' in AsciiTable ==> upperBound is prefix + '{'
             Filter prefixFilter = Filter.and(Filter.ge(Filter.litteral("TableName"), Filter.constant(prefix)),
                     Filter.le(Filter.litteral("TableName"), Filter.constant(prefix + "{")));
-
-            // a new query is needed if prefix alone is passed in
-            if (query == null) {
-                query = new Query();
-            }
-
-            // examine the existing filter on the query
-            if (query.getFilter() == null) {
-                // use the prefix filter if the query filter is null
-                query.setFilter(prefixFilter);
-            }
-            else {
-                // combine and use the prefix filter if the query filter exists
-                Filter combinedFilter = Filter.and(query.getFilter(), prefixFilter);
-                query.setFilter(combinedFilter);
-            }
+            query.setFilter(prefixFilter);
         }
 
         WebResource webResource = getResource(options).path("Tables");

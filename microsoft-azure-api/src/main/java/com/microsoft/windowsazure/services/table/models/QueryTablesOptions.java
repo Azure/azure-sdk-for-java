@@ -16,17 +16,7 @@ package com.microsoft.windowsazure.services.table.models;
 
 public class QueryTablesOptions extends TableServiceOptions {
     private String nextTableName;
-    private Query query;
     private String prefix;
-
-    public Query getQuery() {
-        return query;
-    }
-
-    public QueryTablesOptions setQuery(Query query) {
-        this.query = query;
-        return this;
-    }
 
     public String getNextTableName() {
         return nextTableName;
