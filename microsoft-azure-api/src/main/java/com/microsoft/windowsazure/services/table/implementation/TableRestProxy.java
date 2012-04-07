@@ -72,13 +72,12 @@ import com.microsoft.windowsazure.services.table.models.GetEntityResult;
 import com.microsoft.windowsazure.services.table.models.GetServicePropertiesResult;
 import com.microsoft.windowsazure.services.table.models.GetTableResult;
 import com.microsoft.windowsazure.services.table.models.InsertEntityResult;
-import com.microsoft.windowsazure.services.table.models.LitteralFilter;
-import com.microsoft.windowsazure.services.table.models.Query;
+import com.microsoft.windowsazure.services.table.models.PropertyNameFilter;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryEntitiesResult;
+import com.microsoft.windowsazure.services.table.models.QueryStringFilter;
 import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
-import com.microsoft.windowsazure.services.table.models.RawStringFilter;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableServiceOptions;
 import com.microsoft.windowsazure.services.table.models.UnaryFilter;
@@ -182,26 +181,29 @@ public class TableRestProxy implements TableContract {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
-    private WebResource addOptionalQuery(WebResource webResource, Query query) {
-        if (query == null)
+    private WebResource addOptionalQueryEntitiesOptions(WebResource webResource,
+            QueryEntitiesOptions queryEntitiesOptions) {
+        if (queryEntitiesOptions == null)
             return webResource;
 
-        if (query.getSelectFields() != null && query.getSelectFields().size() > 0) {
+        if (queryEntitiesOptions.getSelectFields() != null && queryEntitiesOptions.getSelectFields().size() > 0) {
             webResource = addOptionalQueryParam(webResource, "$select",
-                    CommaStringBuilder.join(encodeODataURIValues(query.getSelectFields())));
+                    CommaStringBuilder.join(encodeODataURIValues(queryEntitiesOptions.getSelectFields())));
         }
 
-        if (query.getTop() != null) {
-            webResource = addOptionalQueryParam(webResource, "$top", encodeODataURIValue(query.getTop().toString()));
+        if (queryEntitiesOptions.getTop() != null) {
+            webResource = addOptionalQueryParam(webResource, "$top", encodeODataURIValue(queryEntitiesOptions.getTop()
+                    .toString()));
         }
 
-        if (query.getFilter() != null) {
-            webResource = addOptionalQueryParam(webResource, "$filter", buildFilterExpression(query.getFilter()));
+        if (queryEntitiesOptions.getFilter() != null) {
+            webResource = addOptionalQueryParam(webResource, "$filter",
+                    buildFilterExpression(queryEntitiesOptions.getFilter()));
         }
 
-        if (query.getOrderByFields() != null) {
+        if (queryEntitiesOptions.getOrderByFields() != null) {
             webResource = addOptionalQueryParam(webResource, "$orderby",
-                    CommaStringBuilder.join(encodeODataURIValues(query.getOrderByFields())));
+                    CommaStringBuilder.join(encodeODataURIValues(queryEntitiesOptions.getOrderByFields())));
         }
 
         return webResource;
@@ -217,8 +219,8 @@ public class TableRestProxy implements TableContract {
         if (filter == null)
             return;
 
-        if (filter instanceof LitteralFilter) {
-            sb.append(((LitteralFilter) filter).getLitteral());
+        if (filter instanceof PropertyNameFilter) {
+            sb.append(((PropertyNameFilter) filter).getPropertyName());
         }
         else if (filter instanceof ConstantFilter) {
             Object value = ((ConstantFilter) filter).getValue();
@@ -282,8 +284,8 @@ public class TableRestProxy implements TableContract {
             buildFilterExpression(((BinaryFilter) filter).getRight(), sb);
             sb.append(")");
         }
-        else if (filter instanceof RawStringFilter) {
-            sb.append(((RawStringFilter) filter).getRawString());
+        else if (filter instanceof QueryStringFilter) {
+            sb.append(((QueryStringFilter) filter).getQueryString());
         }
     }
 
@@ -380,19 +382,25 @@ public class TableRestProxy implements TableContract {
 
     @Override
     public QueryTablesResult queryTables(QueryTablesOptions options) throws ServiceException {
-        Query query = new Query();
+        Filter queryFilter = options.getFilter();
         String nextTableName = options.getNextTableName();
         String prefix = options.getPrefix();
 
         if (prefix != null) {
             // Append Max char to end '{' is 1 + 'z' in AsciiTable ==> upperBound is prefix + '{'
-            Filter prefixFilter = Filter.and(Filter.ge(Filter.litteral("TableName"), Filter.constant(prefix)),
-                    Filter.le(Filter.litteral("TableName"), Filter.constant(prefix + "{")));
-            query.setFilter(prefixFilter);
+            Filter prefixFilter = Filter.and(Filter.ge(Filter.propertyName("TableName"), Filter.constant(prefix)),
+                    Filter.le(Filter.propertyName("TableName"), Filter.constant(prefix + "{")));
+
+            if (queryFilter == null) {
+                queryFilter = prefixFilter;
+            }
+            else {
+                queryFilter = Filter.and(queryFilter, prefixFilter);
+            }
         }
 
         WebResource webResource = getResource(options).path("Tables");
-        webResource = addOptionalQuery(webResource, query);
+        webResource = addOptionalQueryParam(webResource, "$filter", buildFilterExpression(queryFilter));
         webResource = addOptionalQueryParam(webResource, "NextTableName", nextTableName);
 
         WebResource.Builder builder = webResource.getRequestBuilder();
@@ -609,7 +617,7 @@ public class TableRestProxy implements TableContract {
             options = new QueryEntitiesOptions();
 
         WebResource webResource = getResource(options).path(table);
-        webResource = addOptionalQuery(webResource, options.getQuery());
+        webResource = addOptionalQueryEntitiesOptions(webResource, options);
         webResource = addOptionalQueryParam(webResource, "NextPartitionKey",
                 encodeODataURIValue(options.getNextPartitionKey()));
         webResource = addOptionalQueryParam(webResource, "NextRowKey", encodeODataURIValue(options.getNextRowKey()));

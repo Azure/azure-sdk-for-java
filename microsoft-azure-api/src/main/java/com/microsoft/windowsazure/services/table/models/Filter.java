@@ -16,50 +16,50 @@ package com.microsoft.windowsazure.services.table.models;
 
 public class Filter {
     public static UnaryFilter not(Filter operand) {
-        return new UnaryFilter().setOperator("not").setOperand(operand);
+        return new UnaryFilter("not", operand);
     }
 
     public static BinaryFilter and(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("and").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "and", right);
     }
 
     public static BinaryFilter or(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("or").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "or", right);
     }
 
     public static BinaryFilter eq(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("eq").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "eq", right);
     }
 
     public static BinaryFilter ne(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("ne").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "ne", right);
     }
 
     public static BinaryFilter ge(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("ge").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "ge", right);
     }
 
     public static BinaryFilter gt(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("gt").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "gt", right);
     }
 
     public static BinaryFilter lt(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("lt").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "lt", right);
     }
 
     public static BinaryFilter le(Filter left, Filter right) {
-        return new BinaryFilter().setOperator("le").setLeft(left).setRight(right);
+        return new BinaryFilter(left, "le", right);
     }
 
     public static ConstantFilter constant(Object value) {
-        return new ConstantFilter().setValue(value);
+        return new ConstantFilter(value);
     }
 
-    public static LitteralFilter litteral(String value) {
-        return new LitteralFilter().setLitteral(value);
+    public static PropertyNameFilter propertyName(String value) {
+        return new PropertyNameFilter(value);
     }
 
-    public static RawStringFilter rawString(String value) {
-        return new RawStringFilter().setRawString(value);
+    public static QueryStringFilter QueryString(String value) {
+        return new QueryStringFilter(value);
     }
 }

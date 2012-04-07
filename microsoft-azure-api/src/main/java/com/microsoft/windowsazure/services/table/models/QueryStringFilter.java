@@ -14,15 +14,14 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
-public class RawStringFilter extends Filter {
-    private String rawString;
+public class QueryStringFilter extends Filter {
+    private final String queryString;
 
-    public String getRawString() {
-        return rawString;
+    public QueryStringFilter(String queryString) {
+        this.queryString = queryString;
     }
 
-    public RawStringFilter setRawString(String rawString) {
-        this.rawString = rawString;
-        return this;
+    public String getQueryString() {
+        return queryString;
     }
 }
