@@ -14,19 +14,19 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QueryEntitiesOptions extends TableServiceOptions {
-    private Query query;
+
+    private List<String> selectFields = new ArrayList<String>();
+    private String from;
+    private Filter filter;
+    private List<String> orderByFields = new ArrayList<String>();
+    private Integer top;
+
     public String nextPartitionKey;
     public String nextRowKey;
-
-    public Query getQuery() {
-        return query;
-    }
-
-    public QueryEntitiesOptions setQuery(Query query) {
-        this.query = query;
-        return this;
-    }
 
     public String getNextPartitionKey() {
         return nextPartitionKey;
@@ -43,6 +43,61 @@ public class QueryEntitiesOptions extends TableServiceOptions {
 
     public QueryEntitiesOptions setNextRowKey(String nextRowKey) {
         this.nextRowKey = nextRowKey;
+        return this;
+    }
+
+    public List<String> getSelectFields() {
+        return selectFields;
+    }
+
+    public QueryEntitiesOptions setSelectFields(List<String> selectFields) {
+        this.selectFields = selectFields;
+        return this;
+    }
+
+    public QueryEntitiesOptions addSelectField(String selectField) {
+        this.selectFields.add(selectField);
+        return this;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public QueryEntitiesOptions setFrom(String from) {
+        this.from = from;
+        return this;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public QueryEntitiesOptions setFilter(Filter filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public List<String> getOrderByFields() {
+        return orderByFields;
+    }
+
+    public QueryEntitiesOptions setOrderByFields(List<String> orderByFields) {
+        this.orderByFields = orderByFields;
+        return this;
+    }
+
+    public QueryEntitiesOptions addOrderByField(String orderByField) {
+        this.orderByFields.add(orderByField);
+        return this;
+    }
+
+    public Integer getTop() {
+        return top;
+    }
+
+    public QueryEntitiesOptions setTop(Integer top) {
+        this.top = top;
         return this;
     }
 }

@@ -15,8 +15,18 @@
 package com.microsoft.windowsazure.services.table.models;
 
 public class QueryTablesOptions extends TableServiceOptions {
+    private Filter filter;
     private String nextTableName;
     private String prefix;
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public QueryTablesOptions setFilter(Filter filter) {
+        this.filter = filter;
+        return this;
+    }
 
     public String getNextTableName() {
         return nextTableName;

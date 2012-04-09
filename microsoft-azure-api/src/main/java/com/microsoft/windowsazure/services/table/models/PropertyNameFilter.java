@@ -14,15 +14,15 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
-public class LitteralFilter extends Filter {
-    private String litteral;
+public class PropertyNameFilter extends Filter {
+    private final String propertyName;
 
-    public String getLitteral() {
-        return litteral;
+    public PropertyNameFilter(String propertyName) {
+        this.propertyName = propertyName;
     }
 
-    public LitteralFilter setLitteral(String litteral) {
-        this.litteral = litteral;
-        return this;
+    public String getPropertyName() {
+        return propertyName;
     }
+
 }
