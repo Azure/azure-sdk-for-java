@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
+import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -269,7 +269,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
                 urlConnection.setRequestProperty(e.getKey(), ClientRequest.getHeaderValue(vs.get(0)));
             }
             else {
-                EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+                CommaStringBuilder sb = new CommaStringBuilder();
                 for (Object v : e.getValue()) {
                     sb.add(ClientRequest.getHeaderValue(v));
                 }
