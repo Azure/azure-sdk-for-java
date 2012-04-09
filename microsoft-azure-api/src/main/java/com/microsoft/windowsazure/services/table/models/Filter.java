@@ -59,7 +59,7 @@ public class Filter {
         return new PropertyNameFilter(value);
     }
 
-    public static QueryStringFilter QueryString(String value) {
+    public static QueryStringFilter queryString(String value) {
         return new QueryStringFilter(value);
     }
 }

@@ -685,7 +685,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         {
             // Act
             QueryEntitiesResult result = service.queryEntities(table, new QueryEntitiesOptions().setFilter(Filter
-                    .QueryString("RowKey eq 'queryEntitiesWithFilterWorks-3'")));
+                    .queryString("RowKey eq 'queryEntitiesWithFilterWorks-3'")));
 
             // Assert
             assertNotNull(result);
