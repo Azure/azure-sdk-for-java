@@ -1,3 +1,7 @@
+2012.04.11 Version 0.2.1
+ * Added Service Layer support for Azure Table Storage
+ * Added Javadoc comments to Azure Queue Storage Service Layer
+
 2012.02.28 Version 0.2.0
  * Added Support for Azure Table in com.microsoft.windowsazure.services.table
  * Added Client Tests for Table
