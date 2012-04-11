@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.implementation;
 
@@ -69,10 +69,10 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -122,6 +122,10 @@ public class BlobRestProxy implements BlobContract {
         PipelineHelpers.ThrowIfError(r);
     }
 
+    private void ThrowIfNotSuccess(ClientResponse clientResponse) {
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
@@ -155,18 +159,18 @@ public class BlobRestProxy implements BlobContract {
     }
 
     private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeSnapshots(), "snapshots");
         sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
     private WebResource addOptionalContainerIncludeQueryParam(ListContainersOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
@@ -630,7 +634,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ThrowIfError(response);
+        ThrowIfNotSuccess(response);
 
         GetBlobPropertiesResult properties = getBlobPropertiesResultFromResponse(response);
         GetBlobResult blobResult = new GetBlobResult();
