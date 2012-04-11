@@ -1,7 +1,12 @@
+2012.04.11 Version 0.2.1
+ * Added Service Layer support for Azure Table
+ * Added Javadocs for Queue Storage Service Layer
+
 2012.02.28 Version 0.2.0
  * Added Support for Azure Table in com.microsoft.windowsazure.services.table
- * Added Tests for Azure Table
+ * Added Client Tests for Table
  * Added a dependency on apache commons-lang3 3.1
+ * ResultsSegment exposes an ArrayList instead of an Iterable
  * UserAgent updated to v1.1.2
 
 2012.01.31 Version 0.1.3

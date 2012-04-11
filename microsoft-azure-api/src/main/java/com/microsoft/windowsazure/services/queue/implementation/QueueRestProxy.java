@@ -152,6 +152,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public void createQueue(String queue, CreateQueueOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -165,6 +168,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public void deleteQueue(String queue, QueueServiceOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue);
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -195,6 +201,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public GetQueueMetadataResult getQueueMetadata(String queue, QueueServiceOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -216,6 +225,9 @@ public class QueueRestProxy implements QueueContract {
 
     public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
             throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -229,6 +241,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages");
         webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
         webResource = addOptionalQueryParam(webResource, "messagettl", options.getTimeToLiveInSeconds());
@@ -249,6 +264,11 @@ public class QueueRestProxy implements QueueContract {
 
     public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
             int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+        if (messageId == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
         webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
         webResource = addOptionalQueryParam(webResource, "visibilitytimeout", visibilityTimeoutInSeconds);
@@ -272,6 +292,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public ListMessagesResult listMessages(String queue, ListMessagesOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages");
         webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
         webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
@@ -286,6 +309,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public PeekMessagesResult peekMessages(String queue, PeekMessagesOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages").queryParam("peekonly", "true");
         webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
 
@@ -300,6 +326,11 @@ public class QueueRestProxy implements QueueContract {
 
     public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
             throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+        if (messageId == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
         webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
 
@@ -313,6 +344,9 @@ public class QueueRestProxy implements QueueContract {
     }
 
     public void clearMessages(String queue, QueueServiceOptions options) throws ServiceException {
+        if (queue == null)
+            throw new NullPointerException();
+
         WebResource webResource = getResource(options).path(queue).path("messages");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
