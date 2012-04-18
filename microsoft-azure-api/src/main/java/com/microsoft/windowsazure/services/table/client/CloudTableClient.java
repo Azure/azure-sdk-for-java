@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -657,7 +658,7 @@ public final class CloudTableClient extends ServiceClient {
      *         <code>R</code> of the results of executing the query.
      */
     @DoesServiceRequest
-    public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver) {
+    public <R> Iterator<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver) {
         return this.execute(query, resolver, null, null);
     }
 
@@ -692,11 +693,11 @@ public final class CloudTableClient extends ServiceClient {
      */
     @DoesServiceRequest
     @SuppressWarnings("unchecked")
-    public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver,
+    public <R> Iterator<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver,
             final TableRequestOptions options, final OperationContext opContext) {
         Utility.assertNotNull("query", query);
         Utility.assertNotNull("Query requires a valid class type or resolver.", resolver);
-        return (Iterable<R>) this.generateIteratorForQuery(query, resolver, options, opContext);
+        return (Iterator<R>) this.generateIteratorForQuery(query, resolver, options, opContext);
     }
 
     /**
@@ -716,7 +717,7 @@ public final class CloudTableClient extends ServiceClient {
      *         executing the query.
      */
     @DoesServiceRequest
-    public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query) {
+    public <T extends TableEntity> Iterator<T> execute(final TableQuery<T> query) {
         return this.execute(query, null, null);
     }
 
@@ -748,10 +749,10 @@ public final class CloudTableClient extends ServiceClient {
      */
     @SuppressWarnings("unchecked")
     @DoesServiceRequest
-    public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query, final TableRequestOptions options,
+    public <T extends TableEntity> Iterator<T> execute(final TableQuery<T> query, final TableRequestOptions options,
             final OperationContext opContext) {
         Utility.assertNotNull("query", query);
-        return (Iterable<T>) this.generateIteratorForQuery(query, null, options, opContext);
+        return (Iterator<T>) this.generateIteratorForQuery(query, null, options, opContext);
     }
 
     /**
@@ -942,7 +943,7 @@ public final class CloudTableClient extends ServiceClient {
      *         An <code>Iterable</code> collection of the table names in the storage account.
      */
     @DoesServiceRequest
-    public Iterable<String> listTables() {
+    public Iterator<String> listTables() {
         return this.listTables(null);
     }
 
@@ -961,7 +962,7 @@ public final class CloudTableClient extends ServiceClient {
      *         prefix.
      */
     @DoesServiceRequest
-    public Iterable<String> listTables(final String prefix) {
+    public Iterator<String> listTables(final String prefix) {
         return this.listTables(prefix, null, null);
     }
 
@@ -991,7 +992,7 @@ public final class CloudTableClient extends ServiceClient {
      *         prefix.
      */
     @DoesServiceRequest
-    public Iterable<String> listTables(final String prefix, final TableRequestOptions options,
+    public Iterator<String> listTables(final String prefix, final TableRequestOptions options,
             final OperationContext opContext) {
         return this.execute(this.generateListTablesQuery(prefix), this.tableNameResolver, options, opContext);
     }

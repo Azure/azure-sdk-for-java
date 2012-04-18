@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import junit.framework.Assert;
 
@@ -142,8 +143,8 @@ public class TableClientTests extends TableTestBase {
         try {
             // With prefix
             int currTable = 0;
-            for (String s : tClient.listTables(tableBaseName, null, null)) {
-                Assert.assertEquals(s,
+            for (Iterator<String> iterator = tClient.listTables(tableBaseName, null, null); iterator.hasNext();) {
+                Assert.assertEquals(iterator.next(),
                         String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
                 currTable++;
             }
@@ -152,8 +153,8 @@ public class TableClientTests extends TableTestBase {
 
             // Without prefix
             currTable = 0;
-            for (String s : tClient.listTables()) {
-                if (s.startsWith(tableBaseName)) {
+            for (Iterator<String> iterator = tClient.listTables(tableBaseName, null, null); iterator.hasNext();) {
+                if (iterator.next().startsWith(tableBaseName)) {
                     currTable++;
                 }
             }

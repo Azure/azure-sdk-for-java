@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.table.client;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 import junit.framework.Assert;
@@ -217,7 +218,8 @@ public class TableEscapingTests extends TableTestBase {
 
         int count = 0;
 
-        for (class1 ent : tClient.execute(query)) {
+        for (Iterator<class1> iterator = tClient.execute(query); iterator.hasNext();) {
+            class1 ent = iterator.next();
             count++;
             Assert.assertEquals(ent.getA(), ref.getA());
             Assert.assertEquals(ent.getB(), ref.getB());
