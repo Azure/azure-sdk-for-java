@@ -35,6 +35,7 @@ public class TableClientTests extends TableTestBase {
     @Test
     public void listTablesSegmented() throws IOException, URISyntaxException, StorageException {
         String tableBaseName = generateRandomTableName();
+
         ArrayList<String> tables = new ArrayList<String>();
         for (int m = 0; m < 20; m++) {
             String name = String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(m));
