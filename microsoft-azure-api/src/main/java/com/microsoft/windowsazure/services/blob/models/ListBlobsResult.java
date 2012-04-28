@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.models;
 
@@ -68,6 +68,18 @@ public class ListBlobsResult {
         return this.blobPrefixes;
     }
 
+    /**
+     * Gets the list of blobs that satisfied the request from the response. This list may contain only a portion of the
+     * blobs that satisfy the request, limited by a server timeout or a maximum results parameter. If there are more
+     * blobs that could satisfy the result, the server returns a <strong>NextMarker</strong> element with the response.
+     * Use the {@link ListBlobsResult#getNextMarker() getNextMarker} method to get this value and pass it as a marker
+     * option to a subsequent list blobs request to get the next set of blob results.
+     * <p>
+     * Blobs are listed in alphabetical order in the response body, with upper-case letters listed first.
+     * 
+     * @return
+     *         A {@link List} of {@link BlobEntry} instances for the blobs that satisfied the request.
+     */
     public List<BlobEntry> getBlobs() {
         return this.blobs;
     }
