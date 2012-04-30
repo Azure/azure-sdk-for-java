@@ -183,7 +183,7 @@ public class QueryTableOperation extends TableOperation {
                     final OperationContext opContext) throws Exception {
 
                 final HttpURLConnection request = TableRequest.query(client.getEndpoint(), tableName,
-                        generateRequestIdentity(isTableEntry, operation.getPartitionKey()),
+                        generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false),
                         options.getTimeoutIntervalInMs(), null/* Query Builder */, null/* Continuation Token */,
                         options, opContext);
 

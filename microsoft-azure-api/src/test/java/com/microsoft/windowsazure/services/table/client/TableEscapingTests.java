@@ -28,12 +28,12 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 public class TableEscapingTests extends TableTestBase {
     @Test
     public void emptyString() throws StorageException {
-        doEscapeTest("", false);
+        doEscapeTest("", false, true);
     }
 
     @Test
     public void emptyStringBatch() throws StorageException {
-        doEscapeTest("", true);
+        doEscapeTest("", true, true);
     }
 
     @Test
@@ -44,6 +44,18 @@ public class TableEscapingTests extends TableTestBase {
     @Test
     public void randomCharsBatch() throws StorageException {
         doEscapeTest("!$'\"()*+,;=", true);
+    }
+
+    @Test
+    @Ignore
+    public void percent25() throws StorageException {
+        // Disabled Until Double Percent decoding issue is fixed for single entity operations
+        // doEscapeTest("foo%25", false, true);
+    }
+
+    @Test
+    public void percent25Batch() throws StorageException {
+        doEscapeTest("foo%25", true, true);
     }
 
     @Test
@@ -63,18 +75,18 @@ public class TableEscapingTests extends TableTestBase {
 
     @Test
     public void unicode() throws StorageException {
-        doEscapeTest("\u00A9\u770b\u5168\u90e8", false);
-        doEscapeTest("char中文test", false);
-        doEscapeTest("charä¸­æ–‡test", false);
-        doEscapeTest("世界你好", false);
+        doEscapeTest("\u00A9\u770b\u5168\u90e8", false, true);
+        doEscapeTest("char中文test", false, true);
+        doEscapeTest("charä¸­æ–‡test", false, true);
+        doEscapeTest("世界你好", false, true);
     }
 
     @Test
     public void unicodeBatch() throws StorageException {
-        doEscapeTest("\u00A9\u770b\u5168\u90e8", true);
-        doEscapeTest("char中文test", true);
-        doEscapeTest("charä¸­æ–‡test", true);
-        doEscapeTest("世界你好", true);
+        doEscapeTest("\u00A9\u770b\u5168\u90e8", true, true);
+        doEscapeTest("char中文test", true, true);
+        doEscapeTest("charä¸­æ–‡test", true, true);
+        doEscapeTest("世界你好", true, true);
     }
 
     @Test
@@ -87,12 +99,12 @@ public class TableEscapingTests extends TableTestBase {
 
     @Test
     public void whiteSpaceOnly() throws StorageException {
-        doEscapeTest("     ", false);
+        doEscapeTest("     ", false, true);
     }
 
     @Test
     public void whiteSpaceOnlyBatch() throws StorageException {
-        doEscapeTest("     ", true);
+        doEscapeTest("     ", true, true);
     }
 
     @Test
@@ -119,10 +131,14 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     private void doEscapeTest(String data, boolean useBatch) throws StorageException {
+        doEscapeTest(data, useBatch, false);
+    }
+
+    private void doEscapeTest(String data, boolean useBatch, boolean includeInKey) throws StorageException {
         class1 ref = new class1();
 
         ref.setA(data);
-        ref.setPartitionKey("temp");
+        ref.setPartitionKey(includeInKey ? "temp" + data : "temp");
         ref.setRowKey(UUID.randomUUID().toString());
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
@@ -147,6 +163,7 @@ public class TableEscapingTests extends TableTestBase {
 
         class1 retObj = res.getResultAsType();
         Assert.assertEquals(ref.getA(), retObj.getA());
+        Assert.assertEquals(ref.getPartitionKey(), retObj.getPartitionKey());
 
         ref.setEtag(retObj.getEtag());
         ref.setB(data);
@@ -202,6 +219,15 @@ public class TableEscapingTests extends TableTestBase {
         Assert.assertEquals(ref.getA(), retObj.getA());
         Assert.assertEquals(ref.getB(), retObj.getB());
         Assert.assertEquals(ref.getC(), retObj.getC());
+
+        if (useBatch) {
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.delete(retObj);
+            res = tClient.execute(testSuiteTableName, batch).get(0);
+        }
+        else {
+            res = tClient.execute(testSuiteTableName, TableOperation.delete(retObj));
+        }
     }
 
     private void doQueryEscapeTest(String data) throws StorageException {
