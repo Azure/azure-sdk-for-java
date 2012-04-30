@@ -93,7 +93,7 @@ public class GetBlobMetadataResult {
      * opaque to the server.
      * 
      * @return
-     *         A {@link java.util.HashMap} of key-value pairs of {@link String} containing the names and values of
+     *         A {@link java.util.HashMap} of name-value pairs of {@link String} containing the names and values of
      *         the blob metadata.
      */
     public HashMap<String, String> getMetadata() {
@@ -108,7 +108,7 @@ public class GetBlobMetadataResult {
      * the server.
      * 
      * @param metadata
-     *            A {@link java.util.HashMap} of key-value pairs of {@link String} containing the names and values
+     *            A {@link java.util.HashMap} of name-value pairs of {@link String} containing the names and values
      *            of the blob metadata.
      */
     public void setMetadata(HashMap<String, String> metadata) {

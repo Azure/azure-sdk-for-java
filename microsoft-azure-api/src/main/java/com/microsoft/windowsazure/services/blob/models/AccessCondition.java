@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.models;
 
@@ -19,18 +19,18 @@ import java.util.Date;
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 
 /**
- * Represents a set of access conditions to be used for operations against the storage services.
+ * Represents a set of access conditions for operations that use storage services.
  */
 public final class AccessCondition {
 
     /**
-     * Specifies that no access condition is set.
+     * Specifies an access condition with no conditions set.
      */
     public static final AccessCondition NONE = new AccessCondition(AccessConditionHeaderType.NONE, null);
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource's ETag value matches
-     * the specified ETag value.
+     * Creates an access condition that only allows an operation if the resource's ETag value matches the specified ETag
+     * value.
      * <p>
      * Setting this access condition modifies the request to include the HTTP <i>If-Match</i> conditional header. If
      * this access condition is set, the operation is performed only if the ETag of the resource matches the specified
@@ -49,8 +49,8 @@ public final class AccessCondition {
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource has been modified since
-     * the specified time.
+     * Creates an access condition that only allows an operation if the resource has been modified since the specified
+     * time.
      * <p>
      * Setting this access condition modifies the request to include the HTTP <i>If-Modified-Since</i> conditional
      * header. If this access condition is set, the operation is performed only if the resource has been modified since
@@ -70,8 +70,8 @@ public final class AccessCondition {
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource's ETag value does not
-     * match the specified ETag value.
+     * Creates an access condition that only allows an operation if the resource's ETag value does not match the
+     * specified ETag value.
      * <p>
      * Setting this access condition modifies the request to include the HTTP <i>If-None-Match</i> conditional header.
      * If this access condition is set, the operation is performed only if the ETag of the resource does not match the
@@ -90,8 +90,8 @@ public final class AccessCondition {
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource has not been modified
-     * since the specified time.
+     * Creates an access condition that only allows an operation if the resource has not been modified since the
+     * specified time.
      * <p>
      * Setting this access condition modifies the request to include the HTTP <i>If-Unmodified-Since</i> conditional
      * header. If this access condition is set, the operation is performed only if the resource has not been modified
@@ -111,12 +111,12 @@ public final class AccessCondition {
     }
 
     /**
-     * Represents the header type.
+     * Represents the access condition header type.
      */
     private AccessConditionHeaderType header = AccessConditionHeaderType.NONE;
 
     /**
-     * Represents the header value.
+     * Represents the access condition header value.
      */
     private String value;
 
@@ -140,18 +140,43 @@ public final class AccessCondition {
         this.setValue(value);
     }
 
+    /**
+     * Gets the access condition header type set in this <code>AccessCondition</code> instance.
+     * 
+     * @return
+     *         The {@link AccessConditionHeaderType} set in this <code>AccessCondition</code> instance.
+     */
     public AccessConditionHeaderType getHeader() {
         return header;
     }
 
+    /**
+     * Sets the access condition header type in this <code>AccessCondition</code> instance.
+     * 
+     * @param header
+     *            The {@link AccessConditionHeaderType} to set in this <code>AccessCondition</code> instance.
+     */
     public void setHeader(AccessConditionHeaderType header) {
         this.header = header;
     }
 
+    /**
+     * Gets the access condition value set in this <code>AccessCondition</code> instance.
+     * 
+     * @return
+     *         A {@link String} containing the access condition value set in this <code>AccessCondition</code> instance.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Sets the access condition value in this <code>AccessCondition</code> instance.
+     * 
+     * @param value
+     *            A {@link String} containing the access condition value to set in this <code>AccessCondition</code>
+     *            instance.
+     */
     public void setValue(String value) {
         this.value = value;
     }
