@@ -142,17 +142,35 @@ public class TableClientTests extends TableTestBase {
         try {
             // With prefix
             int currTable = 0;
-            for (String s : tClient.listTables(tableBaseName, null, null)) {
+            Iterable<String> listTables = tClient.listTables(tableBaseName, null, null);
+            for (String s : listTables) {
                 Assert.assertEquals(s,
                         String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
                 currTable++;
             }
 
             Assert.assertEquals(20, currTable);
+            // Second Iteration
+            currTable = 0;
+            for (String s : listTables) {
+                Assert.assertEquals(s,
+                        String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
+                currTable++;
+            }
+            Assert.assertEquals(20, currTable);
 
             // Without prefix
             currTable = 0;
-            for (String s : tClient.listTables()) {
+            Iterable<String> listTablesNoPrefix = tClient.listTables();
+            for (String s : listTablesNoPrefix) {
+                if (s.startsWith(tableBaseName)) {
+                    currTable++;
+                }
+            }
+
+            Assert.assertEquals(20, currTable);
+            currTable = 0;
+            for (String s : listTablesNoPrefix) {
                 if (s.startsWith(tableBaseName)) {
                     currTable++;
                 }
