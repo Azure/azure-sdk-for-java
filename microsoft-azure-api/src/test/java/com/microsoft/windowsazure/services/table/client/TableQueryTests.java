@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 import junit.framework.Assert;
 
@@ -64,11 +61,12 @@ public class TableQueryTests extends TableTestBase {
         // Create entity to check against
         class1 randEnt = TableTestBase.generateRandomEnitity(null);
 
-        final Iterable<DynamicTableEntity> result = tClient.execute(TableQuery.from(testSuiteTableName,
+        final Iterator<DynamicTableEntity> result = tClient.execute(TableQuery.from(testSuiteTableName,
                 DynamicTableEntity.class));
 
         // Validate results
-        for (DynamicTableEntity ent : result) {
+        while (result.hasNext()) {
+            DynamicTableEntity ent = result.next();
             Assert.assertEquals(ent.getProperties().size(), 4);
             Assert.assertEquals(ent.getProperties().get("A").getValueAsString(), randEnt.getA());
             Assert.assertEquals(ent.getProperties().get("B").getValueAsString(), randEnt.getB());
@@ -81,11 +79,12 @@ public class TableQueryTests extends TableTestBase {
     public void tableQueryWithProjection() {
         // Create entity to check against
         class1 randEnt = TableTestBase.generateRandomEnitity(null);
-        final Iterable<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, class1.class).select(
+        final Iterator<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, class1.class).select(
                 new String[] { "A", "C" }));
 
         // Validate results
-        for (class1 ent : result) {
+        while (result.hasNext()) {
+            class1 ent = result.next();
             // Validate core properties were sent.
             Assert.assertNotNull(ent.getPartitionKey());
             Assert.assertNotNull(ent.getRowKey());
@@ -116,12 +115,13 @@ public class TableQueryTests extends TableTestBase {
             }
         });
 
-        final Iterable<class1> result = tClient.execute(
+        final Iterator<class1> result = tClient.execute(
                 TableQuery.from(testSuiteTableName, class1.class).select(
                         new String[] { "PartitionKey", "RowKey", "Timestamp" }), null, opContext);
 
         // Validate results
-        for (class1 ent : result) {
+        while (result.hasNext()) {
+            class1 ent = result.next();
             Assert.assertEquals(ent.getA(), null);
             Assert.assertEquals(ent.getB(), null);
             Assert.assertEquals(ent.getC(), null);
@@ -134,10 +134,11 @@ public class TableQueryTests extends TableTestBase {
         // Create entity to check against
         class1 randEnt = TableTestBase.generateRandomEnitity(null);
 
-        final Iterable<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, class1.class));
+        final Iterator<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, class1.class));
 
         // Validate results
-        for (class1 ent : result) {
+        while (result.hasNext()) {
+            class1 ent = result.next();
             Assert.assertEquals(ent.getA(), randEnt.getA());
             Assert.assertEquals(ent.getB(), randEnt.getB());
             Assert.assertEquals(ent.getC(), randEnt.getC());
@@ -150,7 +151,7 @@ public class TableQueryTests extends TableTestBase {
         // Create entity to check against
         class1 randEnt = TableTestBase.generateRandomEnitity(null);
 
-        final Iterable<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, TableServiceEntity.class),
+        final Iterator<class1> result = tClient.execute(TableQuery.from(testSuiteTableName, TableServiceEntity.class),
                 new EntityResolver<class1>() {
                     @Override
                     public class1 resolve(String partitionKey, String rowKey, Date timeStamp,
@@ -166,7 +167,8 @@ public class TableQueryTests extends TableTestBase {
                 });
 
         // Validate results
-        for (class1 ent : result) {
+        while (result.hasNext()) {
+            class1 ent = result.next();
             Assert.assertEquals(ent.getA(), randEnt.getA());
             Assert.assertEquals(ent.getB(), randEnt.getB());
             Assert.assertEquals(ent.getC(), randEnt.getC());
@@ -202,7 +204,8 @@ public class TableQueryTests extends TableTestBase {
 
         int count = 0;
 
-        for (class1 ent : tClient.execute(query)) {
+        for (Iterator<class1> iterator = tClient.execute(query); iterator.hasNext();) {
+            class1 ent = iterator.next();
             Assert.assertEquals(ent.getA(), randEnt.getA());
             Assert.assertEquals(ent.getB(), randEnt.getB());
             Assert.assertEquals(ent.getC(), randEnt.getC());
@@ -225,7 +228,8 @@ public class TableQueryTests extends TableTestBase {
 
         int count = 0;
         int pk = 1;
-        for (class1 ent : tClient.execute(query)) {
+        for (Iterator<class1> iterator = tClient.execute(query); iterator.hasNext();) {
+            class1 ent = iterator.next();
             Assert.assertEquals(ent.getA(), randEnt.getA());
             Assert.assertEquals(ent.getB(), randEnt.getB());
             Assert.assertEquals(ent.getC(), randEnt.getC());
@@ -406,8 +410,8 @@ public class TableQueryTests extends TableTestBase {
             TableQuery<ComplexEntity> query = TableQuery.from(testSuiteTableName, ComplexEntity.class).where(
                     String.format("PartitionKey eq '%s'", pk));
 
-            for (ComplexEntity e : tClient.execute(query)) {
-                delBatch.delete(e);
+            for (Iterator<ComplexEntity> iterator = tClient.execute(query); iterator.hasNext();) {
+                delBatch.delete(iterator.next());
             }
 
             tClient.execute(testSuiteTableName, delBatch);
@@ -417,8 +421,7 @@ public class TableQueryTests extends TableTestBase {
     private void executeQueryAndAssertResults(String filter, int expectedResults) {
         int count = 0;
         TableQuery<ComplexEntity> query = TableQuery.from(testSuiteTableName, ComplexEntity.class).where(filter);
-        for (@SuppressWarnings("unused")
-        ComplexEntity e : tClient.execute(query)) {
+        for (Iterator<ComplexEntity> iterator = tClient.execute(query); iterator.hasNext();) {
             count++;
         }
 
