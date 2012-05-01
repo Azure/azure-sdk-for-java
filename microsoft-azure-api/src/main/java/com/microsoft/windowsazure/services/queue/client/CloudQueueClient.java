@@ -36,7 +36,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageCredentials;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterator;
+import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterable;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ListingContext;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.SegmentedStorageOperation;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
@@ -164,7 +164,7 @@ public final class CloudQueueClient extends ServiceClient {
             }
         };
 
-        return new LazySegmentedIterator<CloudQueueClient, Void, CloudQueue>(impl, this, null,
+        return new LazySegmentedIterable<CloudQueueClient, Void, CloudQueue>(impl, this, null,
                 options.getRetryPolicyFactory(), opContext);
     }
 

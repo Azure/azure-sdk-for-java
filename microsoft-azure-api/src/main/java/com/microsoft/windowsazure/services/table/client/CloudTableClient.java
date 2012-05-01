@@ -39,7 +39,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterator;
+import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterable;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.SegmentedStorageOperation;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
 
@@ -1328,7 +1328,7 @@ public final class CloudTableClient extends ServiceClient {
                 }
             };
 
-            return new LazySegmentedIterator<CloudTableClient, TableQuery<T>, T>(impl, this, queryRef,
+            return new LazySegmentedIterable<CloudTableClient, TableQuery<T>, T>(impl, this, queryRef,
                     options.getRetryPolicyFactory(), opContext);
         }
         else {
@@ -1352,7 +1352,7 @@ public final class CloudTableClient extends ServiceClient {
                     return result;
                 }
             };
-            return new LazySegmentedIterator<CloudTableClient, TableQuery<T>, R>(impl, this, queryRef,
+            return new LazySegmentedIterable<CloudTableClient, TableQuery<T>, R>(impl, this, queryRef,
                     options.getRetryPolicyFactory(), opContext);
         }
     }
