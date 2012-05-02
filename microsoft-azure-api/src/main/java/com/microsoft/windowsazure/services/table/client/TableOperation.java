@@ -257,7 +257,7 @@ public class TableOperation {
                     final OperationContext opContext) throws Exception {
 
                 final HttpURLConnection request = TableRequest.delete(client.getEndpoint(), tableName,
-                        generateRequestIdentity(isTableEntry, tableIdentity), operation.getEntity().getEtag(),
+                        generateRequestIdentity(isTableEntry, tableIdentity, false), operation.getEntity().getEtag(),
                         options.getTimeoutIntervalInMs(), null, options, opContext);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
@@ -324,7 +324,7 @@ public class TableOperation {
             public TableResult execute(final CloudTableClient client, final TableOperation operation,
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = TableRequest.insert(client.getEndpoint(), tableName,
-                        generateRequestIdentity(isTableEntry, tableIdentity),
+                        generateRequestIdentity(isTableEntry, tableIdentity, false),
                         operation.opType != TableOperationType.INSERT ? operation.getEntity().getEtag() : null,
                         operation.opType.getUpdateType(), options.getTimeoutIntervalInMs(), null, options, opContext);
 
@@ -411,7 +411,7 @@ public class TableOperation {
                     final OperationContext opContext) throws Exception {
 
                 final HttpURLConnection request = TableRequest.merge(client.getEndpoint(), tableName,
-                        generateRequestIdentity(false, null), operation.getEntity().getEtag(),
+                        generateRequestIdentity(false, null, false), operation.getEntity().getEtag(),
                         options.getTimeoutIntervalInMs(), null, options, opContext);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
@@ -477,7 +477,7 @@ public class TableOperation {
                     final OperationContext opContext) throws Exception {
 
                 final HttpURLConnection request = TableRequest.update(client.getEndpoint(), tableName,
-                        generateRequestIdentity(false, null), operation.getEntity().getEtag(),
+                        generateRequestIdentity(false, null, false), operation.getEntity().getEtag(),
                         options.getTimeoutIntervalInMs(), null, options, opContext);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
@@ -577,10 +577,15 @@ public class TableOperation {
      * @param entryName
      *            The entry name to use as the request identity if the <code>isSingleIndexEntry</code> parameter is
      *            <code>true</code>.
+     * @param encodeKeys
+     *            Pass <code>true</code> to url encode the partition & row keys
      * @return
      *         A <code>String</code> containing the formatted request identity string.
+     * @throws StorageException
+     *             If a storage service error occurred.
      */
-    protected String generateRequestIdentity(boolean isSingleIndexEntry, final String entryName) {
+    protected String generateRequestIdentity(boolean isSingleIndexEntry, final String entryName, boolean encodeKeys)
+            throws StorageException {
         if (isSingleIndexEntry) {
             return String.format("'%s'", entryName);
         }
@@ -602,22 +607,24 @@ public class TableOperation {
                 rk = this.getEntity().getRowKey();
             }
 
-            return String.format("%s='%s',%s='%s'", TableConstants.PARTITION_KEY, pk, TableConstants.ROW_KEY, rk);
+            return String.format("%s='%s',%s='%s'", TableConstants.PARTITION_KEY, encodeKeys ? Utility.safeEncode(pk)
+                    : pk, TableConstants.ROW_KEY, encodeKeys ? Utility.safeEncode(rk) : rk);
         }
     }
 
     /**
      * Reserved for internal use. Generates the request identity string for the specified table. The request identity
      * string combines the table name with the PartitionKey and RowKey from the operation to identify specific table
-     * entities.
+     * entities. This request identity is already UrlEncoded.
      * 
      * @param tableName
      *            A <code>String</code> containing the name of the table.
      * @return
      *         A <code>String</code> containing the formatted request identity string for the specified table.
+     * @throws StorageException
      */
-    protected String generateRequestIdentityWithTable(final String tableName) {
-        return String.format("/%s(%s)", tableName, generateRequestIdentity(false, null));
+    protected String generateRequestIdentityWithTable(final String tableName) throws StorageException {
+        return String.format("/%s(%s)", tableName, generateRequestIdentity(false, null, true));
     }
 
     /**
