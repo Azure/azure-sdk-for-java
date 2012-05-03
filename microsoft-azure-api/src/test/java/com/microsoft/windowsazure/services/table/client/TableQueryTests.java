@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +57,54 @@ public class TableQueryTests extends TableTestBase {
             }
 
             tClient.execute(testSuiteTableName, batch);
+        }
+    }
+
+    @Test
+    public void tableQueryIterateTwice() {
+        // Create entity to check against
+        class1 randEnt = TableTestBase.generateRandomEnitity(null);
+
+        final Iterable<DynamicTableEntity> result = tClient.execute(TableQuery.from(testSuiteTableName,
+                DynamicTableEntity.class).take(50));
+
+        ArrayList<DynamicTableEntity> firstIteration = new ArrayList<DynamicTableEntity>();
+        ArrayList<DynamicTableEntity> secondIteration = new ArrayList<DynamicTableEntity>();
+
+        // Validate results
+        for (DynamicTableEntity ent : result) {
+            Assert.assertEquals(ent.getProperties().size(), 4);
+            Assert.assertEquals(ent.getProperties().get("A").getValueAsString(), randEnt.getA());
+            Assert.assertEquals(ent.getProperties().get("B").getValueAsString(), randEnt.getB());
+            Assert.assertEquals(ent.getProperties().get("C").getValueAsString(), randEnt.getC());
+            Assert.assertTrue(Arrays.equals(ent.getProperties().get("D").getValueAsByteArray(), randEnt.getD()));
+            firstIteration.add(ent);
+        }
+
+        // Validate results
+        for (DynamicTableEntity ent : result) {
+            Assert.assertEquals(ent.getProperties().size(), 4);
+            Assert.assertEquals(ent.getProperties().get("A").getValueAsString(), randEnt.getA());
+            Assert.assertEquals(ent.getProperties().get("B").getValueAsString(), randEnt.getB());
+            Assert.assertEquals(ent.getProperties().get("C").getValueAsString(), randEnt.getC());
+            Assert.assertTrue(Arrays.equals(ent.getProperties().get("D").getValueAsByteArray(), randEnt.getD()));
+            secondIteration.add(ent);
+        }
+
+        Assert.assertEquals(firstIteration.size(), secondIteration.size());
+        for (int m = 0; m < firstIteration.size(); m++) {
+            Assert.assertEquals(firstIteration.get(m).getPartitionKey(), secondIteration.get(m).getPartitionKey());
+            Assert.assertEquals(firstIteration.get(m).getRowKey(), secondIteration.get(m).getRowKey());
+            Assert.assertEquals(firstIteration.get(m).getProperties().size(), secondIteration.get(m).getProperties()
+                    .size());
+            Assert.assertEquals(firstIteration.get(m).getProperties().get("A").getValueAsString(),
+                    secondIteration.get(m).getProperties().get("A").getValueAsString());
+            Assert.assertEquals(firstIteration.get(m).getProperties().get("B").getValueAsString(),
+                    secondIteration.get(m).getProperties().get("B").getValueAsString());
+            Assert.assertEquals(firstIteration.get(m).getProperties().get("C").getValueAsString(),
+                    secondIteration.get(m).getProperties().get("C").getValueAsString());
+            Assert.assertTrue(Arrays.equals(firstIteration.get(m).getProperties().get("D").getValueAsByteArray(),
+                    secondIteration.get(m).getProperties().get("D").getValueAsByteArray()));
         }
     }
 
