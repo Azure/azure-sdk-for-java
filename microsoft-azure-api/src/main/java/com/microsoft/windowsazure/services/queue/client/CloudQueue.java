@@ -830,6 +830,14 @@ public final class CloudQueue {
      *             If the resource URI is invalid.
      */
     URI getIndividualMessageAddress(final String messageId) throws URISyntaxException {
+        /*
+        if you delete a cloudQueueMessage with a different cloudQueue instance, 
+        PathUtility.appendPathToUri will throw NullPointerException because
+        messageRequestAddress was not initialized by addMessage or retrieveMessage.
+        */
+        if(this.messageRequestAddress == null)
+            this.getMessageRequestAddress();
+
         return PathUtility.appendPathToUri(this.messageRequestAddress, messageId);
     }
 
