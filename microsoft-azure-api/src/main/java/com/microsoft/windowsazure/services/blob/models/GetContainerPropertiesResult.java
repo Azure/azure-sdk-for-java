@@ -48,7 +48,7 @@ public class GetContainerPropertiesResult {
     }
 
     /**
-     * Reserved for internal use. Sets the Etag of the container from the <strong>ETag</strong> header returned in
+     * Reserved for internal use. Sets the Etag of the container from the <code>ETag</code> header returned in
      * the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
@@ -74,8 +74,8 @@ public class GetContainerPropertiesResult {
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the container from the
-     * <strong>Last-Modified</strong> header returned in the response.
+     * Reserved for internal use. Sets the last modified time of the container from the <code>Last-Modified</code>
+     * header returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
      * the server.
@@ -100,7 +100,7 @@ public class GetContainerPropertiesResult {
     }
 
     /**
-     * Reserved for internal use. Sets the container metadata from the <strong>x-ms-meta-<em>name</em></strong> headers
+     * Reserved for internal use. Sets the container metadata from the <code>x-ms-meta-<em>name</em></code> headers
      * returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by

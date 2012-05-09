@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.models;
 
@@ -24,22 +24,22 @@ public enum AccessConditionHeaderType {
     NONE,
 
     /**
-     * Specifies the <i>If-Unmodified-Since</i> conditional header is set.
+     * Specifies the <code>If-Unmodified-Since</code> conditional header is set.
      */
     IF_UNMODIFIED_SINCE,
 
     /**
-     * Specifies the <i>If-Match</i> conditional header is set.
+     * Specifies the <code>If-Match</code> conditional header is set.
      */
     IF_MATCH,
 
     /**
-     * Specifies the <i>If-Modified-Since</i> conditional header is set.
+     * Specifies the <code>If-Modified-Since</code> conditional header is set.
      */
     IF_MODIFIED_SINCE,
 
     /**
-     * Specifies the <i>If-None-Match</i> conditional header is set.
+     * Specifies the <code>If-None-Match</code> conditional header is set.
      */
     IF_NONE_MATCH;
 

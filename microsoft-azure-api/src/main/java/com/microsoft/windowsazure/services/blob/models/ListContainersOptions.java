@@ -93,7 +93,7 @@ public class ListContainersOptions extends BlobServiceOptions {
      * Use the {@link ListContainersResult#getNextMarker() getNextMarker} method on a {@link ListContainersResult}
      * instance to get the marker value to set on a {@link ListContainersOptions} instance using a call to this method.
      * Pass the {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(listContainersOptions)} call to get the next portion of the container list.
+     * {@link BlobContract#listContainers(ListContainersOptions)} call to get the next portion of the container list.
      * <p>
      * The <em>marker</em> value only affects calls made on methods where this {@link ListContainersOptions} instance is
      * passed as a parameter.
@@ -130,7 +130,7 @@ public class ListContainersOptions extends BlobServiceOptions {
      * Use the {@link ListContainersResult#getNextMarker() getNextMarker} method on a {@link ListContainersResult}
      * instance to get the marker value to set on a {@link ListContainersOptions} instance using a call to
      * {@link ListContainersOptions#setMarker(String)}. Pass the {@link ListContainersOptions} instance as a parameter
-     * to a {@link BlobContract#listContainers(listContainersOptions)} call to get the next portion of the container
+     * to a {@link BlobContract#listContainers(ListContainersOptions)} call to get the next portion of the container
      * list.
      * <p>
      * The <em>maxResults</em> value only affects calls made on methods where this {@link ListContainersOptions}

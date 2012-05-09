@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
  * be up to the value of the blob's full size.
  * <p>
  * Pages are aligned with 512-byte boundaries. When specifying a page range, the start offset must be a modulus of 512
- * and the end offset must be a modulus of 512 – 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
+ * and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
  */
 public class PageRange {
     private long start;
@@ -39,7 +39,7 @@ public class PageRange {
      * Creates a page range from the specified start and end byte offsets, inclusive.
      * <p>
      * Pages are aligned with 512-byte boundaries. When specifying a page range, the start offset must be a modulus of
-     * 512 and the end offset must be a modulus of 512 – 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
+     * 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
      * 
      * @param start
      *            The beginning offset value in bytes for the page range, inclusive.
@@ -66,7 +66,7 @@ public class PageRange {
      * Sets the byte offset of the start of the page range within the blob, inclusive.
      * <p>
      * Pages are aligned with 512-byte boundaries. When specifying a page range, the start offset must be a modulus of
-     * 512 and the end offset must be a modulus of 512 – 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
+     * 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
      * 
      * @param start
      *            The beginning offset value in bytes for the page range, inclusive.
@@ -93,7 +93,7 @@ public class PageRange {
      * Sets the byte offset of the end of the page range within the blob, inclusive.
      * <p>
      * Pages are aligned with 512-byte boundaries. When specifying a page range, the start offset must be a modulus of
-     * 512 and the end offset must be a modulus of 512 – 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
+     * 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
      * 
      * @param end
      *            The ending offset value in bytes for the page range, inclusive.
@@ -121,7 +121,7 @@ public class PageRange {
      * 512 bytes.
      * <p>
      * Pages are aligned with 512-byte boundaries. When specifying a page range, the start offset must be a modulus of
-     * 512 and the end offset must be a modulus of 512 – 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
+     * 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
      * 
      * @param value
      *            The ending offset value in bytes for the page range, inclusive.

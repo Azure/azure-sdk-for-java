@@ -30,11 +30,11 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Get Blobs operation. This is returned by
+ * A wrapper class for the response returned from a Blob Service REST API List Blobs operation. This is returned by
  * calls to implementations of {@link BlobContract#listBlobs(String)} and
  * {@link BlobContract#listBlobs(String, ListBlobsOptions)}.
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135734.aspx">Get Blobs</a> documentation on
+ * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135734.aspx">List Blobs</a> documentation on
  * MSDN for details of the underlying Blob Service REST API operation.
  */
 @XmlRootElement(name = "EnumerationResults")

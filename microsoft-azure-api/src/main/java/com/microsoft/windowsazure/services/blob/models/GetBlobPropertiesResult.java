@@ -66,8 +66,8 @@ public class GetBlobPropertiesResult {
     }
 
     /**
-     * Reserved for internal use. Sets the blob metadata from the <em>x-ms-meta-name:value</em> headers returned in the
-     * response.
+     * Reserved for internal use. Sets the blob metadata from the <code>x-ms-meta-<em>name:value</em></code> headers
+     * returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
      * the server.
