@@ -1,3 +1,8 @@
+2012.05.02 Version 0.2.2
+ * Added Javadoc comments to Azure Blob Service Layer
+ * Fixed a URL encoding issue in Table Client Layer
+ * Made CloudTableClient use Iterator instead of Iterable
+
 2012.04.11 Version 0.2.1
  * Added Service Layer support for Azure Table
  * Added Javadoc comments to Azure Queue Service Layer
