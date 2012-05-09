@@ -114,7 +114,7 @@ public class BatchResult {
 
         /**
          * Reserved for internal use. Sets the ETag for the entity updated by the operation from the matching
-         * <strong>ETag</strong> header within the MIME change set response corresponding to the update request in the
+         * <code>ETag</code> header within the MIME change set response corresponding to the update request in the
          * batch transaction.
          * 
          * @param etag
@@ -145,7 +145,7 @@ public class BatchResult {
          * Gets the {@link ServiceException} instance corresponding to the error returned in the server response.
          * 
          * @return
-         *         A @link ServiceException} instance corresponding to the error returned in the server response.
+         *         A {@link ServiceException} instance corresponding to the error returned in the server response.
          */
         public ServiceException getError() {
             return error;
@@ -156,7 +156,7 @@ public class BatchResult {
          * within the MIME change set response corresponding to the request in the batch transaction.
          * 
          * @param error
-         *            A @link ServiceException} instance corresponding to the error returned in the server response.
+         *            A {@link ServiceException} instance corresponding to the error returned in the server response.
          * @return
          *         A reference to this {@link Error} instance.
          */

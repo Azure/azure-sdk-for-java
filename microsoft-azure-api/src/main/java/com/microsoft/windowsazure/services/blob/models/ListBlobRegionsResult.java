@@ -51,8 +51,8 @@ public class ListBlobRegionsResult {
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the blob from the <strong>Last-Modified</strong>
-     * header returned in the response.
+     * Reserved for internal use. Sets the last modified time of the blob from the <code>Last-Modified</code> header
+     * returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
      * the server.
@@ -78,7 +78,7 @@ public class ListBlobRegionsResult {
     }
 
     /**
-     * Reserved for internal use. Sets the ETag of the blob from the <strong>ETag</strong> header returned in the
+     * Reserved for internal use. Sets the ETag of the blob from the <code>ETag</code> header returned in the
      * response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
@@ -102,7 +102,7 @@ public class ListBlobRegionsResult {
     }
 
     /**
-     * Reserved for internal use. Sets the content length of the blob from the <strong>x-ms-blob-content-length</strong>
+     * Reserved for internal use. Sets the content length of the blob from the <code>x-ms-blob-content-length</code>
      * header returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by

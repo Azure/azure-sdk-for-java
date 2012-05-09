@@ -64,14 +64,8 @@ import java.util.Map;
  * <td>A Boolean value.</td>
  * </tr>
  * <tr>
- * <td><strong>Edm.Byte</strong></td>
- * <td>{@link EdmType#BYTE}</td>
- * <td><code>byte, Byte</code></td>
- * <td>An 8-bit integer value.</td>
- * </tr>
- * <tr>
  * <td><strong>Edm.DateTime</strong></td>
- * <td>{@link EdmType#DATE_TIME}</td>
+ * <td>{@link EdmType#DATETIME}</td>
  * <td><code>Date</code></td>
  * <td>A 64-bit value expressed as Coordinated Universal Time (UTC). The supported range begins from 12:00 midnight,
  * January 1, 1601 A.D. (C.E.), UTC. The range ends at December 31, 9999.</td>

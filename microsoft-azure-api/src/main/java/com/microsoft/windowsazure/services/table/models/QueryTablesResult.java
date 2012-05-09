@@ -55,7 +55,7 @@ public class QueryTablesResult {
 
     /**
      * Reserved for internal use. Sets the next table name continuation token to resume a query tables request with from
-     * the <strong>x-ms-continuation-NextTableName</strong> header returned in the response from the server.
+     * the <code>x-ms-continuation-NextTableName</code> header returned in the response from the server.
      * <p>
      * A query against the Table service may return a maximum of 1,000 items at one time and may execute for a maximum
      * of five seconds. If the result set contains more than 1,000 items, if the query did not complete within five
@@ -68,8 +68,6 @@ public class QueryTablesResult {
      * @param nextTableName
      *            A {@link String} containing the next table name continuation token to use to resume a query tables
      *            request with.
-     * @return
-     *         A reference to this {@link QueryTablesOptions} instance.
      */
     public void setNextTableName(String nextTableName) {
         this.nextTableName = nextTableName;

@@ -41,16 +41,18 @@ import com.microsoft.windowsazure.services.table.TableContract;
  * <ul>
  * <li>The Table service supports only a single change set within a batch. The change set can include multiple insert,
  * update, and delete operations. If a batch includes more than one change set, the first change set will be processed
- * by the service, and additional change sets will be rejected with status code 400 (Bad Request).
- * <p>
- * <strong>Important</strong> Multiple operations against a single entity are not permitted within a change set.</li>
+ * by the service, and additional change sets will be rejected with status code 400 (Bad Request). <br>
+ * <br>
+ * <strong>Important:</strong> Multiple operations against a single entity are not permitted within a change set.<br>
+ * <br>
+ * </li>
  * <li>Note that a query operation is not permitted within a batch that contains insert, update, or delete operations;
  * it must be submitted singly in the batch.</li>
  * <li>Operations within a change set are processed atomically; that is, all operations in the change set either succeed
  * or fail. Operations are processed in the order they are specified in the change set.</li>
  * <li>The Table service does not support linking operations in a change set.</li>
  * <li>The Table service supports a maximum of 100 operations in a change set.</li>
- * <ul>
+ * </ul>
  * <p>
  * An individual request within the change set is identical to a request made when that operation is being called by
  * itself.

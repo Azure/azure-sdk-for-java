@@ -236,7 +236,7 @@ public class QueryEntitiesOptions extends TableServiceOptions {
      * Reserved for future use. Adds a property name to the list of property names to use to order the results in the
      * server response.
      * 
-     * @param orderByFields
+     * @param orderByField
      *            A {@link String} containing a property name to add to the list to use to order the results in the
      *            server response.
      * @return

@@ -84,7 +84,7 @@ public class QueryEntitiesResult {
 
     /**
      * Reserved for internal use. Sets the next partition key continuation token to resume a query entities request with
-     * from the <strong>x-ms-continuation-NextRowKey</strong> header returned in the response from the server.
+     * from the <code>x-ms-continuation-NextPartitionKey</code> header returned in the response from the server.
      * <p>
      * A query against the Table service may return a maximum of 1,000 items at one time and may execute for a maximum
      * of five seconds. If the result set contains more than 1,000 items, if the query did not complete within five
@@ -128,7 +128,7 @@ public class QueryEntitiesResult {
 
     /**
      * Reserved for internal use. Sets the next row key continuation token to resume a query entities request with from
-     * the <strong>x-ms-continuation-NextRowKey</strong> header returned in the response from the server.
+     * the <code>x-ms-continuation-NextRowKey</code> header returned in the response from the server.
      * <p>
      * A query against the Table service may return a maximum of 1,000 items at one time and may execute for a maximum
      * of five seconds. If the result set contains more than 1,000 items, if the query did not complete within five

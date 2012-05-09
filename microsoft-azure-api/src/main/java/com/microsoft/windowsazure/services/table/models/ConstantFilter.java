@@ -49,7 +49,7 @@ public class ConstantFilter extends Filter {
      * Use the static factory method in the {@link Filter} class to create a {@link ConstantFilter}, rather than
      * constructing one directly.
      * 
-     * @param propertyName
+     * @param value
      *            An {@link Object} containing the constant value to use as a filter parameter in a table query request.
      */
     public ConstantFilter(Object value) {

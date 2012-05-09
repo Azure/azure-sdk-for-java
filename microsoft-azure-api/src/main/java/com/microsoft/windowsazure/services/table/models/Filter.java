@@ -215,7 +215,9 @@ public class Filter {
 
     /**
      * A static factory method that creates a property name value to use as an operand in a {@link BinaryFilter}
-     * expression. Case is significant for the <strong>PartitionKey</strong> and <strong>RowKey</strong> property names.
+     * expression. When the filter is evaluated, the content of the named property in the entity is used as the operand.
+     * <p>
+     * Note that case is significant for the <strong>PartitionKey</strong> and <strong>RowKey</strong> property names.
      * 
      * @param value
      *            A {@link String} containing the name of a property.

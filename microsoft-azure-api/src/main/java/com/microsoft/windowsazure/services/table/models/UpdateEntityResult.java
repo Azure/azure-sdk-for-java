@@ -45,7 +45,7 @@ public class UpdateEntityResult {
     }
 
     /**
-     * Reserved for internal use. Sets the ETag value of the modified entity from the <strong>ETag</strong> header value
+     * Reserved for internal use. Sets the ETag value of the modified entity from the <code>ETag</code> header value
      * in the server response.
      * <p>
      * This method is invoked by the API to set the value from the Table Service REST API operation response returned by
