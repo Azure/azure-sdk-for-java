@@ -14,8 +14,29 @@
  */
 package com.microsoft.windowsazure.services.table;
 
+/**
+ * This class contains static strings used to identify parts of a service configuration instance associated with the
+ * Windows Azure Table service.
+ * <p>
+ * These values must not be altered.
+ */
 public class TableConfiguration {
+    /**
+     * The Table configuration account name constant. This <code>String</code> value is used as a key in the
+     * configuration file, to identify the value for the DNS prefix name for the storage account.
+     */
     public final static String ACCOUNT_NAME = "table.accountName";
+
+    /**
+     * The Table configuration account key constant. This <code>String</code> value is used as a key in the
+     * configuration file, to identify the value for the storage service account key.
+     */
     public final static String ACCOUNT_KEY = "table.accountKey";
+
+    /**
+     * The Table configuration URI constant. This <code>String</code> value is used as a key in the
+     * configuration file, to identify the URI value for the Table service REST API address for the
+     * storage account.
+     */
     public final static String URI = "table.uri";
 }
