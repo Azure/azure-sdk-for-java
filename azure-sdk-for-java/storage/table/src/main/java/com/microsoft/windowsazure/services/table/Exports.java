@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.table;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.converter.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.table.implementation.AtomReaderWriter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultEdmValueConterter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultXMLStreamFactory;
@@ -39,5 +40,6 @@ public class Exports implements Builder.Exports {
         registry.add(MimeReaderWriter.class);
         registry.add(HttpReaderWriter.class);
         registry.add(EdmValueConverter.class, DefaultEdmValueConterter.class);
+        registry.add(ISO8601DateConverter.class);
     }
 }
