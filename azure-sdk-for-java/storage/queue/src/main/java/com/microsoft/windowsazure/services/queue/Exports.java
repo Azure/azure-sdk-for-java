@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.services.queue;
 
 import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.converter.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.queue.implementation.QueueExceptionProcessor;
 import com.microsoft.windowsazure.services.queue.implementation.QueueRestProxy;
 import com.microsoft.windowsazure.services.queue.implementation.SharedKeyFilter;
@@ -29,6 +28,5 @@ public class Exports implements Builder.Exports {
         registry.add(QueueRestProxy.class);
         registry.add(SharedKeyLiteFilter.class);
         registry.add(SharedKeyFilter.class);
-        registry.add(ISO8601DateConverter.class);
     }
 }
