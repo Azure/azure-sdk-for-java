@@ -14,13 +14,36 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
+import com.microsoft.windowsazure.services.table.TableContract;
+
+/**
+ * Represents the options that may be set on a
+ * {@link TableContract#deleteEntity(String, String, String, DeleteEntityOptions)} request. An optional ETag value may
+ * be set to require that the deleted entity have the same ETag value to be deleted. Set a <code>null</code> ETag value
+ * to delete the entity unconditionally.
+ */
 public class DeleteEntityOptions extends TableServiceOptions {
     private String etag;
 
+    /**
+     * Gets the ETag value to match in order to delete the entity set in this {@link DeleteEntityOptions} instance.
+     * 
+     * @return
+     *         A {@link String} containing the ETag value the entity must match to be deleted.
+     */
     public String getEtag() {
         return etag;
     }
 
+    /**
+     * Sets the ETag value to match in order to delete the entity. Set the <em>etag</em> parameter to <code>null</code>
+     * to delete the entity unconditionally.
+     * 
+     * @param etag
+     *            A {@link String} containing the ETag value the entity must match to be deleted, or <code>null</code>.
+     * @return
+     *         A reference to this {@link DeleteEntityOptions} instance.
+     */
     public DeleteEntityOptions setEtag(String etag) {
         this.etag = etag;
         return this;

@@ -14,13 +14,39 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
+import com.microsoft.windowsazure.services.table.TableContract;
+
+/**
+ * Represents the response to a request for a single table entry in the list of tables in the storage account returned
+ * from a Table Service REST API Query Tables operation. This is returned by calls to implementations of
+ * {@link TableContract#getTable(String)} and {@link TableContract#getTable(String, TableServiceOptions)}.
+ * <p>
+ * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query Tables</a> documentation
+ * on MSDN for details of the underlying Table Service REST API operation.
+ */
 public class GetTableResult {
     private TableEntry tableEntry;
 
+    /**
+     * Gets the table entry returned in the server response.
+     * 
+     * @return
+     *         A {@link TableEntry} instance representing the table entry returned in the server response.
+     */
     public TableEntry getTableEntry() {
         return tableEntry;
     }
 
+    /**
+     * Reserved for internal use. Sets the table entry value from the <strong>TableName</strong> entity in the
+     * properties of the <strong>entry</strong> entity returned in the body of the server response.
+     * <p>
+     * This method is invoked by the API to set the value from the Table Service REST API operation response returned by
+     * the server.
+     * 
+     * @param tableEntry
+     *            A {@link TableEntry} instance representing the table entry returned in the server response.
+     */
     public void setTableEntry(TableEntry tableEntry) {
         this.tableEntry = tableEntry;
     }
