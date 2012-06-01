@@ -190,7 +190,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * each blob does.
      * <p>
      * Note that if a delimiter is set, you cannot include snapshots. A request that includes both returns an
-     * InvalidQueryParameter error (HTTP status code 400 – Bad Request), which causes a {@link ServiceException} to be
+     * InvalidQueryParameter error (HTTP status code 400 - Bad Request), which causes a {@link ServiceException} to be
      * thrown.
      * <p>
      * The <em>delimiter</em> value only affects calls made on methods where this {@link ListBlobsOptions} instance is
@@ -246,7 +246,7 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * Sets the value of an optional flag indicating whether to include blob snapshots with a response.
      * <p>
      * Note that if this flag is set, you cannot set a delimiter. A request that includes both returns an
-     * InvalidQueryParameter error (HTTP status code 400 – Bad Request), which causes a {@link ServiceException} to be
+     * InvalidQueryParameter error (HTTP status code 400 - Bad Request), which causes a {@link ServiceException} to be
      * thrown.
      * 
      * @param includeSnapshots

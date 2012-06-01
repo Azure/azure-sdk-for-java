@@ -14,13 +14,28 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
+/**
+ * Represents a single table entry in the list of tables in the storage account.
+ */
 public class TableEntry {
     private String name;
 
+    /**
+     * Gets the name of the table.
+     * 
+     * @return
+     *         A {@link String} containing the name of the table.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the table.
+     * 
+     * @param name
+     *            A {@link String} containing the name of the table.
+     */
     public void setName(String name) {
         this.name = name;
     }

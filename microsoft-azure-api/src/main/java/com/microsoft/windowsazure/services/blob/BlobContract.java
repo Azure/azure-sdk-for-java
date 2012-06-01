@@ -690,11 +690,10 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * You can call this method to update a blob by uploading only those blocks that have changed, then committing the
      * new and existing blocks together. You can do this with the <em>blockList</em> parameter by specifying whether to
      * commit a block from the committed block list or from the uncommitted block list, or to commit the most recently
-     * uploaded version of the block, whichever list it may belong to. Use the
-     * {@link BlobContract#CommitBlobBlocksOptions options} parameter to optionally specify the server timeout for the
-     * operation, the MIME content type and content encoding for the blob, the content language, the MD5 hash, a cache
-     * control value, blob metadata, the lease ID if the blob has an active lease, and any access conditions for the
-     * operation.
+     * uploaded version of the block, whichever list it may belong to. Use the {@link CommitBlobBlocksOptions options}
+     * parameter to optionally specify the server timeout for the operation, the MIME content type and content encoding
+     * for the blob, the content language, the MD5 hash, a cache control value, blob metadata, the lease ID if the blob
+     * has an active lease, and any access conditions for the operation.
      * <p>
      * In order to be written as part of a blob, each block in the list must have been successfully written to the
      * server with a call to {@link BlobContract#createBlobBlock(String, String, String, InputStream)} or
