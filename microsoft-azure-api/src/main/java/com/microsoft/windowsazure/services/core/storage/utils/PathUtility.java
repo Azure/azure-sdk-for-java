@@ -196,12 +196,27 @@ public final class PathUtility {
      * @throws IllegalArgumentException
      */
     public static String getContainerNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
-        return getContainerOrQueueNameFromUri(resourceAddress, usePathStyleUris,
+        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
                 String.format("Invalid blob address '%s', missing container information", resourceAddress));
     }
 
     /**
-     * Get the container or queue name from address from the URI.
+     * Get the table name from address from the URI.
+     * 
+     * @param resourceAddress
+     *            The table Uri.
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return table name from address from the URI.
+     * @throws IllegalArgumentException
+     */
+    public static String getTableNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
+        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
+                String.format("Invalid table address '%s', missing table information", resourceAddress));
+    }
+
+    /**
+     * Get the container, queue or table name from address from the URI.
      * 
      * @param resourceAddress
      *            The queue Uri.
@@ -210,7 +225,7 @@ public final class PathUtility {
      * @return container name from address from the URI.
      * @throws IllegalArgumentException
      */
-    private static String getContainerOrQueueNameFromUri(final URI resourceAddress, final boolean usePathStyleUris,
+    private static String getResourceNameFromUri(final URI resourceAddress, final boolean usePathStyleUris,
             final String error) {
         Utility.assertNotNull("resourceAddress", resourceAddress);
 
@@ -222,9 +237,9 @@ public final class PathUtility {
             throw new IllegalArgumentException(error);
         }
 
-        final String containerOrQueueName = usePathStyleUris ? pathSegments[2] : pathSegments[1];
+        final String resourceName = usePathStyleUris ? pathSegments[2] : pathSegments[1];
 
-        return Utility.trimEnd(containerOrQueueName, '/');
+        return Utility.trimEnd(resourceName, '/');
     }
 
     /**
@@ -341,7 +356,7 @@ public final class PathUtility {
      * @throws IllegalArgumentException
      */
     public static String getQueueNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
-        return getContainerOrQueueNameFromUri(resourceAddress, usePathStyleUris,
+        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
                 String.format("Invalid queue URI '%s'.", resourceAddress));
     }
 

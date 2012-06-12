@@ -19,44 +19,41 @@ import java.util.Locale;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * Specifies the lease status of a blob.
- * <p>
- * You can check the lease status of a blob to determine whether it currently has an active lease (locked for
- * exclusive-write access), or whether it is available for exclusive-write access.
+ * The lease duration of a resource.
  */
-public enum LeaseStatus {
+public enum LeaseDuration {
     /**
-     * Specifies the lease status is not specified.
+     * The lease duration is not specified.
      */
     UNSPECIFIED,
 
     /**
-     * Specifies the blob is locked for exclusive-write access.
+     * The lease duration is finite.
      */
-    LOCKED,
+    FIXED,
 
     /**
-     * Specifies the blob is available to be locked for exclusive-write access.
+     * The lease duration is infinite.
      */
-    UNLOCKED;
+    INFINITE;
 
     /**
-     * Parses a lease status from the given string.
+     * Parses a lease duration from the given string.
      * 
      * @param typeString
      *            A <code>String</code> that represents the string to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */
-    public static LeaseStatus parse(final String typeString) {
+    public static LeaseDuration parse(final String typeString) {
         if (Utility.isNullOrEmpty(typeString)) {
             return UNSPECIFIED;
         }
-        else if ("unlocked".equals(typeString.toLowerCase(Locale.US))) {
-            return UNLOCKED;
+        else if ("fixed".equals(typeString.toLowerCase(Locale.US))) {
+            return FIXED;
         }
-        else if ("locked".equals(typeString.toLowerCase(Locale.US))) {
-            return LOCKED;
+        else if ("infinite".equals(typeString.toLowerCase(Locale.US))) {
+            return INFINITE;
         }
         else {
             return UNSPECIFIED;

@@ -39,6 +39,25 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 public final class CloudBlockBlob extends CloudBlob {
 
     /**
+     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified relative URI and storage service
+     * client.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the relative URI to the blob, beginning with the
+     *            container name.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudBlockBlob(final URI uri) throws StorageException {
+        super(BlobType.BLOCK_BLOB);
+
+        Utility.assertNotNull("blobAbsoluteUri", uri);
+        this.uri = uri;
+        this.parseURIQueryStringAndVerify(uri, null, Utility.determinePathStyleFromUri(uri, null));;
+    }
+
+    /**
      * Creates an instance of the <code>CloudBlockBlob</code> class by copying values from another cloud block blob.
      * 
      * @param otherBlob
