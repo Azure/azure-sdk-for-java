@@ -16,9 +16,16 @@
 package com.microsoft.windowsazure.services.table.client;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
@@ -420,6 +427,152 @@ final class TableRequest {
                 queryBuilder, "PUT", tableOptions, opContext);
 
         retConnection.setDoOutput(true);
+        return retConnection;
+    }
+
+    /**
+     * Sets the ACL for the table. , Sign with length of aclBytes.
+     * 
+     * @param rootUri
+     *            A <code>java.net.URI</code> containing an absolute URI to the resource.
+     * @param tableName
+     *            The name of the table.
+     * @param timeoutInMs
+     *            The server timeout interval in milliseconds.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     * */
+    public static HttpURLConnection setAcl(final URI rootUri, final int timeoutInMs, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException {
+
+        UriQueryBuilder queryBuilder = new UriQueryBuilder();
+        queryBuilder.add("comp", "acl");
+
+        final HttpURLConnection retConnection = BaseRequest.createURLConnection(rootUri, timeoutInMs, queryBuilder,
+                opContext);
+        retConnection.setRequestMethod("PUT");
+        retConnection.setDoOutput(true);
+        retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE,
+                TableConstants.HeaderConstants.ATOMPUB_TYPE);
+
+        return retConnection;
+    }
+
+    /**
+     * Writes a collection of shared access policies to the specified stream in XML format.
+     * 
+     * @param sharedAccessPolicies
+     *            A collection of shared access policies
+     * @param outWriter
+     *            an sink to write the output to.
+     * @throws XMLStreamException
+     */
+    public static void writeSharedAccessIdentifiersToStream(
+            final HashMap<String, SharedAccessTablePolicy> sharedAccessPolicies, final StringWriter outWriter)
+            throws XMLStreamException {
+        Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
+        Utility.assertNotNull("outWriter", outWriter);
+
+        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
+        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+
+        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
+            final String errorMessage = String
+                    .format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container.",
+                            sharedAccessPolicies.keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
+
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        // default is UTF8
+        xmlw.writeStartDocument();
+        xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
+
+        for (final Entry<String, SharedAccessTablePolicy> entry : sharedAccessPolicies.entrySet()) {
+            final SharedAccessTablePolicy policy = entry.getValue();
+            xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
+
+            // Set the identifier
+            xmlw.writeStartElement(Constants.ID);
+            xmlw.writeCharacters(entry.getKey());
+            xmlw.writeEndElement();
+
+            xmlw.writeStartElement(Constants.ACCESS_POLICY);
+
+            // Set the Start Time
+            xmlw.writeStartElement(Constants.START);
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
+            // end Start
+            xmlw.writeEndElement();
+
+            // Set the Expiry Time
+            xmlw.writeStartElement(Constants.EXPIRY);
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
+            // end Expiry
+            xmlw.writeEndElement();
+
+            // Set the Permissions
+            xmlw.writeStartElement(Constants.PERMISSION);
+            xmlw.writeCharacters(SharedAccessTablePolicy.permissionsToString(policy.getPermissions()));
+            // end Permission
+            xmlw.writeEndElement();
+
+            // end AccessPolicy
+            xmlw.writeEndElement();
+            // end SignedIdentifier
+            xmlw.writeEndElement();
+        }
+
+        // end SignedIdentifiers
+        xmlw.writeEndElement();
+        // end doc
+        xmlw.writeEndDocument();
+    }
+
+    /**
+     * Constructs a web request to return the ACL for this table. Sign with no length specified.
+     * 
+     * @param rootUri
+     *            A <code>java.net.URI</code> containing an absolute URI to the resource.
+     * @param tableName
+     *            The name of the table.
+     * @param timeoutInMs
+     *            The server timeout interval in milliseconds.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     */
+    public static HttpURLConnection getAcl(final URI rootUri, final String tableName, final int timeoutInMs,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+
+        UriQueryBuilder queryBuilder = new UriQueryBuilder();
+        queryBuilder.add("comp", "acl");
+
+        final HttpURLConnection retConnection = BaseRequest.createURLConnection(rootUri, timeoutInMs, queryBuilder,
+                opContext);
+        retConnection.setRequestMethod("GET");
+        retConnection.setRequestProperty(Constants.HeaderConstants.ACCEPT, TableConstants.HeaderConstants.ACCEPT_TYPE);
+        retConnection.setRequestProperty(Constants.HeaderConstants.ACCEPT_CHARSET, "UTF8");
+        retConnection.setRequestProperty(TableConstants.HeaderConstants.MAX_DATA_SERVICE_VERSION,
+                TableConstants.HeaderConstants.MAX_DATA_SERVICE_VERSION_VALUE);
+        retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE,
+                TableConstants.HeaderConstants.ATOMPUB_TYPE);
+
         return retConnection;
     }
 

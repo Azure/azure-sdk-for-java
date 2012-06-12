@@ -12,33 +12,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.blob.client;
+package com.microsoft.windowsazure.services.table.client;
 
 import java.util.EnumSet;
 
 /**
- * Specifies the set of possible permissions for a shared access policy.
+ * Specifies the set of possible permissions for a shared access table policy.
  */
-public enum SharedAccessPermissions {
-    /**
-     * Specifies Read access granted.
-     */
-    READ((byte) 0x1),
+public enum SharedAccessTablePermissions {
 
     /**
-     * Specifies Write access granted.
+     * No shared access granted.
      */
-    WRITE((byte) 0x2),
+    NONE((byte) 0x0),
 
     /**
-     * Specifies Delete access granted for blobs.
+     * Permission to query entities granted.
      */
-    DELETE((byte) 0x4),
+    QUERY((byte) 0x1),
 
     /**
-     * Specifies List access granted.
+     * Permission to add entities granted.
      */
-    LIST((byte) 0x8);
+    ADD((byte) 0x2),
+
+    /**
+     * Permission to modify entities granted.
+     */
+    UPDATE((byte) 0x4),
+
+    /**
+     * Permission to delete entities granted.
+     */
+    DELETE((byte) 0x8);
 
     /**
      * Returns the enum set representing the shared access permissions for the specified byte value.
@@ -48,21 +54,21 @@ public enum SharedAccessPermissions {
      * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessPermissions</code> values
      *         corresponding to the specified byte value.
      */
-    protected static EnumSet<SharedAccessPermissions> fromByte(final byte value) {
-        final EnumSet<SharedAccessPermissions> retSet = EnumSet.noneOf(SharedAccessPermissions.class);
+    protected static EnumSet<SharedAccessTablePermissions> fromByte(final byte value) {
+        final EnumSet<SharedAccessTablePermissions> retSet = EnumSet.noneOf(SharedAccessTablePermissions.class);
 
-        if (value == READ.value) {
-            retSet.add(READ);
+        if (value == QUERY.value) {
+            retSet.add(QUERY);
         }
 
-        if (value == WRITE.value) {
-            retSet.add(WRITE);
+        if (value == ADD.value) {
+            retSet.add(ADD);
+        }
+        if (value == UPDATE.value) {
+            retSet.add(UPDATE);
         }
         if (value == DELETE.value) {
             retSet.add(DELETE);
-        }
-        if (value == LIST.value) {
-            retSet.add(LIST);
         }
 
         return retSet;
@@ -79,7 +85,7 @@ public enum SharedAccessPermissions {
      * @param val
      *            The value being assigned.
      */
-    SharedAccessPermissions(final byte val) {
+    SharedAccessTablePermissions(final byte val) {
         this.value = val;
     }
 }

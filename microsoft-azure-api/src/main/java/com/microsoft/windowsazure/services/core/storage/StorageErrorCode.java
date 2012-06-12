@@ -117,7 +117,22 @@ public enum StorageErrorCode {
     /**
      * A transport error occurred (server-side error).
      */
-    TRANSPORT_ERROR(5);
+    TRANSPORT_ERROR(5),
+
+    /**
+     * A lease is required to perform the operation.
+     */
+    LEASE_ID_MISSING(21),
+
+    /**
+     * The given lease ID does not match the current lease.
+     */
+    LEASE_ID_MISMATCH(22),
+
+    /**
+     * A lease ID was used when no lease currently is held.
+     */
+    LEASE_NOT_PRESENT(23);
 
     /**
      * Returns the value of this enum.
