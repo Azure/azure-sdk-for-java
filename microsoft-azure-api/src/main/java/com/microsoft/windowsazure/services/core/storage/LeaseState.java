@@ -19,26 +19,38 @@ import java.util.Locale;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * Specifies the lease status of a blob.
- * <p>
- * You can check the lease status of a blob to determine whether it currently has an active lease (locked for
- * exclusive-write access), or whether it is available for exclusive-write access.
+ * he lease state of a resource.
  */
-public enum LeaseStatus {
+public enum LeaseState {
     /**
-     * Specifies the lease status is not specified.
+     * The lease state is not specified.
      */
     UNSPECIFIED,
 
     /**
-     * Specifies the blob is locked for exclusive-write access.
+     * The lease is in the Available state.
      */
-    LOCKED,
+    AVAILABLE,
 
     /**
-     * Specifies the blob is available to be locked for exclusive-write access.
+     * The lease is in the Leased state.
      */
-    UNLOCKED;
+    LEASED,
+
+    /**
+     * The lease is in the Expired state.
+     */
+    EXPIRED,
+
+    /**
+     * The lease is in the Breaking state.
+     */
+    BREAKING,
+
+    /**
+     * The lease is in the Broken state.
+     */
+    BROKEN;
 
     /**
      * Parses a lease status from the given string.
@@ -48,15 +60,24 @@ public enum LeaseStatus {
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */
-    public static LeaseStatus parse(final String typeString) {
+    public static LeaseState parse(final String typeString) {
         if (Utility.isNullOrEmpty(typeString)) {
             return UNSPECIFIED;
         }
-        else if ("unlocked".equals(typeString.toLowerCase(Locale.US))) {
-            return UNLOCKED;
+        else if ("available".equals(typeString.toLowerCase(Locale.US))) {
+            return AVAILABLE;
         }
         else if ("locked".equals(typeString.toLowerCase(Locale.US))) {
-            return LOCKED;
+            return LEASED;
+        }
+        else if ("expired".equals(typeString.toLowerCase(Locale.US))) {
+            return EXPIRED;
+        }
+        else if ("breaking".equals(typeString.toLowerCase(Locale.US))) {
+            return BREAKING;
+        }
+        else if ("broken".equals(typeString.toLowerCase(Locale.US))) {
+            return BROKEN;
         }
         else {
             return UNSPECIFIED;

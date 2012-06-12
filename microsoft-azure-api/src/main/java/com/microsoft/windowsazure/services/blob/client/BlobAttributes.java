@@ -29,6 +29,11 @@ final class BlobAttributes {
     private HashMap<String, String> metadata;
 
     /**
+     * Represents the state of the most recent or pending copy operation.
+     */
+    private CopyState copyState;
+
+    /**
      * Holds the properties of the blob.
      */
     private BlobProperties properties;
@@ -55,6 +60,10 @@ final class BlobAttributes {
         return this.metadata;
     }
 
+    public CopyState getCopyState() {
+        return this.copyState;
+    }
+
     public BlobProperties getProperties() {
         return this.properties;
     }
@@ -65,5 +74,9 @@ final class BlobAttributes {
 
     protected void setProperties(final BlobProperties properties) {
         this.properties = properties;
+    }
+
+    public void setCopyState(final CopyState copyState) {
+        this.copyState = copyState;
     }
 }
