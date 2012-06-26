@@ -68,8 +68,11 @@ final class ContainerResponse extends BaseResponse {
         final BlobContainerProperties containerProperties = containerAttributes.getProperties();
         containerProperties.setEtag(BaseResponse.getEtag(request));
         containerProperties.setLastModified(new Date(request.getLastModified()));
-
         containerAttributes.setMetadata(getMetadata(request));
+
+        containerProperties.setLeaseStatus(BaseResponse.getLeaseStatus(request));
+        containerProperties.setLeaseState(BaseResponse.getLeaseState(request));
+        containerProperties.setLeaseDuration(BaseResponse.getLeaseDuration(request));
 
         return containerAttributes;
     }
