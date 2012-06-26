@@ -123,6 +123,52 @@ final class BlobRequest {
     }
 
     /**
+     * Generates a web request to abort a copy operation.
+     * 
+     * @param uri
+     *            The absolute URI to the container.
+     * @param timeout
+     *            The server timeout interval.
+     * @param copyId
+     *            A <code>String</code> object that identifying the copy operation.
+     * @param accessCondition
+     *            The access condition to apply to the request. Only lease conditions are supported for this operation.
+     * @param blobOptions
+     *            the options to use for the request.
+     * @param opContext
+     *            a tracking object for the request
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public static HttpURLConnection abortCopy(final URI uri, final int timeout, final String copyId,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+
+        builder.add("comp", "copy");
+        builder.add("copyid", copyId);
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+
+        request.setFixedLengthStreamingMode(0);
+        request.setDoOutput(true);
+        request.setRequestMethod("PUT");
+
+        request.setRequestProperty("x-ms-copy-action", "abort");
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request, true);
+        }
+
+        return request;
+    }
+
+    /**
      * Creates the web request.
      * 
      * @param uri
@@ -431,6 +477,19 @@ final class BlobRequest {
      *            The server timeout interval
      * @param action
      *            the LeaseAction to perform
+     * 
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param breakPeriodInSeconds
+     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
+     * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param blobOptions
@@ -447,6 +506,7 @@ final class BlobRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection lease(final URI uri, final int timeout, final LeaseAction action,
+            final Integer leaseTimeInSeconds, final String proposedLeaseId, final Integer breakPeriodInSeconds,
             final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
             final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
 
@@ -460,6 +520,17 @@ final class BlobRequest {
         request.setRequestMethod("PUT");
         request.setFixedLengthStreamingMode(0);
         request.setRequestProperty("x-ms-lease-action", action.toString());
+
+        if (leaseTimeInSeconds != null) {
+            request.setRequestProperty("x-ms-lease-duration", leaseTimeInSeconds.toString());
+        }
+        else {
+            request.setRequestProperty("x-ms-lease-duration", "-1");
+        }
+
+        if (proposedLeaseId != null) {
+            request.setRequestProperty("x-ms-proposed-lease-id", proposedLeaseId);
+        }
 
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);

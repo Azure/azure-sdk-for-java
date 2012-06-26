@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -608,6 +609,124 @@ final class QueueRequest {
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
+
+        return request;
+    }
+
+    /**
+     * Sets the ACL for the queue. , Sign with length of aclBytes.
+     * 
+     * @param uri
+     *            The absolute URI to the queue.
+     * @param timeout
+     *            The server timeout interval.
+     * @param publicAccess
+     *            The type of public access to allow for the queue.
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     * */
+    public static HttpURLConnection setAcl(final URI uri, final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add("comp", "acl");
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+
+        request.setDoOutput(true);
+        request.setRequestMethod("PUT");
+
+        return request;
+    }
+
+    /**
+     * Writes a collection of shared access policies to the specified stream in XML format.
+     * 
+     * @param sharedAccessPolicies
+     *            A collection of shared access policies
+     * @param outWriter
+     *            an sink to write the output to.
+     * @throws XMLStreamException
+     */
+    public static void writeSharedAccessIdentifiersToStream(
+            final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies, final StringWriter outWriter)
+            throws XMLStreamException {
+        Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
+        Utility.assertNotNull("outWriter", outWriter);
+
+        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
+        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+
+        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
+            final String errorMessage = String
+                    .format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single queue.",
+                            sharedAccessPolicies.keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
+
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        // default is UTF8
+        xmlw.writeStartDocument();
+        xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
+
+        for (final Entry<String, SharedAccessQueuePolicy> entry : sharedAccessPolicies.entrySet()) {
+            final SharedAccessQueuePolicy policy = entry.getValue();
+            xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
+
+            // Set the identifier
+            xmlw.writeStartElement(Constants.ID);
+            xmlw.writeCharacters(entry.getKey());
+            xmlw.writeEndElement();
+
+            xmlw.writeStartElement(Constants.ACCESS_POLICY);
+
+            // Set the Start Time
+            xmlw.writeStartElement(Constants.START);
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
+            // end Start
+            xmlw.writeEndElement();
+
+            // Set the Expiry Time
+            xmlw.writeStartElement(Constants.EXPIRY);
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
+            // end Expiry
+            xmlw.writeEndElement();
+
+            // Set the Permissions
+            xmlw.writeStartElement(Constants.PERMISSION);
+            xmlw.writeCharacters(SharedAccessQueuePolicy.permissionsToString(policy.getPermissions()));
+            // end Permission
+            xmlw.writeEndElement();
+
+            // end AccessPolicy
+            xmlw.writeEndElement();
+            // end SignedIdentifier
+            xmlw.writeEndElement();
+        }
+
+        // end SignedIdentifiers
+        xmlw.writeEndElement();
+        // end doc
+        xmlw.writeEndDocument();
+    }
+
+    /**
+     * Constructs a web request to return the ACL for this queue. Sign with no length specified.
+     * 
+     * @param uri
+     *            The absolute URI to the container.
+     * @param timeout
+     *            The server timeout interval.
+     * @return a HttpURLConnection configured for the operation.
+     * @throws StorageException
+     */
+    public static HttpURLConnection getAcl(final URI uri, final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add("comp", "acl");
+
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+
+        request.setRequestMethod("GET");
 
         return request;
     }

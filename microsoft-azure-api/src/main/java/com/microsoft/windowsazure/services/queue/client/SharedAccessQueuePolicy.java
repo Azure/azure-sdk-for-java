@@ -12,18 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.blob.client;
+package com.microsoft.windowsazure.services.queue.client;
 
 import java.util.Date;
 import java.util.EnumSet;
 
 import com.microsoft.windowsazure.services.core.storage.Constants;
+import com.microsoft.windowsazure.services.table.client.SharedAccessTablePermissions;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
  * signature.
  */
-public final class SharedAccessPolicy {
+public final class SharedAccessQueuePolicy {
 
     /**
      * Assigns shared access permissions using the specified permissions string.
@@ -39,26 +40,26 @@ public final class SharedAccessPolicy {
      *            <li><code>w</code>: Write access.</li>
      *            </ul>
      * 
-     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessPermissions} values that
+     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessTablePermissions} values that
      *         represents the set of shared access permissions.
      */
-    public static EnumSet<SharedAccessPermissions> permissionsFromString(final String value) {
+    public static EnumSet<SharedAccessQueuePermissions> permissionsFromString(final String value) {
         final char[] chars = value.toCharArray();
-        final EnumSet<SharedAccessPermissions> retSet = EnumSet.noneOf(SharedAccessPermissions.class);
+        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet.noneOf(SharedAccessQueuePermissions.class);
 
         for (final char c : chars) {
             switch (c) {
                 case 'r':
-                    retSet.add(SharedAccessPermissions.READ);
+                    retSet.add(SharedAccessQueuePermissions.READ);
                     break;
-                case 'w':
-                    retSet.add(SharedAccessPermissions.WRITE);
+                case 'a':
+                    retSet.add(SharedAccessQueuePermissions.ADD);
                     break;
-                case 'd':
-                    retSet.add(SharedAccessPermissions.DELETE);
+                case 'u':
+                    retSet.add(SharedAccessQueuePermissions.UPDATE);
                     break;
-                case 'l':
-                    retSet.add(SharedAccessPermissions.LIST);
+                case 'p':
+                    retSet.add(SharedAccessQueuePermissions.PROCESSMESSAGES);
                     break;
                 default:
                     throw new IllegalArgumentException("value");
@@ -72,12 +73,12 @@ public final class SharedAccessPolicy {
      * Converts the permissions specified for the shared access policy to a string.
      * 
      * @param permissions
-     *            A {@link SharedAccessPermissions} object that represents the shared access permissions.
+     *            A {@link SharedAccessQueuePermissions} object that represents the shared access permissions.
      * 
      * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
-     *         described at {@link SharedAccessPolicy#permissionsFromString}.
+     *         described at {@link SharedAccessQueuePermissions#permissionsFromString}.
      */
-    public static String permissionsToString(final EnumSet<SharedAccessPermissions> permissions) {
+    public static String permissionsToString(final EnumSet<SharedAccessQueuePermissions> permissions) {
         if (permissions == null) {
             return Constants.EMPTY_STRING;
         }
@@ -85,20 +86,20 @@ public final class SharedAccessPolicy {
         // The service supports a fixed order => rwdl
         final StringBuilder builder = new StringBuilder();
 
-        if (permissions.contains(SharedAccessPermissions.READ)) {
+        if (permissions.contains(SharedAccessQueuePermissions.READ)) {
             builder.append("r");
         }
 
-        if (permissions.contains(SharedAccessPermissions.WRITE)) {
-            builder.append("w");
+        if (permissions.contains(SharedAccessQueuePermissions.ADD)) {
+            builder.append("a");
         }
 
-        if (permissions.contains(SharedAccessPermissions.DELETE)) {
-            builder.append("d");
+        if (permissions.contains(SharedAccessQueuePermissions.UPDATE)) {
+            builder.append("u");
         }
 
-        if (permissions.contains(SharedAccessPermissions.LIST)) {
-            builder.append("l");
+        if (permissions.contains(SharedAccessQueuePermissions.PROCESSMESSAGES)) {
+            builder.append("p");
         }
 
         return builder.toString();
@@ -107,7 +108,7 @@ public final class SharedAccessPolicy {
     /**
      * The permissions for a shared access signature associated with this shared access policy.
      */
-    private EnumSet<SharedAccessPermissions> permissions;
+    private EnumSet<SharedAccessQueuePermissions> permissions;
 
     /**
      * The expiry time for a shared access signature associated with this shared access policy.
@@ -120,16 +121,16 @@ public final class SharedAccessPolicy {
     private Date sharedAccessStartTime;
 
     /**
-     * Creates an instance of the <code>SharedAccessPolicy</code> class.
+     * Creates an instance of the <code>SharedAccessTablePolicy</code> class.
      * */
-    public SharedAccessPolicy() {
+    public SharedAccessQueuePolicy() {
         // Empty Default Ctor
     }
 
     /**
      * @return the permissions
      */
-    public EnumSet<SharedAccessPermissions> getPermissions() {
+    public EnumSet<SharedAccessQueuePermissions> getPermissions() {
         return this.permissions;
     }
 
@@ -151,7 +152,7 @@ public final class SharedAccessPolicy {
      * @param permissions
      *            the permissions to set
      */
-    public void setPermissions(final EnumSet<SharedAccessPermissions> permissions) {
+    public void setPermissions(final EnumSet<SharedAccessQueuePermissions> permissions) {
         this.permissions = permissions;
     }
 

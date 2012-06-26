@@ -391,7 +391,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                 final String batchID = String.format("batch_%s", UUID.randomUUID().toString());
                 final String changeSet = String.format("changeset_%s", UUID.randomUUID().toString());
 
-                final HttpURLConnection request = TableRequest.batch(client.getEndpoint(),
+                final HttpURLConnection request = TableRequest.batch(client.getTransformedEndPoint(opContext),
                         options.getTimeoutIntervalInMs(), batchID, null, options, opContext);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);

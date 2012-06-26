@@ -182,8 +182,8 @@ public class QueryTableOperation extends TableOperation {
             public TableResult execute(final CloudTableClient client, final QueryTableOperation operation,
                     final OperationContext opContext) throws Exception {
 
-                final HttpURLConnection request = TableRequest.query(client.getEndpoint(), tableName,
-                        generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false),
+                final HttpURLConnection request = TableRequest.query(client.getTransformedEndPoint(opContext),
+                        tableName, generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false),
                         options.getTimeoutIntervalInMs(), null/* Query Builder */, null/* Continuation Token */,
                         options, opContext);
 

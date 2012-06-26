@@ -17,6 +17,9 @@ package com.microsoft.windowsazure.services.blob.client;
 import java.util.Date;
 
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
+import com.microsoft.windowsazure.services.core.storage.LeaseDuration;
+import com.microsoft.windowsazure.services.core.storage.LeaseState;
+import com.microsoft.windowsazure.services.core.storage.LeaseStatus;
 
 /**
  * Represents the system properties for a container.
@@ -40,6 +43,21 @@ public final class BlobContainerProperties {
     private Date lastModified;
 
     /**
+     * Represents the container's lease status.
+     */
+    private LeaseStatus leaseStatus;
+
+    /**
+     * Represents the container's lease state.
+     */
+    private LeaseState leaseState;
+
+    /**
+     * Represents the container's lease duration.
+     */
+    private LeaseDuration leaseDuration;
+
+    /**
      * @return the etag
      */
     public String getEtag() {
@@ -51,6 +69,27 @@ public final class BlobContainerProperties {
      */
     public Date getLastModified() {
         return this.lastModified;
+    }
+
+    /**
+     * @return the leaseStatus
+     */
+    public LeaseStatus getLeaseStatus() {
+        return this.leaseStatus;
+    }
+
+    /**
+     * @return the leaseState
+     */
+    public LeaseState getLeaseState() {
+        return this.leaseState;
+    }
+
+    /**
+     * @return the leaseDuration
+     */
+    public LeaseDuration getLeaseDuration() {
+        return this.leaseDuration;
     }
 
     /**
@@ -67,5 +106,35 @@ public final class BlobContainerProperties {
      */
     public void setLastModified(final Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    /**
+     * Reserved for internal use.
+     * 
+     * @param leaseStatus
+     *            the leaseStatus to set
+     */
+    public void setLeaseStatus(final LeaseStatus leaseStatus) {
+        this.leaseStatus = leaseStatus;
+    }
+
+    /**
+     * Reserved for internal use.
+     * 
+     * @param LeaseState
+     *            the LeaseState to set
+     */
+    public void setLeaseState(final LeaseState leaseState) {
+        this.leaseState = leaseState;
+    }
+
+    /**
+     * Reserved for internal use.
+     * 
+     * @param LeaseDuration
+     *            the LeaseDuration to set
+     */
+    public void setLeaseDuration(final LeaseDuration leaseDuration) {
+        this.leaseDuration = leaseDuration;
     }
 }

@@ -35,13 +35,13 @@ import com.microsoft.windowsazure.services.core.storage.ResultContinuationType;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.ServiceClient;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentials;
-import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterable;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.SegmentedStorageOperation;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
+import com.microsoft.windowsazure.services.queue.client.CloudQueue;
 
 /**
  * Provides a service client for accessing the Windows Azure Table service.
@@ -108,400 +108,24 @@ public final class CloudTableClient extends ServiceClient {
     }
 
     /**
-     * Creates a table with the specified name in the storage service.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135729.aspx">Create
-     * Table</a> REST API to create the specified table, using the Table service endpoint and storage account
-     * credentials of this instance.
+     * Gets a {@link CloudTable} object that represents the storage service
+     * queue for the specified address.
      * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to create.
+     * @param tableAddress
+     *            A <code>String</code> that represents the name of the table,
+     *            or the absolute URI to the queue.
      * 
+     * @return A {@link CloudQueue} object that represents a reference to the
+     *         table.
+     * 
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table cannot be
-     *             created, or already exists.
+     *             If a storage service error occurred during the operation.
      */
-    @DoesServiceRequest
-    public void createTable(final String tableName) throws StorageException {
-        this.createTable(tableName, null, null);
-    }
-
-    /**
-     * Creates a table with the specified name in the storage service, using the specified {@link TableRequestOptions}
-     * and {@link OperationContext}.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135729.aspx">Create
-     * Table</a> REST API to create the specified table, using the Table service endpoint and storage account
-     * credentials of this instance.
-     * 
-     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
-     * operation.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to create.
-     * @param options
-     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
-     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
-     *            {@link CloudTableClient}.
-     * @param opContext
-     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
-     *            safely ignore operation context.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table cannot be
-     *             created, or already exists.
-     */
-    @DoesServiceRequest
-    public void createTable(final String tableName, TableRequestOptions options, OperationContext opContext)
-            throws StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        if (options == null) {
-            options = new TableRequestOptions();
-        }
-
-        opContext.initialize();
-        options.applyDefaults(this);
-
-        Utility.assertNotNullOrEmpty("tableName", tableName);
-
-        final DynamicTableEntity tableEntry = new DynamicTableEntity();
-        tableEntry.getProperties().put(TableConstants.TABLE_NAME, new EntityProperty(tableName));
-
-        this.execute(TableConstants.TABLES_SERVICE_TABLES_NAME, TableOperation.insert(tableEntry), options, opContext);
-    }
-
-    /**
-     * Creates a table with the specified name in the storage service, if it does not already exist.
-     * <p>
-     * This method first invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, and if not, invokes the <a
-     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135729.aspx">Create Table</a> Storage Service REST
-     * API to create the specified table, using the Table service endpoint and storage account credentials of this
-     * instance.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to create.
-     * 
-     * @return
-     *         A value of <code>true</code> if the operation created a new table, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table does not
-     *             exist and cannot be created.
-     */
-    @DoesServiceRequest
-    public boolean createTableIfNotExists(final String tableName) throws StorageException {
-        return this.createTableIfNotExists(tableName, null, null);
-    }
-
-    /**
-     * Creates a table with the specified name in the storage service if it does not already exist, using the specified
-     * {@link TableRequestOptions} and {@link OperationContext}.
-     * <p>
-     * This method first invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, and if not, invokes the <a
-     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135729.aspx">Create Table</a> Storage Service REST
-     * API to create the specified table, using the Table service endpoint and storage account credentials of this
-     * instance.
-     * 
-     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
-     * operation.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to create.
-     * @param options
-     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
-     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
-     *            {@link CloudTableClient}.
-     * @param opContext
-     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
-     *            safely ignore operation context.
-     * 
-     * @return
-     *         A value of <code>true</code> if the operation created a new table, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table does not
-     *             exist and cannot be created.
-     */
-    @DoesServiceRequest
-    public boolean createTableIfNotExists(final String tableName, TableRequestOptions options,
-            OperationContext opContext) throws StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        if (options == null) {
-            options = new TableRequestOptions();
-        }
-
-        opContext.initialize();
-        options.applyDefaults(this);
-
-        Utility.assertNotNullOrEmpty("tableName", tableName);
-
-        if (this.doesTableExist(tableName, options, opContext)) {
-            return false;
-        }
-        else {
-            try {
-                this.createTable(tableName, options, opContext);
-            }
-            catch (StorageException ex) {
-                if (ex.getHttpStatusCode() == HttpURLConnection.HTTP_CONFLICT
-                        && StorageErrorCodeStrings.TABLE_ALREADY_EXISTS.equals(ex.getErrorCode())) {
-                    return false;
-                }
-                else {
-                    throw ex;
-                }
-            }
-            return true;
-        }
-    }
-
-    /**
-     * Deletes the table with the specified name in the storage service.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179387.aspx">Delete
-     * Table</a> REST API to delete the specified table and any data it contains, using the Table service endpoint and
-     * storage account credentials of this instance.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to delete.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table deletion operation failed.
-     */
-    @DoesServiceRequest
-    public void deleteTable(final String tableName) throws StorageException {
-        this.deleteTable(tableName, null, null);
-    }
-
-    /**
-     * Deletes the table with the specified name in the storage service, using the specified {@link TableRequestOptions}
-     * and {@link OperationContext}.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179387.aspx">Delete
-     * Table</a> REST API to delete the specified table and any data it contains, using the Table service endpoint and
-     * storage account credentials of this instance.
-     * 
-     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
-     * operation.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to delete.
-     * @param options
-     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
-     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
-     *            {@link CloudTableClient}.
-     * @param opContext
-     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
-     *            safely ignore operation context.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table deletion operation failed.
-     */
-    @DoesServiceRequest
-    public void deleteTable(final String tableName, TableRequestOptions options, OperationContext opContext)
-            throws StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        if (options == null) {
-            options = new TableRequestOptions();
-        }
-
-        opContext.initialize();
-        options.applyDefaults(this);
-
-        Utility.assertNotNullOrEmpty("tableName", tableName);
-        final DynamicTableEntity tableEntry = new DynamicTableEntity();
-        tableEntry.getProperties().put(TableConstants.TABLE_NAME, new EntityProperty(tableName));
-
-        final TableOperation delOp = new TableOperation(tableEntry, TableOperationType.DELETE);
-
-        final TableResult result = this.execute(TableConstants.TABLES_SERVICE_TABLES_NAME, delOp, options, opContext);
-
-        if (result.getHttpStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
-            return;
-        }
-        else {
-            throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                    "Unexpected http status code received.", result.getHttpStatusCode(), null, null);
-        }
-    }
-
-    /**
-     * Deletes the table with the specified name in the storage service, if it exists.
-     * <p>
-     * This method first invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, and if so, invokes the <a
-     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179387.aspx">Delete Table</a> Storage Service REST
-     * API to delete the table and any data it contains, using the Table service endpoint and storage account
-     * credentials of this instance.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to delete.
-     * 
-     * @return
-     *         A value of <code>true</code> if the operation deleted an existing table, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table deletion operation failed.
-     */
-    @DoesServiceRequest
-    public boolean deleteTableIfExists(final String tableName) throws StorageException {
-        return this.deleteTableIfExists(tableName, null, null);
-    }
-
-    /**
-     * Deletes the table with the specified name in the storage service, if it exists, using the specified
-     * {@link TableRequestOptions} and {@link OperationContext}.
-     * <p>
-     * This method first invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, and if so, invokes the <a
-     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179387.aspx">Delete Table</a> Storage Service REST
-     * API to delete the table and any data it contains, using the Table service endpoint and storage account
-     * credentials of this instance.
-     * 
-     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
-     * operation.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to delete.
-     * @param options
-     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
-     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
-     *            {@link CloudTableClient}.
-     * @param opContext
-     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
-     *            safely ignore operation context.
-     * 
-     * @return
-     *         A value of <code>true</code> if the operation deleted an existing table, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table deletion operation failed.
-     */
-    @DoesServiceRequest
-    public boolean deleteTableIfExists(final String tableName, TableRequestOptions options, OperationContext opContext)
-            throws StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        if (options == null) {
-            options = new TableRequestOptions();
-        }
-
-        opContext.initialize();
-        options.applyDefaults(this);
-
-        Utility.assertNotNullOrEmpty("tableName", tableName);
-
-        if (this.doesTableExist(tableName, options, opContext)) {
-            try {
-                this.deleteTable(tableName, options, opContext);
-            }
-            catch (StorageException ex) {
-                if (ex.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCodeStrings.RESOURCE_NOT_FOUND.equals(ex.getErrorCode())) {
-                    return false;
-                }
-                else {
-                    throw ex;
-                }
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
-     * Determines if a table with the specified name exists in the storage service.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, using the Table service endpoint and storage account
-     * credentials of this instance.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to find.
-     * 
-     * @return
-     *         A value of <code>true</code> if the table exists, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service.
-     */
-    @DoesServiceRequest
-    public boolean doesTableExist(final String tableName) throws StorageException {
-        return this.doesTableExist(tableName, null, null);
-    }
-
-    /**
-     * Determines if a table with the specified name exists in the storage service, using the specified
-     * {@link TableRequestOptions} and {@link OperationContext}.
-     * <p>
-     * This method invokes the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179405.aspx">Query
-     * Tables</a> REST API to determine if the table exists, using the Table service endpoint and storage account
-     * credentials of this instance.
-     * 
-     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
-     * operation.
-     * 
-     * @param tableName
-     *            A <code>String</code> object containing the name of the table to find.
-     * @param options
-     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
-     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
-     *            {@link CloudTableClient}.
-     * @param opContext
-     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
-     *            safely ignore operation context.
-     * 
-     * @return
-     *         A value of <code>true</code> if the table exists, otherwise <code>false</code>.
-     * 
-     * @throws StorageException
-     *             if an error occurs accessing the storage service.
-     */
-    @DoesServiceRequest
-    public boolean doesTableExist(final String tableName, TableRequestOptions options, OperationContext opContext)
-            throws StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        if (options == null) {
-            options = new TableRequestOptions();
-        }
-
-        opContext.initialize();
-        options.applyDefaults(this);
-
-        Utility.assertNotNullOrEmpty("tableName", tableName);
-
-        final TableResult result = this.execute(TableConstants.TABLES_SERVICE_TABLES_NAME,
-                TableOperation.retrieve(tableName /* Used As PK */, null/* Row Key */, DynamicTableEntity.class),
-                options, opContext);
-
-        if (result.getHttpStatusCode() == HttpURLConnection.HTTP_OK) {
-            return true;
-        }
-        else if (result.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-            return false;
-        }
-        else {
-            throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                    "Unexpected http status code received.", result.getHttpStatusCode(), null, null);
-        }
+    public CloudTable getTableReference(final String tableAddress) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("tableAddress", tableAddress);
+        return new CloudTable(tableAddress, this);
     }
 
     /**
@@ -1170,7 +794,7 @@ public final class CloudTableClient extends ServiceClient {
             Utility.assertNotNull("Query requires a valid class type or resolver.", queryToExecute.getClazzType());
         }
 
-        final HttpURLConnection queryRequest = TableRequest.query(this.getEndpoint(),
+        final HttpURLConnection queryRequest = TableRequest.query(this.getTransformedEndPoint(opContext),
                 queryToExecute.getSourceTableName(), null/* identity */, options.getTimeoutIntervalInMs(),
                 queryToExecute.generateQueryBuilder(), continuationToken, options, opContext);
 
@@ -1268,6 +892,23 @@ public final class CloudTableClient extends ServiceClient {
             }
         };
         return ExecutionEngine.executeWithRetry(this, queryToExecute, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    protected final URI getTransformedEndPoint(final OperationContext opContext) throws URISyntaxException,
+            StorageException {
+        if (this.getCredentials().doCredentialsNeedTransformUri()) {
+            if (this.getEndpoint().isAbsolute()) {
+                return this.getCredentials().transformUri(this.getEndpoint(), opContext);
+            }
+            else {
+                final StorageException ex = Utility.generateNewUnexpectedStorageException(null);
+                ex.getExtendedErrorInformation().setErrorMessage("Table Object relative URIs not supported.");
+                throw ex;
+            }
+        }
+        else {
+            return this.getEndpoint();
+        }
     }
 
     /**
