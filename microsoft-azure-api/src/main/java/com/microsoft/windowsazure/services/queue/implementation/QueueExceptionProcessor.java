@@ -60,7 +60,7 @@ public class QueueExceptionProcessor implements QueueContract {
 
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
-        return ServiceExceptionFactory.process("blob", e);
+        return ServiceExceptionFactory.process("queue", e);
     }
 
     public GetServicePropertiesResult getServiceProperties() throws ServiceException {

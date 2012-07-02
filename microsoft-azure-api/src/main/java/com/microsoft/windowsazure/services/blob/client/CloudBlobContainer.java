@@ -28,6 +28,8 @@ import java.util.HashMap;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.microsoft.windowsazure.services.blob.core.storage.SharedAccessSignatureHelper;
+import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
@@ -42,7 +44,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterator;
+import com.microsoft.windowsazure.services.core.storage.utils.implementation.LazySegmentedIterable;
+import com.microsoft.windowsazure.services.core.storage.utils.implementation.LeaseAction;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.SegmentedStorageOperation;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
 
@@ -617,7 +620,7 @@ public final class CloudBlobContainer {
                 final String aclString = ContainerResponse.getAcl(request);
                 final BlobContainerPermissions containerAcl = getContainerAcl(aclString);
 
-                final AccessPolicyResponse response = new AccessPolicyResponse(request.getInputStream());
+                final BlobAccessPolicyResponse response = new BlobAccessPolicyResponse(request.getInputStream());
 
                 for (final String key : response.getAccessIdentifiers().keySet()) {
                     containerAcl.getSharedAccessPolicies().put(key, response.getAccessIdentifiers().get(key));
@@ -708,232 +711,6 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Returns a shared access signature for the blob using the specified shared access policy. Note this does not
-     * contain the leading "?".
-     * <p>
-     * A shared access signature is a token that provides delegated access to blob resources. You can provide this token
-     * to clients in order to grant them specific permissions to resources for a controlled period of time. A shared
-     * access signature created for a blob grants access just to the content and metadata of that blob. A shared access
-     * signature created for a container grants access to the content and metadata of any blob in the container, and to
-     * the list of blobs in the container.
-     * <p>
-     * The parameters of the shared access signature that govern access are:
-     * <ul>
-     * <li>The start time at which the signature becomes valid.</li>
-     * <li>The time at which it expires.</li>
-     * <li>The permissions that it grants.</li>
-     * </ul>
-     * These parameters are specified in an access policy, represented by the {@link SharedAccessPolicy} class. There
-     * are two ways to specify an access policy:
-     * <ul>
-     * <li>
-     * You can specify it on a single shared access signature. In this case, the interval over which the signature may
-     * be valid is limited to one hour.</li>
-     * <li>
-     * You can specify it by creating a container-level access policy, which can be associated with one or more shared
-     * access signatures. This approach has the advantage of making it possible to revoke a shared access signature, if
-     * it should be compromised. To specify that the access policy should be used by the signature, call an overload
-     * that includes the <code>groupPolicyIdentifier</code> parameter.</li>
-     * </ul>
-     * You can also specify some parameters of the access policy on the signature and some on a container-level access
-     * policy. However, if you specify a parameter in both places, the parameter specified for the signature overrides
-     * that provided by the container-level access policy. For more information on shared access signatures, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224645&clcid=0x409'>Creating a Shared Access Signature</a>. For
-     * details on container-level access policies, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224646&clcid=0x409'>Specifying a Container-Level Access Policy</a>.
-     * 
-     * @param policy
-     *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
-     *            signature.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are invalid or the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public String generateSharedAccessSignature(final SharedAccessPolicy policy) throws InvalidKeyException,
-            StorageException {
-        return this.generateSharedAccessSignature(policy, null);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the shared access policy and operation context. Note this
-     * does not contain the leading "?".
-     * <p>
-     * A shared access signature is a token that provides delegated access to blob resources. You can provide this token
-     * to clients in order to grant them specific permissions to resources for a controlled period of time. A shared
-     * access signature created for a blob grants access just to the content and metadata of that blob. A shared access
-     * signature created for a container grants access to the content and metadata of any blob in the container, and to
-     * the list of blobs in the container.
-     * <p>
-     * The parameters of the shared access signature that govern access are:
-     * <ul>
-     * <li>The start time at which the signature becomes valid.</li>
-     * <li>The time at which it expires.</li>
-     * <li>The permissions that it grants.</li>
-     * </ul>
-     * These parameters are specified in an access policy, represented by the {@link SharedAccessPolicy} class. There
-     * are two ways to specify an access policy:
-     * <ul>
-     * <li>
-     * You can specify it on a single shared access signature. In this case, the interval over which the signature may
-     * be valid is limited to one hour.</li>
-     * <li>
-     * You can specify it by creating a container-level access policy, which can be associated with one or more shared
-     * access signatures. This approach has the advantage of making it possible to revoke a shared access signature, if
-     * it should be compromised. To specify that the access policy should be used by the signature, call an overload
-     * that includes the <code>groupPolicyIdentifier</code> parameter.</li>
-     * </ul>
-     * You can also specify some parameters of the access policy on the signature and some on a container-level access
-     * policy. However, if you specify a parameter in both places, the parameter specified for the signature overrides
-     * that provided by the container-level access policy. For more information on shared access signatures, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224645&clcid=0x409'>Creating a Shared Access Signature</a>. For
-     * details on container-level access policies, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224646&clcid=0x409'>Specifying a Container-Level Access Policy</a>.
-     * 
-     * @param policy
-     *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
-     *            signature.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are invalid or the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public String generateSharedAccessSignature(final SharedAccessPolicy policy, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        return this.generateSharedAccessSignatureCore(policy, null, opContext);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified group policy identifier. Note this does not
-     * contain the leading "?".
-     * <p>
-     * A shared access signature is a token that provides delegated access to blob resources. You can provide this token
-     * to clients in order to grant them specific permissions to resources for a controlled period of time. A shared
-     * access signature created for a blob grants access just to the content and metadata of that blob. A shared access
-     * signature created for a container grants access to the content and metadata of any blob in the container, and to
-     * the list of blobs in the container.
-     * <p>
-     * The parameters of the shared access signature that govern access are:
-     * <ul>
-     * <li>The start time at which the signature becomes valid.</li>
-     * <li>The time at which it expires.</li>
-     * <li>The permissions that it grants.</li>
-     * </ul>
-     * These parameters are specified in an access policy, represented by the {@link SharedAccessPolicy} class. There
-     * are two ways to specify an access policy:
-     * <ul>
-     * <li>
-     * You can specify it on a single shared access signature. In this case, the interval over which the signature may
-     * be valid is limited to one hour.</li>
-     * <li>
-     * You can specify it by creating a container-level access policy, which can be associated with one or more shared
-     * access signatures. This approach has the advantage of making it possible to revoke a shared access signature, if
-     * it should be compromised. To specify that the access policy should be used by the signature, call an overload
-     * that includes the <code>groupPolicyIdentifier</code> parameter.</li>
-     * </ul>
-     * You can also specify some parameters of the access policy on the signature and some on a container-level access
-     * policy. However, if you specify a parameter in both places, the parameter specified for the signature overrides
-     * that provided by the container-level access policy. For more information on shared access signatures, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224645&clcid=0x409'>Creating a Shared Access Signature</a>. For
-     * details on container-level access policies, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224646&clcid=0x409'>Specifying a Container-Level Access Policy</a>.
-     * 
-     * @param groupPolicyIdentifier
-     *            A <code>String</code> that represents the container-level access policy.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are invalid or the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public String generateSharedAccessSignature(final String groupPolicyIdentifier) throws InvalidKeyException,
-            StorageException {
-        return this.generateSharedAccessSignature(groupPolicyIdentifier, null);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
-     * Note this does not contain the leading "?".
-     * <p>
-     * A shared access signature is a token that provides delegated access to blob resources. You can provide this token
-     * to clients in order to grant them specific permissions to resources for a controlled period of time. A shared
-     * access signature created for a blob grants access just to the content and metadata of that blob. A shared access
-     * signature created for a container grants access to the content and metadata of any blob in the container, and to
-     * the list of blobs in the container.
-     * <p>
-     * The parameters of the shared access signature that govern access are:
-     * <ul>
-     * <li>The start time at which the signature becomes valid.</li>
-     * <li>The time at which it expires.</li>
-     * <li>The permissions that it grants.</li>
-     * </ul>
-     * These parameters are specified in an access policy, represented by the {@link SharedAccessPolicy} class. There
-     * are two ways to specify an access policy:
-     * <ul>
-     * <li>
-     * You can specify it on a single shared access signature. In this case, the interval over which the signature may
-     * be valid is limited to one hour.</li>
-     * <li>
-     * You can specify it by creating a container-level access policy, which can be associated with one or more shared
-     * access signatures. This approach has the advantage of making it possible to revoke a shared access signature, if
-     * it should be compromised. To specify that the access policy should be used by the signature, call an overload
-     * that includes the <code>groupPolicyIdentifier</code> parameter.</li>
-     * </ul>
-     * You can also specify some parameters of the access policy on the signature and some on a container-level access
-     * policy. However, if you specify a parameter in both places, the parameter specified for the signature overrides
-     * that provided by the container-level access policy. For more information on shared access signatures, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224645&clcid=0x409'>Creating a Shared Access Signature</a>. For
-     * details on container-level access policies, see <a
-     * href='http://go.microsoft.com/fwlink/?LinkID=224646&clcid=0x409'>Specifying a Container-Level Access Policy</a>.
-     * 
-     * @param groupPolicyIdentifier
-     *            A <code>String</code> that represents the container-level access policy.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are invalid or the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public String generateSharedAccessSignature(final String groupPolicyIdentifier, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        return this.generateSharedAccessSignatureCore(null, groupPolicyIdentifier, opContext);
-    }
-
-    /**
      * Returns a shared access signature for the container. Note this does not contain the leading "?".
      * 
      * @param policy
@@ -945,12 +722,8 @@ public final class CloudBlobContainer {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    private String generateSharedAccessSignatureCore(final SharedAccessPolicy policy,
-            final String groupPolicyIdentifier, OperationContext opContext) throws InvalidKeyException,
-            StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
+    public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy, final String groupPolicyIdentifier)
+            throws InvalidKeyException, StorageException {
 
         if (!this.blobServiceClient.getCredentials().canCredentialsSignRequest()) {
             final String errorMessage = "Cannot create Shared Access Signature unless the Account Key credentials are used by the BlobServiceClient.";
@@ -960,7 +733,7 @@ public final class CloudBlobContainer {
         final String resourceName = this.getSharedAccessCanonicalName();
 
         final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHash(policy,
-                groupPolicyIdentifier, resourceName, this.blobServiceClient, opContext);
+                groupPolicyIdentifier, resourceName, this.blobServiceClient, null);
 
         final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignature(policy,
                 groupPolicyIdentifier, "c", signature);
@@ -1273,7 +1046,7 @@ public final class CloudBlobContainer {
             }
         };
 
-        return new LazySegmentedIterator<CloudBlobClient, CloudBlobContainer, ListBlobItem>(impl,
+        return new LazySegmentedIterable<CloudBlobClient, CloudBlobContainer, ListBlobItem>(impl,
                 this.blobServiceClient, this, options.getRetryPolicyFactory(), opContext);
     }
 
@@ -1854,4 +1627,432 @@ public final class CloudBlobContainer {
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
     }
+
+    /**
+     * Acquires a new lease on the container.
+     * 
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @return A <code>String</code> that represents the lease ID.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final String acquireLease(final Integer leaseTimeInSeconds, final String proposedLeaseId)
+            throws StorageException {
+        return this.acquireLease(leaseTimeInSeconds, proposedLeaseId, null, null, null);
+    }
+
+    /**
+     * Acquires a new lease on the container using the specified visibilityTimeoutInSeconds, proposedLeaseId, request
+     * options and operation context.
+     * 
+     * @param visibilityTimeoutInSeconds
+     *            Specifies the the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A <code>String</code> that represents the lease ID.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final String acquireLease(final Integer leaseTimeInSeconds, final String proposedLeaseId,
+            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlobContainer, String> impl = new StorageOperation<CloudBlobClient, CloudBlobContainer, String>(
+                options) {
+            @Override
+            public String execute(final CloudBlobClient client, final CloudBlobContainer container,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, leaseTimeInSeconds, proposedLeaseId, null,
+                        accessCondition, blobOptions, opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                container.updatePropertiesFromResponse(request);
+
+                return BlobResponse.getLeaseID(request, opContext);
+            }
+        };
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Renews an existing lease.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the container. The LeaseID
+     *            is required to be set on the AccessCondition.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void renewLease(final AccessCondition accessCondition) throws StorageException {
+        this.renewLease(accessCondition, null, null);
+    }
+
+    /**
+     * Renews an existing lease using the specified request options and operation context.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
+     *            required to be set on the AccessCondition.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void renewLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("accessCondition", accessCondition);
+        Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlobContainer, Void> impl = new StorageOperation<CloudBlobClient, CloudBlobContainer, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlobContainer container,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), LeaseAction.RENEW, null, null, null, accessCondition, blobOptions,
+                        opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                container.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
+
+        ExecutionEngine
+                .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Releases the lease on the container.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
+     *            required to be set on the AccessCondition.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void releaseLease(final AccessCondition accessCondition) throws StorageException {
+        this.releaseLease(accessCondition, null, null);
+    }
+
+    /**
+     * Releases the lease on the container using the specified request options and operation context.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.The LeaseID is
+     *            required to be set on the AccessCondition.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void releaseLease(final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("accessCondition", accessCondition);
+        Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlobContainer, Void> impl = new StorageOperation<CloudBlobClient, CloudBlobContainer, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlobContainer container,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), LeaseAction.RELEASE, null, null, null, accessCondition, blobOptions,
+                        opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                container.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
+
+        ExecutionEngine
+                .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Breaks the lease but ensures that another client cannot acquire a new lease until the current lease period has
+     * expired.
+     * 
+     * @param breakPeriodInSeconds
+     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
+     * 
+     * @return The time, in seconds, remaining in the lease period.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final long breakLease(final Integer breakPeriodInSeconds) throws StorageException {
+        return this.breakLease(breakPeriodInSeconds, null, null, null);
+    }
+
+    /**
+     * Breaks the lease, using the specified request options and operation context, but ensures that another client
+     * cannot acquire a new lease until the current lease period has expired.
+     * 
+     * @param breakPeriodInSeconds
+     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return The time, in seconds, remaining in the lease period.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final long breakLease(final Integer breakPeriodInSeconds, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlobContainer, Long> impl = new StorageOperation<CloudBlobClient, CloudBlobContainer, Long>(
+                options) {
+            @Override
+            public Long execute(final CloudBlobClient client, final CloudBlobContainer container,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null, breakPeriodInSeconds,
+                        accessCondition, blobOptions, opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return -1L;
+                }
+
+                container.updatePropertiesFromResponse(request);
+                final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
+                return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
+            }
+        };
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Changes an existing lease.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
+     *            required to be set on the AccessCondition.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void changeLease(final String proposedLeaseId, final AccessCondition accessCondition)
+            throws StorageException {
+        this.changeLease(proposedLeaseId, accessCondition, null, null);
+    }
+
+    /**
+     * Changes an existing lease using the specified proposedLeaseId, request options and operation context.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
+     *            required to be set on the AccessCondition.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void changeLease(final String proposedLeaseId, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("accessCondition", accessCondition);
+        Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlobContainer, Void> impl = new StorageOperation<CloudBlobClient, CloudBlobContainer, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlobContainer container,
+                    final OperationContext opContext) throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
+                        .getTimeoutIntervalInMs(), LeaseAction.CHANGE, null, proposedLeaseId, null, accessCondition,
+                        blobOptions, opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                container.updatePropertiesFromResponse(request);
+                return null;
+            }
+        };
+
+        ExecutionEngine
+                .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
 }

@@ -96,6 +96,7 @@ public class DefaultBuilderTest {
 
         // Assert
         Assert.assertTrue("Exception must occur", false);
+        Assert.assertNull("Result should be null", result);
     }
 
     @Test
@@ -111,6 +112,7 @@ public class DefaultBuilderTest {
 
         // Assert
         Assert.assertTrue("Exception must occur", false);
+        Assert.assertNull("Result should be null", result);
     }
 
     @Test
@@ -155,7 +157,7 @@ public class DefaultBuilderTest {
         // Assert
         Assert.assertEquals("fallback", result1.getHello());
         Assert.assertEquals("fallback", result2.getHello());
-        Assert.assertEquals("fallback", result2.getHello());
+        Assert.assertEquals("fallback", result3.getHello());
     }
 
     @Test

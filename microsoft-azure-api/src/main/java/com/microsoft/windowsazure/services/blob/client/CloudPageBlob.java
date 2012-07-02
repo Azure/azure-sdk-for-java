@@ -37,6 +37,24 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * Represents a Windows Azure page blob.
  */
 public final class CloudPageBlob extends CloudBlob {
+    /**
+     * Creates an instance of the <code>CloudPageBlob</code> class using the specified relative URI and storage service
+     * client.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the relative URI to the blob, beginning with the
+     *            container name.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudPageBlob(final URI uri) throws StorageException {
+        super(BlobType.PAGE_BLOB);
+
+        Utility.assertNotNull("blobAbsoluteUri", uri);
+        this.uri = uri;
+        this.parseURIQueryStringAndVerify(uri, null, Utility.determinePathStyleFromUri(uri, null));;
+    }
 
     /**
      * Creates an instance of the <code>CloudPageBlob</code> class by copying values from another page blob.

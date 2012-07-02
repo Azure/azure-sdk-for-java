@@ -203,6 +203,46 @@ public final class Constants {
         public static final String LEASE_STATUS = PREFIX_FOR_STORAGE_HEADER + "lease-status";
 
         /**
+         * The header that specifies lease state.
+         */
+        public static final String LEASE_STATE = PREFIX_FOR_STORAGE_HEADER + "lease-state";
+
+        /**
+         * The header that specifies lease duration.
+         */
+        public static final String LEASE_DURATION = PREFIX_FOR_STORAGE_HEADER + "lease-duration";
+
+        /**
+         * The header that specifies copy status.
+         */
+        public static final String COPY_STATUS = PREFIX_FOR_STORAGE_HEADER + "copy-status";
+
+        /**
+         * The header that specifies copy progress.
+         */
+        public static final String COPY_PROGRESS = PREFIX_FOR_STORAGE_HEADER + "copy-progress";
+
+        /**
+         * The header that specifies copy status description.
+         */
+        public static final String COPY_STATUS_DESCRIPTION = PREFIX_FOR_STORAGE_HEADER + "copy-status-description";
+
+        /**
+         * The header that specifies copy id.
+         */
+        public static final String COPY_ID = PREFIX_FOR_STORAGE_HEADER + "copy-id";
+
+        /**
+         * The header that specifies copy source.
+         */
+        public static final String COPY_SOURCE = PREFIX_FOR_STORAGE_HEADER + "copy-source";
+
+        /**
+         * The header that specifies copy completion time.
+         */
+        public static final String COPY_COMPLETION_TIME = PREFIX_FOR_STORAGE_HEADER + "copy-completion-time";
+
+        /**
          * The header prefix for metadata.
          */
         public static final String PREFIX_FOR_STORAGE_METADATA = "x-ms-meta-";
@@ -272,7 +312,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2011-08-18";
+        public static final String TARGET_STORAGE_VERSION = "2012-02-12";
 
         /**
          * The UserAgent header.
@@ -287,7 +327,82 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "Client v0.1.1";
+        public static final String USER_AGENT_VERSION = "Client v0.1.2";
+    }
+
+    /**
+     * Defines constants for use with query strings.
+     */
+    public static class QueryConstants {
+        /**
+         * The query component for the SAS signature.
+         */
+        public static final String SIGNATURE = "sig";
+
+        /**
+         * The query component for the signed SAS expiry time.
+         */
+        public static final String SIGNED_EXPIRY = "se";
+
+        /**
+         * The query component for the signed SAS identifier.
+         */
+        public static final String SIGNED_IDENTIFIER = "si";
+
+        /**
+         * The query component for the signed SAS permissions.
+         */
+        public static final String SIGNED_PERMISSIONS = "sp";
+
+        /**
+         * The query component for the signed SAS resource.
+         */
+        public static final String SIGNED_RESOURCE = "sr";
+
+        /**
+         * The query component for the signed SAS start time.
+         */
+        public static final String SIGNED_START = "st";
+
+        /**
+         * The query component for the SAS start partition key.
+         */
+        public static final String START_PARTITION_KEY = "spk";
+
+        /**
+         * The query component for the SAS start row key.
+         */
+        public static final String START_ROW_KEY = "srk";
+
+        /**
+         * The query component for the SAS end partition key.
+         */
+        public static final String END_PARTITION_KEY = "epk";
+
+        /**
+         * The query component for the SAS end row key.
+         */
+        public static final String END_ROW_KEY = "erk";
+
+        /**
+         * The query component for the SAS table name.
+         */
+        public static final String SAS_TABLE_NAME = "tn";
+
+        /**
+         * The query component for the signing SAS key.
+         */
+        public static final String SIGNED_KEY = "sk";
+
+        /**
+         * The query component for the signed SAS version.
+         */
+        public static final String SIGNED_VERSION = "sv";
+
+        /**
+         * The query component for snapshot time.
+         */
+        public static final String SNAPSHOT = "snapshot";
     }
 
     /**
@@ -406,6 +521,46 @@ public final class Constants {
     public static final String LEASE_STATUS_ELEMENT = "LeaseStatus";
 
     /**
+     * XML element for the lease state.
+     */
+    public static final String LEASE_STATE_ELEMENT = "LeaseState";
+
+    /**
+     * XML element for the lease duration.
+     */
+    public static final String LEASE_DURATION_ELEMENT = "LeaseDuration";
+
+    /**
+     * XML element for the copy id.
+     */
+    public static final String COPY_ID_ELEMENT = "CopyId";
+
+    /**
+     * XML element for the copy status.
+     */
+    public static final String COPY_STATUS_ELEMENT = "CopyStatus";
+
+    /**
+     * XML element for the copy source .
+     */
+    public static final String COPY_SOURCE_ELEMENT = "CopySource";
+
+    /**
+     * XML element for the copy progress.
+     */
+    public static final String COPY_PROGRESS_ELEMENT = "CopyProgress";
+
+    /**
+     * XML element for the copy completion time.
+     */
+    public static final String COPY_COMPLETION_TIME_ELEMENT = "CopyCompletionTime";
+
+    /**
+     * XML element for the copy status description.
+     */
+    public static final String COPY_STATUS_DESCRIPTION_ELEMENT = "CopyStatusDescription";
+
+    /**
      * Constant signaling the resource is locked.
      */
     public static final String LOCKED_VALUE = "Locked";
@@ -465,6 +620,41 @@ public final class Constants {
      * XML element for the URL.
      */
     public static final String URL_ELEMENT = "Url";
+
+    /**
+     * XML element for a signed identifier.
+     */
+    public static final String SIGNED_IDENTIFIER_ELEMENT = "SignedIdentifier";
+
+    /**
+     * XML element for signed identifiers.
+     */
+    public static final String SIGNED_IDENTIFIERS_ELEMENT = "SignedIdentifiers";
+
+    /**
+     * XML element for an access policy.
+     */
+    public static final String ACCESS_POLICY = "AccessPolicy";
+
+    /**
+     * Maximum number of shared access policy identifiers supported by server.
+     */
+    public static final int MAX_SHARED_ACCESS_POLICY_IDENTIFIERS = 5;
+
+    /**
+     * XML element for the start time of an access policy.
+     */
+    public static final String START = "Start";
+
+    /**
+     * XML element for the end time of an access policy.
+     */
+    public static final String EXPIRY = "Expiry";
+
+    /**
+     * XML element for the permission of an access policy.
+     */
+    public static final String PERMISSION = "Permission";
 
     /**
      * Private Default Ctor

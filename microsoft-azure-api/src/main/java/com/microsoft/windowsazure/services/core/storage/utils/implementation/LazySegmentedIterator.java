@@ -34,8 +34,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  * @param <ENTITY_TYPE>
  *            The type of the objects the resulting iterable objects
  */
-public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> implements Iterator<ENTITY_TYPE>,
-        Iterable<ENTITY_TYPE> {
+public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> implements Iterator<ENTITY_TYPE> {
 
     /**
      * Holds the current segment of results.
@@ -124,14 +123,6 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
         }
 
         return this.currentSegmentIterator.hasNext();
-    }
-
-    /**
-     * Gets a reference to the iterator.
-     */
-    @Override
-    public Iterator<ENTITY_TYPE> iterator() {
-        return this;
     }
 
     /**
