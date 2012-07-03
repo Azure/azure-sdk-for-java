@@ -1,3 +1,7 @@
+2012.06.02 Version 0.3.0
+ * Added 1.7 Storage Support
+ * Added Javadocs for com.microsoft.windowsazure.services.table
+
 2012.05.02 Version 0.2.2
  * Added Javadoc comments to Azure Blob Service Layer
  * Fixed a URL encoding issue in Table Client Layer
