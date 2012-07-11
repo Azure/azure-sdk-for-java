@@ -62,61 +62,63 @@ deployment tools.
 The following is a quick example on how to set up a Azure blob using the API
 and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://www.windowsazure.com/en-us/develop/java/).
 
-    import com.microsoft.windowsazure.services.core.storage.*;
-    import com.microsoft.windowsazure.services.blob.client.*;
+```java
+import com.microsoft.windowsazure.services.core.storage.*;
+import com.microsoft.windowsazure.services.blob.client.*;
 
-    public class BlobSample {
+public class BlobSample {
 
-        public static final String storageConnectionString = 
-                "DefaultEndpointsProtocol=http;" + 
-                "AccountName=your_account_name;" + 
-                "AccountKey= your_account_name"; 
+    public static final String storageConnectionString = 
+            "DefaultEndpointsProtocol=http;" + 
+            "AccountName=your_account_name;" + 
+            "AccountKey= your_account_name"; 
 
-        public static void main(String[] args) 
+    public static void main(String[] args) 
+    {
+        try
         {
-            try
-            {
-                CloudStorageAccount account;
-                CloudBlobClient serviceClient;
-                CloudBlobContainer container;
-                CloudBlockBlob blob;
-            
-                account = CloudStorageAccount.parse(storageConnectionString);
-                serviceClient = account.createCloudBlobClient();
-                // Container name must be lower case.
-                container = serviceClient.getContainerReference("blobsample");
-                container.createIfNotExist();
-            
-                // Set anonymous access on the container.
-                BlobContainerPermissions containerPermissions;
-                containerPermissions = new BlobContainerPermissions();
-
-                // Upload an image file.
-                blob = container.getBlockBlobReference("image1.jpg");
-                File fileReference = new File ("c:\\myimages\\image1.jpg");
-                blob.upload(new FileInputStream(fileReference), fileReference.length());
-            } 
-            catch (FileNotFoundException fileNotFoundException)
-            {
-                System.out.print("FileNotFoundException encountered: ");
-                System.out.println(fileNotFoundException.getMessage());
-                System.exit(-1);
-            }
-            catch (StorageException storageException)
-            {
-                System.out.print("StorageException encountered: ");
-                System.out.println(storageException.getMessage());
-                System.exit(-1);
-            }
-            catch (Exception e)
-            {
-                System.out.print("Exception encountered: ");
-                System.out.println(e.getMessage());
-                System.exit(-1);
-            }
+            CloudStorageAccount account;
+            CloudBlobClient serviceClient;
+            CloudBlobContainer container;
+            CloudBlockBlob blob;
         
+            account = CloudStorageAccount.parse(storageConnectionString);
+            serviceClient = account.createCloudBlobClient();
+            // Container name must be lower case.
+            container = serviceClient.getContainerReference("blobsample");
+            container.createIfNotExist();
+        
+            // Set anonymous access on the container.
+            BlobContainerPermissions containerPermissions;
+            containerPermissions = new BlobContainerPermissions();
+
+            // Upload an image file.
+            blob = container.getBlockBlobReference("image1.jpg");
+            File fileReference = new File ("c:\\myimages\\image1.jpg");
+            blob.upload(new FileInputStream(fileReference), fileReference.length());
+        } 
+        catch (FileNotFoundException fileNotFoundException)
+        {
+            System.out.print("FileNotFoundException encountered: ");
+            System.out.println(fileNotFoundException.getMessage());
+            System.exit(-1);
         }
+        catch (StorageException storageException)
+        {
+            System.out.print("StorageException encountered: ");
+            System.out.println(storageException.getMessage());
+            System.exit(-1);
+        }
+        catch (Exception e)
+        {
+            System.out.print("Exception encountered: ");
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+    
     }
+}
+```
 
 #Need Help?
 
