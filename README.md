@@ -38,11 +38,13 @@ To get the source code of the SDK via git just type:
 To get the binaries of this library as distributed by Microsoft, ready for use
 within your project you can also have them installed by the Java package manager Maven.
 
-    <dependency>
-      <groupId>com.microsoft.windowsazure</groupId>
-      <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.3.0</version>
-    </dependency>
+```xml
+<dependency>
+    <groupId>com.microsoft.windowsazure</groupId>
+    <artifactId>microsoft-windowsazure-api</artifactId>
+    <version>0.3.0</version>
+</dependency>
+```
 
 ##Minimum Requirements
 
