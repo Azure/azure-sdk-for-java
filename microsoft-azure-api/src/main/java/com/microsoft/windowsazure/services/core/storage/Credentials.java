@@ -34,6 +34,16 @@ public final class Credentials {
     private final StorageKey key;
 
     /**
+     * Stores the name of the access key to be used when signing the request.
+     */
+    private String keyName;
+
+    /**
+     * Stores the account name whose key is used to sign requests.
+     */
+    private String signingAccountName;
+
+    /**
      * Creates an instance of the <code>Credentials</code> class, using the specified storage account name and access
      * key; the specified access key is in the form of a byte array.
      * 
@@ -54,6 +64,7 @@ public final class Credentials {
 
         this.accountName = accountName;
         this.key = new StorageKey(key);
+        this.signingAccountName = accountName;
     }
 
     /**
@@ -98,6 +109,22 @@ public final class Credentials {
     }
 
     /**
+     * Returns the account name whose key is used to sign requests.
+     * Internal use only.
+     */
+    public String getSigningAccountName() {
+        return this.signingAccountName;
+    }
+
+    /**
+     * Returns the name of the access key to be used when signing the request.
+     * Internal use only.
+     */
+    public String getKeyName() {
+        return this.keyName;
+    }
+
+    /**
      * Returns the access key to be used in signing the request.
      * 
      * @return A <code>String</code> that represents the access key to be used in signing the request.
@@ -114,5 +141,25 @@ public final class Credentials {
      */
     protected void setAccountName(final String accountName) {
         this.accountName = accountName;
+    }
+
+    /**
+     * Sets the account name whose key is used to sign requests.
+     * 
+     * @param signingAccountName
+     *            A <code>String</code> that represents the account name whose key is used to sign requests.
+     */
+    protected void setSigningAccountName(final String signingAccountName) {
+        this.signingAccountName = signingAccountName;
+    }
+
+    /**
+     * Sets the name of the access key to be used when signing the request.
+     * 
+     * @param keyName
+     *            A <code>String</code> that represents the name of the access key to be used when signing the request.
+     */
+    protected void setKeyName(final String keyName) {
+        this.keyName = keyName;
     }
 }

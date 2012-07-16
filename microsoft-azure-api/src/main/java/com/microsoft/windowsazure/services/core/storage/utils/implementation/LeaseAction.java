@@ -39,7 +39,12 @@ public enum LeaseAction {
     /**
      * Break the lease.
      */
-    BREAK;
+    BREAK,
+
+    /**
+     * Change the lease.
+     */
+    CHANGE;
 
     @Override
     public String toString() {
@@ -52,6 +57,8 @@ public enum LeaseAction {
                 return "Release";
             case BREAK:
                 return "Break";
+            case CHANGE:
+                return "Change";
             default:
                 // Wont Happen, all possible values covered above.
                 return Constants.EMPTY_STRING;

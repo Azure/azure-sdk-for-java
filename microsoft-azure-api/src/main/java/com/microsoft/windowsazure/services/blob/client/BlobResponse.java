@@ -16,6 +16,8 @@ package com.microsoft.windowsazure.services.blob.client;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,9 +43,11 @@ final class BlobResponse extends BaseResponse {
      * @param opContext
      *            a tracking object for the request
      * @return the BlobAttributes from the given request
+     * @throws ParseException
+     * @throws URISyntaxException
      */
     public static BlobAttributes getAttributes(final HttpURLConnection request, final URI resourceURI,
-            final String snapshotID, final OperationContext opContext) {
+            final String snapshotID, final OperationContext opContext) throws URISyntaxException, ParseException {
 
         final String blobType = request.getHeaderField(BlobConstants.BLOB_TYPE_HEADER);
         final BlobAttributes attributes = new BlobAttributes(BlobType.parse(blobType));
@@ -61,10 +65,9 @@ final class BlobResponse extends BaseResponse {
         lastModifiedCalendar.setTime(new Date(request.getLastModified()));
         properties.setLastModified(lastModifiedCalendar.getTime());
 
-        final String leaseStatus = request.getHeaderField(Constants.HeaderConstants.LEASE_STATUS);
-        if (!Utility.isNullOrEmpty(leaseStatus)) {
-            properties.setLeaseStatus(com.microsoft.windowsazure.services.core.storage.LeaseStatus.parse(leaseStatus));
-        }
+        properties.setLeaseStatus(BaseResponse.getLeaseStatus(request));
+        properties.setLeaseState(BaseResponse.getLeaseState(request));
+        properties.setLeaseDuration(BaseResponse.getLeaseDuration(request));
 
         final String rangeHeader = request.getHeaderField(Constants.HeaderConstants.CONTENT_RANGE);
         final String xContentLengthHeader = request.getHeaderField(BlobConstants.CONTENT_LENGTH_HEADER);
@@ -89,6 +92,8 @@ final class BlobResponse extends BaseResponse {
         attributes.snapshotID = snapshotID;
 
         attributes.setMetadata(getMetadata(request));
+
+        attributes.setCopyState(BaseResponse.getCopyState(request));
         return attributes;
     }
 

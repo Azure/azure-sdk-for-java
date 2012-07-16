@@ -1,6 +1,6 @@
 #Windows Azure SDK for Java
 
-This SDK allows you to build Windows Azure applications in  Java that allow
+This SDK allows you to build Windows Azure applications in Java that allow
 you to take advantage of Azure scalable cloud computing resources: table and blob
 storage, messaging through Service Bus.
 
@@ -41,7 +41,7 @@ within your project you can also have them installed by the Java package manager
     <dependency>
       <groupId>com.microsoft.windowsazure</groupId>
       <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.1.0</version>
+      <version>0.3.0</version>
     </dependency>
 
 ##Minimum Requirements
@@ -68,9 +68,9 @@ and uploading a file to it.  For additional information on using the client libr
     public class BlobSample {
 
         public static final String storageConnectionString = 
-              "DefaultEndpointsProtocol=http;" + 
-              "AccountName=your_account_name;" + 
-              "AccountKey= your_account_name"; 
+                "DefaultEndpointsProtocol=http;" + 
+                "AccountName=your_account_name;" + 
+                "AccountKey= your_account_name"; 
 
         public static void main(String[] args) 
         {

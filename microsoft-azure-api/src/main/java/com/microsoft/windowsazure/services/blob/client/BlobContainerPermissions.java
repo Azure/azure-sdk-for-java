@@ -55,14 +55,14 @@ public final class BlobContainerPermissions {
     /**
      * Gets the set of shared access policies for the container.
      */
-    private HashMap<String, SharedAccessPolicy> sharedAccessPolicies;
+    private HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies;
 
     /**
      * Creates an instance of the <code>BlobContainerPermissions</code> class.
      */
     public BlobContainerPermissions() {
         this.setPublicAccess(BlobContainerPublicAccessType.OFF);
-        this.sharedAccessPolicies = new HashMap<String, SharedAccessPolicy>();
+        this.sharedAccessPolicies = new HashMap<String, SharedAccessBlobPolicy>();
     }
 
     /**
@@ -75,10 +75,10 @@ public final class BlobContainerPermissions {
     /**
      * Returns the set of shared access policies for the container.
      * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessPolicy} objects that represent the set of shared
+     * @return A <code>HashMap</code> object of {@link SharedAccessBlobPolicy} objects that represent the set of shared
      *         access policies for the container.
      */
-    public HashMap<String, SharedAccessPolicy> getSharedAccessPolicies() {
+    public HashMap<String, SharedAccessBlobPolicy> getSharedAccessPolicies() {
         return this.sharedAccessPolicies;
     }
 
@@ -94,7 +94,7 @@ public final class BlobContainerPermissions {
      * @param sharedAccessPolicies
      *            the sharedAccessPolicies to set
      */
-    public void setSharedAccessPolicies(final HashMap<String, SharedAccessPolicy> sharedAccessPolicies) {
+    public void setSharedAccessPolicies(final HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies) {
         this.sharedAccessPolicies = sharedAccessPolicies;
     }
 }
