@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob;
 
@@ -48,6 +48,7 @@ import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
@@ -219,6 +220,19 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Assert
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullContainerFail() throws Exception {
+        // Arrange 
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act 
+        service.createContainer(null);
+
+        // Assert
+        assertTrue(false);
+    }
+
     @Test
     public void createContainerWithMetadataWorks() throws Exception {
         // Arrange
@@ -268,6 +282,40 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(acl);
 
+    }
+
+    @Test
+    public void deleteContainerWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String containerName = "deletecontainerworks";
+        service.createContainer(
+                containerName,
+                new CreateContainerOptions().setPublicAccess("blob").addMetadata("test", "bar")
+                        .addMetadata("blah", "bleah"));
+
+        // Act
+        service.deleteContainer(containerName);
+        ListContainersResult listContainerResult = service.listContainers();
+
+        // Assert
+        for (Container container : listContainerResult.getContainers()) {
+            assertTrue(!container.getName().equals(container));
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void deleteNullContainerFail() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        service.deleteContainer(null);
+
+        // Assert 
+        assertTrue(false);
     }
 
     @Test
@@ -886,6 +934,23 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void createBlobBlockNullContainerWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        String container = null;
+        String blob = "createBlobBlockNullContainerWorks";
+        String content = new String(new char[512]);
+        service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(content.getBytes("UTF-8")));
+
+        // Assert
+    }
+
+    @Test
     public void createBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -1296,6 +1361,24 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.deleteBlob(TEST_CONTAINER_FOR_BLOBS, "test2");
 
         // Assert
+    }
+
+    @Test
+    public void deleteBlobSnapshotSuccess() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String blobName = "deleteBlobSnapshotSuccess";
+        // Act
+        service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, blobName, 512);
+        CreateBlobSnapshotResult createBlobSnapshotResult = service.createBlobSnapshot(TEST_CONTAINER_FOR_BLOBS,
+                blobName);
+        DeleteBlobOptions deleteBlobOptions = new DeleteBlobOptions();
+        deleteBlobOptions.setSnapshot(createBlobSnapshotResult.getSnapshot());
+        service.deleteBlob(TEST_CONTAINER_FOR_BLOBS, blobName, deleteBlobOptions);
+
+        // Assert
+        assertTrue(true);
     }
 
     @Test
