@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -60,6 +61,7 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.BlobEntry;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult.Container;
@@ -941,13 +943,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Act
         String container = null;
-        String blob = "createBlobBlockNullContainerWorks";
+        String blob = "createblobblocknullcontainerworks";
         String content = new String(new char[512]);
         service.createBlockBlob(container, blob, new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.createBlobBlock(container, blob, "123", new ByteArrayInputStream(content.getBytes("UTF-8")));
-        service.createBlobBlock(container, blob, "124", new ByteArrayInputStream(content.getBytes("UTF-8")));
+        GetBlobPropertiesResult result = service.getBlobProperties(null, blob);
+        GetBlobResult getBlobResult = service.getBlob(null, blob);
 
         // Assert
+        assertNotNull(result);
+        assertNotNull(result.getMetadata());
+        assertEquals(0, result.getMetadata().size());
+        BlobProperties props = result.getProperties();
+        assertNotNull(props);
+
+        assertEquals(content, inputStreamToString(getBlobResult.getContentStream(), "UTF-8"));
     }
 
     @Test
@@ -1374,10 +1383,16 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         CreateBlobSnapshotResult createBlobSnapshotResult = service.createBlobSnapshot(TEST_CONTAINER_FOR_BLOBS,
                 blobName);
         DeleteBlobOptions deleteBlobOptions = new DeleteBlobOptions();
-        deleteBlobOptions.setSnapshot(createBlobSnapshotResult.getSnapshot());
+        String snapshot = createBlobSnapshotResult.getSnapshot();
+        deleteBlobOptions.setSnapshot(snapshot);
         service.deleteBlob(TEST_CONTAINER_FOR_BLOBS, blobName, deleteBlobOptions);
 
         // Assert
+        ListBlobsResult listBlobsResult = service.listBlobs(TEST_CONTAINER_FOR_BLOBS);
+        List<BlobEntry> blobEntry = listBlobsResult.getBlobs();
+        for (BlobEntry blobEntryItem : blobEntry) {
+            assertTrue(blobEntryItem.getSnapshot() != snapshot);
+        }
         assertTrue(true);
     }
 

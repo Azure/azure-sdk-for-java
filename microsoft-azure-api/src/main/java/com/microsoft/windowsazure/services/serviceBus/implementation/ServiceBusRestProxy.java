@@ -274,15 +274,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public GetQueueResult getQueue(String queuePath) throws ServiceException {
-        QueueInfo queueInfo;
-        try {
-            queueInfo = getResource().path(queuePath).get(QueueInfo.class);
-        }
-        catch (WebApplicationException webApplicationException) {
-            throw new ServiceException(webApplicationException.getMessage());
-        }
-
-        return new GetQueueResult(queueInfo);
+        return new GetQueueResult(getResource().path(queuePath).get(QueueInfo.class));
     }
 
     @Override
