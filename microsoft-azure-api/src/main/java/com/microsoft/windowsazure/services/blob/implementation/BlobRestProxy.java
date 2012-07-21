@@ -957,8 +957,8 @@ public class BlobRestProxy implements BlobContract {
 
     private String createPathFromContainer(String containerName) {
         String path;
-        if (containerName == null) {
-            path = "";
+        if (containerName == null || containerName.isEmpty()) {
+            path = "$root";
         }
         else {
             path = containerName;
