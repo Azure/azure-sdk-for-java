@@ -429,7 +429,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length) throws ServiceException;
+    void createPageBlob(String container, String blob, long length) throws ServiceException;
 
     /**
      * Creates a page blob of the specified maximum length, using the specified options.
@@ -457,7 +457,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
+    void createPageBlob(String container, String blob, long length, CreateBlobOptions options) throws ServiceException;
 
     /**
      * Creates a block blob from a content stream.
