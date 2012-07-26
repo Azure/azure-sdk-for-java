@@ -651,6 +651,9 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        if (options.isComputeRangeMD5()) {
+            builder = addOptionalHeader(builder, "x-ms-range-get-content-md5", "true");
+        }
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfNotSuccess(response);
