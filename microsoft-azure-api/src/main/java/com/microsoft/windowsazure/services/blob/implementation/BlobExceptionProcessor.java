@@ -30,10 +30,12 @@ import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -383,9 +385,9 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void createPageBlob(String container, String blob, long length) throws ServiceException {
+    public CreateBlobResult createPageBlob(String container, String blob, long length) throws ServiceException {
         try {
-            service.createPageBlob(container, blob, length);
+            return service.createPageBlob(container, blob, length);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -396,10 +398,10 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void createPageBlob(String container, String blob, long length, CreateBlobOptions options)
+    public CreateBlobResult createPageBlob(String container, String blob, long length, CreateBlobOptions options)
             throws ServiceException {
         try {
-            service.createPageBlob(container, blob, length, options);
+            return service.createPageBlob(container, blob, length, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -410,23 +412,24 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
-        try {
-            service.createBlockBlob(container, blob, contentStream);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream)
             throws ServiceException {
         try {
-            service.createBlockBlob(container, blob, contentStream, options);
+            return service.createBlockBlob(container, blob, contentStream);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream,
+            CreateBlobOptions options) throws ServiceException {
+        try {
+            return service.createBlockBlob(container, blob, contentStream, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -776,10 +779,10 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
-            throws ServiceException {
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob) throws ServiceException {
         try {
-            service.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob);
+            return service.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -790,10 +793,10 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
             String sourceBlob, CopyBlobOptions options) throws ServiceException {
         try {
-            service.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, options);
+            return service.copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
