@@ -1259,6 +1259,24 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(0, props.getSequenceNumber());
     }
 
+    @Test(expected = ServiceException.class)
+    public void getBlobPropertiesIfNotModified() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        Date currentLastModifiedDate = new Date();
+
+        // Act
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+        GetBlobPropertiesResult result = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions()
+                .setAccessCondition(AccessCondition.ifModifiedSince(currentLastModifiedDate)));
+
+        // Assert
+        assertTrue(false);
+    }
+
     @Test
     public void getBlobMetadataWorks() throws Exception {
         // Arrange

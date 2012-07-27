@@ -546,7 +546,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
-        ThrowIfError(response);
+        ThrowIfNotSuccess(response);
 
         return getBlobPropertiesResultFromResponse(response);
     }
