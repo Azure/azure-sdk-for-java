@@ -34,10 +34,12 @@ import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -488,12 +490,12 @@ public class BlobRestProxy implements BlobContract {
     }
 
     @Override
-    public void createPageBlob(String container, String blob, long length) throws ServiceException {
-        createPageBlob(container, blob, length, new CreateBlobOptions());
+    public CreateBlobResult createPageBlob(String container, String blob, long length) throws ServiceException {
+        return createPageBlob(container, blob, length, new CreateBlobOptions());
     }
 
     @Override
-    public void createPageBlob(String container, String blob, long length, CreateBlobOptions options)
+    public CreateBlobResult createPageBlob(String container, String blob, long length, CreateBlobOptions options)
             throws ServiceException {
         String path = createPathFromContainer(container);
         WebResource webResource = getResource(options).path(path).path(blob);
@@ -505,17 +507,25 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addPutBlobHeaders(options, builder);
 
-        builder.put();
+        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ThrowIfError(clientResponse);
+
+        CreateBlobResult createBlobResult = new CreateBlobResult();
+        createBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        createBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return createBlobResult;
     }
 
     @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
-        createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
-    }
-
-    @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream)
             throws ServiceException {
+        return createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
+    }
+
+    @Override
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream,
+            CreateBlobOptions options) throws ServiceException {
         String path = createPathFromContainer(container);
         System.out.println(path);
         WebResource webResource = getResource(options).path(path).path(blob);
@@ -526,7 +536,14 @@ public class BlobRestProxy implements BlobContract {
         builder = addPutBlobHeaders(options, builder);
 
         Object contentObject = (contentStream == null ? new byte[0] : contentStream);
-        builder.put(contentObject);
+        ClientResponse clientResponse = builder.put(ClientResponse.class, contentObject);
+        ThrowIfError(clientResponse);
+
+        CreateBlobResult createBlobResult = new CreateBlobResult();
+        createBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        createBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return createBlobResult;
     }
 
     @Override
@@ -713,13 +730,13 @@ public class BlobRestProxy implements BlobContract {
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
-            throws ServiceException {
-        copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob) throws ServiceException {
+        return copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
             String sourceBlob, CopyBlobOptions options) {
         String path = createPathFromContainer(destinationContainer);
         WebResource webResource = getResource(options).path(path).path(destinationBlob);
@@ -733,7 +750,14 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
         builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
 
-        builder.put();
+        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ThrowIfError(clientResponse);
+
+        CopyBlobResult copyBlobResult = new CopyBlobResult();
+        copyBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        copyBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return copyBlobResult;
     }
 
     @Override
