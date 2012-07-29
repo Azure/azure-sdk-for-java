@@ -96,12 +96,16 @@ public class PipelineHelpers {
                 switch (accessCondition.getHeader()) {
                     case IF_MATCH:
                         headerName = "x-ms-source-if-match";
+                        break;
                     case IF_UNMODIFIED_SINCE:
                         headerName = "x-ms-source-if-unmodified-since";
+                        break;
                     case IF_MODIFIED_SINCE:
                         headerName = "x-ms-source-if-modified-since";
+                        break;
                     case IF_NONE_MATCH:
                         headerName = "x-ms-source-if-none-match";
+                        break;
                     default:
                         headerName = "";
                 }
