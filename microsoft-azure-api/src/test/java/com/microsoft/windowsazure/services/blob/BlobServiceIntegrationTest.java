@@ -44,8 +44,10 @@ import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -661,6 +663,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void createPageBlobWithETagSuccess() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        CreateBlobResult createBlobResult = service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512);
+
+        // Assert
+        assertNotNull(createBlobResult);
+        assertNotNull(createBlobResult.getEtag());
+    }
+
+    @Test
     public void createPageBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -969,6 +985,21 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2", new ByteArrayInputStream("some content".getBytes()));
 
         // Assert
+    }
+
+    @Test
+    public void createBlockBlobWithValidEtag() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        CreateBlobResult createBlobResult = service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2",
+                new ByteArrayInputStream("some content".getBytes()));
+
+        // Assert
+        assertNotNull(createBlobResult);
+        assertNotNull(createBlobResult.getEtag());
     }
 
     @Test
@@ -1469,6 +1500,29 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
         assertEquals(content, inputStreamToString(result.getContentStream(), "UTF-8"));
+    }
+
+    @Test
+    public void copyBlobGetEtagSuccess() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String sourceBlobName = "copyblobgetetagsuccesssource";
+        String targetBlobName = "copyblobgetetagsuccesstarget";
+
+        //Act
+        String content = "some content2";
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, sourceBlobName,
+                new ByteArrayInputStream(content.getBytes("UTF-8")));
+        CopyBlobResult copyBlobResult = service.copyBlob(TEST_CONTAINER_FOR_BLOBS_2, targetBlobName,
+                TEST_CONTAINER_FOR_BLOBS, sourceBlobName);
+
+        GetBlobResult result = service.getBlob(TEST_CONTAINER_FOR_BLOBS_2, targetBlobName);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(copyBlobResult.getEtag(), result.getProperties().getEtag());
+
     }
 
     @Test
