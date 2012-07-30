@@ -80,7 +80,7 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
@@ -89,7 +89,7 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalSourceAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 String headerName;

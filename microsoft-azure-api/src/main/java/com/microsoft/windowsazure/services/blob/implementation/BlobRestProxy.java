@@ -146,12 +146,12 @@ public class BlobRestProxy implements BlobContract {
         return PipelineHelpers.addOptionalRangeHeader(builder, rangeStart, rangeEnd);
     }
 
-    private Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return PipelineHelpers.addOptionalAccessContitionHeader(builder, accessCondition);
+    private Builder addOptionalAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
+        return PipelineHelpers.addOptionalAccessConditionHeader(builder, accessCondition);
     }
 
-    private Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return PipelineHelpers.addOptionalSourceAccessContitionHeader(builder, accessCondition);
+    private Builder addOptionalSourceAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
+        return PipelineHelpers.addOptionalSourceAccessConditionHeader(builder, accessCondition);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
@@ -191,7 +191,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         return builder;
     }
@@ -322,7 +322,7 @@ public class BlobRestProxy implements BlobContract {
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
@@ -443,7 +443,7 @@ public class BlobRestProxy implements BlobContract {
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.put();
     }
@@ -543,7 +543,7 @@ public class BlobRestProxy implements BlobContract {
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
         ThrowIfNotSuccess(response);
@@ -565,7 +565,7 @@ public class BlobRestProxy implements BlobContract {
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);
@@ -594,7 +594,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-sequence-number-action", options.getSequenceNumberAction());
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -625,7 +625,7 @@ public class BlobRestProxy implements BlobContract {
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, metadata);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -650,7 +650,7 @@ public class BlobRestProxy implements BlobContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfNotSuccess(response);
@@ -680,7 +680,7 @@ public class BlobRestProxy implements BlobContract {
             builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only"
                     : "include");
         }
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
@@ -699,7 +699,7 @@ public class BlobRestProxy implements BlobContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -730,8 +730,8 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-copy-source",
                 getCopyBlobSourceName(sourceContainer, sourceBlob, options));
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
-        builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
+        builder = addOptionalSourceAccessConditionHeader(builder, options.getSourceAccessCondition());
 
         builder.put();
     }
@@ -788,7 +788,7 @@ public class BlobRestProxy implements BlobContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
-        builder = addOptionalAccessContitionHeader(builder, accessCondition);
+        builder = addOptionalAccessConditionHeader(builder, accessCondition);
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.put(ClientResponse.class);
@@ -834,7 +834,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class, contentStream);
         ThrowIfError(response);
@@ -862,7 +862,7 @@ public class BlobRestProxy implements BlobContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);
@@ -914,7 +914,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getBlobContentLanguage());
         builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.put(blockList);
     }
