@@ -33,7 +33,7 @@ public class CopyBlobResult {
      * Gets the ETag of the blob.
      * 
      * @return
-     *         A {@link String} containing the server-assigned ETag value for the snapshot.
+     *         A {@link String} containing the server-assigned ETag value for the copy blob.
      */
     public String getEtag() {
         return etag;
@@ -72,7 +72,7 @@ public class CopyBlobResult {
      * the server.
      * 
      * @param lastModified
-     *            A {@link java.util.Date} containing the last modified time of the snapshot.
+     *            A {@link java.util.Date} containing the last modified time of the blob.
      */
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
