@@ -349,6 +349,44 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void insertEntityEscapeCharactersWorks() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+        //Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityEscapeCharactersWorks")
+        //        .setProperty("test", EdmType.STRING, "t1").setProperty("test2", EdmType.STRING, "t2")
+        //        .setProperty("test3", EdmType.STRING, "t3");
+        Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityEscapeCharactersWorks")
+                .setProperty("test", EdmType.STRING, "\u0005").setProperty("test2", EdmType.STRING, "\u0011")
+                .setProperty("test3", EdmType.STRING, "\u0025");
+
+        // Act
+        InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
+
+        // Assert
+        assertNotNull(result);
+        assertNotNull(result.getEntity());
+
+        assertEquals("001", result.getEntity().getPartitionKey());
+        assertEquals("insertEntityEscapeCharactersWorks", result.getEntity().getRowKey());
+        assertNotNull(result.getEntity().getTimestamp());
+        assertNotNull(result.getEntity().getEtag());
+
+        assertNotNull(result.getEntity().getProperty("test"));
+        String actualTest1 = (String) result.getEntity().getProperty("test").getValue();
+        assertEquals("&#5;", actualTest1);
+
+        assertNotNull(result.getEntity().getProperty("test2"));
+        String actualTest2 = (String) result.getEntity().getProperty("test2").getValue();
+        assertEquals("&#11;", actualTest2);
+
+        assertNotNull(result.getEntity().getProperty("test3"));
+        String actualTest3 = (String) result.getEntity().getProperty("test3").getValue();
+        assertEquals("%", actualTest3);
+
+    }
+
+    @Test
     public void updateEntityWorks() throws Exception {
         System.out.println("updateEntityWorks()");
 
