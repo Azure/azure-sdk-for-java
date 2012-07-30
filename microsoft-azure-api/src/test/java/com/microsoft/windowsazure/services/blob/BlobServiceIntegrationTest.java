@@ -1227,6 +1227,32 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void getBlobWithMD5Range() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String expectedMd5 = "+zxkkqBt6HehE3r5suhS1w==";
+
+        // Act
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+
+        GetBlobOptions options = new GetBlobOptions();
+        options = options.setRangeStart(50L);
+        options = options.setRangeEnd(200L);
+        options = options.setComputeRangeMD5(true);
+        GetBlobResult getBlobResult = service.getBlob(container, blob, options);
+
+        // Assert
+        assertNotNull(getBlobResult);
+        BlobProperties blobProperties = getBlobResult.getProperties();
+        String actualMd5 = blobProperties.getContentMD5();
+        assertEquals(expectedMd5, actualMd5);
+
+    }
+
+    @Test
     public void getBlobPropertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
