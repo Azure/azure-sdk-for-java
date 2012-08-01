@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.table.client;
 
 import java.util.HashMap;
 
+import com.microsoft.windowsazure.services.queue.client.SharedAccessQueuePolicy;
+
 /**
  * Represents the permissions for a table.
  */
@@ -49,8 +51,8 @@ public final class TablePermissions {
      * Sets the set of shared access policies for the table.
      * 
      * @param sharedAccessPolicies
-     *            A <code>HashMap</code> object of {@link SharedAccessTablePolicy} objects that represent the set of shared
-     *         access policies for the table.
+     *            The set of shared access policies to set for the table, represented by a <code>HashMap</code> object of
+     *            {@link SharedAccessTablePolicy} objects.
      */
     public void setSharedAccessPolicies(final HashMap<String, SharedAccessTablePolicy> sharedAccessPolicies) {
         this.sharedAccessPolicies = sharedAccessPolicies;

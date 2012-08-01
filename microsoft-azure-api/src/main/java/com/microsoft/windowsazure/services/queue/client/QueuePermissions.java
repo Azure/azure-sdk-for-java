@@ -51,8 +51,8 @@ public final class QueuePermissions {
      * Sets the set of shared access policies for the queue.
      * 
      * @param sharedAccessPolicies
-     *            A <code>HashMap</code> object of {@link SharedAccessQueuePolicy} objects that represent the set of shared
-     *         access policies for the table.
+     *            The set of shared access policies to set for the queue, represented by a <code>HashMap</code> object of
+     *            {@link SharedAccessQueuePolicy} objects.
      */
     public void setSharedAccessPolicies(final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies) {
         this.sharedAccessPolicies = sharedAccessPolicies;
