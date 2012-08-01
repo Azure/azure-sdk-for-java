@@ -64,9 +64,9 @@ public class ServiceBusConfiguration {
      * 
      */
     public static Configuration configureWithWrapAuthentication(String namespace, String authenticationName,
-            String authenticationPassword, String serviceBusRootUri, String serviceBusWrapUri) {
+            String authenticationPassword, String serviceBusRootUri, String wrapRootUri) {
         return configureWithWrapAuthentication(null, Configuration.getInstance(), namespace, authenticationName,
-                authenticationPassword, serviceBusRootUri, serviceBusWrapUri);
+                authenticationPassword, serviceBusRootUri, wrapRootUri);
     }
 
     /**

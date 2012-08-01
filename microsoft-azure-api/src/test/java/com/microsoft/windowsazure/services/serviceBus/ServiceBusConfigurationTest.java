@@ -28,7 +28,7 @@ public class ServiceBusConfigurationTest {
 
         // Act
         ServiceBusConfiguration.configureWithWrapAuthentication(config, "alpha", "beta", "gamma",
-                ".servicebus.windows.net", "-sb.accesscontrol.windows.net/WRAPv0.9");
+                ".servicebus.windows.net/", "-sb.accesscontrol.windows.net/WRAPv0.9");
 
         // Assert
         assertEquals("https://alpha.servicebus.windows.net/", config.getProperty("serviceBus.uri"));
@@ -44,7 +44,7 @@ public class ServiceBusConfigurationTest {
 
         // Act
         ServiceBusConfiguration.configureWithWrapAuthentication("backup", config, "alpha", "beta", "gamma",
-                ".servicebus.windows.net", "-sb.accesscontrol.windows.net/WRAPv0.9");
+                ".servicebus.windows.net/", "-sb.accesscontrol.windows.net/WRAPv0.9");
 
         // Assert
         assertEquals("https://alpha.servicebus.windows.net/", config.getProperty("backup.serviceBus.uri"));
