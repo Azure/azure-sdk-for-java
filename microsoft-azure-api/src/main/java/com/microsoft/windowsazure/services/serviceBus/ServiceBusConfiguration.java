@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
@@ -63,8 +63,10 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configureWithWrapAuthentication(String namespace, String authenticationName, String authenticationPassword) {
-        return configureWithWrapAuthentication(null, Configuration.getInstance(), namespace, authenticationName, authenticationPassword);
+    public static Configuration configureWithWrapAuthentication(String namespace, String authenticationName,
+            String authenticationPassword, String serviceBusRootUri, String serviceBusWrapUri) {
+        return configureWithWrapAuthentication(null, Configuration.getInstance(), namespace, authenticationName,
+                authenticationPassword, serviceBusRootUri, serviceBusWrapUri);
     }
 
     /**
@@ -87,9 +89,10 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configureWithWrapAuthentication(Configuration configuration, String namespace, String authenticationName,
-            String authenticationPassword) {
-        return configureWithWrapAuthentication(null, configuration, namespace, authenticationName, authenticationPassword);
+    public static Configuration configureWithWrapAuthentication(Configuration configuration, String namespace,
+            String authenticationName, String authenticationPassword, String serviceBusRootUri, String wrapRootUri) {
+        return configureWithWrapAuthentication(null, configuration, namespace, authenticationName,
+                authenticationPassword, serviceBusRootUri, wrapRootUri);
     }
 
     /**
@@ -115,8 +118,9 @@ public class ServiceBusConfiguration {
      *         <code>ServiceBusService</code> class.
      * 
      */
-    public static Configuration configureWithWrapAuthentication(String profile, Configuration configuration, String namespace,
-            String authenticationName, String authenticationPassword) {
+    public static Configuration configureWithWrapAuthentication(String profile, Configuration configuration,
+            String namespace, String authenticationName, String authenticationPassword, String serviceBusRootUri,
+            String wrapRootUri) {
 
         if (profile == null) {
             profile = "";
@@ -125,10 +129,9 @@ public class ServiceBusConfiguration {
             profile = profile + ".";
         }
 
-        configuration.setProperty(profile + URI, "https://" + namespace + ".servicebus.windows.net/");
+        configuration.setProperty(profile + URI, "https://" + namespace + serviceBusRootUri);
 
-        configuration
-                .setProperty(profile + WRAP_URI, "https://" + namespace + "-sb.accesscontrol.windows.net/WRAPv0.9");
+        configuration.setProperty(profile + WRAP_URI, "https://" + namespace + wrapRootUri);
 
         configuration.setProperty(profile + WRAP_NAME, authenticationName);
         configuration.setProperty(profile + WRAP_PASSWORD, authenticationPassword);
