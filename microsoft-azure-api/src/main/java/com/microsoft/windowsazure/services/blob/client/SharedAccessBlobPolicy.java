@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import com.microsoft.windowsazure.services.core.storage.Constants;
+import com.microsoft.windowsazure.services.table.client.SharedAccessTablePermissions;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
@@ -127,45 +128,59 @@ public final class SharedAccessBlobPolicy {
     }
 
     /**
-     * @return the permissions
+     * Gets the permissions for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessBlobPermissions} values that
+     *         represents the set of shared access permissions.
      */
     public EnumSet<SharedAccessBlobPermissions> getPermissions() {
         return this.permissions;
     }
 
     /**
-     * @return the sharedAccessExpiryTime
+     * Gets the expiry time for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>Date</code> object that contains the shared access signature expiry time.
      */
     public Date getSharedAccessExpiryTime() {
         return this.sharedAccessExpiryTime;
     }
 
     /**
-     * @return the sharedAccessStartTime
+     * Gets the start time for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>Date</code> object that contains the shared access signature start time.
      */
     public Date getSharedAccessStartTime() {
         return this.sharedAccessStartTime;
     }
 
     /**
+     * Sets the permissions for a shared access signature associated with this shared access policy.
+     * 
      * @param permissions
-     *            the permissions to set
+     *            The permissions, represented by a <code>java.util.EnumSet</code> object that contains 
+     *            {@link SharedAccessBlobPermissions} values, to set for the shared access signature.
      */
     public void setPermissions(final EnumSet<SharedAccessBlobPermissions> permissions) {
         this.permissions = permissions;
     }
 
     /**
+     * Sets the expiry time for a shared access signature associated with this shared access policy.
+     * 
      * @param sharedAccessExpiryTime
-     *            the sharedAccessExpiryTime to set
+     *            The expiry time to set for the shared access signature.
      */
     public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
     }
 
     /**
+     * Sets the start time for a shared access signature associated with this shared access policy.
+     * 
      * @param sharedAccessStartTime
-     *            the sharedAccessStartTime to set
+     *            The start time to set for the shared access signature.
      */
     public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
         this.sharedAccessStartTime = sharedAccessStartTime;
