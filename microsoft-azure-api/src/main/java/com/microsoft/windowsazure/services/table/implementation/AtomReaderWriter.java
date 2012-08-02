@@ -77,6 +77,11 @@ public class AtomReaderWriter {
                     }
 
                     String value = edmValueConverter.serialize(edmType, entry.getValue().getValue());
+
+                    if ((edmType != null) && (edmType == "Edm.String")) {
+                        value = encodeNumericCharacterReference(value);
+                    }
+
                     if (value != null) {
                         writer.writeCharacters(value);
                     }
@@ -326,5 +331,22 @@ public class AtomReaderWriter {
     private void expect(XMLStreamReader xmlr, int eventType, String localName) throws XMLStreamException {
         xmlr.require(eventType, null, localName);
         nextSignificant(xmlr);
+    }
+
+    private String encodeNumericCharacterReference(String value) {
+        if (value == null) {
+            return null;
+        }
+        else {
+            char[] charArray = value.toCharArray();
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int index = 0; index < charArray.length; index++) {
+                if (charArray[index] < 0x20 || charArray[index] > 0x7f)
+                    stringBuffer.append("&#x").append(Integer.toHexString(charArray[index])).append(";");
+                else
+                    stringBuffer.append(charArray[index]);
+            }
+            return stringBuffer.toString();
+        }
     }
 }
