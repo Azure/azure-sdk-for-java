@@ -353,12 +353,12 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
-        //Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityEscapeCharactersWorks")
-        //        .setProperty("test", EdmType.STRING, "t1").setProperty("test2", EdmType.STRING, "t2")
-        //        .setProperty("test3", EdmType.STRING, "t3");
+
         Entity entity = new Entity().setPartitionKey("001").setRowKey("insertEntityEscapeCharactersWorks")
                 .setProperty("test", EdmType.STRING, "\u0005").setProperty("test2", EdmType.STRING, "\u0011")
-                .setProperty("test3", EdmType.STRING, "\u0025");
+                .setProperty("test3", EdmType.STRING, "\u0025").setProperty("test4", EdmType.STRING, "\uaaaa")
+                .setProperty("test5", EdmType.STRING, "\ub2e2").setProperty("test6", EdmType.STRING, " \ub2e2")
+                .setProperty("test7", EdmType.STRING, "ok \ub2e2");
 
         // Act
         InsertEntityResult result = service.insertEntity(TEST_TABLE_2, entity);
@@ -374,15 +374,31 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntity().getProperty("test"));
         String actualTest1 = (String) result.getEntity().getProperty("test").getValue();
-        assertEquals("&#5;", actualTest1);
+        assertEquals("&#x5;", actualTest1);
 
         assertNotNull(result.getEntity().getProperty("test2"));
         String actualTest2 = (String) result.getEntity().getProperty("test2").getValue();
-        assertEquals("&#11;", actualTest2);
+        assertEquals("&#x11;", actualTest2);
 
         assertNotNull(result.getEntity().getProperty("test3"));
         String actualTest3 = (String) result.getEntity().getProperty("test3").getValue();
         assertEquals("%", actualTest3);
+
+        assertNotNull(result.getEntity().getProperty("test4"));
+        String actualTest4 = (String) result.getEntity().getProperty("test4").getValue();
+        assertEquals("&#xaaaa;", actualTest4);
+
+        assertNotNull(result.getEntity().getProperty("test5"));
+        String actualTest5 = (String) result.getEntity().getProperty("test5").getValue();
+        assertEquals("&#xb2e2;", actualTest5);
+
+        assertNotNull(result.getEntity().getProperty("test6"));
+        String actualTest6 = (String) result.getEntity().getProperty("test6").getValue();
+        assertEquals(" &#xb2e2;", actualTest6);
+
+        assertNotNull(result.getEntity().getProperty("test7"));
+        String actualTest7 = (String) result.getEntity().getProperty("test7").getValue();
+        assertEquals("ok &#xb2e2;", actualTest7);
 
     }
 
