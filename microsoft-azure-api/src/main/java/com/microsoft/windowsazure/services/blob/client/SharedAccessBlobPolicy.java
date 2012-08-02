@@ -120,7 +120,7 @@ public final class SharedAccessBlobPolicy {
     private Date sharedAccessStartTime;
 
     /**
-     * Creates an instance of the <code>SharedAccessPolicy</code> class.
+     * Creates an instance of the <code>SharedAccessBlobPolicy</code> class.
      * */
     public SharedAccessBlobPolicy() {
         // Empty Default Ctor
