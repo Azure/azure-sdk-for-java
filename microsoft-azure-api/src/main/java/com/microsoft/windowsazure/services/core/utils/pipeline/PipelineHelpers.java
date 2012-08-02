@@ -80,7 +80,7 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
@@ -89,19 +89,23 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalSourceAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 String headerName;
                 switch (accessCondition.getHeader()) {
                     case IF_MATCH:
                         headerName = "x-ms-source-if-match";
+                        break;
                     case IF_UNMODIFIED_SINCE:
                         headerName = "x-ms-source-if-unmodified-since";
+                        break;
                     case IF_MODIFIED_SINCE:
                         headerName = "x-ms-source-if-modified-since";
+                        break;
                     case IF_NONE_MATCH:
                         headerName = "x-ms-source-if-none-match";
+                        break;
                     default:
                         headerName = "";
                 }

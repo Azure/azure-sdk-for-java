@@ -44,8 +44,10 @@ import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -661,6 +663,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void createPageBlobWithETagSuccess() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        CreateBlobResult createBlobResult = service.createPageBlob(TEST_CONTAINER_FOR_BLOBS, "test", 512);
+
+        // Assert
+        assertNotNull(createBlobResult);
+        assertNotNull(createBlobResult.getEtag());
+    }
+
+    @Test
     public void createPageBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -972,6 +988,21 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void createBlockBlobWithValidEtag() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        // Act
+        CreateBlobResult createBlobResult = service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test2",
+                new ByteArrayInputStream("some content".getBytes()));
+
+        // Assert
+        assertNotNull(createBlobResult);
+        assertNotNull(createBlobResult.getEtag());
+    }
+
+    @Test
     public void createBlockBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -1227,6 +1258,32 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void getBlobWithMD5Range() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String expectedMd5 = "+zxkkqBt6HehE3r5suhS1w==";
+
+        // Act
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+
+        GetBlobOptions options = new GetBlobOptions();
+        options = options.setRangeStart(50L);
+        options = options.setRangeEnd(200L);
+        options = options.setComputeRangeMD5(true);
+        GetBlobResult getBlobResult = service.getBlob(container, blob, options);
+
+        // Assert
+        assertNotNull(getBlobResult);
+        BlobProperties blobProperties = getBlobResult.getProperties();
+        String actualMd5 = blobProperties.getContentMD5();
+        assertEquals(expectedMd5, actualMd5);
+
+    }
+
+    @Test
     public void getBlobPropertiesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -1257,6 +1314,24 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("PageBlob", props.getBlobType());
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
+    }
+
+    @Test(expected = ServiceException.class)
+    public void getBlobPropertiesIfNotModified() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        Date currentLastModifiedDate = new Date();
+
+        // Act
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "test";
+        service.createPageBlob(container, blob, 4096);
+        GetBlobPropertiesResult result = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions()
+                .setAccessCondition(AccessCondition.ifModifiedSince(currentLastModifiedDate)));
+
+        // Assert
+        assertTrue(false);
     }
 
     @Test
@@ -1425,6 +1500,29 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
         assertEquals(content, inputStreamToString(result.getContentStream(), "UTF-8"));
+    }
+
+    @Test
+    public void copyBlobGetEtagSuccess() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+        String sourceBlobName = "copyblobgetetagsuccesssource";
+        String targetBlobName = "copyblobgetetagsuccesstarget";
+
+        //Act
+        String content = "some content2";
+        service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, sourceBlobName,
+                new ByteArrayInputStream(content.getBytes("UTF-8")));
+        CopyBlobResult copyBlobResult = service.copyBlob(TEST_CONTAINER_FOR_BLOBS_2, targetBlobName,
+                TEST_CONTAINER_FOR_BLOBS, sourceBlobName);
+
+        GetBlobResult result = service.getBlob(TEST_CONTAINER_FOR_BLOBS_2, targetBlobName);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(copyBlobResult.getEtag(), result.getProperties().getEtag());
+
     }
 
     @Test
