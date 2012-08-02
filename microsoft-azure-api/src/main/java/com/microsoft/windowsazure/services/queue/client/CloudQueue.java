@@ -1540,10 +1540,13 @@ public final class CloudQueue {
      *            The access policy for the shared access signature.
      * @param groupPolicyIdentifier
      *            A queue-level access policy.
-     * @return a shared access signature for the container.
+     * @return A shared access signature for the container.
      * @throws InvalidKeyException
+     *            If an invalid key was passed.
      * @throws StorageException
+     *            If a storage service error occurred.
      * @throws IllegalArgumentException
+     *            If an unexpected value is passed.
      */
     public String generateSharedAccessSignature(final SharedAccessQueuePolicy policy, final String groupPolicyIdentifier)
             throws InvalidKeyException, StorageException {
