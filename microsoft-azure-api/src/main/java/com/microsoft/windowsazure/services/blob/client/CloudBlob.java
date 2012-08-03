@@ -219,7 +219,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Acquires a new lease on the blob.
      * 
-     * @param visibilityTimeoutInSeconds
+     * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
      *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
      *            zero.
