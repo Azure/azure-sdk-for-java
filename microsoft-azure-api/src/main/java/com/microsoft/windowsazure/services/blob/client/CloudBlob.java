@@ -220,8 +220,9 @@ public abstract class CloudBlob implements ListBlobItem {
      * Acquires a new lease on the blob.
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
@@ -242,8 +243,9 @@ public abstract class CloudBlob implements ListBlobItem {
      * Acquires a new lease on the blob using the specified request options and operation context.
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
@@ -253,10 +255,10 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -338,14 +340,14 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the lease but ensures that another client cannot acquire a new lease until the current lease period has
+     * Breaks the existing lease by rejecting future requests to renew the lease until the current lease period has
      * expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            Specifies the time to wait, in seconds, until the current lease expires.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
-     * @return The time, in seconds, remaining in the lease period.
+     * @return The time, in seconds, remaining in the current lease period.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -356,21 +358,21 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the lease, using the specified request options and operation context, but ensures that another client
-     * cannot acquire a new lease until the current lease period has expired.
+     * Breaks the existing lease, using the specified request options and operation context, by rejecting future requests 
+     * to renew the lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            Specifies the time to wait, in seconds, until the current lease expires.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -2000,15 +2002,15 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Changes an existing lease.
+     * Changes the existing lease ID to the proposed lease ID.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -2020,21 +2022,22 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Changes an existing lease using the specified proposedLeaseId, request options and operation context.
+     * Changes the existing lease ID to the proposed lease Id with the specified request options and operation
+     * context.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
