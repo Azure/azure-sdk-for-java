@@ -217,7 +217,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Acquires a new lease on the blob.
+     * Acquires a new lease on the blob with the specified lease time and proposed lease ID.
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
@@ -240,7 +240,8 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Acquires a new lease on the blob using the specified request options and operation context.
+     * Acquires a new lease on the blob with the specified lease time, proposed lease ID, request
+     * options, and operation context.
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
@@ -253,10 +254,12 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
      *            <code>null</code> will use the default request options from the associated service client 
      *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -347,7 +350,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            Specifies the time to wait, in seconds, until the current lease expires.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
-     * @return The time, in seconds, remaining in the current lease period.
+     * @return The time, in seconds, remaining in the lease period.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -2022,8 +2025,8 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Changes the existing lease ID to the proposed lease Id with the specified request options and operation
-     * context.
+     * Changes the existing lease ID to the proposed lease Id with the specified access conditions, request options,
+     * and operation context.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
