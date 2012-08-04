@@ -72,67 +72,77 @@ public final class BlobContainerProperties {
     }
 
     /**
-     * @return the leaseStatus
+     * Gets the lease status of the container.
+     * 
+     * @return The lease status as a <code>LeaseStatus</code> object.
      */
     public LeaseStatus getLeaseStatus() {
         return this.leaseStatus;
     }
 
     /**
-     * @return the leaseState
+     * Gets the lease state of the container.
+     * 
+     * @return The lease state as a <code>LeaseState</code> object.
      */
     public LeaseState getLeaseState() {
         return this.leaseState;
     }
 
     /**
-     * @return the leaseDuration
+     * Gets the lease duration of the container.
+     * 
+     * @return The lease duration as a <code>LeaseDuration</code> object.
      */
     public LeaseDuration getLeaseDuration() {
         return this.leaseDuration;
     }
 
     /**
+     * Sets the ETag value on the container.
+     * 
      * @param etag
-     *            the etag to set
+     *            The ETag value to set, as a string.
      */
     public void setEtag(final String etag) {
         this.etag = etag;
     }
 
     /**
+     * Sets the last modified time on the container.
+     * 
      * @param lastModified
-     *            the lastModified to set
+     *            The last modified time to set, as a <code>Date</code> object.
      */
     public void setLastModified(final Date lastModified) {
         this.lastModified = lastModified;
     }
 
     /**
-     * Reserved for internal use.
+     * Sets the lease status on the container. Reserved for internal use.
      * 
      * @param leaseStatus
-     *            the leaseStatus to set
+     *            The lease status to set, as a <code>LeaseStatus</code> object.
      */
     public void setLeaseStatus(final LeaseStatus leaseStatus) {
         this.leaseStatus = leaseStatus;
     }
 
     /**
-     * Reserved for internal use.
+     * Sets the lease status on the container. Reserved for internal use.
      * 
      * @param LeaseState
-     *            the LeaseState to set
+     *            The lease state to set, as a <code>LeaseState</code> object.
      */
     public void setLeaseState(final LeaseState leaseState) {
         this.leaseState = leaseState;
     }
 
     /**
-     * Reserved for internal use.
+     * Sets the lease duration on the container. Reserved for internal use.
      * 
      * @param LeaseDuration
-     *            the LeaseDuration to set
+     *            The lease duration to set, as a <code>LeaseDuration</code> object.
      */
     public void setLeaseDuration(final LeaseDuration leaseDuration) {
         this.leaseDuration = leaseDuration;
