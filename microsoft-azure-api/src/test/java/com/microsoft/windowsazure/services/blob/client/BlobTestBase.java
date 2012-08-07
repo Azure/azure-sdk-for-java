@@ -51,7 +51,11 @@ public class BlobTestBase {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
         }
         else {
-            httpAcc = CloudStorageAccount.parse(CLOUD_ACCOUNT_HTTP);
+            String cloudAccount = CLOUD_ACCOUNT_HTTP;
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("blob.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("blob.accountKey"));
+
+            httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
 
         bClient = httpAcc.createCloudBlobClient();
