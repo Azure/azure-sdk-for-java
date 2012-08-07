@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  */
 public enum CopyStatus {
     /**
-     * The copy status is not specified..
+     * The copy status is not specified.
      */
     UNSPECIFIED,
 
