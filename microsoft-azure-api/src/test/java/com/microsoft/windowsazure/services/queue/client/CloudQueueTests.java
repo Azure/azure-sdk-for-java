@@ -98,8 +98,9 @@ public class CloudQueueTests extends QueueTestBase {
             // Add a policy, check setting and getting.
             SharedAccessQueuePolicy policy1 = new SharedAccessQueuePolicy();
             Calendar now = GregorianCalendar.getInstance();
+            now.add(Calendar.MINUTE, -15);
             policy1.setSharedAccessStartTime(now.getTime());
-            now.add(Calendar.MINUTE, 10);
+            now.add(Calendar.MINUTE, 30);
             policy1.setSharedAccessExpiryTime(now.getTime());
             String identifier = UUID.randomUUID().toString();
 
@@ -1269,5 +1270,36 @@ public class CloudQueueTests extends QueueTestBase {
 
         queue.setMetadata(metadata);
         queue.uploadMetadata();
+    }
+
+    @Test
+    public void testSASClientParse() throws StorageException, URISyntaxException, InvalidKeyException {
+
+        // Add a policy, check setting and getting.
+        SharedAccessQueuePolicy policy1 = new SharedAccessQueuePolicy();
+        Calendar now = GregorianCalendar.getInstance();
+        now.add(Calendar.MINUTE, -15);
+        policy1.setSharedAccessStartTime(now.getTime());
+        now.add(Calendar.MINUTE, 30);
+        policy1.setSharedAccessExpiryTime(now.getTime());
+
+        policy1.setPermissions(EnumSet.of(SharedAccessQueuePermissions.READ,
+                SharedAccessQueuePermissions.PROCESSMESSAGES, SharedAccessQueuePermissions.ADD,
+                SharedAccessQueuePermissions.UPDATE));
+
+        String sasString = queue.generateSharedAccessSignature(policy1, null);
+
+        URI queueUri = new URI("http://myaccount.queue.core.windows.net/myqueue");
+
+        CloudQueueClient queueClient1 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
+                new StorageCredentialsSharedAccessSignature(sasString));
+
+        CloudQueue queue1 = new CloudQueue(queueUri, queueClient1);
+        queue1.getName();
+
+        CloudQueueClient queueClient2 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
+                new StorageCredentialsSharedAccessSignature(sasString));
+        CloudQueue queue2 = new CloudQueue(queueUri, queueClient2);
+        queue2.getName();
     }
 }
