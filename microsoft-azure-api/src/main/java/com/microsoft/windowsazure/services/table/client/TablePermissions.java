@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.table.client;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.queue.client.SharedAccessQueuePolicy;
 
 /**
  * Represents the permissions for a table.

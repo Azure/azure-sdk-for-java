@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import com.microsoft.windowsazure.services.core.storage.Constants;
-import com.microsoft.windowsazure.services.table.client.SharedAccessTablePermissions;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
