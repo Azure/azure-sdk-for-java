@@ -35,7 +35,7 @@ public class ResourceLocationManager {
         return UriBuilder.fromUri(baseURI).path(originalURI.getPath()).build();
     }
 
-    public void setRedirectedURI(String newURI) throws URISyntaxException, NullPointerException {
+    public void setRedirectedURI(String newURI) throws URISyntaxException {
         baseURI = new URI(newURI);
     }
 }

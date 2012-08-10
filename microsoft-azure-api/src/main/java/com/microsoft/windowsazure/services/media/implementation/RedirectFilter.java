@@ -25,10 +25,10 @@ public class RedirectFilter extends ClientFilter {
             try {
                 locationManager.setRedirectedURI(response.getHeaders().getFirst("Location"));
             }
-            catch (NullPointerException ex) {
+            catch (NullPointerException e) {
                 throw new ClientHandlerException("HTTP Redirect did not include Location header");
             }
-            catch (URISyntaxException ex) {
+            catch (URISyntaxException e) {
                 throw new ClientHandlerException("HTTP Redirect location is not a valid URI");
             }
 

@@ -45,6 +45,7 @@ public class RedirectionFilterTest {
         c.addFilter(new RedirectFilter(new ResourceLocationManager(originalBaseURI)));
 
         ClientResponse response = c.resource("Things").get(ClientResponse.class);
+
         assertEquals(200, response.getStatus());
         assertEquals(redirectedBaseURI + "Things", sink.request.getURI().toString());
     }
@@ -127,6 +128,7 @@ public class RedirectionFilterTest {
 
         @Override
         public ClientResponse handle(ClientRequest request) throws ClientHandlerException {
+
             if (request.getURI().toString().startsWith(uriToRedirect)) {
                 ClientResponse response = Mockito.mock(ClientResponse.class);
                 Mockito.when(response.getStatus()).thenReturn(301);
