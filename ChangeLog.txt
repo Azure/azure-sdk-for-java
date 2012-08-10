@@ -1,0 +1,39 @@
+2012.06.02 Version 0.3.0
+ * Added 1.7 Storage Support
+ * Added Javadocs for com.microsoft.windowsazure.services.table
+
+2012.05.02 Version 0.2.2
+ * Added Javadoc comments to Azure Blob Service Layer
+ * Fixed a URL encoding issue in Table Client Layer
+ * Made CloudTableClient use Iterator instead of Iterable
+
+2012.04.11 Version 0.2.1
+ * Added Service Layer support for Azure Table
+ * Added Javadoc comments to Azure Queue Service Layer
+
+2012.02.28 Version 0.2.0
+ * Added Support for Azure Table in com.microsoft.windowsazure.services.table
+ * Added Client Tests for Table
+ * Added a dependency on apache commons-lang3 3.1
+ * ResultsSegment exposes an ArrayList instead of an Iterable
+ * UserAgent updated to v1.1.2
+
+2012.01.31 Version 0.1.3
+ * Updated User Agent to v0.1.1
+ * Updated License Headers
+ * Blob Client Mark bug fix
+ * Retry Logic updated in Blob and Queue Client to not retry
+ * Error Response parsing updated for Table compatibility
+ * MD5 is delay calculated on copy streams
+ * Date parsing support for various number of fractional decimals
+ * StorageErrorResponse updated to support lower case xml for tables
+
+2011.12.22 Version 0.1.2
+ * Fixed CloudBlob.download to lock to ETag during a resume
+ * Ensured that Client Side Exceptions are not resumed
+
+2011.12.14 Version 0.1.1
+ * Commenting/documentation changes
+
+2011.12.09 Version 0.1.0
+ * Initial Release

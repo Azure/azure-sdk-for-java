@@ -1,0 +1,74 @@
+/**
+ * Copyright 2011 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package com.microsoft.windowsazure.services.serviceBus.implementation;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+public class BrokerPropertiesMapper {
+
+    public BrokerProperties fromString(String value) throws IllegalArgumentException {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(value.getBytes(), BrokerProperties.class);
+        }
+        catch (JsonParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new IllegalArgumentException(e);
+        }
+        catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new IllegalArgumentException(e);
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public String toString(BrokerProperties value) {
+        ObjectMapper mapper = new ObjectMapper();
+        Writer writer = new StringWriter();
+        try {
+            mapper.writeValue(writer, value);
+        }
+        catch (JsonGenerationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return writer.toString();
+    }
+
+}
