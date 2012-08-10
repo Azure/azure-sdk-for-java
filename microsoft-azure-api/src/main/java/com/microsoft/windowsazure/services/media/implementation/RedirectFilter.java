@@ -21,23 +21,20 @@ public class RedirectFilter extends ClientFilter {
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
         ClientResponse response = getNext().handle(request);
-        if (response.getStatus() == 301) {
-            String newLocation = response.getHeaders().getFirst("Location");
-            if (newLocation == null) {
-                throw new ClientHandlerException("HTTP Redirect did not include location header");
-            }
+        while (response.getStatus() == 301) {
             try {
-                locationManager.setRedirectedURI(newLocation);
+                locationManager.setRedirectedURI(response.getHeaders().getFirst("Location"));
+            }
+            catch (NullPointerException ex) {
+                throw new ClientHandlerException("HTTP Redirect did not include Location header");
             }
             catch (URISyntaxException ex) {
                 throw new ClientHandlerException("HTTP Redirect location is not a valid URI");
             }
 
             request.setURI(locationManager.getRedirectedURI(originalURI));
-            return getNext().handle(request);
+            response = getNext().handle(request);
         }
-        else {
-            return response;
-        }
+        return response;
     }
 }
