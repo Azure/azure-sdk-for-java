@@ -131,7 +131,7 @@ public class RedirectionFilterTest {
 
             if (request.getURI().toString().startsWith(uriToRedirect)) {
                 ClientResponse response = Mockito.mock(ClientResponse.class);
-                Mockito.when(response.getStatus()).thenReturn(301);
+                Mockito.when(response.getClientResponseStatus()).thenReturn(ClientResponse.Status.MOVED_PERMANENTLY);
                 MultivaluedMap<String, String> headers = new InBoundHeaders();
                 headers.add("location", uriRedirectedTo);
                 Mockito.when(response.getHeaders()).thenReturn(headers);

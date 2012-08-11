@@ -1,3 +1,18 @@
+/**
+ * Copyright 2011 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
@@ -17,11 +32,15 @@ public class RedirectFilter extends ClientFilter {
 
     @Override
     public ClientResponse handle(ClientRequest request) throws ClientHandlerException {
+        if (request == null) {
+            throw new IllegalArgumentException("Request should not be null");
+        }
+
         URI originalURI = request.getURI();
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
         ClientResponse response = getNext().handle(request);
-        while (response.getStatus() == 301) {
+        while (response.getClientResponseStatus() == ClientResponse.Status.MOVED_PERMANENTLY) {
             try {
                 locationManager.setRedirectedURI(response.getHeaders().getFirst("Location"));
             }
