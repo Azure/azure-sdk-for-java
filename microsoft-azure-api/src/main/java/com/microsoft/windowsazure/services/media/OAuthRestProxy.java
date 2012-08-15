@@ -34,6 +34,12 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
 
+/**
+ * The OAuth rest proxy.
+ * 
+ * @author azurejava@microsoft.com
+ * 
+ */
 public class OAuthRestProxy implements OAuthContract {
     Client channel;
 

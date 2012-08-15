@@ -52,8 +52,9 @@ public class OAuthTokenManagerTest {
         String acsBaseUri = "testurl";
         String accountName = "testname";
         String accountPassword = "testpassword";
+        String scope = "urn:WindowsAzureMediaServices";
 
-        client = new OAuthTokenManager(contract, dateFactory, new URI(acsBaseUri), accountName, accountPassword);
+        client = new OAuthTokenManager(contract, dateFactory, new URI(acsBaseUri), accountName, accountPassword, scope);
 
         when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
             @Override
@@ -76,20 +77,9 @@ public class OAuthTokenManagerTest {
                 wrapResponse.setExpiresIn(83);
                 return wrapResponse;
             }
-        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope");
+        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword",
+                "urn:WindowsAzureMediaServices");
 
-        doAnswer(new Answer<OAuthTokenResponse>() {
-            int count = 0;
-
-            @Override
-            public OAuthTokenResponse answer(InvocationOnMock invocation) throws Throwable {
-                ++count;
-                OAuthTokenResponse wrapResponse = new OAuthTokenResponse();
-                wrapResponse.setAccessToken("testaccesstoken2-" + count);
-                wrapResponse.setExpiresIn(83);
-                return wrapResponse;
-            }
-        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope2");
     }
 
     @Test
@@ -99,7 +89,7 @@ public class OAuthTokenManagerTest {
         doIncrementingTokens();
 
         // Act
-        String accessToken = client.getAccessToken("https://test/scope");
+        String accessToken = client.getAccessToken();
 
         // Assert
         assertNotNull(accessToken);
@@ -113,39 +103,18 @@ public class OAuthTokenManagerTest {
         doIncrementingTokens();
 
         // Act
-        String accessToken1 = client.getAccessToken("https://test/scope");
-        String accessToken2 = client.getAccessToken("https://test/scope");
+        String accessToken1 = client.getAccessToken();
+        String accessToken2 = client.getAccessToken();
         calendar.add(Calendar.SECOND, 40);
-        String accessToken3 = client.getAccessToken("https://test/scope");
+        String accessToken3 = client.getAccessToken();
 
         // Assert
         assertEquals("testaccesstoken1-1", accessToken1);
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-1", accessToken3);
 
-        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope");
-    }
-
-    @Test
-    public void callsToDifferentScopeWillResultInDifferentAccessTokens() throws ServiceException, URISyntaxException,
-            JsonParseException, JsonMappingException, IOException {
-        // Arrange
-        doIncrementingTokens();
-
-        // Act
-        String accessToken1 = client.getAccessToken("https://test/scope");
-        String accessToken2 = client.getAccessToken("https://test/scope2");
-        calendar.add(Calendar.SECOND, 40);
-        String accessToken3 = client.getAccessToken("https://test/scope");
-
-        // Assert
-        assertEquals("testaccesstoken1-1", accessToken1);
-        assertEquals("testaccesstoken2-1", accessToken2);
-        assertEquals("testaccesstoken1-1", accessToken3);
-
-        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope");
-        verify(contract, times(1))
-                .getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope2");
+        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword",
+                "urn:WindowsAzureMediaServices");
     }
 
     @Test
@@ -155,17 +124,18 @@ public class OAuthTokenManagerTest {
         doIncrementingTokens();
 
         // Act
-        String accessToken1 = client.getAccessToken("https://test/scope");
-        String accessToken2 = client.getAccessToken("https://test/scope");
+        String accessToken1 = client.getAccessToken();
+        String accessToken2 = client.getAccessToken();
         calendar.add(Calendar.SECOND, 45);
-        String accessToken3 = client.getAccessToken("https://test/scope");
+        String accessToken3 = client.getAccessToken();
 
         // Assert
         assertEquals("testaccesstoken1-1", accessToken1);
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-2", accessToken3);
 
-        verify(contract, times(2)).getAccessToken(new URI("testurl"), "testname", "testpassword", "https://test/scope");
+        verify(contract, times(2)).getAccessToken(new URI("testurl"), "testname", "testpassword",
+                "urn:WindowsAzureMediaServices");
     }
 
 }

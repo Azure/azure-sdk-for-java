@@ -22,11 +22,17 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
+/**
+ * The Jersey filter for OAuth.
+ * 
+ * @author azurejava@microsoft.com
+ * 
+ */
 public class OAuthFilter extends ClientFilter {
     private final OAuthTokenManager oAuthTokenManager;
 
     /**
-     * Creates an <code>OAuthFilter</code> object with specfied <code>OAuthTokenManager</code> instance.
+     * Creates an <code>OAuthFilter</code> object with specified <code>OAuthTokenManager</code> instance.
      * 
      * @param oAuthTokenManager
      */
@@ -45,7 +51,7 @@ public class OAuthFilter extends ClientFilter {
 
         String accessToken;
         try {
-            accessToken = oAuthTokenManager.getAccessToken(clientRequest.getURI().toString());
+            accessToken = oAuthTokenManager.getAccessToken();
         }
         catch (ServiceException e) {
             // must wrap exception because of base class signature

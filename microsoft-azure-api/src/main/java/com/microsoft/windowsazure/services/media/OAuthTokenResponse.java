@@ -17,6 +17,12 @@ package com.microsoft.windowsazure.services.media;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * A class representing OAuth token response.
+ * 
+ * @author azurejava@microsoft.com
+ * 
+ */
 public class OAuthTokenResponse {
 
     private String _accessToken;
