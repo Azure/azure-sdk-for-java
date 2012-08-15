@@ -18,7 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import java.util.Date;
 
 /**
- * A class representing active token for OAuthTokenResponse.
+ * A class representing active token.
  * 
  * @author azurejava@microsoft.com
  * 
@@ -26,7 +26,7 @@ import java.util.Date;
 public class ActiveToken {
 
     private Date expiresUtc;
-    private OAuthTokenResponse oAuthTokenResponse;
+    private String accessToken;
 
     /**
      * Gets the expiration time in UTC.
@@ -47,21 +47,20 @@ public class ActiveToken {
     }
 
     /**
-     * Gets the OAuth token response.
+     * Gets access token.
      * 
-     * @return The OAuth token response.
+     * @return String
      */
-    public OAuthTokenResponse getOAuthTokenResponse() {
-        return oAuthTokenResponse;
+    public String getAccessToken() {
+        return this.accessToken;
     }
 
     /**
-     * Sets the OAuth token response.
+     * Sets the access token.
      * 
-     * @param oAuth2TokenResponse
+     * @param accessToken
      */
-    public void setOAuth2TokenResponse(OAuthTokenResponse oAuth2TokenResponse) {
-        this.oAuthTokenResponse = oAuth2TokenResponse;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
-
 }

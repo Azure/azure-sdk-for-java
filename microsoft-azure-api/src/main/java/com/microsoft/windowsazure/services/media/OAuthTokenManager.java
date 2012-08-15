@@ -18,22 +18,26 @@ package com.microsoft.windowsazure.services.media;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.management.timer.Timer;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
 
+/**
+ * An OAuth token manager class.
+ * 
+ * @author azurejava@microsoft.com
+ * 
+ */
 public class OAuthTokenManager {
     private final DateFactory dateFactory;
     private final URI acsBaseUri;
     private final String clientId;
     private final String clientSecret;
     private final OAuthContract contract;
-    private final ConcurrentHashMap<String, ActiveToken> activeTokens;
+    private ActiveToken activeToken;
+    private final String scope;
 
     /**
      * Creates an OAuth token manager instance with specified contract, date factory, ACS base URI, client ID,
@@ -56,13 +60,14 @@ public class OAuthTokenManager {
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory, URI acsBaseUri, String clientId,
-            String clientSecret) {
+            String clientSecret, String scope) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.acsBaseUri = acsBaseUri;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.activeTokens = new ConcurrentHashMap<String, ActiveToken>();
+        this.scope = scope;
+        this.activeToken = null;
     }
 
     /**
@@ -76,33 +81,22 @@ public class OAuthTokenManager {
      * @throws ServiceException
      * @throws URISyntaxException
      */
-    public String getAccessToken(String mediaServiceScope) throws ServiceException, URISyntaxException {
+    public String getAccessToken() throws ServiceException, URISyntaxException {
         Date now = dateFactory.getDate();
         OAuthTokenResponse oAuth2TokenResponse = null;
 
-        ActiveToken activeToken = this.activeTokens.get(mediaServiceScope);
-
-        if (activeToken != null && now.before(activeToken.getExpiresUtc())) {
-            return activeToken.getOAuthTokenResponse().getAccessToken();
+        if (this.activeToken == null) {
+            this.activeToken = new ActiveToken();
+        }
+        else if (now.before(this.activeToken.getExpiresUtc())) {
+            return this.activeToken.getAccessToken();
         }
 
-        // sweep expired tokens out of collection
-        Iterator<Entry<String, ActiveToken>> iterator = activeTokens.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, ActiveToken> entry = iterator.next();
-            if (!now.before(entry.getValue().getExpiresUtc())) {
-                iterator.remove();
-            }
-        }
-
-        oAuth2TokenResponse = contract.getAccessToken(acsBaseUri, clientId, clientSecret, mediaServiceScope);
-
+        oAuth2TokenResponse = contract.getAccessToken(acsBaseUri, clientId, clientSecret, scope);
         Date expiresUtc = new Date(now.getTime() + oAuth2TokenResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
 
-        ActiveToken acquiredToken = new ActiveToken();
-        acquiredToken.setOAuth2TokenResponse(oAuth2TokenResponse);
-        acquiredToken.setExpiresUtc(expiresUtc);
-        this.activeTokens.put(mediaServiceScope, acquiredToken);
+        this.activeToken.setAccessToken(oAuth2TokenResponse.getAccessToken());
+        this.activeToken.setExpiresUtc(expiresUtc);
 
         return oAuth2TokenResponse.getAccessToken();
     }
