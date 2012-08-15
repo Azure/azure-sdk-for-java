@@ -24,7 +24,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
  */
 public interface MediaServicesContract extends FilterableService<MediaServicesContract> {
 	/**
-	* The set of operations to support. Will uncomment as they get added
+	* // The set of operations to support. Will uncomment as they get added
 	*
 	* CreateAssetResult createAsset(String name) throws ServiceException;
 	* 
@@ -39,10 +39,23 @@ public interface MediaServicesContract extends FilterableService<MediaServicesCo
 	*                                   LocatorType type)
 	*                                   throws ServiceException;
 	*
-	* Add overload that defaults locatorType to SAS, and defaults startTime to now - 5 minutes.
+	* // Add overload that defaults locatorType to SAS, and defaults startTime to now - 5 minutes.
 	*
-	* We need to upload blobs from here - do we go through blobservice, or do we just do it
-	* directly? I'm leaning towards direct - blob container is encoded in locator.
+	* // We need to upload blobs from here - do we go through blobservice, or do we just do it
+	* // directly? I'm leaning towards direct - blob container is encoded in locator.
 	*
+	* UploadResult uploadFile(Locator locator, string content, UploadOptions options);
+	* UploadResult uploadFile(Locator locator, InputStream sream, UploadOptions options);
+	* 
+	* // UploadOptions - do we need this? Look at blob client for what's in this. Can we reuse?
+	* // Probably shouldn't, in case they diverge.
+	*
+	* DeleteLocatorResult deleteLocator(Locator locator)
+	*         throws ServiceException; 
+	*
+	* CreateFileInfosResponse createFileInfos(Asset asset) 
+	*         throws ServiceException;
+	*
+	* 
 	*/
 }
