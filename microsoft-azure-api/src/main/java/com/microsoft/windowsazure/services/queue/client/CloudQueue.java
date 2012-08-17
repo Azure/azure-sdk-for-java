@@ -1540,7 +1540,7 @@ public final class CloudQueue {
      *            The access policy for the shared access signature.
      * @param groupPolicyIdentifier
      *            A queue-level access policy.
-     * @return A shared access signature for the container.
+     * @return A shared access signature for the queue.
      * @throws InvalidKeyException
      *            If an invalid key was passed.
      * @throws StorageException
