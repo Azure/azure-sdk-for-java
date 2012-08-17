@@ -15,6 +15,10 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
+import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
+import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
+import com.microsoft.windowsazure.services.media.implementation.OAuthTokenManager;
 
 public class Exports implements Builder.Exports {
 
