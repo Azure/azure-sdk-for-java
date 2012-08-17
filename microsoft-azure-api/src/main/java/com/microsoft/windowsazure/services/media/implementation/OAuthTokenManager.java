@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media;
+package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media;
+package com.microsoft.windowsazure.services.media.implementation;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
