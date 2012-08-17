@@ -65,9 +65,9 @@ public final class CopyState {
     }
 
     /**
-     * Gets the name of the container.
+     * Gets the copy ID of the container.
      * 
-     * @return A string containing the name of the container.
+     * @return A string containing the copy ID of the container.
      */
     public String getCopyId() {
         return this.copyId;
@@ -123,10 +123,10 @@ public final class CopyState {
     }
 
     /**
-     * Sets the name of the container.
+     * Sets the copy ID of the container.
      * 
      * @param copyId
-     *           The name of the container to set.
+     *           The copy ID of the container to set.
      * 
      */
     public void setCopyId(final String copyId) {
