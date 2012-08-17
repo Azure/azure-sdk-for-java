@@ -592,7 +592,7 @@ public final class CloudTable {
      *            The access policy for the shared access signature.
      * @param accessPolicyIdentifier
      *            A table-level access policy.
-     * @return A <code>String</code> containing the shared access signature for the container.
+     * @return A <code>String</code> containing the shared access signature for the table.
      * @throws InvalidKeyException
      *              If an invalid key was passed.
      * @throws StorageException
