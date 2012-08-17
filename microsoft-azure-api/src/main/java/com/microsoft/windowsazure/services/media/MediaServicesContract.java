@@ -12,7 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -23,11 +23,36 @@ import com.microsoft.windowsazure.services.core.ServiceException;
  * 
  */
 public interface MediaServicesContract extends FilterableService<MediaServicesContract> {
+
+	/**
+	 * Creates a new media service asset
+	 *
+	 * @param name
+	 *			A <code>String</code> specifying the name of the asset to create.
+	 *
+	 * @return A <code>CreateAssetResult</code> object that represents the result.
+	 *
+	 * @exception ServiceException
+	 *			If a service exception is encountered.
+	 *
+	 */
+	CreateAssetResult createAsset(String name) throws ServiceException;
+
+	/**
+	 * Deletes a media service asset
+	 *
+	 * @param asset
+	 *			A <code>AssetInfo</code> object specifying the asset to delete.
+	 *
+	 * @exception ServiceException
+	 *			If a service exception is encountered.
+	 *
+	 */	
+	void deleteAsset(AssetInfo asset) throws ServiceException;
+
 	/**
 	* // The set of operations to support. Will uncomment as they get added
 	*
-	* CreateAssetResult createAsset(String name) throws ServiceException;
-	* 
 	* CreateAccessPolicyResult createAccessPolicy(String name, 
 	*         int durationInMinutes,
 	*         AccessPolicyPermissions permissions)
