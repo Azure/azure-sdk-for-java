@@ -62,10 +62,6 @@ public interface MediaServicesContract extends FilterableService<MediaServicesCo
     /**
      * // The set of operations to support. Will uncomment as they get added
      * 
-     * CreateAccessPolicyResult createAccessPolicy(String name,
-     * int durationInMinutes,
-     * AccessPolicyPermissions permissions)
-     * throws ServiceException;
      * 
      * CreateLocatorResult createLocator(AssetId asset,
      * AccessPolicyId accessPolicy,

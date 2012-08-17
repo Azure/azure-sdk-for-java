@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
+import java.util.EnumSet;
 
 /**
  * Class representing an AccessPolicy entity
@@ -31,7 +32,98 @@ public class AccessPolicyInfo {
     private Date lastModified;
     private String name;
     private double durationInMinutes;
-    // TODO: Figure out best way to represent these. EnumSet<AccessPolicyPermission>?
-    // private AccessPolicyPermissions permissions;
+    private final EnumSet<AccessPolicyPermission> permissions = EnumSet.noneOf(AccessPolicyPermission.class);
+
+    public AccessPolicyInfo(String id, String Name, Date created, Date lastModified, double durationInMinutes,
+            int permissionBits) {
+
+        this.id = id;
+        this.created = created;
+        this.lastModified = lastModified;
+        this.durationInMinutes = durationInMinutes;
+        permissions.addAll(AccessPolicyPermission.permissionsFromBits(permissionBits));
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the created
+     */
+    public Date getCreated() {
+        return created;
+    }
+
+    /**
+     * @param created
+     *            the created to set
+     */
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    /**
+     * @return the lastModified
+     */
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    /**
+     * @param lastModified
+     *            the lastModified to set
+     */
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name
+     *            the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the durationInMinutes
+     */
+    public double getDurationInMinutes() {
+        return durationInMinutes;
+    }
+
+    /**
+     * @param durationInMinutes
+     *            the durationInMinutes to set
+     */
+    public void setDurationInMinutes(double durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+    }
+
+    /**
+     * @return the permissions
+     */
+    public EnumSet<AccessPolicyPermission> getPermissions() {
+        return permissions;
+    }
 
 }
