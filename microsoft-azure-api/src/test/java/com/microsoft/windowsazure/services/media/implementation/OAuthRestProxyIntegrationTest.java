@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.media;
+package com.microsoft.windowsazure.services.media.implementation;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +21,7 @@ import java.net.URI;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;
 
 public class OAuthRestProxyIntegrationTest {
