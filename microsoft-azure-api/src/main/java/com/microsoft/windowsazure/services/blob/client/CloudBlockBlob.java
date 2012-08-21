@@ -162,6 +162,8 @@ public final class CloudBlockBlob extends CloudBlob {
     @DoesServiceRequest
     public void commitBlockList(final Iterable<BlockEntry> blockList, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -406,6 +408,8 @@ public final class CloudBlockBlob extends CloudBlob {
                     "Invalid stream length, specify -1 for unkown length stream, or a positive number of bytes");
         }
 
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -519,6 +523,8 @@ public final class CloudBlockBlob extends CloudBlob {
             throw new IllegalArgumentException(
                     "Invalid stream length, length must be less than or equal to 4 MB in size.");
         }
+
+        assertNoWriteOperationForSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();

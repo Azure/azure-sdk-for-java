@@ -2399,6 +2399,7 @@ public abstract class CloudBlob implements ListBlobItem {
     public final void uploadMetadata(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
         assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2516,7 +2517,7 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Asserts that write operation is not done for snapshot.
      */
-    private void assertNoWriteOperationForSnapshot() {
+    protected void assertNoWriteOperationForSnapshot() {
         if (isSnapshot()) {
             throw new IllegalArgumentException("Cannot perform this operation on a blob representing a snapshot.");
         }
