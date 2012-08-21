@@ -507,8 +507,8 @@ public class TableClientTests extends TableTestBase {
             now.add(Calendar.MINUTE, 10);
             policy1.setSharedAccessExpiryTime(now.getTime());
 
-            policy1.setPermissions(EnumSet.of(SharedAccessTablePermissions.ADD, SharedAccessTablePermissions.QUERY,
-                    SharedAccessTablePermissions.UPDATE, SharedAccessTablePermissions.DELETE));
+            policy1.setPermissions(EnumSet.of(SharedAccessTablePermissions.QUERY, SharedAccessTablePermissions.UPDATE,
+                    SharedAccessTablePermissions.DELETE));
             expectedPermissions.getSharedAccessPolicies().put(identifier, policy1);
 
             table.uploadPermissions(expectedPermissions);
@@ -532,6 +532,16 @@ public class TableClientTests extends TableTestBase {
                     "javatables_batch_0", null, "javatables_batch_9", null);
 
             {
+                TableBatchOperation batchFromSAS = new TableBatchOperation();
+
+                for (int j = 1000; j < 1010; j++) {
+                    class1 ent = generateRandomEnitity("javatables_batch_" + Integer.toString(0));
+                    ent.setRowKey(String.format("%06d", j));
+                    batchFromSAS.insert(ent);
+                }
+
+                tableClientFromPermission.execute(name, batchFromSAS);
+
                 class1 randEnt = TableTestBase.generateRandomEnitity(null);
                 TableQuery<class1> query = TableQuery.from(name, class1.class).where(
                         String.format("(PartitionKey eq '%s') and (RowKey ge '%s')", "javatables_batch_1", "000050"));
@@ -581,9 +591,10 @@ public class TableClientTests extends TableTestBase {
                 secondEntity.setRowKey(baseEntity.getRowKey());
                 secondEntity.setEtag(baseEntity.getEtag());
 
-                // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
                 TableResult insertResult = tableClientFromPermission.execute(name,
                         TableOperation.insertOrMerge(baseEntity));
+
+                // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
 
                 Assert.assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
 

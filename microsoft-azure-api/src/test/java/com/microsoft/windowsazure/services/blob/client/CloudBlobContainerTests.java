@@ -498,4 +498,82 @@ public class CloudBlobContainerTests extends BlobTestBase {
             newContainer.deleteIfExists();
         }
     }
+
+    @Test
+    public void testBlobSnapshotValidationTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+            final int length = 1 * 1024;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            String blockBlobName = "testBlockBlob" + Integer.toString(randGenerator.nextInt(50000));
+            blockBlobName = blockBlobName.replace('-', '_');
+
+            final CloudBlob blockBlobRef = newContainer.getBlockBlobReference(blockBlobName);
+            blockBlobRef.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+
+            final CloudBlob blobSnapshot = blockBlobRef.createSnapshot();
+
+            final ByteArrayOutputStream outStream = new ByteArrayOutputStream(length);
+
+            blobSnapshot.download(outStream);
+            final byte[] retrievedBuff = outStream.toByteArray();
+            for (int m = 0; m < length; m++) {
+                Assert.assertEquals(buff[m], retrievedBuff[m]);
+            }
+
+            // Read operation should work fine. 
+            blobSnapshot.downloadAttributes();
+
+            // Expect an IllegalArgumentException from upload. 
+            try {
+                blobSnapshot.upload(new ByteArrayInputStream(buff), -1);
+                Assert.fail("Expect an IllegalArgumentException from upload");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from uploadMetadata. 
+            try {
+                blobSnapshot.uploadMetadata();
+                Assert.fail("Expect an IllegalArgumentException from uploadMetadata");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from uploadProperties. 
+            try {
+                blobSnapshot.uploadProperties();
+                Assert.fail("Expect an IllegalArgumentException from uploadProperties");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from createSnapshot. 
+            try {
+                blobSnapshot.createSnapshot();
+                Assert.fail("Expect an IllegalArgumentException from createSnapshot");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            blobSnapshot.delete(DeleteSnapshotsOption.NONE, null, null, null);
+
+            blockBlobRef.downloadAttributes();
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
 }

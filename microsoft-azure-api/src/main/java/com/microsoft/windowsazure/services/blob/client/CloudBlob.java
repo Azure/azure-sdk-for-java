@@ -671,6 +671,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final CloudBlob createSnapshot(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2311,6 +2313,8 @@ public abstract class CloudBlob implements ListBlobItem {
     protected final void uploadFullBlob(final InputStream sourceStream, final long length,
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
             throws StorageException, IOException {
+        assertNoWriteOperationForSnapshot();
+
         // Mark sourceStream for current position.
         sourceStream.mark(Constants.MAX_MARK_LENGTH);
 
@@ -2394,6 +2398,7 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadMetadata(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2465,6 +2470,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadProperties(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2504,5 +2511,14 @@ public abstract class CloudBlob implements ListBlobItem {
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Asserts that write operation is not done for snapshot.
+     */
+    private void assertNoWriteOperationForSnapshot() {
+        if (isSnapshot()) {
+            throw new IllegalArgumentException("Cannot perform this operation on a blob representing a snapshot.");
+        }
     }
 }

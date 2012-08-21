@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -538,6 +539,77 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
+    public void testAddMessageUnicode() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+        final String queueName = UUID.randomUUID().toString().toLowerCase();
+        final CloudQueue queue = qClient.getQueueReference(queueName);
+        queue.create();
+
+        ArrayList<String> messages = new ArrayList<String>();
+        messages.add("Le débat sur l'identité nationale, l'idée du président Nicolas Sarkozy de déchoir des personnes d'origine étrangère de la nationalité française dans certains cas et les récentes mesures prises contre les Roms ont choqué les experts, qui rendront leurs conclusions le 27 août.");
+        messages.add("Ваш логин Yahoo! дает доступ к таким мощным инструментам связи, как электронная почта, отправка мгновенных сообщений, функции безопасности, в частности, антивирусные средства и блокировщик всплывающей рекламы, и избранное, например, фото и музыка в сети — все бесплат");
+        messages.add("据新华社8月12日电 8月11日晚，舟曲境内再次出现强降雨天气，使特大山洪泥石流灾情雪上加霜。白龙江水在梨坝子村的交汇地带形成一个新的堰塞湖，水位比平时高出3米。甘肃省国土资源厅副厅长张国华当日22时许在新闻发布会上介绍，截至12日21时50分，舟曲堰塞湖堰塞体已消除，溃坝险情已消除，目前针对堰塞湖的主要工作是疏通河道。");
+        messages.add("ל כולם\", הדהים יעלון, ויישר קו עם העדות שמסר ראש הממשלה, בנימין נתניהו, לוועדת טירקל. לדבריו, אכן השרים דנו רק בהיבטים התקשורתיים של עצירת המשט: \"בשביעייה לא התקיים דיון על האלטרנטיבות. עסקנו בהיבטים ");
+        messages.add("Prozent auf 0,5 Prozent. Im Vergleich zum Vorjahresquartal wuchs die deutsche Wirtschaft von Januar bis März um 2,1 Prozent. Auch das ist eine Korrektur nach oben, ursprünglich waren es hier 1,7 Prozent");
+        messages.add("<?xml version=\"1.0\"?>\n<!DOCTYPE PARTS SYSTEM \"parts.dtd\">\n<?xml-stylesheet type=\"text/css\" href=\"xmlpartsstyle.css\"?>\n<PARTS>\n   <TITLE>Computer Parts</TITLE>\n   <PART>\n      <ITEM>Motherboard</ITEM>\n      <MANUFACTURER>ASUS</MANUFACTURER>\n      <MODEL>"
+                + "P3B-F</MODEL>\n      <COST> 123.00</COST>\n   </PART>\n   <PART>\n      <ITEM>Video Card</ITEM>\n      <MANUFACTURER>ATI</MANUFACTURER>\n      <MODEL>All-in-Wonder Pro</MODEL>\n      <COST> 160.00</COST>\n   </PART>\n   <PART>\n      <ITEM>Sound Card</ITEM>\n      <MANUFACTURER>"
+                + "Creative Labs</MANUFACTURER>\n      <MODEL>Sound Blaster Live</MODEL>\n      <COST> 80.00</COST>\n   </PART>\n   <PART>\n      <ITEM> inch Monitor</ITEM>\n      <MANUFACTURER>LG Electronics</MANUFACTURER>\n      <MODEL> 995E</MODEL>\n      <COST> 290.00</COST>\n   </PART>\n</PARTS>");
+
+        for (int i = 0; i < messages.size(); i++) {
+            String msg = messages.get(i);
+            queue.addMessage(new CloudQueueMessage(msg));
+            CloudQueueMessage readBack = queue.retrieveMessage();
+            Assert.assertEquals(msg, readBack.getMessageContentAsString());
+            queue.deleteMessage(readBack);
+        }
+
+        queue.shouldEncodeMessage = false;
+        for (int i = 0; i < messages.size(); i++) {
+            String msg = messages.get(i);
+            queue.addMessage(new CloudQueueMessage(msg));
+            CloudQueueMessage readBack = queue.retrieveMessage();
+            Assert.assertEquals(msg, readBack.getMessageContentAsString());
+            queue.deleteMessage(readBack);
+        }
+
+        queue.delete();
+    }
+
+    @Test
+    public void testAddMessageLargeVisibilityDelay() throws URISyntaxException, StorageException,
+            UnsupportedEncodingException {
+        final String queueName = UUID.randomUUID().toString().toLowerCase();
+        final CloudQueue queue = qClient.getQueueReference(queueName);
+        queue.create();
+
+        String msgContent = UUID.randomUUID().toString();
+        final CloudQueueMessage message = new CloudQueueMessage(msgContent);
+        queue.addMessage(message, 10, 20, null, null);
+        CloudQueueMessage msgFromRetrieve1 = queue.retrieveMessage();
+        Assert.assertEquals(message.getMessageContentAsString(), msgContent);
+        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
+
+        queue.delete();
+    }
+
+    @Test
+    public void testDeleteMessageWithDifferentQueueInstance() throws URISyntaxException, StorageException,
+            UnsupportedEncodingException {
+        final String queueName = UUID.randomUUID().toString().toLowerCase();
+        final CloudQueue queue1 = qClient.getQueueReference(queueName);
+        queue1.create();
+
+        String msgContent = UUID.randomUUID().toString();
+        final CloudQueueMessage message = new CloudQueueMessage(msgContent);
+        queue1.addMessage(message);
+        CloudQueueMessage msgFromRetrieved = queue1.retrieveMessage();
+
+        final CloudQueue queue2 = qClient.getQueueReference(queueName);
+        queue2.deleteMessage(msgFromRetrieved);
+
+        queue1.delete();
+    }
+
+    @Test
     public void testAddMessageToNonExistingQueue() throws URISyntaxException, StorageException,
             UnsupportedEncodingException {
         String queueName = UUID.randomUUID().toString().toLowerCase();
@@ -752,10 +824,14 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
         newQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
-        CloudQueueMessage message1 = newQueue.retrieveMessage();
+        OperationContext opContext = new OperationContext();
+        CloudQueueMessage message1 = newQueue.retrieveMessage(10, null /*QueueRequestOptions*/, opContext);
         Date expirationTime1 = message1.getExpirationTime();
         Date insertionTime1 = message1.getInsertionTime();
         Date nextVisibleTime1 = message1.getNextVisibleTime();
+
+        Assert.assertEquals(HttpURLConnection.HTTP_OK, opContext.getLastResult().getStatusCode());
+
         newQueue.deleteMessage(message1);
 
         try {
