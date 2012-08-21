@@ -352,6 +352,8 @@ public final class CloudBlockBlob extends CloudBlob {
             options = new BlobRequestOptions();
         }
 
+        assertNoWriteOperationForSnapshot();
+
         options.applyDefaults(this.blobServiceClient);
 
         return new BlobOutputStream(this, accessCondition, options, opContext);

@@ -418,6 +418,8 @@ public final class CloudPageBlob extends CloudBlob {
             options = new BlobRequestOptions();
         }
 
+        assertNoWriteOperationForSnapshot();
+
         options.applyDefaults(this.blobServiceClient);
 
         if (options.getStoreBlobContentMD5()) {

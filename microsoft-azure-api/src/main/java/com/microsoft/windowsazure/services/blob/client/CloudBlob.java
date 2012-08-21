@@ -1743,6 +1743,8 @@ public abstract class CloudBlob implements ListBlobItem {
             options = new BlobRequestOptions();
         }
 
+        assertNoWriteOperationForSnapshot();
+
         options.applyDefaults(this.blobServiceClient);
 
         return new BlobInputStream(this, accessCondition, options, opContext);
