@@ -26,30 +26,33 @@ import com.microsoft.windowsazure.services.table.client.SharedAccessTablePolicy;
 public final class QueuePermissions {
 
     /**
-     * Gets the set of shared access policies for the table.
+     * Gets the set of shared access policies for the queue.
      */
     private HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies;
 
     /**
-     * Creates an instance of the <code>TablePermissions</code> class.
+     * Creates an instance of the <code>QueuePermissions</code> class.
      */
     public QueuePermissions() {
         this.sharedAccessPolicies = new HashMap<String, SharedAccessQueuePolicy>();
     }
 
     /**
-     * Returns the set of shared access policies for the table.
+     * Returns the set of shared access policies for the queue.
      * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessTablePolicy} objects that represent the set of shared
-     *         access policies for the table.
+     * @return A <code>HashMap</code> object of {@link SharedAccessQueuePolicy} objects that represent the set of shared
+     *         access policies for the queue.
      */
     public HashMap<String, SharedAccessQueuePolicy> getSharedAccessPolicies() {
         return this.sharedAccessPolicies;
     }
 
     /**
+     * Sets the set of shared access policies for the queue.
+     * 
      * @param sharedAccessPolicies
-     *            the sharedAccessPolicies to set
+     *            The set of shared access policies to set for the queue, represented by a <code>HashMap</code> object of
+     *            {@link SharedAccessQueuePolicy} objects.
      */
     public void setSharedAccessPolicies(final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies) {
         this.sharedAccessPolicies = sharedAccessPolicies;
