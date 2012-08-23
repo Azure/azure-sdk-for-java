@@ -343,11 +343,11 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the existing lease by rejecting future requests to renew the lease until the current lease period has
-     * expired.
+     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease period 
+     * has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the time to wait, in seconds, until the current lease expires.
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @return The time, in seconds, remaining in the lease period.
@@ -361,11 +361,11 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the existing lease, using the specified request options and operation context, by rejecting future requests 
-     * to renew the lease until the current lease period has expired.
+     * Breaks the existing lease, using the specified request options and operation context, and ensures that another 
+     * client cannot acquire a new lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the time to wait, in seconds, until the current lease expires.
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @param accessCondition
