@@ -51,7 +51,7 @@ public enum SharedAccessTablePermissions {
      * 
      * @param value
      *            The byte value to convert to the corresponding enum set.
-     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessPermissions</code> values
+     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessTablePermissions</code> values
      *         corresponding to the specified byte value.
      */
     protected static EnumSet<SharedAccessTablePermissions> fromByte(final byte value) {
