@@ -46,7 +46,7 @@ public class CreateBlobSnapshotResult {
     }
 
     /**
-     * Reserved for internal use. Sets the snapshot timestamp value from the <strong>x-ms-snapshot</strong> header
+     * Reserved for internal use. Sets the snapshot timestamp value from the <code>x-ms-snapshot</code> header
      * returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
@@ -75,7 +75,7 @@ public class CreateBlobSnapshotResult {
     }
 
     /**
-     * Reserved for internal use. Sets the ETag of the snapshot from the <strong>ETag</strong> header returned in the
+     * Reserved for internal use. Sets the ETag of the snapshot from the <code>ETag</code> header returned in the
      * response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
@@ -104,8 +104,8 @@ public class CreateBlobSnapshotResult {
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the snapshot from the <strong>Last-Modified</strong>
-     * header returned in the response.
+     * Reserved for internal use. Sets the last modified time of the snapshot from the <code>Last-Modified</code> header
+     * returned in the response.
      * <p>
      * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
      * the server.

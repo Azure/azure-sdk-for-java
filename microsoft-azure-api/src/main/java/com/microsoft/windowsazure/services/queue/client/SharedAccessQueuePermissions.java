@@ -12,57 +12,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.blob.client;
+package com.microsoft.windowsazure.services.queue.client;
 
 import java.util.EnumSet;
 
 /**
- * Specifies the set of possible permissions for a shared access policy.
+ * Specifies the set of possible permissions for a shared access queue policy.
  */
-public enum SharedAccessPermissions {
+public enum SharedAccessQueuePermissions {
+
     /**
-     * Specifies Read access granted.
+     * No shared access granted.
+     */
+    NONE((byte) 0x0),
+
+    /**
+     * Permission to peek messages and get queue metadata granted.
      */
     READ((byte) 0x1),
 
     /**
-     * Specifies Write access granted.
+     * Permission to add messages granted.
      */
-    WRITE((byte) 0x2),
+    ADD((byte) 0x2),
 
     /**
-     * Specifies Delete access granted for blobs.
+     * Permissions to update messages granted.
      */
-    DELETE((byte) 0x4),
+    UPDATE((byte) 0x4),
 
     /**
-     * Specifies List access granted.
+     * Permission to get and delete messages granted.
      */
-    LIST((byte) 0x8);
+    PROCESSMESSAGES((byte) 0x8);
 
     /**
      * Returns the enum set representing the shared access permissions for the specified byte value.
      * 
      * @param value
      *            The byte value to convert to the corresponding enum set.
-     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessPermissions</code> values
+     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessQueuePermissions</code> values
      *         corresponding to the specified byte value.
      */
-    protected static EnumSet<SharedAccessPermissions> fromByte(final byte value) {
-        final EnumSet<SharedAccessPermissions> retSet = EnumSet.noneOf(SharedAccessPermissions.class);
+    protected static EnumSet<SharedAccessQueuePermissions> fromByte(final byte value) {
+        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet.noneOf(SharedAccessQueuePermissions.class);
 
         if (value == READ.value) {
             retSet.add(READ);
         }
 
-        if (value == WRITE.value) {
-            retSet.add(WRITE);
+        if (value == PROCESSMESSAGES.value) {
+            retSet.add(PROCESSMESSAGES);
         }
-        if (value == DELETE.value) {
-            retSet.add(DELETE);
+        if (value == ADD.value) {
+            retSet.add(ADD);
         }
-        if (value == LIST.value) {
-            retSet.add(LIST);
+        if (value == UPDATE.value) {
+            retSet.add(UPDATE);
         }
 
         return retSet;
@@ -79,7 +85,7 @@ public enum SharedAccessPermissions {
      * @param val
      *            The value being assigned.
      */
-    SharedAccessPermissions(final byte val) {
+    SharedAccessQueuePermissions(final byte val) {
         this.value = val;
     }
 }

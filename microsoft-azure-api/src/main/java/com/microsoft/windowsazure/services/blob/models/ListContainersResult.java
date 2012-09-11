@@ -31,7 +31,7 @@ import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateAdapte
 /**
  * A wrapper class for the response returned from a Blob Service REST API List Containers operation. This is returned by
  * calls to implementations of {@link BlobContract#listContainers} and
- * {@link BlobContract#listContainers(listContainersOptions)}.
+ * {@link BlobContract#listContainers(ListContainersOptions)}.
  * <p>
  * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179352.aspx">List Containers</a>
  * documentation on MSDN for details of the underlying Blob Service REST API operation.
@@ -135,7 +135,7 @@ public class ListContainersResult {
      * Use the {@link ListContainersResult#getNextMarker() getNextMarker} method to get the marker value to set on a
      * {@link ListContainersOptions} instance using a call to {@link ListContainersOptions#setMarker(String)}. Pass the
      * {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(listContainersOptions)} call to get the next portion of the container list.
+     * {@link BlobContract#listContainers(ListContainersOptions)} call to get the next portion of the container list.
      * 
      * @return
      *         A {@link String} containing the marker used to specify the beginning of the container list returned, if
@@ -207,7 +207,7 @@ public class ListContainersResult {
      * Use the {@link ListContainersResult#getNextMarker() getNextMarker} method to get the marker value to set on a
      * {@link ListContainersOptions} instance using a call to {@link ListContainersOptions#setMarker(String)}. Pass the
      * {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(listContainersOptions)} call to get the next portion of the container list.
+     * {@link BlobContract#listContainers(ListContainersOptions)} call to get the next portion of the container list.
      * 
      * @return
      *         The maximum number of container list items to return that was specified in the request, if any.
@@ -292,7 +292,7 @@ public class ListContainersResult {
         }
 
         /**
-         * Gets the container properties. The container properties include the last modified time and an Etag value.
+         * Gets the container properties. The container properties include the last modified time and an ETag value.
          * 
          * @return
          *         A {@link ContainerProperties} instance containing the properties associated with the container.
@@ -384,12 +384,12 @@ public class ListContainersResult {
         }
 
         /**
-         * Gets the Etag of the container. This value can be used when updating or deleting a container using an
+         * Gets the ETag of the container. This value can be used when updating or deleting a container using an
          * optimistic concurrency model to prevent the client from modifying data that has been changed by another
          * client.
          * 
          * @return
-         *         A {@link String} containing the server-assigned Etag value for the container.
+         *         A {@link String} containing the server-assigned ETag value for the container.
          */
         @XmlElement(name = "Etag")
         public String getEtag() {
@@ -397,14 +397,14 @@ public class ListContainersResult {
         }
 
         /**
-         * Reserved for internal use. Sets the Etag of the container from the <strong>Etag</strong> element returned in
+         * Reserved for internal use. Sets the ETag of the container from the <strong>ETag</strong> element returned in
          * the response.
          * <p>
          * This method is invoked by the API to set the value from the Blob Service REST API operation response returned
          * by the server.
          * 
          * @param etag
-         *            A {@link String} containing the server-assigned Etag value for the container.
+         *            A {@link String} containing the server-assigned ETag value for the container.
          */
         public void setEtag(String etag) {
             this.etag = etag;

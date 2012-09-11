@@ -14,5 +14,8 @@
  */
 package com.microsoft.windowsazure.services.table.models;
 
+/**
+ * This class is a base class for options that may be set on certain Table service requests.
+ */
 public class TableServiceOptions {
 }

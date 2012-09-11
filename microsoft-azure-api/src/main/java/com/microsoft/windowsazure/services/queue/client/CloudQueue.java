@@ -16,19 +16,24 @@
 package com.microsoft.windowsazure.services.queue.client;
 
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import com.microsoft.windowsazure.services.blob.core.storage.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
+import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.StorageExtendedErrorInformation;
 import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
+import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
@@ -70,7 +75,7 @@ public final class CloudQueue {
     /**
      * A reference to the queue's associated service client.
      */
-    private CloudQueueClient queueServiceClient;
+    CloudQueueClient queueServiceClient;
 
     /**
      * The queue's Metadata collection.
@@ -103,8 +108,10 @@ public final class CloudQueue {
      * 
      * @throws URISyntaxException
      *             If the resource URI is invalid.
+     * @throws StorageException
      */
-    public CloudQueue(final String queueAddress, final CloudQueueClient client) throws URISyntaxException {
+    public CloudQueue(final String queueAddress, final CloudQueueClient client) throws URISyntaxException,
+            StorageException {
         this(PathUtility.appendPathToUri(client.getEndpoint(), queueAddress), client);
     }
 
@@ -116,12 +123,15 @@ public final class CloudQueue {
      * @param client
      *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Queue service.
+     * @throws StorageException
+     * @throws URISyntaxException
      */
-    public CloudQueue(final URI uri, final CloudQueueClient client) {
+    public CloudQueue(final URI uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
         this.uri = uri;
         this.name = PathUtility.getQueueNameFromUri(uri, client.isUsePathStyleUris());
         this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
+        this.parseQueryAndVerify(this.uri, client, client.isUsePathStyleUris());
     }
 
     /**
@@ -200,8 +210,8 @@ public final class CloudQueue {
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
 
-                final HttpURLConnection request = QueueRequest.putMessage(queue.getMessageRequestAddress(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), initialVisibilityDelayInSeconds,
+                final HttpURLConnection request = QueueRequest.putMessage(queue.getMessageRequestAddress(opContext),
+                        this.getRequestOptions().getTimeoutIntervalInMs(), initialVisibilityDelayInSeconds,
                         timeToLiveInSeconds, opContext);
 
                 final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
@@ -271,8 +281,8 @@ public final class CloudQueue {
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
 
-                final HttpURLConnection request = QueueRequest.clearMessages(queue.getMessageRequestAddress(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.clearMessages(queue.getMessageRequestAddress(opContext),
+                        this.getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -335,8 +345,8 @@ public final class CloudQueue {
             @Override
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
-                final HttpURLConnection request = QueueRequest.create(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.create(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
@@ -408,8 +418,8 @@ public final class CloudQueue {
             @Override
             public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
                     final OperationContext opContext) throws Exception {
-                final HttpURLConnection request = QueueRequest.create(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.create(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
@@ -494,8 +504,8 @@ public final class CloudQueue {
             @Override
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
-                final HttpURLConnection request = QueueRequest.delete(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.delete(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -565,8 +575,8 @@ public final class CloudQueue {
             @Override
             public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
                     final OperationContext opContext) throws Exception {
-                final HttpURLConnection request = QueueRequest.delete(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.delete(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -648,9 +658,9 @@ public final class CloudQueue {
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
 
-                final HttpURLConnection request = QueueRequest.deleteMessage(
-                        queue.getIndividualMessageAddress(messageId),
-                        this.getRequestOptions().getTimeoutIntervalInMs(), messagePopReceipt, opContext);
+                final HttpURLConnection request = QueueRequest.deleteMessage(queue.getIndividualMessageAddress(
+                        messageId, opContext), this.getRequestOptions().getTimeoutIntervalInMs(), messagePopReceipt,
+                        opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -714,8 +724,9 @@ public final class CloudQueue {
             @Override
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
-                final HttpURLConnection request = QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.downloadAttributes(
+                        queue.getTransformedAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
+                        opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -786,8 +797,9 @@ public final class CloudQueue {
             @Override
             public Boolean execute(final CloudQueueClient client, final CloudQueue queue,
                     final OperationContext opContext) throws Exception {
-                final HttpURLConnection request = QueueRequest.downloadAttributes(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.downloadAttributes(
+                        queue.getTransformedAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
+                        opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -828,9 +840,11 @@ public final class CloudQueue {
      * 
      * @throws URISyntaxException
      *             If the resource URI is invalid.
+     * @throws StorageException
      */
-    URI getIndividualMessageAddress(final String messageId) throws URISyntaxException {
-        return PathUtility.appendPathToUri(this.messageRequestAddress, messageId);
+    URI getIndividualMessageAddress(final String messageId, final OperationContext opContext)
+            throws URISyntaxException, StorageException {
+        return PathUtility.appendPathToUri(this.getMessageRequestAddress(opContext), messageId);
     }
 
     /**
@@ -840,10 +854,12 @@ public final class CloudQueue {
      * 
      * @throws URISyntaxException
      *             If the resource URI is invalid.
+     * @throws StorageException
      */
-    URI getMessageRequestAddress() throws URISyntaxException {
+    URI getMessageRequestAddress(final OperationContext opContext) throws URISyntaxException, StorageException {
         if (this.messageRequestAddress == null) {
-            this.messageRequestAddress = PathUtility.appendPathToUri(this.uri, QueueConstants.MESSAGES);
+            this.messageRequestAddress = PathUtility.appendPathToUri(this.getTransformedAddress(opContext),
+                    QueueConstants.MESSAGES);
         }
 
         return this.messageRequestAddress;
@@ -997,8 +1013,8 @@ public final class CloudQueue {
             public ArrayList<CloudQueueMessage> execute(final CloudQueueClient client, final CloudQueue queue,
                     final OperationContext opContext) throws Exception {
 
-                final HttpURLConnection request = QueueRequest.peekMessages(queue.getMessageRequestAddress(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, opContext);
+                final HttpURLConnection request = QueueRequest.peekMessages(queue.getMessageRequestAddress(opContext),
+                        this.getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -1130,9 +1146,9 @@ public final class CloudQueue {
             public ArrayList<CloudQueueMessage> execute(final CloudQueueClient client, final CloudQueue queue,
                     final OperationContext opContext) throws Exception {
 
-                final HttpURLConnection request = QueueRequest.retrieveMessages(queue.getMessageRequestAddress(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, visibilityTimeoutInSeconds,
-                        opContext);
+                final HttpURLConnection request = QueueRequest.retrieveMessages(
+                        queue.getMessageRequestAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
+                        numberOfMessages, visibilityTimeoutInSeconds, opContext);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -1258,9 +1274,9 @@ public final class CloudQueue {
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
 
-                final HttpURLConnection request = QueueRequest.updateMessage(queue.getIndividualMessageAddress(message
-                        .getId()), this.getRequestOptions().getTimeoutIntervalInMs(), message.getPopReceipt(),
-                        visibilityTimeoutInSeconds, opContext);
+                final HttpURLConnection request = QueueRequest.updateMessage(queue.getIndividualMessageAddress(
+                        message.getId(), opContext), this.getRequestOptions().getTimeoutIntervalInMs(), message
+                        .getPopReceipt(), visibilityTimeoutInSeconds, opContext);
 
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
                     final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
@@ -1341,8 +1357,8 @@ public final class CloudQueue {
             public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
                     throws Exception {
 
-                final HttpURLConnection request = QueueRequest.setMetadata(queue.uri, this.getRequestOptions()
-                        .getTimeoutIntervalInMs(), opContext);
+                final HttpURLConnection request = QueueRequest.setMetadata(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
@@ -1360,5 +1376,294 @@ public final class CloudQueue {
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
 
+    }
+
+    /**
+     * Uploads the queue's permissions.
+     * 
+     * @param permissions
+     *            A {@link QueuePermissions} object that represents the permissions to upload.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPermissions(final QueuePermissions permissions) throws StorageException {
+        this.uploadPermissions(permissions, null, null);
+    }
+
+    /**
+     * Uploads the queue's permissions using the specified request options and operation context.
+     * 
+     * @param permissions
+     *            A {@link QueuePermissions} object that represents the permissions to upload.
+     * @param options
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public void uploadPermissions(final QueuePermissions permissions, QueueRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new QueueRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.queueServiceClient);
+
+        final StorageOperation<CloudQueueClient, CloudQueue, Void> impl = new StorageOperation<CloudQueueClient, CloudQueue, Void>(
+                options) {
+
+            @Override
+            public Void execute(final CloudQueueClient client, final CloudQueue queue, final OperationContext opContext)
+                    throws Exception {
+
+                final HttpURLConnection request = QueueRequest.setAcl(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+
+                final StringWriter outBuffer = new StringWriter();
+
+                QueueRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
+
+                final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
+                client.getCredentials().signRequest(request, aclBytes.length);
+                final OutputStream outStreamRef = request.getOutputStream();
+                outStreamRef.write(aclBytes);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                return null;
+            }
+        };
+
+        ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Downloads the permission settings for the queue.
+     * 
+     * @return A {@link QueuePermissions} object that represents the queue's permissions.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public QueuePermissions downloadPermissions() throws StorageException {
+        return this.downloadPermissions(null, null);
+    }
+
+    /**
+     * Downloads the permissions settings for the queue using the specified request options and operation context.
+     * 
+     * @param options
+     *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudQueueClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link QueuePermissions} object that represents the container's permissions.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public QueuePermissions downloadPermissions(QueueRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new QueueRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.queueServiceClient);
+
+        final StorageOperation<CloudQueueClient, CloudQueue, QueuePermissions> impl = new StorageOperation<CloudQueueClient, CloudQueue, QueuePermissions>(
+                options) {
+
+            @Override
+            public QueuePermissions execute(final CloudQueueClient client, final CloudQueue queue,
+                    final OperationContext opContext) throws Exception {
+
+                final HttpURLConnection request = QueueRequest.getAcl(queue.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+
+                client.getCredentials().signRequest(request, -1L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                final QueuePermissions permissions = new QueuePermissions();
+                final QueueAccessPolicyResponse response = new QueueAccessPolicyResponse(request.getInputStream());
+
+                for (final String key : response.getAccessIdentifiers().keySet()) {
+                    permissions.getSharedAccessPolicies().put(key, response.getAccessIdentifiers().get(key));
+                }
+
+                return permissions;
+            }
+        };
+
+        return ExecutionEngine.executeWithRetry(this.queueServiceClient, this, impl, options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Returns a shared access signature for the queue.
+     * 
+     * @param policy
+     *            The access policy for the shared access signature.
+     * @param groupPolicyIdentifier
+     *            A queue-level access policy.
+     * @return A shared access signature for the queue.
+     * @throws InvalidKeyException
+     *            If an invalid key was passed.
+     * @throws StorageException
+     *            If a storage service error occurred.
+     * @throws IllegalArgumentException
+     *            If an unexpected value is passed.
+     */
+    public String generateSharedAccessSignature(final SharedAccessQueuePolicy policy, final String groupPolicyIdentifier)
+            throws InvalidKeyException, StorageException {
+
+        if (!this.queueServiceClient.getCredentials().canCredentialsSignRequest()) {
+            final String errorMessage = "Cannot create Shared Access Signature unless the Account Key credentials are used by the QueueServiceClient.";
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        final String resourceName = this.getSharedAccessCanonicalName();
+
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHash(policy,
+                groupPolicyIdentifier, resourceName, this.queueServiceClient, null);
+
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignature(policy,
+                groupPolicyIdentifier, signature);
+
+        return builder.toString();
+    }
+
+    /**
+     * Returns the canonical name for shared access.
+     * 
+     * @return the canonical name for shared access.
+     */
+    private String getSharedAccessCanonicalName() {
+        if (this.queueServiceClient.isUsePathStyleUris()) {
+            return this.getUri().getPath();
+        }
+        else {
+            return PathUtility.getCanonicalPathFromCredentials(this.queueServiceClient.getCredentials(), this.getUri()
+                    .getPath());
+        }
+    }
+
+    /**
+     * Returns the transformed URI for the resource if the given credentials require transformation.
+     * 
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A <code>java.net.URI</code> object that represents the transformed URI.
+     * 
+     * @throws IllegalArgumentException
+     *             If the URI is not absolute.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    protected final URI getTransformedAddress(final OperationContext opContext) throws URISyntaxException,
+            StorageException {
+        if (this.queueServiceClient.getCredentials().doCredentialsNeedTransformUri()) {
+            if (this.getUri().isAbsolute()) {
+                return this.queueServiceClient.getCredentials().transformUri(this.getUri(), opContext);
+            }
+            else {
+                final StorageException ex = Utility.generateNewUnexpectedStorageException(null);
+                ex.getExtendedErrorInformation().setErrorMessage("Queue Object relative URIs not supported.");
+                throw ex;
+            }
+        }
+        else {
+            return this.getUri();
+        }
+    }
+
+    /**
+     * Parse Uri for SAS (Shared access signature) information.
+     * 
+     * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
+     * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
+     * a new client is created based on SAS information or as anonymous credentials.
+     * 
+     * @param completeUri
+     *            The complete Uri.
+     * @param existingClient
+     *            The client to use.
+     * @param usePathStyleUris
+     *            If true, path style Uris are used.
+     * @throws URISyntaxException
+     * @throws StorageException
+     */
+    private void parseQueryAndVerify(final URI completeUri, final CloudQueueClient existingClient,
+            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("completeUri", completeUri);
+
+        if (!completeUri.isAbsolute()) {
+            final String errorMessage = String.format(
+                    "Address '%s' is not an absolute address. Relative addresses are not permitted in here.",
+                    completeUri.toString());
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        this.uri = PathUtility.stripURIQueryAndFragment(completeUri);
+
+        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+        final StorageCredentialsSharedAccessSignature sasCreds = SharedAccessSignatureHelper
+                .parseQuery(queryParameters);
+
+        if (sasCreds == null) {
+            return;
+        }
+
+        final Boolean sameCredentials = existingClient == null ? false : Utility.areCredentialsEqual(sasCreds,
+                existingClient.getCredentials());
+
+        if (existingClient == null || !sameCredentials) {
+            this.queueServiceClient = new CloudQueueClient(new URI(PathUtility.getServiceClientBaseAddress(
+                    this.getUri(), usePathStyleUris)), sasCreds);
+        }
+
+        if (existingClient != null && !sameCredentials) {
+            this.queueServiceClient.setRetryPolicyFactory(existingClient.getRetryPolicyFactory());
+            this.queueServiceClient.setTimeoutInMs(existingClient.getTimeoutInMs());
+        }
     }
 }

@@ -24,10 +24,12 @@ import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -429,7 +431,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length) throws ServiceException;
+    CreateBlobResult createPageBlob(String container, String blob, long length) throws ServiceException;
 
     /**
      * Creates a page blob of the specified maximum length, using the specified options.
@@ -457,7 +459,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
+    CreateBlobResult createPageBlob(String container, String blob, long length, CreateBlobOptions options)
+            throws ServiceException;
 
     /**
      * Creates a block blob from a content stream.
@@ -473,7 +476,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException;
+    CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException;
 
     /**
      * Creates a block blob from a content stream, using the specified options.
@@ -495,7 +498,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+    CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
             throws ServiceException;
 
     /**
@@ -690,11 +693,10 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * You can call this method to update a blob by uploading only those blocks that have changed, then committing the
      * new and existing blocks together. You can do this with the <em>blockList</em> parameter by specifying whether to
      * commit a block from the committed block list or from the uncommitted block list, or to commit the most recently
-     * uploaded version of the block, whichever list it may belong to. Use the
-     * {@link BlobContract#CommitBlobBlocksOptions options} parameter to optionally specify the server timeout for the
-     * operation, the MIME content type and content encoding for the blob, the content language, the MD5 hash, a cache
-     * control value, blob metadata, the lease ID if the blob has an active lease, and any access conditions for the
-     * operation.
+     * uploaded version of the block, whichever list it may belong to. Use the {@link CommitBlobBlocksOptions options}
+     * parameter to optionally specify the server timeout for the operation, the MIME content type and content encoding
+     * for the blob, the content language, the MD5 hash, a cache control value, blob metadata, the lease ID if the blob
+     * has an active lease, and any access conditions for the operation.
      * <p>
      * In order to be written as part of a blob, each block in the list must have been successfully written to the
      * server with a call to {@link BlobContract#createBlobBlock(String, String, String, InputStream)} or
@@ -1215,8 +1217,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
-            throws ServiceException;
+    CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob) throws ServiceException;
 
     /**
      * Copies a source blob to a destination within the storage account, using the specified options.
@@ -1294,8 +1296,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob,
-            CopyBlobOptions options) throws ServiceException;
+    CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob, CopyBlobOptions options) throws ServiceException;
 
     /**
      * Gets a new lease on a blob.

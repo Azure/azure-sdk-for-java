@@ -26,6 +26,11 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  */
 public enum LeaseStatus {
     /**
+     * Specifies the lease status is not specified.
+     */
+    UNSPECIFIED,
+
+    /**
      * Specifies the blob is locked for exclusive-write access.
      */
     LOCKED,
@@ -33,12 +38,7 @@ public enum LeaseStatus {
     /**
      * Specifies the blob is available to be locked for exclusive-write access.
      */
-    UNLOCKED,
-
-    /**
-     * Specifies the lease status is not specified.
-     */
-    UNSPECIFIED;
+    UNLOCKED;
 
     /**
      * Parses a lease status from the given string.

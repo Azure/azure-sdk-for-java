@@ -78,8 +78,8 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  * <tr>
  * <td><strong>Edm.Byte</strong></td>
  * <td>{@link EdmType#BYTE}</td>
- * <td><code>boolean, Boolean</code></td>
- * <td>A Boolean value.</td>
+ * <td><code>byte, Byte</code></td>
+ * <td>An 8-bit integer value.</td>
  * </tr>
  * <tr>
  * <td><strong>Edm.DateTime</strong></td>

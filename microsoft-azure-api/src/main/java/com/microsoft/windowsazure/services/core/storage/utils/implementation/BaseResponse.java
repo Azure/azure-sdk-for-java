@@ -16,6 +16,9 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +26,16 @@ import java.util.Map.Entry;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.microsoft.windowsazure.services.blob.client.CopyState;
+import com.microsoft.windowsazure.services.blob.client.CopyStatus;
 import com.microsoft.windowsazure.services.core.storage.Constants;
+import com.microsoft.windowsazure.services.core.storage.LeaseDuration;
+import com.microsoft.windowsazure.services.core.storage.LeaseState;
+import com.microsoft.windowsazure.services.core.storage.LeaseStatus;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ServiceProperties;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
  * RESERVED FOR INTERNAL USE. The base response class for the protocol layer
@@ -73,6 +82,96 @@ public class BaseResponse {
      */
     public static HashMap<String, String> getMetadata(final HttpURLConnection request) {
         return getValuesByHeaderPrefix(request, Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA);
+    }
+
+    /**
+     * Gets the LeaseStatus
+     * 
+     * @param request
+     *            The response from server.
+     * @return The Etag.
+     */
+    public static LeaseStatus getLeaseStatus(final HttpURLConnection request) {
+        final String leaseStatus = request.getHeaderField(Constants.HeaderConstants.LEASE_STATUS);
+        if (!Utility.isNullOrEmpty(leaseStatus)) {
+            return LeaseStatus.parse(leaseStatus);
+        }
+
+        return LeaseStatus.UNSPECIFIED;
+    }
+
+    /**
+     * Gets the LeaseState
+     * 
+     * @param request
+     *            The response from server.
+     * @return The LeaseState.
+     */
+    public static LeaseState getLeaseState(final HttpURLConnection request) {
+        final String leaseState = request.getHeaderField(Constants.HeaderConstants.LEASE_STATE);
+        if (!Utility.isNullOrEmpty(leaseState)) {
+            return LeaseState.parse(leaseState);
+        }
+
+        return LeaseState.UNSPECIFIED;
+    }
+
+    /**
+     * Gets the LeaseDuration
+     * 
+     * @param request
+     *            The response from server.
+     * @return The LeaseDuration.
+     */
+    public static LeaseDuration getLeaseDuration(final HttpURLConnection request) {
+        final String leaseDuration = request.getHeaderField(Constants.HeaderConstants.LEASE_DURATION);
+        if (!Utility.isNullOrEmpty(leaseDuration)) {
+            return LeaseDuration.parse(leaseDuration);
+        }
+
+        return LeaseDuration.UNSPECIFIED;
+    }
+
+    /**
+     * Gets the copyState
+     * 
+     * @param request
+     *            The response from server.
+     * @return The CopyState.
+     * @throws URISyntaxException
+     * @throws ParseException
+     */
+    public static CopyState getCopyState(final HttpURLConnection request) throws URISyntaxException, ParseException {
+        String copyStatusString = request.getHeaderField(Constants.HeaderConstants.COPY_STATUS);
+        if (!Utility.isNullOrEmpty(copyStatusString)) {
+            CopyState copyState = new CopyState();
+            copyState.setStatus(CopyStatus.parse(copyStatusString));
+            copyState.setCopyId(request.getHeaderField(Constants.HeaderConstants.COPY_ID));
+            copyState.setStatusDescription(request.getHeaderField(Constants.HeaderConstants.COPY_STATUS_DESCRIPTION));
+
+            final String copyProgressString = request.getHeaderField(Constants.HeaderConstants.COPY_PROGRESS);
+            if (!Utility.isNullOrEmpty(copyProgressString)) {
+                String[] progressSequence = copyProgressString.split("/");
+                copyState.setBytesCopied(Long.parseLong(progressSequence[0]));
+                copyState.setTotalBytes(Long.parseLong(progressSequence[1]));
+            }
+
+            final String copySourceString = request.getHeaderField(Constants.HeaderConstants.COPY_SOURCE);
+            if (!Utility.isNullOrEmpty(copySourceString)) {
+                copyState.setSource(new URI(copySourceString));
+            }
+
+            final String copyCompletionTimeString = request
+                    .getHeaderField(Constants.HeaderConstants.COPY_COMPLETION_TIME);
+            if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
+                copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
+            }
+
+            return copyState;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
