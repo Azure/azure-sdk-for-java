@@ -7,7 +7,7 @@
  * Updated the BlobRestProxy.copyBlob to correctly honor source access conditions
  * Updated the BlobRestProxy.getBlob to correctly honor setComputeRangeMD5 option
  * Added international support for ServiceBus URIs
- * Added encoding for speical characters when serializing entity to XML in Table Service Layer
+ * Added encoding for special characters when serializing entity to XML in Table Service Layer
 
 2012.06.02 Version 0.3.0
  * Added 1.7 Storage Support
