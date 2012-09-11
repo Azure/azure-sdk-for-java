@@ -1,3 +1,14 @@
+2012.09.11 Version 0.3.1
+ * Added Javadocs to 1.7 Storage Support from 0.3.0 release
+ * Fixed bug where getqueue for an invalid queue returns 200 and the exception is not wrapped in a ServiceException
+ * Fixed the error when deleting a blob snapshot in the Service Layer
+ * Changed the PageBlob length parameter from an int to a long
+ * Return an Etag for create and copy Blob in Service Layer
+ * Updated the BlobRestProxy.copyBlob to correctly honor source access conditions
+ * Updated the BlobRestProxy.getBlob to correctly honor setComputeRangeMD5 option
+ * Added international support for ServiceBus URIs
+ * Added encoding for special characters when serializing entity to XML in Table Service Layer
+
 2012.06.02 Version 0.3.0
  * Added 1.7 Storage Support
  * Added Javadocs for com.microsoft.windowsazure.services.table
