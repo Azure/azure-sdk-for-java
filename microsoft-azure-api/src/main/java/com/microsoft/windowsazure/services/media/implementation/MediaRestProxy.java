@@ -24,35 +24,35 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
-import com.microsoft.windowsazure.services.media.MediaServicesContract;
+import com.microsoft.windowsazure.services.media.MediaContract;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
-public class MediaServicesRestProxy implements MediaServicesContract {
+public class MediaRestProxy implements MediaContract {
 
     private Client channel;
-    static Log log = LogFactory.getLog(MediaServicesContract.class);
+    static Log log = LogFactory.getLog(MediaContract.class);
 
     ServiceFilter[] filters;
 
     @Inject
-    public MediaServicesRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter) {
+    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
     }
 
-    public MediaServicesRestProxy(Client channel, ServiceFilter[] filters) {
+    public MediaRestProxy(Client channel, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
     }
 
     @Override
-    public MediaServicesContract withFilter(ServiceFilter filter) {
+    public MediaContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new MediaServicesRestProxy(channel, newFilters);
+        return new MediaRestProxy(channel, newFilters);
     }
 
     public Client getChannel() {

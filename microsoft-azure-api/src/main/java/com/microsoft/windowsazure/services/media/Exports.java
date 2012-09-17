@@ -15,8 +15,8 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.media.implementation.MediaServicesExceptionProcessor;
-import com.microsoft.windowsazure.services.media.implementation.MediaServicesRestProxy;
+import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
+import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
 import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
 import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
@@ -31,9 +31,9 @@ public class Exports implements Builder.Exports {
      */
     @Override
     public void register(Builder.Registry registry) {
-        registry.add(MediaServicesContract.class, MediaServicesExceptionProcessor.class);
-        registry.add(MediaServicesExceptionProcessor.class);
-        registry.add(MediaServicesRestProxy.class);
+        registry.add(MediaContract.class, MediaExceptionProcessor.class);
+        registry.add(MediaExceptionProcessor.class);
+        registry.add(MediaRestProxy.class);
         registry.add(OAuthContract.class, OAuthRestProxy.class);
         registry.add(OAuthTokenManager.class);
         registry.add(OAuthFilter.class);

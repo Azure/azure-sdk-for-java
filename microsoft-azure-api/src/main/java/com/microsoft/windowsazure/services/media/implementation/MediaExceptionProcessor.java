@@ -23,30 +23,30 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
-import com.microsoft.windowsazure.services.media.MediaServicesContract;
+import com.microsoft.windowsazure.services.media.MediaContract;
 
 /**
  * Wrapper implementation of <code>MediaServicesContract</code> that
  * translates exceptions into ServiceExceptions.
  * 
  */
-public class MediaServicesExceptionProcessor implements MediaServicesContract {
+public class MediaExceptionProcessor implements MediaContract {
 
-    private final MediaServicesContract next;
-    static Log log = LogFactory.getLog(MediaServicesContract.class);
+    private final MediaContract next;
+    static Log log = LogFactory.getLog(MediaContract.class);
 
-    public MediaServicesExceptionProcessor(MediaServicesContract next) {
+    public MediaExceptionProcessor(MediaContract next) {
         this.next = next;
     }
 
     @Inject
-    public MediaServicesExceptionProcessor(MediaServicesRestProxy next) {
+    public MediaExceptionProcessor(MediaRestProxy next) {
         this.next = next;
     }
 
     @Override
-    public MediaServicesContract withFilter(ServiceFilter filter) {
-        return new MediaServicesExceptionProcessor(next.withFilter(filter));
+    public MediaContract withFilter(ServiceFilter filter) {
+        return new MediaExceptionProcessor(next.withFilter(filter));
     }
 
     private ServiceException processCatch(ServiceException e) {

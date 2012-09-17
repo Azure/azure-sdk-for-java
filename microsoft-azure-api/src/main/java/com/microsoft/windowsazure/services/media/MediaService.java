@@ -18,21 +18,21 @@ import com.microsoft.windowsazure.services.core.Configuration;
 
 /**
  * 
- * Access media services functionality.
+ * Access media services functionality. This class cannot
+ * be instantiated.
  * 
  */
-public class MediaServicesService {
+public class MediaService {
 
-    private MediaServicesService() {
-        // class is not instantiated
+    private MediaService() {
     }
 
     /**
      * Creates an instance of the <code>MediaServicesContract</code> API.
      * 
      */
-    public static MediaServicesContract create() {
-        return Configuration.getInstance().create(MediaServicesContract.class);
+    public static MediaContract create() {
+        return Configuration.getInstance().create(MediaContract.class);
     }
 
     /**
@@ -42,16 +42,16 @@ public class MediaServicesService {
      *            A <code>Configuration</code> object that represents the configuration for the service bus service.
      * 
      */
-    public static MediaServicesContract create(Configuration config) {
-        return config.create(MediaServicesContract.class);
+    public static MediaContract create(Configuration config) {
+        return config.create(MediaContract.class);
     }
 
     /**
      * Creates an instance of the <code>MediaServicesContract</code> API.
      * 
      */
-    public static MediaServicesContract create(String profile) {
-        return Configuration.getInstance().create(profile, MediaServicesContract.class);
+    public static MediaContract create(String profile) {
+        return Configuration.getInstance().create(profile, MediaContract.class);
     }
 
     /**
@@ -61,7 +61,7 @@ public class MediaServicesService {
      *            A <code>Configuration</code> object that represents the configuration for the service bus service.
      * 
      */
-    public static MediaServicesContract create(String profile, Configuration config) {
-        return config.create(profile, MediaServicesContract.class);
+    public static MediaContract create(String profile, Configuration config) {
+        return config.create(profile, MediaContract.class);
     }
 }
