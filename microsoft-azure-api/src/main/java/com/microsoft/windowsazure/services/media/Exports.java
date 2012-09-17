@@ -15,10 +15,14 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
+import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
 import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
 import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthTokenManager;
+import com.microsoft.windowsazure.services.media.implementation.RedirectFilter;
+import com.microsoft.windowsazure.services.media.implementation.ResourceLocationManager;
 
 public class Exports implements Builder.Exports {
 
@@ -27,9 +31,14 @@ public class Exports implements Builder.Exports {
      */
     @Override
     public void register(Builder.Registry registry) {
+        registry.add(MediaContract.class, MediaExceptionProcessor.class);
+        registry.add(MediaExceptionProcessor.class);
+        registry.add(MediaRestProxy.class);
         registry.add(OAuthContract.class, OAuthRestProxy.class);
         registry.add(OAuthTokenManager.class);
         registry.add(OAuthFilter.class);
+        registry.add(ResourceLocationManager.class);
+        registry.add(RedirectFilter.class);
     }
 
 }

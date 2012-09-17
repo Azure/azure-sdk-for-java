@@ -19,10 +19,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
+import javax.inject.Named;
 import javax.management.timer.Timer;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
+import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
 /**
  * An OAuth token manager class.
@@ -59,8 +61,11 @@ public class OAuthTokenManager {
      *            A <code>String</code> object instance that represents the client secret.
      * 
      */
-    public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory, URI acsBaseUri, String clientId,
-            String clientSecret, String scope) {
+    public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
+            @Named(MediaConfiguration.OAUTH_URI) URI acsBaseUri,
+            @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
+            @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
+            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.acsBaseUri = acsBaseUri;

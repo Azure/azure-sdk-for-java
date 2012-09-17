@@ -18,12 +18,15 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Named;
 import javax.ws.rs.core.UriBuilder;
+
+import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
 public class ResourceLocationManager {
     private URI baseURI;
 
-    public ResourceLocationManager(String baseUri) throws URISyntaxException {
+    public ResourceLocationManager(@Named(MediaConfiguration.URI) String baseUri) throws URISyntaxException {
         this.baseURI = new URI(baseUri);
     }
 

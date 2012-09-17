@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media;
 import com.microsoft.windowsazure.services.core.Configuration;
 
 /**
- * Provides functionality to create a service bus configuration.
+ * Provides functionality to create a media services configuration.
  * 
  */
 public class MediaConfiguration {

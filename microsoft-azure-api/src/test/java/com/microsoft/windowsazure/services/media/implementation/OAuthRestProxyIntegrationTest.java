@@ -20,18 +20,14 @@ import java.net.URI;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;
 
-public class OAuthRestProxyIntegrationTest {
+public class OAuthRestProxyIntegrationTest extends IntegrationTestBase {
     @Test
     public void serviceCanBeCalledToCreateAccessToken() throws Exception {
         // Arrange
-        Configuration config = Configuration.getInstance();
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         OAuthContract oAuthContract = new OAuthRestProxy(config.create(Client.class));
 
         // Act
@@ -44,13 +40,5 @@ public class OAuthRestProxyIntegrationTest {
         // Assert
         assertNotNull(result);
         assertNotNull(result.getAccessToken());
-    }
-
-    private static void overrideWithEnv(Configuration config, String key) {
-        String value = System.getenv(key);
-        if (value == null)
-            return;
-
-        config.setProperty(key, value);
     }
 }
