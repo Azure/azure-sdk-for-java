@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.util.EnumSet;
-
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -26,12 +24,6 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaServicesContract;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyResult;
-import com.microsoft.windowsazure.services.media.models.CreateAssetResult;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Wrapper implementation of <code>MediaServicesContract</code> that
@@ -62,43 +54,4 @@ public class MediaServicesExceptionProcessor implements MediaServicesContract {
         return ServiceExceptionFactory.process("MediaServices", e);
     }
 
-    @Override
-    public CreateAssetResult createAsset(String name) throws ServiceException {
-        try {
-            return next.createAsset(name);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    @Override
-    public void deleteAsset(AssetInfo asset) throws ServiceException {
-        try {
-            next.deleteAsset(asset);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    @Override
-    public CreateAccessPolicyResult createAccessPolicy(String name, int durationInMinutes,
-            EnumSet<AccessPolicyPermission> permissions) throws ServiceException {
-        try {
-            return next.createAccessPolicy(name, durationInMinutes, permissions);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
 }

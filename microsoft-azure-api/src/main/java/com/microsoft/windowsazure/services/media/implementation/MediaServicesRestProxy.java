@@ -16,19 +16,15 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.util.Arrays;
-import java.util.EnumSet;
+
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.media.MediaServicesContract;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyResult;
-import com.microsoft.windowsazure.services.media.models.CreateAssetResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
@@ -39,6 +35,7 @@ public class MediaServicesRestProxy implements MediaServicesContract {
 
     ServiceFilter[] filters;
 
+    @Inject
     public MediaServicesRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
@@ -72,25 +69,6 @@ public class MediaServicesRestProxy implements MediaServicesContract {
             resource.addFilter(new ClientFilterAdapter(filter));
         }
         return resource;
-    }
-
-    @Override
-    public CreateAssetResult createAsset(String name) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void deleteAsset(AssetInfo asset) throws ServiceException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public CreateAccessPolicyResult createAccessPolicy(String name, int durationInMinutes,
-            EnumSet<AccessPolicyPermission> permissions) throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
