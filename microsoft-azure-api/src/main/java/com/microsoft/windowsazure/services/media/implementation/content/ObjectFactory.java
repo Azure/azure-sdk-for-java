@@ -40,4 +40,13 @@ public class ObjectFactory {
     public AssetType createAssetType() {
         return new AssetType();
     }
+
+    /**
+     * Create an instance of {@link ODataActionType }
+     * 
+     * @return a new ODataActionType instance.
+     */
+    public ODataActionType createODataActionType() {
+        return new ODataActionType();
+    }
 }
