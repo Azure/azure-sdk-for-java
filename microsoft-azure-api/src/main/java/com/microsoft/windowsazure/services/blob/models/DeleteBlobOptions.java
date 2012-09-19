@@ -28,7 +28,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 public class DeleteBlobOptions extends BlobServiceOptions {
     private String snapshot;
     private String leaseId;
-    private boolean deleteSnaphotsOnly;
+    private Boolean deleteSnaphotsOnly;
     private AccessCondition accessCondition;
 
     /**
@@ -111,9 +111,10 @@ public class DeleteBlobOptions extends BlobServiceOptions {
      * 
      * @return
      *         A value of <code>true</code> to delete only the snapshots, or <code>false</code> to delete both snapshots
-     *         and the blob.
+     *         and the blob. When the value <code>null</code> is set, x-ms-delete-snapshots in the header will not be
+     *         set.
      */
-    public boolean getDeleteSnaphotsOnly() {
+    public Boolean getDeleteSnaphotsOnly() {
         return deleteSnaphotsOnly;
     }
 

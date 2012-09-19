@@ -1629,11 +1629,12 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Acquires a new lease on the container.
+     * Acquires a new lease on the container with the specified lease time and proposed lease ID.
      * 
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     * @param leaseTimeInSeconds
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
@@ -1651,25 +1652,28 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Acquires a new lease on the container using the specified visibilityTimeoutInSeconds, proposedLeaseId, request
-     * options and operation context.
+     * Acquires a new lease on the container with the specified lease time, proposed lease ID, request
+     * options, and operation context.
      * 
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     * @param leaseTimeInSeconds
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object that represents the access conditions for the container.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -1724,11 +1728,11 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Renews an existing lease.
+     * Renews an existing lease with the specified access conditions.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the container. The LeaseID
-     *            is required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the container. The lease ID is
+     *            required to be set with an access condition.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1739,17 +1743,19 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Renews an existing lease using the specified request options and operation context.
+     * Renews an existing lease with the specified access conditions, request options, and operation context.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -1806,8 +1812,8 @@ public final class CloudBlobContainer {
      * Releases the lease on the container.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1818,17 +1824,19 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Releases the lease on the container using the specified request options and operation context.
+     * Releases the lease on the container using the specified access conditions, request options, and operation context.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -1882,11 +1890,11 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Breaks the lease but ensures that another client cannot acquire a new lease until the current lease period has
-     * expired.
+     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease 
+     * period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @return The time, in seconds, remaining in the lease period.
@@ -1900,21 +1908,21 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Breaks the lease, using the specified request options and operation context, but ensures that another client
-     * cannot acquire a new lease until the current lease period has expired.
+     * Breaks the existing lease, using the specified request options and operation context, and ensures that 
+     * another client cannot acquire a new lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the amount of time to allow the lease to remain, in seconds.
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -1968,15 +1976,15 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Changes an existing lease.
+     * Changes the existing lease ID to the proposed lease ID.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1988,21 +1996,24 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Changes an existing lease using the specified proposedLeaseId, request options and operation context.
+     * Changes the existing lease ID to the proposed lease Id with the specified access conditions, request options,
+     * and operation context.
      * 
      * @param proposedLeaseId
      *            A <code>String</code> that represents the proposed lease ID for the new lease,
      *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob. The LeaseID is
-     *            required to be set on the AccessCondition.
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 

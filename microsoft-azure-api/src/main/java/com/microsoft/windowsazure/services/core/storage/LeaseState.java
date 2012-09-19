@@ -19,7 +19,7 @@ import java.util.Locale;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * he lease state of a resource.
+ * The lease state of a resource.
  */
 public enum LeaseState {
     /**
@@ -56,7 +56,7 @@ public enum LeaseState {
      * Parses a lease status from the given string.
      * 
      * @param typeString
-     *            A <code>String</code> that represents the string to parse.
+     *            The string to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */
