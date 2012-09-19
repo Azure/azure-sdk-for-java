@@ -54,7 +54,7 @@ public class OAuthTokenManagerTest {
         String accountPassword = "testpassword";
         String scope = "urn:WindowsAzureMediaServices";
 
-        client = new OAuthTokenManager(contract, dateFactory, new URI(acsBaseUri), accountName, accountPassword, scope);
+        client = new OAuthTokenManager(contract, dateFactory, acsBaseUri, accountName, accountPassword, scope);
 
         when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
             @Override

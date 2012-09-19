@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.services.media.implementation.ResourceLocation
 public class Exports implements Builder.Exports {
 
     /**
-     * register the OAUTH service.
+     * register the Media services.
      */
     @Override
     public void register(Builder.Registry registry) {

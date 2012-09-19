@@ -14,7 +14,11 @@
  */
 package com.microsoft.windowsazure.services.media;
 
+import java.util.List;
+
 import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 
 /**
  * 
@@ -23,6 +27,14 @@ import com.microsoft.windowsazure.services.core.FilterableService;
  */
 public interface MediaContract extends FilterableService<MediaContract> {
 
-    // Will fill in as we implement the various Media Services entities
+    public Asset createAsset(Asset asset);
+
+    public Asset getAsset(Asset asset);
+
+    public List<Asset> listAssets(ListAssetsOptions listAssetsOptions);
+
+    public Asset updateAsset(Asset updatedAsset);
+
+    public void deleteAsset(String assetId);
 
 }

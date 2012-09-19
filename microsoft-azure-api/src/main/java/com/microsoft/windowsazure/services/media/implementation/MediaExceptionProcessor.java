@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +26,8 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 
 /**
  * Wrapper implementation of <code>MediaServicesContract</code> that
@@ -32,26 +36,51 @@ import com.microsoft.windowsazure.services.media.MediaContract;
  */
 public class MediaExceptionProcessor implements MediaContract {
 
-    private final MediaContract next;
+    private final MediaContract service;
     static Log log = LogFactory.getLog(MediaContract.class);
 
-    public MediaExceptionProcessor(MediaContract next) {
-        this.next = next;
+    public MediaExceptionProcessor(MediaContract service) {
+        this.service = service;
     }
 
     @Inject
-    public MediaExceptionProcessor(MediaRestProxy next) {
-        this.next = next;
+    public MediaExceptionProcessor(MediaRestProxy service) {
+        this.service = service;
     }
 
     @Override
     public MediaContract withFilter(ServiceFilter filter) {
-        return new MediaExceptionProcessor(next.withFilter(filter));
+        return new MediaExceptionProcessor(service.withFilter(filter));
     }
 
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("MediaServices", e);
+    }
+
+    @Override
+    public Asset createAsset(Asset asset) {
+        return service.createAsset(asset);
+    }
+
+    @Override
+    public Asset getAsset(Asset asset) {
+        return service.getAsset(asset);
+    }
+
+    @Override
+    public List<Asset> listAssets(ListAssetsOptions listAssetsOptions) {
+        return service.listAssets(listAssetsOptions);
+    }
+
+    @Override
+    public Asset updateAsset(Asset updatedAsset) {
+        return service.updateAsset(updatedAsset);
+    }
+
+    @Override
+    public void deleteAsset(String assetId) {
+        service.deleteAsset(assetId);
     }
 
 }

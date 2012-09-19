@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,6 +27,8 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
@@ -69,6 +73,36 @@ public class MediaRestProxy implements MediaContract {
             resource.addFilter(new ClientFilterAdapter(filter));
         }
         return resource;
+    }
+
+    @Override
+    public Asset createAsset(Asset asset) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Asset getAsset(Asset asset) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Asset> listAssets(ListAssetsOptions listAssetsOptions) {
+        List<Asset> listAssetsResult = new ArrayList<Asset>();
+        return listAssetsResult;
+    }
+
+    @Override
+    public Asset updateAsset(Asset updatedAsset) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteAsset(String assetId) {
+        // TODO Auto-generated method stub
+
     }
 
 }
