@@ -18,13 +18,17 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.util.Arrays;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.content.CreateAssetRequest;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
@@ -32,15 +36,19 @@ public class MediaRestProxy implements MediaContract {
 
     private Client channel;
     static Log log = LogFactory.getLog(MediaContract.class);
+    private static final String jsonRequestType = "application/json; odata=verbose";
 
     ServiceFilter[] filters;
 
     @Inject
-    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter) {
+    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
+            VersionHeadersFilter versionHeadersFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
+
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
+        channel.addFilter(versionHeadersFilter);
     }
 
     public MediaRestProxy(Client channel, ServiceFilter[] filters) {
@@ -71,4 +79,11 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    @Override
+    public AssetInfo createAsset(String name) throws ServiceException {
+        WebResource resource = getResource("Assets");
+
+        CreateAssetRequest request = new CreateAssetRequest(name);
+        return resource.type(jsonRequestType).accept(MediaType.APPLICATION_ATOM_XML).post(AssetInfo.class, request);
+    }
 }

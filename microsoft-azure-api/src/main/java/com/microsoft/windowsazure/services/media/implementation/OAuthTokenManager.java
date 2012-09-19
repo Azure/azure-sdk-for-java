@@ -59,16 +59,17 @@ public class OAuthTokenManager {
      * 
      * @param clientSecret
      *            A <code>String</code> object instance that represents the client secret.
+     * @throws URISyntaxException
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
-            @Named(MediaConfiguration.OAUTH_URI) URI acsBaseUri,
+            @Named(MediaConfiguration.OAUTH_URI) String acsBaseUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
-            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) {
+            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.acsBaseUri = acsBaseUri;
+        this.acsBaseUri = new URI(acsBaseUri);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;

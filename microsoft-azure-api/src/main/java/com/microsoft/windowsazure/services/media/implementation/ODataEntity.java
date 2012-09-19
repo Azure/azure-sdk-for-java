@@ -45,6 +45,4 @@ public abstract class ODataEntity<T> {
     public T getContent() {
         return content;
     }
-
-    public abstract Class<?> getJAXBContentClass();
 }

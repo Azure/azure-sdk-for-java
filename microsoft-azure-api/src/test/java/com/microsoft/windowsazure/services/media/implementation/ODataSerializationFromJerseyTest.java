@@ -1,6 +1,5 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.ws.rs.core.MediaType;
@@ -11,13 +10,16 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
+import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.MediaService;
+import com.microsoft.windowsazure.services.media.implementation.content.CreateAssetRequest;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAssetRequest;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
@@ -29,6 +31,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
         ClientConfig cc = new DefaultClientConfig();
         cc.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
+        cc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
         cc.getSingletons().add(new ODataEntityProvider());
         Client c = Client.create(cc);
 
@@ -45,7 +48,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
                 .accept(MediaType.APPLICATION_ATOM_XML).post(AssetInfo.class, requestData);
 
         Assert.assertNotNull(newAsset);
-        Assert.assertEquals("firstTestAsset", newAsset.getContent().getName());
+        Assert.assertEquals("firstTestAsset", newAsset.getName());
     }
 
     private OAuthContract createOAuthContract() {
@@ -53,8 +56,8 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
     }
 
     private OAuthTokenManager createTokenManager() throws URISyntaxException {
-        return new OAuthTokenManager(createOAuthContract(), new DefaultDateFactory(), new URI(
-                (String) config.getProperty(MediaConfiguration.OAUTH_URI)),
+        return new OAuthTokenManager(createOAuthContract(), new DefaultDateFactory(),
+                (String) config.getProperty(MediaConfiguration.OAUTH_URI),
                 (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_ID),
                 (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET), "urn:WindowsAzureMediaServices");
     }
@@ -63,4 +66,11 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         return new ResourceLocationManager((String) config.getProperty(MediaConfiguration.URI));
     }
 
+    @Test
+    public void canCreateAssetThroughMediaServiceAPI() throws Exception {
+        MediaContract client = MediaService.create(config);
+        AssetInfo newAsset = client.createAsset("secondTestAsset");
+
+        Assert.assertEquals("secondTestAsset", newAsset.getName());
+    }
 }

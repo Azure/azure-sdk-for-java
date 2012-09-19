@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.models;
+package com.microsoft.windowsazure.services.media.implementation.content;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

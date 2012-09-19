@@ -15,6 +15,8 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 /**
  * 
@@ -23,6 +25,6 @@ import com.microsoft.windowsazure.services.core.FilterableService;
  */
 public interface MediaContract extends FilterableService<MediaContract> {
 
-    // Will fill in as we implement the various Media Services entities
+    AssetInfo createAsset(String name) throws ServiceException;
 
 }
