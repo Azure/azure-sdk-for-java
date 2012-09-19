@@ -2,8 +2,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
@@ -14,6 +12,7 @@ import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAssetRequest;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -39,14 +38,11 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         c.addFilter(new VersionHeadersFilter());
 
         WebResource assetResource = c.resource("Assets");
-        String requestData = "{\"Name\":\"firstTestAsset\"}";
 
-        Map<String, String> mediaTypeParams = new HashMap<String, String>();
-        //mediaTypeParams.put("type", "feed");
-        MediaType acceptedType = new MediaType("application", "atom+xml", mediaTypeParams);
+        CreateAssetRequest requestData = new CreateAssetRequest("firstTestAsset");
 
-        AssetInfo newAsset = assetResource.type("application/json;odata=verbose").accept(acceptedType)
-                .post(AssetInfo.class, requestData);
+        AssetInfo newAsset = assetResource.type("application/json;odata=verbose")
+                .accept(MediaType.APPLICATION_ATOM_XML).post(AssetInfo.class, requestData);
 
         Assert.assertNotNull(newAsset);
         Assert.assertEquals("firstTestAsset", newAsset.getContent().getName());
