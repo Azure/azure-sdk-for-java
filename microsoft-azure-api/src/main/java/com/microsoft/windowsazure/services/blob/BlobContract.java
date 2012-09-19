@@ -24,10 +24,12 @@ import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -429,7 +431,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length) throws ServiceException;
+    CreateBlobResult createPageBlob(String container, String blob, long length) throws ServiceException;
 
     /**
      * Creates a page blob of the specified maximum length, using the specified options.
@@ -457,7 +459,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createPageBlob(String container, String blob, int length, CreateBlobOptions options) throws ServiceException;
+    CreateBlobResult createPageBlob(String container, String blob, long length, CreateBlobOptions options)
+            throws ServiceException;
 
     /**
      * Creates a block blob from a content stream.
@@ -473,7 +476,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException;
+    CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException;
 
     /**
      * Creates a block blob from a content stream, using the specified options.
@@ -495,7 +498,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+    CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
             throws ServiceException;
 
     /**
@@ -1214,8 +1217,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
-            throws ServiceException;
+    CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob) throws ServiceException;
 
     /**
      * Copies a source blob to a destination within the storage account, using the specified options.
@@ -1293,8 +1296,8 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob,
-            CopyBlobOptions options) throws ServiceException;
+    CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob, CopyBlobOptions options) throws ServiceException;
 
     /**
      * Gets a new lease on a blob.

@@ -30,7 +30,7 @@ public final class SharedAccessTablePolicy {
      * 
      * @param value
      *            A <code>String</code> that represents the shared access permissions. The string must contain one or
-     *            more of the following values. Note they must be lowercase, and the order that they are specified must
+     *            more of the following values. Note that they must be lower case, and the order that they are specified must
      *            be in the order of "rwdl".
      *            <ul>
      *            <li><code>d</code>: Delete access.</li>
@@ -72,7 +72,7 @@ public final class SharedAccessTablePolicy {
      * Converts the permissions specified for the shared access policy to a string.
      * 
      * @param permissions
-     *            A {@link SharedAccessTablePermissions} object that represents the shared access permissions.
+     *            A set of {@link SharedAccessTablePermissions} objects that represent the shared access permissions.
      * 
      * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
      *         described at {@link SharedAccessTablePermissions#permissionsFromString}.
@@ -127,45 +127,59 @@ public final class SharedAccessTablePolicy {
     }
 
     /**
-     * @return the permissions
+     * Gets the permissions for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessTablePermissions} values that
+     *         represents the set of shared access permissions.
      */
     public EnumSet<SharedAccessTablePermissions> getPermissions() {
         return this.permissions;
     }
 
     /**
-     * @return the sharedAccessExpiryTime
+     * Gets the expiry time for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>Date</code> object that contains the shared access signature expiry time.
      */
     public Date getSharedAccessExpiryTime() {
         return this.sharedAccessExpiryTime;
     }
 
     /**
-     * @return the sharedAccessStartTime
+     * Gets the start time for a shared access signature associated with this shared access policy.
+     * 
+     * @return A <code>Date</code> object that contains the shared access signature start time.
      */
     public Date getSharedAccessStartTime() {
         return this.sharedAccessStartTime;
     }
 
     /**
+     * Sets the permissions for a shared access signature associated with this shared access policy.
+     * 
      * @param permissions
-     *            the permissions to set
+     *            The permissions, represented by a <code>java.util.EnumSet</code> object that contains 
+     *            {@link SharedAccessTablePermissions} values, to set for the shared access signature.
      */
     public void setPermissions(final EnumSet<SharedAccessTablePermissions> permissions) {
         this.permissions = permissions;
     }
 
     /**
+     * Sets the expiry time for a shared access signature associated with this shared access policy.
+     * 
      * @param sharedAccessExpiryTime
-     *            the sharedAccessExpiryTime to set
+     *            The expiry time to set for the shared access signature.
      */
     public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
     }
 
     /**
+     * Sets the start time for a shared access signature associated with this shared access policy.
+     * 
      * @param sharedAccessStartTime
-     *            the sharedAccessStartTime to set
+     *            The start time to set for the shared access signature.
      */
     public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
         this.sharedAccessStartTime = sharedAccessStartTime;

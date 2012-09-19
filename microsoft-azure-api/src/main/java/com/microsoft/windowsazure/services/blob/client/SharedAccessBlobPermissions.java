@@ -45,7 +45,7 @@ public enum SharedAccessBlobPermissions {
      * 
      * @param value
      *            The byte value to convert to the corresponding enum set.
-     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessPermissions</code> values
+     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessBlobPermissions</code> values
      *         corresponding to the specified byte value.
      */
     protected static EnumSet<SharedAccessBlobPermissions> fromByte(final byte value) {
