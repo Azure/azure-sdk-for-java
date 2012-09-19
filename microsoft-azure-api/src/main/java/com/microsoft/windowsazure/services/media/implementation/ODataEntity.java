@@ -22,7 +22,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
  * access to entry and content types.
  * 
  */
-public class ODataEntity<T> {
+public abstract class ODataEntity<T> {
 
     private final EntryType entry;
     private final T content;
@@ -45,4 +45,6 @@ public class ODataEntity<T> {
     public T getContent() {
         return content;
     }
+
+    public abstract Class<?> getJAXBContentClass();
 }

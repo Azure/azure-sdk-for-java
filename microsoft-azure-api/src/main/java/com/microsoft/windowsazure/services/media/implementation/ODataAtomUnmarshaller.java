@@ -16,6 +16,9 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -47,14 +50,84 @@ public class ODataAtomUnmarshaller {
         mediaContentUnmarshaller = mediaContentContext.createUnmarshaller();
     }
 
-    public ODataEntity<?> unmarshal(InputStream stream, Class<?> contentType) throws JAXBException {
+    public ODataEntity<?> unmarshalFeed(InputStream stream, Class<?> contentType) throws JAXBException {
         JAXBElement<FeedType> feedElement = atomUnmarshaller.unmarshal(new StreamSource(stream), FeedType.class);
         FeedType feed = feedElement.getValue();
         EntryType firstEntry = getFirstEntry(feed);
 
-        Object content = getEntryContent(firstEntry, contentType);
+        Class<?> serializationType = GetSerializationContentType(contentType);
 
-        return new ODataEntity(firstEntry, content);
+        Object content = getEntryContent(firstEntry, serializationType);
+
+        try {
+            Constructor<?> resultCtor = contentType.getConstructor(EntryType.class, serializationType);
+            return (ODataEntity<?>) resultCtor.newInstance(firstEntry, content);
+        }
+        catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ODataEntity<?> unmarshalEntry(InputStream stream, Class<?> contentType) throws JAXBException {
+        JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(new StreamSource(stream), EntryType.class);
+
+        EntryType entry = entryElement.getValue();
+
+        Class<?> serializationType = GetSerializationContentType(contentType);
+
+        Object content = getEntryContent(entry, serializationType);
+
+        try {
+            Constructor<?> resultCtor = contentType.getConstructor(EntryType.class, serializationType);
+            return (ODataEntity<?>) resultCtor.newInstance(entry, content);
+        }
+        catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Object getEntryContent(EntryType entry, Class<?> contentType) throws JAXBException {
@@ -116,4 +189,8 @@ public class ODataAtomUnmarshaller {
         return new QName(e.getLocalName(), e.getNamespaceURI());
     }
 
+    private Class<?> GetSerializationContentType(Class<?> contentType) {
+        ParameterizedType pt = (ParameterizedType) contentType.getGenericSuperclass();
+        return (Class<?>) pt.getActualTypeArguments()[0];
+    }
 }

@@ -44,7 +44,7 @@ public class ODataSerializationTest {
     public void canUnmarshallAssetFromFeed() throws Exception {
         ODataAtomUnmarshaller um = new ODataAtomUnmarshaller();
         InputStream input = new ByteArrayInputStream(sampleFeedOneAsset.getBytes("UTF-8"));
-        ODataEntity<AssetType> entry = (ODataEntity<AssetType>) um.unmarshal(input, AssetType.class);
+        ODataEntity<AssetType> entry = (ODataEntity<AssetType>) um.unmarshalFeed(input, AssetType.class);
         Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entry.getContent().getId());
     }
 }
