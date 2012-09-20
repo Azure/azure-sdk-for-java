@@ -54,6 +54,17 @@ public class ODataAtomMarshaller {
         documentBuilder = dbf.newDocumentBuilder();
     }
 
+    /**
+     * Convert the given content object into an ATOM entry
+     * (represented as a DOM document) suitable for sending
+     * up to the Media Services service.
+     * 
+     * @param content
+     *            The content object to send
+     * @return The generated DOM
+     * @throws JAXBException
+     *             if content is malformed/not serializable
+     */
     public Document marshalEntry(Object content) throws JAXBException {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
