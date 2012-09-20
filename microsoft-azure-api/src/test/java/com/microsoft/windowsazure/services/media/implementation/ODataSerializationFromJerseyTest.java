@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
-import com.microsoft.windowsazure.services.media.implementation.content.CreateAssetRequest;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -57,13 +57,17 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
         WebResource assetResource = c.resource("Assets");
 
-        CreateAssetRequest requestData = new CreateAssetRequest("firstTestAsset");
+        ODataAtomMarshaller m = new ODataAtomMarshaller();
+        AssetType requestData = new AssetType();
+        requestData.setName("firstTestAsset");
+        requestData.setAlternateId("some external id");
 
-        AssetInfo newAsset = assetResource.type("application/json;odata=verbose")
-                .accept(MediaType.APPLICATION_ATOM_XML).post(AssetInfo.class, requestData);
+        AssetInfo newAsset = assetResource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(AssetInfo.class, m.marshalEntry(requestData));
 
         Assert.assertNotNull(newAsset);
         Assert.assertEquals("firstTestAsset", newAsset.getName());
+        Assert.assertEquals("some external id", newAsset.getAlternateId());
     }
 
     private OAuthContract createOAuthContract() {

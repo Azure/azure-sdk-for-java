@@ -18,10 +18,15 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
 public class ODataSerializationTest {
@@ -61,5 +66,24 @@ public class ODataSerializationTest {
         InputStream input = new ByteArrayInputStream(sampleFeedOneAsset.getBytes("UTF-8"));
         ODataEntity<AssetType> entry = (ODataEntity<AssetType>) um.unmarshalFeed(input, AssetType.class);
         Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entry.getContent().getId());
+    }
+
+    @Test
+    public void canMarshalEntryFromJavaObject() throws Exception {
+        AssetType a = new AssetType();
+        a.setName("testNewAsset");
+        a.setOptions(0);
+        a.setAlternateId("some other id");
+
+        JAXBContext context = JAXBContext.newInstance(EntryType.class, AssetType.class);
+        Marshaller m = context.createMarshaller();
+
+        EntryType e = new EntryType();
+        ContentType c = new ContentType();
+        c.getContent().add(a);
+        e.getEntryChildren().add(c);
+
+        m.marshal(e, System.out);
+
     }
 }

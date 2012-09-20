@@ -19,6 +19,8 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,14 +29,17 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.media.MediaContract;
-import com.microsoft.windowsazure.services.media.implementation.content.CreateAssetRequest;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 public class MediaRestProxy implements MediaContract {
 
     private Client channel;
+    private ODataAtomMarshaller marshaller;
+
     static Log log = LogFactory.getLog(MediaContract.class);
     private static final String jsonRequestType = "application/json; odata=verbose";
 
@@ -49,11 +54,14 @@ public class MediaRestProxy implements MediaContract {
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
         channel.addFilter(versionHeadersFilter);
+
+        createMarshaller();
     }
 
     public MediaRestProxy(Client channel, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
+        createMarshaller();
     }
 
     @Override
@@ -79,11 +87,32 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    private void createMarshaller() {
+        try {
+            this.marshaller = new ODataAtomMarshaller();
+        }
+        catch (JAXBException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
-    public AssetInfo createAsset(String name) throws ServiceException {
+    public AssetInfo createAsset(String name) throws ServiceException, UniformInterfaceException {
         WebResource resource = getResource("Assets");
 
-        CreateAssetRequest request = new CreateAssetRequest(name);
-        return resource.type(jsonRequestType).accept(MediaType.APPLICATION_ATOM_XML).post(AssetInfo.class, request);
+        AssetType request = new AssetType();
+        request.setName(name);
+        try {
+            return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                    .post(AssetInfo.class, marshaller.marshalEntry(request));
+        }
+        catch (JAXBException e) {
+            throw new ServiceException(e);
+        }
     }
 }
