@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,13 +63,13 @@ public class OAuthTokenManager {
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
-            @Named(MediaConfiguration.OAUTH_URI) String acsBaseUri,
+            @Named(MediaConfiguration.OAUTH_URI) String oauthUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
             @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.acsBaseUri = new URI(acsBaseUri);
+        this.acsBaseUri = new URI(oauthUri);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;

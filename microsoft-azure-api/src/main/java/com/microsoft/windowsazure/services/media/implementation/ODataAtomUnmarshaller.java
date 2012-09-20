@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Element;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
@@ -37,12 +38,20 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.ODataActionType;
 
+/**
+ * This class implements unmarshalling from OData over Atom into Java
+ * classes.
+ * 
+ */
 public class ODataAtomUnmarshaller {
     private final JAXBContext atomContext;
     private final JAXBContext mediaContentContext;
     private final Unmarshaller atomUnmarshaller;
     private final Unmarshaller mediaContentUnmarshaller;
 
+    /**
+     * @throws JAXBException
+     */
     public ODataAtomUnmarshaller() throws JAXBException {
         atomContext = JAXBContext.newInstance(FeedType.class.getPackage().getName());
         atomUnmarshaller = atomContext.createUnmarshaller();
@@ -50,7 +59,23 @@ public class ODataAtomUnmarshaller {
         mediaContentUnmarshaller = mediaContentContext.createUnmarshaller();
     }
 
-    public ODataEntity<?> unmarshalFeed(InputStream stream, Class<?> contentType) throws JAXBException {
+    /**
+     * Given a stream that contains XML with an atom Feed element at the root,
+     * unmarshal it into Java objects with the given content type in the entries.
+     * 
+     * @param stream
+     *            - stream containing the XML data
+     * @param contentType
+     *            - Java type to unmarshal the entry contents into
+     * @return an instance of contentType that contains the unmarshalled data.
+     * @throws JAXBException
+     * @throws ServiceException
+     */
+    public ODataEntity<?> unmarshalFeed(InputStream stream, Class<?> contentType) throws JAXBException,
+            ServiceException {
+        validateNotNull(stream, "stream");
+        validateNotNull(contentType, "contentType");
+
         JAXBElement<FeedType> feedElement = atomUnmarshaller.unmarshal(new StreamSource(stream), FeedType.class);
         FeedType feed = feedElement.getValue();
         EntryType firstEntry = getFirstEntry(feed);
@@ -64,33 +89,48 @@ public class ODataAtomUnmarshaller {
             return (ODataEntity<?>) resultCtor.newInstance(firstEntry, content);
         }
         catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (SecurityException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (InstantiationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
-        return null;
     }
 
-    public ODataEntity<?> unmarshalEntry(InputStream stream, Class<?> contentType) throws JAXBException {
+    /**
+     * Given a stream containing XML with an Atom entry element at the root,
+     * unmarshal it into an instance of contentType
+     * 
+     * @param stream
+     *            - stream containing XML data
+     * @param contentType
+     *            - type of object to return
+     * @return An instance of contentType
+     * @throws JAXBException
+     * @throws ServiceException
+     */
+    public ODataEntity<?> unmarshalEntry(InputStream stream, Class<?> contentType) throws JAXBException,
+            ServiceException {
+        validateNotNull(stream, "stream");
+        validateNotNull(contentType, "contentType");
+
         JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(new StreamSource(stream), EntryType.class);
 
         EntryType entry = entryElement.getValue();
@@ -104,35 +144,34 @@ public class ODataAtomUnmarshaller {
             return (ODataEntity<?>) resultCtor.newInstance(entry, content);
         }
         catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (SecurityException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (InstantiationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
         catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            throw new ServiceException(e);
         }
-        return null;
     }
 
     private Object getEntryContent(EntryType entry, Class<?> contentType) throws JAXBException {
         List<Object> entryChildren = entry.getEntryChildren();
-        Object retval = null;
+        Object retVal = null;
 
         for (int i = 0; i < entryChildren.size(); ++i) {
             Object child = entryChildren.get(i);
@@ -140,7 +179,7 @@ public class ODataAtomUnmarshaller {
                 // It's a parsed element, if it's content unmarshal, fixup, and store return value
                 JAXBElement e = (JAXBElement) child;
                 if (e.getDeclaredType() == ContentType.class) {
-                    retval = unmarshalEntryContent((ContentType) e.getValue(), contentType);
+                    retVal = unmarshalEntryContent((ContentType) e.getValue(), contentType);
                 }
             }
             else {
@@ -153,7 +192,7 @@ public class ODataAtomUnmarshaller {
                 }
             }
         }
-        return retval;
+        return retVal;
     }
 
     private EntryType getFirstEntry(FeedType feed) {
@@ -192,5 +231,11 @@ public class ODataAtomUnmarshaller {
     private Class<?> GetSerializationContentType(Class<?> contentType) {
         ParameterizedType pt = (ParameterizedType) contentType.getGenericSuperclass();
         return (Class<?>) pt.getActualTypeArguments()[0];
+    }
+
+    private static void validateNotNull(Object param, String paramName) {
+        if (param == null) {
+            throw new IllegalArgumentException(paramName);
+        }
     }
 }

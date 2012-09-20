@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,18 +53,15 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 
-                // enable this feature for unattributed json object serialization
                 instance.getProperties().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
 
-                // Turn off auto-redirect following
+                // Turn off auto-follow redirects, because Media Services rest calls break if it's on
                 instance.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
 
-                // add body reader/writer for ODataEntity<?> descendant classes
                 try {
                     instance.getSingletons().add(new ODataEntityProvider());
                 }
                 catch (JAXBException e) {
-                    // wrap in runtimeexception, we can't change the function signature
                     e.printStackTrace();
                     throw new RuntimeException(e);
                 }

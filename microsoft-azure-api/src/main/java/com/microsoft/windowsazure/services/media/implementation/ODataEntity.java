@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public abstract class ODataEntity<T> {
     private final EntryType entry;
     private final T content;
 
-    public ODataEntity(EntryType entry, T content) {
+    protected ODataEntity(EntryType entry, T content) {
         this.entry = entry;
         this.content = content;
     }
@@ -35,14 +35,14 @@ public abstract class ODataEntity<T> {
     /**
      * @return the entry
      */
-    public EntryType getEntry() {
+    protected EntryType getEntry() {
         return entry;
     }
 
     /**
      * @return the content
      */
-    public T getContent() {
+    protected T getContent() {
         return content;
     }
 }

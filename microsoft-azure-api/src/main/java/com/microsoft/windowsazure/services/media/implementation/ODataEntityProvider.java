@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 
 /**
@@ -59,15 +60,21 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
         ODataEntity entity;
         String responseType = mediaType.getParameters().get("type");
         try {
-            if (responseType.equals("entry")) {
+            if (responseType == null || responseType.equals("feed")) {
+                entity = unmarshaller.unmarshalFeed(entityStream, type);
+            }
+            else if (responseType.equals("entry")) {
                 entity = unmarshaller.unmarshalEntry(entityStream, type);
             }
             else {
-                entity = unmarshaller.unmarshalFeed(entityStream, type);
+                throw new RuntimeException();
             }
         }
         catch (JAXBException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        catch (ServiceException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -90,7 +97,7 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
     public void writeTo(ODataEntity<?> t, Class<?> type, Type genericType, Annotation[] annotations,
             MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        // We do not support writing in this version.
+        throw new UnsupportedOperationException();
     }
 
 }
