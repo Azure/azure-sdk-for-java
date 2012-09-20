@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,32 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Enum ProtectionKeyType.
+ */
 public enum ProtectionKeyType {
+
+    /** The X509 certificate thumbprint. */
     X509CertificateThumbprint(0);
 
+    /** The protection key type code. */
     private int protectionKeyTypeCode;
 
+    /**
+     * Instantiates a new protection key type.
+     * 
+     * @param protectionKeyTypeCode
+     *            the protection key type code
+     */
     private ProtectionKeyType(int protectionKeyTypeCode) {
         this.protectionKeyTypeCode = protectionKeyTypeCode;
     }
 
+    /**
+     * Gets the code.
+     * 
+     * @return the code
+     */
     public int getCode() {
         return protectionKeyTypeCode;
     }

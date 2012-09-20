@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class FileTest {
+public class FileInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "testId";
-        File file = new File();
+        FileInfo file = new FileInfo();
 
         // Act
         String actualId = file.setId(expectedId).getId();
@@ -39,10 +39,10 @@ public class FileTest {
     public void testGetSetName() {
         // Arrange
         String expectedName = "testName";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualName = file.setName(expectedName).getName();
+        String actualName = fileInfo.setName(expectedName).getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -52,10 +52,10 @@ public class FileTest {
     public void testGetSetContentFileSize() {
         // Arrange
         int expectedContentFileSize = 1234;
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        int actualContentFileSize = file.setContentFileSize(expectedContentFileSize).getContentFileSize();
+        int actualContentFileSize = fileInfo.setContentFileSize(expectedContentFileSize).getContentFileSize();
 
         // Assert
         assertEquals(expectedContentFileSize, actualContentFileSize);
@@ -66,10 +66,10 @@ public class FileTest {
     public void testGetSetParentAssetId() {
         // Arrange
         String expectedParentAssetId = "testParentAssetId";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualParentAssetId = file.setParentAssetId(expectedParentAssetId).getParentAssetId();
+        String actualParentAssetId = fileInfo.setParentAssetId(expectedParentAssetId).getParentAssetId();
 
         // Assert
         assertEquals(expectedParentAssetId, actualParentAssetId);
@@ -79,10 +79,11 @@ public class FileTest {
     public void testGetSetEncryptionVersion() {
         // Arrange 
         String expectedEncryptionVersion = "testEncryptionVersion";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act 
-        String actualEncryptionVersion = file.setEncryptionVersion(expectedEncryptionVersion).getEncryptionVersion();
+        String actualEncryptionVersion = fileInfo.setEncryptionVersion(expectedEncryptionVersion)
+                .getEncryptionVersion();
 
         // Assert
         assertEquals(expectedEncryptionVersion, actualEncryptionVersion);
@@ -92,10 +93,10 @@ public class FileTest {
     public void testGetSetEncryptionScheme() {
         // Arrange
         String expectedEncryptionScheme = "testEncryptionScheme";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualEncryptionScheme = file.setEncryptionScheme(expectedEncryptionScheme).getEncryptionScheme();
+        String actualEncryptionScheme = fileInfo.setEncryptionScheme(expectedEncryptionScheme).getEncryptionScheme();
 
         // Assert
         assertEquals(expectedEncryptionScheme, actualEncryptionScheme);
@@ -105,10 +106,10 @@ public class FileTest {
     public void testGetSetIsEncrypted() {
         // Arrange 
         Boolean expectedIsEncrypted = true;
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        Boolean actualIsEncrypted = file.setIsEncrypted(expectedIsEncrypted).getIsEncrypted();
+        Boolean actualIsEncrypted = fileInfo.setIsEncrypted(expectedIsEncrypted).getIsEncrypted();
 
         // Assert
         assertEquals(expectedIsEncrypted, actualIsEncrypted);
@@ -118,10 +119,10 @@ public class FileTest {
     public void testGetSetEncryptionKeyId() {
         // Arrange 
         String expectedEncryptionKeyId = "testEncryptionKeyId";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualEncryptionKeyId = file.setEncryptionKeyId(expectedEncryptionKeyId).getEncryptionKeyId();
+        String actualEncryptionKeyId = fileInfo.setEncryptionKeyId(expectedEncryptionKeyId).getEncryptionKeyId();
 
         // Assert 
         assertEquals(expectedEncryptionKeyId, actualEncryptionKeyId);
@@ -131,10 +132,10 @@ public class FileTest {
     public void testGetSetInitializationVector() {
         // Arrange 
         String expectedInitializationVector = "testInitializationVector";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualInitializationVector = file.setInitializationVector(expectedInitializationVector)
+        String actualInitializationVector = fileInfo.setInitializationVector(expectedInitializationVector)
                 .getInitializationVector();
 
         // Assert 
@@ -146,10 +147,10 @@ public class FileTest {
     public void testGetSetIsPrimary() {
         // Arrange
         Boolean expectedIsPrimary = true;
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        Boolean actualIsPrimary = file.setIsPrimary(expectedIsPrimary).getIsPrimary();
+        Boolean actualIsPrimary = fileInfo.setIsPrimary(expectedIsPrimary).getIsPrimary();
 
         // Assert 
         assertEquals(expectedIsPrimary, actualIsPrimary);
@@ -159,10 +160,10 @@ public class FileTest {
     public void testGetSetLastModified() {
         // Arrange 
         Date expectedLastModified = new Date();
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act 
-        Date actualLastModified = file.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = fileInfo.setLastModified(expectedLastModified).getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
@@ -172,10 +173,10 @@ public class FileTest {
     public void testGetSetCreated() {
         // Arrange
         Date expectedCreated = new Date();
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act 
-        Date actualCreated = file.setCreated(expectedCreated).getCreated();
+        Date actualCreated = fileInfo.setCreated(expectedCreated).getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -185,10 +186,10 @@ public class FileTest {
     public void testGetSetMimeType() {
         // Arrange
         String expectedMimeType = "testMimeType";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act 
-        String actualMimeType = file.setMimeType(expectedMimeType).getMimeType();
+        String actualMimeType = fileInfo.setMimeType(expectedMimeType).getMimeType();
 
         // Assert 
         assertEquals(expectedMimeType, actualMimeType);
@@ -198,10 +199,10 @@ public class FileTest {
     public void testGetSetContentChecksum() {
         // Arrange 
         String expectedContentChecksum = "testContentChecksum";
-        File file = new File();
+        FileInfo fileInfo = new FileInfo();
 
         // Act
-        String actualContentChecksum = file.setContentChecksum(expectedContentChecksum).getContentChecksum();
+        String actualContentChecksum = fileInfo.setContentChecksum(expectedContentChecksum).getContentChecksum();
 
         // Assert
         assertEquals(expectedContentChecksum, actualContentChecksum);
