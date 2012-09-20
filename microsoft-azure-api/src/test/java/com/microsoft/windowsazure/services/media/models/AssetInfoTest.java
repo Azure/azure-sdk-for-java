@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class AssetTest {
+public class AssetInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act 
-        String actualId = asset.setId(expectedId).getId();
+        String actualId = assetInfo.setId(expectedId).getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -41,10 +41,10 @@ public class AssetTest {
     public void testGetSetState() {
         // Arrange
         AssetState expectedState = AssetState.Published;
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        AssetState actualState = asset.setState(expectedState).getState();
+        AssetState actualState = assetInfo.setState(expectedState).getState();
 
         // Assert
         assertEquals(expectedState, actualState);
@@ -54,10 +54,10 @@ public class AssetTest {
     public void testGetSetCreated() {
         // Arrange
         Date expectedCreated = new Date();
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act 
-        Date actualCreated = asset.setCreate(expectedCreated).getCreated();
+        Date actualCreated = assetInfo.setCreate(expectedCreated).getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -68,10 +68,10 @@ public class AssetTest {
     public void testGetSetLastModified() {
         // Arrange
         Date expectedLastModified = new Date();
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        Date actualLastModified = asset.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = assetInfo.setLastModified(expectedLastModified).getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
@@ -81,10 +81,10 @@ public class AssetTest {
     public void testGetSetAlternateId() {
         // Arrange
         String expectedAlternateId = "testAlternateId";
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        String actualAlternateId = asset.setAlternateId(expectedAlternateId).getAlternateId();
+        String actualAlternateId = assetInfo.setAlternateId(expectedAlternateId).getAlternateId();
 
         // Assert
         assertEquals(expectedAlternateId, actualAlternateId);
@@ -94,10 +94,10 @@ public class AssetTest {
     public void testGetSetName() {
         // Arrange
         String expectedName = "testName";
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        String actualName = asset.setName(expectedName).getName();
+        String actualName = assetInfo.setName(expectedName).getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -107,10 +107,10 @@ public class AssetTest {
     public void testGetSetOptions() {
         // Arrange
         EncryptionOption expectedOptions = EncryptionOption.None;
-        Asset asset = new Asset();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        EncryptionOption actualOptions = asset.setOptions(expectedOptions).getOptions();
+        EncryptionOption actualOptions = assetInfo.setOptions(expectedOptions).getOptions();
 
         // Assert
         assertEquals(expectedOptions, actualOptions);
@@ -119,11 +119,11 @@ public class AssetTest {
     @Test
     public void testGetSetLocators() {
         // Arrange
-        Iterable<Locator> expectedLocators = new ArrayList<Locator>();
-        Asset asset = new Asset();
+        Iterable<LocatorInfo> expectedLocators = new ArrayList<LocatorInfo>();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        Iterable<Locator> actualLocators = asset.setLocators(expectedLocators).getLocators();
+        Iterable<LocatorInfo> actualLocators = assetInfo.setLocators(expectedLocators).getLocators();
 
         // Assert
         assertEquals(expectedLocators, actualLocators);
@@ -132,11 +132,11 @@ public class AssetTest {
     @Test
     public void testGetSetContentKeys() {
         // Arrange
-        Iterable<ContentKey> expectedContentKeys = new ArrayList<ContentKey>();
-        Asset asset = new Asset();
+        Iterable<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        Iterable<ContentKey> actualContentKeys = asset.setContentKeys(expectedContentKeys).getContentKeys();
+        Iterable<ContentKeyInfo> actualContentKeys = assetInfo.setContentKeys(expectedContentKeys).getContentKeys();
 
         // Assert
         assertEquals(expectedContentKeys, actualContentKeys);
@@ -145,11 +145,11 @@ public class AssetTest {
     @Test
     public void testGetSetFiles() {
         // Arrange 
-        Iterable<File> expectedFiles = new ArrayList<File>();
-        Asset asset = new Asset();
+        Iterable<FileInfo> expectedFiles = new ArrayList<FileInfo>();
+        AssetInfo assetInfo = new AssetInfo();
 
         // Act 
-        Iterable<File> actualFiles = asset.setFiles(expectedFiles).getFiles();
+        Iterable<FileInfo> actualFiles = assetInfo.setFiles(expectedFiles).getFiles();
 
         // Assert
         assertEquals(expectedFiles, actualFiles);
@@ -158,11 +158,11 @@ public class AssetTest {
     @Test
     public void testGetSetParentAsset() {
         // Arrange
-        Iterable<Asset> expectedParentAssets = new ArrayList<Asset>();
-        Asset asset = new Asset();
+        Iterable<AssetInfo> expectedParentAssets = new ArrayList<AssetInfo>();
+        AssetInfo asset = new AssetInfo();
 
         // Act
-        Iterable<Asset> actualAssets = asset.setParentAssets(expectedParentAssets).getParentAssets();
+        Iterable<AssetInfo> actualAssets = asset.setParentAssets(expectedParentAssets).getParentAssets();
 
         // Assert
         assertEquals(expectedParentAssets, actualAssets);

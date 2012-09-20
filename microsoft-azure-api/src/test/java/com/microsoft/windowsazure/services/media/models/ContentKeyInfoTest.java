@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class ContentKeyTest {
+public class ContentKeyInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act 
-        String actualId = contentKey.setId(expectedId).getId();
+        String actualId = contentKeyInfo.setId(expectedId).getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -39,10 +39,10 @@ public class ContentKeyTest {
     public void testGetSetCreated() {
         // Arrange
         Date expectedCreated = new Date();
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        Date actualCreated = contentKey.setCreated(expectedCreated).getCreated();
+        Date actualCreated = contentKeyInfo.setCreated(expectedCreated).getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -52,10 +52,10 @@ public class ContentKeyTest {
     public void testGetSetLastModified() {
         // Arrange
         Date expectedLastModified = new Date();
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        Date actualLastModified = contentKey.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = contentKeyInfo.setLastModified(expectedLastModified).getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
@@ -65,10 +65,11 @@ public class ContentKeyTest {
     public void testGetSetContentKeyType() {
         // Arrange
         ContentKeyType expectedContentKeyType = ContentKeyType.ConfigurationEncryption;
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act 
-        ContentKeyType actualContentKeyType = contentKey.setContentKeyType(expectedContentKeyType).getContentKeyType();
+        ContentKeyType actualContentKeyType = contentKeyInfo.setContentKeyType(expectedContentKeyType)
+                .getContentKeyType();
 
         // Assert
         assertEquals(expectedContentKeyType, actualContentKeyType);
@@ -79,10 +80,10 @@ public class ContentKeyTest {
     public void testGetSetEncryptedContentKey() {
         // Arrange 
         String expectedEncryptedContentKey = "testX509Certificate";
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        String actualEncryptedContentKey = contentKey.setEncryptedContentKey(expectedEncryptedContentKey)
+        String actualEncryptedContentKey = contentKeyInfo.setEncryptedContentKey(expectedEncryptedContentKey)
                 .getEncryptedContentKey();
 
         // Assert
@@ -93,10 +94,10 @@ public class ContentKeyTest {
     public void testGetSetName() {
         // Arrange
         String expectedName = "expectedName";
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        String actualName = contentKey.setName(expectedName).getName();
+        String actualName = contentKeyInfo.setName(expectedName).getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -106,10 +107,10 @@ public class ContentKeyTest {
     public void testGetSetProtectionKeyId() {
         // Arrange 
         String expectedProtectionKeyId = "expectedProtectionKeyId";
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        String actualProtectionKeyId = contentKey.setProtectionKeyId(expectedProtectionKeyId).getProtectionKeyId();
+        String actualProtectionKeyId = contentKeyInfo.setProtectionKeyId(expectedProtectionKeyId).getProtectionKeyId();
 
         // Assert 
         assertEquals(expectedProtectionKeyId, actualProtectionKeyId);
@@ -120,10 +121,10 @@ public class ContentKeyTest {
     public void testGetSetProtectionKeyType() {
         // Arrange
         ProtectionKeyType expectedProtectionKeyType = ProtectionKeyType.X509CertificateThumbprint;
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act
-        ProtectionKeyType actualProtectionKeyType = contentKey.setProtectionKeyType(expectedProtectionKeyType)
+        ProtectionKeyType actualProtectionKeyType = contentKeyInfo.setProtectionKeyType(expectedProtectionKeyType)
                 .getProtectionKeyType();
 
         // Assert
@@ -134,10 +135,10 @@ public class ContentKeyTest {
     public void testGetSetCheckSum() {
         // Arrange 
         String expectedCheckSum = "testCheckSum";
-        ContentKey contentKey = new ContentKey();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act 
-        String actualCheckSum = contentKey.setCheckSum(expectedCheckSum).getCheckSum();
+        String actualCheckSum = contentKeyInfo.setCheckSum(expectedCheckSum).getCheckSum();
 
         // Assert
         assertEquals(expectedCheckSum, actualCheckSum);
