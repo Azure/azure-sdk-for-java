@@ -57,11 +57,11 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
             MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
             throws IOException, WebApplicationException {
 
-        ODataEntity entity;
+        ODataEntity entity = null;
         String responseType = mediaType.getParameters().get("type");
         try {
             if (responseType == null || responseType.equals("feed")) {
-                entity = unmarshaller.unmarshalFeed(entityStream, type);
+                //entity = unmarshaller.unmarshalFeed(entityStream, type);
             }
             else if (responseType.equals("entry")) {
                 entity = unmarshaller.unmarshalEntry(entityStream, type);

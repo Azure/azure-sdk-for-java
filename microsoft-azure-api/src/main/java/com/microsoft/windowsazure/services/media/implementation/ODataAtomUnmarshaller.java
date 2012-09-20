@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -63,6 +64,8 @@ public class ODataAtomUnmarshaller {
      * Given a stream that contains XML with an atom Feed element at the root,
      * unmarshal it into Java objects with the given content type in the entries.
      * 
+     * @param <T>
+     * 
      * @param stream
      *            - stream containing the XML data
      * @param contentType
@@ -71,47 +74,25 @@ public class ODataAtomUnmarshaller {
      * @throws JAXBException
      * @throws ServiceException
      */
-    public ODataEntity<?> unmarshalFeed(InputStream stream, Class<?> contentType) throws JAXBException,
-            ServiceException {
+    public <T extends ODataEntity> List<T> unmarshalFeed(InputStream stream, Class<T> contentType)
+            throws JAXBException, ServiceException {
         validateNotNull(stream, "stream");
         validateNotNull(contentType, "contentType");
 
-        JAXBElement<FeedType> feedElement = atomUnmarshaller.unmarshal(new StreamSource(stream), FeedType.class);
-        FeedType feed = feedElement.getValue();
-        EntryType firstEntry = getFirstEntry(feed);
+        List<T> entries = new ArrayList<T>();
+        FeedType feed = unmarshalFeed(stream);
+        Class<?> marshallingContentType = getMarshallingContentType(contentType);
 
-        Class<?> serializationType = GetSerializationContentType(contentType);
-
-        Object content = getEntryContent(firstEntry, serializationType);
-
-        try {
-            Constructor<?> resultCtor = contentType.getConstructor(EntryType.class, serializationType);
-            return (ODataEntity<?>) resultCtor.newInstance(firstEntry, content);
+        for (Object feedChild : feed.getFeedChildren()) {
+            EntryType entry = asEntry(feedChild);
+            if (entry != null) {
+                unmarshalODataContent(entry, contentType);
+                ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
+                Object contentObject = getFirstOfType(marshallingContentType, contentElement.getContent());
+                entries.add(constructResultObject(contentType, entry, contentObject));
+            }
         }
-        catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        catch (SecurityException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        catch (InstantiationException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        catch (InvocationTargetException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
-        catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
+        return entries;
     }
 
     /**
@@ -126,22 +107,84 @@ public class ODataAtomUnmarshaller {
      * @throws JAXBException
      * @throws ServiceException
      */
-    public ODataEntity<?> unmarshalEntry(InputStream stream, Class<?> contentType) throws JAXBException,
+    public <T extends ODataEntity> T unmarshalEntry(InputStream stream, Class<T> contentType) throws JAXBException,
             ServiceException {
         validateNotNull(stream, "stream");
         validateNotNull(contentType, "contentType");
 
-        JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(new StreamSource(stream), EntryType.class);
+        Class<?> marshallingContentType = getMarshallingContentType(contentType);
 
-        EntryType entry = entryElement.getValue();
+        EntryType entry = unmarshalEntry(stream);
+        unmarshalODataContent(entry, contentType);
+        ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
+        Object contentObject = getFirstOfType(marshallingContentType, contentElement.getContent());
+        return constructResultObject(contentType, entry, contentObject);
+    }
 
-        Class<?> serializationType = GetSerializationContentType(contentType);
+    private EntryType asEntry(Object o) {
+        if (o instanceof JAXBElement) {
+            JAXBElement e = (JAXBElement) o;
+            if (e.getDeclaredType() == EntryType.class) {
+                return (EntryType) e.getValue();
+            }
+        }
+        return null;
+    }
 
-        Object content = getEntryContent(entry, serializationType);
+    private void unmarshalODataContent(EntryType entry, Class<?> contentType) throws JAXBException {
+        unmarshalEntryActions(entry);
+        unmarshalEntryContent(entry, contentType);
+    }
 
+    private void unmarshalEntryActions(EntryType entry) throws JAXBException {
+        List<Object> children = entry.getEntryChildren();
+        for (int i = 0; i < children.size(); ++i) {
+            Object child = children.get(i);
+            if (child instanceof Element) {
+                Element e = (Element) child;
+                if (qnameFromElement(e).equals(Constants.ODATA_ACTION_ELEMENT_NAME)) {
+                    JAXBElement<ODataActionType> actionElement = mediaContentUnmarshaller.unmarshal(e,
+                            ODataActionType.class);
+                    children.set(i, actionElement);
+                }
+            }
+        }
+    }
+
+    private void unmarshalEntryContent(EntryType entry, Class<?> contentType) throws JAXBException {
+        Class<?> marshallingContentType = getMarshallingContentType(contentType);
+        ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
+        List<Object> contentChildren = contentElement.getContent();
+        for (int i = 0; i < contentChildren.size(); ++i) {
+            Object child = contentChildren.get(i);
+            if (child instanceof Element) {
+                Element e = (Element) child;
+                if (qnameFromElement(e).equals(Constants.ODATA_PROPERTIES_ELEMENT_NAME)) {
+                    JAXBElement actualContentElement = mediaContentUnmarshaller.unmarshal(e, marshallingContentType);
+                    contentChildren.set(i, actualContentElement);
+                }
+            }
+        }
+    }
+
+    private <T> T getFirstOfType(Class<T> targetType, List<Object> collection) {
+        for (Object c : collection) {
+            if (c instanceof JAXBElement) {
+                JAXBElement e = (JAXBElement) c;
+                if (e.getDeclaredType() == targetType) {
+                    return (T) e.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    private <T extends ODataEntity> T constructResultObject(Class<T> contentType, EntryType entry, Object contentObject)
+            throws ServiceException {
+        Class<?> marshallingType = getMarshallingContentType(contentType);
         try {
-            Constructor<?> resultCtor = contentType.getConstructor(EntryType.class, serializationType);
-            return (ODataEntity<?>) resultCtor.newInstance(entry, content);
+            Constructor<T> resultCtor = contentType.getConstructor(EntryType.class, marshallingType);
+            return resultCtor.newInstance(entry, contentObject);
         }
         catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -169,66 +212,21 @@ public class ODataAtomUnmarshaller {
         }
     }
 
-    private Object getEntryContent(EntryType entry, Class<?> contentType) throws JAXBException {
-        List<Object> entryChildren = entry.getEntryChildren();
-        Object retVal = null;
-
-        for (int i = 0; i < entryChildren.size(); ++i) {
-            Object child = entryChildren.get(i);
-            if (child instanceof JAXBElement) {
-                // It's a parsed element, if it's content unmarshal, fixup, and store return value
-                JAXBElement e = (JAXBElement) child;
-                if (e.getDeclaredType() == ContentType.class) {
-                    retVal = unmarshalEntryContent((ContentType) e.getValue(), contentType);
-                }
-            }
-            else {
-                // It's an arbitrary XML element. If it's an action, fix up element.
-                Element e = (Element) child;
-                if (qnameFromElement(e).equals(Constants.ODATA_ACTION_ELEMENT_NAME)) {
-                    JAXBElement<ODataActionType> actionElement = mediaContentUnmarshaller.unmarshal(e,
-                            ODataActionType.class);
-                    entryChildren.set(i, actionElement);
-                }
-            }
-        }
-        return retVal;
+    private EntryType unmarshalEntry(InputStream stream) throws JAXBException {
+        JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(new StreamSource(stream), EntryType.class);
+        return entryElement.getValue();
     }
 
-    private EntryType getFirstEntry(FeedType feed) {
-        for (Object child : feed.getFeedChildren()) {
-            if (child instanceof JAXBElement) {
-                JAXBElement e = (JAXBElement) child;
-
-                if (e.getDeclaredType() == EntryType.class) {
-                    return (EntryType) e.getValue();
-                }
-            }
-        }
-        return null;
+    private FeedType unmarshalFeed(InputStream stream) throws JAXBException {
+        JAXBElement<FeedType> feedElement = atomUnmarshaller.unmarshal(new StreamSource(stream), FeedType.class);
+        return feedElement.getValue();
     }
 
-    private Object unmarshalEntryContent(ContentType content, Class<?> actualContentType) throws JAXBException {
-        List<Object> contentChildren = content.getContent();
-        for (int i = 0; i < contentChildren.size(); ++i) {
-            Object child = contentChildren.get(i);
-            if (child instanceof Element) {
-                Element e = (Element) child;
-                if (qnameFromElement(e).equals(Constants.ODATA_PROPERTIES_ELEMENT_NAME)) {
-                    JAXBElement actualContentElement = mediaContentUnmarshaller.unmarshal(e, actualContentType);
-                    contentChildren.set(i, actualContentElement);
-                    return actualContentElement.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    private QName qnameFromElement(Element e) {
+    private static QName qnameFromElement(Element e) {
         return new QName(e.getLocalName(), e.getNamespaceURI());
     }
 
-    private Class<?> GetSerializationContentType(Class<?> contentType) {
+    private static Class<?> getMarshallingContentType(Class<?> contentType) {
         ParameterizedType pt = (ParameterizedType) contentType.getGenericSuperclass();
         return (Class<?>) pt.getActualTypeArguments()[0];
     }

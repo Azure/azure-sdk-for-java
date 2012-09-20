@@ -17,9 +17,12 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 
 import junit.framework.Assert;
 
@@ -28,6 +31,8 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 public class ODataSerializationTest {
 
@@ -64,8 +69,9 @@ public class ODataSerializationTest {
     public void canUnmarshallAssetFromFeed() throws Exception {
         ODataAtomUnmarshaller um = new ODataAtomUnmarshaller();
         InputStream input = new ByteArrayInputStream(sampleFeedOneAsset.getBytes("UTF-8"));
-        ODataEntity<AssetType> entry = (ODataEntity<AssetType>) um.unmarshalFeed(input, AssetType.class);
-        Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entry.getContent().getId());
+        List<AssetInfo> entries = um.unmarshalFeed(input, AssetInfo.class);
+        Assert.assertEquals(1, entries.size());
+        Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entries.get(0).getId());
     }
 
     @Test
@@ -80,10 +86,10 @@ public class ODataSerializationTest {
 
         EntryType e = new EntryType();
         ContentType c = new ContentType();
-        c.getContent().add(a);
-        e.getEntryChildren().add(c);
+        c.getContent().add(new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME, AssetType.class, a));
+        e.getEntryChildren().add(new JAXBElement(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, c));
 
-        m.marshal(e, System.out);
+        m.marshal(new JAXBElement(new QName(Constants.ATOM_NS, "entry"), EntryType.class, e), System.out);
 
     }
 }

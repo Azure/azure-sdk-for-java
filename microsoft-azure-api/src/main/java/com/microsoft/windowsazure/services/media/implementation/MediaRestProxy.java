@@ -32,7 +32,6 @@ import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 public class MediaRestProxy implements MediaContract {
@@ -102,11 +101,12 @@ public class MediaRestProxy implements MediaContract {
     }
 
     @Override
-    public AssetInfo createAsset(String name) throws ServiceException, UniformInterfaceException {
+    public AssetInfo createAsset(String name) throws ServiceException {
         WebResource resource = getResource("Assets");
 
         AssetType request = new AssetType();
         request.setName(name);
+
         try {
             return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                     .post(AssetInfo.class, marshaller.marshalEntry(request));
