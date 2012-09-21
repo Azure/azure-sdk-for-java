@@ -22,8 +22,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 /**
  * XML Serialization class for odata m:action elements
  * 
- * @author ctavares
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ODataActionType {
