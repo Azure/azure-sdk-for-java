@@ -29,7 +29,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.implementation.content.MediaServiceDTO;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 
 /**
@@ -39,11 +38,9 @@ import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
  */
 public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODataEntity<?>> {
     private final ODataAtomUnmarshaller unmarshaller;
-    private final ODataAtomMarshaller marshaller;
 
     public ODataEntityProvider() throws JAXBException, ParserConfigurationException {
         unmarshaller = new ODataAtomUnmarshaller();
-        marshaller = new ODataAtomMarshaller();
     }
 
     /* (non-Javadoc)
@@ -93,8 +90,7 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
      */
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        boolean result = type.isAnnotationPresent(MediaServiceDTO.class);
-        return result;
+        return false;
     }
 
     /* (non-Javadoc)
@@ -104,11 +100,6 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
     public void writeTo(ODataEntity<?> t, Class<?> type, Type genericType, Annotation[] annotations,
             MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        try {
-            marshaller.marshalEntry(t, entityStream);
-        }
-        catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
+        throw new UnsupportedOperationException();
     }
 }

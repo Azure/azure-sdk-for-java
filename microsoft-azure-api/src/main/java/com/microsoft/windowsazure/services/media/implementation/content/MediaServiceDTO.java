@@ -1,17 +1,14 @@
 package com.microsoft.windowsazure.services.media.implementation.content;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * Annotation marking a type as a data transfer object
+ * Marker interface to mark types as a data transfer object
  * to or from Media Services.
  * 
+ * This is a marker interface rather than an annotation so
+ * that it can be used as a generic type parameter or restriction.
+ * 
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MediaServiceDTO {
+public interface MediaServiceDTO {
 
 }

@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
@@ -63,6 +64,7 @@ public class Exports implements Builder.Exports {
                 try {
                     instance.getSingletons().add(new ODataEntityProvider());
                     instance.getSingletons().add(new ODataEntityCollectionProvider());
+                    instance.getSingletons().add(new MediaContentProvider());
                 }
                 catch (JAXBException e) {
                     throw new RuntimeException(e);

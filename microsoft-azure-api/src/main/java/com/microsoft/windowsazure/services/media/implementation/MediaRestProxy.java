@@ -20,8 +20,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,11 +37,8 @@ import com.sun.jersey.api.client.WebResource;
 public class MediaRestProxy implements MediaContract {
 
     private Client channel;
-    private ODataAtomMarshaller marshaller;
 
     static Log log = LogFactory.getLog(MediaContract.class);
-    private static final String jsonRequestType = "application/json; odata=verbose";
-
     ServiceFilter[] filters;
 
     @Inject
@@ -55,14 +50,11 @@ public class MediaRestProxy implements MediaContract {
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
         channel.addFilter(versionHeadersFilter);
-
-        createMarshaller();
     }
 
     public MediaRestProxy(Client channel, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
-        createMarshaller();
     }
 
     @Override
@@ -86,20 +78,6 @@ public class MediaRestProxy implements MediaContract {
             resource.addFilter(new ClientFilterAdapter(filter));
         }
         return resource;
-    }
-
-    private void createMarshaller() {
-        try {
-            this.marshaller = new ODataAtomMarshaller();
-        }
-        catch (JAXBException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
