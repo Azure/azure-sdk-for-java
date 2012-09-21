@@ -15,6 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 
 /**
@@ -44,5 +48,49 @@ public abstract class ODataEntity<T> {
      */
     protected T getContent() {
         return content;
+    }
+
+    /**
+     * Is the given type inherited from ODataEntity
+     * 
+     * @param type
+     *            Type to check
+     * @return true if derived from ODataEntity
+     */
+    public static boolean isODataEntityType(Class<?> type) {
+        return ODataEntity.class.isAssignableFrom(type);
+    }
+
+    /**
+     * Is the given type a collection of ODataEntity
+     * 
+     * @param type
+     *            Base type
+     * @param genericType
+     *            Generic type
+     * @return true if it's List&lt;OEntity> or derive from.
+     */
+    public static boolean isODataEntityCollectionType(Class<?> type, Type genericType) {
+        if (List.class != type) {
+            return false;
+        }
+
+        ParameterizedType pt = (ParameterizedType) genericType;
+
+        if (pt.getActualTypeArguments().length != 1) {
+            return false;
+        }
+
+        Class<?> typeClass = getCollectedType(genericType);
+
+        return isODataEntityType(typeClass);
+    }
+
+    public static Class<?> getCollectedType(Type genericType) {
+        ParameterizedType pt = (ParameterizedType) genericType;
+        if (pt.getActualTypeArguments().length != 1) {
+            throw new IllegalArgumentException("genericType");
+        }
+        return (Class<?>) pt.getActualTypeArguments()[0];
     }
 }

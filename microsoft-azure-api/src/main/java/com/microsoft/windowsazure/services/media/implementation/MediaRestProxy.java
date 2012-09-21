@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -32,6 +33,7 @@ import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
 public class MediaRestProxy implements MediaContract {
@@ -114,5 +116,18 @@ public class MediaRestProxy implements MediaContract {
         catch (JAXBException e) {
             throw new ServiceException(e);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAssets()
+     */
+    @Override
+    public List<AssetInfo> getAssets() throws ServiceException {
+        WebResource resource = getResource("Assets");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<List<AssetInfo>>() {
+                });
+
     }
 }

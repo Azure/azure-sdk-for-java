@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -46,7 +47,7 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
      */
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return ODataEntity.class.isAssignableFrom(type);
+        return ODataEntity.isODataEntityType(type);
     }
 
     /* (non-Javadoc)
@@ -57,14 +58,15 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
             MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
             throws IOException, WebApplicationException {
 
-        ODataEntity entity = null;
+        ODataEntity<?> result = null;
         String responseType = mediaType.getParameters().get("type");
         try {
             if (responseType == null || responseType.equals("feed")) {
-                //entity = unmarshaller.unmarshalFeed(entityStream, type);
+                List<ODataEntity<?>> feedContents = unmarshaller.unmarshalFeed(entityStream, type);
+                return feedContents.get(0);
             }
             else if (responseType.equals("entry")) {
-                entity = unmarshaller.unmarshalEntry(entityStream, type);
+                result = unmarshaller.unmarshalEntry(entityStream, type);
             }
             else {
                 throw new RuntimeException();
@@ -79,7 +81,7 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
             throw new RuntimeException(e);
         }
 
-        return entity;
+        return result;
     }
 
     /* (non-Javadoc)
@@ -99,5 +101,4 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
             throws IOException, WebApplicationException {
         throw new UnsupportedOperationException();
     }
-
 }

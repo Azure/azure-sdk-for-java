@@ -19,8 +19,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
-// XML Serialization class for odata m:action elements
-
+/**
+ * XML Serialization class for odata m:action elements
+ * 
+ * @author ctavares
+ * 
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ODataActionType {
 
@@ -33,26 +37,56 @@ public class ODataActionType {
     @XmlAttribute(required = true)
     protected String title;
 
+    /**
+     * Get metadata
+     * 
+     * @return the metadata
+     */
     public String getMetadata() {
         return metadata;
     }
 
+    /**
+     * Set metadata
+     * 
+     * @param metadata
+     */
     public void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Get target
+     * 
+     * @return the target
+     */
     public String getTarget() {
         return target;
     }
 
+    /**
+     * set target
+     * 
+     * @param target
+     */
     public void setTarget(String target) {
         this.target = target;
     }
 
+    /**
+     * Get title
+     * 
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * set title
+     * 
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }

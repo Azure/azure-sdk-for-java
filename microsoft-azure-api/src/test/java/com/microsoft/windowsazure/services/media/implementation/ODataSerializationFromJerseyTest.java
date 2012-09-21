@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
@@ -91,5 +92,13 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         AssetInfo newAsset = client.createAsset("secondTestAsset");
 
         Assert.assertEquals("secondTestAsset", newAsset.getName());
+    }
+
+    @Test
+    public void canRetrieveListOfAssets() throws Exception {
+        MediaContract client = MediaService.create(config);
+        List<AssetInfo> assets = client.getAssets();
+
+        Assert.assertNotNull(assets);
     }
 }

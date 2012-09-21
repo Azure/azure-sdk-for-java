@@ -25,6 +25,7 @@ import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
 import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
 import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthTokenManager;
+import com.microsoft.windowsazure.services.media.implementation.ODataEntityCollectionProvider;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntityProvider;
 import com.microsoft.windowsazure.services.media.implementation.RedirectFilter;
 import com.microsoft.windowsazure.services.media.implementation.ResourceLocationManager;
@@ -60,6 +61,7 @@ public class Exports implements Builder.Exports {
 
                 try {
                     instance.getSingletons().add(new ODataEntityProvider());
+                    instance.getSingletons().add(new ODataEntityCollectionProvider());
                 }
                 catch (JAXBException e) {
                     e.printStackTrace();

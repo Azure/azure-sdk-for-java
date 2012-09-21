@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -61,6 +63,19 @@ public class MediaExceptionProcessor implements MediaContract {
     public AssetInfo createAsset(String name) throws ServiceException {
         try {
             return next.createAsset(name);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public List<AssetInfo> getAssets() throws ServiceException {
+        try {
+            return next.getAssets();
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
