@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +26,9 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Wrapper implementation of <code>MediaServicesContract</code> that
@@ -54,4 +59,29 @@ public class MediaExceptionProcessor implements MediaContract {
         return ServiceExceptionFactory.process("MediaServices", e);
     }
 
+    @Override
+    public AssetInfo createAsset(String name) throws ServiceException {
+        try {
+            return next.createAsset(name);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public List<AssetInfo> getAssets() throws ServiceException {
+        try {
+            return next.getAssets();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
 }

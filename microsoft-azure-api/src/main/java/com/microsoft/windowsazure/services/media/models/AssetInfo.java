@@ -1,4 +1,5 @@
-/*
+/**
+ * >>>>>>> e8cf07bb1f265cdf72add1bd00ac069cb4dbaa33
  * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,275 +16,170 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
 /**
- * The Class AssetInfo.
+ * Data about a Media Services Asset entity.
+ * 
  */
-public class AssetInfo {
+public class AssetInfo extends ODataEntity<AssetType> {
 
-    /** The id. */
-    private String id;
+    public AssetInfo(EntryType entry, AssetType content) {
+        super(entry, content);
+    }
 
-    /** The state. */
-    private AssetState state;
-
-    /** The created. */
-    private Date created;
-
-    /** The last modified. */
-    private Date lastModified;
-
-    /** The alternate id. */
-    private String alternateId;
-
-    /** The name. */
-    private String name;
-
-    /** The options. */
-    private EncryptionOption options;
-
-    /** The locator infos. */
-    private Iterable<LocatorInfo> locatorInfos;
-
-    /** The content key infos. */
-    private Iterable<ContentKeyInfo> contentKeyInfos;
-
-    /** The file infos. */
-    private Iterable<FileInfo> fileInfos;
-
-    /** The parent asset infos. */
-    private Iterable<AssetInfo> parentAssetInfos;
+    public AssetInfo() {
+        super(new AssetType());
+    }
 
     /**
-     * Gets the id.
+     * Get the asset id
      * 
      * @return the id
      */
     public String getId() {
-        return this.id;
+        return getContent().getId();
     }
 
     /**
-     * Sets the id.
+     * Set the id
      * 
      * @param id
      *            the id
      * @return the asset info
      */
     public AssetInfo setId(String id) {
-        this.id = id;
+        getContent().setId(id);
         return this;
     }
 
     /**
-     * Gets the state.
-     * 
-     * @return the state
-     */
-    public AssetState getState() {
-        return this.state;
-    }
-
-    /**
-     * Sets the state.
-     * 
-     * @param state
-     *            the state
-     * @return the asset info
-     */
-    public AssetInfo setState(AssetState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Gets the created.
-     * 
-     * @return the created
-     */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Sets the create.
-     * 
-     * @param created
-     *            the created
-     * @return the asset info
-     */
-    public AssetInfo setCreate(Date created) {
-        this.created = created;
-        return this;
-    }
-
-    /**
-     * Gets the last modified.
-     * 
-     * @return the last modified
-     */
-    public Date getLastModified() {
-        return this.lastModified;
-    }
-
-    /**
-     * Sets the last modified.
-     * 
-     * @param lastModified
-     *            the last modified
-     * @return the asset info
-     */
-    public AssetInfo setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-        return this;
-    }
-
-    /**
-     * Gets the alternate id.
-     * 
-     * @return the alternate id
-     */
-    public String getAlternateId() {
-        return this.alternateId;
-    }
-
-    /**
-     * Sets the alternate id.
-     * 
-     * @param alternateId
-     *            the alternate id
-     * @return the asset info
-     */
-    public AssetInfo setAlternateId(String alternateId) {
-        this.alternateId = alternateId;
-        return this;
-    }
-
-    /**
-     * Gets the name.
+     * Get the asset name
      * 
      * @return the name
      */
     public String getName() {
-        return this.name;
+        return this.getContent().getName();
     }
 
     /**
-     * Sets the name.
+     * set the name
      * 
      * @param name
      *            the name
      * @return the asset info
      */
     public AssetInfo setName(String name) {
-        this.name = name;
+        this.getContent().setName(name);
         return this;
     }
 
     /**
-     * Gets the options.
+     * Get the asset state
+     * 
+     * @return the state
+     */
+    public AssetState getState() {
+        return AssetState.fromCode(getContent().getState());
+    }
+
+    /**
+     * Set the state
+     * 
+     * @param state
+     *            the state
+     * @return the asset info
+     */
+    public AssetInfo setState(AssetState state) {
+        getContent().setState(state.getCode());
+        return this;
+    }
+
+    /**
+     * Get the creation date
+     * 
+     * @return the date
+     */
+    public XMLGregorianCalendar getCreated() {
+        return this.getContent().getCreated();
+    }
+
+    /**
+     * Set creation date
+     * 
+     * @param created
+     *            the date
+     * @return the asset info
+     */
+    public AssetInfo setCreated(XMLGregorianCalendar created) {
+        getContent().setCreated(created);
+        return this;
+    }
+
+    /**
+     * Get last modified date
+     * 
+     * @return the date
+     */
+    public XMLGregorianCalendar getLastModified() {
+        return getContent().getLastModified();
+    }
+
+    /**
+     * Set last modified date
+     * 
+     * @param lastModified
+     *            the date
+     * @return the asset info
+     */
+    public AssetInfo setLastModified(XMLGregorianCalendar lastModified) {
+        getContent().setLastModified(lastModified);
+        return this;
+    }
+
+    /**
+     * Get the alternate id
+     * 
+     * @return the id
+     */
+    public String getAlternateId() {
+        return getContent().getAlternateId();
+    }
+
+    /**
+     * Set the alternate id
+     * 
+     * @param alternateId
+     *            the id
+     * @return the asset info
+     */
+    public AssetInfo setAlternateId(String alternateId) {
+        getContent().setAlternateId(alternateId);
+        return this;
+    }
+
+    /**
+     * Get the options
      * 
      * @return the options
      */
     public EncryptionOption getOptions() {
-        return this.options;
+        return EncryptionOption.fromCode(getContent().getOptions());
     }
 
     /**
-     * Sets the options.
+     * Set the options
      * 
      * @param options
      *            the options
      * @return the asset info
      */
     public AssetInfo setOptions(EncryptionOption options) {
-        this.options = options;
+        getContent().setOptions(options.getCode());
         return this;
     }
-
-    /**
-     * Gets the locators.
-     * 
-     * @return the locators
-     */
-    public Iterable<LocatorInfo> getLocators() {
-        return this.locatorInfos;
-    }
-
-    /**
-     * Sets the locators.
-     * 
-     * @param locatorInfos
-     *            the locator infos
-     * @return the asset info
-     */
-    public AssetInfo setLocators(Iterable<LocatorInfo> locatorInfos) {
-        this.locatorInfos = locatorInfos;
-        return this;
-    }
-
-    /**
-     * Gets the content keys.
-     * 
-     * @return the content keys
-     */
-    public Iterable<ContentKeyInfo> getContentKeys() {
-        return this.contentKeyInfos;
-    }
-
-    /**
-     * Sets the content keys.
-     * 
-     * @param expectedContentKeys
-     *            the expected content keys
-     * @return the asset info
-     */
-    public AssetInfo setContentKeys(Iterable<ContentKeyInfo> expectedContentKeys) {
-        this.contentKeyInfos = expectedContentKeys;
-        return this;
-    }
-
-    /**
-     * Gets the files.
-     * 
-     * @return the files
-     */
-    public Iterable<FileInfo> getFiles() {
-        return this.fileInfos;
-    }
-
-    /**
-     * Sets the files.
-     * 
-     * @param fileInfos
-     *            the file infos
-     * @return the asset info
-     */
-    public AssetInfo setFiles(Iterable<FileInfo> fileInfos) {
-        this.fileInfos = fileInfos;
-        return this;
-    }
-
-    /**
-     * Gets the parent assets.
-     * 
-     * @return the parent assets
-     */
-    public Iterable<AssetInfo> getParentAssets() {
-        return this.parentAssetInfos;
-    }
-
-    /**
-     * Sets the parent assets.
-     * 
-     * @param parentAssetInfos
-     *            the parent asset infos
-     * @return the asset info
-     */
-    public AssetInfo setParentAssets(Iterable<AssetInfo> parentAssetInfos) {
-        this.parentAssetInfos = parentAssetInfos;
-        return this;
-    }
-
 }

@@ -16,8 +16,11 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.Test;
 
@@ -51,13 +54,16 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() {
+    public void testGetSetCreated() throws Exception {
         // Arrange
-        Date expectedCreated = new Date();
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(new Date());
+        XMLGregorianCalendar expectedCreated = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+
         AssetInfo assetInfo = new AssetInfo();
 
         // Act 
-        Date actualCreated = assetInfo.setCreate(expectedCreated).getCreated();
+        XMLGregorianCalendar actualCreated = assetInfo.setCreated(expectedCreated).getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -65,13 +71,16 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() {
+    public void testGetSetLastModified() throws Exception {
         // Arrange
-        Date expectedLastModified = new Date();
+
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(new Date());
+        XMLGregorianCalendar expectedLastModified = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        Date actualLastModified = assetInfo.setLastModified(expectedLastModified).getLastModified();
+        XMLGregorianCalendar actualLastModified = assetInfo.setLastModified(expectedLastModified).getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
@@ -116,55 +125,4 @@ public class AssetInfoTest {
         assertEquals(expectedOptions, actualOptions);
     }
 
-    @Test
-    public void testGetSetLocators() {
-        // Arrange
-        Iterable<LocatorInfo> expectedLocators = new ArrayList<LocatorInfo>();
-        AssetInfo assetInfo = new AssetInfo();
-
-        // Act
-        Iterable<LocatorInfo> actualLocators = assetInfo.setLocators(expectedLocators).getLocators();
-
-        // Assert
-        assertEquals(expectedLocators, actualLocators);
-    }
-
-    @Test
-    public void testGetSetContentKeys() {
-        // Arrange
-        Iterable<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
-        AssetInfo assetInfo = new AssetInfo();
-
-        // Act
-        Iterable<ContentKeyInfo> actualContentKeys = assetInfo.setContentKeys(expectedContentKeys).getContentKeys();
-
-        // Assert
-        assertEquals(expectedContentKeys, actualContentKeys);
-    }
-
-    @Test
-    public void testGetSetFiles() {
-        // Arrange 
-        Iterable<FileInfo> expectedFiles = new ArrayList<FileInfo>();
-        AssetInfo assetInfo = new AssetInfo();
-
-        // Act 
-        Iterable<FileInfo> actualFiles = assetInfo.setFiles(expectedFiles).getFiles();
-
-        // Assert
-        assertEquals(expectedFiles, actualFiles);
-    }
-
-    @Test
-    public void testGetSetParentAsset() {
-        // Arrange
-        Iterable<AssetInfo> expectedParentAssets = new ArrayList<AssetInfo>();
-        AssetInfo asset = new AssetInfo();
-
-        // Act
-        Iterable<AssetInfo> actualAssets = asset.setParentAssets(expectedParentAssets).getParentAssets();
-
-        // Assert
-        assertEquals(expectedParentAssets, actualAssets);
-    }
 }
