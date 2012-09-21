@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
 /**
  * Specifies the options for encryption.
  */
@@ -47,5 +49,26 @@ public enum EncryptionOption {
      */
     public int getCode() {
         return encryptionOptionCode;
+    }
+
+    /**
+     * Create an EncryptionOption instance based on the
+     * given integer.
+     * 
+     * @param option
+     *            the integer value of option
+     * @return The EncryptionOption
+     */
+    public static EncryptionOption fromCode(int option) {
+        switch (option) {
+            case 0:
+                return EncryptionOption.None;
+            case 1:
+                return EncryptionOption.StorageEncrypted;
+            case 2:
+                return EncryptionOption.CommonEncryptionProtected;
+            default:
+                throw new InvalidParameterException("option");
+        }
     }
 }

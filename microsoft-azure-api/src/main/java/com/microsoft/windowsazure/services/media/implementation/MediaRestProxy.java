@@ -20,17 +20,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
 // TODO: Auto-generated Javadoc
@@ -44,7 +49,6 @@ public class MediaRestProxy implements MediaContract {
 
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
-
     /** The filters. */
     ServiceFilter[] filters;
 
@@ -59,11 +63,14 @@ public class MediaRestProxy implements MediaContract {
      *            the redirect filter
      */
     @Inject
-    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter) {
+    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
+            VersionHeadersFilter versionHeadersFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
+
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
+        channel.addFilter(versionHeadersFilter);
     }
 
     /**
@@ -123,6 +130,30 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    @Override
+    public AssetInfo createAsset(String name) throws ServiceException {
+        WebResource resource = getResource("Assets");
+
+        AssetType request = new AssetType();
+        request.setName(name);
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(AssetInfo.class, request);
+
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAssets()
+     */
+    @Override
+    public List<AssetInfo> getAssets() throws ServiceException {
+        WebResource resource = getResource("Assets");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<List<AssetInfo>>() {
+                });
+
+    }
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
      */

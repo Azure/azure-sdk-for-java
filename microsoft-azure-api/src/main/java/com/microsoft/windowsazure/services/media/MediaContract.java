@@ -21,7 +21,6 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * Defines the methods available for Windows Azure Media Services.
  */
@@ -106,4 +105,5 @@ public interface MediaContract extends FilterableService<MediaContract> {
      */
     public void deleteAsset(AssetInfo assetInfo);
 
+    List<AssetInfo> getAssets() throws ServiceException;
 }

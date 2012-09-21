@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
 /**
  * Specifies the states of the asset.
  */
@@ -47,5 +49,25 @@ public enum AssetState {
      */
     public int getCode() {
         return assetStateCode;
+    }
+
+    /**
+     * Create an AssetState instance from the corresponding int.
+     * 
+     * @param state
+     *            state as integer
+     * @return new AssetState instance
+     */
+    public static AssetState fromCode(int state) {
+        switch (state) {
+            case 0:
+                return AssetState.Initialized;
+            case 1:
+                return AssetState.Published;
+            case 2:
+                return AssetState.Deleted;
+            default:
+                throw new InvalidParameterException("state");
+        }
     }
 }
