@@ -109,13 +109,9 @@ public class MediaRestProxy implements MediaContract {
         AssetType request = new AssetType();
         request.setName(name);
 
-        try {
-            return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                    .post(AssetInfo.class, marshaller.marshalEntry(request));
-        }
-        catch (JAXBException e) {
-            throw new ServiceException(e);
-        }
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(AssetInfo.class, request);
+
     }
 
     /* (non-Javadoc)

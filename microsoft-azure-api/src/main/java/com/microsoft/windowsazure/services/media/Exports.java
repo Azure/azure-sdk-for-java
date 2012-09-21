@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
@@ -64,7 +65,9 @@ public class Exports implements Builder.Exports {
                     instance.getSingletons().add(new ODataEntityCollectionProvider());
                 }
                 catch (JAXBException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+                catch (ParserConfigurationException e) {
                     throw new RuntimeException(e);
                 }
 

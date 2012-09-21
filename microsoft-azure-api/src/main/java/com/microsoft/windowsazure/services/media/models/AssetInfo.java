@@ -14,12 +14,12 @@
  */
 
 package com.microsoft.windowsazure.services.media.models;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
-
 
 /**
  * Data about a Media Services Asset entity.

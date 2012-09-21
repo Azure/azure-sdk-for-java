@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * for Asset entities.
  * 
  */
+@MediaServiceDTO
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AssetType {
 

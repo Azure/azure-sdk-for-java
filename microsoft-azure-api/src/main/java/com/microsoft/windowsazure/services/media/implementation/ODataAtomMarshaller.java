@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,9 +64,36 @@ public class ODataAtomMarshaller {
      *            The content object to send
      * @return The generated DOM
      * @throws JAXBException
-     *             if content is malformed/not serializable
+     *             if content is malformed/not marshallable
      */
     public Document marshalEntry(Object content) throws JAXBException {
+        JAXBElement<EntryType> entryElement = createEntry(content);
+
+        Document doc = documentBuilder.newDocument();
+        doc.setXmlStandalone(true);
+
+        marshaller.marshal(entryElement, doc);
+
+        return doc;
+
+    }
+
+    /**
+     * Convert the given content into an ATOM entry
+     * and write it to the given stream.
+     * 
+     * @param content
+     *            Content object to send
+     * @param stream
+     *            Stream to write to
+     * @throws JAXBException
+     *             if content is malformed/not marshallable
+     */
+    public void marshalEntry(Object content, OutputStream stream) throws JAXBException {
+        marshaller.marshal(createEntry(content), stream);
+    }
+
+    private JAXBElement<EntryType> createEntry(Object content) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent.getContent().add(
@@ -78,13 +106,7 @@ public class ODataAtomMarshaller {
         JAXBElement<EntryType> entryElement = new JAXBElement<EntryType>(new QName(Constants.ATOM_NS, "entry"),
                 EntryType.class, atomEntry);
 
-        Document doc = documentBuilder.newDocument();
-        doc.setXmlStandalone(true);
-
-        marshaller.marshal(entryElement, doc);
-
-        return doc;
-
+        return entryElement;
     }
 
     private static Class<?>[] getMarshalledClasses() {
