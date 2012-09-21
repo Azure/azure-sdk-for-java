@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,17 +31,37 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapt
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MediaRestProxy.
+ */
 public class MediaRestProxy implements MediaContract {
 
+    /** The channel. */
     private Client channel;
 
+    /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
+    /** The filters. */
     ServiceFilter[] filters;
 
+    /**
+     * Instantiates a new media rest proxy.
+     * 
+     * @param channel
+     *            the channel
+     * @param authFilter
+     *            the auth filter
+     * @param redirectFilter
+     *            the redirect filter
+     */
     @Inject
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
             VersionHeadersFilter versionHeadersFilter) {
@@ -52,11 +73,22 @@ public class MediaRestProxy implements MediaContract {
         channel.addFilter(versionHeadersFilter);
     }
 
+    /**
+     * Instantiates a new media rest proxy.
+     * 
+     * @param channel
+     *            the channel
+     * @param filters
+     *            the filters
+     */
     public MediaRestProxy(Client channel, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
     @Override
     public MediaContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
@@ -64,14 +96,32 @@ public class MediaRestProxy implements MediaContract {
         return new MediaRestProxy(channel, newFilters);
     }
 
+    /**
+     * Gets the channel.
+     * 
+     * @return the channel
+     */
     public Client getChannel() {
         return channel;
     }
 
+    /**
+     * Sets the channel.
+     * 
+     * @param channel
+     *            the new channel
+     */
     public void setChannel(Client channel) {
         this.channel = channel;
     }
 
+    /**
+     * Gets the resource.
+     * 
+     * @param entityName
+     *            the entity name
+     * @return the resource
+     */
     private WebResource getResource(String entityName) {
         WebResource resource = getChannel().resource(entityName);
         for (ServiceFilter filter : filters) {
@@ -104,4 +154,79 @@ public class MediaRestProxy implements MediaContract {
                 });
 
     }
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
+     */
+    @Override
+    public AssetInfo createAsset(String assetName) {
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
+        return createAsset(assetName, createAssetOptions);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
+     */
+    @Override
+    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAsset(java.lang.String)
+     */
+    @Override
+    public AssetInfo getAsset(String assetId) {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
+     */
+    @Override
+    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
+        List<AssetInfo> listAssetsResult = new ArrayList<AssetInfo>();
+        return listAssetsResult;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets()
+     */
+    @Override
+    public List<AssetInfo> listAssets() {
+        ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
+        return listAssets(listAssetsOptions);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#updateAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
+     */
+    @Override
+    public AssetInfo updateAsset(AssetInfo updatedAssetInfo) {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(java.lang.String)
+     */
+    @Override
+    public void deleteAsset(String assetId) {
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
+     */
+    @Override
+    public void deleteAsset(AssetInfo assetInfo) {
+        this.deleteAsset(assetInfo.getId());
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
+     */
+    @Override
+    public AssetInfo createAsset(AssetInfo assetInfo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

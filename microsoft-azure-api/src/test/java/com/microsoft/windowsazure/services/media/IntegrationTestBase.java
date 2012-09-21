@@ -5,7 +5,7 @@ import org.junit.Before;
 import com.microsoft.windowsazure.services.core.Configuration;
 
 public abstract class IntegrationTestBase {
-    protected Configuration config;
+    protected static Configuration config;
 
     @Before
     public void beforeEachTest() {
