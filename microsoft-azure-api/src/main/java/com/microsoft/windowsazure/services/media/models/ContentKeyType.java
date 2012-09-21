@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,32 @@ package com.microsoft.windowsazure.services.media.models;
  * 
  */
 public enum ContentKeyType {
-    CommonEncryption(0), StorageEncryption(1), ConfigurationEncryption(2);
 
+    /** The Common encryption. */
+    CommonEncryption(0),
+    /** The Storage encryption. */
+    StorageEncryption(1),
+    /** The Configuration encryption. */
+    ConfigurationEncryption(2);
+
+    /** The content key type code. */
     private int contentKeyTypeCode;
 
+    /**
+     * Instantiates a new content key type.
+     * 
+     * @param contentKeyTypeCode
+     *            the content key type code
+     */
     private ContentKeyType(int contentKeyTypeCode) {
         this.contentKeyTypeCode = contentKeyTypeCode;
     }
 
+    /**
+     * Gets the code.
+     * 
+     * @return the code
+     */
     public int getCode() {
         return contentKeyTypeCode;
     }

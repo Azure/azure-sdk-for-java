@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class LocatorTest {
+public class LocatorInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "testId";
-        Locator locator = new Locator();
+        LocatorInfo locator = new LocatorInfo();
 
         // Act
         String actualId = locator.setId(expectedId).getId();
@@ -39,10 +39,10 @@ public class LocatorTest {
     public void testGetSetExpirationDateTime() {
         // Arrange
         Date expectedExpirationDateTime = new Date();
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act
-        Date actualExpirationDateTime = locator.setExpirationDateTime(expectedExpirationDateTime)
+        Date actualExpirationDateTime = locatorInfo.setExpirationDateTime(expectedExpirationDateTime)
                 .getExpirationDateTime();
 
         // Assert
@@ -53,10 +53,10 @@ public class LocatorTest {
     public void testGetSetType() {
         // Arrange
         LocatorType expectedLocatorType = LocatorType.WindowsAzureCDN;
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act 
-        LocatorType actualLocatorType = locator.setLocatorType(expectedLocatorType).getLocatorType();
+        LocatorType actualLocatorType = locatorInfo.setLocatorType(expectedLocatorType).getLocatorType();
 
         // Assert 
         assertEquals(expectedLocatorType, actualLocatorType);
@@ -66,10 +66,10 @@ public class LocatorTest {
     public void testGetSetPath() {
         // Arrange
         String expectedPath = "testPath";
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act
-        String actualPath = locator.setPath(expectedPath).getPath();
+        String actualPath = locatorInfo.setPath(expectedPath).getPath();
 
         // Assert
         assertEquals(expectedPath, actualPath);
@@ -79,10 +79,10 @@ public class LocatorTest {
     public void testGetSetAccessPolicyId() {
         // Arrange
         String expectedAccessPolicyId = "testAccessPolicyId";
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act
-        String actualAccessPolicyId = locator.setAccessPolicyId(expectedAccessPolicyId).getAccessPolicyId();
+        String actualAccessPolicyId = locatorInfo.setAccessPolicyId(expectedAccessPolicyId).getAccessPolicyId();
 
         // Assert
         assertEquals(expectedAccessPolicyId, actualAccessPolicyId);
@@ -92,10 +92,10 @@ public class LocatorTest {
     public void testGetSetAssetId() {
         // Arrange
         String expectedAssetId = "testAssetId";
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act
-        String actualAssetId = locator.setAssetId(expectedAssetId).getAssetId();
+        String actualAssetId = locatorInfo.setAssetId(expectedAssetId).getAssetId();
 
         // Assert
         assertEquals(expectedAssetId, actualAssetId);
@@ -105,10 +105,10 @@ public class LocatorTest {
     public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
-        Locator locator = new Locator();
+        LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act
-        Date actualStartTime = locator.setStartTime(expectedStartTime).getStartTime();
+        Date actualStartTime = locatorInfo.setStartTime(expectedStartTime).getStartTime();
 
         // Assert 
         assertEquals(expectedStartTime, actualStartTime);

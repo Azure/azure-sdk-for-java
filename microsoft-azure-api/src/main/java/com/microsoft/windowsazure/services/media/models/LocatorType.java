@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,38 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Enum LocatorType.
+ */
 public enum LocatorType {
-    None(0), SAS(1), Origin(2), WindowsAzureCDN(3);
 
+    /** The None. */
+    None(0),
+    /** The sas. */
+    SAS(1),
+    /** The Origin. */
+    Origin(2),
+    /** The Windows azure cdn. */
+    WindowsAzureCDN(3);
+
+    /** The locator type code. */
     private int locatorTypeCode;
 
+    /**
+     * Instantiates a new locator type.
+     * 
+     * @param locatorTypeCode
+     *            the locator type code
+     */
     private LocatorType(int locatorTypeCode) {
         this.locatorTypeCode = locatorTypeCode;
     }
 
+    /**
+     * Gets the code.
+     * 
+     * @return the code
+     */
     public int getCode() {
         return this.locatorTypeCode;
     }
