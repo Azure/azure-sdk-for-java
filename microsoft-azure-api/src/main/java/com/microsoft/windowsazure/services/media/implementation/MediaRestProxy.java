@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapt
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.sun.jersey.api.client.Client;
@@ -61,6 +60,8 @@ public class MediaRestProxy implements MediaContract {
      *            the auth filter
      * @param redirectFilter
      *            the redirect filter
+     * @param versionHeadersFilter
+     *            the version headers filter
      */
     @Inject
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
@@ -130,12 +131,15 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
+     */
     @Override
-    public AssetInfo createAsset(String name) throws ServiceException {
+    public AssetInfo createAsset(String assetName) throws ServiceException {
         WebResource resource = getResource("Assets");
 
         AssetType request = new AssetType();
-        request.setName(name);
+        request.setName(assetName);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .post(AssetInfo.class, request);
@@ -153,14 +157,6 @@ public class MediaRestProxy implements MediaContract {
                 .get(new GenericType<List<AssetInfo>>() {
                 });
 
-    }
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
-     */
-    @Override
-    public AssetInfo createAsset(String assetName) {
-        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
-        return createAsset(assetName, createAssetOptions);
     }
 
     /* (non-Javadoc)

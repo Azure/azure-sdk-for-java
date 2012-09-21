@@ -27,10 +27,10 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Wrapper implementation of <code>MediaServicesContract</code> that
@@ -62,9 +62,9 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     @Override
-    public AssetInfo createAsset(String name) throws ServiceException {
+    public AssetInfo createAsset(String assetName) throws ServiceException {
         try {
-            return next.createAsset(name);
+            return service.createAsset(assetName);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -77,7 +77,7 @@ public class MediaExceptionProcessor implements MediaContract {
     @Override
     public List<AssetInfo> getAssets() throws ServiceException {
         try {
-            return next.getAssets();
+            return service.getAssets();
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -86,6 +86,8 @@ public class MediaExceptionProcessor implements MediaContract {
             throw processCatch(new ServiceException(e));
         }
     }
+
+    @Override
     public void deleteAsset(String assetId) {
         service.deleteAsset(assetId);
     }
@@ -98,11 +100,6 @@ public class MediaExceptionProcessor implements MediaContract {
     @Override
     public AssetInfo updateAsset(AssetInfo updatedAsset) {
         return service.updateAsset(updatedAsset);
-    }
-
-    @Override
-    public AssetInfo createAsset(String assetName) {
-        return service.createAsset(assetName);
     }
 
     @Override

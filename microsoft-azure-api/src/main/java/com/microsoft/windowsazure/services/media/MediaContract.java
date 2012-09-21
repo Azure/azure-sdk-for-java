@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media;
 import java.util.List;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
@@ -67,8 +68,9 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @param assetName
      *            the asset name
      * @return the asset info
+     * @throws ServiceException
      */
-    public AssetInfo createAsset(String assetName);
+    public AssetInfo createAsset(String assetName) throws ServiceException;
 
     /**
      * Creates the asset.
