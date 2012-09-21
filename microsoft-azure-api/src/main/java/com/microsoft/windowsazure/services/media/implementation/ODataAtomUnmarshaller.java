@@ -86,10 +86,7 @@ public class ODataAtomUnmarshaller {
         for (Object feedChild : feed.getFeedChildren()) {
             EntryType entry = asEntry(feedChild);
             if (entry != null) {
-                unmarshalODataContent(entry, contentType);
-                ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
-                Object contentObject = getFirstOfType(marshallingContentType, contentElement.getContent());
-                entries.add(constructResultObject(contentType, entry, contentObject));
+                entries.add(contentFromEntry(contentType, marshallingContentType, entry));
             }
         }
         return entries;
@@ -115,6 +112,11 @@ public class ODataAtomUnmarshaller {
         Class<?> marshallingContentType = getMarshallingContentType(contentType);
 
         EntryType entry = unmarshalEntry(stream);
+        return contentFromEntry(contentType, marshallingContentType, entry);
+    }
+
+    private <T extends ODataEntity> T contentFromEntry(Class<T> contentType, Class<?> marshallingContentType,
+            EntryType entry) throws JAXBException, ServiceException {
         unmarshalODataContent(entry, contentType);
         ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
         Object contentObject = getFirstOfType(marshallingContentType, contentElement.getContent());
