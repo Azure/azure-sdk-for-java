@@ -24,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
@@ -35,9 +35,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Create all test containers and their content
         config = createConfig();
         service = MediaService.create(config);
-        List<Asset> listAssetsResult = service.listAssets(null);
-        for (Asset asset : listAssetsResult) {
-            service.deleteAsset(asset.getId());
+        List<AssetInfo> listAssetsResult = service.listAssets(null);
+        for (AssetInfo assetInfo : listAssetsResult) {
+            service.deleteAsset(assetInfo.getId());
         }
     }
 
@@ -63,10 +63,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createAssetSuccess() throws Exception {
         // Arrange
-        Asset expectedAsset = new Asset().setName("testAssetName");
+        AssetInfo expectedAsset = new AssetInfo().setName("testAssetName");
 
         // Act
-        Asset actualAsset = service.createAsset(expectedAsset);
+        AssetInfo actualAsset = service.createAsset(expectedAsset);
 
         // Assert
         assertEquals(expectedAsset, actualAsset);
@@ -75,10 +75,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createAssetMissingNameFailed() {
         // Arrange
-        Asset expectedAsset = new Asset();
+        AssetInfo expectedAsset = new AssetInfo();
 
         // Act
-        Asset actualAsset = service.createAsset(expectedAsset);
+        AssetInfo actualAsset = service.createAsset(expectedAsset);
 
         // Assert
         assertTrue(false);
@@ -87,11 +87,11 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void getAssetSuccess() throws Exception {
         // Arrange
-        Asset expectedAsset = new Asset();
-        service.createAsset(expectedAsset);
+        AssetInfo expectedAsset = new AssetInfo();
+        AssetInfo assetInfo = service.createAsset(expectedAsset);
 
         // Act
-        Asset actualAsset = service.getAsset(expectedAsset);
+        AssetInfo actualAsset = service.getAsset(assetInfo.getId());
 
         // Assert
         assertEquals(expectedAsset, actualAsset);
@@ -100,11 +100,11 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void getAssetFailedWithInvalidId() {
         // Arrange
-        Asset expectedAsset = new Asset();
+        AssetInfo expectedAsset = new AssetInfo();
         service.createAsset(expectedAsset);
 
         // Act
-        Asset actualAsset = service.getAsset(expectedAsset.setName("IncorrectAssetName"));
+        AssetInfo actualAsset = service.getAsset(expectedAsset.setId("IncorrectAssetId").getId());
 
         // Assert
         assertTrue(false);
@@ -114,14 +114,14 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listAssetSuccess() {
         // Arrange
-        Asset assetA = new Asset();
-        Asset assetB = new Asset();
+        AssetInfo assetA = new AssetInfo();
+        AssetInfo assetB = new AssetInfo();
         service.createAsset(assetA);
         service.createAsset(assetB);
         ListAssetsOptions listAssetOptions = new ListAssetsOptions();
 
         // Act
-        Collection<Asset> listAssetResult = service.listAssets(listAssetOptions);
+        Collection<AssetInfo> listAssetResult = service.listAssets(listAssetOptions);
         // Assert        
 
         assertEquals(2, listAssetResult.size());
@@ -133,7 +133,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
 
         // Act
-        Collection<Asset> listAssetResult = service.listAssets(listAssetsOptions);
+        Collection<AssetInfo> listAssetResult = service.listAssets(listAssetsOptions);
 
         // Assert
         assertTrue(false);
@@ -142,13 +142,13 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateAssetSuccess() throws Exception {
         // Arrange
-        Asset originalAsset = new Asset();
+        AssetInfo originalAsset = new AssetInfo();
         service.createAsset(originalAsset);
-        Asset updatedAsset = new Asset();
+        AssetInfo updatedAsset = new AssetInfo();
 
         // Act
         service.updateAsset(updatedAsset);
-        Asset actualAsset = service.updateAsset(updatedAsset);
+        AssetInfo actualAsset = service.updateAsset(updatedAsset);
 
         // Assert
         assertEquals(updatedAsset, actualAsset);
@@ -159,7 +159,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void updateAssetFailedWithInvalidId() {
         // Arrange
         MediaContract service = MediaService.create(config);
-        Asset updatedAsset = new Asset();
+        AssetInfo updatedAsset = new AssetInfo();
 
         // Act
         service.updateAsset(updatedAsset);
@@ -171,9 +171,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteAssetSuccess() throws Exception {
         // Arrange
-        Asset asset = new Asset();
+        AssetInfo asset = new AssetInfo();
         service.createAsset(asset);
-        List<Asset> listAssetsResult = service.listAssets(null);
+        List<AssetInfo> listAssetsResult = service.listAssets(null);
         assertEquals(1, listAssetsResult.size());
 
         // Act

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,93 @@ package com.microsoft.windowsazure.services.media;
 import java.util.List;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 
+// TODO: Auto-generated Javadoc
 /**
- * 
- * Defines the methods available for Windows Azure Media Services
- * 
+ * Defines the methods available for Windows Azure Media Services.
  */
 public interface MediaContract extends FilterableService<MediaContract> {
 
-    public Asset createAsset(Asset asset);
+    /**
+     * Creates the asset.
+     * 
+     * @param asset
+     *            the asset
+     * @return the asset info
+     */
+    public AssetInfo createAsset(AssetInfo asset);
 
-    public Asset getAsset(Asset asset);
+    /**
+     * List assets.
+     * 
+     * @param listAssetsOptions
+     *            the list assets options
+     * @return the list
+     */
+    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions);
 
-    public List<Asset> listAssets(ListAssetsOptions listAssetsOptions);
+    /**
+     * Update asset.
+     * 
+     * @param updatedAsset
+     *            the updated asset
+     * @return the asset info
+     */
+    public AssetInfo updateAsset(AssetInfo updatedAsset);
 
-    public Asset updateAsset(Asset updatedAsset);
-
+    /**
+     * Delete asset.
+     * 
+     * @param assetId
+     *            the asset id
+     */
     public void deleteAsset(String assetId);
+
+    /**
+     * Creates the asset.
+     * 
+     * @param assetName
+     *            the asset name
+     * @return the asset info
+     */
+    public AssetInfo createAsset(String assetName);
+
+    /**
+     * Creates the asset.
+     * 
+     * @param assetName
+     *            the asset name
+     * @param createAssetOptions
+     *            the create asset options
+     * @return the asset info
+     */
+    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions);
+
+    /**
+     * Gets the asset.
+     * 
+     * @param assetId
+     *            the asset id
+     * @return the asset
+     */
+    public AssetInfo getAsset(String assetId);
+
+    /**
+     * List assets.
+     * 
+     * @return the list
+     */
+    public List<AssetInfo> listAssets();
+
+    /**
+     * Delete asset.
+     * 
+     * @param assetInfo
+     *            the asset info
+     */
+    public void deleteAsset(AssetInfo assetInfo);
 
 }
