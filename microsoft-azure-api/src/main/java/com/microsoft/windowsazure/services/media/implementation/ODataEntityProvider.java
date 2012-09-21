@@ -74,11 +74,9 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
             }
         }
         catch (JAXBException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         catch (ServiceException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
 

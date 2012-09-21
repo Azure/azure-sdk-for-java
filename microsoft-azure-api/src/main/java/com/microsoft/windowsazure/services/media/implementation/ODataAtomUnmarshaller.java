@@ -189,27 +189,21 @@ public class ODataAtomUnmarshaller {
             return resultCtor.newInstance(entry, contentObject);
         }
         catch (IllegalArgumentException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
         catch (SecurityException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
         catch (InstantiationException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
         catch (IllegalAccessException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
         catch (InvocationTargetException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
         catch (NoSuchMethodException e) {
-            e.printStackTrace();
             throw new ServiceException(e);
         }
     }
