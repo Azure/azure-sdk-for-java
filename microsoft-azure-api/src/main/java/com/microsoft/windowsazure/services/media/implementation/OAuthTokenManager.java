@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,16 +59,17 @@ public class OAuthTokenManager {
      * 
      * @param clientSecret
      *            A <code>String</code> object instance that represents the client secret.
+     * @throws URISyntaxException
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
-            @Named(MediaConfiguration.OAUTH_URI) URI acsBaseUri,
+            @Named(MediaConfiguration.OAUTH_URI) String oauthUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
-            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) {
+            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.acsBaseUri = acsBaseUri;
+        this.acsBaseUri = new URI(oauthUri);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;

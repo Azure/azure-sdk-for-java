@@ -12,22 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.media;
 
-import java.util.List;
+package com.microsoft.windowsazure.services.media.implementation.content;
 
-import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 
- * Defines the methods available for Windows Azure Media Services
+ * Serializable class containing the information needed to
+ * create an asset.
  * 
  */
-public interface MediaContract extends FilterableService<MediaContract> {
+@XmlRootElement
+public class CreateAssetRequest {
+    public String Name;
 
-    AssetInfo createAsset(String name) throws ServiceException;
+    /**
+     * Empty constructor required by JaxB.
+     */
+    public CreateAssetRequest() {
+    }
 
-    List<AssetInfo> getAssets() throws ServiceException;
+    public CreateAssetRequest(String name) {
+        Name = name;
+    }
 }

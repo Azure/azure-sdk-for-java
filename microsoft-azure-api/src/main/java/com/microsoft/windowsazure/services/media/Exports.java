@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,26 @@
  */
 package com.microsoft.windowsazure.services.media;
 
+import java.util.Map;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
 import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
 import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthTokenManager;
+import com.microsoft.windowsazure.services.media.implementation.ODataEntityCollectionProvider;
+import com.microsoft.windowsazure.services.media.implementation.ODataEntityProvider;
 import com.microsoft.windowsazure.services.media.implementation.RedirectFilter;
 import com.microsoft.windowsazure.services.media.implementation.ResourceLocationManager;
+import com.microsoft.windowsazure.services.media.implementation.VersionHeadersFilter;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 public class Exports implements Builder.Exports {
 
@@ -39,6 +50,31 @@ public class Exports implements Builder.Exports {
         registry.add(OAuthFilter.class);
         registry.add(ResourceLocationManager.class);
         registry.add(RedirectFilter.class);
-    }
+        registry.add(VersionHeadersFilter.class);
 
+        registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+            @Override
+            public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
+
+                instance.getProperties().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
+
+                // Turn off auto-follow redirects, because Media Services rest calls break if it's on
+                instance.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
+
+                try {
+                    instance.getSingletons().add(new ODataEntityProvider());
+                    instance.getSingletons().add(new ODataEntityCollectionProvider());
+                    instance.getSingletons().add(new MediaContentProvider());
+                }
+                catch (JAXBException e) {
+                    throw new RuntimeException(e);
+                }
+                catch (ParserConfigurationException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return instance;
+            }
+        });
+    }
 }
