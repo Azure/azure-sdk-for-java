@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
+import com.sun.jersey.api.client.config.ClientConfig;
 
 public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String testTablesPrefix = "sdktest";
@@ -1138,5 +1139,53 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
                 .getEntries().get(1);
         assertEquals("Second result status code", 412, error.getError().getHttpStatusCode());
         assertNull("Third result should be null", result.getEntries().get(2));
+    }
+
+    @Test
+    public void settingTimeoutWorks() throws Exception {
+        Configuration config = createConfiguration();
+
+        // Set timeout to very short to force failure
+        config.setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(1));
+        config.setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(1));
+
+        TableContract service = TableService.create(config);
+
+        try {
+            service.queryTables();
+            fail("Exception should have been thrown");
+        }
+        catch (ServiceException ex) {
+            assertNotNull(ex.getCause());
+        }
+        finally {
+            // Clean up timeouts, they interfere with other tests otherwise
+            config.getProperties().remove(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+            config.getProperties().remove(ClientConfig.PROPERTY_READ_TIMEOUT);
+        }
+    }
+
+    @Test
+    public void settingTimeoutFromStringWorks() throws Exception {
+        Configuration config = createConfiguration();
+
+        // Set timeout to very short to force failure
+        config.setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, "1");
+        config.setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, "1");
+
+        TableContract service = TableService.create(config);
+
+        try {
+            service.queryTables();
+            fail("Exception should have been thrown");
+        }
+        catch (ServiceException ex) {
+            assertNotNull(ex.getCause());
+        }
+        finally {
+            // Clean up timeouts, they interfere with other tests otherwise
+            config.getProperties().remove(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+            config.getProperties().remove(ClientConfig.PROPERTY_READ_TIMEOUT);
+        }
     }
 }
