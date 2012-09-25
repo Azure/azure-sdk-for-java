@@ -38,12 +38,12 @@ import com.sun.jersey.core.header.InBoundHeaders;
 
 public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
-    private final int connectionTimeoutMS;
-    private final int readTimeoutMS;
+    private final int connectionTimeoutMillis;
+    private final int readTimeoutMillis;
 
     public HttpURLConnectionClientHandler(ClientConfig clientConfig) {
-        connectionTimeoutMS = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_CONNECT_TIMEOUT);
-        readTimeoutMS = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_READ_TIMEOUT);
+        connectionTimeoutMillis = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+        readTimeoutMillis = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_READ_TIMEOUT);
     }
 
     private static int readTimeoutFromConfig(ClientConfig config, String propertyName) {
@@ -51,7 +51,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         if (property != null) {
             return property.intValue();
         }
-        return 0;
+        throw new IllegalArgumentException(propertyName);
     }
 
     /**
@@ -195,8 +195,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     private ClientResponse doHandle(final ClientRequest clientRequest) throws IOException, MalformedURLException,
             ProtocolException {
         final HttpURLConnection urlConnection = (HttpURLConnection) clientRequest.getURI().toURL().openConnection();
-        urlConnection.setReadTimeout(readTimeoutMS);
-        urlConnection.setConnectTimeout(connectionTimeoutMS);
+        urlConnection.setReadTimeout(readTimeoutMillis);
+        urlConnection.setConnectTimeout(connectionTimeoutMillis);
 
         final EntityStreamingListener entityStreamingListener = getEntityStreamingListener(clientRequest);
 

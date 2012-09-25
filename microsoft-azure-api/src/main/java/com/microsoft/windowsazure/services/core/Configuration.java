@@ -23,6 +23,8 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sun.jersey.api.client.config.ClientConfig;
+
 public class Configuration {
 
     private static Configuration instance;
@@ -34,11 +36,18 @@ public class Configuration {
     public Configuration() {
         this.properties = new HashMap<String, Object>();
         this.builder = DefaultBuilder.create();
+        init();
     }
 
     public Configuration(Builder builder) {
         this.properties = new HashMap<String, Object>();
         this.builder = builder;
+        init();
+    }
+
+    private void init() {
+        setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(90 * 1000));
+        setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(90 * 1000));
     }
 
     public static Configuration getInstance() {
