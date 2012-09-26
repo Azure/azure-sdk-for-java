@@ -14,13 +14,17 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
+// TODO: Auto-generated Javadoc
 /**
- * The Class CreateAssetOptions.
+ * The Class UpdateAssetOptions.
  */
-public class CreateAssetOptions {
+public class UpdateAssetOptions {
 
     /** The alternate id. */
     private String alternateId;
+
+    /** The name. */
+    private String name;
 
     /** The options. */
     private EncryptionOption options;
@@ -42,10 +46,31 @@ public class CreateAssetOptions {
      * 
      * @param alternateId
      *            the alternate id
-     * @return the creates the asset options
+     * @return the update asset options
      */
-    public CreateAssetOptions setAlternateId(String alternateId) {
+    public UpdateAssetOptions setAlternateId(String alternateId) {
         this.alternateId = alternateId;
+        return this;
+    }
+
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name.
+     * 
+     * @param name
+     *            the name
+     * @return the update asset options
+     */
+    public UpdateAssetOptions setName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -61,12 +86,12 @@ public class CreateAssetOptions {
     /**
      * Sets the options.
      * 
-     * @param encryptionOption
-     *            the encryption option
-     * @return the creates the asset options
+     * @param options
+     *            the options
+     * @return the update asset options
      */
-    public CreateAssetOptions setOptions(EncryptionOption encryptionOption) {
-        this.options = encryptionOption;
+    public UpdateAssetOptions setOptions(EncryptionOption options) {
+        this.options = options;
         return this;
     }
 
@@ -84,9 +109,9 @@ public class CreateAssetOptions {
      * 
      * @param assetState
      *            the asset state
-     * @return the creates the asset options
+     * @return the update asset options
      */
-    public CreateAssetOptions setState(AssetState assetState) {
+    public UpdateAssetOptions setState(AssetState assetState) {
         this.state = assetState;
         return this;
     }

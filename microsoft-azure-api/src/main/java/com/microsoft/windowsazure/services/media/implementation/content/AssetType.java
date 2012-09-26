@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
+
 /**
  * This type maps the XML returned in the odata ATOM serialization
  * for Asset entities.
@@ -152,5 +154,17 @@ public class AssetType implements MediaServiceDTO {
      */
     public void setOptions(int options) {
         this.options = options;
+    }
+
+    public static AssetType create(AssetInfo assetInfo) {
+        AssetType assetType = new AssetType();
+        assetType.setAlternateId(assetInfo.getAlternateId());
+        assetType.setCreated(assetInfo.getCreated());
+        assetType.setId(assetInfo.getId());
+        assetType.setLastModified(assetInfo.getLastModified());
+        assetType.setName(assetInfo.getName());
+        assetType.setOptions(assetInfo.getOptions().getCode());
+        assetType.setState(assetInfo.getState().getCode());
+        return assetType;
     }
 }

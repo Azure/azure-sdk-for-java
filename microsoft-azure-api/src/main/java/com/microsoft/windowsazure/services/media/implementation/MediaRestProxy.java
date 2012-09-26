@@ -15,7 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,17 +29,18 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MediaRestProxy.
  */
@@ -61,6 +63,8 @@ public class MediaRestProxy implements MediaContract {
      *            the auth filter
      * @param redirectFilter
      *            the redirect filter
+     * @param versionHeadersFilter
+     *            the version headers filter
      */
     @Inject
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
@@ -130,37 +134,12 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
-    @Override
-    public AssetInfo createAsset(String name) throws ServiceException {
-        WebResource resource = getResource("Assets");
-
-        AssetType request = new AssetType();
-        request.setName(name);
-
-        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .post(AssetInfo.class, request);
-
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#getAssets()
-     */
-    @Override
-    public List<AssetInfo> getAssets() throws ServiceException {
-        WebResource resource = getResource("Assets");
-
-        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .get(new GenericType<List<AssetInfo>>() {
-                });
-
-    }
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
      */
     @Override
-    public AssetInfo createAsset(String assetName) {
-        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
-        return createAsset(assetName, createAssetOptions);
+    public AssetInfo createAsset(String assetName) throws ServiceException {
+        return this.createAsset(assetName, null);
     }
 
     /* (non-Javadoc)
@@ -168,15 +147,30 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) {
-        return null;
+        WebResource resource = getResource("Assets");
+        AssetType assetTypeForSubmission = new AssetType();
+        assetTypeForSubmission.setName(assetName);
+        if (createAssetOptions != null) {
+            assetTypeForSubmission.setAlternateId(createAssetOptions.getAlternateId());
+            if (createAssetOptions.getOptions() != null) {
+                assetTypeForSubmission.setOptions(createAssetOptions.getOptions().getCode());
+            }
+            if (createAssetOptions.getState() != null) {
+                assetTypeForSubmission.setState(createAssetOptions.getState().getCode());
+            }
+        }
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(AssetInfo.class, assetTypeForSubmission);
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#getAsset(java.lang.String)
      */
     @Override
-    public AssetInfo getAsset(String assetId) {
-        return null;
+    public AssetInfo getAsset(String assetId) throws ServiceException {
+        WebResource resource = getResource("Assets", assetId);
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(AssetInfo.class);
     }
 
     /* (non-Javadoc)
@@ -184,8 +178,10 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
-        List<AssetInfo> listAssetsResult = new ArrayList<AssetInfo>();
-        return listAssetsResult;
+        WebResource resource = getResource("Assets");
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<List<AssetInfo>>() {
+                });
     }
 
     /* (non-Javadoc)
@@ -201,32 +197,58 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#updateAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
      */
     @Override
-    public AssetInfo updateAsset(AssetInfo updatedAssetInfo) {
-        return null;
+    public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException {
+        String escapedAssetId = null;
+        try {
+            escapedAssetId = URLEncoder.encode(assetId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ServiceException(e);
+        }
+        String assetPath = String.format("Assets(\'%s\')", escapedAssetId);
+        AssetType updatedAssetType = new AssetType();
+        updatedAssetType.setAlternateId(updateAssetOptions.getAlternateId());
+        updatedAssetType.setName(updateAssetOptions.getName());
+        if (updateAssetOptions.getOptions() != null) {
+            updatedAssetType.setOptions(updateAssetOptions.getOptions().getCode());
+        }
+
+        if (updateAssetOptions.getState() != null) {
+            updatedAssetType.setState(updateAssetOptions.getState().getCode());
+        }
+
+        ClientResponse clientResponse = mergeRequest(assetPath, ClientResponse.class, updatedAssetType);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(java.lang.String)
      */
     @Override
-    public void deleteAsset(String assetId) {
+    public void deleteAsset(String assetId) throws ServiceException {
+        getResource("Assets", assetId).delete();
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
-     */
-    @Override
-    public void deleteAsset(AssetInfo assetInfo) {
-        this.deleteAsset(assetInfo.getId());
+    private WebResource getResource(String entityType, String entityId) throws ServiceException {
+        String escapedEntityId = null;
+        try {
+            escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ServiceException(e);
+        }
+        String entityPath = String.format("%s(\'%s\')", entityType, escapedEntityId);
+
+        return getResource(entityPath);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
-     */
-    @Override
-    public AssetInfo createAsset(AssetInfo assetInfo) {
-        // TODO Auto-generated method stub
-        return null;
+    private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
+        WebResource resource = getResource(path);
+        WebResource.Builder builder = resource.getRequestBuilder();
+        builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .header("X-HTTP-Method", "MERGE");
+        return builder.post(c, requestEntity);
+
     }
 
 }
