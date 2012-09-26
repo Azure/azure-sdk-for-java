@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -570,6 +571,56 @@ public class CloudBlobContainerTests extends BlobTestBase {
             blobSnapshot.delete(DeleteSnapshotsOption.NONE, null, null, null);
 
             blockBlobRef.downloadAttributes();
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testBlobDownloadRangeValidationTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+
+            final int blockLength = 1024 * 1024;
+            final int length = 3 * blockLength;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            String blockBlobName = "testBlockBlob" + Integer.toString(randGenerator.nextInt(50000));
+            blockBlobName = blockBlobName.replace('-', '_');
+
+            final CloudBlockBlob blockBlobRef = newContainer.getBlockBlobReference(blockBlobName);
+            blockBlobRef.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+            ArrayList<BlockEntry> blockList = new ArrayList<BlockEntry>();
+            for (int i = 1; i <= 3; i++) {
+                randGenerator.nextBytes(buff);
+
+                String blockID = String.format("%08d", i);
+                blockBlobRef.uploadBlock(blockID, new ByteArrayInputStream(buff), blockLength, null, null, null);
+                blockList.add(new BlockEntry(blockID, BlockSearchMode.LATEST));
+            }
+
+            blockBlobRef.commitBlockList(blockList);
+
+            //Download full blob
+            blockBlobRef.download(new ByteArrayOutputStream());
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
+
+            //Download blob range.
+            byte[] downloadBuffer = new byte[100];
+            blockBlobRef.downloadRange(0, 100, downloadBuffer, 0);
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
+
+            //Download block list.
+            blockBlobRef.downloadBlockList();
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
         }
         finally {
             // cleanup
