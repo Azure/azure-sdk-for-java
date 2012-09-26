@@ -32,7 +32,19 @@ public class Exports implements Builder.Exports {
             public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
                 for (Entry<String, Object> entry : properties.entrySet()) {
-                    clientConfig.getProperties().put(entry.getKey(), entry.getValue());
+                    Object propertyValue = entry.getValue();
+
+                    // ClientConfig requires instance of Integer to properly set
+                    // timeouts, but config file will deliver strings. Special
+                    // case these timeout properties and convert them to Integer
+                    // if necessary.
+                    if (entry.getKey().equals(ClientConfig.PROPERTY_CONNECT_TIMEOUT)
+                            || entry.getKey().equals(ClientConfig.PROPERTY_READ_TIMEOUT)) {
+                        if (propertyValue instanceof String) {
+                            propertyValue = Integer.valueOf((String) propertyValue);
+                        }
+                    }
+                    clientConfig.getProperties().put(entry.getKey(), propertyValue);
                 }
                 return clientConfig;
             }
@@ -41,7 +53,7 @@ public class Exports implements Builder.Exports {
         registry.add(new Builder.Factory<Client>() {
             @Override
             public Client create(String profile, Builder builder, Map<String, Object> properties) {
-                ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
+                ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 Client client = Client.create(clientConfig);
                 return client;
             }
@@ -50,7 +62,7 @@ public class Exports implements Builder.Exports {
         registry.add(new Builder.Factory<HttpURLConnectionClient>() {
             @Override
             public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
-                ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
+                ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
                 //client.addFilter(new LoggingFilter());
                 return client;
