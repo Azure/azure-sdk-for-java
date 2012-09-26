@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -39,28 +40,56 @@ import com.sun.jersey.api.client.UniformInterfaceException;
  */
 public class MediaExceptionProcessor implements MediaContract {
 
+    /** The service. */
     private final MediaContract service;
+
+    /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
 
+    /**
+     * Instantiates a new media exception processor.
+     * 
+     * @param service
+     *            the service
+     */
     public MediaExceptionProcessor(MediaContract service) {
         this.service = service;
     }
 
+    /**
+     * Instantiates a new media exception processor.
+     * 
+     * @param service
+     *            the service
+     */
     @Inject
     public MediaExceptionProcessor(MediaRestProxy service) {
         this.service = service;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
     @Override
     public MediaContract withFilter(ServiceFilter filter) {
         return new MediaExceptionProcessor(service.withFilter(filter));
     }
 
+    /**
+     * Process a catch.
+     * 
+     * @param e
+     *            the e
+     * @return the service exception
+     */
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("MediaServices", e);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
+     */
     @Override
     public AssetInfo createAsset(String assetName) throws ServiceException {
         try {
@@ -74,10 +103,13 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets()
+     */
     @Override
-    public List<AssetInfo> getAssets() throws ServiceException {
+    public List<AssetInfo> listAssets() throws ServiceException {
         try {
-            return service.getAssets();
+            return service.listAssets();
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -87,44 +119,83 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#updateAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
+     */
     @Override
-    public void deleteAsset(String assetId) {
-        service.deleteAsset(assetId);
+    public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException {
+        try {
+            service.updateAsset(assetId, updateAssetOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw new ServiceException(e);
+        }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
+     */
     @Override
-    public AssetInfo createAsset(AssetInfo asset) {
-        return service.createAsset(asset);
+    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException {
+        try {
+            return service.createAsset(assetName, createAssetOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAsset(java.lang.String)
+     */
     @Override
-    public AssetInfo updateAsset(AssetInfo updatedAsset) {
-        return service.updateAsset(updatedAsset);
+    public AssetInfo getAsset(String assetId) throws ServiceException {
+        try {
+            return service.getAsset(assetId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(java.lang.String)
+     */
     @Override
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) {
-        return service.createAsset(assetName, createAssetOptions);
+    public void deleteAsset(String assetId) throws ServiceException {
+        try {
+            service.deleteAsset(assetId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
+     */
     @Override
-    public AssetInfo getAsset(String assetId) {
-        return service.getAsset(assetId);
+    public void deleteAsset(AssetInfo assetInfo) throws ServiceException {
+        try {
+            service.deleteAsset(assetInfo);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
+     */
     @Override
-    public List<AssetInfo> listAssets() {
-        return service.listAssets();
-    }
-
-    @Override
-    public void deleteAsset(AssetInfo assetInfo) {
-        service.deleteAsset(assetInfo);
-    }
-
-    @Override
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
-        return service.listAssets(listAssetsOptions);
+    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException {
+        try {
+            return service.listAssets(listAssetsOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
 }

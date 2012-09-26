@@ -14,6 +14,81 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Class CreateAssetOptions.
+ */
 public class CreateAssetOptions {
+
+    /** The alternate id. */
+    private String alternateId;
+
+    /** The options. */
+    private EncryptionOption options;
+
+    /** The state. */
+    private AssetState state;
+
+    /**
+     * Gets the alternate id.
+     * 
+     * @return the alternate id
+     */
+    public String getAlternateId() {
+        return alternateId;
+    }
+
+    /**
+     * Sets the alternate id.
+     * 
+     * @param alternateId
+     *            the alternate id
+     * @return the creates the asset options
+     */
+    public CreateAssetOptions setAlternateId(String alternateId) {
+        this.alternateId = alternateId;
+        return this;
+    }
+
+    /**
+     * Gets the options.
+     * 
+     * @return the options
+     */
+    public EncryptionOption getOptions() {
+        return options;
+    }
+
+    /**
+     * Sets the options.
+     * 
+     * @param encryptionOption
+     *            the encryption option
+     * @return the creates the asset options
+     */
+    public CreateAssetOptions setOptions(EncryptionOption encryptionOption) {
+        this.options = encryptionOption;
+        return this;
+    }
+
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
+    public AssetState getState() {
+        return state;
+    }
+
+    /**
+     * Sets the state.
+     * 
+     * @param assetState
+     *            the asset state
+     * @return the creates the asset options
+     */
+    public CreateAssetOptions setState(AssetState assetState) {
+        this.state = assetState;
+        return this;
+    }
 
 }
