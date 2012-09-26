@@ -279,7 +279,7 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -359,7 +359,7 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
                 return response.getPageRanges();
             }
@@ -489,7 +489,8 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
                 return null;
             }
         };

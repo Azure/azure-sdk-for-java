@@ -211,7 +211,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -300,7 +300,9 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
+
                 final GetBlockListResponse response = new GetBlockListResponse(request.getInputStream());
                 return response.getBlocks();
             }
@@ -629,7 +631,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
