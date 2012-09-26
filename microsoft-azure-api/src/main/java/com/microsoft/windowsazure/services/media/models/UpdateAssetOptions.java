@@ -25,7 +25,7 @@ public class UpdateAssetOptions {
         return alternateId;
     }
 
-    public UpdateAssetOptions setAlternatedId(String alternateId) {
+    public UpdateAssetOptions setAlternateId(String alternateId) {
         this.alternateId = alternateId;
         return this;
     }

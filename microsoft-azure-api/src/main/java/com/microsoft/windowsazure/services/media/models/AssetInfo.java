@@ -1,5 +1,4 @@
 /**
- * >>>>>>> e8cf07bb1f265cdf72add1bd00ac069cb4dbaa33
  * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");

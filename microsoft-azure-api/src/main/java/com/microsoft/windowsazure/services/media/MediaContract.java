@@ -29,25 +29,6 @@ import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 public interface MediaContract extends FilterableService<MediaContract> {
 
     /**
-     * List assets.
-     * 
-     * @param listAssetsOptions
-     *            the list assets options
-     * @return the list
-     * @throws ServiceException
-     */
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException;
-
-    /**
-     * Delete asset.
-     * 
-     * @param assetId
-     *            the asset id
-     * @throws ServiceException
-     */
-    public void deleteAsset(String assetId) throws ServiceException;
-
-    /**
      * Creates the asset.
      * 
      * @param assetName
@@ -70,6 +51,15 @@ public interface MediaContract extends FilterableService<MediaContract> {
     public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException;
 
     /**
+     * Delete asset.
+     * 
+     * @param assetId
+     *            the asset id
+     * @throws ServiceException
+     */
+    public void deleteAsset(String assetId) throws ServiceException;
+
+    /**
      * Gets the asset.
      * 
      * @param assetId
@@ -88,13 +78,14 @@ public interface MediaContract extends FilterableService<MediaContract> {
     public List<AssetInfo> listAssets() throws ServiceException;
 
     /**
-     * Delete asset.
+     * List assets.
      * 
-     * @param assetInfo
-     *            the asset info
+     * @param listAssetsOptions
+     *            the list assets options
+     * @return the list
      * @throws ServiceException
      */
-    public void deleteAsset(AssetInfo assetInfo) throws ServiceException;
+    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException;
 
     /**
      * Update asset.

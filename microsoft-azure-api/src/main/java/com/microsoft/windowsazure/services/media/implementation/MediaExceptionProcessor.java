@@ -104,12 +104,76 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
+     */
+    @Override
+    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException {
+        try {
+            return service.createAsset(assetName, createAssetOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(java.lang.String)
+     */
+    @Override
+    public void deleteAsset(String assetId) throws ServiceException {
+        try {
+            service.deleteAsset(assetId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAsset(java.lang.String)
+     */
+    @Override
+    public AssetInfo getAsset(String assetId) throws ServiceException {
+        try {
+            return service.getAsset(assetId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets()
      */
     @Override
     public List<AssetInfo> listAssets() throws ServiceException {
         try {
             return service.listAssets();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
+     */
+    @Override
+    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException {
+        try {
+            return service.listAssets(listAssetsOptions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -128,72 +192,9 @@ public class MediaExceptionProcessor implements MediaContract {
             service.updateAsset(assetId, updateAssetOptions);
         }
         catch (UniformInterfaceException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
-     */
-    @Override
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException {
-        try {
-            return service.createAsset(assetName, createAssetOptions);
-        }
-        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
         }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#getAsset(java.lang.String)
-     */
-    @Override
-    public AssetInfo getAsset(String assetId) throws ServiceException {
-        try {
-            return service.getAsset(assetId);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(java.lang.String)
-     */
-    @Override
-    public void deleteAsset(String assetId) throws ServiceException {
-        try {
-            service.deleteAsset(assetId);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAsset(com.microsoft.windowsazure.services.media.models.AssetInfo)
-     */
-    @Override
-    public void deleteAsset(AssetInfo assetInfo) throws ServiceException {
-        try {
-            service.deleteAsset(assetInfo);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
-     */
-    @Override
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException {
-        try {
-            return service.listAssets(listAssetsOptions);
-        }
-        catch (UniformInterfaceException e) {
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
