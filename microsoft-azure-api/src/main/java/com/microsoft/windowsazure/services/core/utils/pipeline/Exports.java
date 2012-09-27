@@ -31,6 +31,13 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
+                // Lower levels of the stack assume timeouts are set. 
+                // Set default timeout on clientConfig in case user
+                // hasn't set it yet in their configuration
+
+                clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(90 * 1000));
+                clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(90 * 1000));
+
                 for (Entry<String, Object> entry : properties.entrySet()) {
                     Object propertyValue = entry.getValue();
 

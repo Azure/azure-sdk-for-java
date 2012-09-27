@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
 import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceTimeoutException;
 import com.microsoft.windowsazure.services.table.models.BatchOperations;
 import com.microsoft.windowsazure.services.table.models.BatchResult;
 import com.microsoft.windowsazure.services.table.models.BatchResult.DeleteEntity;
@@ -1155,8 +1156,11 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             service.queryTables();
             fail("Exception should have been thrown");
         }
-        catch (ServiceException ex) {
-            assertNotNull(ex.getCause());
+        catch (ServiceTimeoutException ex) {
+            // No need to assert, test is if correct assertion type is thrown.
+        }
+        catch (Exception ex) {
+            fail("unexpected exception was thrown");
         }
         finally {
             // Clean up timeouts, they interfere with other tests otherwise
@@ -1179,8 +1183,11 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
             service.queryTables();
             fail("Exception should have been thrown");
         }
-        catch (ServiceException ex) {
-            assertNotNull(ex.getCause());
+        catch (ServiceTimeoutException ex) {
+            // No need to assert, test is if correct assertion type is thrown.
+        }
+        catch (Exception ex) {
+            fail("unexpected exception was thrown");
         }
         finally {
             // Clean up timeouts, they interfere with other tests otherwise

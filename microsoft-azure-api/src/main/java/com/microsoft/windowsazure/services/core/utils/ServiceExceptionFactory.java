@@ -2,19 +2,23 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.utils;
 
+import java.net.SocketTimeoutException;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.ServiceTimeoutException;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -22,14 +26,69 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 public class ServiceExceptionFactory {
 
     public static ServiceException process(String serviceName, ServiceException exception) {
+        // State machine for figuring out what to do with the exception
+        //
+        // Input is the type of the current exception cause.
+        // FSM starts in state 0.
+        //
+        // State  |  Input                    | New State       | Action
+        //---------------------------------------------------------------------------
+        // 0      | ServiceException          | None            | populate and return
+        //        |                           |                 |
+        // 0      | UniformInterfaceException | None            | populate and return
+        //        |                           |                 |
+        // 0      | ClientHandlerException    | 1               | None
+        //        |                           |                 |
+        // 0      | Any other                 | 0               | None
+        //        |                           |                 |
+        // 1      | ServiceException          | None            | populate and return
+        //        |                           |                 |
+        // 1      | UniformInterfaceException | None            | populate and return
+        //        |                           |                 |
+        // 1      | ClientHandlerException    | 1               | None
+        //        |                           |                 |
+        // 1      | SocketTimeoutException    | None            | populate and return
+        //        |                           |                 |
+        // 1      | Any other                 | 0               | None
+
+        int state = 0;
         Throwable cause = exception.getCause();
 
         for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
-            if (ServiceException.class.isAssignableFrom(scan.getClass())) {
-                return populate(exception, serviceName, (ServiceException) scan);
-            }
-            else if (UniformInterfaceException.class.isAssignableFrom(scan.getClass())) {
-                return populate(exception, serviceName, (UniformInterfaceException) scan);
+            Class scanClass = scan.getClass();
+
+            switch (state) {
+                case 0:
+                    if (ServiceException.class.isAssignableFrom(scanClass)) {
+                        return populate(exception, serviceName, (ServiceException) scan);
+                    }
+                    else if (UniformInterfaceException.class.isAssignableFrom(scanClass)) {
+                        return populate(exception, serviceName, (UniformInterfaceException) scan);
+                    }
+                    else if (ClientHandlerException.class.isAssignableFrom(scanClass)) {
+                        state = 1;
+                    }
+                    else {
+                        state = 0;
+                    }
+                    break;
+
+                case 1:
+                    if (ServiceException.class.isAssignableFrom(scanClass)) {
+                        return populate(exception, serviceName, (ServiceException) scan);
+                    }
+                    else if (UniformInterfaceException.class.isAssignableFrom(scanClass)) {
+                        return populate(exception, serviceName, (UniformInterfaceException) scan);
+                    }
+                    else if (SocketTimeoutException.class.isAssignableFrom(scanClass)) {
+                        return populate(exception, serviceName, (SocketTimeoutException) scan);
+                    }
+                    else if (ClientHandlerException.class.isAssignableFrom(scanClass)) {
+                        state = 1;
+                    }
+                    else {
+                        state = 0;
+                    }
             }
         }
 
@@ -83,4 +142,9 @@ public class ServiceExceptionFactory {
         return exception;
     }
 
+    static ServiceException populate(ServiceException exception, String serviceName, SocketTimeoutException cause) {
+        ServiceTimeoutException newException = new ServiceTimeoutException(cause.getMessage(), cause);
+        newException.setServiceName(serviceName);
+        return newException;
+    }
 }
