@@ -25,6 +25,16 @@ import org.apache.commons.logging.LogFactory;
 
 public class Configuration {
 
+    /**
+     * Property name for socket connection timeout used by services created with this configuration.
+     */
+    public static final String PROPERTY_CONNECT_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.connectTimeout";
+
+    /**
+     * Property name for socket read timeout used by services created with this configuration.
+     */
+    public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.readTimeout";
+
     private static Configuration instance;
     Map<String, Object> properties;
     Builder builder;

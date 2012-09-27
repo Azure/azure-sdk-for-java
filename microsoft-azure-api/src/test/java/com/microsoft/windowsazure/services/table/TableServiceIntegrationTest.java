@@ -48,7 +48,6 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
-import com.sun.jersey.api.client.config.ClientConfig;
 
 public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String testTablesPrefix = "sdktest";
@@ -1147,8 +1146,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
 
         // Set timeout to very short to force failure
-        config.setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(1));
-        config.setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(1));
+        config.setProperty(Configuration.PROPERTY_CONNECT_TIMEOUT, new Integer(1));
+        config.setProperty(Configuration.PROPERTY_READ_TIMEOUT, new Integer(1));
 
         TableContract service = TableService.create(config);
 
@@ -1164,8 +1163,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         }
         finally {
             // Clean up timeouts, they interfere with other tests otherwise
-            config.getProperties().remove(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
-            config.getProperties().remove(ClientConfig.PROPERTY_READ_TIMEOUT);
+            config.getProperties().remove(Configuration.PROPERTY_CONNECT_TIMEOUT);
+            config.getProperties().remove(Configuration.PROPERTY_READ_TIMEOUT);
         }
     }
 
@@ -1174,8 +1173,8 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
 
         // Set timeout to very short to force failure
-        config.setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, "1");
-        config.setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, "1");
+        config.setProperty(Configuration.PROPERTY_CONNECT_TIMEOUT, "1");
+        config.setProperty(Configuration.PROPERTY_READ_TIMEOUT, "1");
 
         TableContract service = TableService.create(config);
 
@@ -1191,8 +1190,34 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         }
         finally {
             // Clean up timeouts, they interfere with other tests otherwise
-            config.getProperties().remove(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
-            config.getProperties().remove(ClientConfig.PROPERTY_READ_TIMEOUT);
+            config.getProperties().remove(Configuration.PROPERTY_CONNECT_TIMEOUT);
+            config.getProperties().remove(Configuration.PROPERTY_READ_TIMEOUT);
         }
+    }
+
+    @Test
+    public void settingTimeoutPrefixedFromConfigWorks() throws Exception {
+        Configuration config = createConfiguration();
+
+        TableContract service = TableService.create("testprefix", config);
+
+        try {
+            service.queryTables();
+            fail("Exception should have been thrown");
+        }
+        catch (ServiceTimeoutException ex) {
+            // No need to assert, test is if correct assertion type is thrown.
+        }
+        catch (Exception ex) {
+            fail("unexpected exception was thrown");
+        }
+    }
+
+    @Test
+    public void prefixedTimeoutsGetLoaded() throws Exception {
+        Configuration config = createConfiguration();
+
+        assertEquals("3", config.getProperty("testprefix." + Configuration.PROPERTY_CONNECT_TIMEOUT));
+        assertEquals("7", config.getProperty("testprefix." + Configuration.PROPERTY_READ_TIMEOUT));
     }
 }
