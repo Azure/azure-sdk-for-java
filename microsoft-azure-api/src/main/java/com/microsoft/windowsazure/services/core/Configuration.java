@@ -23,9 +23,17 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sun.jersey.api.client.config.ClientConfig;
-
 public class Configuration {
+
+    /**
+     * Property name for socket connection timeout used by services created with this configuration.
+     */
+    public static final String PROPERTY_CONNECT_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.connectTimeout";
+
+    /**
+     * Property name for socket read timeout used by services created with this configuration.
+     */
+    public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.readTimeout";
 
     private static Configuration instance;
     Map<String, Object> properties;
@@ -36,18 +44,11 @@ public class Configuration {
     public Configuration() {
         this.properties = new HashMap<String, Object>();
         this.builder = DefaultBuilder.create();
-        init();
     }
 
     public Configuration(Builder builder) {
         this.properties = new HashMap<String, Object>();
         this.builder = builder;
-        init();
-    }
-
-    private void init() {
-        setProperty(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(90 * 1000));
-        setProperty(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(90 * 1000));
     }
 
     public static Configuration getInstance() {
