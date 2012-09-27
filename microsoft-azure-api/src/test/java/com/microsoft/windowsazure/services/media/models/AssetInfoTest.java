@@ -17,10 +17,6 @@ package com.microsoft.windowsazure.services.media.models;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.Test;
 
@@ -56,14 +52,12 @@ public class AssetInfoTest {
     @Test
     public void testGetSetCreated() throws Exception {
         // Arrange
-        GregorianCalendar c = new GregorianCalendar();
-        c.setTime(new Date());
-        XMLGregorianCalendar expectedCreated = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        Date expectedCreated = new Date();
 
         AssetInfo assetInfo = new AssetInfo();
 
         // Act 
-        XMLGregorianCalendar actualCreated = assetInfo.setCreated(expectedCreated).getCreated();
+        Date actualCreated = assetInfo.setCreated(expectedCreated).getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -73,14 +67,11 @@ public class AssetInfoTest {
     @Test
     public void testGetSetLastModified() throws Exception {
         // Arrange
-
-        GregorianCalendar c = new GregorianCalendar();
-        c.setTime(new Date());
-        XMLGregorianCalendar expectedLastModified = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        Date expectedLastModified = new Date();
         AssetInfo assetInfo = new AssetInfo();
 
         // Act
-        XMLGregorianCalendar actualLastModified = assetInfo.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = assetInfo.setLastModified(expectedLastModified).getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);

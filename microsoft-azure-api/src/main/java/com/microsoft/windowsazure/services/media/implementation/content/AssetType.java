@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.microsoft.windowsazure.services.core.utils.DateConverter;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 /**
@@ -159,9 +160,9 @@ public class AssetType implements MediaServiceDTO {
     public static AssetType create(AssetInfo assetInfo) {
         AssetType assetType = new AssetType();
         assetType.setAlternateId(assetInfo.getAlternateId());
-        assetType.setCreated(assetInfo.getCreated());
+        assetType.setCreated(DateConverter.DateToXMLGregorianCalendar(assetInfo.getCreated()));
         assetType.setId(assetInfo.getId());
-        assetType.setLastModified(assetInfo.getLastModified());
+        assetType.setLastModified(DateConverter.DateToXMLGregorianCalendar(assetInfo.getLastModified()));
         assetType.setName(assetInfo.getName());
         assetType.setOptions(assetInfo.getOptions().getCode());
         assetType.setState(assetInfo.getState().getCode());
