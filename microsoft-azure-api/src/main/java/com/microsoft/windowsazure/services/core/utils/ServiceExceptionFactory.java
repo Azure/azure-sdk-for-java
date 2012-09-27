@@ -18,7 +18,6 @@ import java.net.SocketTimeoutException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceTimeoutException;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -26,69 +25,18 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 public class ServiceExceptionFactory {
 
     public static ServiceException process(String serviceName, ServiceException exception) {
-        // State machine for figuring out what to do with the exception
-        //
-        // Input is the type of the current exception cause.
-        // FSM starts in state 0.
-        //
-        // State  |  Input                    | New State       | Action
-        //---------------------------------------------------------------------------
-        // 0      | ServiceException          | None            | populate and return
-        //        |                           |                 |
-        // 0      | UniformInterfaceException | None            | populate and return
-        //        |                           |                 |
-        // 0      | ClientHandlerException    | 1               | None
-        //        |                           |                 |
-        // 0      | Any other                 | 0               | None
-        //        |                           |                 |
-        // 1      | ServiceException          | None            | populate and return
-        //        |                           |                 |
-        // 1      | UniformInterfaceException | None            | populate and return
-        //        |                           |                 |
-        // 1      | ClientHandlerException    | 1               | None
-        //        |                           |                 |
-        // 1      | SocketTimeoutException    | None            | populate and return
-        //        |                           |                 |
-        // 1      | Any other                 | 0               | None
-
-        int state = 0;
         Throwable cause = exception.getCause();
 
         for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
             Class scanClass = scan.getClass();
-
-            switch (state) {
-                case 0:
-                    if (ServiceException.class.isAssignableFrom(scanClass)) {
-                        return populate(exception, serviceName, (ServiceException) scan);
-                    }
-                    else if (UniformInterfaceException.class.isAssignableFrom(scanClass)) {
-                        return populate(exception, serviceName, (UniformInterfaceException) scan);
-                    }
-                    else if (ClientHandlerException.class.isAssignableFrom(scanClass)) {
-                        state = 1;
-                    }
-                    else {
-                        state = 0;
-                    }
-                    break;
-
-                case 1:
-                    if (ServiceException.class.isAssignableFrom(scanClass)) {
-                        return populate(exception, serviceName, (ServiceException) scan);
-                    }
-                    else if (UniformInterfaceException.class.isAssignableFrom(scanClass)) {
-                        return populate(exception, serviceName, (UniformInterfaceException) scan);
-                    }
-                    else if (SocketTimeoutException.class.isAssignableFrom(scanClass)) {
-                        return populate(exception, serviceName, (SocketTimeoutException) scan);
-                    }
-                    else if (ClientHandlerException.class.isAssignableFrom(scanClass)) {
-                        state = 1;
-                    }
-                    else {
-                        state = 0;
-                    }
+            if (ServiceException.class.isAssignableFrom(scanClass)) {
+                return populate(exception, serviceName, (ServiceException) scan);
+            }
+            else if (UniformInterfaceException.class.isAssignableFrom(scanClass)) {
+                return populate(exception, serviceName, (UniformInterfaceException) scan);
+            }
+            else if (SocketTimeoutException.class.isAssignableFrom(scanClass)) {
+                return populate(exception, serviceName, (SocketTimeoutException) scan);
             }
         }
 
