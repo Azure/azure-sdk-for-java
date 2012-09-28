@@ -38,7 +38,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 public class Exports implements Builder.Exports {
 
     /**
-     * register the OAUTH service.
+     * register the Media services.
      */
     @Override
     public void register(Builder.Registry registry) {

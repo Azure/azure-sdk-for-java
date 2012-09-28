@@ -1,5 +1,4 @@
 /**
- * >>>>>>> e8cf07bb1f265cdf72add1bd00ac069cb4dbaa33
  * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 
+import com.microsoft.windowsazure.services.core.utils.DateConverter;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
@@ -104,8 +104,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * 
      * @return the date
      */
-    public XMLGregorianCalendar getCreated() {
-        return this.getContent().getCreated();
+    public Date getCreated() {
+        return DateConverter.XMLGregorianCalendarToDate(this.getContent().getCreated());
     }
 
     /**
@@ -115,8 +115,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      *            the date
      * @return the asset info
      */
-    public AssetInfo setCreated(XMLGregorianCalendar created) {
-        getContent().setCreated(created);
+    public AssetInfo setCreated(Date created) {
+        getContent().setCreated(DateConverter.DateToXMLGregorianCalendar(created));
         return this;
     }
 
@@ -125,8 +125,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * 
      * @return the date
      */
-    public XMLGregorianCalendar getLastModified() {
-        return getContent().getLastModified();
+    public Date getLastModified() {
+        return DateConverter.XMLGregorianCalendarToDate(getContent().getLastModified());
     }
 
     /**
@@ -136,8 +136,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      *            the date
      * @return the asset info
      */
-    public AssetInfo setLastModified(XMLGregorianCalendar lastModified) {
-        getContent().setLastModified(lastModified);
+    public AssetInfo setLastModified(Date lastModified) {
+        getContent().setLastModified(DateConverter.DateToXMLGregorianCalendar(lastModified));
         return this;
     }
 

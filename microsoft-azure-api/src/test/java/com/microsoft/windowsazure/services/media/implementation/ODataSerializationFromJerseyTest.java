@@ -97,7 +97,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
     @Test
     public void canRetrieveListOfAssets() throws Exception {
         MediaContract client = MediaService.create(config);
-        List<AssetInfo> assets = client.getAssets();
+        List<AssetInfo> assets = client.listAssets();
 
         Assert.assertNotNull(assets);
     }

@@ -51,8 +51,8 @@ public class OAuthTokenManager {
      * @param dateFactory
      *            A <code>DateFactory</code> object instance that represents the date factory.
      * 
-     * @param acsBaseUri
-     *            A <code>URI</code> object instance that represents the ACS base URI.
+     * @param oAuthUri
+     *            A <code>String</code> object instance that represents the ACS base URI.
      * 
      * @param clientId
      *            A <code>String</code> object instance that represents the client ID.
@@ -63,13 +63,13 @@ public class OAuthTokenManager {
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
-            @Named(MediaConfiguration.OAUTH_URI) String oauthUri,
+            @Named(MediaConfiguration.OAUTH_URI) String oAuthUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
             @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.acsBaseUri = new URI(oauthUri);
+        this.acsBaseUri = new URI(oAuthUri);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;
