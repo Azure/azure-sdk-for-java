@@ -41,24 +41,24 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 public final class CloudTable {
 
     /**
-     * Holds the name of the table.
+     * The name of the table.
      */
     String name;
 
     /**
-     * Holds the URI of the table.
+     * The URI of the table.
      */
     URI uri;
 
     /**
-     * Holds a reference to the associated service client.
+     * A reference to the associated service client.
      */
     private final CloudTableClient tableServiceClient;
 
     /**
-     * Gets the name of the queue.
+     * Gets the name of the table.
      * 
-     * @return A <code>String</code> object that represents the name of the queue.
+     * @return A <code>String</code> object that represents the name of the table.
      */
     public String getName() {
         return this.name;
@@ -74,9 +74,9 @@ public final class CloudTable {
     }
 
     /**
-     * Gets the absolute URI for this queue.
+     * Gets the absolute URI for this table.
      * 
-     * @return A <code>java.net.URI</code> object that represents the URI for this queue.
+     * @return A <code>java.net.URI</code> object that represents the URI for this table.
      */
     public URI getUri() {
         return this.uri;
@@ -85,7 +85,7 @@ public final class CloudTable {
     /**
      * Creates an instance of the <code>CloudTable</code> class using the specified address and client.
      * 
-     * @param tableAddress
+     * @param tableName
      *            A <code>String</code> that represents the table name.
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
@@ -148,7 +148,7 @@ public final class CloudTable {
      *            safely ignore operation context.
      * 
      * @throws StorageException
-     *             if an error occurs accessing the storage service, or because the table cannot be
+     *             If an error occurs accessing the storage service, or because the table cannot be
      *             created, or already exists.
      */
     @DoesServiceRequest
@@ -188,7 +188,7 @@ public final class CloudTable {
     }
 
     /**
-     * Creates the table in the storage service with the specified request options and operation context if it does not
+     * Creates the table in the storage service with the specified request options and operation context, if it does not
      * already exist.
      * 
      * @param options
@@ -300,7 +300,7 @@ public final class CloudTable {
     }
 
     /**
-     * Deletes the table from the storage service if it exists.
+     * Deletes the table from the storage service, if it exists.
      * 
      * @return A value of <code>true</code> if the table existed in the storage service and has been deleted, otherwise
      *         <code>false</code>.
@@ -445,7 +445,7 @@ public final class CloudTable {
     }
 
     /**
-     * Uploads the container's permissions using the specified request options and operation context.
+     * Uploads the table's permissions using the specified request options and operation context.
      * 
      * @param permissions
      *            A {@link TablePermissions} object that represents the permissions to upload.
@@ -533,7 +533,7 @@ public final class CloudTable {
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
-     * @return A {@link BlobContainerPermissions} object that represents the container's permissions.
+     * @return A {@link TablePermissions} object that represents the table's permissions.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -592,10 +592,13 @@ public final class CloudTable {
      *            The access policy for the shared access signature.
      * @param accessPolicyIdentifier
      *            A table-level access policy.
-     * @return a shared access signature for the container.
+     * @return A <code>String</code> containing the shared access signature for the table.
      * @throws InvalidKeyException
+     *              If an invalid key was passed.
      * @throws StorageException
+     *              If a storage service error occurred.
      * @throws IllegalArgumentException
+     *              If an unexpected value is passed.
      */
     public String generateSharedAccessSignature(final SharedAccessTablePolicy policy,
             final String accessPolicyIdentifier, final String startPartitionKey, final String startRowKey,
@@ -629,7 +632,7 @@ public final class CloudTable {
     /**
      * Returns the canonical name for shared access.
      * 
-     * @return the canonical name for shared access.
+     * @return A <code>String</code> containing the canonical name for shared access.
      */
     private String getSharedAccessCanonicalName() {
         if (this.tableServiceClient.isUsePathStyleUris()) {
