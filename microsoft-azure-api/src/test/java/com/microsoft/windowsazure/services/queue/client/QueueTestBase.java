@@ -52,7 +52,11 @@ public class QueueTestBase {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
         }
         else {
-            httpAcc = CloudStorageAccount.parse(CLOUD_ACCOUNT_HTTP);
+            String cloudAccount = CLOUD_ACCOUNT_HTTP;
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("queue.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("queue.accountKey"));
+
+            httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
 
         qClient = httpAcc.createCloudQueueClient();
