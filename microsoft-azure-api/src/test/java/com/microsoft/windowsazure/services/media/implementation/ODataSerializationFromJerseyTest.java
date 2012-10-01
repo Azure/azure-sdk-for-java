@@ -101,4 +101,5 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
         Assert.assertNotNull(assets);
     }
+
 }

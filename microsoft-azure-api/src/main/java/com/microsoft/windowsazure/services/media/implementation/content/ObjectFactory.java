@@ -49,4 +49,13 @@ public class ObjectFactory {
     public ODataActionType createODataActionType() {
         return new ODataActionType();
     }
+
+    /**
+     * Create an instance of {@link AccessPolicyType }
+     * 
+     * @return a new AccessPolicyType instance.
+     */
+    public AccessPolicyType createAccessPolicyType() {
+        return new AccessPolicyType();
+    }
 }
