@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
+import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 
@@ -114,6 +115,7 @@ public class ODataAtomMarshaller {
         classes.add(FeedType.class);
         classes.add(EntryType.class);
         classes.add(AssetType.class);
+        classes.add(AccessPolicyType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }

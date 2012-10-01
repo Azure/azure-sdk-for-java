@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,9 +32,14 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.sun.jersey.api.client.Client;
@@ -134,6 +140,27 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    private WebResource getResource(String entityType, String entityId) throws ServiceException {
+        String escapedEntityId = null;
+        try {
+            escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ServiceException(e);
+        }
+        String entityPath = String.format("%s(\'%s\')", entityType, escapedEntityId);
+
+        return getResource(entityPath);
+    }
+
+    private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
+        WebResource resource = getResource(path);
+        WebResource.Builder builder = resource.getRequestBuilder();
+        builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .header("X-HTTP-Method", "MERGE");
+        return builder.post(c, requestEntity);
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
      */
@@ -229,26 +256,69 @@ public class MediaRestProxy implements MediaContract {
         getResource("Assets", assetId).delete();
     }
 
-    private WebResource getResource(String entityType, String entityId) throws ServiceException {
-        String escapedEntityId = null;
-        try {
-            escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new ServiceException(e);
-        }
-        String entityPath = String.format("%s(\'%s\')", entityType, escapedEntityId);
-
-        return getResource(entityPath);
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
+     */
+    @Override
+    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException {
+        return createAccessPolicy(name, durationInMinutes, null);
     }
 
-    private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
-        WebResource resource = getResource(path);
-        WebResource.Builder builder = resource.getRequestBuilder();
-        builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .header("X-HTTP-Method", "MERGE");
-        return builder.post(c, requestEntity);
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
+     */
+    @Override
+    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
+            throws ServiceException {
 
+        if (options == null) {
+            options = new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE));
+        }
+
+        AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes).setName(name)
+                .setPermissions(AccessPolicyPermission.bitsFromPermissions(options.getPermissions()));
+
+        WebResource resource = getResource("AccessPolicies");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(AccessPolicyInfo.class, requestData);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getAccessPolicy(java.lang.String)
+     */
+    @Override
+    public AccessPolicyInfo getAccessPolicy(String id) throws ServiceException {
+        WebResource resource = getResource("AccessPolicies", id);
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(AccessPolicyInfo.class);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAccessPolicy(java.lang.String)
+     */
+    @Override
+    public void deleteAccessPolicy(String id) throws ServiceException {
+        getResource("AccessPolicies", id).delete();
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAccessPolicies()
+     */
+    @Override
+    public List<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
+        return listAccessPolicies(null);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listAccessPolicies()
+     */
+    @Override
+    public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
+        WebResource resource = getResource("AccessPolicies");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<List<AccessPolicyInfo>>() {
+                });
+    }
 }
