@@ -108,7 +108,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @param name
      *            name of access policy
      * @param durationInMinutes
-     *            duration access policy is active
+     *            Duration in minutes that blob access will be granted when using this access policy
      * @return Created access policy
      * @throws ServiceException
      */
@@ -120,7 +120,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @param name
      *            name of access policy
      * @param durationInMinutes
-     *            duration access policy is active
+     *            Duration in minutes that blob access will be granted when using this access policy
      * @param options
      *            options for creation
      * @return the created access policy

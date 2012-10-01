@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,24 @@ import static org.junit.Assert.*;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 
 public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private static MediaContract service;
+
+    private static final String testPrefix = "testPolicy";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -50,7 +57,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         for (AccessPolicyInfo policy : service.listAccessPolicies()) {
-            if (policy.getName().startsWith("testPolicy")) {
+            if (policy.getName().startsWith(testPrefix)) {
                 service.deleteAccessPolicy(policy.getId());
             }
         }
@@ -58,7 +65,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canCreateAccessPolicy() throws Exception {
-        AccessPolicyInfo policy = service.createAccessPolicy("testPolicy", 5,
+        AccessPolicyInfo policy = service.createAccessPolicy(testPrefix + "CanCreate", 5,
                 new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE)));
 
         assertTrue(policy.getPermissions().contains(AccessPolicyPermission.WRITE));
@@ -66,7 +73,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canGetSinglePolicyById() throws Exception {
-        String expectedName = "testPolicyGetOne";
+        String expectedName = testPrefix + "GetOne";
         AccessPolicyInfo policyToGet = service.createAccessPolicy(expectedName, 1);
 
         AccessPolicyInfo retrievedPolicy = service.getAccessPolicy(policyToGet.getId());
@@ -77,7 +84,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canRetrieveListOfAccessPolicies() throws Exception {
-        String[] policyNames = new String[] { "testPolicy1", "testPolicy2" };
+        String[] policyNames = new String[] { testPrefix + "ListOne", testPrefix + "ListTwo" };
         for (String name : policyNames) {
             service.createAccessPolicy(name, 3, new CreateAccessPolicyOptions().addPermissions(EnumSet.of(
                     AccessPolicyPermission.WRITE, AccessPolicyPermission.LIST)));
@@ -92,21 +99,58 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         AccessPolicyInfo policy2 = null;
 
         for (AccessPolicyInfo policy : policies) {
-            if (policy.getName().equals("testPolicy1")) {
+            if (policy.getName().equals(policyNames[0])) {
                 policy1 = policy;
             }
-            if (policy.getName().equals("testPolicy2")) {
+            if (policy.getName().equals(policyNames[1])) {
                 policy2 = policy;
             }
         }
 
         assertNotNull(policy1);
         assertNotNull(policy2);
+
+        assertTrue(policy1.getPermissions().containsAll(
+                EnumSet.of(AccessPolicyPermission.WRITE, AccessPolicyPermission.LIST)));
+    }
+
+    @Rule
+    public ExpectedException expected = ExpectedException.none();
+
+    @Test
+    public void getWithBadIdThrowsServiceException() throws Exception {
+        expected.expect(ServiceException.class);
+        AccessPolicyInfo policy = service.getAccessPolicy("notAValidId");
+    }
+
+    @Test
+    public void getWithValidButNonExistentPolicyIdThrows404ServiceException() throws Exception {
+        expected.expect(new BaseMatcher<ServiceException>() {
+
+            @Override
+            public boolean matches(Object item) {
+                if (item.getClass() != ServiceException.class) {
+                    return false;
+                }
+
+                if (((ServiceException) item).getHttpStatusCode() != 404) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Must be ServiceException with a 404 status code");
+            }
+        });
+        service.getAccessPolicy("nb:pid:UUID:bce3863e-830b-49f5-9199-7cfaff52935f");
     }
 
     @Test
     public void canDeleteAccessPolicyById() throws Exception {
-        AccessPolicyInfo policyToDelete = service.createAccessPolicy("testPolicyToDelete", 1);
+        AccessPolicyInfo policyToDelete = service.createAccessPolicy(testPrefix + "ToDelete", 1);
 
         service.deleteAccessPolicy(policyToDelete.getId());
 

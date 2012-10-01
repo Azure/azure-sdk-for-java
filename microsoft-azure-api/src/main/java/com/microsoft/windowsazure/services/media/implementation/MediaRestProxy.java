@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -260,9 +261,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException {
-        CreateAccessPolicyOptions options = new CreateAccessPolicyOptions();
-        options.getPermissions().add(AccessPolicyPermission.WRITE);
-        return createAccessPolicy(name, durationInMinutes, options);
+        return createAccessPolicy(name, durationInMinutes, null);
     }
 
     /* (non-Javadoc)
@@ -271,6 +270,10 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
             throws ServiceException {
+
+        if (options == null) {
+            options = new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE));
+        }
 
         AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes).setName(name)
                 .setPermissions(AccessPolicyPermission.bitsFromPermissions(options.getPermissions()));
@@ -304,11 +307,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
-        WebResource resource = getResource("AccessPolicies");
-
-        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .get(new GenericType<List<AccessPolicyInfo>>() {
-                });
+        return listAccessPolicies(null);
     }
 
     /* (non-Javadoc)
@@ -316,7 +315,10 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
-        // Currently no options defined so can call zero arg overload instead
-        return listAccessPolicies();
+        WebResource resource = getResource("AccessPolicies");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<List<AccessPolicyInfo>>() {
+                });
     }
 }
