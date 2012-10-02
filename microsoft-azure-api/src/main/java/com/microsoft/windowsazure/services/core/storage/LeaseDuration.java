@@ -38,10 +38,10 @@ public enum LeaseDuration {
     INFINITE;
 
     /**
-     * Parses a lease duration from the given string.
+     * Parses a lease duration from the specified string.
      * 
      * @param typeString
-     *            A <code>String</code> that represents the string to parse.
+     *            The string to parse.
      * 
      * @return A <code>LeaseStatus</code> value that represents the lease status.
      */
