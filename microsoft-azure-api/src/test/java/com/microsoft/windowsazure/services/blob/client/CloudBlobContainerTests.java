@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
+import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
@@ -625,6 +626,49 @@ public class CloudBlobContainerTests extends BlobTestBase {
         finally {
             // cleanup
             newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testBlobNamePlusEncodingTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+
+            final int length = 1 * 1024;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            final CloudBlockBlob originalBlob = newContainer.getBlockBlobReference("a+b.txt");
+            originalBlob.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+
+            CloudBlob copyBlob = newContainer.getBlockBlobReference(originalBlob.getName() + "copyed");
+            copyBlob.copyFromBlob(originalBlob);
+            Thread.sleep(1000);
+            copyBlob.downloadAttributes();
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testListContainersTest() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        final ResultSegment<CloudBlobContainer> segment = bClient.listContainersSegmented(null,
+                ContainerListingDetails.ALL, 2, null, null, null);
+
+        for (int i = 0; i < 5 && segment.getHasMoreResults(); i++) {
+            for (final CloudBlobContainer container : segment.getResults()) {
+                container.downloadAttributes();
+            }
+
+            bClient.listContainersSegmented(null, ContainerListingDetails.ALL, 2, segment.getContinuationToken(), null,
+                    null);
         }
     }
 }
