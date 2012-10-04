@@ -23,7 +23,7 @@ import java.util.Date;
  */
 public final class CopyState {
     /**
-     * Holds the Name of the Container
+     * Holds the name of the container.
      */
     private String copyId;
 
@@ -59,27 +59,52 @@ public final class CopyState {
     private String statusDescription;
 
     /**
-     * Initializes a new instance of the CopyState class
+     * Initializes a new instance of the CopyState class.
      */
     public CopyState() {
     }
 
+    /**
+     * Gets the copy ID of the container.
+     * 
+     * @return A string containing the copy ID of the container.
+     */
     public String getCopyId() {
         return this.copyId;
     }
 
+    /**
+     * Gets the time that the copy operation completed.
+     * 
+     * @return The time that the copy operation completed.
+     */
     public Date getCompletionTime() {
         return this.completionTime;
     }
 
+    /**
+     * Gets the status of the copy operation.
+     * 
+     * @return A <code>CopyStatus</code> object representing the status of the copy operation.
+     */
     public CopyStatus getStatus() {
         return this.status;
     }
 
+    /**
+     * Gets the source URI of the copy operation.
+     * 
+     * @return The source URI of the copy operation in a string.
+     */
     public URI getSource() {
         return this.source;
     }
 
+    /**
+     * Gets the number of bytes copied in the operation so far.
+     * 
+     * @return The number of bytes copied so far.
+     */
     public Long getBytesCopied() {
         return this.bytesCopied;
     }
@@ -88,34 +113,82 @@ public final class CopyState {
         return this.totalBytes;
     }
 
+    /**
+     * Gets the status description of the copy operation.
+     * 
+     * @return A string containing the status description.
+     */
     public String getStatusDescription() {
         return this.statusDescription;
     }
 
+    /**
+     * Sets the copy ID of the container.
+     * 
+     * @param copyId
+     *           The copy ID of the container to set.
+     * 
+     */
     public void setCopyId(final String copyId) {
         this.copyId = copyId;
     }
 
+    /**
+     * Sets the time that the copy operation completed.
+     * 
+     * @param completionTime
+     *         The completion time to set.
+     */
     public void setCompletionTime(final Date completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * Sets the status of the copy operation.
+     * 
+     * @param status
+     *         The copy operation status to set, as a <code>CopyStatus</code> object.
+     */
     public void setStatus(final CopyStatus status) {
         this.status = status;
     }
 
+    /**
+     * Sets the source URI of the copy operation.
+     * 
+     * @param source
+     *         The source URI to set.
+     */
     public void setSource(final URI source) {
         this.source = source;
     }
 
+    /**
+     * Sets the number of bytes copied so far.
+     * 
+     * @param bytesCopied
+     *         The number of bytes copied to set.
+     */
     public void setBytesCopied(final Long bytesCopied) {
         this.bytesCopied = bytesCopied;
     }
 
+    /**
+     * Sets the total number of bytes in the source to copy.
+     * 
+     * @param totalBytes
+     *         The number of bytes to set.
+     */
     public void setTotalBytes(final Long totalBytes) {
         this.totalBytes = totalBytes;
     }
 
+    /**
+     * Sets the current status of the copy operation.
+     * 
+     * @param statusDescription
+     *         The current status to set.
+     */
     public void setStatusDescription(final String statusDescription) {
         this.statusDescription = statusDescription;
     }

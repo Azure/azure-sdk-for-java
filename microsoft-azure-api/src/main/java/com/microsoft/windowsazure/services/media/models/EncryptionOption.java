@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,60 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
 /**
  * Specifies the options for encryption.
  */
 public enum EncryptionOption {
-    None(0), StorageEncrypted(1), CommonEncryptionProtected(2);
 
+    /** The None. */
+    None(0),
+    /** The Storage encrypted. */
+    StorageEncrypted(1),
+    /** The Common encryption protected. */
+    CommonEncryptionProtected(2);
+
+    /** The encryption option code. */
     private int encryptionOptionCode;
 
+    /**
+     * Instantiates a new encryption option.
+     * 
+     * @param encryptionOptionCode
+     *            the encryption option code
+     */
     private EncryptionOption(int encryptionOptionCode) {
         this.encryptionOptionCode = encryptionOptionCode;
     }
 
+    /**
+     * Gets the code.
+     * 
+     * @return the code
+     */
     public int getCode() {
         return encryptionOptionCode;
+    }
+
+    /**
+     * Create an EncryptionOption instance based on the
+     * given integer.
+     * 
+     * @param option
+     *            the integer value of option
+     * @return The EncryptionOption
+     */
+    public static EncryptionOption fromCode(int option) {
+        switch (option) {
+            case 0:
+                return EncryptionOption.None;
+            case 1:
+                return EncryptionOption.StorageEncrypted;
+            case 2:
+                return EncryptionOption.CommonEncryptionProtected;
+            default:
+                throw new InvalidParameterException("option");
+        }
     }
 }

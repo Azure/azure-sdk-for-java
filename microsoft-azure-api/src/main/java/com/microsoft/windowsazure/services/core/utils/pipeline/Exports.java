@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.core.Builder.Registry;
+import com.microsoft.windowsazure.services.core.Configuration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -31,8 +32,37 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
+                profile = normalizeProfile(profile);
+
+                // Lower levels of the stack assume timeouts are set. 
+                // Set default timeout on clientConfig in case user
+                // hasn't set it yet in their configuration
+
+                clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(90 * 1000));
+                clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(90 * 1000));
+
                 for (Entry<String, Object> entry : properties.entrySet()) {
-                    clientConfig.getProperties().put(entry.getKey(), entry.getValue());
+                    Object propertyValue = entry.getValue();
+                    String propertyKey = entry.getKey();
+
+                    if (propertyKey.equals(profile + Configuration.PROPERTY_CONNECT_TIMEOUT)) {
+                        propertyKey = ClientConfig.PROPERTY_CONNECT_TIMEOUT;
+                    }
+                    if (propertyKey.equals(profile + Configuration.PROPERTY_READ_TIMEOUT)) {
+                        propertyKey = ClientConfig.PROPERTY_READ_TIMEOUT;
+                    }
+
+                    // ClientConfig requires instance of Integer to properly set
+                    // timeouts, but config file will deliver strings. Special
+                    // case these timeout properties and convert them to Integer
+                    // if necessary.
+                    if (propertyKey.equals(ClientConfig.PROPERTY_CONNECT_TIMEOUT)
+                            || propertyKey.equals(ClientConfig.PROPERTY_READ_TIMEOUT)) {
+                        if (propertyValue instanceof String) {
+                            propertyValue = Integer.valueOf((String) propertyValue);
+                        }
+                    }
+                    clientConfig.getProperties().put(propertyKey, propertyValue);
                 }
                 return clientConfig;
             }
@@ -41,7 +71,7 @@ public class Exports implements Builder.Exports {
         registry.add(new Builder.Factory<Client>() {
             @Override
             public Client create(String profile, Builder builder, Map<String, Object> properties) {
-                ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
+                ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 Client client = Client.create(clientConfig);
                 return client;
             }
@@ -50,11 +80,23 @@ public class Exports implements Builder.Exports {
         registry.add(new Builder.Factory<HttpURLConnectionClient>() {
             @Override
             public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
-                ClientConfig clientConfig = (ClientConfig) properties.get("ClientConfig");
+                ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
                 //client.addFilter(new LoggingFilter());
                 return client;
             }
         });
+    }
+
+    private static String normalizeProfile(String profile) {
+        if (profile == null) {
+            return "";
+        }
+
+        if (profile.endsWith(".")) {
+            return profile;
+        }
+
+        return profile + ".";
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,24 +51,25 @@ public class OAuthTokenManager {
      * @param dateFactory
      *            A <code>DateFactory</code> object instance that represents the date factory.
      * 
-     * @param acsBaseUri
-     *            A <code>URI</code> object instance that represents the ACS base URI.
+     * @param oAuthUri
+     *            A <code>String</code> object instance that represents the ACS base URI.
      * 
      * @param clientId
      *            A <code>String</code> object instance that represents the client ID.
      * 
      * @param clientSecret
      *            A <code>String</code> object instance that represents the client secret.
+     * @throws URISyntaxException
      * 
      */
     public OAuthTokenManager(OAuthContract contract, DateFactory dateFactory,
-            @Named(MediaConfiguration.OAUTH_URI) URI acsBaseUri,
+            @Named(MediaConfiguration.OAUTH_URI) String oAuthUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
-            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) {
+            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.acsBaseUri = acsBaseUri;
+        this.acsBaseUri = new URI(oAuthUri);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;
