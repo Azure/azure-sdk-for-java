@@ -18,8 +18,11 @@ import java.util.List;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 
@@ -99,4 +102,67 @@ public interface MediaContract extends FilterableService<MediaContract> {
      */
     public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException;
 
+    /**
+     * Create the access policy
+     * 
+     * @param name
+     *            name of access policy
+     * @param durationInMinutes
+     *            Duration in minutes that blob access will be granted when using this access policy
+     * @return Created access policy
+     * @throws ServiceException
+     */
+    AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException;
+
+    /**
+     * Create the access policy with the given options
+     * 
+     * @param name
+     *            name of access policy
+     * @param durationInMinutes
+     *            Duration in minutes that blob access will be granted when using this access policy
+     * @param options
+     *            options for creation
+     * @return the created access policy
+     * @throws ServiceException
+     */
+    AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
+            throws ServiceException;
+
+    /**
+     * Delete the access policy with the given id
+     * 
+     * @param id
+     *            of access policy to delete
+     * @throws ServiceException
+     */
+    void deleteAccessPolicy(String id) throws ServiceException;
+
+    /**
+     * Get a single access policy
+     * 
+     * @param id
+     *            the id of the asset to retrieve
+     * @return the asset
+     * @throws ServiceException
+     */
+    AccessPolicyInfo getAccessPolicy(String id) throws ServiceException;
+
+    /**
+     * List access policies
+     * 
+     * @return the list
+     * @throws ServiceException
+     */
+    List<AccessPolicyInfo> listAccessPolicies() throws ServiceException;
+
+    /**
+     * List access policies
+     * 
+     * @param options
+     *            the list access policy options
+     * @return the list
+     * @throws ServiceException
+     */
+    List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException;
 }
