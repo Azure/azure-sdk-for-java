@@ -27,8 +27,6 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
@@ -93,10 +91,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void createAssetNullNameSuccess() throws ServiceException {
         // Arrange
 
-        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
-        CreateAssetOptions options = new CreateAssetOptions().setOptions(encryptionOption);
         // Act
-        AssetInfo actualAsset = service.createAsset(null, options);
+        AssetInfo actualAsset = service.createAsset(null);
 
         // Assert
         assertNotNull("actualAsset", actualAsset);
