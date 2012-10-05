@@ -22,7 +22,9 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -33,6 +35,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     private MediaContract service;
     private static String testAssetPrefix = "testAsset";
     private static String fakeAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -115,21 +120,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void getAssetFailedWithInvalidId() throws ServiceException {
-        // Arrange
-
-        // Act
-        try {
-            service.getAsset(fakeAssetId);
-            // Should not get here
-
-            // Assert
-            fail();
-        }
-        catch (ServiceException ex) {
-            // Assert
-            assertEquals("Error code should be not found, because asset does not exist to update", 404,
-                    ex.getHttpStatusCode());
-        }
+        thrown.expect(ServiceException.class);
+        thrown.expect(new ServiceExceptionMatcher(404));
+        service.getAsset(fakeAssetId);
     }
 
     @Test
@@ -169,18 +162,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
 
         // Act
-
-        try {
-            service.updateAsset(fakeAssetId, updateAssetOptions);
-
-            // Assert
-            fail();
-        }
-        catch (ServiceException ex) {
-            // Assert
-            assertEquals("Error code should be not found, because asset does not exist to update", 404,
-                    ex.getHttpStatusCode());
-        }
+        thrown.expect(ServiceException.class);
+        thrown.expect(new ServiceExceptionMatcher(404));
+        service.updateAsset(fakeAssetId, updateAssetOptions);
     }
 
     @Test
@@ -201,19 +185,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void deleteAssetFailedWithInvalidId() throws ServiceException {
-        // Arrange
-
-        // Act
-        try {
-            service.deleteAsset(fakeAssetId);
-
-            // Assert
-            fail();
-        }
-        catch (ServiceException ex) {
-            // Assert
-            assertEquals("Error code should be not found, because asset does not exist to update", 404,
-                    ex.getHttpStatusCode());
-        }
+        thrown.expect(ServiceException.class);
+        thrown.expect(new ServiceExceptionMatcher(404));
+        service.deleteAsset(fakeAssetId);
     }
 }
