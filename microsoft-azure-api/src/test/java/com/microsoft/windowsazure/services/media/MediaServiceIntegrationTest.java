@@ -29,6 +29,9 @@ import org.junit.rules.ExpectedException;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.AssetState;
+import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
@@ -55,7 +58,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         try {
             List<AssetInfo> listAssetsResult = service.listAssets();
             for (AssetInfo assetInfo : listAssetsResult) {
-                if (assetInfo.getName().startsWith(testAssetPrefix)) {
+                if (assetInfo.getName().startsWith(testAssetPrefix) || assetInfo.getName().equals("")) {
                     service.deleteAsset(assetInfo.getId());
                 }
             }
@@ -89,7 +92,46 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         AssetInfo actualAsset = service.createAsset(testName);
 
         // Assert
-        assertEquals("testName and actualAsset name", testName, actualAsset.getName());
+        assertEquals("actualAsset Name", testName, actualAsset.getName());
+        assertEquals("actualAsset AlternateId", "", actualAsset.getAlternateId());
+        assertEquals("actualAsset Options", EncryptionOption.None, actualAsset.getOptions());
+        assertEquals("actualAsset State", AssetState.Initialized, actualAsset.getState());
+    }
+
+    @Test
+    public void createAssetOptionsSuccess() throws Exception {
+        // Arrange
+        String testName = testAssetPrefix + "createAssetOptionsSuccess";
+        String altId = "altId";
+        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetState assetState = AssetState.Published;
+        CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
+                .setState(assetState);
+
+        // Act
+        AssetInfo actualAsset = service.createAsset(testName, options);
+
+        // Assert
+        assertEquals("actualAsset Name", testName, actualAsset.getName());
+        assertEquals("actualAsset AlternateId", altId, actualAsset.getAlternateId());
+        assertEquals("actualAsset Options", encryptionOption, actualAsset.getOptions());
+        assertEquals("actualAsset State", assetState, actualAsset.getState());
+    }
+
+    @Test
+    public void createAssetMeanString() throws Exception {
+        // Arrange
+        String meanString = "'\"(?++\\+&==/&?''$@://   +ne <some><XML></stuff>"
+                + "{\"jsonLike\":\"Created\":\"\\/Date(1336368841597)\\/\",\"Name\":null,cksum value\"}}"
+                + "Some unicode: \uB2E4\uB974\uB2E4\uB294\u0625 \u064A\u062F\u064A\u0648\u0009\r\n";
+
+        String testName = testAssetPrefix + "createAssetMeanString" + meanString;
+
+        // Act
+        AssetInfo actualAsset = service.createAsset(testName);
+
+        // Assert
+        assertEquals("actualAsset Name", testName, actualAsset.getName());
     }
 
     @Test
@@ -109,13 +151,21 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void getAssetSuccess() throws Exception {
         // Arrange
         String testName = testAssetPrefix + "GetAssetSuccess";
-        AssetInfo assetInfo = service.createAsset(testName);
+        String altId = "altId";
+        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetState assetState = AssetState.Published;
+        CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
+                .setState(assetState);
+        AssetInfo assetInfo = service.createAsset(testName, options);
 
         // Act
         AssetInfo actualAsset = service.getAsset(assetInfo.getId());
 
         // Assert
-        assertEquals(testName, actualAsset.getName());
+        assertEquals("actualAsset Name", testName, actualAsset.getName());
+        assertEquals("actualAsset AlternateId", altId, actualAsset.getAlternateId());
+        assertEquals("actualAsset Options", encryptionOption, actualAsset.getOptions());
+        assertEquals("actualAsset State", assetState, actualAsset.getState());
     }
 
     @Test
@@ -142,18 +192,51 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateAssetSuccess() throws Exception {
         // Arrange
-        String originalTestName = testAssetPrefix + "UpdateAssetSuccess";
-        String updatedTestName = testAssetPrefix + "UpdateAssetSuccess";
+        String originalTestName = testAssetPrefix + "updateAssetSuccessOriginal";
+        CreateAssetOptions originalOptions = new CreateAssetOptions().setAlternateId("altId")
+                .setOptions(EncryptionOption.StorageEncrypted).setState(AssetState.Published);
+        AssetInfo originalAsset = service.createAsset(originalTestName, originalOptions);
 
-        AssetInfo originalAsset = service.createAsset(originalTestName);
-        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions().setName(updatedTestName);
+        String updatedTestName = testAssetPrefix + "updateAssetSuccessUpdated";
+        String altId = "otherAltId";
+        EncryptionOption encryptionOption = EncryptionOption.None;
+        AssetState assetState = AssetState.Initialized;
+        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions().setName(updatedTestName).setAlternateId(altId)
+                .setOptions(encryptionOption).setState(assetState);
 
         // Act
         service.updateAsset(originalAsset.getId(), updateAssetOptions);
         AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
 
         // Assert
-        assertEquals(updatedTestName, updatedAsset.getName());
+        assertEquals("updatedAsset Name", updatedTestName, updatedAsset.getName());
+        assertEquals("updatedAsset AlternateId", altId, updatedAsset.getAlternateId());
+        assertEquals("updatedAsset Options", encryptionOption, updatedAsset.getOptions());
+        assertEquals("updatedAsset State", assetState, updatedAsset.getState());
+    }
+
+    @Test
+    public void updateAssetNoChangesSuccess() throws Exception {
+        // Arrange
+        String originalTestName = testAssetPrefix + "updateAssetNoChangesSuccess";
+        String altId = "altId";
+        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetState assetState = AssetState.Published;
+        CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
+                .setState(assetState);
+        AssetInfo originalAsset = service.createAsset(originalTestName, options);
+
+        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
+
+        // Act
+        service.updateAsset(originalAsset.getId(), updateAssetOptions);
+        AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
+
+        // Assert
+        assertEquals("updatedAsset Name", originalTestName, updatedAsset.getName());
+        assertEquals("updatedAsset AlternateId", altId, updatedAsset.getAlternateId());
+        assertEquals("updatedAsset Options", encryptionOption, updatedAsset.getOptions());
+        assertEquals("updatedAsset State", assetState, updatedAsset.getState());
     }
 
     @Test
@@ -179,8 +262,12 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         service.deleteAsset(assetInfo.getId());
 
         // Assert
-        listAssetsResult = service.listAssets(null);
+        listAssetsResult = service.listAssets();
         assertEquals(assetCountBaseline - 1, listAssetsResult.size());
+
+        thrown.expect(ServiceException.class);
+        thrown.expect(new ServiceExceptionMatcher(404));
+        service.getAsset(assetInfo.getId());
     }
 
     @Test
