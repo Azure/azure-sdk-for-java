@@ -39,7 +39,7 @@ public class SASTokenFilter extends ClientFilter {
      *            URL containing authentication information
      * @throws URISyntaxException
      */
-    public SASTokenFilter(String sasToken) throws URISyntaxException {
+    public SASTokenFilter(String sasToken) {
         this.sasToken = sasToken;
     }
 

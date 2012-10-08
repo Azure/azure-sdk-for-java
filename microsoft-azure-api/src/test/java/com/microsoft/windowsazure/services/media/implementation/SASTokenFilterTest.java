@@ -104,7 +104,8 @@ public class SASTokenFilterTest {
         assertEquals("iMDPr8V%2FIJrYG8t2GeSqBh5tTUdM7ykOObFVICa%2F%2F1Q%3D", queryParams.get("sig"));
     }
 
-    // I am shocked this isn't already in the core library!
+    // Simplistic parsing of query parameters into map so we can assert against contents
+    // easily.
     private Map<String, String> parseQueryParameters(URI uri) {
         HashMap<String, String> queryParameters = new HashMap<String, String>();
         String queryString = uri.getRawQuery();
