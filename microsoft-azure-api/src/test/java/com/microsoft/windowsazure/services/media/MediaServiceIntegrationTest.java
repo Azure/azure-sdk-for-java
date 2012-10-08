@@ -151,15 +151,17 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
             assertEquals("actualAsset.getName() should be the service default value, the empty string", "",
                     actualAsset.getName());
         }
-        catch (Exception ex) {
+        finally {
+            // Clean up the anonymous asset now while we have the id, because we
+            // do not want to delete all anonymous assets in the bulk-cleanup code.
             try {
-                if (actualAsset != null)
+                if (actualAsset != null) {
                     service.deleteAsset(actualAsset.getId());
+                }
             }
-            catch (ServiceException ex2) {
+            catch (ServiceException ex) {
                 ex.printStackTrace();
             }
-            throw ex;
         }
     }
 
