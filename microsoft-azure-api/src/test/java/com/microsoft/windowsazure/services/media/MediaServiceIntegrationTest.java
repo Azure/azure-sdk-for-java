@@ -22,6 +22,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -58,7 +59,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         try {
             List<AssetInfo> listAssetsResult = service.listAssets();
             for (AssetInfo assetInfo : listAssetsResult) {
-                if (assetInfo.getName().startsWith(testAssetPrefix) || assetInfo.getName().equals("")) {
+                if (assetInfo.getName().startsWith(testAssetPrefix)) {
                     service.deleteAsset(assetInfo.getId());
                 }
             }
@@ -78,6 +79,15 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         return config;
     }
 
+    private void verifyAssetProperties(String message, String testName, String altId,
+            EncryptionOption encryptionOption, AssetState assetState, AssetInfo actualAsset) {
+        assertNotNull(message, actualAsset);
+        assertEquals(message + " Name", testName, actualAsset.getName());
+        assertEquals(message + " AlternateId", altId, actualAsset.getAlternateId());
+        assertEquals(message + " Options", encryptionOption, actualAsset.getOptions());
+        assertEquals(message + " State", assetState, actualAsset.getState());
+    }
+
     @Before
     public void setupInstance() throws Exception {
         service = MediaService.create(config);
@@ -92,10 +102,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         AssetInfo actualAsset = service.createAsset(testName);
 
         // Assert
-        assertEquals("actualAsset Name", testName, actualAsset.getName());
-        assertEquals("actualAsset AlternateId", "", actualAsset.getAlternateId());
-        assertEquals("actualAsset Options", EncryptionOption.None, actualAsset.getOptions());
-        assertEquals("actualAsset State", AssetState.Initialized, actualAsset.getState());
+        verifyAssetProperties("actualAsset", testName, "", EncryptionOption.None, AssetState.Initialized, actualAsset);
     }
 
     @Test
@@ -112,10 +119,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         AssetInfo actualAsset = service.createAsset(testName, options);
 
         // Assert
-        assertEquals("actualAsset Name", testName, actualAsset.getName());
-        assertEquals("actualAsset AlternateId", altId, actualAsset.getAlternateId());
-        assertEquals("actualAsset Options", encryptionOption, actualAsset.getOptions());
-        assertEquals("actualAsset State", assetState, actualAsset.getState());
+        verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
     }
 
     @Test
@@ -135,16 +139,28 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createAssetNullNameSuccess() throws ServiceException {
+    public void createAssetNullNameSuccess() throws Exception {
         // Arrange
 
         // Act
-        AssetInfo actualAsset = service.createAsset(null);
-
-        // Assert
-        assertNotNull("actualAsset", actualAsset);
-        assertEquals("actualAsset.getName() should be the service default value, the empty string", "",
-                actualAsset.getName());
+        AssetInfo actualAsset = null;
+        try {
+            actualAsset = service.createAsset(null);
+            // Assert
+            assertNotNull("actualAsset", actualAsset);
+            assertEquals("actualAsset.getName() should be the service default value, the empty string", "",
+                    actualAsset.getName());
+        }
+        catch (Exception ex) {
+            try {
+                if (actualAsset != null)
+                    service.deleteAsset(actualAsset.getId());
+            }
+            catch (ServiceException ex2) {
+                ex.printStackTrace();
+            }
+            throw ex;
+        }
     }
 
     @Test
@@ -161,11 +177,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Act
         AssetInfo actualAsset = service.getAsset(assetInfo.getId());
 
-        // Assert
-        assertEquals("actualAsset Name", testName, actualAsset.getName());
-        assertEquals("actualAsset AlternateId", altId, actualAsset.getAlternateId());
-        assertEquals("actualAsset Options", encryptionOption, actualAsset.getOptions());
-        assertEquals("actualAsset State", assetState, actualAsset.getState());
+        verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
     }
 
     @Test
@@ -189,6 +201,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(listAssetResultBaseLine.size() + 2, listAssetResult.size());
     }
 
+    @Ignore
+    // Bug https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/364
     @Test
     public void updateAssetSuccess() throws Exception {
         // Arrange
@@ -209,10 +223,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
 
         // Assert
-        assertEquals("updatedAsset Name", updatedTestName, updatedAsset.getName());
-        assertEquals("updatedAsset AlternateId", altId, updatedAsset.getAlternateId());
-        assertEquals("updatedAsset Options", encryptionOption, updatedAsset.getOptions());
-        assertEquals("updatedAsset State", assetState, updatedAsset.getState());
+        verifyAssetProperties("updatedAsset", updatedTestName, altId, encryptionOption, assetState, updatedAsset);
     }
 
     @Test
@@ -233,10 +244,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
 
         // Assert
-        assertEquals("updatedAsset Name", originalTestName, updatedAsset.getName());
-        assertEquals("updatedAsset AlternateId", altId, updatedAsset.getAlternateId());
-        assertEquals("updatedAsset Options", encryptionOption, updatedAsset.getOptions());
-        assertEquals("updatedAsset State", assetState, updatedAsset.getState());
+        verifyAssetProperties("updatedAsset", originalTestName, altId, encryptionOption, assetState, updatedAsset);
     }
 
     @Test
