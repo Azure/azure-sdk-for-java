@@ -30,9 +30,15 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -289,6 +295,86 @@ public class MediaExceptionProcessor implements MediaContract {
     public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
         try {
             return service.listAccessPolicies();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
+            CreateLocatorOptions createLocatorOptions) throws ServiceException {
+        try {
+            return service.createLocator(accessPolicyId, assetId, locatorType, createLocatorOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public LocatorInfo getLocator(String locatorId) throws ServiceException {
+        try {
+            return service.getLocator(locatorId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListLocatorsResult listLocators() throws ServiceException {
+        try {
+            return service.listLocators();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteLocator(String locatorId) throws ServiceException {
+        try {
+            service.deleteLocator(locatorId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException {
+        try {
+            service.updateLocator(locatorId, updateLocatorOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+
+    }
+
+    @Override
+    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorsOptions) throws ServiceException {
+        try {
+            return service.listLocators(listLocatorsOptions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 
 /**
  * A class to manage marshalling of request parameters into
@@ -116,6 +117,7 @@ public class ODataAtomMarshaller {
         classes.add(EntryType.class);
         classes.add(AssetType.class);
         classes.add(AccessPolicyType.class);
+        classes.add(LocatorRestType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }

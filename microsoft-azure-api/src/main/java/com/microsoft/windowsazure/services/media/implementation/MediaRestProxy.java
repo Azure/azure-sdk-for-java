@@ -34,17 +34,25 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -320,5 +328,88 @@ public class MediaRestProxy implements MediaContract {
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AccessPolicyInfo>>() {
                 });
+    }
+
+    @Override
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
+            CreateLocatorOptions createLocatorOptions) {
+        if (createLocatorOptions == null) {
+            createLocatorOptions = new CreateLocatorOptions();
+        }
+
+        LocatorRestType locatorRestType = new LocatorRestType();
+        locatorRestType.setAccessPolicyId(accessPolicyId);
+        locatorRestType.setAssetId(assetId);
+        locatorRestType.setType(locatorType.getCode());
+        if (createLocatorOptions != null) {
+            if (createLocatorOptions.getExpirationDateTime() != null) {
+                locatorRestType.setExpirationDateTime(createLocatorOptions.getExpirationDateTime());
+            }
+
+            if (createLocatorOptions.getStartTime() != null) {
+                locatorRestType.setStartTime(createLocatorOptions.getStartTime());
+            }
+        }
+
+        WebResource resource = getResource("Locators");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(LocatorInfo.class, locatorRestType);
+    }
+
+    @Override
+    public LocatorInfo getLocator(String locatorId) throws ServiceException {
+        WebResource resource = getResource("Locators", locatorId);
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(LocatorInfo.class);
+    }
+
+    @Override
+    public ListLocatorsResult listLocators() {
+        return listLocators(null);
+    }
+
+    @Override
+    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
+        WebResource resource = getResource("Locators");
+
+        List<LocatorInfo> locatorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<LocatorInfo>>() {
+                });
+        ListLocatorsResult listLocatorsResult = new ListLocatorsResult();
+        listLocatorsResult.setLocatorInfos(locatorInfoList);
+        return listLocatorsResult;
+
+    }
+
+    @Override
+    public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException {
+        getResource("Locators", locatorId).delete();
+    }
+
+    @Override
+    public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException {
+        String escapedLocatorId = null;
+        try {
+            escapedLocatorId = URLEncoder.encode(locatorId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ServiceException(e);
+        }
+
+        String assetPath = String.format("Locators(\'%s\')", escapedLocatorId);
+        LocatorRestType updatedLocatorRestType = new LocatorRestType();
+
+        updatedLocatorRestType.setId(locatorId);
+        updatedLocatorRestType.setAccessPolicyId(updateLocatorOptions.getAccessPolicyId());
+        updatedLocatorRestType.setAssetId(updateLocatorOptions.getAssetId());
+        updatedLocatorRestType.setExpirationDateTime(updateLocatorOptions.getExpirationDateTime());
+        updatedLocatorRestType.setStartTime(updateLocatorOptions.getStartTime());
+        if (updateLocatorOptions.getType() != null) {
+            updatedLocatorRestType.setType(updateLocatorOptions.getType().getCode());
+        }
+
+        ClientResponse clientResponse = mergeRequest(assetPath, ClientResponse.class, updatedLocatorRestType);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 }

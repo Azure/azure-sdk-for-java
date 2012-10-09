@@ -22,9 +22,16 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Defines the methods available for Windows Azure Media Services.
@@ -165,4 +172,17 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      */
     List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException;
+
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
+            CreateLocatorOptions createLocatorOptions) throws ServiceException;
+
+    public LocatorInfo getLocator(String locatorId) throws ServiceException;
+
+    public ListLocatorsResult listLocators() throws ServiceException;
+
+    public void deleteLocator(String id) throws UniformInterfaceException, ServiceException;
+
+    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) throws ServiceException;
+
+    void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException;
 }
