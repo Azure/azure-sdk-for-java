@@ -20,8 +20,6 @@ import static org.junit.Assert.*;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -38,6 +36,9 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private static MediaContract service;
 
     private static final String testPrefix = "testPolicy";
+
+    @Rule
+    public ExpectedException expected = ExpectedException.none();
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -114,9 +115,6 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
                 EnumSet.of(AccessPolicyPermission.WRITE, AccessPolicyPermission.LIST)));
     }
 
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
-
     @Test
     public void getWithBadIdThrowsServiceException() throws Exception {
         expected.expect(ServiceException.class);
@@ -125,26 +123,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void getWithValidButNonExistentPolicyIdThrows404ServiceException() throws Exception {
-        expected.expect(new BaseMatcher<ServiceException>() {
-
-            @Override
-            public boolean matches(Object item) {
-                if (item.getClass() != ServiceException.class) {
-                    return false;
-                }
-
-                if (((ServiceException) item).getHttpStatusCode() != 404) {
-                    return false;
-                }
-
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Must be ServiceException with a 404 status code");
-            }
-        });
+        expected.expect(new ServiceExceptionMatcher(404));
         service.getAccessPolicy("nb:pid:UUID:bce3863e-830b-49f5-9199-7cfaff52935f");
     }
 
