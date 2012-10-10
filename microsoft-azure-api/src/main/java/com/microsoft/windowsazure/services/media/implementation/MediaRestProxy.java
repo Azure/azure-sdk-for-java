@@ -162,23 +162,16 @@ public class MediaRestProxy implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
-     */
-    @Override
-    public AssetInfo createAsset(String assetName) throws ServiceException {
-        return this.createAsset(assetName, null);
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
      */
     @Override
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) {
+    public AssetInfo createAsset(CreateAssetOptions createAssetOptions) {
         WebResource resource = getResource("Assets");
         AssetType assetTypeForSubmission = new AssetType();
-        assetTypeForSubmission.setName(assetName);
         if (createAssetOptions != null) {
+            assetTypeForSubmission.setName(createAssetOptions.getName());
             assetTypeForSubmission.setAlternateId(createAssetOptions.getAlternateId());
+
             if (createAssetOptions.getOptions() != null) {
                 assetTypeForSubmission.setOptions(createAssetOptions.getOptions().getCode());
             }

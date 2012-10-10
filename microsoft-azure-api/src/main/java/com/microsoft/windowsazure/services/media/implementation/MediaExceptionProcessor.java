@@ -91,28 +91,12 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
-     */
-    @Override
-    public AssetInfo createAsset(String assetName) throws ServiceException {
-        try {
-            return service.createAsset(assetName);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
      */
     @Override
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException {
+    public AssetInfo createAsset(CreateAssetOptions createAssetOptions) throws ServiceException {
         try {
-            return service.createAsset(assetName, createAssetOptions);
+            return service.createAsset(createAssetOptions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

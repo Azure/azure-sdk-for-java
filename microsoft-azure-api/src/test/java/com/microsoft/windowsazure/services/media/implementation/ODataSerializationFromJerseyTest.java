@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -89,7 +90,8 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
     @Test
     public void canCreateAssetThroughMediaServiceAPI() throws Exception {
         MediaContract client = MediaService.create(config);
-        AssetInfo newAsset = client.createAsset("secondTestAsset");
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName("secondTestAsset");
+        AssetInfo newAsset = client.createAsset(createAssetOptions);
 
         Assert.assertEquals("secondTestAsset", newAsset.getName());
     }

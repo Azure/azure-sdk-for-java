@@ -34,24 +34,12 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Creates the asset.
      * 
-     * @param assetName
-     *            the asset name
-     * @return the asset info
-     * @throws ServiceException
-     */
-    public AssetInfo createAsset(String assetName) throws ServiceException;
-
-    /**
-     * Creates the asset.
-     * 
-     * @param assetName
-     *            the asset name
      * @param createAssetOptions
      *            the create asset options
      * @return the asset info
      * @throws ServiceException
      */
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException;
+    public AssetInfo createAsset(CreateAssetOptions createAssetOptions) throws ServiceException;
 
     /**
      * Delete asset.
