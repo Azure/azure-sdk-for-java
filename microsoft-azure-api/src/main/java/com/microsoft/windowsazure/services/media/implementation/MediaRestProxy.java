@@ -148,6 +148,17 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    /**
+     * Gets the resource.
+     * 
+     * @param entityType
+     *            the entity type
+     * @param entityId
+     *            the entity id
+     * @return the resource
+     * @throws ServiceException
+     *             the service exception
+     */
     private WebResource getResource(String entityType, String entityId) throws ServiceException {
         String escapedEntityId = null;
         try {
@@ -161,6 +172,19 @@ public class MediaRestProxy implements MediaContract {
         return getResource(entityPath);
     }
 
+    /**
+     * Merge request.
+     * 
+     * @param <T>
+     *            the generic type
+     * @param path
+     *            the path
+     * @param c
+     *            the c
+     * @param requestEntity
+     *            the request entity
+     * @return the t
+     */
     private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
         WebResource resource = getResource(path);
         WebResource.Builder builder = resource.getRequestBuilder();
@@ -330,6 +354,9 @@ public class MediaRestProxy implements MediaContract {
                 });
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createLocator(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.media.models.LocatorType, com.microsoft.windowsazure.services.media.models.CreateLocatorOptions)
+     */
     @Override
     public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
             CreateLocatorOptions createLocatorOptions) {
@@ -357,6 +384,9 @@ public class MediaRestProxy implements MediaContract {
                 .post(LocatorInfo.class, locatorRestType);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getLocator(java.lang.String)
+     */
     @Override
     public LocatorInfo getLocator(String locatorId) throws ServiceException {
         WebResource resource = getResource("Locators", locatorId);
@@ -364,11 +394,17 @@ public class MediaRestProxy implements MediaContract {
                 .get(LocatorInfo.class);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators()
+     */
     @Override
     public ListLocatorsResult listLocators() {
         return listLocators(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators(com.microsoft.windowsazure.services.media.models.ListLocatorsOptions)
+     */
     @Override
     public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
         WebResource resource = getResource("Locators");
@@ -382,11 +418,17 @@ public class MediaRestProxy implements MediaContract {
 
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteLocator(java.lang.String)
+     */
     @Override
     public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException {
         getResource("Locators", locatorId).delete();
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#updateLocator(java.lang.String, com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions)
+     */
     @Override
     public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException {
         String escapedLocatorId = null;
