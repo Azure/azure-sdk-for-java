@@ -153,8 +153,9 @@ public class MediaRestProxy implements MediaContract {
         return getResource(entityPath);
     }
 
-    private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
-        WebResource resource = getResource(path);
+    private <T> T mergeRequest(String entityType, String entityId, java.lang.Class<T> c, java.lang.Object requestEntity)
+            throws ServiceException {
+        WebResource resource = getResource(entityType, entityId);
         WebResource.Builder builder = resource.getRequestBuilder();
         builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .header("X-HTTP-Method", "MERGE");
@@ -218,14 +219,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException {
-        String escapedAssetId = null;
-        try {
-            escapedAssetId = URLEncoder.encode(assetId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new ServiceException(e);
-        }
-        String assetPath = String.format("Assets(\'%s\')", escapedAssetId);
+
         AssetType updatedAssetType = new AssetType();
         updatedAssetType.setAlternateId(updateAssetOptions.getAlternateId());
         updatedAssetType.setName(updateAssetOptions.getName());
@@ -237,7 +231,7 @@ public class MediaRestProxy implements MediaContract {
             updatedAssetType.setState(updateAssetOptions.getState().getCode());
         }
 
-        ClientResponse clientResponse = mergeRequest(assetPath, ClientResponse.class, updatedAssetType);
+        ClientResponse clientResponse = mergeRequest("Assets", assetId, ClientResponse.class, updatedAssetType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
