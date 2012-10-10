@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.security.InvalidParameterException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Enum LocatorType.
  */

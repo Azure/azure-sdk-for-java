@@ -16,14 +16,30 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.List;
 
+/**
+ * The Class ListLocatorsResult.
+ */
 public class ListLocatorsResult {
 
+    /** The locator infos. */
     private List<LocatorInfo> locatorInfos;
 
+    /**
+     * Gets the locator infos.
+     * 
+     * @return the locator infos
+     */
     public List<LocatorInfo> getLocatorInfos() {
         return locatorInfos;
     }
 
+    /**
+     * Sets the locator infos.
+     * 
+     * @param locatorInfos
+     *            the locator infos
+     * @return the list locators result
+     */
     public ListLocatorsResult setLocatorInfos(List<LocatorInfo> locatorInfos) {
         this.locatorInfos = locatorInfos;
         return this;

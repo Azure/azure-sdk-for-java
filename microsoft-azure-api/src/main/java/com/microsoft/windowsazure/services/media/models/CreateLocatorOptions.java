@@ -24,18 +24,6 @@ public class CreateLocatorOptions {
     /** The expiration date time. */
     private Date expirationDateTime;
 
-    /** The type. */
-    private LocatorType type;
-
-    /** The path. */
-    private String path;
-
-    /** The access policy id. */
-    private String accessPolicyId;
-
-    /** The asset id. */
-    private String assetId;
-
     /** The start time. */
     private Date startTime;
 
@@ -57,90 +45,6 @@ public class CreateLocatorOptions {
      */
     public CreateLocatorOptions setExpirationDateTime(Date expirationDateTime) {
         this.expirationDateTime = expirationDateTime;
-        return this;
-    }
-
-    /**
-     * Gets the type.
-     * 
-     * @return the type
-     */
-    public LocatorType getType() {
-        return type;
-    }
-
-    /**
-     * Sets the type.
-     * 
-     * @param type
-     *            the type
-     * @return the creates the locator options
-     */
-    public CreateLocatorOptions setType(LocatorType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Gets the path.
-     * 
-     * @return the path
-     */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * Sets the path.
-     * 
-     * @param path
-     *            the path
-     * @return the creates the locator options
-     */
-    public CreateLocatorOptions setPath(String path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
-     * Gets the access policy id.
-     * 
-     * @return the access policy id
-     */
-    public String getAccessPolicyId() {
-        return accessPolicyId;
-    }
-
-    /**
-     * Sets the access policy id.
-     * 
-     * @param accessPolicyId
-     *            the access policy id
-     * @return the creates the locator options
-     */
-    public CreateLocatorOptions setAccessPolicyId(String accessPolicyId) {
-        this.accessPolicyId = accessPolicyId;
-        return this;
-    }
-
-    /**
-     * Gets the asset id.
-     * 
-     * @return the asset id
-     */
-    public String getAssetId() {
-        return assetId;
-    }
-
-    /**
-     * Sets the asset id.
-     * 
-     * @param assetId
-     *            the asset id
-     * @return the creates the locator options
-     */
-    public CreateLocatorOptions setAssetId(String assetId) {
-        this.assetId = assetId;
         return this;
     }
 

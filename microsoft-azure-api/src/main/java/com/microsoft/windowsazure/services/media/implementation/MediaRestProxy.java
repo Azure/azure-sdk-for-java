@@ -401,13 +401,8 @@ public class MediaRestProxy implements MediaContract {
         LocatorRestType updatedLocatorRestType = new LocatorRestType();
 
         updatedLocatorRestType.setId(locatorId);
-        updatedLocatorRestType.setAccessPolicyId(updateLocatorOptions.getAccessPolicyId());
-        updatedLocatorRestType.setAssetId(updateLocatorOptions.getAssetId());
         updatedLocatorRestType.setExpirationDateTime(updateLocatorOptions.getExpirationDateTime());
         updatedLocatorRestType.setStartTime(updateLocatorOptions.getStartTime());
-        if (updateLocatorOptions.getType() != null) {
-            updatedLocatorRestType.setType(updateLocatorOptions.getType().getCode());
-        }
 
         ClientResponse clientResponse = mergeRequest(assetPath, ClientResponse.class, updatedLocatorRestType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);

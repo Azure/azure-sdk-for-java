@@ -26,10 +26,21 @@ import com.microsoft.windowsazure.services.media.implementation.content.LocatorR
  */
 public class LocatorInfo extends ODataEntity<LocatorRestType> {
 
+    /**
+     * Instantiates a new locator info.
+     * 
+     * @param entry
+     *            the entry
+     * @param content
+     *            the content
+     */
     public LocatorInfo(EntryType entry, LocatorRestType content) {
         super(entry, content);
     }
 
+    /**
+     * Instantiates a new locator info.
+     */
     public LocatorInfo() {
         super(new LocatorRestType());
     }
