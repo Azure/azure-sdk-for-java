@@ -650,6 +650,38 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(0, results6.getBlobPrefixes().size());
     }
 
+    // Repro case for https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/295
+    @Test
+    public void listBlockBlobWithNoCommittedBlocksWorks() throws Exception {
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        String container = "mysample2";
+        String blob = "test14";
+
+        try {
+            service.createContainer(container);
+            service.listBlobs(container);
+            service.createBlockBlob(container, blob, null);
+            service.createBlobBlock(container, blob, "01", new ByteArrayInputStream(new byte[] { 0x00 }));
+            service.listBlobBlocks(container, blob, new ListBlobBlocksOptions().setCommittedList(true)
+                    .setUncommittedList(true));
+            service.listBlobs(container);
+            service.deleteContainer(container);
+            Thread.sleep(40000);
+            service.createContainer(container);
+            service.listBlobs(container);
+            service.createBlobBlock(container, blob, "01", new ByteArrayInputStream(new byte[] { 0x00 }));
+            // The next line throws
+            service.listBlobBlocks(container, blob, new ListBlobBlocksOptions().setCommittedList(true)
+                    .setUncommittedList(true));
+            service.listBlobs(container);
+        }
+        finally {
+            deleteContainers(service, null, new String[] { container });
+        }
+    }
+
     @Test
     public void createPageBlobWorks() throws Exception {
         // Arrange
