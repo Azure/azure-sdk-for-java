@@ -59,4 +59,17 @@ public class CreateAssetOptionsTest {
         assertEquals(expectedOptions, actualOptions);
     }
 
+    @Test
+    public void testGetSetName() {
+        // Arrange
+        String expectedName = "testGetSetName";
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
+
+        // Act
+        String actualName = createAssetOptions.setName(expectedName).getName();
+
+        // Assert
+        assertEquals(expectedName, actualName);
+    }
+
 }
