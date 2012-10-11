@@ -1,11 +1,11 @@
 /**
  * Copyright 2011 Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,7 @@ public class ServiceProperties {
 
     /**
      * Gets the value of the logging options on the storage account.
-     * 
+     *
      * @return
      *         A {@link Logging} instance containing the logging options.
      */
@@ -45,17 +45,20 @@ public class ServiceProperties {
 
     /**
      * Sets the value of the logging options on the storage account.
-     * 
+     *
      * @param logging
      *            A {@link Logging} instance containing the logging options.
+     * @return
+     *         A reference to this {@link ServiceProperties} instance.
      */
-    public void setLogging(Logging logging) {
+    public ServiceProperties setLogging(Logging logging) {
         this.logging = logging;
+        return this;
     }
 
     /**
      * Gets the value of the metrics options on the storage account.
-     * 
+     *
      * @return
      *         A {@link Metrics} instance containing the metrics options.
      */
@@ -66,17 +69,20 @@ public class ServiceProperties {
 
     /**
      * Sets the value of the metrics options on the storage account.
-     * 
+     *
      * @param metrics
      *            A {@link Metrics} instance containing the metrics options.
+     * @return
+     *         A reference to this {@link ServiceProperties} instance.
      */
-    public void setMetrics(Metrics metrics) {
+    public ServiceProperties setMetrics(Metrics metrics) {
         this.metrics = metrics;
+        return this;
     }
 
     /**
      * Gets the default service version string used for operations on the storage account.
-     * 
+     *
      * @return
      *         A {@link String} containing the default service version string used for operations on the storage
      *         account.
@@ -92,13 +98,16 @@ public class ServiceProperties {
      * <p>
      * See <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd894041.aspx">Storage Services Versioning</a>
      * on MSDN for more information on applicable versions.
-     * 
+     *
      * @param defaultServiceVersion
      *            A {@link String} containing the default service version string used for operations on the storage
      *            account.
+     * @return
+     *         A reference to this {@link ServiceProperties} instance.
      */
-    public void setDefaultServiceVersion(String defaultServiceVersion) {
+    public ServiceProperties setDefaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
+        return this;
     }
 
     /**
@@ -113,7 +122,7 @@ public class ServiceProperties {
 
         /**
          * Gets the retention policy for logging data set on the storage account.
-         * 
+         *
          * @return
          *         The {@link RetentionPolicy} set on the storage account.
          */
@@ -124,17 +133,20 @@ public class ServiceProperties {
 
         /**
          * Sets the retention policy to use for logging data on the storage account.
-         * 
+         *
          * @param retentionPolicy
          *            The {@link RetentionPolicy} to set on the storage account.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether all write requests are logged.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if all write operations are logged; otherwise, <code>false</code>.
          */
@@ -145,17 +157,20 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether all write requests should be logged.
-         * 
+         *
          * @param write
          *            Set a flag value of <code>true</code> to log all write operations; otherwise, <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setWrite(boolean write) {
+        public Logging setWrite(boolean write) {
             this.write = write;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether all read requests are logged.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if all read operations are logged; otherwise, <code>false</code>.
          */
@@ -166,17 +181,20 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether all read requests should be logged.
-         * 
+         *
          * @param read
          *            Set a flag value of <code>true</code> to log all read operations; otherwise, <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setRead(boolean read) {
+        public Logging setRead(boolean read) {
             this.read = read;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether all delete requests are logged.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if all delete operations are logged; otherwise, <code>false</code>.
          */
@@ -187,17 +205,20 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether all delete requests should be logged.
-         * 
+         *
          * @param delete
          *            Set a flag value of <code>true</code> to log all delete operations; otherwise, <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setDelete(boolean delete) {
+        public Logging setDelete(boolean delete) {
             this.delete = delete;
+            return this;
         }
 
         /**
          * Gets the version of logging configured on the storage account.
-         * 
+         *
          * @return
          *         A {@link String} containing the version of logging configured on the storage account.
          */
@@ -208,12 +229,15 @@ public class ServiceProperties {
 
         /**
          * Sets the version of logging configured on the storage account.
-         * 
+         *
          * @param version
          *            A {@link String} containing the version of logging configured on the storage account.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setVersion(String version) {
+        public Logging setVersion(String version) {
             this.version = version;
+            return this;
         }
     }
 
@@ -228,7 +252,7 @@ public class ServiceProperties {
 
         /**
          * Gets the retention policy for metrics data set on the storage account.
-         * 
+         *
          * @return
          *         The {@link RetentionPolicy} set on the storage account.
          */
@@ -239,17 +263,20 @@ public class ServiceProperties {
 
         /**
          * Sets the retention policy to use for metrics data on the storage account.
-         * 
+         *
          * @param retentionPolicy
          *            The {@link RetentionPolicy} to set on the storage account.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether metrics generates summary statistics for called API operations.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if metrics generates summary statistics for called API operations;
          *         otherwise, <code>false</code>.
@@ -262,18 +289,21 @@ public class ServiceProperties {
         /**
          * Sets a flag indicating whether metrics should generate summary statistics for called API operations. This
          * flag is optional if metrics is not enabled.
-         * 
+         *
          * @param includeAPIs
          *            Set a flag value of <code>true</code> to generate summary statistics for called API operations;
          *            otherwise, <code>false</code>.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setIncludeAPIs(Boolean includeAPIs) {
+        public Metrics setIncludeAPIs(Boolean includeAPIs) {
             this.includeAPIs = includeAPIs;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether metrics is enabled for the storage account.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if metrics is enabled for the storage account; otherwise,
          *         <code>false</code>.
@@ -285,18 +315,21 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether to enable metrics for the storage account.
-         * 
+         *
          * @param enabled
          *            Set a flag value of <code>true</code> to enable metrics for the storage account; otherwise,
          *            <code>false</code>.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setEnabled(boolean enabled) {
+        public Metrics setEnabled(boolean enabled) {
             this.enabled = enabled;
+            return this;
         }
 
         /**
          * Gets the version of Storage Analytics configured on the storage account.
-         * 
+         *
          * @return
          *         A {@link String} containing the version of Storage Analytics configured on the storage account.
          */
@@ -307,12 +340,15 @@ public class ServiceProperties {
 
         /**
          * Sets the version of Storage Analytics configured on the storage account.
-         * 
+         *
          * @param version
          *            A {@link String} containing the version of Storage Analytics configured on the storage account.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setVersion(String version) {
+        public Metrics setVersion(String version) {
             this.version = version;
+            return this;
         }
     }
 
@@ -325,7 +361,7 @@ public class ServiceProperties {
 
         /**
          * Gets the number of days that metrics or logging data should be retained, if logging is enabled.
-         * 
+         *
          * @return
          *         The number of days to retain logging or metrics data if logging is enabled, or <code>null</code>.
          */
@@ -338,17 +374,20 @@ public class ServiceProperties {
          * Sets the number of days that metrics or logging data should be retained. The minimum value you can specify is
          * 1; the largest value is 365 (one year). This value must be specified even if the enabled flag is set
          * to <code>false</code>.
-         * 
+         *
          * @param days
          *            The number of days to retain logging or metrics data.
+         * @return
+         *         A reference to this {@link RetentionPolicy} instance.
          */
-        public void setDays(Integer days) {
+        public RetentionPolicy setDays(Integer days) {
             this.days = days;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether a retention policy is enabled.
-         * 
+         *
          * @return
          *         A flag value of <code>true</code> if a retention policy is enabled; otherwise, <code>false</code>.
          */
@@ -359,12 +398,15 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether to enable a retention policy.
-         * 
+         *
          * @param enabled
          *            Set a flag value of <code>true</code> to enable a retention policy; otherwise, <code>false</code>.
+         * @return
+         *         A reference to this {@link RetentionPolicy} instance.
          */
-        public void setEnabled(boolean enabled) {
+        public RetentionPolicy setEnabled(boolean enabled) {
             this.enabled = enabled;
+            return this;
         }
     }
 }
