@@ -88,31 +88,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    private static Configuration createConfig() {
-        Configuration config = Configuration.getInstance();
-        overrideWithEnv(config, MediaConfiguration.URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
-        return config;
-    }
-
     private static void cleanupEnvironment() throws ServiceException {
         config = createConfig();
-        MediaContract service = MediaService.create(config);
         removeAllAssets();
         removeAllLocators();
-    }
-
-    private static Configuration createConfig() {
-        Configuration config = Configuration.getInstance();
-        overrideWithEnv(config, MediaConfiguration.URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
-        return config;
     }
 
     private void verifyAssetProperties(String message, String testName, String altId,
@@ -243,19 +222,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull("listAssetResult", listAssetResult);
         assertEquals("listAssetResult.size", listAssetResultBaseLine.size() + 2, listAssetResult.size());
 
-        AssetInfo[] assets = new AssetInfo[assetNames.length];
-
-        for (AssetInfo asset : listAssetResult) {
-            for (int i = 0; i < assetNames.length; i++) {
-                if (asset.getName().equals(assetNames[i])) {
-                    assets[i] = asset;
-                }
-            }
-        }
-
-        for (int i = 0; i < assetNames.length; i++) {
-            verifyAssetProperties("asset " + i, assetNames[i], altId, encryptionOption, assetState, assets[i]);
-        }
     }
 
     @Ignore
@@ -493,7 +459,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteLocatorSuccess() throws ServiceException {
         // Arrange
-        LocatorType locatorTypeExepcted = LocatorType.Origin;
         AssetInfo assetInfo = service.createAsset(null);
         AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("deleteLocatorsSuccess", 5);
         LocatorType locatorType = LocatorType.SAS;
