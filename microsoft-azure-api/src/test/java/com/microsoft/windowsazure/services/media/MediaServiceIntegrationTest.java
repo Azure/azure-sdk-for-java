@@ -122,9 +122,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void createAssetSuccess() throws Exception {
         // Arrange
         String testName = testAssetPrefix + "Name";
+        CreateAssetOptions options = new CreateAssetOptions().setName(testName);
 
         // Act
-        AssetInfo actualAsset = service.createAsset(testName);
+        AssetInfo actualAsset = service.createAsset(options);
 
         // Assert
         verifyAssetProperties("actualAsset", testName, "", EncryptionOption.None, AssetState.Initialized, actualAsset);
@@ -138,10 +139,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
         CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
-                .setState(assetState);
+                .setState(assetState).setName(testName);
 
         // Act
-        AssetInfo actualAsset = service.createAsset(testName, options);
+        AssetInfo actualAsset = service.createAsset(options);
 
         // Assert
         verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
@@ -155,9 +156,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
                 + "Some unicode: \uB2E4\uB974\uB2E4\uB294\u0625 \u064A\u062F\u064A\u0648\u0009\r\n";
 
         String testName = testAssetPrefix + "createAssetMeanString" + meanString;
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName(testName);
 
         // Act
-        AssetInfo actualAsset = service.createAsset(testName);
+        AssetInfo actualAsset = service.createAsset(createAssetOptions);
 
         // Assert
         assertEquals("actualAsset Name", testName, actualAsset.getName());
@@ -198,8 +200,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
         CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
-                .setState(assetState);
-        AssetInfo assetInfo = service.createAsset(testName, options);
+                .setState(assetState).setName(testName);
+        AssetInfo assetInfo = service.createAsset(options);
 
         // Act
         AssetInfo actualAsset = service.getAsset(assetInfo.getId());
@@ -218,8 +220,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listAssetSuccess() throws ServiceException {
         // Arrange
         Collection<AssetInfo> listAssetResultBaseLine = service.listAssets();
-        service.createAsset(testAssetPrefix + "assetA");
-        service.createAsset(testAssetPrefix + "assetB");
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetA"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetB"));
 
         // Act
         Collection<AssetInfo> listAssetResult = service.listAssets();
@@ -235,8 +238,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         String originalTestName = testAssetPrefix + "updateAssetSuccessOriginal";
         CreateAssetOptions originalOptions = new CreateAssetOptions().setAlternateId("altId")
-                .setOptions(EncryptionOption.StorageEncrypted).setState(AssetState.Published);
-        AssetInfo originalAsset = service.createAsset(originalTestName, originalOptions);
+                .setOptions(EncryptionOption.StorageEncrypted).setState(AssetState.Published).setName(originalTestName);
+        AssetInfo originalAsset = service.createAsset(originalOptions);
 
         String updatedTestName = testAssetPrefix + "updateAssetSuccessUpdated";
         String altId = "otherAltId";
@@ -261,8 +264,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
         CreateAssetOptions options = new CreateAssetOptions().setAlternateId(altId).setOptions(encryptionOption)
-                .setState(assetState);
-        AssetInfo originalAsset = service.createAsset(originalTestName, options);
+                .setState(assetState).setName(originalTestName);
+        AssetInfo originalAsset = service.createAsset(options);
 
         UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
 
@@ -289,7 +292,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void deleteAssetSuccess() throws Exception {
         // Arrange
         String assetName = "deleteAssetSuccess";
-        AssetInfo assetInfo = service.createAsset(assetName);
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName(assetName);
+        AssetInfo assetInfo = service.createAsset(createAssetOptions);
         List<AssetInfo> listAssetsResult = service.listAssets(null);
         int assetCountBaseline = listAssetsResult.size();
 
@@ -330,7 +334,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore("due to nimbus bug 596240")
+    @Ignore("due to media service bug 596240")
     @Test
     public void createLocatorSetExpirationDateTimeSuccess() throws ServiceException {
         // Arrange 
@@ -341,7 +345,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
         createLocatorOptions.setExpirationDateTime(expectedExpirationDateTime);
         AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy(accessPolicyName, 10);
-        AssetInfo assetInfo = service.createAsset("createLocatorSetExpirationDatetimeSuccess");
+        AssetInfo assetInfo = service.createAsset(null);
         LocatorType locatorType = LocatorType.SAS;
 
         // Act
@@ -365,7 +369,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
         createLocatorOptions.setStartTime(expectedStartDateTime);
         AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy(accessPolicyName, 10);
-        AssetInfo assetInfo = service.createAsset("createLocatorSetStartDatetimeSuccess");
+        AssetInfo assetInfo = service.createAsset(null);
         LocatorType locatorType = LocatorType.SAS;
 
         // Act
@@ -379,7 +383,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore("due to nimbus bug 596238")
+    @Ignore("due to media service bug 596238")
     @Test
     public void getLocatorSuccess() throws ServiceException {
         // Arrange
@@ -427,7 +431,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore("due to nimbus bug 596264")
+    @Ignore("due to media service bug 596264")
     @Test
     public void updateLocatorSuccess() throws ServiceException {
         // Arrange

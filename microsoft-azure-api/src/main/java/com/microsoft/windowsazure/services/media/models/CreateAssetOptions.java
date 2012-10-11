@@ -19,6 +19,9 @@ package com.microsoft.windowsazure.services.media.models;
  */
 public class CreateAssetOptions {
 
+    /** The name. */
+    private String name;
+
     /** The alternate id. */
     private String alternateId;
 
@@ -88,6 +91,27 @@ public class CreateAssetOptions {
      */
     public CreateAssetOptions setState(AssetState assetState) {
         this.state = assetState;
+        return this;
+    }
+
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     * 
+     * @param name
+     *            the name
+     * @return the creates the asset options
+     */
+    public CreateAssetOptions setName(String name) {
+        this.name = name;
         return this;
     }
 
