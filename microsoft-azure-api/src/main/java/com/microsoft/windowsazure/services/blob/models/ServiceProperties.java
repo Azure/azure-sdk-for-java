@@ -49,7 +49,7 @@ public class ServiceProperties {
      * @param logging
      *            A {@link Logging} instance containing the logging options.
      * @return
-     *         A reference to this {@link ServiceProperties} instance.
+     *            A reference to this {@link ServiceProperties} instance.
      */
     public ServiceProperties setLogging(Logging logging) {
         this.logging = logging;
@@ -73,7 +73,7 @@ public class ServiceProperties {
      * @param metrics
      *            A {@link Metrics} instance containing the metrics options.
      * @return
-     *         A reference to this {@link ServiceProperties} instance.
+     *            A reference to this {@link ServiceProperties} instance.
      */
     public ServiceProperties setMetrics(Metrics metrics) {
         this.metrics = metrics;
@@ -103,7 +103,7 @@ public class ServiceProperties {
      *            A {@link String} containing the default service version string used for operations on the storage
      *            account.
      * @return
-     *         A reference to this {@link ServiceProperties} instance.
+     *            A reference to this {@link ServiceProperties} instance.
      */
     public ServiceProperties setDefaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
@@ -137,7 +137,7 @@ public class ServiceProperties {
          * @param retentionPolicy
          *            The {@link RetentionPolicy} to set on the storage account.
          * @return
-         *         A reference to this {@link Logging} instance.
+         *            A reference to this {@link Logging} instance.
          */
         public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
@@ -185,7 +185,7 @@ public class ServiceProperties {
          * @param read
          *            Set a flag value of <code>true</code> to log all read operations; otherwise, <code>false</code>.
          * @return
-         *         A reference to this {@link Logging} instance.
+         *            A reference to this {@link Logging} instance.
          */
         public Logging setRead(boolean read) {
             this.read = read;
@@ -209,7 +209,7 @@ public class ServiceProperties {
          * @param delete
          *            Set a flag value of <code>true</code> to log all delete operations; otherwise, <code>false</code>.
          * @return
-         *         A reference to this {@link Logging} instance.
+         *            A reference to this {@link Logging} instance.
          */
         public Logging setDelete(boolean delete) {
             this.delete = delete;
@@ -233,7 +233,7 @@ public class ServiceProperties {
          * @param version
          *            A {@link String} containing the version of logging configured on the storage account.
          * @return
-         *         A reference to this {@link Logging} instance.
+         *            A reference to this {@link Logging} instance.
          */
         public Logging setVersion(String version) {
             this.version = version;
@@ -267,7 +267,7 @@ public class ServiceProperties {
          * @param retentionPolicy
          *            The {@link RetentionPolicy} to set on the storage account.
          * @return
-         *         A reference to this {@link Metrics} instance.
+         *            A reference to this {@link Metrics} instance.
          */
         public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
@@ -294,7 +294,7 @@ public class ServiceProperties {
          *            Set a flag value of <code>true</code> to generate summary statistics for called API operations;
          *            otherwise, <code>false</code>.
          * @return
-         *         A reference to this {@link Metrics} instance.
+         *            A reference to this {@link Metrics} instance.
          */
         public Metrics setIncludeAPIs(Boolean includeAPIs) {
             this.includeAPIs = includeAPIs;
@@ -320,7 +320,7 @@ public class ServiceProperties {
          *            Set a flag value of <code>true</code> to enable metrics for the storage account; otherwise,
          *            <code>false</code>.
          * @return
-         *         A reference to this {@link Metrics} instance.
+         *            A reference to this {@link Metrics} instance.
          */
         public Metrics setEnabled(boolean enabled) {
             this.enabled = enabled;
@@ -344,7 +344,7 @@ public class ServiceProperties {
          * @param version
          *            A {@link String} containing the version of Storage Analytics configured on the storage account.
          * @return
-         *         A reference to this {@link Metrics} instance.
+         *            A reference to this {@link Metrics} instance.
          */
         public Metrics setVersion(String version) {
             this.version = version;
@@ -378,7 +378,7 @@ public class ServiceProperties {
          * @param days
          *            The number of days to retain logging or metrics data.
          * @return
-         *         A reference to this {@link RetentionPolicy} instance.
+         *            A reference to this {@link RetentionPolicy} instance.
          */
         public RetentionPolicy setDays(Integer days) {
             this.days = days;
@@ -402,7 +402,7 @@ public class ServiceProperties {
          * @param enabled
          *            Set a flag value of <code>true</code> to enable a retention policy; otherwise, <code>false</code>.
          * @return
-         *         A reference to this {@link RetentionPolicy} instance.
+         *            A reference to this {@link RetentionPolicy} instance.
          */
         public RetentionPolicy setEnabled(boolean enabled) {
             this.enabled = enabled;

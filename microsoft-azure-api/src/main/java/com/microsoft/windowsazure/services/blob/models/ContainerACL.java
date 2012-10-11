@@ -67,7 +67,7 @@ public class ContainerACL {
      *            {@link ContainerACL} instance.
      *
      * @return
-     *         A reference to this {@link ContainerACL} instance.
+     *            A reference to this {@link ContainerACL} instance.
      */
     public ContainerACL setEtag(String etag) {
         this.etag = etag;
@@ -94,9 +94,9 @@ public class ContainerACL {
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
      *
      * @param lastModified
-     *            A {@link Date} containing the last modified time to associate with this {@link com.microsoft.windowsazure.services.blob.models.ContainerACL} instance.
+     *            A {@link java.util.Date} containing the last modified time to associate with this {@link ContainerACL} instance.
      * @return
-     *         A reference to this {@link ContainerACL} instance.
+     *            A reference to this {@link ContainerACL} instance.
      */
     public ContainerACL setLastModified(Date lastModified) {
         this.lastModified = lastModified;
@@ -127,7 +127,7 @@ public class ContainerACL {
      *            A {@link PublicAccessType} value representing the public access level to associate with this
      *            {@link ContainerACL} instance.
      * @return
-     *         A reference to this {@link ContainerACL} instance.
+     *            A reference to this {@link ContainerACL} instance.
      */
     public ContainerACL setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
@@ -158,7 +158,7 @@ public class ContainerACL {
      *            A {@link List} of {@link SignedIdentifier} instances containing up to five container-level access
      *            policies to associate with this {@link ContainerACL} instance.
      * @return
-     *         A reference to this {@link ContainerACL} instance.
+     *            A reference to this {@link ContainerACL} instance.
      */
     public ContainerACL setSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
@@ -272,7 +272,7 @@ public class ContainerACL {
          * @param id
          *            A {@link String} containing the name for the access policy.
          * @return
-         *         A reference to this {@link SignedIdentifier} instance.
+         *            A reference to this {@link SignedIdentifier} instance.
          */
         public SignedIdentifier setId(String id) {
             this.id = id;
@@ -300,7 +300,7 @@ public class ContainerACL {
          *            An {@link AccessPolicy} reference containing the start time, expiration time, and permissions
          *            to associate with the access policy.
          * @return
-         *         A reference to this {@link SignedIdentifier} instance.
+         *            A reference to this {@link SignedIdentifier} instance.
          */
         public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
             this.accessPolicy = accessPolicy;
@@ -340,7 +340,7 @@ public class ContainerACL {
          *            A {@link Date} representing the start time for the access policy, or <code>null</code> to leave
          *            the time unspecified.
          * @return
-         *         A reference to this {@link AccessPolicy} instance.
+         *            A reference to this {@link AccessPolicy} instance.
          */
         public AccessPolicy setStart(Date start) {
             this.start = start;
@@ -371,7 +371,7 @@ public class ContainerACL {
          *            A {@link Date} representing the expiration time for the access policy, or <code>null</code> to
          *            leave the time unspecified.
          * @return
-         *         A reference to this {@link AccessPolicy} instance.
+         *            A reference to this {@link AccessPolicy} instance.
          */
         public AccessPolicy setExpiry(Date expiry) {
             this.expiry = expiry;
@@ -402,7 +402,7 @@ public class ContainerACL {
          * @param permission
          *            A {@link String} containing the permissions specified for the access policy.
          * @return
-         *         A reference to this {@link AccessPolicy} instance.
+         *            A reference to this {@link AccessPolicy} instance.
          */
         public AccessPolicy setPermission(String permission) {
             this.permission = permission;
