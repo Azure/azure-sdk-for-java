@@ -16,6 +16,16 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
     }
 
+    protected static Configuration createConfig() {
+        Configuration config = Configuration.getInstance();
+        overrideWithEnv(config, MediaConfiguration.URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
+        return config;
+    }
+
     protected static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
         if (value == null)

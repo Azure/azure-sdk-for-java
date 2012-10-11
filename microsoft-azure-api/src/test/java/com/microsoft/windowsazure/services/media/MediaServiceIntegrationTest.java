@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
@@ -28,7 +29,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
@@ -46,7 +46,8 @@ import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
     private static MediaContract service;
-    private static String testAssetPrefix = "testAsset";
+
+    private static final String testAssetPrefix = "testAsset";
     private static String fakeAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
 
     @Rule
@@ -85,6 +86,16 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static Configuration createConfig() {
+        Configuration config = Configuration.getInstance();
+        overrideWithEnv(config, MediaConfiguration.URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
+        return config;
     }
 
     private static void cleanupEnvironment() throws ServiceException {
@@ -206,6 +217,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Act
         AssetInfo actualAsset = service.getAsset(assetInfo.getId());
 
+        assertEquals("Id", assetInfo.getId(), actualAsset.getId());
         verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
     }
 
@@ -228,7 +240,22 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         Collection<AssetInfo> listAssetResult = service.listAssets();
 
         // Assert
-        assertEquals(listAssetResultBaseLine.size() + 2, listAssetResult.size());
+        assertNotNull("listAssetResult", listAssetResult);
+        assertEquals("listAssetResult.size", listAssetResultBaseLine.size() + 2, listAssetResult.size());
+
+        AssetInfo[] assets = new AssetInfo[assetNames.length];
+
+        for (AssetInfo asset : listAssetResult) {
+            for (int i = 0; i < assetNames.length; i++) {
+                if (asset.getName().equals(assetNames[i])) {
+                    assets[i] = asset;
+                }
+            }
+        }
+
+        for (int i = 0; i < assetNames.length; i++) {
+            verifyAssetProperties("asset " + i, assetNames[i], altId, encryptionOption, assetState, assets[i]);
+        }
     }
 
     @Ignore
@@ -294,7 +321,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         String assetName = "deleteAssetSuccess";
         CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName(assetName);
         AssetInfo assetInfo = service.createAsset(createAssetOptions);
-        List<AssetInfo> listAssetsResult = service.listAssets(null);
+        List<AssetInfo> listAssetsResult = service.listAssets();
         int assetCountBaseline = listAssetsResult.size();
 
         // Act
@@ -302,7 +329,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         listAssetsResult = service.listAssets();
-        assertEquals(assetCountBaseline - 1, listAssetsResult.size());
+        assertEquals("listAssetsResult.size", assetCountBaseline - 1, listAssetsResult.size());
 
         thrown.expect(ServiceException.class);
         thrown.expect(new ServiceExceptionMatcher(404));
