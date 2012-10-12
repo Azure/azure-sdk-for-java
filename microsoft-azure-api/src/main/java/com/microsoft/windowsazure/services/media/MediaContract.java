@@ -22,9 +22,16 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Defines the methods available for Windows Azure Media Services.
@@ -34,24 +41,21 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Creates the asset.
      * 
-     * @param assetName
-     *            the asset name
      * @return the asset info
      * @throws ServiceException
      */
-    public AssetInfo createAsset(String assetName) throws ServiceException;
+    public AssetInfo createAsset() throws ServiceException;
 
     /**
      * Creates the asset.
      * 
-     * @param assetName
-     *            the asset name
      * @param createAssetOptions
      *            the create asset options
      * @return the asset info
      * @throws ServiceException
+     *             the service exception
      */
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) throws ServiceException;
+    public AssetInfo createAsset(CreateAssetOptions createAssetOptions) throws ServiceException;
 
     /**
      * Delete asset.
@@ -59,6 +63,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @param assetId
      *            the asset id
      * @throws ServiceException
+     *             the service exception
      */
     public void deleteAsset(String assetId) throws ServiceException;
 
@@ -69,6 +74,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            the asset id
      * @return the asset
      * @throws ServiceException
+     *             the service exception
      */
     public AssetInfo getAsset(String assetId) throws ServiceException;
 
@@ -77,6 +83,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * 
      * @return the list
      * @throws ServiceException
+     *             the service exception
      */
     public List<AssetInfo> listAssets() throws ServiceException;
 
@@ -87,6 +94,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            the list assets options
      * @return the list
      * @throws ServiceException
+     *             the service exception
      */
     public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException;
 
@@ -103,7 +111,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
     public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException;
 
     /**
-     * Create the access policy
+     * Create the access policy.
      * 
      * @param name
      *            name of access policy
@@ -111,11 +119,12 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            Duration in minutes that blob access will be granted when using this access policy
      * @return Created access policy
      * @throws ServiceException
+     *             the service exception
      */
     AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException;
 
     /**
-     * Create the access policy with the given options
+     * Create the access policy with the given options.
      * 
      * @param name
      *            name of access policy
@@ -125,44 +134,138 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            options for creation
      * @return the created access policy
      * @throws ServiceException
+     *             the service exception
      */
     AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
             throws ServiceException;
 
     /**
-     * Delete the access policy with the given id
+     * Delete the access policy with the given id.
      * 
      * @param id
      *            of access policy to delete
      * @throws ServiceException
+     *             the service exception
      */
     void deleteAccessPolicy(String id) throws ServiceException;
 
     /**
-     * Get a single access policy
+     * Get a single access policy.
      * 
      * @param id
      *            the id of the asset to retrieve
      * @return the asset
      * @throws ServiceException
+     *             the service exception
      */
     AccessPolicyInfo getAccessPolicy(String id) throws ServiceException;
 
     /**
-     * List access policies
+     * List access policies.
      * 
      * @return the list
      * @throws ServiceException
+     *             the service exception
      */
     List<AccessPolicyInfo> listAccessPolicies() throws ServiceException;
 
     /**
-     * List access policies
+     * List access policies.
      * 
      * @param options
      *            the list access policy options
      * @return the list
      * @throws ServiceException
+     *             the service exception
      */
     List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException;
+
+    /**
+     * Creates the locator.
+     * 
+     * @param accessPolicyId
+     *            the access policy id
+     * @param assetId
+     *            the asset id
+     * @param locatorType
+     *            the locator type
+     * @return the locator info
+     * @throws ServiceException
+     */
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType)
+            throws ServiceException;
+
+    /**
+     * Creates the locator.
+     * 
+     * @param accessPolicyId
+     *            the access policy id
+     * @param assetId
+     *            the asset id
+     * @param locatorType
+     *            the locator type
+     * @param createLocatorOptions
+     *            the create locator options
+     * @return the locator info
+     * @throws ServiceException
+     *             the service exception
+     */
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
+            CreateLocatorOptions createLocatorOptions) throws ServiceException;
+
+    /**
+     * Gets the locator.
+     * 
+     * @param locatorId
+     *            the locator id
+     * @return the locator
+     * @throws ServiceException
+     *             the service exception
+     */
+    public LocatorInfo getLocator(String locatorId) throws ServiceException;
+
+    /**
+     * List locators.
+     * 
+     * @return the list locators result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListLocatorsResult listLocators() throws ServiceException;
+
+    /**
+     * Delete locator.
+     * 
+     * @param id
+     *            the id
+     * @throws UniformInterfaceException
+     *             the uniform interface exception
+     * @throws ServiceException
+     *             the service exception
+     */
+    public void deleteLocator(String id) throws UniformInterfaceException, ServiceException;
+
+    /**
+     * List locators.
+     * 
+     * @param listLocatorOptions
+     *            the list locator options
+     * @return the list locators result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) throws ServiceException;
+
+    /**
+     * Update locator.
+     * 
+     * @param locatorId
+     *            the locator id
+     * @param updateLocatorOptions
+     *            the update locator options
+     * @throws ServiceException
+     *             the service exception
+     */
+    public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException;
+
 }

@@ -34,17 +34,25 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -140,6 +148,17 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    /**
+     * Gets the resource.
+     * 
+     * @param entityType
+     *            the entity type
+     * @param entityId
+     *            the entity id
+     * @return the resource
+     * @throws ServiceException
+     *             the service exception
+     */
     private WebResource getResource(String entityType, String entityId) throws ServiceException {
         String escapedEntityId = null;
         try {
@@ -153,8 +172,26 @@ public class MediaRestProxy implements MediaContract {
         return getResource(entityPath);
     }
 
-    private <T> T mergeRequest(String path, java.lang.Class<T> c, java.lang.Object requestEntity) {
-        WebResource resource = getResource(path);
+    /**
+     * Merge request.
+     * 
+     * @param <T>
+     *            the generic type
+     * @param entityType
+     *            the entity type
+     * @param entityId
+     *            the entity id
+     * @param c
+     *            the c
+     * @param requestEntity
+     *            the request entity
+     * @return the t
+     * @throws ServiceException
+     *             the service exception
+     */
+    private <T> T mergeRequest(String entityType, String entityId, java.lang.Class<T> c, java.lang.Object requestEntity)
+            throws ServiceException {
+        WebResource resource = getResource(entityType, entityId);
         WebResource.Builder builder = resource.getRequestBuilder();
         builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .header("X-HTTP-Method", "MERGE");
@@ -162,23 +199,24 @@ public class MediaRestProxy implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset()
      */
     @Override
-    public AssetInfo createAsset(String assetName) throws ServiceException {
-        return this.createAsset(assetName, null);
+    public AssetInfo createAsset() {
+        return this.createAsset(null);
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateAssetOptions)
      */
     @Override
-    public AssetInfo createAsset(String assetName, CreateAssetOptions createAssetOptions) {
+    public AssetInfo createAsset(CreateAssetOptions createAssetOptions) {
         WebResource resource = getResource("Assets");
         AssetType assetTypeForSubmission = new AssetType();
-        assetTypeForSubmission.setName(assetName);
         if (createAssetOptions != null) {
+            assetTypeForSubmission.setName(createAssetOptions.getName());
             assetTypeForSubmission.setAlternateId(createAssetOptions.getAlternateId());
+
             if (createAssetOptions.getOptions() != null) {
                 assetTypeForSubmission.setOptions(createAssetOptions.getOptions().getCode());
             }
@@ -225,14 +263,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public void updateAsset(String assetId, UpdateAssetOptions updateAssetOptions) throws ServiceException {
-        String escapedAssetId = null;
-        try {
-            escapedAssetId = URLEncoder.encode(assetId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new ServiceException(e);
-        }
-        String assetPath = String.format("Assets(\'%s\')", escapedAssetId);
+
         AssetType updatedAssetType = new AssetType();
         updatedAssetType.setAlternateId(updateAssetOptions.getAlternateId());
         updatedAssetType.setName(updateAssetOptions.getName());
@@ -244,7 +275,7 @@ public class MediaRestProxy implements MediaContract {
             updatedAssetType.setState(updateAssetOptions.getState().getCode());
         }
 
-        ClientResponse clientResponse = mergeRequest(assetPath, ClientResponse.class, updatedAssetType);
+        ClientResponse clientResponse = mergeRequest("Assets", assetId, ClientResponse.class, updatedAssetType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
@@ -321,4 +352,100 @@ public class MediaRestProxy implements MediaContract {
                 .get(new GenericType<List<AccessPolicyInfo>>() {
                 });
     }
+
+    @Override
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType) {
+        return this.createLocator(accessPolicyId, assetId, locatorType, null);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createLocator(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.media.models.LocatorType, com.microsoft.windowsazure.services.media.models.CreateLocatorOptions)
+     */
+    @Override
+    public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType,
+            CreateLocatorOptions createLocatorOptions) {
+
+        LocatorRestType locatorRestType = new LocatorRestType();
+        locatorRestType.setAccessPolicyId(accessPolicyId);
+        locatorRestType.setAssetId(assetId);
+        locatorRestType.setType(locatorType.getCode());
+        if (createLocatorOptions != null) {
+            if (createLocatorOptions.getExpirationDateTime() != null) {
+                locatorRestType.setExpirationDateTime(createLocatorOptions.getExpirationDateTime());
+            }
+
+            if (createLocatorOptions.getStartTime() != null) {
+                locatorRestType.setStartTime(createLocatorOptions.getStartTime());
+            }
+        }
+
+        WebResource resource = getResource("Locators");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(LocatorInfo.class, locatorRestType);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getLocator(java.lang.String)
+     */
+    @Override
+    public LocatorInfo getLocator(String locatorId) throws ServiceException {
+        WebResource resource = getResource("Locators", locatorId);
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(LocatorInfo.class);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators()
+     */
+    @Override
+    public ListLocatorsResult listLocators() {
+        return listLocators(null);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators(com.microsoft.windowsazure.services.media.models.ListLocatorsOptions)
+     */
+    @Override
+    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
+        WebResource resource = getResource("Locators");
+
+        List<LocatorInfo> locatorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<LocatorInfo>>() {
+                });
+        ListLocatorsResult listLocatorsResult = new ListLocatorsResult();
+        listLocatorsResult.setLocatorInfos(locatorInfoList);
+        return listLocatorsResult;
+
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteLocator(java.lang.String)
+     */
+    @Override
+    public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException {
+        getResource("Locators", locatorId).delete();
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#updateLocator(java.lang.String, com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions)
+     */
+    @Override
+    public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException {
+        LocatorRestType updatedLocatorRestType = new LocatorRestType();
+
+        updatedLocatorRestType.setId(locatorId);
+        if (updateLocatorOptions != null) {
+            if (updateLocatorOptions.getExpirationDateTime() != null) {
+                updatedLocatorRestType.setExpirationDateTime(updateLocatorOptions.getExpirationDateTime());
+            }
+            if (updateLocatorOptions.getStartTime() != null) {
+                updatedLocatorRestType.setStartTime(updateLocatorOptions.getStartTime());
+            }
+        }
+        ClientResponse clientResponse = mergeRequest("Locators", locatorId, ClientResponse.class,
+                updatedLocatorRestType);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
 }

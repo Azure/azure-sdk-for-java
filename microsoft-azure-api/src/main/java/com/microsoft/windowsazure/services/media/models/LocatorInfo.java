@@ -17,31 +17,33 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
 
+import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
+
 /**
  * The Class LocatorInfo.
  */
-public class LocatorInfo {
+public class LocatorInfo extends ODataEntity<LocatorRestType> {
 
-    /** The id. */
-    private String id;
+    /**
+     * Instantiates a new locator info.
+     * 
+     * @param entry
+     *            the entry
+     * @param content
+     *            the content
+     */
+    public LocatorInfo(EntryType entry, LocatorRestType content) {
+        super(entry, content);
+    }
 
-    /** The expiration datetime. */
-    private Date expirationDatetime;
-
-    /** The path. */
-    private String path;
-
-    /** The access policy id. */
-    private String accessPolicyId;
-
-    /** The asset id. */
-    private String assetId;
-
-    /** The start time. */
-    private Date startTime;
-
-    /** The locator type. */
-    private LocatorType locatorType;
+    /**
+     * Instantiates a new locator info.
+     */
+    public LocatorInfo() {
+        super(new LocatorRestType());
+    }
 
     /**
      * Gets the id.
@@ -49,7 +51,7 @@ public class LocatorInfo {
      * @return the id
      */
     public String getId() {
-        return this.id;
+        return getContent().getId();
     }
 
     /**
@@ -60,8 +62,17 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setId(String id) {
-        this.id = id;
+        getContent().setId(id);
         return this;
+    }
+
+    /**
+     * Gets the expiration date time.
+     * 
+     * @return the expiration date time
+     */
+    public Date getExpirationDateTime() {
+        return getContent().getExpirationDateTime();
     }
 
     /**
@@ -72,17 +83,8 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setExpirationDateTime(Date expirationDateTime) {
-        this.expirationDatetime = expirationDateTime;
+        getContent().setExpirationDateTime(expirationDateTime);
         return this;
-    }
-
-    /**
-     * Gets the expiration date time.
-     * 
-     * @return the expiration date time
-     */
-    public Date getExpirationDateTime() {
-        return this.expirationDatetime;
     }
 
     /**
@@ -93,7 +95,7 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setLocatorType(LocatorType locatorType) {
-        this.locatorType = locatorType;
+        getContent().setType(locatorType.getCode());
         return this;
     }
 
@@ -103,7 +105,7 @@ public class LocatorInfo {
      * @return the locator type
      */
     public LocatorType getLocatorType() {
-        return this.locatorType;
+        return LocatorType.fromCode(getContent().getType());
     }
 
     /**
@@ -114,7 +116,7 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setPath(String path) {
-        this.path = path;
+        getContent().setPath(path);
         return this;
     }
 
@@ -124,7 +126,7 @@ public class LocatorInfo {
      * @return the path
      */
     public String getPath() {
-        return this.path;
+        return getContent().getPath();
     }
 
     /**
@@ -135,7 +137,7 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setAccessPolicyId(String accessPolicyId) {
-        this.accessPolicyId = accessPolicyId;
+        getContent().setAccessPolicyId(accessPolicyId);
         return this;
     }
 
@@ -145,7 +147,7 @@ public class LocatorInfo {
      * @return the access policy id
      */
     public String getAccessPolicyId() {
-        return this.accessPolicyId;
+        return getContent().getAccessPolicyId();
     }
 
     /**
@@ -156,7 +158,7 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setAssetId(String assetId) {
-        this.assetId = assetId;
+        getContent().setAssetId(assetId);
         return this;
     }
 
@@ -166,7 +168,7 @@ public class LocatorInfo {
      * @return the asset id
      */
     public String getAssetId() {
-        return this.assetId;
+        return getContent().getAssetId();
     }
 
     /**
@@ -177,7 +179,7 @@ public class LocatorInfo {
      * @return the locator info
      */
     public LocatorInfo setStartTime(Date startTime) {
-        this.startTime = startTime;
+        getContent().setStartTime(startTime);
         return this;
     }
 
@@ -187,7 +189,7 @@ public class LocatorInfo {
      * @return the start time
      */
     public Date getStartTime() {
-        return this.startTime;
+        return getContent().getStartTime();
     }
 
 }

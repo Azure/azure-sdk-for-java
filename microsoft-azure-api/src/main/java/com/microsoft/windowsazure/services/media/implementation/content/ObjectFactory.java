@@ -58,4 +58,13 @@ public class ObjectFactory {
     public AccessPolicyType createAccessPolicyType() {
         return new AccessPolicyType();
     }
+
+    /**
+     * Create an instance of {@link LocatorRestType }
+     *
+     * @return a new LocatorRestType instance.
+     */
+    public LocatorRestType createLocatorRestType() {
+        return new LocatorRestType();
+    }
 }

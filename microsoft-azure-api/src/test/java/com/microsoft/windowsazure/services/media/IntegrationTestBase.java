@@ -16,7 +16,7 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
     }
 
-    protected static Configuration createConfig() {
+    public static Configuration createConfig() {
         Configuration config = Configuration.getInstance();
         overrideWithEnv(config, MediaConfiguration.URI);
         overrideWithEnv(config, MediaConfiguration.OAUTH_URI);

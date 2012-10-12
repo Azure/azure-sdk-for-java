@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
 /**
  * The Enum LocatorType.
  */
@@ -49,5 +51,27 @@ public enum LocatorType {
      */
     public int getCode() {
         return this.locatorTypeCode;
+    }
+
+    /**
+     * From code.
+     * 
+     * @param type
+     *            the type
+     * @return the locator type
+     */
+    public static LocatorType fromCode(int type) {
+        switch (type) {
+            case 0:
+                return LocatorType.None;
+            case 1:
+                return LocatorType.SAS;
+            case 2:
+                return LocatorType.Origin;
+            case 3:
+                return LocatorType.WindowsAzureCDN;
+            default:
+                throw new InvalidParameterException("type");
+        }
     }
 }
