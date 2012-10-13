@@ -28,7 +28,7 @@ public class MediaServiceTest {
         // Arrange
         Configuration configurationInstance = Configuration.getInstance();
         configurationInstance = MediaConfiguration.configureWithOAuthAuthentication(configurationInstance,
-                "mediaServiceBaseUri", "oAuthUri", "clientId", "clientSecret");
+                "mediaServiceBaseUri", "oAuthUri", "clientId", "clientSecret", "testScope");
 
         // Act
         MediaContract mediaContract = MediaService.create();
@@ -43,7 +43,7 @@ public class MediaServiceTest {
     public void createMediaContractWithSpecifiedConfigurationTest() {
         // Arrange
         Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("mediaServiceBaseUri",
-                "oAuthUri", "clientId", "clientSecret");
+                "oAuthUri", "clientId", "clientSecret", "testScope");
 
         // Act 
         MediaContract mediaContract = MediaService.create(configuration);
@@ -69,8 +69,8 @@ public class MediaServiceTest {
     public void createMediaContractWithSpecifiedProfileAndConfiguration() {
         // Arrange
         String profile = "testProfile";
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("mediaServiceBaseUri",
-                "oAuthUri", "clientId", "clientSecret");
+        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(profile, new Configuration(),
+                "mediaServiceBaseUri", "oAuthUri", "clientId", "clientSecret", "testScope");
 
         // Act 
         MediaContract mediaContract = MediaService.create(profile, configuration);
