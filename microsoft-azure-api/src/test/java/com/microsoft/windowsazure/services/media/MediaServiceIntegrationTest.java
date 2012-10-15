@@ -17,17 +17,13 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
@@ -45,67 +41,34 @@ import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
-    private static MediaContract service;
 
-    private static final String testAssetPrefix = "testAsset";
-    private static String fakeAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        service = MediaService.create(createConfig());
-        cleanupEnvironment();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        cleanupEnvironment();
-    }
-
-    private static void removeAllAssets() throws ServiceException {
-        List<AssetInfo> listAssetsResult = service.listAssets(null);
-        for (AssetInfo assetInfo : listAssetsResult) {
-            try {
-                service.deleteAsset(assetInfo.getId());
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void removeAllLocators() throws ServiceException {
-        ListLocatorsResult listLocatorsResult = service.listLocators(null);
-        for (LocatorInfo locatorInfo : listLocatorsResult.getLocatorInfos()) {
-            try {
-                service.deleteLocator(locatorInfo.getId());
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void cleanupEnvironment() throws ServiceException {
-        config = createConfig();
-        removeAllAssets();
-        removeAllLocators();
+    private void verifyInfosEqual(String message, AssetInfo expected, AssetInfo actual) {
+        verifyAssetProperties(message, expected.getName(), expected.getAlternateId(), expected.getOptions(),
+                expected.getState(), expected.getId(), expected.getCreated(), expected.getLastModified(), actual);
     }
 
     private void verifyAssetProperties(String message, String testName, String altId,
             EncryptionOption encryptionOption, AssetState assetState, AssetInfo actualAsset) {
+        verifyAssetProperties(message, testName, altId, encryptionOption, assetState, null, null, null, actualAsset);
+    }
+
+    private void verifyAssetProperties(String message, String testName, String altId,
+            EncryptionOption encryptionOption, AssetState assetState, String id, Date created, Date lastModified,
+            AssetInfo actualAsset) {
         assertNotNull(message, actualAsset);
         assertEquals(message + " Name", testName, actualAsset.getName());
         assertEquals(message + " AlternateId", altId, actualAsset.getAlternateId());
         assertEquals(message + " Options", encryptionOption, actualAsset.getOptions());
         assertEquals(message + " State", assetState, actualAsset.getState());
-    }
-
-    @Before
-    public void setupInstance() throws Exception {
-        service = MediaService.create(config);
+        if (id != null) {
+            assertEquals(message + " Id", id, actualAsset.getId());
+        }
+        if (created != null) {
+            assertEquals(message + " Created", created, actualAsset.getCreated());
+        }
+        if (lastModified != null) {
+            assertEquals(message + " LastModified", lastModified, actualAsset.getLastModified());
+        }
     }
 
     @Test
@@ -162,7 +125,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Act
         AssetInfo actualAsset = null;
         try {
-            actualAsset = service.createAsset(null);
+            actualAsset = service.createAsset();
             // Assert
             assertNotNull("actualAsset", actualAsset);
             assertEquals("actualAsset.getName() should be the service default value, the empty string", "",
@@ -202,26 +165,38 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void getAssetFailedWithInvalidId() throws ServiceException {
-        thrown.expect(ServiceException.class);
-        thrown.expect(new ServiceExceptionMatcher(404));
-        service.getAsset(fakeAssetId);
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
+        service.getAsset(validButNonexistAssetId);
     }
 
     @Test
     public void listAssetSuccess() throws ServiceException {
         // Arrange
-        Collection<AssetInfo> listAssetResultBaseLine = service.listAssets();
-        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
-        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetA"));
-        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetB"));
+        String altId = "altId";
+        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetState assetState = AssetState.Published;
+
+        String[] assetNames = new String[] { testAssetPrefix + "assetA", testAssetPrefix + "assetB" };
+        List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
+        for (int i = 0; i < assetNames.length; i++) {
+            String name = assetNames[i];
+            CreateAssetOptions options = new CreateAssetOptions().setName(name).setAlternateId(altId)
+                    .setOptions(encryptionOption).setState(assetState);
+            expectedAssets.add(service.createAsset(options));
+        }
 
         // Act
         Collection<AssetInfo> listAssetResult = service.listAssets();
 
         // Assert
-        assertNotNull("listAssetResult", listAssetResult);
-        assertEquals("listAssetResult.size", listAssetResultBaseLine.size() + 2, listAssetResult.size());
 
+        verifyListResultContains("listAssets", expectedAssets, listAssetResult, new ComponentDelegate() {
+            @Override
+            public void verifyEquals(String message, Object expected, Object actual) {
+                verifyInfosEqual(message, (AssetInfo) expected, (AssetInfo) actual);
+            }
+        });
     }
 
     @Ignore
@@ -276,9 +251,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
 
         // Act
-        thrown.expect(ServiceException.class);
-        thrown.expect(new ServiceExceptionMatcher(404));
-        service.updateAsset(fakeAssetId, updateAssetOptions);
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
+        service.updateAsset(validButNonexistAssetId, updateAssetOptions);
     }
 
     @Test
@@ -297,24 +272,38 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         listAssetsResult = service.listAssets();
         assertEquals("listAssetsResult.size", assetCountBaseline - 1, listAssetsResult.size());
 
-        thrown.expect(ServiceException.class);
-        thrown.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
         service.getAsset(assetInfo.getId());
     }
 
     @Test
     public void deleteAssetFailedWithInvalidId() throws ServiceException {
-        thrown.expect(ServiceException.class);
-        thrown.expect(new ServiceExceptionMatcher(404));
-        service.deleteAsset(fakeAssetId);
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
+        service.deleteAsset(validButNonexistAssetId);
+    }
+
+    // End of Asset tests
+
+    // Start of Locator tests
+
+    private AssetInfo assetInfo;
+    private AccessPolicyInfo accessPolicyInfo;
+    private AccessPolicyInfo accessPolicyInfoRead;
+
+    private void setupForLocatorTest() throws ServiceException {
+        assetInfo = service.createAsset(new CreateAssetOptions().setName(testAssetPrefix + "ForLocatorTest"));
+        accessPolicyInfo = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTest", 5);
+        accessPolicyInfoRead = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTestRead", 5,
+                new CreateAccessPolicyOptions().addPermissions(AccessPolicyPermission.READ));
     }
 
     @Test
     public void createLocatorSuccess() throws ServiceException {
         // Arrange 
+        setupForLocatorTest();
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
-        AssetInfo assetInfo = service.createAsset(null);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("createLocatorSuccess", 5);
         LocatorType locatorType = LocatorType.SAS;
 
         // Act
@@ -331,14 +320,12 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createLocatorSetExpirationDateTimeSuccess() throws ServiceException {
         // Arrange 
+        setupForLocatorTest();
+
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         Date expectedExpirationDateTime = new Date();
         expectedExpirationDateTime.setTime(expectedExpirationDateTime.getTime() + 1000);
-        String accessPolicyName = "createLocatorSetExpirationDateTimeSuccess";
-
         createLocatorOptions.setExpirationDateTime(expectedExpirationDateTime);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy(accessPolicyName, 10);
-        AssetInfo assetInfo = service.createAsset(null);
         LocatorType locatorType = LocatorType.SAS;
 
         // Act
@@ -355,14 +342,12 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createLocatorSetStartTimeSuccess() throws ServiceException {
         // Arrange 
+        setupForLocatorTest();
+
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         Date expectedStartDateTime = new Date();
         expectedStartDateTime.setTime(expectedStartDateTime.getTime() + 1000);
-        String accessPolicyName = "createLocatorSetStartDateTimeSuccess";
-
         createLocatorOptions.setStartTime(expectedStartDateTime);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy(accessPolicyName, 10);
-        AssetInfo assetInfo = service.createAsset(null);
         LocatorType locatorType = LocatorType.SAS;
 
         // Act
@@ -380,9 +365,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void getLocatorSuccess() throws ServiceException {
         // Arrange
+        setupForLocatorTest();
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
-        AssetInfo assetInfo = service.createAsset(null);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("getLocatorSuccess", 5);
         LocatorType locatorType = LocatorType.SAS;
         LocatorInfo expectedLocatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(),
                 locatorType, createLocatorOptions);
@@ -405,41 +389,32 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listLocatorsSuccess() throws ServiceException {
         // Arrange
-        CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
-        AssetInfo assetInfo = service.createAsset(null);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("listLocatorsSuccess", 5);
+        setupForLocatorTest();
         LocatorType locatorType = LocatorType.SAS;
-        LocatorInfo locatorInfoA = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
-                createLocatorOptions);
-        LocatorInfo locatorInfoB = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
-                createLocatorOptions);
+        List<LocatorInfo> expectedLocators = new ArrayList<LocatorInfo>();
+        for (int i = 0; i < 2; i++) {
+            expectedLocators.add(service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType));
+        }
 
         // Act
         ListLocatorsResult listLocatorsResult = service.listLocators();
 
         // Assert
         assertNotNull(listLocatorsResult);
-        service.deleteLocator(locatorInfoA.getId());
-        service.deleteLocator(locatorInfoB.getId());
-
+        verifyListResultContains("listLocators", expectedLocators, listLocatorsResult.getLocatorInfos(), null);
     }
 
     @Ignore("due to media service bug 596264")
     @Test
     public void updateLocatorSuccess() throws ServiceException {
         // Arrange
+        setupForLocatorTest();
+
         LocatorType locatorTypeExepcted = LocatorType.Origin;
-        AssetInfo assetInfo = service.createAsset(null);
-        CreateAccessPolicyOptions createAccessPolicyOptions = new CreateAccessPolicyOptions();
-        createAccessPolicyOptions.removePermissions(AccessPolicyPermission.DELETE);
-        createAccessPolicyOptions.removePermissions(AccessPolicyPermission.WRITE);
-        createAccessPolicyOptions.addPermissions(AccessPolicyPermission.READ);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("listLocatorsSuccess", 5,
-                createAccessPolicyOptions);
         LocatorType locatorType = LocatorType.Origin;
 
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
-        LocatorInfo locatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
+        LocatorInfo locatorInfo = service.createLocator(accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType,
                 createLocatorOptions);
         Date expirationDateTime = new Date();
         expirationDateTime.setTime(expirationDateTime.getTime() + 1000);
@@ -459,8 +434,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteLocatorSuccess() throws ServiceException {
         // Arrange
-        AssetInfo assetInfo = service.createAsset(null);
-        AccessPolicyInfo accessPolicyInfo = service.createAccessPolicy("deleteLocatorsSuccess", 5);
+        setupForLocatorTest();
         LocatorType locatorType = LocatorType.SAS;
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         LocatorInfo locatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
@@ -490,5 +464,4 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertTrue(false);
     }
-
 }
