@@ -44,7 +44,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     private void verifyInfosEqual(String message, AssetInfo expected, AssetInfo actual) {
         verifyAssetProperties(message, expected.getName(), expected.getAlternateId(), expected.getOptions(),
-                expected.getState(), expected.getId(), expected.getCreated(), expected.getLastModified(), actual);
+                expected.getState(), actual);
     }
 
     private void verifyAssetProperties(String message, String testName, String altId,
