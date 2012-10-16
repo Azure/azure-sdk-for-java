@@ -58,6 +58,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MediaRestProxy.
  */
@@ -356,6 +357,9 @@ public class MediaRestProxy implements MediaContract {
                 });
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createLocator(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.media.models.LocatorType)
+     */
     @Override
     public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType) {
         return this.createLocator(accessPolicyId, assetId, locatorType, null);
@@ -451,11 +455,17 @@ public class MediaRestProxy implements MediaContract {
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors()
+     */
     @Override
     public ListMediaProcessorsResult listMediaProcessors() {
         return this.listMediaProcessors(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors(com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions)
+     */
     @Override
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
         WebResource resource = getResource("MediaProcessors");

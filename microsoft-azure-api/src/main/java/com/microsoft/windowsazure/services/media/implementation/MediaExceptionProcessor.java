@@ -421,6 +421,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors()
+     */
     @Override
     public ListMediaProcessorsResult listMediaProcessors() throws ServiceException {
         try {
@@ -434,6 +437,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors(com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions)
+     */
     @Override
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException {
