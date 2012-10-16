@@ -235,14 +235,14 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetC"));
         service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetD"));
         ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
-        listAssetsOptions.getQueryParameters().add("top", "3");
+        listAssetsOptions.getQueryParameters().add("$top", "3");
 
         // Act
         Collection<AssetInfo> listAssetResult = service.listAssets(listAssetsOptions);
 
         // Assert
         assertNotNull("listAssetResult", listAssetResult);
-        assertEquals("listAssetResult.size", listAssetResultBaseLine.size() + 3, listAssetResult.size());
+        assertEquals("listAssetResult.size", 3, listAssetResult.size());
 
     }
 
