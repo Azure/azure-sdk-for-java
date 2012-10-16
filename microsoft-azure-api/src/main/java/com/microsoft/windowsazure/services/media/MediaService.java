@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media;
 import java.net.URI;
 
 import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.MediaBlobContainerWriter;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -79,11 +78,10 @@ public class MediaService {
      * @param locator
      *            locator specifying where to upload to
      * @return the implementation of <code>WritableBlobContainerContract</code>
-     * @throws ServiceException
      */
-    public static WritableBlobContainerContract createBlobWriter(LocatorInfo locator) throws ServiceException {
+    public static WritableBlobContainerContract createBlobWriter(LocatorInfo locator) {
         if (locator.getLocatorType() != LocatorType.SAS) {
-            throw new ServiceException("Can only upload to SAS locators");
+            throw new IllegalArgumentException("Can only write to SAS locators");
         }
 
         LocatorParser p = new LocatorParser(locator);
