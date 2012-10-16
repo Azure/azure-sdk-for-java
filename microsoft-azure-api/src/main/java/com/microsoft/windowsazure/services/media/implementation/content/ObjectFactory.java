@@ -67,4 +67,13 @@ public class ObjectFactory {
     public LocatorRestType createLocatorRestType() {
         return new LocatorRestType();
     }
+
+    /**
+     * Create an instance of {@link MediaProcessorType }
+     *
+     * @return a new MediaProcessorType instance.
+     */
+    public MediaProcessorType createMediaProcessorType() {
+        return new MediaProcessorType();
+    }
 }

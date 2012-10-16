@@ -39,6 +39,8 @@ import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
@@ -489,6 +491,31 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertTrue(false);
+    }
+
+    @Test
+    public void listMediaProcessorsSuccess() throws ServiceException {
+        // Arrange 
+
+        // Act
+        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors();
+
+        // Assert
+        assertNotNull(listMediaProcessorsResult);
+        assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
+    }
+
+    @Test
+    public void listMediaProcessorWithOptionSuccess() throws ServiceException {
+        // Arrange
+        ListMediaProcessorsOptions listMediaProcessorsOptions = new ListMediaProcessorsOptions();
+
+        // Act
+        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors(listMediaProcessorsOptions);
+
+        // Assert
+        assertNotNull(listMediaProcessorsResult);
+        assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
     }
 
 }

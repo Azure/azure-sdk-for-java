@@ -45,8 +45,11 @@ import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.Client;
@@ -446,6 +449,23 @@ public class MediaRestProxy implements MediaContract {
         ClientResponse clientResponse = mergeRequest("Locators", locatorId, ClientResponse.class,
                 updatedLocatorRestType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
+    @Override
+    public ListMediaProcessorsResult listMediaProcessors() {
+        return this.listMediaProcessors(null);
+    }
+
+    @Override
+    public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
+        WebResource resource = getResource("MediaProcessors");
+
+        List<MediaProcessorInfo> mediaProcessorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<MediaProcessorInfo>>() {
+                });
+        ListMediaProcessorsResult listMediaProcessorsResult = new ListMediaProcessorsResult();
+        listMediaProcessorsResult.setMediaProcessorInfos(mediaProcessorInfoList);
+        return listMediaProcessorsResult;
     }
 
 }
