@@ -14,6 +14,7 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
     }
 
     public static Configuration createConfig() {
