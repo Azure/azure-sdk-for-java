@@ -14,6 +14,6 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
-public class ListAssetsOptions {
+public class ListAssetsOptions extends ListOptions {
 
 }

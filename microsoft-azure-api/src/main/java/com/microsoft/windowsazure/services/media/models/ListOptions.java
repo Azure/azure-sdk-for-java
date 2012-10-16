@@ -14,9 +14,31 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
+import javax.ws.rs.core.MultivaluedMap;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 /**
- * The Class ListLocatorsOptions.
+ * The Class ListOptions.
  */
-public class ListLocatorsOptions extends ListOptions {
+public class ListOptions {
+
+    /**
+     * Instantiates a new list options.
+     */
+    public ListOptions() {
+        this.queryParameters = new MultivaluedMapImpl();
+    }
+
+    /** The query parameters. */
+    protected MultivaluedMap<String, String> queryParameters;
+
+    /**
+     * Gets the query parameters.
+     * 
+     * @return the query parameters
+     */
+    public MultivaluedMap<String, String> getQueryParameters() {
+        return this.queryParameters;
+    }
 
 }

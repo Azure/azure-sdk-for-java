@@ -248,6 +248,10 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
         WebResource resource = getResource("Assets");
+        if ((listAssetsOptions != null) && (listAssetsOptions.getQueryParameters() != null)) {
+            resource = resource.queryParams(listAssetsOptions.getQueryParameters());
+        }
+
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AssetInfo>>() {
                 });

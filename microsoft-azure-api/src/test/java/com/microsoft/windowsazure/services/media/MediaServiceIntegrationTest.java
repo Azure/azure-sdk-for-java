@@ -38,6 +38,7 @@ import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOption
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
@@ -223,6 +224,27 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull("listAssetResult", listAssetResult);
         assertEquals("listAssetResult.size", listAssetResultBaseLine.size() + 2, listAssetResult.size());
+
+    }
+
+    @Test
+    public void listTopThreeAssetsSuccess() throws ServiceException {
+        // Arrange
+        Collection<AssetInfo> listAssetResultBaseLine = service.listAssets();
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetA"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetB"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetC"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetD"));
+        ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
+        listAssetsOptions.getQueryParameters().add("$top", "3");
+
+        // Act
+        Collection<AssetInfo> listAssetResult = service.listAssets(listAssetsOptions);
+
+        // Assert
+        assertNotNull("listAssetResult", listAssetResult);
+        assertEquals("listAssetResult.size", 3, listAssetResult.size());
 
     }
 
