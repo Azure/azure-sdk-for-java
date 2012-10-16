@@ -17,6 +17,6 @@ package com.microsoft.windowsazure.services.media.models;
 /**
  * The Class ListLocatorsOptions.
  */
-public class ListLocatorsOptions {
+public class ListLocatorsOptions extends ListOptions {
 
 }

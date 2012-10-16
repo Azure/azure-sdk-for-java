@@ -19,6 +19,6 @@ package com.microsoft.windowsazure.services.media.models;
  * Options class for listing access policies
  * No options available at this time.
  */
-public class ListAccessPolicyOptions {
+public class ListAccessPolicyOptions extends ListOptions {
 
 }

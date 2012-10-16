@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,10 +41,7 @@ public class ResourceLocationManager {
         String queryString = originalURI.getQuery();
 
         if (queryString != null && !queryString.isEmpty()) {
-            Map<String, String> queryParams = parseQueryString(queryString);
-            for (String key : new ArrayList<String>(queryParams.keySet())) {
-                uriBuilder.queryParam(key, queryParams.get(key));
-            }
+            uriBuilder.replaceQuery(queryString);
         }
         return uriBuilder.build();
     }
