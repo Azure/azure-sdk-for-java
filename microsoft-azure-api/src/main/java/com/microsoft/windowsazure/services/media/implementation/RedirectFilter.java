@@ -37,6 +37,7 @@ public class RedirectFilter extends ClientFilter {
         }
 
         URI originalURI = request.getURI();
+        String queryString = originalURI.getQuery();
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
         ClientResponse response = getNext().handle(request);

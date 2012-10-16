@@ -35,7 +35,12 @@ public class ResourceLocationManager {
     }
 
     public URI getRedirectedURI(URI originalURI) {
-        return UriBuilder.fromUri(baseURI).path(originalURI.getPath()).build();
+        String queryString = originalURI.getQuery();
+        String path = originalURI.getPath();
+        if (queryString != null && !queryString.isEmpty()) {
+            path = path + queryString;
+        }
+        return UriBuilder.fromUri(baseURI).path(path).build();
     }
 
     public void setRedirectedURI(String newURI) throws URISyntaxException {
