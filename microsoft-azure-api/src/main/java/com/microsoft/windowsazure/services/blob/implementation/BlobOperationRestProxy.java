@@ -980,8 +980,19 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         ListBlobBlocksResult result = response.getEntity(ListBlobBlocksResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentType(response.getHeaders().getFirst("Content-Type"));
-        result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
+
+        String blobContentLength = response.getHeaders().getFirst("x-ms-blob-content-length");
+        if (blobContentLength != null) {
+            result.setContentLength(Long.parseLong(blobContentLength));
+        }
+        else {
+            result.setContentLength(0);
+        }
+
+        String lastModified = response.getHeaders().getFirst("Last-Modified");
+        if (lastModified != null) {
+            result.setLastModified(dateMapper.parse(lastModified));
+        }
 
         return result;
     }
