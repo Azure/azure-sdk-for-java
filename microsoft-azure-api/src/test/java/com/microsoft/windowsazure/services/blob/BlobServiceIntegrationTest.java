@@ -91,6 +91,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static String TEST_CONTAINER_FOR_LISTING;
     private static String[] creatableContainers;
     private static String[] testContainers;
+    private static boolean createdRoot;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -120,6 +121,14 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobContract service = BlobService.create(config);
 
         createContainers(service, testContainersPrefix, testContainers);
+
+        try {
+            service.createContainer("$root");
+            createdRoot = true;
+        }
+        catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
@@ -129,6 +138,17 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         deleteContainers(service, testContainersPrefix, testContainers);
         deleteContainers(service, createableContainersPrefix, creatableContainers);
+
+        // If container was created, delete it
+        if (createdRoot) {
+            try {
+                service.deleteContainer("$root");
+                createdRoot = false;
+            }
+            catch (ServiceException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void createContainers(BlobContract service, String prefix, String[] list) throws Exception {
@@ -465,20 +485,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         BlobContract service = BlobService.create(config);
 
         //
-        // Ensure root container exists
-        //
-        ServiceException error = null;
-        try {
-            service.createContainer("$root");
-        }
-        catch (ServiceException e) {
-            error = e;
-        }
-
-        // Assert
-        assertTrue(error == null || error.getHttpStatusCode() == 409);
-
-        //
         // Work with root container explicitly ("$root")
         //
         {
@@ -517,11 +523,6 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
             // Act
             service.deleteBlob("", BLOB_FOR_ROOT_CONTAINER);
-        }
-
-        // If container was created, delete it
-        if (error == null) {
-            service.deleteContainer("$root");
         }
     }
 
