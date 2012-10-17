@@ -474,6 +474,10 @@ public class MediaRestProxy implements MediaContract {
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
         WebResource resource = getResource("MediaProcessors");
 
+        if ((listMediaProcessorsOptions != null) && (listMediaProcessorsOptions.getQueryParameters() != null)) {
+            resource = resource.queryParams(listMediaProcessorsOptions.getQueryParameters());
+        }
+
         List<MediaProcessorInfo> mediaProcessorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
                 .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<MediaProcessorInfo>>() {
                 });
