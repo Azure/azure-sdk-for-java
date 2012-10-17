@@ -113,7 +113,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Create the access policy.
      * 
-     * @param name
+     * @param accessPolicyName
      *            name of access policy
      * @param durationInMinutes
      *            Duration in minutes that blob access will be granted when using this access policy
@@ -121,12 +121,12 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException;
+    AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes) throws ServiceException;
 
     /**
      * Create the access policy with the given options.
      * 
-     * @param name
+     * @param accessPolicyName
      *            name of access policy
      * @param durationInMinutes
      *            Duration in minutes that blob access will be granted when using this access policy
@@ -136,29 +136,29 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
-            throws ServiceException;
+    AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
+            CreateAccessPolicyOptions options) throws ServiceException;
 
     /**
      * Delete the access policy with the given id.
      * 
-     * @param id
+     * @param accessPolicyId
      *            of access policy to delete
      * @throws ServiceException
      *             the service exception
      */
-    void deleteAccessPolicy(String id) throws ServiceException;
+    void deleteAccessPolicy(String accessPolicyId) throws ServiceException;
 
     /**
      * Get a single access policy.
      * 
-     * @param id
+     * @param accessPolicyId
      *            the id of the asset to retrieve
      * @return the asset
      * @throws ServiceException
      *             the service exception
      */
-    AccessPolicyInfo getAccessPolicy(String id) throws ServiceException;
+    AccessPolicyInfo getAccessPolicy(String accessPolicyId) throws ServiceException;
 
     /**
      * List access policies.
@@ -236,14 +236,14 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Delete locator.
      * 
-     * @param id
+     * @param locatorId
      *            the id
      * @throws UniformInterfaceException
      *             the uniform interface exception
      * @throws ServiceException
      *             the service exception
      */
-    public void deleteLocator(String id) throws UniformInterfaceException, ServiceException;
+    public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException;
 
     /**
      * List locators.
