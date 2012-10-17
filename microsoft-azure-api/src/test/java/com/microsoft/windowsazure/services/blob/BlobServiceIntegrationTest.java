@@ -651,6 +651,31 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void listBlockBlobWithNoCommittedBlocksWorks() throws Exception {
+        Configuration config = createConfiguration();
+        BlobContract service = BlobService.create(config);
+
+        String container = TEST_CONTAINER_FOR_BLOBS;
+        String blob = "listBlockBlobWithNoCommittedBlocksWorks";
+
+        service.createBlockBlob(container, blob, null);
+        service.createBlobBlock(container, blob, "01", new ByteArrayInputStream(new byte[] { 0x00 }));
+        service.deleteBlob(container, blob);
+
+        try {
+            // Note: This next two lines should give a 404, because the blob no longer
+            // exists. However, the service sometimes allow this improper access, so
+            // the SDK has to handle the situation gracefully.
+            service.createBlobBlock(container, blob, "01", new ByteArrayInputStream(new byte[] { 0x00 }));
+            ListBlobBlocksResult result = service.listBlobBlocks(container, blob);
+            assertEquals(0, result.getCommittedBlocks().size());
+        }
+        catch (ServiceException ex) {
+            assertEquals(404, ex.getHttpStatusCode());
+        }
+    }
+
+    @Test
     public void createPageBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -1321,14 +1346,14 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
-        Date currentLastModifiedDate = new Date();
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
-        service.createPageBlob(container, blob, 4096);
-        GetBlobPropertiesResult result = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions()
-                .setAccessCondition(AccessCondition.ifModifiedSince(currentLastModifiedDate)));
+        CreateBlobResult result = service.createPageBlob(container, blob, 4096);
+        Date tenSecondsFromNow = new Date(result.getLastModified().getTime() + 10000);
+        service.getBlobProperties(container, blob,
+                new GetBlobPropertiesOptions().setAccessCondition(AccessCondition.ifModifiedSince(tenSecondsFromNow)));
 
         // Assert
         assertTrue(false);
