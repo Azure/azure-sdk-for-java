@@ -116,6 +116,11 @@ public abstract class IntegrationTestBase {
         void verifyEquals(String message, Object expected, Object actual);
     }
 
+    protected <T> void verifyListResultContains(List<T> expectedInfos, Collection<T> actualInfos,
+            ComponentDelegate delegate) {
+        verifyListResultContains("", expectedInfos, actualInfos, delegate);
+    }
+
     protected <T> void verifyListResultContains(String message, List<T> expectedInfos, Collection<T> actualInfos,
             ComponentDelegate delegate) {
         assertNotNull(message + ": actualInfos", actualInfos);
