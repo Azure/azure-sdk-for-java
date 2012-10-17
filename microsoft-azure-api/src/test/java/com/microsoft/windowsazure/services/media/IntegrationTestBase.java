@@ -129,12 +129,12 @@ public abstract class IntegrationTestBase {
 
         List<T> orderedAndFilteredActualInfo = new ArrayList<T>();
         try {
-            for (T actualInfo : actualInfos) {
-                Method getId = null;
-                getId = actualInfo.getClass().getMethod("getId");
-                for (T expectedInfo : expectedInfos) {
+            for (T expectedInfo : expectedInfos) {
+                Method getId = expectedInfo.getClass().getMethod("getId");
+                for (T actualInfo : actualInfos) {
                     if (((String) getId.invoke(actualInfo)).equals(getId.invoke(expectedInfo))) {
                         orderedAndFilteredActualInfo.add(actualInfo);
+                        break;
                     }
                 }
             }
@@ -149,7 +149,8 @@ public abstract class IntegrationTestBase {
 
         if (delegate != null) {
             for (int i = 0; i < expectedInfos.size(); i++) {
-                delegate.verifyEquals("orderedPolicies " + i, expectedInfos.get(i), orderedAndFilteredActualInfo.get(i));
+                delegate.verifyEquals(message + ": orderedAndFilteredActualInfo " + i, expectedInfos.get(i),
+                        orderedAndFilteredActualInfo.get(i));
             }
         }
     }
