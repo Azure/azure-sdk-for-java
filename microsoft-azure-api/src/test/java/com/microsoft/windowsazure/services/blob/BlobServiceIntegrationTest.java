@@ -1346,14 +1346,14 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
-        Date currentLastModifiedDate = new Date();
 
         // Act
         String container = TEST_CONTAINER_FOR_BLOBS;
         String blob = "test";
-        service.createPageBlob(container, blob, 4096);
-        GetBlobPropertiesResult result = service.getBlobProperties(container, blob, new GetBlobPropertiesOptions()
-                .setAccessCondition(AccessCondition.ifModifiedSince(currentLastModifiedDate)));
+        CreateBlobResult result = service.createPageBlob(container, blob, 4096);
+        Date tenSecondsFromNow = new Date(result.getLastModified().getTime() + 10000);
+        service.getBlobProperties(container, blob,
+                new GetBlobPropertiesOptions().setAccessCondition(AccessCondition.ifModifiedSince(tenSecondsFromNow)));
 
         // Assert
         assertTrue(false);
