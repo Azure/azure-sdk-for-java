@@ -17,12 +17,8 @@ package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
@@ -41,44 +37,6 @@ import com.microsoft.windowsazure.services.media.models.LocatorType;
  * 
  */
 public class UploadingIntegrationTest extends IntegrationTestBase {
-    private static ArrayList<String> locatorIds;
-
-    @BeforeClass
-    public static void init() {
-        locatorIds = new ArrayList<String>();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        MediaContract service = MediaService.create(config);
-        deleteLocators(service);
-        deleteAccessPolicies(service, "upload");
-        deleteAssets(service, "upload");
-    }
-
-    private static void deleteLocators(MediaContract service) throws Exception {
-        for (String locatorId : locatorIds) {
-            service.deleteLocator(locatorId);
-        }
-    }
-
-    private static void deleteAccessPolicies(MediaContract service, String prefix) throws Exception {
-        List<AccessPolicyInfo> policies = service.listAccessPolicies();
-        for (AccessPolicyInfo policy : policies) {
-            if (policy.getName().startsWith(prefix)) {
-                service.deleteAccessPolicy(policy.getId());
-            }
-        }
-    }
-
-    private static void deleteAssets(MediaContract service, String prefix) throws Exception {
-        List<AssetInfo> assets = service.listAssets();
-        for (AssetInfo asset : assets) {
-            if (asset.getName().startsWith(prefix)) {
-                service.deleteAsset(asset.getId());
-            }
-        }
-    }
 
     @Test
     public void canUploadBlockBlob() throws Exception {
@@ -98,8 +56,6 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
 
         LocatorInfo locator = service.createLocator(policy.getId(), asset.getId(), LocatorType.SAS,
                 new CreateLocatorOptions().setStartTime(fiveMinutesAgo).setExpirationDateTime(tenMinutesFromNow));
-
-        locatorIds.add(locator.getId());
 
         WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
 

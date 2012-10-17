@@ -291,22 +291,24 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
      */
     @Override
-    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException {
-        return createAccessPolicy(name, durationInMinutes, null);
+    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes)
+            throws ServiceException {
+        return createAccessPolicy(accessPolicyName, durationInMinutes, null);
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
      */
     @Override
-    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
-            throws ServiceException {
+    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
+            CreateAccessPolicyOptions options) throws ServiceException {
 
         if (options == null) {
             options = new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE));
         }
 
-        AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes).setName(name)
+        AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes)
+                .setName(accessPolicyName)
                 .setPermissions(AccessPolicyPermission.bitsFromPermissions(options.getPermissions()));
 
         WebResource resource = getResource("AccessPolicies");
@@ -319,8 +321,8 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#getAccessPolicy(java.lang.String)
      */
     @Override
-    public AccessPolicyInfo getAccessPolicy(String id) throws ServiceException {
-        WebResource resource = getResource("AccessPolicies", id);
+    public AccessPolicyInfo getAccessPolicy(String accessPolicyId) throws ServiceException {
+        WebResource resource = getResource("AccessPolicies", accessPolicyId);
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(AccessPolicyInfo.class);
     }
@@ -329,8 +331,8 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAccessPolicy(java.lang.String)
      */
     @Override
-    public void deleteAccessPolicy(String id) throws ServiceException {
-        getResource("AccessPolicies", id).delete();
+    public void deleteAccessPolicy(String accessPolicyId) throws ServiceException {
+        getResource("AccessPolicies", accessPolicyId).delete();
     }
 
     /* (non-Javadoc)

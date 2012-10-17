@@ -212,9 +212,10 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
      */
     @Override
-    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes) throws ServiceException {
+    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes)
+            throws ServiceException {
         try {
-            return service.createAccessPolicy(name, durationInMinutes);
+            return service.createAccessPolicy(accessPolicyName, durationInMinutes);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -228,10 +229,10 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
      */
     @Override
-    public AccessPolicyInfo createAccessPolicy(String name, double durationInMinutes, CreateAccessPolicyOptions options)
-            throws ServiceException {
+    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
+            CreateAccessPolicyOptions options) throws ServiceException {
         try {
-            return service.createAccessPolicy(name, durationInMinutes, options);
+            return service.createAccessPolicy(accessPolicyName, durationInMinutes, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -261,9 +262,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#deleteAccessPolicy(java.lang.String)
      */
     @Override
-    public void deleteAccessPolicy(String id) throws ServiceException {
+    public void deleteAccessPolicy(String accessPolicyId) throws ServiceException {
         try {
-            service.deleteAccessPolicy(id);
+            service.deleteAccessPolicy(accessPolicyId);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -277,9 +278,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#getAccessPolicy(java.lang.String)
      */
     @Override
-    public AccessPolicyInfo getAccessPolicy(String id) throws ServiceException {
+    public AccessPolicyInfo getAccessPolicy(String accessPolicyId) throws ServiceException {
         try {
-            return service.getAccessPolicy(id);
+            return service.getAccessPolicy(accessPolicyId);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
