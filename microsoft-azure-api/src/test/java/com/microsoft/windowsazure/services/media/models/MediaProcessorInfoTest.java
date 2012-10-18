@@ -95,7 +95,7 @@ public class MediaProcessorInfoTest {
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
 
         // Act
-        String actualVersion = mediaProcessorInfo.setName(expectedVersion).getVersion();
+        String actualVersion = mediaProcessorInfo.setVersion(expectedVersion).getVersion();
 
         // Assert
         assertEquals(expectedVersion, actualVersion);
