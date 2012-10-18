@@ -27,6 +27,8 @@ import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
@@ -43,6 +45,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * 
      * @return the asset info
      * @throws ServiceException
+     *             the service exception
      */
     public AssetInfo createAsset() throws ServiceException;
 
@@ -191,6 +194,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            the locator type
      * @return the locator info
      * @throws ServiceException
+     *             the service exception
      */
     public LocatorInfo createLocator(String accessPolicyId, String assetId, LocatorType locatorType)
             throws ServiceException;
@@ -267,5 +271,26 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *             the service exception
      */
     public void updateLocator(String locatorId, UpdateLocatorOptions updateLocatorOptions) throws ServiceException;
+
+    /**
+     * List media processors.
+     * 
+     * @return the list media processors result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListMediaProcessorsResult listMediaProcessors() throws ServiceException;
+
+    /**
+     * List media processors.
+     * 
+     * @param listMediaProcessorsOptions
+     *            the list media processors options
+     * @return the list media processors result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
+            throws ServiceException;
 
 }

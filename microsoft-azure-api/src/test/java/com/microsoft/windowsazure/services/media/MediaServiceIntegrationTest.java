@@ -34,7 +34,10 @@ import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOption
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
+import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
@@ -197,6 +200,27 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
                 verifyInfosEqual(message, (AssetInfo) expected, (AssetInfo) actual);
             }
         });
+    }
+
+    @Test
+    public void listTopThreeAssetsSuccess() throws ServiceException {
+        // Arrange
+        Collection<AssetInfo> listAssetResultBaseLine = service.listAssets();
+        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetA"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetB"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetC"));
+        service.createAsset(createAssetOptions.setName(testAssetPrefix + "assetD"));
+        ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
+        listAssetsOptions.getQueryParameters().add("$top", "3");
+
+        // Act
+        Collection<AssetInfo> listAssetResult = service.listAssets(listAssetsOptions);
+
+        // Assert
+        assertNotNull("listAssetResult", listAssetResult);
+        assertEquals("listAssetResult.size", 3, listAssetResult.size());
+
     }
 
     @Ignore
@@ -464,4 +488,29 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertTrue(false);
     }
+    @Test
+    public void listMediaProcessorsSuccess() throws ServiceException {
+        // Arrange 
+
+        // Act
+        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors();
+
+        // Assert
+        assertNotNull(listMediaProcessorsResult);
+        assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
+    }
+
+    @Test
+    public void listMediaProcessorWithOptionSuccess() throws ServiceException {
+        // Arrange
+        ListMediaProcessorsOptions listMediaProcessorsOptions = new ListMediaProcessorsOptions();
+
+        // Act
+        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors(listMediaProcessorsOptions);
+
+        // Assert
+        assertNotNull(listMediaProcessorsResult);
+        assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
+    }
+
 }
