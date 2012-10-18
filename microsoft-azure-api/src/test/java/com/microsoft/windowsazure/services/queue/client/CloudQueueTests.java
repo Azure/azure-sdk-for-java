@@ -583,10 +583,9 @@ public class CloudQueueTests extends QueueTestBase {
 
         String msgContent = UUID.randomUUID().toString();
         final CloudQueueMessage message = new CloudQueueMessage(msgContent);
-        queue.addMessage(message, 10, 20, null, null);
+        queue.addMessage(message, 100, 50, null, null);
         CloudQueueMessage msgFromRetrieve1 = queue.retrieveMessage();
-        Assert.assertEquals(message.getMessageContentAsString(), msgContent);
-        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
+        Assert.assertNull(msgFromRetrieve1);
 
         queue.delete();
     }
