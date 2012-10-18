@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.EnumSet;
 
 import org.junit.Test;
 
@@ -26,7 +27,6 @@ import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -45,7 +45,7 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
         AssetInfo asset = service.createAsset(new CreateAssetOptions().setName("uploadBlockBlobAsset"));
 
         AccessPolicyInfo policy = service.createAccessPolicy("uploadWritePolicy", 10,
-                new CreateAccessPolicyOptions().addPermissions(AccessPolicyPermission.WRITE));
+                EnumSet.of(AccessPolicyPermission.WRITE));
 
         Date now = new Date();
         Date fiveMinutesAgo = new Date();
