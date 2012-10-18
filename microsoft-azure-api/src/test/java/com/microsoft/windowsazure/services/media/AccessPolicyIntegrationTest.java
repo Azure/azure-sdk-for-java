@@ -74,6 +74,17 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.WRITE, policy);
     }
 
+    @Test
+    public void canCreateAccessPolicyWithReadPermissions() throws Exception {
+        String testName = testPolicyPrefix + "CanCreateRead";
+        double duration = 5;
+
+        AccessPolicyInfo policy = service.createAccessPolicy(testName, duration,
+                EnumSet.of(AccessPolicyPermission.READ));
+
+        verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.READ, policy);
+    }
+
     // TODO: Null name or duration?
 
     @Test
