@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptio
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 
 public class MediaServiceIntegrationTest extends IntegrationTestBase {
+
     @Test
     public void listMediaProcessorsSuccess() throws ServiceException {
         // Arrange 

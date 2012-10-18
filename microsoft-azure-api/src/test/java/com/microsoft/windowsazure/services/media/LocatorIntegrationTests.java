@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -28,7 +29,6 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
@@ -44,9 +44,10 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
 
     private void setupForLocatorTest() throws ServiceException {
         assetInfo = service.createAsset(new CreateAssetOptions().setName(testAssetPrefix + "ForLocatorTest"));
-        accessPolicyInfo = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTest", 5);
+        accessPolicyInfo = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTest", 5,
+                EnumSet.of(AccessPolicyPermission.WRITE));
         accessPolicyInfoRead = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTestRead", 5,
-                new CreateAccessPolicyOptions().addPermissions(AccessPolicyPermission.READ));
+                EnumSet.of(AccessPolicyPermission.READ));
     }
 
     @Test

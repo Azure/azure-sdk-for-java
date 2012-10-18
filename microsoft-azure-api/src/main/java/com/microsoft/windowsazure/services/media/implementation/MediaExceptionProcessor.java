@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,8 +28,8 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
@@ -214,27 +215,10 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
      */
     @Override
-    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes)
-            throws ServiceException {
-        try {
-            return service.createAccessPolicy(accessPolicyName, durationInMinutes);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
-     */
-    @Override
     public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
-            CreateAccessPolicyOptions options) throws ServiceException {
+            EnumSet<AccessPolicyPermission> permissions) throws ServiceException {
         try {
-            return service.createAccessPolicy(accessPolicyName, durationInMinutes, options);
+            return service.createAccessPolicy(accessPolicyName, durationInMinutes, permissions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
