@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.services.media.implementation.content.LocatorR
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
@@ -296,28 +295,14 @@ public class MediaRestProxy implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
-     */
-    @Override
-    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes)
-            throws ServiceException {
-        return createAccessPolicy(accessPolicyName, durationInMinutes, null);
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
      */
     @Override
     public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
-            CreateAccessPolicyOptions options) throws ServiceException {
-
-        if (options == null) {
-            options = new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE));
-        }
+            EnumSet<AccessPolicyPermission> permissions) throws ServiceException {
 
         AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes)
-                .setName(accessPolicyName)
-                .setPermissions(AccessPolicyPermission.bitsFromPermissions(options.getPermissions()));
+                .setName(accessPolicyName).setPermissions(AccessPolicyPermission.bitsFromPermissions(permissions));
 
         WebResource resource = getResource("AccessPolicies");
 
