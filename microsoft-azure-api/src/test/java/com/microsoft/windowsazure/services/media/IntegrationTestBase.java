@@ -26,9 +26,9 @@ public abstract class IntegrationTestBase {
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
 
-    protected static final String validButNonexistAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
-    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:00000000-0000-4a00-0000-000000000000";
-    protected static final String validButNonexistLocatorId = "nb:lid:UUID:00000000-0000-4a00-0000-000000000000";
+    protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
+    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
+    protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
 
     protected static final String invalidId = "notAValidId";
 
