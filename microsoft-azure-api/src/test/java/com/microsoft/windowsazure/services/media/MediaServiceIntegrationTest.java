@@ -41,13 +41,14 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listMediaProcessorWithOptionSuccess() throws ServiceException {
         // Arrange
         ListMediaProcessorsOptions listMediaProcessorsOptions = new ListMediaProcessorsOptions();
+        listMediaProcessorsOptions.getQueryParameters().add("$top", "2");
 
         // Act
         ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors(listMediaProcessorsOptions);
 
         // Assert
         assertNotNull(listMediaProcessorsResult);
-        assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
+        assertEquals(2, listMediaProcessorsResult.getMediaProcessorInfos().size());
     }
 
 }

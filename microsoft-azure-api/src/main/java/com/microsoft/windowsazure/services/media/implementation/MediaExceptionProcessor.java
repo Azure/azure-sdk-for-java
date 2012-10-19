@@ -281,7 +281,7 @@ public class MediaExceptionProcessor implements MediaContract {
      */@Override
     public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
         try {
-            return service.listAccessPolicies();
+            return service.listAccessPolicies(options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
