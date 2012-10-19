@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import javax.ws.rs.core.MultivaluedMap;
+
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -30,7 +31,7 @@ public class ListOptions {
     }
 
     /** The query parameters. */
-    protected MultivaluedMap<String, String> queryParameters;
+    private final MultivaluedMap<String, String> queryParameters;
 
     /**
      * Gets the query parameters.

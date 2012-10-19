@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
+import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 
 public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private void verifyInfosEqual(String message, AccessPolicyInfo expected, AccessPolicyInfo actual) {
@@ -136,6 +137,29 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
                         verifyInfosEqual(message, (AccessPolicyInfo) expected, (AccessPolicyInfo) actual);
                     }
                 });
+    }
+
+    @Test
+    public void canUseQueryParametersWhenListingAccessPolicies() throws Exception {
+        String[] policyNames = new String[] { testPolicyPrefix + "ListThree", testPolicyPrefix + "ListFour",
+                testPolicyPrefix + "ListFive", testPolicyPrefix + "ListSix", testPolicyPrefix + "ListSeven" };
+
+        double duration = 3;
+        EnumSet<AccessPolicyPermission> permissions = EnumSet.of(AccessPolicyPermission.WRITE,
+                AccessPolicyPermission.LIST);
+
+        List<AccessPolicyInfo> expectedAccessPolicies = new ArrayList<AccessPolicyInfo>();
+        for (int i = 0; i < policyNames.length; i++) {
+            AccessPolicyInfo policy = service.createAccessPolicy(policyNames[i], duration, permissions);
+            expectedAccessPolicies.add(policy);
+        }
+
+        ListAccessPolicyOptions options = new ListAccessPolicyOptions();
+        options.getQueryParameters().add("$top", "2");
+
+        List<AccessPolicyInfo> actualAccessPolicies = service.listAccessPolicies(options);
+
+        assertEquals(2, actualAccessPolicies.size());
     }
 
     // Note: Access Policy cannot be updated.

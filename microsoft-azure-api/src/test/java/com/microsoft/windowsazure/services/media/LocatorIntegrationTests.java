@@ -215,28 +215,22 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void listLocatorsQuerySuccess() throws ServiceException {
-        // Arrange
-        LocatorType locatorType = LocatorType.SAS;
+    public void listLocatorsWithOptions() throws ServiceException {
         List<LocatorInfo> expectedLocators = new ArrayList<LocatorInfo>();
-        for (int i = 0; i < 2; i++) {
-            expectedLocators.add(service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType));
+        for (int i = 0; i < 5; i++) {
+            expectedLocators.add(service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), LocatorType.SAS));
         }
+
         ListLocatorsOptions options = new ListLocatorsOptions();
-        options.getQueryParameters().add("$query", "id eq " + expectedLocators.get(0).getId());
+        options.getQueryParameters().add(
+                "$filter",
+                "(Id eq '" + expectedLocators.get(1).getId() + "') or (" + "Id eq '" + expectedLocators.get(3).getId()
+                        + "')");
+        options.getQueryParameters().add("$top", "3");
 
-        // Act
-        ListLocatorsResult listLocatorsResult = service.listLocators(options);
+        ListLocatorsResult result = service.listLocators(options);
 
-        // Assert
-        assertNotNull(listLocatorsResult);
-        verifyListResultContains("listLocatorsResult", expectedLocators, listLocatorsResult.getLocatorInfos(),
-                new ComponentDelegate() {
-                    @Override
-                    public void verifyEquals(String message, Object expected, Object actual) {
-                        verifyLocatorInfosEqual(message, (LocatorInfo) expected, (LocatorInfo) actual);
-                    }
-                });
+        assertEquals(2, result.getLocatorInfos().size());
     }
 
     @Test
