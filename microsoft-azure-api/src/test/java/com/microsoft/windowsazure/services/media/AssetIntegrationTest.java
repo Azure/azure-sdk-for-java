@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 
 public class AssetIntegrationTest extends IntegrationTestBase {
@@ -189,6 +190,27 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 verifyInfosEqual(message, (AssetInfo) expected, (AssetInfo) actual);
             }
         });
+    }
+
+    @Test
+    public void canListAssetsWithOptions() throws ServiceException {
+        String[] assetNames = new String[] { testAssetPrefix + "assetListOptionsA",
+                testAssetPrefix + "assetListOptionsB", testAssetPrefix + "assetListOptionsC",
+                testAssetPrefix + "assetListOptionsD" };
+        List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
+        for (int i = 0; i < assetNames.length; i++) {
+            String name = assetNames[i];
+            CreateAssetOptions options = new CreateAssetOptions().setName(name);
+            expectedAssets.add(service.createAsset(options));
+        }
+
+        ListAssetsOptions options = new ListAssetsOptions();
+        options.getQueryParameters().add("$top", "2");
+        Collection<AssetInfo> listAssetResult = service.listAssets(options);
+
+        // Assert
+
+        assertEquals(2, listAssetResult.size());
     }
 
     @Ignore
