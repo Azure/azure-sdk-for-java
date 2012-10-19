@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -153,6 +154,22 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         // Assert
         assertNotNull(listLocatorsResult);
         verifyListResultContains("listLocators", expectedLocators, listLocatorsResult.getLocatorInfos(), null);
+    }
+
+    @Test
+    public void canListLocatorsWithOptions() throws ServiceException {
+        setupForLocatorTest();
+
+        for (int i = 0; i < 5; i++) {
+            service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), LocatorType.SAS);
+        }
+
+        ListLocatorsOptions options = new ListLocatorsOptions();
+        options.getQueryParameters().add("$top", "2");
+
+        ListLocatorsResult result = service.listLocators(options);
+
+        assertEquals(2, result.getLocatorInfos().size());
     }
 
     @Ignore("due to media service bug 596264")

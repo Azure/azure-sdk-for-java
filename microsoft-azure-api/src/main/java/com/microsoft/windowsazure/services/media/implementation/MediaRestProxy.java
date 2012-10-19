@@ -46,6 +46,7 @@ import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
@@ -151,6 +152,14 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    private WebResource getResource(String entityName, ListOptions options) {
+        WebResource resource = getResource(entityName);
+        if (options != null) {
+            resource = resource.queryParams(options.getQueryParameters());
+        }
+        return resource;
+    }
+
     /**
      * Gets the resource.
      * 
@@ -246,10 +255,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
-        WebResource resource = getResource("Assets");
-        if ((listAssetsOptions != null) && (listAssetsOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listAssetsOptions.getQueryParameters());
-        }
+        WebResource resource = getResource("Assets", listAssetsOptions);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AssetInfo>>() {
@@ -341,7 +347,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
-        WebResource resource = getResource("AccessPolicies");
+        WebResource resource = getResource("AccessPolicies", options);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AccessPolicyInfo>>() {
@@ -406,7 +412,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
-        WebResource resource = getResource("Locators");
+        WebResource resource = getResource("Locators", listLocatorOptions);
 
         List<LocatorInfo> locatorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
                 .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<LocatorInfo>>() {
@@ -459,11 +465,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
-        WebResource resource = getResource("MediaProcessors");
-
-        if ((listMediaProcessorsOptions != null) && (listMediaProcessorsOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listMediaProcessorsOptions.getQueryParameters());
-        }
+        WebResource resource = getResource("MediaProcessors", listMediaProcessorsOptions);
 
         List<MediaProcessorInfo> mediaProcessorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
                 .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<MediaProcessorInfo>>() {
