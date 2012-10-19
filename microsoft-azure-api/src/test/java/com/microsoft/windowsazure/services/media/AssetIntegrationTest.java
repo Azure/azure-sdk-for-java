@@ -65,19 +65,6 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createAssetSuccess() throws Exception {
-        // Arrange
-        String testName = testAssetPrefix + "Name";
-        CreateAssetOptions options = new CreateAssetOptions().setName(testName);
-
-        // Act
-        AssetInfo actualAsset = service.createAsset(options);
-
-        // Assert
-        verifyAssetProperties("actualAsset", testName, "", EncryptionOption.None, AssetState.Initialized, actualAsset);
-    }
-
-    @Test
     public void createAssetOptionsSuccess() throws Exception {
         // Arrange
         String testName = testAssetPrefix + "createAssetOptionsSuccess";
@@ -120,9 +107,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         try {
             actualAsset = service.createAsset();
             // Assert
-            assertNotNull("actualAsset", actualAsset);
-            assertEquals("actualAsset.getName() should be the service default value, the empty string", "",
-                    actualAsset.getName());
+            verifyAssetProperties("actualAsset", "", "", EncryptionOption.None, AssetState.Initialized, actualAsset);
         }
         finally {
             // Clean up the anonymous asset now while we have the id, because we
@@ -152,12 +137,19 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         // Act
         AssetInfo actualAsset = service.getAsset(assetInfo.getId());
 
-        assertEquals("Id", assetInfo.getId(), actualAsset.getId());
-        verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
+        // Assert
+        verifyInfosEqual("actualAsset", assetInfo, actualAsset);
     }
 
     @Test
-    public void getAssetFailedWithInvalidId() throws ServiceException {
+    public void getAssetInvalidId() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(500));
+        service.getAsset(invalidId);
+    }
+
+    @Test
+    public void getAssetNonexistId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.getAsset(validButNonexistAssetId);
@@ -213,8 +205,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listAssetResult.size());
     }
 
-    @Ignore
-    // Bug https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/364
+    @Ignore("https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/364")
     @Test
     public void updateAssetSuccess() throws Exception {
         // Arrange
@@ -256,7 +247,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
 
         // Assert
-        verifyAssetProperties("updatedAsset", originalTestName, altId, encryptionOption, assetState, updatedAsset);
+        verifyInfosEqual("updatedAsset", originalAsset, updatedAsset);
     }
 
     @Test
@@ -273,7 +264,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteAssetSuccess() throws Exception {
         // Arrange
-        String assetName = "deleteAssetSuccess";
+        String assetName = testAssetPrefix + "deleteAssetSuccess";
         CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName(assetName);
         AssetInfo assetInfo = service.createAsset(createAssetOptions);
         List<AssetInfo> listAssetsResult = service.listAssets();
