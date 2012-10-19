@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Named;
 import javax.ws.rs.core.UriBuilder;
@@ -48,17 +46,5 @@ public class ResourceLocationManager {
 
     public void setRedirectedURI(String newURI) throws URISyntaxException {
         baseURI = new URI(newURI);
-    }
-
-    private Map<String, String> parseQueryString(String queryString) {
-        Map<String, String> map = new HashMap<String, String>();
-        String[] params = queryString.split("&");
-        for (String param : params) {
-            String key = param.split("=")[0];
-            String value = param.split("=")[1];
-            map.put(key, value);
-        }
-        return map;
-
     }
 }
