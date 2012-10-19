@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptio
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 
-public class MediaServiceIntegrationTest extends IntegrationTestBase {
+public class MediaProcessorIntegrationTest extends IntegrationTestBase {
 
     private void verifyMediaProcessorInfo(String message, MediaProcessorInfo mediaProcessorInfo) {
         assertEquals(message + " id length", 49, mediaProcessorInfo.getId().length());
