@@ -34,7 +34,6 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Defines the methods available for Windows Azure Media Services.
@@ -230,12 +229,11 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * 
      * @param locatorId
      *            the id
-     * @throws UniformInterfaceException
-     *             the uniform interface exception
+     * 
      * @throws ServiceException
      *             the service exception
      */
-    public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException;
+    public void deleteLocator(String locatorId) throws ServiceException;
 
     /**
      * List locators.
