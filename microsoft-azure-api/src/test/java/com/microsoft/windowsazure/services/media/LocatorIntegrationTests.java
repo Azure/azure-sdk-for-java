@@ -44,9 +44,11 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     private static AssetInfo assetInfo;
     private static AccessPolicyInfo accessPolicyInfo;
     private static AccessPolicyInfo accessPolicyInfoRead;
+    private static int minuteInMS = 60 * 1000;
+    private static int tenMinutesInMS = 10 * 60 * 1000;
 
     private Date calculateDefaultExpectedExpDate(AccessPolicyInfo accessPolicy, AssetInfo asset) {
-        return new Date(asset.getLastModified().getTime() + (long) accessPolicy.getDurationInMinutes() * 60 * 1000);
+        return new Date(asset.getLastModified().getTime() + (long) accessPolicy.getDurationInMinutes() * minuteInMS);
     }
 
     private void verifyLocatorInfosEqual(String message, LocatorInfo expected, LocatorInfo actual) {
@@ -92,7 +94,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         IntegrationTestBase.setup();
         accessPolicyInfo = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTest", 5,
                 EnumSet.of(AccessPolicyPermission.WRITE));
-        accessPolicyInfoRead = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTestRead", 5,
+        accessPolicyInfoRead = service.createAccessPolicy(testPolicyPrefix + "ForLocatorTestRead", 15,
                 EnumSet.of(AccessPolicyPermission.READ));
     }
 
@@ -105,13 +107,13 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     public void createLocatorSuccess() throws ServiceException {
         // Arrange
         LocatorType locatorType = LocatorType.Origin;
-        Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfo, assetInfo);
+        Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfoRead, assetInfo);
 
         // Act
-        LocatorInfo locatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType);
+        LocatorInfo locatorInfo = service.createLocator(accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType);
 
         // Assert
-        verifyLocatorProperties("locatorInfo", accessPolicyInfo.getId(), assetInfo.getId(), locatorType, null,
+        verifyLocatorProperties("locatorInfo", accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType, null,
                 expectedExpirationDateTime, locatorInfo);
     }
 
@@ -121,7 +123,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         // Arrange
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         Date expectedExpirationDateTime = new Date();
-        expectedExpirationDateTime.setTime(expectedExpirationDateTime.getTime() + 10000);
+        expectedExpirationDateTime.setTime(expectedExpirationDateTime.getTime() + tenMinutesInMS);
         createLocatorOptions.setExpirationDateTime(expectedExpirationDateTime);
         LocatorType locatorType = LocatorType.SAS;
 
@@ -134,14 +136,16 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 expectedExpirationDateTime, locatorInfo);
     }
 
+    @Ignore("due to media service bug 596240")
     @Test
     public void createLocatorOptionsSetStartTimeSuccess() throws ServiceException {
         // Arrange
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         Date expectedStartDateTime = new Date();
-        expectedStartDateTime.setTime(expectedStartDateTime.getTime() + 10000);
+        expectedStartDateTime.setTime(expectedStartDateTime.getTime() + tenMinutesInMS);
         createLocatorOptions.setStartTime(expectedStartDateTime);
         LocatorType locatorType = LocatorType.SAS;
+        Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfo, assetInfo);
 
         // Act
         LocatorInfo locatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
@@ -149,17 +153,16 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
 
         // Assert 
         verifyLocatorProperties("locatorInfo", accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
-                expectedStartDateTime, null, locatorInfo);
+                expectedStartDateTime, expectedExpirationDateTime, locatorInfo);
     }
 
-    @Ignore("due to media service bug 596238")
     @Test
     public void getLocatorSuccess() throws ServiceException {
         // Arrange
         LocatorType locatorType = LocatorType.SAS;
         Date expectedStartDateTime = new Date();
-        expectedStartDateTime.setTime(expectedStartDateTime.getTime() + 10000);
-        Date expectedExpirationDateTime = new Date(expectedStartDateTime.getTime() + 10000);
+        expectedStartDateTime.setTime(expectedStartDateTime.getTime() + tenMinutesInMS);
+        Date expectedExpirationDateTime = new Date(expectedStartDateTime.getTime() + tenMinutesInMS);
 
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         createLocatorOptions.setStartTime(expectedStartDateTime);
@@ -177,15 +180,15 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void getLocatorInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
-        service.getAsset(invalidId);
+        expectedException.expect(new ServiceExceptionMatcher(500));
+        service.getLocator(invalidId);
     }
 
     @Test
     public void getLocatorNonexistId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.getAsset(validButNonexistLocatorId);
+        service.getLocator(validButNonexistLocatorId);
     }
 
     @Test
@@ -236,7 +239,6 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 });
     }
 
-    @Ignore("due to media service bug 596264")
     @Test
     public void updateLocatorSuccess() throws ServiceException {
         // Arrange
@@ -244,9 +246,9 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         LocatorInfo locatorInfo = service.createLocator(accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType);
 
         Date expirationDateTime = new Date();
-        expirationDateTime.setTime(expirationDateTime.getTime() + 1000);
+        expirationDateTime.setTime(expirationDateTime.getTime() + tenMinutesInMS);
         Date startTime = new Date();
-        startTime.setTime(startTime.getTime() - 1000);
+        startTime.setTime(startTime.getTime() - tenMinutesInMS);
         UpdateLocatorOptions updateLocatorOptions = new UpdateLocatorOptions()
                 .setExpirationDateTime(expirationDateTime).setStartTime(startTime);
 
@@ -265,9 +267,9 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         // Arrange
         LocatorType locatorType = LocatorType.Origin;
         Date expirationDateTime = new Date();
-        expirationDateTime.setTime(expirationDateTime.getTime() + 1000);
+        expirationDateTime.setTime(expirationDateTime.getTime() + tenMinutesInMS);
         Date startTime = new Date();
-        startTime.setTime(startTime.getTime() - 1000);
+        startTime.setTime(startTime.getTime() - tenMinutesInMS);
         CreateLocatorOptions options = new CreateLocatorOptions().setExpirationDateTime(expirationDateTime)
                 .setStartTime(startTime);
 

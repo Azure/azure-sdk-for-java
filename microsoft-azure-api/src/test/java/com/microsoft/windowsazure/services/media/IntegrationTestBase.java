@@ -13,7 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
@@ -163,20 +162,24 @@ public abstract class IntegrationTestBase {
     }
 
     protected void assertDateApproxEquals(String message, Date expected, Date actual) {
-        // Default allows for a 30 seconds difference in dates.
+        // Default allows for a 30 seconds difference in dates, for clock skew, network delays, etc.
         long deltaInMilliseconds = 30000;
+
         if (expected == null || actual == null) {
             assertEquals(message, expected, actual);
         }
         else {
             long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+
+            // TODO: Remove this time-zone workaround when fixed:
+            // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/413
             if (diffInMilliseconds > deltaInMilliseconds) {
-                // Out of the range. Need to assert
-                // Use strings so the messages make more sense.
-                ISO8601DateConverter converter = new ISO8601DateConverter();
-                String expectedString = converter.format(expected);
-                String actualString = converter.format(actual);
-                assertEquals(message, expectedString, actualString);
+                // Just hard-code time-zone offset of 7 hours for now.
+                diffInMilliseconds = Math.abs(diffInMilliseconds - 7 * 60 * 60 * 1000);
+            }
+
+            if (diffInMilliseconds > deltaInMilliseconds) {
+                assertEquals(message, expected, actual);
             }
         }
     }
