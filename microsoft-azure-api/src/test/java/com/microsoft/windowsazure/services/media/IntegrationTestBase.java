@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -12,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
@@ -26,7 +28,8 @@ public abstract class IntegrationTestBase {
     protected static final String testPolicyPrefix = "testPolicy";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
-    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:bce3863e-830b-49f5-9199-7cfaff52935f";
+    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:00000000-0000-4a00-0000-000000000000";
+    protected static final String validButNonexistLocatorId = "nb:lid:UUID:00000000-0000-4a00-0000-000000000000";
 
     protected static final String invalidId = "notAValidId";
 
@@ -151,6 +154,29 @@ public abstract class IntegrationTestBase {
             for (int i = 0; i < expectedInfos.size(); i++) {
                 delegate.verifyEquals(message + ": orderedAndFilteredActualInfo " + i, expectedInfos.get(i),
                         orderedAndFilteredActualInfo.get(i));
+            }
+        }
+    }
+
+    protected void assertDateApproxEquals(Date expected, Date actual) {
+        assertDateApproxEquals("", expected, actual);
+    }
+
+    protected void assertDateApproxEquals(String message, Date expected, Date actual) {
+        // Default allows for a 30 seconds difference in dates.
+        long deltaInMilliseconds = 30000;
+        if (expected == null || actual == null) {
+            assertEquals(message, expected, actual);
+        }
+        else {
+            long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+            if (diffInMilliseconds > deltaInMilliseconds) {
+                // Out of the range. Need to assert
+                // Use strings so the messages make more sense.
+                ISO8601DateConverter converter = new ISO8601DateConverter();
+                String expectedString = converter.format(expected);
+                String actualString = converter.format(actual);
+                assertEquals(message, expectedString, actualString);
             }
         }
     }
