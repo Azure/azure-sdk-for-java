@@ -503,12 +503,13 @@ public class TableClientTests extends TableTestBase {
             // Add a policy, check setting and getting.
             SharedAccessTablePolicy policy1 = new SharedAccessTablePolicy();
             Calendar now = GregorianCalendar.getInstance();
+            now.add(Calendar.MINUTE, -10);
             policy1.setSharedAccessStartTime(now.getTime());
-            now.add(Calendar.MINUTE, 10);
+            now.add(Calendar.MINUTE, 30);
             policy1.setSharedAccessExpiryTime(now.getTime());
 
-            policy1.setPermissions(EnumSet.of(SharedAccessTablePermissions.QUERY, SharedAccessTablePermissions.UPDATE,
-                    SharedAccessTablePermissions.DELETE));
+            policy1.setPermissions(EnumSet.of(SharedAccessTablePermissions.ADD, SharedAccessTablePermissions.QUERY,
+                    SharedAccessTablePermissions.UPDATE, SharedAccessTablePermissions.DELETE));
             expectedPermissions.getSharedAccessPolicies().put(identifier, policy1);
 
             table.uploadPermissions(expectedPermissions);
