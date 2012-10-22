@@ -637,6 +637,9 @@ public final class CloudQueue {
     public void deleteMessage(final CloudQueueMessage message, QueueRequestOptions options, OperationContext opContext)
             throws StorageException {
         Utility.assertNotNull("message", message);
+        Utility.assertNotNullOrEmpty("messageId", message.id);
+        Utility.assertNotNullOrEmpty("popReceipt", message.popReceipt);
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -1072,7 +1075,7 @@ public final class CloudQueue {
     @DoesServiceRequest
     public CloudQueueMessage retrieveMessage(final int visibilityTimeoutInSeconds, final QueueRequestOptions options,
             final OperationContext opContext) throws StorageException {
-        return getFirstOrNull(this.retrieveMessages(1, visibilityTimeoutInSeconds, null, null));
+        return getFirstOrNull(this.retrieveMessages(1, visibilityTimeoutInSeconds, options, opContext));
     }
 
     /**

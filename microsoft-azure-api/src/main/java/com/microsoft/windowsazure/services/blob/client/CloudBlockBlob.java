@@ -162,6 +162,8 @@ public final class CloudBlockBlob extends CloudBlob {
     @DoesServiceRequest
     public void commitBlockList(final Iterable<BlockEntry> blockList, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -209,7 +211,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -298,7 +300,9 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
+
                 final GetBlockListResponse response = new GetBlockListResponse(request.getInputStream());
                 return response.getBlocks();
             }
@@ -349,6 +353,8 @@ public final class CloudBlockBlob extends CloudBlob {
         if (options == null) {
             options = new BlobRequestOptions();
         }
+
+        assertNoWriteOperationForSnapshot();
 
         options.applyDefaults(this.blobServiceClient);
 
@@ -405,6 +411,8 @@ public final class CloudBlockBlob extends CloudBlob {
             throw new IllegalArgumentException(
                     "Invalid stream length, specify -1 for unkown length stream, or a positive number of bytes");
         }
+
+        assertNoWriteOperationForSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -520,6 +528,8 @@ public final class CloudBlockBlob extends CloudBlob {
                     "Invalid stream length, length must be less than or equal to 4 MB in size.");
         }
 
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -621,7 +631,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };

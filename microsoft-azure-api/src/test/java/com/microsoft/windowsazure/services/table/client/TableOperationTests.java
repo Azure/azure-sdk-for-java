@@ -517,8 +517,8 @@ public class TableOperationTests extends TableTestBase {
         catch (TableServiceException ex) {
             Assert.assertEquals(ex.getMessage(), "Precondition Failed");
             Assert.assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The condition specified using HTTP conditional header(s) is not met."));
-            Assert.assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ConditionNotMet");
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            Assert.assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
         }
 
         // delete entity

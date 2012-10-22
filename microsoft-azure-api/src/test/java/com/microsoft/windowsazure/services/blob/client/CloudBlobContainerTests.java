@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -36,6 +37,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
+import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
@@ -496,6 +498,177 @@ public class CloudBlobContainerTests extends BlobTestBase {
         finally {
             // cleanup
             newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testBlobSnapshotValidationTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+            final int length = 1 * 1024;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            String blockBlobName = "testBlockBlob" + Integer.toString(randGenerator.nextInt(50000));
+            blockBlobName = blockBlobName.replace('-', '_');
+
+            final CloudBlob blockBlobRef = newContainer.getBlockBlobReference(blockBlobName);
+            blockBlobRef.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+
+            final CloudBlob blobSnapshot = blockBlobRef.createSnapshot();
+
+            final ByteArrayOutputStream outStream = new ByteArrayOutputStream(length);
+
+            blobSnapshot.download(outStream);
+            final byte[] retrievedBuff = outStream.toByteArray();
+            for (int m = 0; m < length; m++) {
+                Assert.assertEquals(buff[m], retrievedBuff[m]);
+            }
+
+            // Read operation should work fine. 
+            blobSnapshot.downloadAttributes();
+
+            // Expect an IllegalArgumentException from upload. 
+            try {
+                blobSnapshot.upload(new ByteArrayInputStream(buff), -1);
+                Assert.fail("Expect an IllegalArgumentException from upload");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from uploadMetadata. 
+            try {
+                blobSnapshot.uploadMetadata();
+                Assert.fail("Expect an IllegalArgumentException from uploadMetadata");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from uploadProperties. 
+            try {
+                blobSnapshot.uploadProperties();
+                Assert.fail("Expect an IllegalArgumentException from uploadProperties");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            // Expect an IllegalArgumentException from createSnapshot. 
+            try {
+                blobSnapshot.createSnapshot();
+                Assert.fail("Expect an IllegalArgumentException from createSnapshot");
+            }
+            catch (IllegalArgumentException e) {
+                Assert.assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+            }
+
+            blobSnapshot.delete(DeleteSnapshotsOption.NONE, null, null, null);
+
+            blockBlobRef.downloadAttributes();
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testBlobDownloadRangeValidationTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+
+            final int blockLength = 1024 * 1024;
+            final int length = 3 * blockLength;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            String blockBlobName = "testBlockBlob" + Integer.toString(randGenerator.nextInt(50000));
+            blockBlobName = blockBlobName.replace('-', '_');
+
+            final CloudBlockBlob blockBlobRef = newContainer.getBlockBlobReference(blockBlobName);
+            blockBlobRef.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+            ArrayList<BlockEntry> blockList = new ArrayList<BlockEntry>();
+            for (int i = 1; i <= 3; i++) {
+                randGenerator.nextBytes(buff);
+
+                String blockID = String.format("%08d", i);
+                blockBlobRef.uploadBlock(blockID, new ByteArrayInputStream(buff), blockLength, null, null, null);
+                blockList.add(new BlockEntry(blockID, BlockSearchMode.LATEST));
+            }
+
+            blockBlobRef.commitBlockList(blockList);
+
+            //Download full blob
+            blockBlobRef.download(new ByteArrayOutputStream());
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
+
+            //Download blob range.
+            byte[] downloadBuffer = new byte[100];
+            blockBlobRef.downloadRange(0, 100, downloadBuffer, 0);
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
+
+            //Download block list.
+            blockBlobRef.downloadBlockList();
+            Assert.assertEquals(length, blockBlobRef.getProperties().getLength());
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testBlobNamePlusEncodingTest() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        try {
+
+            final int length = 1 * 1024;
+            final Random randGenerator = new Random();
+            final byte[] buff = new byte[length];
+            randGenerator.nextBytes(buff);
+
+            final CloudBlockBlob originalBlob = newContainer.getBlockBlobReference("a+b.txt");
+            originalBlob.upload(new ByteArrayInputStream(buff), -1, null, null, null);
+
+            CloudBlob copyBlob = newContainer.getBlockBlobReference(originalBlob.getName() + "copyed");
+            copyBlob.copyFromBlob(originalBlob);
+            Thread.sleep(1000);
+            copyBlob.downloadAttributes();
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testListContainersTest() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        final ResultSegment<CloudBlobContainer> segment = bClient.listContainersSegmented(null,
+                ContainerListingDetails.ALL, 2, null, null, null);
+
+        for (int i = 0; i < 5 && segment.getHasMoreResults(); i++) {
+            for (final CloudBlobContainer container : segment.getResults()) {
+                container.downloadAttributes();
+            }
+
+            bClient.listContainersSegmented(null, ContainerListingDetails.ALL, 2, segment.getContinuationToken(), null,
+                    null);
         }
     }
 }
