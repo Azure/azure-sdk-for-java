@@ -1,11 +1,11 @@
 /**
  * Copyright 2011 Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,7 +45,7 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service properties until they have been set on the
      * storage account with a call to {@link QueueContract}<em>.setServiceProperties</em>.
-     * 
+     *
      * @return
      *         A reference to the {@link Logging} instance in this {@link ServiceProperties} instance.
      */
@@ -59,12 +59,15 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service properties until they have been set on the
      * storage account with a call to {@link QueueContract}<em>.setServiceProperties</em>.
-     * 
+     *
      * @param logging
      *            The {@link Logging} instance to set in this {@link ServiceProperties} instance.
+     * @return
+     *         A reference to this {@link ServiceProperties} instance.
      */
-    public void setLogging(Logging logging) {
+    public ServiceProperties setLogging(Logging logging) {
         this.logging = logging;
+        return this;
     }
 
     /**
@@ -75,7 +78,7 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service properties until they have been set on the
      * storage account with a call to {@link QueueContract}<em>.setServiceProperties</em>.
-     * 
+     *
      * @return
      *         A reference to the {@link Metrics} instance in this {@link ServiceProperties} instance.
      */
@@ -89,12 +92,15 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service properties until they have been set on the
      * storage account with a call to {@link QueueContract}<em>.setServiceProperties</em>.
-     * 
+     *
      * @param metrics
      *            The {@link Metrics} instance to set in this {@link ServiceProperties} instance.
+     * @return
+     *         A reference to this {@link ServiceProperties} instance.
      */
-    public void setMetrics(Metrics metrics) {
+    public ServiceProperties setMetrics(Metrics metrics) {
         this.metrics = metrics;
+        return this;
     }
 
     /**
@@ -111,7 +117,7 @@ public class ServiceProperties {
 
         /**
          * Gets a reference to the {@link RetentionPolicy} instance in this {@link Logging} instance.
-         * 
+         *
          * @return
          *         A reference to the {@link RetentionPolicy} instance in this {@link Logging} instance.
          */
@@ -122,19 +128,22 @@ public class ServiceProperties {
 
         /**
          * Sets the {@link RetentionPolicy} instance in this {@link Logging} instance.
-         * 
+         *
          * @param retentionPolicy
          *            The {@link RetentionPolicy} instance to set in this {@link Logging} instance.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether queue write operations are logged. If this value is <code>true</code> then all
          * requests that write to the Queue service will be logged. These requests include adding a message, updating a
          * message, setting queue metadata, and creating a queue.
-         * 
+         *
          * @return
          *         <code>true</code> if queue write operations are logged, otherwise <code>false</code>.
          */
@@ -147,19 +156,22 @@ public class ServiceProperties {
          * Sets a flag indicating whether queue write operations are logged. If this value is <code>true</code> then all
          * requests that write to the Queue service will be logged. These requests include adding a message, updating a
          * message, setting queue metadata, and creating a queue.
-         * 
+         *
          * @param write
          *            <code>true</code> to enable logging of queue write operations, otherwise <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setWrite(boolean write) {
+        public Logging setWrite(boolean write) {
             this.write = write;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether queue read operations are logged. If this value is <code>true</code> then all
          * requests that read from the Queue service will be logged. These requests include listing queues, getting
          * queue metadata, listing messages, and peeking messages.
-         * 
+         *
          * @return
          *         <code>true</code> if queue read operations are logged, otherwise <code>false</code>.
          */
@@ -172,19 +184,22 @@ public class ServiceProperties {
          * Sets a flag indicating whether queue read operations are logged. If this value is <code>true</code> then all
          * requests that read from the Queue service will be logged. These requests include listing queues, getting
          * queue metadata, listing messages, and peeking messages.
-         * 
+         *
          * @param read
          *            <code>true</code> to enable logging of queue read operations, otherwise <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setRead(boolean read) {
+        public Logging setRead(boolean read) {
             this.read = read;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether queue delete operations are logged. If this value is <code>true</code> then
          * all requests that delete from the Queue service will be logged. These requests include deleting queues,
          * deleting messages, and clearing messages.
-         * 
+         *
          * @return
          *         <code>true</code> if queue delete operations are logged, otherwise <code>false</code>.
          */
@@ -197,17 +212,20 @@ public class ServiceProperties {
          * Sets a flag indicating whether queue delete operations are logged. If this value is <code>true</code> then
          * all requests that delete from the Queue service will be logged. These requests include deleting queues,
          * deleting messages, and clearing messages.
-         * 
+         *
          * @param delete
          *            <code>true</code> to enable logging of queue delete operations, otherwise <code>false</code>.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setDelete(boolean delete) {
+        public Logging setDelete(boolean delete) {
             this.delete = delete;
+            return this;
         }
 
         /**
          * Gets the Storage Analytics version number associated with this {@link Logging} instance.
-         * 
+         *
          * @return
          *         A {@link String} containing the Storage Analytics version number.
          */
@@ -223,12 +241,15 @@ public class ServiceProperties {
          * <p>
          * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/hh343268.aspx">Storage Analytics
          * Overview</a> documentation on MSDN for more information.
-         * 
+         *
          * @param version
          *            A {@link String} containing the Storage Analytics version number to set.
+         * @return
+         *         A reference to this {@link Logging} instance.
          */
-        public void setVersion(String version) {
+        public Logging setVersion(String version) {
             this.version = version;
+            return this;
         }
     }
 
@@ -245,7 +266,7 @@ public class ServiceProperties {
 
         /**
          * Gets a reference to the {@link RetentionPolicy} instance in this {@link Metrics} instance.
-         * 
+         *
          * @return
          *         A reference to the {@link RetentionPolicy} instance in this {@link Metrics} instance.
          */
@@ -256,18 +277,21 @@ public class ServiceProperties {
 
         /**
          * Sets the {@link RetentionPolicy} instance in this {@link Metrics} instance.
-         * 
+         *
          * @param retentionPolicy
          *            The {@link RetentionPolicy} instance to set in this {@link Metrics} instance.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
             this.retentionPolicy = retentionPolicy;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether metrics should generate summary statistics for called API operations. If this
          * value is <code>true</code> then all Queue service REST API operations will be included in the metrics.
-         * 
+         *
          * @return
          *         <code>true</code> if Queue service REST API operations are included in metrics, otherwise
          *         <code>false</code>.
@@ -280,18 +304,21 @@ public class ServiceProperties {
         /**
          * Sets a flag indicating whether metrics should generate summary statistics for called API operations. If this
          * value is <code>true</code> then all Queue service REST API operations will be included in the metrics.
-         * 
+         *
          * @param includeAPIs
          *            <code>true</code> to include Queue service REST API operations in metrics, otherwise
          *            <code>false</code>.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setIncludeAPIs(Boolean includeAPIs) {
+        public Metrics setIncludeAPIs(Boolean includeAPIs) {
             this.includeAPIs = includeAPIs;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether metrics is enabled for the Queue storage service.
-         * 
+         *
          * @return
          *         A flag indicating whether metrics is enabled for the Queue storage service.
          */
@@ -302,17 +329,20 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether to enable metrics for the Queue storage service.
-         * 
+         *
          * @param enabled
          *            <code>true</code> to enable metrics for the Queue storage service, otherwise <code>false</code>.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setEnabled(boolean enabled) {
+        public Metrics setEnabled(boolean enabled) {
             this.enabled = enabled;
+            return this;
         }
 
         /**
          * Gets the Storage Analytics version number associated with this {@link Metrics} instance.
-         * 
+         *
          * @return
          *         A {@link String} containing the Storage Analytics version number.
          */
@@ -327,12 +357,15 @@ public class ServiceProperties {
          * <p>
          * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/hh343268.aspx">Storage Analytics
          * Overview</a> documentation on MSDN for more information.
-         * 
+         *
          * @param version
          *            A {@link String} containing the Storage Analytics version number to set.
+         * @return
+         *         A reference to this {@link Metrics} instance.
          */
-        public void setVersion(String version) {
+        public Metrics setVersion(String version) {
             this.version = version;
+            return this;
         }
     }
 
@@ -348,7 +381,7 @@ public class ServiceProperties {
         /**
          * Gets the number of days that metrics or logging data should be retained. All data older than this value will
          * be deleted. The value may be null if a retention policy is not enabled.
-         * 
+         *
          * @return
          *         The number of days that metrics or logging data should be retained.
          */
@@ -361,17 +394,20 @@ public class ServiceProperties {
          * Sets the number of days that metrics or logging data should be retained. All data older than this value will
          * be deleted. The value must be in the range from 1 to 365. This value must be set if a retention policy is
          * enabled, but is not required if a retention policy is not enabled.
-         * 
+         *
          * @param days
          *            The number of days that metrics or logging data should be retained.
+         * @return
+         *         A reference to this {@link RetentionPolicy} instance.
          */
-        public void setDays(Integer days) {
+        public RetentionPolicy setDays(Integer days) {
             this.days = days;
+            return this;
         }
 
         /**
          * Gets a flag indicating whether a retention policy is enabled for the storage service.
-         * 
+         *
          * @return
          *         <code>true</code> if data retention is enabled, otherwise <code>false</code>.
          */
@@ -382,12 +418,15 @@ public class ServiceProperties {
 
         /**
          * Sets a flag indicating whether a retention policy is enabled for the storage service.
-         * 
+         *
          * @param enabled
          *            Set <code>true</code> to enable data retention.
+         * @return
+         *         A reference to this {@link RetentionPolicy} instance.
          */
-        public void setEnabled(boolean enabled) {
+        public RetentionPolicy setEnabled(boolean enabled) {
             this.enabled = enabled;
+            return this;
         }
     }
 }

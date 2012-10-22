@@ -577,7 +577,11 @@ public class TableTestBase {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
         }
         else {
-            httpAcc = CloudStorageAccount.parse(CLOUD_ACCOUNT_HTTP);
+            String cloudAccount = CLOUD_ACCOUNT_HTTP;
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("table.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("table.accountKey"));
+
+            httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
 
         bClient = httpAcc.createCloudBlobClient();
