@@ -327,7 +327,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "Client v0.1.2";
+        public static final String USER_AGENT_VERSION = "Client v0.1.3";
     }
 
     /**
