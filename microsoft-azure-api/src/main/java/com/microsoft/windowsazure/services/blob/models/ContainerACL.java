@@ -1,11 +1,11 @@
 /**
  * Copyright 2011 Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ public class ContainerACL {
      * Gets the <strong>Etag</strong> value associated with this {@link ContainerACL} instance. This is the value
      * returned for a container by a Blob service REST API Get Container ACL operation, or the value to set on a
      * container with a Set Container ACL operation.
-     * 
+     *
      * @return
      *         A {@link String} containing the <strong>Etag</strong> value associated with this {@link ContainerACL}
      *         instance.
@@ -61,20 +61,24 @@ public class ContainerACL {
      * This value is only set on a container when this {@link ContainerACL} instance is passed as a parameter to a call
      * to an implementation of {@link BlobContract#setContainerACL(String, ContainerACL)} or
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
-     * 
+     *
      * @param etag
      *            A {@link String} containing the <strong>Etag</strong> value to associate with this
      *            {@link ContainerACL} instance.
+     *
+     * @return
+     *            A reference to this {@link ContainerACL} instance.
      */
-    public void setEtag(String etag) {
+    public ContainerACL setEtag(String etag) {
         this.etag = etag;
+        return this;
     }
 
     /**
      * Gets the last modified time associated with this {@link ContainerACL} instance. This is the value
      * returned for a container by a Blob service REST API Get Container ACL operation, or the value to set on a
      * container with a Set Container ACL operation.
-     * 
+     *
      * @return
      *         A {@link Date} containing the last modified time associated with this {@link ContainerACL} instance.
      */
@@ -88,19 +92,22 @@ public class ContainerACL {
      * This value is only set on a container when this {@link ContainerACL} instance is passed as a parameter to a call
      * to an implementation of {@link BlobContract#setContainerACL(String, ContainerACL)} or
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
-     * 
+     *
      * @param lastModified
-     *            A {@link Date} containing the last modified time to associate with this {@link ContainerACL} instance.
+     *            A {@link java.util.Date} containing the last modified time to associate with this {@link ContainerACL} instance.
+     * @return
+     *            A reference to this {@link ContainerACL} instance.
      */
-    public void setLastModified(Date lastModified) {
+    public ContainerACL setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+        return this;
     }
 
     /**
      * Gets the public access level associated with this {@link ContainerACL} instance. This is the value
      * returned for a container by a Blob service REST API Get Container ACL operation, or the value to set on a
      * container with a Set Container ACL operation.
-     * 
+     *
      * @return
      *         A {@link PublicAccessType} value representing the public access level associated with this
      *         {@link ContainerACL} instance.
@@ -115,20 +122,23 @@ public class ContainerACL {
      * This value is only set on a container when this {@link ContainerACL} instance is passed as a parameter to a call
      * to an implementation of {@link BlobContract#setContainerACL(String, ContainerACL)} or
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
-     * 
+     *
      * @param publicAccess
      *            A {@link PublicAccessType} value representing the public access level to associate with this
      *            {@link ContainerACL} instance.
+     * @return
+     *            A reference to this {@link ContainerACL} instance.
      */
-    public void setPublicAccess(PublicAccessType publicAccess) {
+    public ContainerACL setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
+        return this;
     }
 
     /**
      * Gets the list of container-level access policies associated with this {@link ContainerACL} instance. This is the
      * value returned for a container by a Blob service REST API Get Container ACL operation, or the value to set on a
      * container with a Set Container ACL operation.
-     * 
+     *
      * @return
      *         A {@link List} of {@link SignedIdentifier} instances containing up to five container-level access
      *         policies associated with this {@link ContainerACL} instance.
@@ -143,13 +153,16 @@ public class ContainerACL {
      * This value is only set on a container when this {@link ContainerACL} instance is passed as a parameter to a call
      * to an implementation of {@link BlobContract#setContainerACL(String, ContainerACL)} or
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
-     * 
+     *
      * @param signedIdentifiers
      *            A {@link List} of {@link SignedIdentifier} instances containing up to five container-level access
      *            policies to associate with this {@link ContainerACL} instance.
+     * @return
+     *            A reference to this {@link ContainerACL} instance.
      */
-    public void setSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
+    public ContainerACL setSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
+        return this;
     }
 
     /**
@@ -176,7 +189,7 @@ public class ContainerACL {
      * This value is only set on a container when this {@link ContainerACL} instance is passed as a parameter to a call
      * to an implementation of {@link BlobContract#setContainerACL(String, ContainerACL)} or
      * {@link BlobContract#setContainerACL(String, ContainerACL, BlobServiceOptions)}.
-     * 
+     *
      * @param id
      *            A {@link String} containing the name for the access policy.
      * @param start
@@ -213,7 +226,7 @@ public class ContainerACL {
 
         /**
          * Gets the list of container-level access policies associated with this {@link SignedIdentifiers} instance.
-         * 
+         *
          * @return
          *         A {@link List} of {@link SignedIdentifier} instances containing container-level access policies.
          */
@@ -224,7 +237,7 @@ public class ContainerACL {
 
         /**
          * Sets the list of container-level access policies associated with this {@link SignedIdentifiers} instance.
-         * 
+         *
          * @param signedIdentifiers
          *            A {@link List} of {@link SignedIdentifier} instances containing container-level access policies.
          */
@@ -243,7 +256,7 @@ public class ContainerACL {
         /**
          * Gets the name of the container-level access policy. The name may be up to 64 characters in
          * length and must be unique within the container.
-         * 
+         *
          * @return
          *         A {@link String} containing the name for the access policy.
          */
@@ -255,18 +268,21 @@ public class ContainerACL {
         /**
          * Sets the name of the container-level access policy. The name may be up to 64 characters in
          * length and must be unique within the container.
-         * 
+         *
          * @param id
          *            A {@link String} containing the name for the access policy.
+         * @return
+         *            A reference to this {@link SignedIdentifier} instance.
          */
-        public void setId(String id) {
+        public SignedIdentifier setId(String id) {
             this.id = id;
+            return this;
         }
 
         /**
          * Gets an {@link AccessPolicy} reference containing the start time, expiration time, and permissions associated
          * with the container-level access policy.
-         * 
+         *
          * @return
          *         An {@link AccessPolicy} reference containing the start time, expiration time, and permissions
          *         associated with the access policy.
@@ -279,13 +295,16 @@ public class ContainerACL {
         /**
          * Sets an {@link AccessPolicy} reference containing the start time, expiration time, and permissions to
          * associate with the container-level access policy.
-         * 
+         *
          * @param accessPolicy
          *            An {@link AccessPolicy} reference containing the start time, expiration time, and permissions
          *            to associate with the access policy.
+         * @return
+         *            A reference to this {@link SignedIdentifier} instance.
          */
-        public void setAccessPolicy(AccessPolicy accessPolicy) {
+        public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
             this.accessPolicy = accessPolicy;
+            return this;
         }
     }
 
@@ -301,7 +320,7 @@ public class ContainerACL {
          * Gets the start time for valid access to a resource using the access policy. If this value is
          * <code>null</code>, the start time for any resource request using the access policy is assumed to be the time
          * when the Blob service receives the request.
-         * 
+         *
          * @return
          *         A {@link Date} representing the start time for the access policy, or <code>null</code> if none is
          *         specified.
@@ -316,20 +335,23 @@ public class ContainerACL {
          * Sets the start time for valid access to a resource using the access policy. If this value is
          * <code>null</code>, the start time for any resource request using the access policy is assumed to be the time
          * when the Blob service receives the request.
-         * 
+         *
          * @param start
          *            A {@link Date} representing the start time for the access policy, or <code>null</code> to leave
          *            the time unspecified.
+         * @return
+         *            A reference to this {@link AccessPolicy} instance.
          */
-        public void setStart(Date start) {
+        public AccessPolicy setStart(Date start) {
             this.start = start;
+            return this;
         }
 
         /**
          * Gets the expiration time for valid access to a resource using the access policy. If this value is
          * <code>null</code>, any Shared Access Signature that refers to this access policy must specify the expiry
          * value.
-         * 
+         *
          * @return
          *         A {@link Date} representing the expiration time for the access policy, or <code>null</code> if none
          *         is specified.
@@ -344,13 +366,16 @@ public class ContainerACL {
          * Sets the expiration time for valid access to a resource using the access policy. If this value is
          * <code>null</code>, any Shared Access Signature that refers to this access policy must specify the expiry
          * value.
-         * 
+         *
          * @param expiry
          *            A {@link Date} representing the expiration time for the access policy, or <code>null</code> to
          *            leave the time unspecified.
+         * @return
+         *            A reference to this {@link AccessPolicy} instance.
          */
-        public void setExpiry(Date expiry) {
+        public AccessPolicy setExpiry(Date expiry) {
             this.expiry = expiry;
+            return this;
         }
 
         /**
@@ -359,7 +384,7 @@ public class ContainerACL {
          * operations to be performed with the access policy. For example, if all permissions to a resource are granted,
          * the method returns "rwdl" as the result. If only read/write permissions are granted, the method returns "rw"
          * as the result.
-         * 
+         *
          * @return
          *         A {@link String} containing the permissions specified for the access policy.
          */
@@ -373,12 +398,15 @@ public class ContainerACL {
          * include read (r), write (w), delete (d), and list (l). Permissions may be grouped so as to allow multiple
          * operations to be performed with the access policy. For example, to grant all permissions to a resource,
          * specify "rwdl" for the parameter. To grant only read/write permissions, specify "rw" for the parameter.
-         * 
+         *
          * @param permission
          *            A {@link String} containing the permissions specified for the access policy.
+         * @return
+         *            A reference to this {@link AccessPolicy} instance.
          */
-        public void setPermission(String permission) {
+        public AccessPolicy setPermission(String permission) {
             this.permission = permission;
+            return this;
         }
     }
 
