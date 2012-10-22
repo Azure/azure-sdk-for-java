@@ -30,13 +30,19 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
@@ -454,5 +460,123 @@ public class MediaExceptionProcessor implements MediaContract {
             throw processCatch(new ServiceException(e));
         }
 
+    }
+
+    @Override
+    public ListJobsResult listJobs() throws ServiceException {
+        try {
+            return service.listJobs();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+
+    }
+
+    @Override
+    public JobInfo createJob(CreateJobOptions createJobOptions) throws ServiceException {
+        try {
+            return service.createJob(createJobOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void cancelJob(String jobId) throws ServiceException {
+        try {
+            service.cancelJob(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListTasksResult listTasks() throws ServiceException {
+        try {
+            return service.listTasks();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListTasksResult listJobTasks(String jobId) throws ServiceException {
+        try {
+            return service.listJobTasks(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public JobInfo getJob(String jobId) throws ServiceException {
+        try {
+            return service.getJob(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException {
+        try {
+            return service.listJobs(listJobsOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException {
+        try {
+            return service.listTasks(listTasksOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
+        try {
+            return service.listJobTasks(jobId, listTasksOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 }

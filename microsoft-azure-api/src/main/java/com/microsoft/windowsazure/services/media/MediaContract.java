@@ -22,13 +22,19 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
@@ -292,5 +298,23 @@ public interface MediaContract extends FilterableService<MediaContract> {
      */
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException;
+
+    public JobInfo createJob(CreateJobOptions createJobOptions) throws ServiceException;
+
+    public JobInfo getJob(String jobId) throws ServiceException;
+
+    public ListJobsResult listJobs() throws ServiceException;
+
+    public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException;
+
+    public void cancelJob(String jobId) throws ServiceException;
+
+    public ListTasksResult listTasks() throws ServiceException;
+
+    public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException;
+
+    public ListTasksResult listJobTasks(String jobId) throws ServiceException;
+
+    public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException;
 
 }

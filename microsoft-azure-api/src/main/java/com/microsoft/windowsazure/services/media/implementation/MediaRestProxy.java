@@ -34,22 +34,30 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.Client;
@@ -58,7 +66,6 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MediaRestProxy.
  */
@@ -486,6 +493,100 @@ public class MediaRestProxy implements MediaContract {
         ListMediaProcessorsResult listMediaProcessorsResult = new ListMediaProcessorsResult();
         listMediaProcessorsResult.setMediaProcessorInfos(mediaProcessorInfoList);
         return listMediaProcessorsResult;
+    }
+
+    @Override
+    public ListJobsResult listJobs() throws ServiceException {
+        return listJobs(null);
+    }
+
+    @Override
+    public JobInfo createJob(CreateJobOptions createJobOptions) {
+        JobType jobType = new JobType();
+
+        if (createJobOptions != null) {
+        }
+
+        WebResource resource = getResource("Jobs");
+
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(JobInfo.class, jobType);
+    }
+
+    @Override
+    public void cancelJob(String jobId) throws ServiceException {
+        try {
+            getResource("Jobs", jobId).delete();
+        }
+        catch (UniformInterfaceException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public JobInfo getJob(String jobId) throws ServiceException {
+        WebResource resource = getResource("Jobs", jobId);
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML).get(JobInfo.class);
+    }
+
+    @Override
+    public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException {
+        WebResource resource = getResource("Jobs");
+
+        if ((listJobsOptions != null) && (listJobsOptions.getQueryParameters() != null)) {
+            resource = resource.queryParams(listJobsOptions.getQueryParameters());
+        }
+
+        List<JobInfo> jobInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<JobInfo>>() {
+                });
+        ListJobsResult listJobsResult = new ListJobsResult();
+        listJobsResult.setJobInfos(jobInfoList);
+        return listJobsResult;
+    }
+
+    @Override
+    public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException {
+        WebResource resource = getResource("Tasks");
+
+        if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
+            resource = resource.queryParams(listTasksOptions.getQueryParameters());
+        }
+
+        List<TaskInfo> taskInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<TaskInfo>>() {
+                });
+        ListTasksResult listTasksResult = new ListTasksResult();
+        listTasksResult.setTaskInfos(taskInfoList);
+        return listTasksResult;
+
+    }
+
+    @Override
+    public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
+        WebResource resource = getResource("Jobs('')/Tasks", jobId);
+
+        if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
+            resource = resource.queryParams(listTasksOptions.getQueryParameters());
+        }
+
+        List<TaskInfo> taskInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<TaskInfo>>() {
+                });
+        ListTasksResult listTasksResult = new ListTasksResult();
+        listTasksResult.setTaskInfos(taskInfoList);
+        return listTasksResult;
+
+    }
+
+    @Override
+    public ListTasksResult listTasks() throws ServiceException {
+        return listTasks(null);
+    }
+
+    @Override
+    public ListTasksResult listJobTasks(String jobId) throws ServiceException {
+        return this.listJobTasks(jobId, null);
     }
 
 }
