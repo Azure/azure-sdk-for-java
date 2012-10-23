@@ -451,7 +451,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, metadata);
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
-        builder.put();
+        builder.put("");
     }
 
     @Override
@@ -511,7 +511,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addPutBlobHeaders(options, builder);
 
-        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ClientResponse clientResponse = builder.put(ClientResponse.class, "");
         ThrowIfError(clientResponse);
 
         CreateBlobResult createBlobResult = new CreateBlobResult();
@@ -617,7 +617,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
-        ClientResponse response = builder.put(ClientResponse.class);
+        ClientResponse response = builder.put(ClientResponse.class, "");
         ThrowIfError(response);
 
         SetBlobPropertiesResult result = new SetBlobPropertiesResult();
@@ -648,7 +648,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, metadata);
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
-        ClientResponse response = builder.put(ClientResponse.class);
+        ClientResponse response = builder.put(ClientResponse.class, "");
         ThrowIfError(response);
 
         SetBlobMetadataResult result = new SetBlobMetadataResult();
@@ -725,7 +725,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
-        ClientResponse response = builder.put(ClientResponse.class);
+        ClientResponse response = builder.put(ClientResponse.class, "");
         ThrowIfError(response);
 
         CreateBlobSnapshotResult blobSnapshot = new CreateBlobSnapshotResult();
@@ -757,7 +757,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
         builder = addOptionalSourceAccessConditionHeader(builder, options.getSourceAccessCondition());
 
-        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ClientResponse clientResponse = builder.put(ClientResponse.class, "");
         ThrowIfError(clientResponse);
 
         CopyBlobResult copyBlobResult = new CopyBlobResult();
@@ -822,7 +822,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalAccessConditionHeader(builder, accessCondition);
 
         // Note: Add content type here to enable proper HMAC signing
-        ClientResponse response = builder.put(ClientResponse.class);
+        ClientResponse response = builder.put(ClientResponse.class, "");
         ThrowIfError(response);
 
         AcquireLeaseResult result = new AcquireLeaseResult();
@@ -867,7 +867,8 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
         builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
-        ClientResponse response = builder.put(ClientResponse.class, contentStream);
+        Object contentObject = (contentStream == null ? new byte[0] : contentStream);
+        ClientResponse response = builder.put(ClientResponse.class, contentObject);
         ThrowIfError(response);
 
         CreateBlobPagesResult result = new CreateBlobPagesResult();
