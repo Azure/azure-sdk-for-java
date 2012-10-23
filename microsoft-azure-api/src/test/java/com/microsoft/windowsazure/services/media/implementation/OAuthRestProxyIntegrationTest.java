@@ -34,7 +34,7 @@ public class OAuthRestProxyIntegrationTest extends IntegrationTestBase {
         URI oAuthUri = new URI((String) config.getProperty(MediaConfiguration.OAUTH_URI));
         String clientId = (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_ID);
         String clientSecret = (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET);
-        String scope = "urn:WindowsAzureMediaServices";
+        String scope = (String) config.getProperty(MediaConfiguration.OAUTH_SCOPE);
         OAuthTokenResponse result = oAuthContract.getAccessToken(oAuthUri, clientId, clientSecret, scope);
 
         // Assert
