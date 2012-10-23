@@ -574,7 +574,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test(expected = ServiceException.class)
-    public void cancelInvalidFailed() throws ServiceException {
+    public void cancelInvalidJobFailed() throws ServiceException {
         // Arrange 
 
         // Act 

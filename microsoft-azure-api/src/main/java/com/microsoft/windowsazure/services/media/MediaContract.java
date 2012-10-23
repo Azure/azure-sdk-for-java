@@ -299,22 +299,100 @@ public interface MediaContract extends FilterableService<MediaContract> {
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException;
 
+    /**
+     * Creates the job.
+     * 
+     * @param createJobOptions
+     *            the create job options
+     * @return the job info
+     * @throws ServiceException
+     *             the service exception
+     */
     public JobInfo createJob(CreateJobOptions createJobOptions) throws ServiceException;
 
+    /**
+     * Gets the job.
+     * 
+     * @param jobId
+     *            the job id
+     * @return the job
+     * @throws ServiceException
+     *             the service exception
+     */
     public JobInfo getJob(String jobId) throws ServiceException;
 
+    /**
+     * List jobs.
+     * 
+     * @return the list jobs result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListJobsResult listJobs() throws ServiceException;
 
+    /**
+     * List jobs.
+     * 
+     * @param listJobsOptions
+     *            the list jobs options
+     * @return the list jobs result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException;
 
+    /**
+     * Cancel job.
+     * 
+     * @param jobId
+     *            the job id
+     * @throws ServiceException
+     *             the service exception
+     */
     public void cancelJob(String jobId) throws ServiceException;
 
+    /**
+     * List tasks.
+     * 
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListTasksResult listTasks() throws ServiceException;
 
+    /**
+     * List tasks.
+     * 
+     * @param listTasksOptions
+     *            the list tasks options
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException;
 
+    /**
+     * List job tasks.
+     * 
+     * @param jobId
+     *            the job id
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListTasksResult listJobTasks(String jobId) throws ServiceException;
 
+    /**
+     * List job tasks.
+     * 
+     * @param jobId
+     *            the job id
+     * @param listTasksOptions
+     *            the list tasks options
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
     public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException;
 
 }

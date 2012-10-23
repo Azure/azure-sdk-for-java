@@ -495,16 +495,26 @@ public class MediaRestProxy implements MediaContract {
         return listMediaProcessorsResult;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobs()
+     */
     @Override
     public ListJobsResult listJobs() throws ServiceException {
         return listJobs(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(com.microsoft.windowsazure.services.media.models.CreateJobOptions)
+     */
     @Override
     public JobInfo createJob(CreateJobOptions createJobOptions) {
         JobType jobType = new JobType();
 
         if (createJobOptions != null) {
+            if (createJobOptions.getTaskInfos().size() > 0) {
+                String taskString = "";
+                jobType.setTasks(taskString);
+            }
         }
 
         WebResource resource = getResource("Jobs");
@@ -513,6 +523,9 @@ public class MediaRestProxy implements MediaContract {
                 .post(JobInfo.class, jobType);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
+     */
     @Override
     public void cancelJob(String jobId) throws ServiceException {
         try {
@@ -523,12 +536,18 @@ public class MediaRestProxy implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getJob(java.lang.String)
+     */
     @Override
     public JobInfo getJob(String jobId) throws ServiceException {
         WebResource resource = getResource("Jobs", jobId);
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML).get(JobInfo.class);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobs(com.microsoft.windowsazure.services.media.models.ListJobsOptions)
+     */
     @Override
     public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException {
         WebResource resource = getResource("Jobs");
@@ -545,6 +564,9 @@ public class MediaRestProxy implements MediaContract {
         return listJobsResult;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listTasks(com.microsoft.windowsazure.services.media.models.ListTasksOptions)
+     */
     @Override
     public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException {
         WebResource resource = getResource("Tasks");
@@ -562,6 +584,9 @@ public class MediaRestProxy implements MediaContract {
 
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobTasks(java.lang.String, com.microsoft.windowsazure.services.media.models.ListTasksOptions)
+     */
     @Override
     public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
         WebResource resource = getResource("Jobs('')/Tasks", jobId);
@@ -579,11 +604,17 @@ public class MediaRestProxy implements MediaContract {
 
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listTasks()
+     */
     @Override
     public ListTasksResult listTasks() throws ServiceException {
         return listTasks(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobTasks(java.lang.String)
+     */
     @Override
     public ListTasksResult listJobTasks(String jobId) throws ServiceException {
         return this.listJobTasks(jobId, null);
