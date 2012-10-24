@@ -594,6 +594,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listTasksSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        service.createJob(taskInfos, createJobOptions);
 
         // Act
         ListTasksResult listTasksResult = service.listTasks();
@@ -605,12 +607,20 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listTasksWithOptionsSuccess() {
-        // Arrange 
+    public void listTasksWithOptionsSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        service.createJob(taskInfos, createJobOptions);
+        ListTasksOptions listTasksOptions = new ListTasksOptions();
+        listTasksOptions.getQueryParameters().add("$top", "1");
 
         // Act
+        ListTasksResult listTasksResult = service.listTasks(listTasksOptions);
 
-        // Assert 
+        // Assert
+        assertNotNull(listTasksResult);
+        assertEquals(1, listTasksResult.getTaskInfos().size());
     }
 
     @Test

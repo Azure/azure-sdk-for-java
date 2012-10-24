@@ -66,6 +66,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MediaRestProxy.
  */
@@ -186,8 +187,10 @@ public class MediaRestProxy implements MediaContract {
     /**
      * Gets the resource.
      * 
-     * @param entityType
-     *            the entity type
+     * @param parentEntityType
+     *            the parent entity type
+     * @param childEntityType
+     *            the child entity type
      * @param entityId
      *            the entity id
      * @return the resource
@@ -528,6 +531,9 @@ public class MediaRestProxy implements MediaContract {
         return listJobs(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateJobOptions)
+     */
     @Override
     public JobInfo createJob(String templateId, CreateJobOptions createJobOptions) throws ServiceException {
         JobType jobType = new JobType();
