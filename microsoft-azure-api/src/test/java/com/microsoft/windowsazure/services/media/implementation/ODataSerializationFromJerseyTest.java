@@ -80,7 +80,8 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         return new OAuthTokenManager(createOAuthContract(), new DefaultDateFactory(),
                 (String) config.getProperty(MediaConfiguration.OAUTH_URI),
                 (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_ID),
-                (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET), "urn:WindowsAzureMediaServices");
+                (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET),
+                (String) config.getProperty(MediaConfiguration.OAUTH_SCOPE));
     }
 
     private ResourceLocationManager createLocationManager() throws URISyntaxException {
