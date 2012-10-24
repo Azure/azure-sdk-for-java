@@ -184,6 +184,31 @@ public class MediaRestProxy implements MediaContract {
     }
 
     /**
+     * Gets the resource.
+     * 
+     * @param entityType
+     *            the entity type
+     * @param entityId
+     *            the entity id
+     * @return the resource
+     * @throws ServiceException
+     *             the service exception
+     */
+    private WebResource getResource(String parentEntityType, String childEntityType, String entityId)
+            throws ServiceException {
+        String escapedEntityId = null;
+        try {
+            escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ServiceException(e);
+        }
+        String entityPath = String.format("%s(\'%s\')/%s", parentEntityType, escapedEntityId, childEntityType);
+
+        return getResource(entityPath);
+    }
+
+    /**
      * Merge request.
      * 
      * @param <T>
@@ -503,18 +528,40 @@ public class MediaRestProxy implements MediaContract {
         return listJobs(null);
     }
 
+    @Override
+    public JobInfo createJob(String templateId, CreateJobOptions createJobOptions) throws ServiceException {
+        JobType jobType = new JobType();
+        jobType.setTemplateId(templateId);
+
+        if (createJobOptions != null) {
+            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
+            jobType.setName(createJobOptions.getName());
+            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
+            jobType.setPriority(createJobOptions.getPriority());
+            jobType.setStartTime(createJobOptions.getStartTime());
+        }
+
+        WebResource resource = getResource("Jobs");
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .post(JobInfo.class, jobType);
+
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(com.microsoft.windowsazure.services.media.models.CreateJobOptions)
      */
     @Override
-    public JobInfo createJob(CreateJobOptions createJobOptions) {
+    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) {
         JobType jobType = new JobType();
+        String taskString = "<?xml version=\"1.0\" encoding=\"utf-16\"?><taskBody><inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset></taskBody>";
+        jobType.setTaskBody(taskString);
 
         if (createJobOptions != null) {
-            if (createJobOptions.getTaskInfos().size() > 0) {
-                String taskString = "";
-                jobType.setTasks(taskString);
-            }
+            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
+            jobType.setName(createJobOptions.getName());
+            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
+            jobType.setPriority(createJobOptions.getPriority());
+            jobType.setStartTime(createJobOptions.getStartTime());
         }
 
         WebResource resource = getResource("Jobs");
@@ -589,7 +636,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
-        WebResource resource = getResource("Jobs('')/Tasks", jobId);
+        WebResource resource = getResource("Jobs", "Tasks", jobId);
 
         if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
             resource = resource.queryParams(listTasksOptions.getQueryParameters());

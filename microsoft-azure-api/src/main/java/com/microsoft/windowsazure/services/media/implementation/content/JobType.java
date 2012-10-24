@@ -51,11 +51,11 @@ public class JobType implements MediaServiceDTO {
 
     /** The priority. */
     @XmlElement(name = "Priority", namespace = Constants.ODATA_DATA_NS)
-    protected int priority;
+    protected Integer priority;
 
     /** The running duration. */
     @XmlElement(name = "RunningDuration", namespace = Constants.ODATA_DATA_NS)
-    protected double runningDuration;
+    protected Double runningDuration;
 
     /** The start time. */
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
@@ -63,7 +63,7 @@ public class JobType implements MediaServiceDTO {
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected int state;
+    protected Integer state;
 
     /** The template id. */
     @XmlElement(name = "TemplateId", namespace = Constants.ODATA_DATA_NS)
@@ -78,8 +78,8 @@ public class JobType implements MediaServiceDTO {
     protected String inputMediaAssets;
 
     /** The tasks. */
-    @XmlElement(name = "Tasks", namespace = Constants.ODATA_DATA_NS)
-    protected String tasks;
+    @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
+    protected String taskBody;
 
     /**
      * Gets the id.
@@ -96,8 +96,9 @@ public class JobType implements MediaServiceDTO {
      * @param id
      *            the new id
      */
-    public void setId(String id) {
+    public JobType setId(String id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -115,8 +116,9 @@ public class JobType implements MediaServiceDTO {
      * @param name
      *            the new name
      */
-    public void setName(String name) {
+    public JobType setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -134,8 +136,9 @@ public class JobType implements MediaServiceDTO {
      * @param created
      *            the new created
      */
-    public void setCreated(Date created) {
+    public JobType setCreated(Date created) {
         this.created = created;
+        return this;
     }
 
     /**
@@ -153,8 +156,9 @@ public class JobType implements MediaServiceDTO {
      * @param lastModified
      *            the new last modified
      */
-    public void setLastModified(Date lastModified) {
+    public JobType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+        return this;
     }
 
     /**
@@ -172,8 +176,9 @@ public class JobType implements MediaServiceDTO {
      * @param endTime
      *            the new end time
      */
-    public void setEndTime(Date endTime) {
+    public JobType setEndTime(Date endTime) {
         this.endTime = endTime;
+        return this;
     }
 
     /**
@@ -181,7 +186,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the priority
      */
-    public int getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
@@ -191,8 +196,9 @@ public class JobType implements MediaServiceDTO {
      * @param priority
      *            the new priority
      */
-    public void setPriority(int priority) {
+    public JobType setPriority(Integer priority) {
         this.priority = priority;
+        return this;
     }
 
     /**
@@ -210,8 +216,9 @@ public class JobType implements MediaServiceDTO {
      * @param runningDuration
      *            the new running duration
      */
-    public void setRunningDuration(double runningDuration) {
+    public JobType setRunningDuration(double runningDuration) {
         this.runningDuration = runningDuration;
+        return this;
     }
 
     /**
@@ -229,8 +236,9 @@ public class JobType implements MediaServiceDTO {
      * @param startTime
      *            the new start time
      */
-    public void setStartTime(Date startTime) {
+    public JobType setStartTime(Date startTime) {
         this.startTime = startTime;
+        return this;
     }
 
     /**
@@ -238,7 +246,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the state
      */
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
@@ -248,8 +256,9 @@ public class JobType implements MediaServiceDTO {
      * @param state
      *            the new state
      */
-    public void setState(int state) {
+    public JobType setState(Integer state) {
         this.state = state;
+        return this;
     }
 
     /**
@@ -267,8 +276,9 @@ public class JobType implements MediaServiceDTO {
      * @param templateId
      *            the new template id
      */
-    public void setTemplateId(String templateId) {
+    public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
+        return this;
     }
 
     /**
@@ -286,8 +296,9 @@ public class JobType implements MediaServiceDTO {
      * @param outputMediaAssets
      *            the new output media assets
      */
-    public void setOutputMediaAssets(String outputMediaAssets) {
+    public JobType setOutputMediaAssets(String outputMediaAssets) {
         this.outputMediaAssets = outputMediaAssets;
+        return this;
     }
 
     /**
@@ -305,8 +316,9 @@ public class JobType implements MediaServiceDTO {
      * @param inputMediaAssets
      *            the new input media assets
      */
-    public void setInputMediaAssets(String inputMediaAssets) {
+    public JobType setInputMediaAssets(String inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
+        return this;
     }
 
     /**
@@ -314,8 +326,8 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the tasks
      */
-    public String getTasks() {
-        return tasks;
+    public String getTaskBody() {
+        return taskBody;
     }
 
     /**
@@ -324,8 +336,9 @@ public class JobType implements MediaServiceDTO {
      * @param tasks
      *            the new tasks
      */
-    public void setTasks(String tasks) {
-        this.tasks = tasks;
+    public JobType setTaskBody(String taskBody) {
+        this.taskBody = taskBody;
+        return this;
     }
 
 }

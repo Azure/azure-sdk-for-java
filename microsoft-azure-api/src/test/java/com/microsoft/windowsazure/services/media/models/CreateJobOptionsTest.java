@@ -16,9 +16,7 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -64,20 +62,6 @@ public class CreateJobOptionsTest {
     }
 
     @Test
-    public void testGetSetRunningDuration() {
-        // Arrange
-        double expectedRunningDuration = 2342.32;
-        CreateJobOptions createJobOptions = new CreateJobOptions();
-
-        // Act
-        double actualRunningDuration = createJobOptions.setRunningDuration(expectedRunningDuration)
-                .getRunningDuration();
-
-        // Assert
-        assertTrue(expectedRunningDuration == actualRunningDuration);
-    }
-
-    @Test
     public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
@@ -88,19 +72,6 @@ public class CreateJobOptionsTest {
 
         // Assert
         assertEquals(expectedStartTime, actualStartTime);
-    }
-
-    @Test
-    public void testGetSetTemplateId() {
-        // Arrange
-        String expectedTemplateId = "testGetSetTemplateId";
-        CreateJobOptions createJobOptions = new CreateJobOptions();
-
-        // Act
-        String actualTemplateId = createJobOptions.setTemplateId(expectedTemplateId).getTemplateId();
-
-        // Assert
-        assertEquals(expectedTemplateId, actualTemplateId);
     }
 
     @Test
@@ -129,19 +100,6 @@ public class CreateJobOptionsTest {
 
         // Assert
         assertEquals(expectedOutputMediaAssets, actualOutputMediaAssets);
-    }
-
-    @Test
-    public void testGetSetTasks() {
-        // Arrange
-        List<TaskInfo> expectedTaskInfos = new ArrayList<TaskInfo>();
-        CreateJobOptions createJobOptions = new CreateJobOptions();
-
-        // Act 
-        List<TaskInfo> actualTaskInfos = createJobOptions.setTaskInfos(expectedTaskInfos).getTaskInfos();
-
-        // Assert
-        assertEquals(expectedTaskInfos, actualTaskInfos);
     }
 
 }

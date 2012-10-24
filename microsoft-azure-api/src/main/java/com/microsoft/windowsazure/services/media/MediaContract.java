@@ -37,10 +37,12 @@ import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
+// TODO: Auto-generated Javadoc
 /**
  * Defines the methods available for Windows Azure Media Services.
  */
@@ -302,13 +304,28 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Creates the job.
      * 
+     * @param taskInfos
+     *            the task infos
      * @param createJobOptions
      *            the create job options
      * @return the job info
      * @throws ServiceException
      *             the service exception
      */
-    public JobInfo createJob(CreateJobOptions createJobOptions) throws ServiceException;
+    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) throws ServiceException;
+
+    /**
+     * Creates the job.
+     * 
+     * @param templateId
+     *            the template id
+     * @param createJobOptions
+     *            the create job options
+     * @return the job info
+     * @throws ServiceException
+     *             the service exception
+     */
+    public JobInfo createJob(String templateId, CreateJobOptions createJobOptions) throws ServiceException;
 
     /**
      * Gets the job.

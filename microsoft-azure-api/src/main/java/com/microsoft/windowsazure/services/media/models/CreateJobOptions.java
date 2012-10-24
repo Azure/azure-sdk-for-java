@@ -14,30 +14,15 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * The Class CreateJobOptions.
  */
 public class CreateJobOptions {
 
-    /**
-     * Instantiates a new creates the job options.
-     */
-    public CreateJobOptions() {
-        this.taskInfos = new ArrayList<TaskInfo>();
-    }
-
-    /** The expiration date time. */
-    private Date expirationDateTime;
-
     /** The start time. */
     private Date startTime;
-
-    /** The task infos. */
-    private List<TaskInfo> taskInfos;
 
     /** The name. */
     private String name;
@@ -45,38 +30,11 @@ public class CreateJobOptions {
     /** The priority. */
     private Integer priority;
 
-    /** The running duration. */
-    private double runningDuration;
-
-    /** The template id. */
-    private String templateId;
-
     /** The input media assets. */
     private String inputMediaAssets;
 
     /** The output media assets. */
     private String outputMediaAssets;
-
-    /**
-     * Gets the expiration date time.
-     * 
-     * @return the expiration date time
-     */
-    public Date getExpirationDateTime() {
-        return expirationDateTime;
-    }
-
-    /**
-     * Sets the expiration date time.
-     * 
-     * @param expirationDateTime
-     *            the expiration date time
-     * @return the creates the locator options
-     */
-    public CreateJobOptions setExpirationDateTime(Date expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-        return this;
-    }
 
     /**
      * Gets the start time.
@@ -96,27 +54,6 @@ public class CreateJobOptions {
      */
     public CreateJobOptions setStartTime(Date startTime) {
         this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Gets the task infos.
-     * 
-     * @return the task infos
-     */
-    public List<TaskInfo> getTaskInfos() {
-        return taskInfos;
-    }
-
-    /**
-     * Sets the task infos.
-     * 
-     * @param taskInfos
-     *            the task infos
-     * @return the creates the job options
-     */
-    public CreateJobOptions setTaskInfos(List<TaskInfo> taskInfos) {
-        this.taskInfos = taskInfos;
         return this;
     }
 
@@ -160,48 +97,6 @@ public class CreateJobOptions {
      */
     public Integer getPriority() {
         return this.priority;
-    }
-
-    /**
-     * Sets the running duration.
-     * 
-     * @param runningDuration
-     *            the running duration
-     * @return the creates the job options
-     */
-    public CreateJobOptions setRunningDuration(double runningDuration) {
-        this.runningDuration = runningDuration;
-        return this;
-    }
-
-    /**
-     * Gets the running duration.
-     * 
-     * @return the running duration
-     */
-    public double getRunningDuration() {
-        return this.runningDuration;
-    }
-
-    /**
-     * Sets the template id.
-     * 
-     * @param templateId
-     *            the template id
-     * @return the creates the job options
-     */
-    public CreateJobOptions setTemplateId(String templateId) {
-        this.templateId = templateId;
-        return this;
-    }
-
-    /**
-     * Gets the template id.
-     * 
-     * @return the template id
-     */
-    public String getTemplateId() {
-        return this.templateId;
     }
 
     /**

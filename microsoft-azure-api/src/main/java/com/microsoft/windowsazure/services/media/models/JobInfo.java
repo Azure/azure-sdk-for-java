@@ -303,7 +303,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * @return the tasks
      */
     public String getTasks() {
-        return getContent().getTasks();
+        return getContent().getTaskBody();
     }
 
     /**
@@ -314,7 +314,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * @return the job info
      */
     public JobInfo setTasks(String tasks) {
-        getContent().setTasks(tasks);
+        getContent().setTaskBody(tasks);
         return this;
     }
 }

@@ -45,6 +45,7 @@ import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
@@ -520,12 +521,14 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createJobSuccess() throws ServiceException {
+    public void createJobWithTaskInfoSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
+        TaskInfo taskInfo = new TaskInfo();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
 
         // Act 
-        JobInfo jobInfo = service.createJob(createJobOptions);
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
 
         // Assert
         assertNotNull(jobInfo);
@@ -535,8 +538,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        JobInfo jobInfoA = service.createJob(createJobOptions);
-        JobInfo jobInfoB = service.createJob(createJobOptions);
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+
+        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
 
         // Act 
         ListJobsResult listJobsResult = service.listJobs();
@@ -549,8 +554,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listTopJobsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        JobInfo jobInfoA = service.createJob(createJobOptions);
-        JobInfo jobInfoB = service.createJob(createJobOptions);
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
 
         // Act 
         ListJobsResult listJobsResult = service.listJobs();
@@ -564,7 +570,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void cancelJobSuccess() throws ServiceException {
         // Arrange 
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        JobInfo jobInfo = service.createJob(createJobOptions);
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
 
         // Act
         service.cancelJob(jobInfo.getId());
@@ -610,7 +617,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobTasksSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        JobInfo jobInfo = service.createJob(createJobOptions);
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
 
         // Act 
         ListTasksResult listTasksResult = service.listJobTasks(jobInfo.getId());
@@ -635,7 +643,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobTasksSuccessWithOptionsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        JobInfo jobInfo = service.createJob(createJobOptions);
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
         ListTasksOptions listTasksOptions = new ListTasksOptions();
 
         // Act 
