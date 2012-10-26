@@ -51,19 +51,19 @@ public class TaskType implements MediaServiceDTO {
     protected String perfMessage;
 
     @XmlElement(name = "Priority", namespace = Constants.ODATA_DATA_NS)
-    protected int priority;
+    protected Integer priority;
 
     @XmlElement(name = "Progress", namespace = Constants.ODATA_DATA_NS)
-    protected double progress;
+    protected Double progress;
 
     @XmlElement(name = "RunningDuration", namespace = Constants.ODATA_DATA_NS)
-    protected double runningDuration;
+    protected Double runningDuration;
 
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
     protected Date startTime;
 
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected int state;
+    protected Integer state;
 
     @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
     protected String taskBody;
@@ -145,27 +145,27 @@ public class TaskType implements MediaServiceDTO {
         this.perfMessage = perfMessage;
     }
 
-    public int getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public double getProgress() {
+    public Double getProgress() {
         return progress;
     }
 
-    public void setProgress(double progress) {
+    public void setProgress(Double progress) {
         this.progress = progress;
     }
 
-    public double getRunningDuration() {
+    public Double getRunningDuration() {
         return runningDuration;
     }
 
-    public void setRunningDuration(double runningDuration) {
+    public void setRunningDuration(Double runningDuration) {
         this.runningDuration = runningDuration;
     }
 
@@ -177,11 +177,11 @@ public class TaskType implements MediaServiceDTO {
         this.startTime = startTime;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -193,11 +193,11 @@ public class TaskType implements MediaServiceDTO {
         this.taskBody = taskBody;
     }
 
-    public int getOptions() {
+    public Integer getOptions() {
         return options;
     }
 
-    public void setOptions(int options) {
+    public void setOptions(Integer options) {
         this.options = options;
     }
 

@@ -100,7 +100,7 @@ public class MediaProcessorType implements MediaServiceDTO {
     }
 
     public String getVersion() {
-        return null;
+        return this.version;
     }
 
     public void setVersion(String version) {

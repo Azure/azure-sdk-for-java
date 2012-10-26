@@ -197,7 +197,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the priority
      */
-    public int getPriority() {
+    public Integer getPriority() {
         return getContent().getPriority();
     }
 
@@ -208,7 +208,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      *            the priority
      * @return the task info
      */
-    public TaskInfo setPriority(int priority) {
+    public TaskInfo setPriority(Integer priority) {
         getContent().setPriority(priority);
         return this;
     }
@@ -218,18 +218,17 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the progress
      */
-    public double getProgress() {
+    public Double getProgress() {
         return getContent().getProgress();
     }
 
     /**
-     * Sets the progress.
      * 
      * @param progress
      *            the progress
      * @return the task info
      */
-    public TaskInfo setProgress(int progress) {
+    public TaskInfo setProgress(Double progress) {
         getContent().setProgress(progress);
         return this;
     }
@@ -281,7 +280,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the state
      */
-    public int getState() {
+    public Integer getState() {
         return getContent().getState();
     }
 
@@ -292,7 +291,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      *            the state
      * @return the task info
      */
-    public TaskInfo setState(int state) {
+    public TaskInfo setState(Integer state) {
         getContent().setState(state);
         return this;
     }
@@ -323,7 +322,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the options
      */
-    public int getOptions() {
+    public Integer getOptions() {
         return getContent().getOptions();
     }
 
@@ -334,7 +333,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      *            the options
      * @return the task info
      */
-    public TaskInfo setOptions(int options) {
+    public TaskInfo setOptions(Integer options) {
         getContent().setOptions(options);
         return this;
     }
