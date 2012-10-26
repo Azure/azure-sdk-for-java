@@ -30,15 +30,22 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -454,5 +461,166 @@ public class MediaExceptionProcessor implements MediaContract {
             throw processCatch(new ServiceException(e));
         }
 
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobs()
+     */
+    @Override
+    public ListJobsResult listJobs() throws ServiceException {
+        try {
+            return service.listJobs();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(java.util.List, com.microsoft.windowsazure.services.media.models.CreateJobOptions)
+     */
+    @Override
+    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) throws ServiceException {
+        try {
+            return service.createJob(taskInfos, createJobOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
+     */
+    @Override
+    public JobInfo cancelJob(String jobId) throws ServiceException {
+        try {
+            return service.cancelJob(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listTasks()
+     */
+    @Override
+    public ListTasksResult listTasks() throws ServiceException {
+        try {
+            return service.listTasks();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobTasks(java.lang.String)
+     */
+    @Override
+    public ListTasksResult listJobTasks(String jobId) throws ServiceException {
+        try {
+            return service.listJobTasks(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getJob(java.lang.String)
+     */
+    @Override
+    public JobInfo getJob(String jobId) throws ServiceException {
+        try {
+            return service.getJob(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobs(com.microsoft.windowsazure.services.media.models.ListJobsOptions)
+     */
+    @Override
+    public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException {
+        try {
+            return service.listJobs(listJobsOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listTasks(com.microsoft.windowsazure.services.media.models.ListTasksOptions)
+     */
+    @Override
+    public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException {
+        try {
+            return service.listTasks(listTasksOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#listJobTasks(java.lang.String, com.microsoft.windowsazure.services.media.models.ListTasksOptions)
+     */
+    @Override
+    public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
+        try {
+            return service.listJobTasks(jobId, listTasksOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(java.lang.String, com.microsoft.windowsazure.services.media.models.CreateJobOptions)
+     */
+    @Override
+    public JobInfo createJob(String templateId, CreateJobOptions createJobOptions) throws ServiceException {
+        try {
+            return service.createJob(templateId, createJobOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 }

@@ -32,14 +32,20 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
@@ -488,6 +494,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertTrue(false);
     }
+
     @Test
     public void listMediaProcessorsSuccess() throws ServiceException {
         // Arrange 
@@ -511,6 +518,159 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(listMediaProcessorsResult);
         assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
+    }
+
+    @Ignore
+    @Test
+    public void createJobWithTaskInfoSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        TaskInfo taskInfo = new TaskInfo();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+
+        // Act 
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+
+        // Assert
+        assertNotNull(jobInfo);
+    }
+
+    @Ignore
+    @Test
+    public void listJobsSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+
+        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
+
+        // Act 
+        ListJobsResult listJobsResult = service.listJobs();
+
+        // Assert
+        assertNotNull(listJobsResult);
+    }
+
+    @Ignore
+    @Test
+    public void listTopJobsSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
+
+        // Act 
+        ListJobsResult listJobsResult = service.listJobs();
+
+        // Assert
+        assertNotNull(listJobsResult);
+
+    }
+
+    @Ignore
+    @Test
+    public void cancelJobSuccess() throws ServiceException {
+        // Arrange 
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+
+        // Act
+        service.cancelJob(jobInfo.getId());
+
+        // Assert
+
+    }
+
+    @Test(expected = ServiceException.class)
+    public void cancelInvalidJobFailed() throws ServiceException {
+        // Arrange 
+
+        // Act 
+        service.cancelJob("invalidJobId");
+
+        // Assert
+    }
+
+    @Ignore
+    @Test
+    public void listTasksSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        service.createJob(taskInfos, createJobOptions);
+
+        // Act
+        ListTasksResult listTasksResult = service.listTasks();
+
+        // Assert
+        assertNotNull(listTasksResult);
+        assertEquals(1, listTasksResult.getTaskInfos().size());
+
+    }
+
+    @Ignore
+    @Test
+    public void listTasksWithOptionsSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        service.createJob(taskInfos, createJobOptions);
+        ListTasksOptions listTasksOptions = new ListTasksOptions();
+        listTasksOptions.getQueryParameters().add("$top", "1");
+
+        // Act
+        ListTasksResult listTasksResult = service.listTasks(listTasksOptions);
+
+        // Assert
+        assertNotNull(listTasksResult);
+        assertEquals(1, listTasksResult.getTaskInfos().size());
+    }
+
+    @Ignore
+    @Test
+    public void listJobTasksSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+
+        // Act 
+        ListTasksResult listTasksResult = service.listJobTasks(jobInfo.getId());
+
+        // Assert
+        assertNotNull(listTasksResult);
+    }
+
+    @Ignore
+    @Test
+    public void listJobTasksInvalidIdFailed() throws ServiceException {
+        // Arrange
+
+        // Act 
+        ListTasksResult listTasksResult = service.listJobTasks("InvalidJobId");
+
+        // Assert
+        assertNull(listTasksResult);
+
+    }
+
+    @Ignore
+    @Test
+    public void listJobTasksSuccessWithOptionsSuccess() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+        ListTasksOptions listTasksOptions = new ListTasksOptions();
+
+        // Act 
+        ListTasksResult listTasksResult = service.listJobTasks(jobInfo.getId());
+
+        // Assert
+        assertNotNull(listTasksResult);
     }
 
 }

@@ -22,19 +22,27 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
+import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsOptions;
+import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
+import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
+// TODO: Auto-generated Javadoc
 /**
  * Defines the methods available for Windows Azure Media Services.
  */
@@ -292,5 +300,117 @@ public interface MediaContract extends FilterableService<MediaContract> {
      */
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException;
+
+    /**
+     * Creates the job.
+     * 
+     * @param taskInfos
+     *            the task infos
+     * @param createJobOptions
+     *            the create job options
+     * @return the job info
+     * @throws ServiceException
+     *             the service exception
+     */
+    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) throws ServiceException;
+
+    /**
+     * Creates the job.
+     * 
+     * @param templateId
+     *            the template id
+     * @param createJobOptions
+     *            the create job options
+     * @return the job info
+     * @throws ServiceException
+     *             the service exception
+     */
+    public JobInfo createJob(String templateId, CreateJobOptions createJobOptions) throws ServiceException;
+
+    /**
+     * Gets the job.
+     * 
+     * @param jobId
+     *            the job id
+     * @return the job
+     * @throws ServiceException
+     *             the service exception
+     */
+    public JobInfo getJob(String jobId) throws ServiceException;
+
+    /**
+     * List jobs.
+     * 
+     * @return the list jobs result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListJobsResult listJobs() throws ServiceException;
+
+    /**
+     * List jobs.
+     * 
+     * @param listJobsOptions
+     *            the list jobs options
+     * @return the list jobs result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListJobsResult listJobs(ListJobsOptions listJobsOptions) throws ServiceException;
+
+    /**
+     * Cancel job.
+     * 
+     * @param jobId
+     *            the job id
+     * @return
+     * @throws ServiceException
+     *             the service exception
+     */
+    public JobInfo cancelJob(String jobId) throws ServiceException;
+
+    /**
+     * List tasks.
+     * 
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListTasksResult listTasks() throws ServiceException;
+
+    /**
+     * List tasks.
+     * 
+     * @param listTasksOptions
+     *            the list tasks options
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException;
+
+    /**
+     * List job tasks.
+     * 
+     * @param jobId
+     *            the job id
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListTasksResult listJobTasks(String jobId) throws ServiceException;
+
+    /**
+     * List job tasks.
+     * 
+     * @param jobId
+     *            the job id
+     * @param listTasksOptions
+     *            the list tasks options
+     * @return the list tasks result
+     * @throws ServiceException
+     *             the service exception
+     */
+    public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException;
 
 }
