@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -205,28 +204,27 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listAssetResult.size());
     }
 
-    @Ignore("https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/364")
     @Test
     public void updateAssetSuccess() throws Exception {
         // Arrange
         String originalTestName = testAssetPrefix + "updateAssetSuccessOriginal";
+        EncryptionOption originalEncryptionOption = EncryptionOption.StorageEncrypted;
+        AssetState originalAssetState = AssetState.Published;
         CreateAssetOptions originalOptions = new CreateAssetOptions().setAlternateId("altId")
-                .setOptions(EncryptionOption.StorageEncrypted).setState(AssetState.Published).setName(originalTestName);
+                .setOptions(originalEncryptionOption).setState(originalAssetState).setName(originalTestName);
         AssetInfo originalAsset = service.createAsset(originalOptions);
 
         String updatedTestName = testAssetPrefix + "updateAssetSuccessUpdated";
         String altId = "otherAltId";
-        EncryptionOption encryptionOption = EncryptionOption.None;
-        AssetState assetState = AssetState.Initialized;
-        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions().setName(updatedTestName).setAlternateId(altId)
-                .setOptions(encryptionOption).setState(assetState);
+        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions().setName(updatedTestName).setAlternateId(altId);
 
         // Act
         service.updateAsset(originalAsset.getId(), updateAssetOptions);
         AssetInfo updatedAsset = service.getAsset(originalAsset.getId());
 
         // Assert
-        verifyAssetProperties("updatedAsset", updatedTestName, altId, encryptionOption, assetState, updatedAsset);
+        verifyAssetProperties("updatedAsset", updatedTestName, altId, originalEncryptionOption, originalAssetState,
+                updatedAsset);
     }
 
     @Test
