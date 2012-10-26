@@ -25,12 +25,6 @@ public class UpdateAssetOptions {
     /** The name. */
     private String name;
 
-    /** The options. */
-    private EncryptionOption options;
-
-    /** The state. */
-    private AssetState state;
-
     /**
      * Gets the alternate id.
      * 
@@ -70,48 +64,6 @@ public class UpdateAssetOptions {
      */
     public UpdateAssetOptions setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Gets the options.
-     * 
-     * @return the options
-     */
-    public EncryptionOption getOptions() {
-        return options;
-    }
-
-    /**
-     * Sets the options.
-     * 
-     * @param options
-     *            the options
-     * @return the update asset options
-     */
-    public UpdateAssetOptions setOptions(EncryptionOption options) {
-        this.options = options;
-        return this;
-    }
-
-    /**
-     * Gets the state.
-     * 
-     * @return the state
-     */
-    public AssetState getState() {
-        return state;
-    }
-
-    /**
-     * Sets the state.
-     * 
-     * @param assetState
-     *            the asset state
-     * @return the update asset options
-     */
-    public UpdateAssetOptions setState(AssetState assetState) {
-        this.state = assetState;
         return this;
     }
 
