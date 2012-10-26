@@ -48,6 +48,11 @@ public class SASTokenFilter extends ClientFilter {
      */
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+        if (cr.getProperties().containsKey("MediaServicesSASFilter")) {
+            return this.getNext().handle(cr);
+        }
+        cr.getProperties().put("MediaServicesSASFilter", this);
+
         UriBuilder newUri = UriBuilder.fromUri(cr.getURI());
         String currentQuery = cr.getURI().getRawQuery();
         if (currentQuery == null) {

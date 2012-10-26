@@ -48,6 +48,11 @@ public class OAuthFilter extends ClientFilter {
      */
     @Override
     public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
+        // Only do oauth process once
+        if (clientRequest.getProperties().containsKey("MediaServicesOAuthFilter")) {
+            return this.getNext().handle(clientRequest);
+        }
+        clientRequest.getProperties().put("MediaServicesOAuthFilter", this);
 
         String accessToken;
         try {

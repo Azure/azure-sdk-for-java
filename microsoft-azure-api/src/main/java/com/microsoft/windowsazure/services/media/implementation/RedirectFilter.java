@@ -36,6 +36,13 @@ public class RedirectFilter extends ClientFilter {
             throw new IllegalArgumentException("Request should not be null");
         }
 
+        // Only redirect once
+        if (request.getProperties().containsKey("MediaServicesRedirectFilter")) {
+            return this.getNext().handle(request);
+        }
+
+        request.getProperties().put("MediaServicesRedirectFilter", this);
+
         URI originalURI = request.getURI();
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
