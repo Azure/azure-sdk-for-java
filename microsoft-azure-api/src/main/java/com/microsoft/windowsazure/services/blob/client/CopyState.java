@@ -28,7 +28,7 @@ public final class CopyState {
     private String copyId;
 
     /**
-     * Holds the time the copy operation completed, whether completion was due to a successful copy, abortion, or a
+     * Holds the time the copy operation completed, whether completion was due to a successful copy, an abort, or a
      * failure.
      */
     private Date completionTime;
