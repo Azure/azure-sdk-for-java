@@ -97,6 +97,7 @@ public class ODataAtomMarshaller {
         marshaller.marshal(createEntry(content), stream);
     }
 
+    @SuppressWarnings("unchecked")
     private JAXBElement<EntryType> createEntry(Object content) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");

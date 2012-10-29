@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOption
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.CreateTaskOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
@@ -45,7 +46,6 @@ import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
@@ -521,14 +521,26 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createJobWithTaskInfoSuccess() throws ServiceException {
+    public void createJobWithTaskSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        TaskInfo taskInfo = new TaskInfo();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
 
         // Act 
-        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
+
+        // Assert
+        assertNotNull(jobInfo);
+    }
+
+    @Test(expected = ServiceException.class)
+    public void createJobWithoutTaskFailed() throws ServiceException {
+        // Arrange
+        CreateJobOptions createJobOptions = new CreateJobOptions();
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+
+        // Act 
+        JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
 
         // Assert
         assertNotNull(jobInfo);
@@ -538,10 +550,10 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
 
-        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
-        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
+        JobInfo jobInfoA = service.createJob(createJobOptions, createTaskOptions);
+        JobInfo jobInfoB = service.createJob(createJobOptions, createTaskOptions);
 
         // Act 
         ListJobsResult listJobsResult = service.listJobs();
@@ -554,9 +566,9 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listTopJobsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        JobInfo jobInfoA = service.createJob(taskInfos, createJobOptions);
-        JobInfo jobInfoB = service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        JobInfo jobInfoA = service.createJob(createJobOptions, createTaskOptions);
+        JobInfo jobInfoB = service.createJob(createJobOptions, createTaskOptions);
 
         // Act 
         ListJobsResult listJobsResult = service.listJobs();
@@ -570,8 +582,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void cancelJobSuccess() throws ServiceException {
         // Arrange 
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
 
         // Act
         service.cancelJob(jobInfo.getId());
@@ -594,8 +606,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listTasksSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        service.createJob(createJobOptions, createTaskOptions);
 
         // Act
         ListTasksResult listTasksResult = service.listTasks();
@@ -610,8 +622,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listTasksWithOptionsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        service.createJob(createJobOptions, createTaskOptions);
         ListTasksOptions listTasksOptions = new ListTasksOptions();
         listTasksOptions.getQueryParameters().add("$top", "1");
 
@@ -627,8 +639,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobTasksSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
 
         // Act 
         ListTasksResult listTasksResult = service.listJobTasks(jobInfo.getId());
@@ -653,8 +665,8 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
     public void listJobTasksSuccessWithOptionsSuccess() throws ServiceException {
         // Arrange
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
-        JobInfo jobInfo = service.createJob(taskInfos, createJobOptions);
+        List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
         ListTasksOptions listTasksOptions = new ListTasksOptions();
 
         // Act 

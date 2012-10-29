@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOption
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.CreateTaskOptions;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
@@ -37,7 +38,6 @@ import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -304,15 +304,16 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Creates the job.
      * 
-     * @param taskInfos
-     *            the task infos
+     * @param createTaskOptions
+     *            the create task options
      * @param createJobOptions
      *            the create job options
      * @return the job info
      * @throws ServiceException
      *             the service exception
      */
-    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) throws ServiceException;
+    public JobInfo createJob(CreateJobOptions createJobOptions, List<CreateTaskOptions> createTaskOptions)
+            throws ServiceException;
 
     /**
      * Creates the job.
