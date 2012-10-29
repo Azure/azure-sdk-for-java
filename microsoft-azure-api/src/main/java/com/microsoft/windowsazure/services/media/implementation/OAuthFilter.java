@@ -16,11 +16,11 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URISyntaxException;
 
+import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * The Jersey filter for OAuth.
@@ -28,7 +28,7 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * @author azurejava@microsoft.com
  * 
  */
-public class OAuthFilter extends ClientFilter {
+public class OAuthFilter extends IdempotentClientFilter {
     private final OAuthTokenManager oAuthTokenManager;
 
     /**
@@ -40,20 +40,10 @@ public class OAuthFilter extends ClientFilter {
         this.oAuthTokenManager = oAuthTokenManager;
     }
 
-    /**
-     * Handles response with a specified client request.
-     * 
-     * @param clientRequest
-     *            A <code>ClientRequest</code> object representing a client request.
-     */
-    @Override
-    public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
-        // Only do oauth process once
-        if (clientRequest.getProperties().containsKey("MediaServicesOAuthFilter")) {
-            return this.getNext().handle(clientRequest);
-        }
-        clientRequest.getProperties().put("MediaServicesOAuthFilter", this);
-
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+     */@Override
+    public ClientResponse doHandle(ClientRequest clientRequest) throws ClientHandlerException {
         String accessToken;
         try {
             accessToken = oAuthTokenManager.getAccessToken();
