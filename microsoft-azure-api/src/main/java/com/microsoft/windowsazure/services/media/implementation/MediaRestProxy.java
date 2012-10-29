@@ -280,13 +280,6 @@ public class MediaRestProxy implements MediaContract {
         AssetType updatedAssetType = new AssetType();
         updatedAssetType.setAlternateId(updateAssetOptions.getAlternateId());
         updatedAssetType.setName(updateAssetOptions.getName());
-        if (updateAssetOptions.getOptions() != null) {
-            updatedAssetType.setOptions(updateAssetOptions.getOptions().getCode());
-        }
-
-        if (updateAssetOptions.getState() != null) {
-            updatedAssetType.setState(updateAssetOptions.getState().getCode());
-        }
 
         ClientResponse clientResponse = mergeRequest("Assets", assetId, ClientResponse.class, updatedAssetType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
