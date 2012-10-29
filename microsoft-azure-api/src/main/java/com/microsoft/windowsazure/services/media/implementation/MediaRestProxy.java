@@ -73,7 +73,6 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MediaRestProxy.
  */
@@ -242,6 +241,19 @@ public class MediaRestProxy implements MediaContract {
         builder = builder.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .header("X-HTTP-Method", "MERGE");
         return builder.post(c, requestEntity);
+    }
+
+    private ListTasksResult listWebResourceTasks(WebResource webResource, ListTasksOptions listTasksOptions) {
+        if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
+            webResource = webResource.queryParams(listTasksOptions.getQueryParameters());
+        }
+
+        List<TaskInfo> taskInfoList = webResource.type(MediaType.APPLICATION_ATOM_XML)
+                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<TaskInfo>>() {
+                });
+        ListTasksResult listTasksResult = new ListTasksResult();
+        listTasksResult.setTaskInfos(taskInfoList);
+        return listTasksResult;
     }
 
     /* (non-Javadoc)
@@ -652,9 +664,9 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
      */
     @Override
-    public void cancelJob(String jobId) throws ServiceException {
+    public JobInfo cancelJob(String jobId) throws ServiceException {
         try {
-            getResource("Jobs", jobId).delete();
+            return getResource("CancelJob").queryParam("jobId", jobId).get(JobInfo.class);
         }
         catch (UniformInterfaceException e) {
             throw new ServiceException(e);
@@ -695,18 +707,7 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public ListTasksResult listTasks(ListTasksOptions listTasksOptions) throws ServiceException {
         WebResource resource = getResource("Tasks");
-
-        if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listTasksOptions.getQueryParameters());
-        }
-
-        List<TaskInfo> taskInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
-                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<TaskInfo>>() {
-                });
-        ListTasksResult listTasksResult = new ListTasksResult();
-        listTasksResult.setTaskInfos(taskInfoList);
-        return listTasksResult;
-
+        return listWebResourceTasks(resource, listTasksOptions);
     }
 
     /* (non-Javadoc)
@@ -715,17 +716,7 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException {
         WebResource resource = getResource("Jobs", "Tasks", jobId);
-
-        if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listTasksOptions.getQueryParameters());
-        }
-
-        List<TaskInfo> taskInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
-                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<TaskInfo>>() {
-                });
-        ListTasksResult listTasksResult = new ListTasksResult();
-        listTasksResult.setTaskInfos(taskInfoList);
-        return listTasksResult;
+        return listWebResourceTasks(resource, listTasksOptions);
 
     }
 

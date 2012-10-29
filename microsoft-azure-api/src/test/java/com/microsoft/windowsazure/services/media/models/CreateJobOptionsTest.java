@@ -36,19 +36,6 @@ public class CreateJobOptionsTest {
     }
 
     @Test
-    public void testGetSetEndTime() {
-        // Arrange
-        String expectedJobName = "testGetSetNameJobName";
-        CreateJobOptions createJobOptions = new CreateJobOptions();
-
-        // Act
-        String actualJobName = createJobOptions.setName(expectedJobName).getName();
-
-        // Assert
-        assertEquals(expectedJobName, actualJobName);
-    }
-
-    @Test
     public void testGetSetPriority() {
         // Arrange
         Integer expectedPriority = 3;
