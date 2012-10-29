@@ -1,3 +1,39 @@
+2012.10.29 Version 0.3.3
+ * In the blob client, fixed a bug which allows users to call write APIs on a blob snapshot reference
+ * Updated the URL parse method in storage client libraries, to allow users to pass a URL ending with "/"
+ * Updated the parsing response header code in blob client APIs
+ * Updated the storage client library user agent version from 0.1.2 to 0.1.3
+ * Added more test cases in storage client tests
+
+2012.10.16 Version 0.3.2
+ * Implemented a more graceful timeout Exception
+ * Implemented a better Exception for an empty header returned by the Azure Storage Service
+ * Added Fluent setters for Blob Models
+
+2012.09.11 Version 0.3.1
+ * Added Javadocs to 1.7 Storage Support from 0.3.0 release
+ * Fixed bug where getqueue for an invalid queue returns 200 and the exception is not wrapped in a ServiceException
+ * Fixed the error when deleting a blob snapshot in the Service Layer
+ * Changed the PageBlob length parameter from an int to a long
+ * Return an Etag for create and copy Blob in Service Layer
+ * Updated the BlobRestProxy.copyBlob to correctly honor source access conditions
+ * Updated the BlobRestProxy.getBlob to correctly honor setComputeRangeMD5 option
+ * Added international support for ServiceBus URIs
+ * Added encoding for special characters when serializing entity to XML in Table Service Layer
+
+2012.06.02 Version 0.3.0
+ * Added 1.7 Storage Support
+ * Added Javadocs for com.microsoft.windowsazure.services.table
+
+2012.05.02 Version 0.2.2
+ * Added Javadoc comments to Azure Blob Service Layer
+ * Fixed a URL encoding issue in Table Client Layer
+ * Made CloudTableClient use Iterator instead of Iterable
+
+2012.04.11 Version 0.2.1
+ * Added Service Layer support for Azure Table
+ * Added Javadoc comments to Azure Queue Service Layer
+
 2012.02.28 Version 0.2.0
  * Added Support for Azure Table in com.microsoft.windowsazure.services.table
  * Added Client Tests for Table

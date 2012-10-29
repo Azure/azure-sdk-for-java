@@ -62,7 +62,7 @@ public class QueryTableOperation extends TableOperation {
      */
     QueryTableOperation(final String partitionKey, final String rowKey) {
         super(null, TableOperationType.RETRIEVE);
-        Utility.assertNotNullOrEmpty("partitionKey", partitionKey);
+        Utility.assertNotNull("partitionKey", partitionKey);
         this.partitionKey = partitionKey;
         this.rowKey = rowKey;
     }
@@ -182,8 +182,8 @@ public class QueryTableOperation extends TableOperation {
             public TableResult execute(final CloudTableClient client, final QueryTableOperation operation,
                     final OperationContext opContext) throws Exception {
 
-                final HttpURLConnection request = TableRequest.query(client.getEndpoint(), tableName,
-                        generateRequestIdentity(isTableEntry, operation.getPartitionKey()),
+                final HttpURLConnection request = TableRequest.query(client.getTransformedEndPoint(opContext),
+                        tableName, generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false),
                         options.getTimeoutIntervalInMs(), null/* Query Builder */, null/* Continuation Token */,
                         options, opContext);
 

@@ -37,6 +37,24 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
  * Represents a Windows Azure page blob.
  */
 public final class CloudPageBlob extends CloudBlob {
+    /**
+     * Creates an instance of the <code>CloudPageBlob</code> class using the specified relative URI and storage service
+     * client.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the relative URI to the blob, beginning with the
+     *            container name.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudPageBlob(final URI uri) throws StorageException {
+        super(BlobType.PAGE_BLOB);
+
+        Utility.assertNotNull("blobAbsoluteUri", uri);
+        this.uri = uri;
+        this.parseURIQueryStringAndVerify(uri, null, Utility.determinePathStyleFromUri(uri, null));;
+    }
 
     /**
      * Creates an instance of the <code>CloudPageBlob</code> class by copying values from another page blob.
@@ -222,6 +240,8 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public void create(final long length, final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (length % BlobConstants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("Page blob length must be multiple of 512.");
         }
@@ -259,7 +279,7 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -339,7 +359,7 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
                 return response.getPageRanges();
             }
@@ -397,6 +417,8 @@ public final class CloudPageBlob extends CloudBlob {
         if (options == null) {
             options = new BlobRequestOptions();
         }
+
+        assertNoWriteOperationForSnapshot();
 
         options.applyDefaults(this.blobServiceClient);
 
@@ -467,7 +489,8 @@ public final class CloudPageBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
                 return null;
             }
         };
@@ -523,6 +546,8 @@ public final class CloudPageBlob extends CloudBlob {
     @DoesServiceRequest
     public void upload(final InputStream sourceStream, final long length, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException, IOException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -625,6 +650,8 @@ public final class CloudPageBlob extends CloudBlob {
         if (length > 4 * Constants.MB) {
             throw new IllegalArgumentException("Max write size is 4MB. Please specify a smaller range.");
         }
+
+        assertNoWriteOperationForSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();

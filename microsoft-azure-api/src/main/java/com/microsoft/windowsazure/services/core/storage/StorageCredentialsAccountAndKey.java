@@ -196,6 +196,22 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     }
 
     /**
+     * Internal usage.
+     * Gets the name of the key used by these credentials.
+     */
+    public String getAccountKeyName() {
+        return this.credentials.getKeyName();
+    }
+
+    /**
+     * Internal usage.
+     * Sets the account name that owns the key to use when signing requests.
+     */
+    public void setSigningAccountName(final String signingAccountName) {
+        this.credentials.setSigningAccountName(signingAccountName);
+    }
+
+    /**
      * Returns the Base64-encoded key for the credentials.
      * 
      * @return A <code>String</code> that contains the Base64-encoded key.

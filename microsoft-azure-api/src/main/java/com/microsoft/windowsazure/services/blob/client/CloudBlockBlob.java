@@ -39,6 +39,25 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 public final class CloudBlockBlob extends CloudBlob {
 
     /**
+     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified relative URI and storage service
+     * client.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that represents the relative URI to the blob, beginning with the
+     *            container name.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public CloudBlockBlob(final URI uri) throws StorageException {
+        super(BlobType.BLOCK_BLOB);
+
+        Utility.assertNotNull("blobAbsoluteUri", uri);
+        this.uri = uri;
+        this.parseURIQueryStringAndVerify(uri, null, Utility.determinePathStyleFromUri(uri, null));;
+    }
+
+    /**
      * Creates an instance of the <code>CloudBlockBlob</code> class by copying values from another cloud block blob.
      * 
      * @param otherBlob
@@ -143,6 +162,8 @@ public final class CloudBlockBlob extends CloudBlob {
     @DoesServiceRequest
     public void commitBlockList(final Iterable<BlockEntry> blockList, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -190,7 +211,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -279,7 +300,9 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
+
                 final GetBlockListResponse response = new GetBlockListResponse(request.getInputStream());
                 return response.getBlocks();
             }
@@ -330,6 +353,8 @@ public final class CloudBlockBlob extends CloudBlob {
         if (options == null) {
             options = new BlobRequestOptions();
         }
+
+        assertNoWriteOperationForSnapshot();
 
         options.applyDefaults(this.blobServiceClient);
 
@@ -386,6 +411,8 @@ public final class CloudBlockBlob extends CloudBlob {
             throw new IllegalArgumentException(
                     "Invalid stream length, specify -1 for unkown length stream, or a positive number of bytes");
         }
+
+        assertNoWriteOperationForSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -501,6 +528,8 @@ public final class CloudBlockBlob extends CloudBlob {
                     "Invalid stream length, length must be less than or equal to 4 MB in size.");
         }
 
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -602,7 +631,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };

@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.microsoft.windowsazure.services.blob.core.storage.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
@@ -43,6 +44,7 @@ import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
 import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
+import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.LeaseAction;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
@@ -72,6 +74,11 @@ public abstract class CloudBlob implements ListBlobItem {
      * Holds the snapshot ID.
      */
     String snapshotID;
+
+    /**
+     * Represents the state of the most recent or pending copy operation.
+     */
+    CopyState copyState;
 
     /**
      * Holds the Blobs container Reference.
@@ -122,7 +129,6 @@ public abstract class CloudBlob implements ListBlobItem {
         this(type);
 
         Utility.assertNotNull("blobAbsoluteUri", uri);
-        Utility.assertNotNull("serviceClient", client);
 
         this.blobServiceClient = client;
         this.uri = uri;
@@ -207,10 +213,20 @@ public abstract class CloudBlob implements ListBlobItem {
         this.parent = otherBlob.parent;
         this.blobServiceClient = otherBlob.blobServiceClient;
         this.name = otherBlob.name;
+        this.copyState = otherBlob.copyState;
     }
 
     /**
-     * Acquires a new lease on the blob.
+     * Acquires a new lease on the blob with the specified lease time and proposed lease ID.
+     * 
+     * @param leaseTimeInSeconds
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
      * 
      * @return A <code>String</code> that represents the lease ID.
      * 
@@ -218,21 +234,34 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final String acquireLease() throws StorageException {
-        return this.acquireLease(null, null, null);
+    public final String acquireLease(final Integer leaseTimeInSeconds, final String proposedLeaseId)
+            throws StorageException {
+        return this.acquireLease(leaseTimeInSeconds, proposedLeaseId, null, null, null);
     }
 
     /**
-     * Acquires a new lease on the blob using the specified request options and operation context.
+     * Acquires a new lease on the blob with the specified lease time, proposed lease ID, request
+     * options, and operation context.
+     * 
+     * @param leaseTimeInSeconds
+     *            Specifies the span of time for which to acquire the lease, in seconds.
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            zero.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     *            
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -242,8 +271,9 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final String acquireLease(final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException {
+    public final String acquireLease(final Integer leaseTimeInSeconds, final String proposedLeaseId,
+            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -263,8 +293,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, accessCondition,
-                        blobOptions, opContext);
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, leaseTimeInSeconds,
+                        proposedLeaseId, null, accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, 0L);
 
@@ -275,7 +305,6 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
                 blob.properties.setLeaseStatus(LeaseStatus.LOCKED);
 
                 return BlobResponse.getLeaseID(request, opContext);
@@ -313,8 +342,12 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the lease but ensures that another client cannot acquire a new lease until the current lease period has
-     * expired.
+     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease period 
+     * has expired.
+     * 
+     * @param breakPeriodInSeconds
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
+     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @return The time, in seconds, remaining in the lease period.
      * 
@@ -322,22 +355,26 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final long breakLease() throws StorageException {
-        return this.breakLease(null, null, null);
+    public final long breakLease(final Integer breakPeriodInSeconds) throws StorageException {
+        return this.breakLease(breakPeriodInSeconds, null, null, null);
     }
 
     /**
-     * Breaks the lease, using the specified request options and operation context, but ensures that another client
-     * cannot acquire a new lease until the current lease period has expired.
+     * Breaks the existing lease, using the specified request options and operation context, and ensures that another 
+     * client cannot acquire a new lease until the current lease period has expired.
+     * 
+     * @param breakPeriodInSeconds
+     *            Specifies the time to wait, in seconds, until the current lease is broken.
+     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
      * 
@@ -347,8 +384,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final long breakLease(final AccessCondition accessCondition, BlobRequestOptions options,
-            OperationContext opContext) throws StorageException {
+    public final long breakLease(final Integer breakPeriodInSeconds, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -368,8 +405,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, accessCondition, blobOptions,
-                        opContext);
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null,
+                        breakPeriodInSeconds, accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, 0L);
 
@@ -380,7 +417,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return -1L;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
 
                 blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
@@ -401,9 +438,10 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
+     * @throws URISyntaxException
      */
     @DoesServiceRequest
-    public final void copyFromBlob(final CloudBlob sourceBlob) throws StorageException {
+    public final void copyFromBlob(final CloudBlob sourceBlob) throws StorageException, URISyntaxException {
         this.copyFromBlob(sourceBlob, null, null, null, null);
     }
 
@@ -428,10 +466,57 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
+     * @throws URISyntaxException
      * 
      */
     @DoesServiceRequest
     public final void copyFromBlob(final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
+            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException, URISyntaxException {
+        this.copyFromBlob(sourceBlob.uri, sourceAccessCondition, destinationAccessCondition, options, opContext);
+
+    }
+
+    /**
+     * Copies an existing blob's contents, properties, and metadata to this instance of the <code>CloudBlob</code>
+     * class.
+     * 
+     * @param source
+     *            A <code>URI</code> The URI of a source blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void copyFromBlob(final URI source) throws StorageException {
+        this.copyFromBlob(source, null, null, null, null);
+    }
+
+    /**
+     * Copies an existing blob's contents, properties, and metadata to a new blob, using the specified access
+     * conditions, lease ID, request options, and operation context.
+     * 
+     * @param source
+     *            A <code>URI</code> The URI of a source blob.
+     * @param sourceAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the source blob.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * 
+     */
+    @DoesServiceRequest
+    public final void copyFromBlob(final URI source, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -453,20 +538,97 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.copyFrom(blob.getTransformedAddress(opContext),
-                        blobOptions.getTimeoutIntervalInMs(), sourceBlob.getCanonicalName(false), blob.snapshotID,
+                        blobOptions.getTimeoutIntervalInMs(), source.toString(), blob.snapshotID,
                         sourceAccessCondition, destinationAccessCondition, blobOptions, opContext);
 
-                BlobRequest.addMetadata(request, sourceBlob.metadata, opContext);
+                BlobRequest.addMetadata(request, blob.metadata, opContext);
                 client.getCredentials().signRequest(request, 0);
 
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.copyState = BaseResponse.getCopyState(request);
+
+                return null;
+            }
+        };
+
+        ExecutionEngine
+                .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Aborts an ongoing blob copy operation.
+     * 
+     * @param copyId
+     *            A <code>String</code> object that identifying the copy operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void abortCopy(final String copyId) throws StorageException {
+        this.abortCopy(copyId, null, null, null);
+    }
+
+    /**
+     * Aborts an ongoing blob copy operation.
+     * 
+     * @param copyId
+     *            A <code>String</code> object that identifying the copy operation.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * 
+     */
+    @DoesServiceRequest
+    public final void abortCopy(final String copyId, final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = BlobRequest.abortCopy(blob.getTransformedAddress(opContext),
+                        blobOptions.getTimeoutIntervalInMs(), copyId, accessCondition, blobOptions, opContext);
+
+                client.getCredentials().signRequest(request, 0);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
 
                 return null;
             }
@@ -511,6 +673,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final CloudBlob createSnapshot(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -549,7 +713,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     snapshot = new CloudPageBlob(blob.getUri(), snapshotTime, client);
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return snapshot;
             }
         };
@@ -716,7 +880,6 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                blob.updatePropertiesFromResponse(request);
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     return true;
                 }
@@ -808,7 +971,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
 
-                blob.updatePropertiesFromResponse(request);
+                final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                        blob.snapshotID, opContext);
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
+                blob.copyState = retrievedAttributes.getCopyState();
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
@@ -996,6 +1163,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 blob.properties = retrievedAttributes.getProperties();
                 blob.metadata = retrievedAttributes.getMetadata();
+                blob.copyState = retrievedAttributes.getCopyState();
 
                 return null;
             }
@@ -1160,7 +1328,15 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                // Do not update blob length in downloadRangeInternal API. 
+                final long orignalBlobLength = blob.properties.getLength();
+                final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                        blob.snapshotID, opContext);
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
+                blob.copyState = retrievedAttributes.getCopyState();
+                blob.properties.setLength(orignalBlobLength);
+
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
                 if (totalRead != expectedLength) {
@@ -1260,7 +1436,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                    blob.updatePropertiesFromResponse(request);
+                    final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                            blob.snapshotID, opContext);
+                    blob.properties = retrievedAttributes.getProperties();
+                    blob.metadata = retrievedAttributes.getMetadata();
+                    blob.copyState = retrievedAttributes.getCopyState();
                     return Boolean.valueOf(true);
                 }
                 else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -1277,107 +1457,6 @@ public abstract class CloudBlob implements ListBlobItem {
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(),
                 opContext);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified shared access policy. Note this does not
-     * contain the leading "?".
-     * 
-     * @param policy
-     *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
-     *            signature.
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are unable to sign the request or if the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public final String generateSharedAccessSignature(final SharedAccessPolicy policy) throws InvalidKeyException,
-            StorageException {
-        return this.generateSharedAccessSignature(policy, null);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified shared access policy and operation context.
-     * Note this does not contain the leading "?".
-     * 
-     * @param policy
-     *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
-     *            signature.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are unable to sign the request or if the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public final String generateSharedAccessSignature(final SharedAccessPolicy policy, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        return this.generateSharedAccessSignatureCore(policy, null, opContext);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified group policy identifier. Note this does not
-     * contain the leading "?".
-     * 
-     * @param groupPolicyIdentifier
-     *            A <code>String</code> that represents the container-level access policy.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are unable to sign the request or if the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public final String generateSharedAccessSignature(final String groupPolicyIdentifier) throws InvalidKeyException,
-            StorageException {
-        return this.generateSharedAccessSignature(groupPolicyIdentifier, null);
-    }
-
-    /**
-     * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
-     * Note this does not contain the leading "?".
-     * 
-     * @param groupPolicyIdentifier
-     *            A <code>String</code> that represents the container-level access policy.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * 
-     * @return A <code>String</code> that represents the shared access signature.
-     * 
-     * @throws IllegalArgumentException
-     *             If the credentials are unable to sign the request or if the blob is a snapshot.
-     * @throws InvalidKeyException
-     *             If the credentials are invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public final String generateSharedAccessSignature(final String groupPolicyIdentifier, OperationContext opContext)
-            throws InvalidKeyException, StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
-
-        return this.generateSharedAccessSignatureCore(null, groupPolicyIdentifier, opContext);
     }
 
     /**
@@ -1403,12 +1482,8 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    private String generateSharedAccessSignatureCore(final SharedAccessPolicy policy,
-            final String groupPolicyIdentifier, OperationContext opContext) throws InvalidKeyException,
-            StorageException {
-        if (opContext == null) {
-            opContext = new OperationContext();
-        }
+    public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy, final String groupPolicyIdentifier)
+            throws InvalidKeyException, StorageException {
 
         if (!this.blobServiceClient.getCredentials().canCredentialsSignRequest()) {
             throw new IllegalArgumentException(
@@ -1423,7 +1498,7 @@ public abstract class CloudBlob implements ListBlobItem {
         final String resourceName = this.getCanonicalName(true);
 
         final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHash(policy,
-                groupPolicyIdentifier, resourceName, this.blobServiceClient, opContext);
+                groupPolicyIdentifier, resourceName, this.blobServiceClient, null);
 
         final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignature(policy,
                 groupPolicyIdentifier, "b", signature);
@@ -1532,6 +1607,15 @@ public abstract class CloudBlob implements ListBlobItem {
      */
     public final BlobProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Returns the blob's copy state.
+     * 
+     * @return A {@link CopyState} object that represents the copy state of the blob.
+     */
+    public CopyState getCopyState() {
+        return this.copyState;
     }
 
     /**
@@ -1676,6 +1760,8 @@ public abstract class CloudBlob implements ListBlobItem {
             options = new BlobRequestOptions();
         }
 
+        assertNoWriteOperationForSnapshot();
+
         options.applyDefaults(this.blobServiceClient);
 
         return new BlobInputStream(this, accessCondition, options, opContext);
@@ -1697,7 +1783,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      * */
-    private void parseURIQueryStringAndVerify(final URI completeUri, final CloudBlobClient existingClient,
+    protected void parseURIQueryStringAndVerify(final URI completeUri, final CloudBlobClient existingClient,
             final boolean usePathStyleUris) throws StorageException {
         Utility.assertNotNull("resourceUri", completeUri);
 
@@ -1750,7 +1836,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
     }
 
-    void updatePropertiesFromResponse(HttpURLConnection request) {
+    void updateEtagAndLastModifiedFromResponse(HttpURLConnection request) {
         String tempStr = request.getHeaderField(Constants.HeaderConstants.ETAG);
 
         // ETag
@@ -1766,12 +1852,12 @@ public abstract class CloudBlob implements ListBlobItem {
             this.getProperties().setLastModified(lastModifiedCalendar.getTime());
         }
 
-        // using this instead of the request property since the request
-        // property only returns an int.
-        tempStr = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
+    }
 
-        if (!Utility.isNullOrEmpty(tempStr)) {
-            this.getProperties().setLength(Long.parseLong(tempStr));
+    void updateLengthFromResponse(HttpURLConnection request) {
+        final String xContentLengthHeader = request.getHeaderField(BlobConstants.CONTENT_LENGTH_HEADER);
+        if (!Utility.isNullOrEmpty(xContentLengthHeader)) {
+            this.getProperties().setLength(Long.parseLong(xContentLengthHeader));
         }
     }
 
@@ -1833,8 +1919,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RELEASE, accessCondition,
-                        blobOptions, opContext);
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RELEASE, null, null, null,
+                        accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, 0L);
 
@@ -1845,7 +1931,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
                 return null;
             }
@@ -1913,8 +1999,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RENEW, accessCondition, blobOptions,
-                        opContext);
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RENEW, null, null, null,
+                        accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, 0L);
 
@@ -1925,7 +2011,96 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
+                return null;
+            }
+        };
+
+        ExecutionEngine
+                .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Changes the existing lease ID to the proposed lease ID.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void changeLease(final String proposedLeaseId, final AccessCondition accessCondition)
+            throws StorageException {
+        this.changeLease(proposedLeaseId, accessCondition, null, null);
+    }
+
+    /**
+     * Changes the existing lease ID to the proposed lease Id with the specified access conditions, request options,
+     * and operation context.
+     * 
+     * @param proposedLeaseId
+     *            A <code>String</code> that represents the proposed lease ID for the new lease,
+     *            or null if no lease ID is proposed.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
+     *            required to be set with an access condition.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client 
+     *            ({@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. The context
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void changeLease(final String proposedLeaseId, final AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("accessCondition", accessCondition);
+        Utility.assertNotNullOrEmpty("leaseID", accessCondition.getLeaseID());
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        if (options == null) {
+            options = new BlobRequestOptions();
+        }
+
+        opContext.initialize();
+        options.applyDefaults(this.blobServiceClient);
+
+        final StorageOperation<CloudBlobClient, CloudBlob, Void> impl = new StorageOperation<CloudBlobClient, CloudBlob, Void>(
+                options) {
+            @Override
+            public Void execute(final CloudBlobClient client, final CloudBlob blob, final OperationContext opContext)
+                    throws Exception {
+                final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
+
+                final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.CHANGE, null, proposedLeaseId, null,
+                        accessCondition, blobOptions, opContext);
+
+                client.getCredentials().signRequest(request, 0L);
+
+                this.setResult(ExecutionEngine.processRequest(request, opContext));
+
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -1962,6 +2137,16 @@ public abstract class CloudBlob implements ListBlobItem {
      */
     protected final void setProperties(final BlobProperties properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Reserved for internal use.
+     * 
+     * @param copyState
+     *            the copyState to set
+     */
+    public void setCopyState(final CopyState copyState) {
+        this.copyState = copyState;
     }
 
     /**
@@ -2030,8 +2215,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 final BlobRequestOptions blobOptions = (BlobRequestOptions) this.getRequestOptions();
 
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, accessCondition, blobOptions,
-                        opContext);
+                        .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null, null,
+                        accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, 0L);
 
@@ -2062,7 +2247,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return -1L;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
 
                 return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
@@ -2148,6 +2333,8 @@ public abstract class CloudBlob implements ListBlobItem {
     protected final void uploadFullBlob(final InputStream sourceStream, final long length,
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
             throws StorageException, IOException {
+        assertNoWriteOperationForSnapshot();
+
         // Mark sourceStream for current position.
         sourceStream.mark(Constants.MAX_MARK_LENGTH);
 
@@ -2190,7 +2377,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2231,6 +2418,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadMetadata(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2262,7 +2451,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2302,6 +2491,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadProperties(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2334,12 +2525,21 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Asserts that write operation is not done for snapshot.
+     */
+    protected void assertNoWriteOperationForSnapshot() {
+        if (isSnapshot()) {
+            throw new IllegalArgumentException("Cannot perform this operation on a blob representing a snapshot.");
+        }
     }
 }

@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.utils.pipeline;
 
@@ -27,7 +27,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
+import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -37,10 +37,28 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.core.header.InBoundHeaders;
 
 public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
+
+    private final int connectionTimeoutMillis;
+    private final int readTimeoutMillis;
+
+    public HttpURLConnectionClientHandler(ClientConfig clientConfig) {
+        connectionTimeoutMillis = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+        readTimeoutMillis = readTimeoutFromConfig(clientConfig, ClientConfig.PROPERTY_READ_TIMEOUT);
+    }
+
+    private static int readTimeoutFromConfig(ClientConfig config, String propertyName) {
+        Integer property = (Integer) config.getProperty(propertyName);
+        if (property != null) {
+            return property.intValue();
+        }
+        throw new IllegalArgumentException(propertyName);
+    }
+
     /**
      * Empty "no-op" listener if none registered
      */
     private static final EntityStreamingListener EMPTY_STREAMING_LISTENER = new EntityStreamingListener() {
+        @Override
         public void onBeforeStreamingEntity(ClientRequest clientRequest) {
         }
     };
@@ -164,6 +182,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         }
     }
 
+    @Override
     public ClientResponse handle(final ClientRequest ro) throws ClientHandlerException {
         try {
             return doHandle(ro);
@@ -176,6 +195,9 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     private ClientResponse doHandle(final ClientRequest clientRequest) throws IOException, MalformedURLException,
             ProtocolException {
         final HttpURLConnection urlConnection = (HttpURLConnection) clientRequest.getURI().toURL().openConnection();
+        urlConnection.setReadTimeout(readTimeoutMillis);
+        urlConnection.setConnectTimeout(connectionTimeoutMillis);
+
         final EntityStreamingListener entityStreamingListener = getEntityStreamingListener(clientRequest);
 
         urlConnection.setRequestMethod(clientRequest.getMethod());
@@ -202,6 +224,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
             writeRequestEntity(clientRequest, new RequestEntityWriterListener() {
                 private boolean inStreamingMode;
 
+                @Override
                 public void onRequestEntitySize(long size) {
                     if (size != -1 && size < Integer.MAX_VALUE) {
                         inStreamingMode = true;
@@ -222,6 +245,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
                     }
                 }
 
+                @Override
                 public OutputStream onGetOutputStream() throws IOException {
                     if (inStreamingMode)
                         return new StreamingOutputStream(urlConnection, clientRequest);
@@ -269,7 +293,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
                 urlConnection.setRequestProperty(e.getKey(), ClientRequest.getHeaderValue(vs.get(0)));
             }
             else {
-                EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+                CommaStringBuilder sb = new CommaStringBuilder();
                 for (Object v : e.getValue()) {
                     sb.add(ClientRequest.getHeaderValue(v));
                 }

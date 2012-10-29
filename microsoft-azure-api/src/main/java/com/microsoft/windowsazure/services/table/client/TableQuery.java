@@ -456,7 +456,7 @@ public class TableQuery<T extends TableEntity> {
      * {@link TableServiceEntity}<code>.class</code> as the class type parameter if no more specialized type is
      * required.
      * 
-     * @param tablename
+     * @param tableName
      *            A <code>String</code> containing the name of the source table to query.
      * @param clazzType
      *            The <code>java.lang.Class</code> of the class <code>T</code> that represents the table entity type for

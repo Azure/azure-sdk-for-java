@@ -25,6 +25,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.microsoft.windowsazure.services.core.storage.Constants;
+import com.microsoft.windowsazure.services.core.storage.LeaseDuration;
+import com.microsoft.windowsazure.services.core.storage.LeaseState;
 import com.microsoft.windowsazure.services.core.storage.LeaseStatus;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
@@ -61,6 +63,7 @@ final class BlobDeserializationHelper {
         String urlString = null;
         HashMap<String, String> metadata = null;
         BlobProperties properties = null;
+        CopyState copyState = null;
 
         int eventType = xmlr.getEventType();
         // check if there are more events in the input stream
@@ -85,6 +88,49 @@ final class BlobDeserializationHelper {
                 else if (name.equals(Constants.METADATA_ELEMENT)) {
                     metadata = DeserializationHelper.parseMetadateFromXML(xmlr);
                     xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
+                }
+                else if (name.equals(Constants.COPY_ID_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+                    copyState.setCopyId(Utility.readElementFromXMLReader(xmlr, Constants.COPY_ID_ELEMENT));
+                }
+                else if (name.equals(Constants.COPY_COMPLETION_TIME_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+                    copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(Utility
+                            .readElementFromXMLReader(xmlr, Constants.COPY_COMPLETION_TIME_ELEMENT)));
+                }
+                else if (name.equals(Constants.COPY_STATUS_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+                    copyState.setStatus(CopyStatus.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.COPY_STATUS_ELEMENT)));
+                }
+                else if (name.equals(Constants.COPY_SOURCE_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+                    copyState.setSource(new URI(Utility.readElementFromXMLReader(xmlr, Constants.COPY_SOURCE_ELEMENT)));
+                }
+                else if (name.equals(Constants.COPY_PROGRESS_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+
+                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.COPY_PROGRESS_ELEMENT);
+                    String[] progressSequence = tempString.split("/");
+                    copyState.setBytesCopied(Long.parseLong(progressSequence[0]));
+                    copyState.setTotalBytes(Long.parseLong(progressSequence[1]));
+                }
+                else if (name.equals(Constants.COPY_STATUS_DESCRIPTION_ELEMENT)) {
+                    if (copyState == null) {
+                        copyState = new CopyState();
+                    }
+                    copyState.setStatusDescription(Utility.readElementFromXMLReader(xmlr,
+                            Constants.COPY_STATUS_DESCRIPTION_ELEMENT));
                 }
             }
             else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.BLOB_ELEMENT)) {
@@ -125,6 +171,7 @@ final class BlobDeserializationHelper {
             retBlob.snapshotID = snapshotID;
             retBlob.properties = properties;
             retBlob.metadata = metadata;
+            retBlob.copyState = copyState;
             return retBlob;
         }
         else {
@@ -268,6 +315,18 @@ final class BlobDeserializationHelper {
                 else if (name.equals(Constants.ETAG_ELEMENT)) {
                     properties.setEtag(Utility.readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT));
                 }
+                else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
+                    properties.setLeaseStatus(LeaseStatus.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.LEASE_STATUS_ELEMENT)));
+                }
+                else if (name.equals(Constants.LEASE_STATE_ELEMENT)) {
+                    properties.setLeaseState(LeaseState.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.LEASE_STATE_ELEMENT)));
+                }
+                else if (name.equals(Constants.LEASE_DURATION_ELEMENT)) {
+                    properties.setLeaseDuration(LeaseDuration.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.LEASE_DURATION_ELEMENT)));
+                }
             }
             else {
                 // expect end of properties
@@ -343,9 +402,10 @@ final class BlobDeserializationHelper {
      * @throws ParseException
      *             if a date value is not correctly encoded
      * @throws StorageException
+     * @throws URISyntaxException
      */
     protected static BlobProperties readBlobProperties(final XMLStreamReader xmlr) throws XMLStreamException,
-            ParseException, StorageException {
+            ParseException, StorageException, URISyntaxException {
         xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.PROPERTIES);
         int eventType = xmlr.getEventType();
         final BlobProperties properties = new BlobProperties();
@@ -421,6 +481,14 @@ final class BlobDeserializationHelper {
                                 "The response received is invalid or improperly formatted.",
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                     }
+                }
+                else if (name.equals(Constants.LEASE_STATE_ELEMENT)) {
+                    properties.setLeaseState(LeaseState.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.LEASE_STATE_ELEMENT)));
+                }
+                else if (name.equals(Constants.LEASE_DURATION_ELEMENT)) {
+                    properties.setLeaseDuration(LeaseDuration.parse(Utility.readElementFromXMLReader(xmlr,
+                            Constants.LEASE_DURATION_ELEMENT)));
                 }
             }
             else if (eventType == XMLStreamConstants.END_ELEMENT) {

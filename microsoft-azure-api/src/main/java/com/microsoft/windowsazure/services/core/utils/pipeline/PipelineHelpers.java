@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.core.utils.pipeline;
 
@@ -27,32 +27,17 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 public class PipelineHelpers {
-    public static void ThrowIfError(ClientResponse r) {
-        if (r.getStatus() >= 300) {
-            throw new UniformInterfaceException(r);
+    public static void ThrowIfNotSuccess(ClientResponse clientResponse) {
+        int statusCode = clientResponse.getStatus();
+
+        if ((statusCode < 200) || (statusCode >= 300)) {
+            throw new UniformInterfaceException(clientResponse);
         }
     }
 
-    public static class EnumCommaStringBuilder {
-        private final StringBuilder sb = new StringBuilder();
-
-        public void add(String representation) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(representation);
-        }
-
-        public void addValue(boolean value, String representation) {
-            if (value) {
-                add(representation);
-            }
-        }
-
-        public String getValue() {
-            if (sb.length() == 0)
-                return null;
-            return sb.toString();
+    public static void ThrowIfError(ClientResponse clientResponse) {
+        if (clientResponse.getStatus() >= 400) {
+            throw new UniformInterfaceException(clientResponse);
         }
     }
 
@@ -95,7 +80,7 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 builder = addOptionalHeader(builder, accessCondition.getHeader().toString(), accessCondition.getValue());
@@ -104,19 +89,23 @@ public class PipelineHelpers {
         return builder;
     }
 
-    public static Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
+    public static Builder addOptionalSourceAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
         if (accessCondition != null) {
             if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
                 String headerName;
                 switch (accessCondition.getHeader()) {
                     case IF_MATCH:
                         headerName = "x-ms-source-if-match";
+                        break;
                     case IF_UNMODIFIED_SINCE:
                         headerName = "x-ms-source-if-unmodified-since";
+                        break;
                     case IF_MODIFIED_SINCE:
                         headerName = "x-ms-source-if-modified-since";
+                        break;
                     case IF_NONE_MATCH:
                         headerName = "x-ms-source-if-none-match";
+                        break;
                     default:
                         headerName = "";
                 }

@@ -2,15 +2,15 @@
  * Copyright 2011 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.blob.implementation;
 
@@ -34,10 +34,12 @@ import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
+import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
@@ -69,10 +71,10 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers.EnumCommaStringBuilder;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -122,6 +124,10 @@ public class BlobRestProxy implements BlobContract {
         PipelineHelpers.ThrowIfError(r);
     }
 
+    private void ThrowIfNotSuccess(ClientResponse clientResponse) {
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
     private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
@@ -142,12 +148,12 @@ public class BlobRestProxy implements BlobContract {
         return PipelineHelpers.addOptionalRangeHeader(builder, rangeStart, rangeEnd);
     }
 
-    private Builder addOptionalAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return PipelineHelpers.addOptionalAccessContitionHeader(builder, accessCondition);
+    private Builder addOptionalAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
+        return PipelineHelpers.addOptionalAccessConditionHeader(builder, accessCondition);
     }
 
-    private Builder addOptionalSourceAccessContitionHeader(Builder builder, AccessCondition accessCondition) {
-        return PipelineHelpers.addOptionalSourceAccessContitionHeader(builder, accessCondition);
+    private Builder addOptionalSourceAccessConditionHeader(Builder builder, AccessCondition accessCondition) {
+        return PipelineHelpers.addOptionalSourceAccessConditionHeader(builder, accessCondition);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
@@ -155,18 +161,18 @@ public class BlobRestProxy implements BlobContract {
     }
 
     private WebResource addOptionalBlobListingIncludeQueryParam(ListBlobsOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeSnapshots(), "snapshots");
         sb.addValue(options.isIncludeUncommittedBlobs(), "uncommittedblobs");
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
     private WebResource addOptionalContainerIncludeQueryParam(ListContainersOptions options, WebResource webResource) {
-        EnumCommaStringBuilder sb = new EnumCommaStringBuilder();
+        CommaStringBuilder sb = new CommaStringBuilder();
         sb.addValue(options.isIncludeMetadata(), "metadata");
-        webResource = addOptionalQueryParam(webResource, "include", sb.getValue());
+        webResource = addOptionalQueryParam(webResource, "include", sb.toString());
         return webResource;
     }
 
@@ -187,7 +193,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getBlobCacheControl());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         return builder;
     }
@@ -293,6 +299,9 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
+        if (container == null || container.isEmpty()) {
+            throw new IllegalArgumentException("The container cannot be null or empty.");
+        }
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -309,10 +318,13 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
+        if ((container == null) || (container.isEmpty())) {
+            throw new IllegalArgumentException("The root container has already been created.");
+        }
         WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
@@ -341,7 +353,8 @@ public class BlobRestProxy implements BlobContract {
 
     private GetContainerPropertiesResult getContainerPropertiesImpl(String container, BlobServiceOptions options,
             String operation) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).queryParam("resType", "container");
         webResource = addOptionalQueryParam(webResource, "comp", operation);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -364,7 +377,8 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public GetContainerACLResult getContainerACL(String container, BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).queryParam("resType", "container")
                 .queryParam("comp", "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -399,7 +413,8 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public void setContainerACL(String container, ContainerACL acl, BlobServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).queryParam("resType", "container")
                 .queryParam("comp", "acl");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -424,12 +439,13 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public void setContainerMetadata(String container, HashMap<String, String> metadata,
             SetContainerMetadataOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("resType", "container")
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).queryParam("resType", "container")
                 .queryParam("comp", "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.put();
     }
@@ -459,7 +475,8 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public ListBlobsResult listBlobs(String container, ListBlobsOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).queryParam("comp", "list")
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).queryParam("comp", "list")
                 .queryParam("resType", "container");
         webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
         webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
@@ -473,14 +490,15 @@ public class BlobRestProxy implements BlobContract {
     }
 
     @Override
-    public void createPageBlob(String container, String blob, int length) throws ServiceException {
-        createPageBlob(container, blob, length, new CreateBlobOptions());
+    public CreateBlobResult createPageBlob(String container, String blob, long length) throws ServiceException {
+        return createPageBlob(container, blob, length, new CreateBlobOptions());
     }
 
     @Override
-    public void createPageBlob(String container, String blob, int length, CreateBlobOptions options)
+    public CreateBlobResult createPageBlob(String container, String blob, long length, CreateBlobOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container + "/" + blob);
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-type", "PageBlob");
@@ -489,18 +507,28 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addPutBlobHeaders(options, builder);
 
-        builder.put();
+        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ThrowIfError(clientResponse);
+
+        CreateBlobResult createBlobResult = new CreateBlobResult();
+        createBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        createBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return createBlobResult;
     }
 
     @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream) throws ServiceException {
-        createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
-    }
-
-    @Override
-    public void createBlockBlob(String container, String blob, InputStream contentStream, CreateBlobOptions options)
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container + "/" + blob);
+        return createBlockBlob(container, blob, contentStream, new CreateBlobOptions());
+    }
+
+    @Override
+    public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream,
+            CreateBlobOptions options) throws ServiceException {
+        String path = createPathFromContainer(container);
+        System.out.println(path);
+        WebResource webResource = getResource(options).path(path).path(blob);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -508,7 +536,14 @@ public class BlobRestProxy implements BlobContract {
         builder = addPutBlobHeaders(options, builder);
 
         Object contentObject = (contentStream == null ? new byte[0] : contentStream);
-        builder.put(contentObject);
+        ClientResponse clientResponse = builder.put(ClientResponse.class, contentObject);
+        ThrowIfError(clientResponse);
+
+        CreateBlobResult createBlobResult = new CreateBlobResult();
+        createBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        createBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return createBlobResult;
     }
 
     @Override
@@ -519,15 +554,16 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob);
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
-        ThrowIfError(response);
+        ThrowIfNotSuccess(response);
 
         return getBlobPropertiesResultFromResponse(response);
     }
@@ -540,12 +576,13 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public GetBlobMetadataResult getBlobMetadata(String container, String blob, GetBlobMetadataOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "metadata");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);
@@ -561,7 +598,8 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public SetBlobPropertiesResult setBlobProperties(String container, String blob, SetBlobPropertiesOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "properties");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "properties");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-blob-cache-control", options.getCacheControl());
@@ -573,7 +611,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-sequence-number-action", options.getSequenceNumberAction());
         builder = addOptionalHeader(builder, "x-ms-blob-sequence-number", options.getSequenceNumber());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -598,12 +636,13 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public SetBlobMetadataResult setBlobMetadata(String container, String blob, HashMap<String, String> metadata,
             SetBlobMetadataOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "metadata");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "metadata");
 
         WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, metadata);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -621,16 +660,20 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob);
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
+        if (options.isComputeRangeMD5()) {
+            builder = addOptionalHeader(builder, "x-ms-range-get-content-md5", "true");
+        }
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ThrowIfError(response);
+        ThrowIfNotSuccess(response);
 
         GetBlobPropertiesResult properties = getBlobPropertiesResultFromResponse(response);
         GetBlobResult blobResult = new GetBlobResult();
@@ -647,14 +690,17 @@ public class BlobRestProxy implements BlobContract {
 
     @Override
     public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container + "/" + blob);
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob);
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only"
-                : "include");
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        if (options.getDeleteSnaphotsOnly() != null) {
+            builder = addOptionalHeader(builder, "x-ms-delete-snapshots", options.getDeleteSnaphotsOnly() ? "only"
+                    : "include");
+        }
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.delete();
     }
@@ -667,12 +713,13 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public CreateBlobSnapshotResult createBlobSnapshot(String container, String blob, CreateBlobSnapshotOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container + "/" + blob).queryParam("comp", "snapshot");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "snapshot");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class);
         ThrowIfError(response);
@@ -686,15 +733,16 @@ public class BlobRestProxy implements BlobContract {
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer, String sourceBlob)
-            throws ServiceException {
-        copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+            String sourceBlob) throws ServiceException {
+        return copyBlob(destinationContainer, destinationBlob, sourceContainer, sourceBlob, new CopyBlobOptions());
     }
 
     @Override
-    public void copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
+    public CopyBlobResult copyBlob(String destinationContainer, String destinationBlob, String sourceContainer,
             String sourceBlob, CopyBlobOptions options) {
-        WebResource webResource = getResource(options).path(destinationContainer).path(destinationBlob);
+        String path = createPathFromContainer(destinationContainer);
+        WebResource webResource = getResource(options).path(path).path(destinationBlob);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -702,10 +750,17 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-copy-source",
                 getCopyBlobSourceName(sourceContainer, sourceBlob, options));
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
-        builder = addOptionalSourceAccessContitionHeader(builder, options.getSourceAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
+        builder = addOptionalSourceAccessConditionHeader(builder, options.getSourceAccessCondition());
 
-        builder.put();
+        ClientResponse clientResponse = builder.put(ClientResponse.class);
+        ThrowIfError(clientResponse);
+
+        CopyBlobResult copyBlobResult = new CopyBlobResult();
+        copyBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
+        copyBlobResult.setLastModified(dateMapper.parse(clientResponse.getHeaders().getFirst("Last-Modified")));
+
+        return copyBlobResult;
     }
 
     @Override
@@ -754,12 +809,13 @@ public class BlobRestProxy implements BlobContract {
 
     private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId,
             BlobServiceOptions options, AccessCondition accessCondition) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "lease");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
-        builder = addOptionalAccessContitionHeader(builder, accessCondition);
+        builder = addOptionalAccessConditionHeader(builder, accessCondition);
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.put(ClientResponse.class);
@@ -796,7 +852,8 @@ public class BlobRestProxy implements BlobContract {
     private CreateBlobPagesResult updatePageBlobPagesImpl(String action, String container, String blob,
             PageRange range, long length, InputStream contentStream, CreateBlobPagesOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "page");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "page");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, range.getStart(), range.getEnd());
@@ -804,7 +861,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "Content-MD5", options.getContentMD5());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
         builder = addOptionalHeader(builder, "x-ms-page-write", action);
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.put(ClientResponse.class, contentStream);
         ThrowIfError(response);
@@ -826,12 +883,13 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public ListBlobRegionsResult listBlobRegions(String container, String blob, ListBlobRegionsOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "pagelist");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "pagelist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalRangeHeader(builder, options.getRangeStart(), options.getRangeEnd());
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         ClientResponse response = builder.get(ClientResponse.class);
         ThrowIfError(response);
@@ -853,7 +911,8 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public void createBlobBlock(String container, String blob, String blockId, InputStream contentStream,
             CreateBlobBlockOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "block");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "block");
         webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
@@ -871,7 +930,8 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public void commitBlobBlocks(String container, String blob, BlockList blockList, CommitBlobBlocksOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "blocklist");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());
@@ -881,7 +941,7 @@ public class BlobRestProxy implements BlobContract {
         builder = addOptionalHeader(builder, "x-ms-blob-content-language", options.getBlobContentLanguage());
         builder = addOptionalHeader(builder, "x-ms-blob-content-md5", options.getBlobContentMD5());
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
-        builder = addOptionalAccessContitionHeader(builder, options.getAccessCondition());
+        builder = addOptionalAccessConditionHeader(builder, options.getAccessCondition());
 
         builder.put(blockList);
     }
@@ -894,7 +954,8 @@ public class BlobRestProxy implements BlobContract {
     @Override
     public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
             throws ServiceException {
-        WebResource webResource = getResource(options).path(container).path(blob).queryParam("comp", "blocklist");
+        String path = createPathFromContainer(container);
+        WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "blocklist");
         webResource = addOptionalQueryParam(webResource, "snapshot", options.getSnapshot());
         if (options.isCommittedList() && options.isUncommittedList()) {
             webResource = addOptionalQueryParam(webResource, "blocklisttype", "all");
@@ -915,9 +976,31 @@ public class BlobRestProxy implements BlobContract {
         ListBlobBlocksResult result = response.getEntity(ListBlobBlocksResult.class);
         result.setEtag(response.getHeaders().getFirst("ETag"));
         result.setContentType(response.getHeaders().getFirst("Content-Type"));
-        result.setContentLength(Long.parseLong(response.getHeaders().getFirst("x-ms-blob-content-length")));
-        result.setLastModified(dateMapper.parse(response.getHeaders().getFirst("Last-Modified")));
+
+        String blobContentLength = response.getHeaders().getFirst("x-ms-blob-content-length");
+        if (blobContentLength != null) {
+            result.setContentLength(Long.parseLong(blobContentLength));
+        }
+        else {
+            result.setContentLength(0);
+        }
+
+        String lastModified = response.getHeaders().getFirst("Last-Modified");
+        if (lastModified != null) {
+            result.setLastModified(dateMapper.parse(lastModified));
+        }
 
         return result;
+    }
+
+    private String createPathFromContainer(String containerName) {
+        String path;
+        if (containerName == null || containerName.isEmpty()) {
+            path = "$root";
+        }
+        else {
+            path = containerName;
+        }
+        return path;
     }
 }
