@@ -249,6 +249,25 @@ public class TableSerializerTests extends TableTestBase {
     }
 
     @Test
+    public void whitespaceOnEmptyKeysTest() throws StorageException {
+        class1 ref = new class1();
+
+        ref.setA("B    ");
+        ref.setB("    A   ");
+        ref.setC(" ");
+        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setPartitionKey("");
+        ref.setRowKey("");
+
+        tClient.execute(testSuiteTableName, TableOperation.insert(ref));
+
+        TableResult res = tClient.execute(testSuiteTableName,
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), class1.class));
+
+        Assert.assertEquals(((class1) res.getResult()).getA(), ref.getA());
+    }
+
+    @Test
     public void newLineTest() throws StorageException {
         class1 ref = new class1();
 
