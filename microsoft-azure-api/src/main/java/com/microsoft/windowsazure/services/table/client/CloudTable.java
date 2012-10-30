@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
-import com.microsoft.windowsazure.services.blob.client.BlobContainerPermissions;
 import com.microsoft.windowsazure.services.blob.core.storage.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.services.core.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
@@ -594,11 +593,11 @@ public final class CloudTable {
      *            A table-level access policy.
      * @return A <code>String</code> containing the shared access signature for the table.
      * @throws InvalidKeyException
-     *              If an invalid key was passed.
+     *             If an invalid key was passed.
      * @throws StorageException
-     *              If a storage service error occurred.
+     *             If a storage service error occurred.
      * @throws IllegalArgumentException
-     *              If an unexpected value is passed.
+     *             If an unexpected value is passed.
      */
     public String generateSharedAccessSignature(final SharedAccessTablePolicy policy,
             final String accessPolicyIdentifier, final String startPartitionKey, final String startRowKey,
