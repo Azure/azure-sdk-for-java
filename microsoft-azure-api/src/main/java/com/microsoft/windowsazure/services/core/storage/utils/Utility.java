@@ -365,11 +365,16 @@ public final class Utility {
      * @return <code>true</code> if the specified URI is path-style; otherwise, <code>false</code>.
      */
     public static boolean determinePathStyleFromUri(final URI baseURI, final String knownAccountName) {
+        String path = baseURI.getPath();
+
         if (knownAccountName == null) {
-            return !Utility.isNullOrEmpty(baseURI.getPath());
+            if (Utility.isNullOrEmpty(path) || path.equals("/")) {
+                return false;
+            }
+
+            return true;
         }
 
-        String path = baseURI.getPath();
         if (!Utility.isNullOrEmpty(path) && path.startsWith("/")) {
             path = path.substring(1);
         }

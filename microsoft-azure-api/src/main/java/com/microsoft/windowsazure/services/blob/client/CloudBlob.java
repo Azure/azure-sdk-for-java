@@ -305,7 +305,6 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
                 blob.properties.setLeaseStatus(LeaseStatus.LOCKED);
 
                 return BlobResponse.getLeaseID(request, opContext);
@@ -418,7 +417,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return -1L;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
 
                 blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
@@ -552,7 +551,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 blob.copyState = BaseResponse.getCopyState(request);
 
                 return null;
@@ -631,8 +630,6 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
-
                 return null;
             }
         };
@@ -676,6 +673,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final CloudBlob createSnapshot(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -714,7 +713,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     snapshot = new CloudPageBlob(blob.getUri(), snapshotTime, client);
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return snapshot;
             }
         };
@@ -881,7 +880,6 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
-                blob.updatePropertiesFromResponse(request);
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     return true;
                 }
@@ -973,7 +971,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
 
-                blob.updatePropertiesFromResponse(request);
+                final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                        blob.snapshotID, opContext);
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
+                blob.copyState = retrievedAttributes.getCopyState();
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
@@ -1326,7 +1328,15 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                // Do not update blob length in downloadRangeInternal API. 
+                final long orignalBlobLength = blob.properties.getLength();
+                final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                        blob.snapshotID, opContext);
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
+                blob.copyState = retrievedAttributes.getCopyState();
+                blob.properties.setLength(orignalBlobLength);
+
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
                 if (totalRead != expectedLength) {
@@ -1426,7 +1436,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 this.setResult(ExecutionEngine.processRequest(request, opContext));
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
-                    blob.updatePropertiesFromResponse(request);
+                    final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
+                            blob.snapshotID, opContext);
+                    blob.properties = retrievedAttributes.getProperties();
+                    blob.metadata = retrievedAttributes.getMetadata();
+                    blob.copyState = retrievedAttributes.getCopyState();
                     return Boolean.valueOf(true);
                 }
                 else if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -1746,6 +1760,8 @@ public abstract class CloudBlob implements ListBlobItem {
             options = new BlobRequestOptions();
         }
 
+        assertNoWriteOperationForSnapshot();
+
         options.applyDefaults(this.blobServiceClient);
 
         return new BlobInputStream(this, accessCondition, options, opContext);
@@ -1820,7 +1836,7 @@ public abstract class CloudBlob implements ListBlobItem {
         }
     }
 
-    void updatePropertiesFromResponse(HttpURLConnection request) {
+    void updateEtagAndLastModifiedFromResponse(HttpURLConnection request) {
         String tempStr = request.getHeaderField(Constants.HeaderConstants.ETAG);
 
         // ETag
@@ -1836,12 +1852,12 @@ public abstract class CloudBlob implements ListBlobItem {
             this.getProperties().setLastModified(lastModifiedCalendar.getTime());
         }
 
-        // using this instead of the request property since the request
-        // property only returns an int.
-        tempStr = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
+    }
 
-        if (!Utility.isNullOrEmpty(tempStr)) {
-            this.getProperties().setLength(Long.parseLong(tempStr));
+    void updateLengthFromResponse(HttpURLConnection request) {
+        final String xContentLengthHeader = request.getHeaderField(BlobConstants.CONTENT_LENGTH_HEADER);
+        if (!Utility.isNullOrEmpty(xContentLengthHeader)) {
+            this.getProperties().setLength(Long.parseLong(xContentLengthHeader));
         }
     }
 
@@ -1915,7 +1931,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
                 return null;
             }
@@ -1995,7 +2011,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2084,7 +2100,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2231,7 +2247,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return -1L;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 final String leaseTime = BlobResponse.getLeaseTime(request, opContext);
 
                 return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
@@ -2317,6 +2333,8 @@ public abstract class CloudBlob implements ListBlobItem {
     protected final void uploadFullBlob(final InputStream sourceStream, final long length,
             final AccessCondition accessCondition, final BlobRequestOptions options, final OperationContext opContext)
             throws StorageException, IOException {
+        assertNoWriteOperationForSnapshot();
+
         // Mark sourceStream for current position.
         sourceStream.mark(Constants.MAX_MARK_LENGTH);
 
@@ -2359,7 +2377,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2400,6 +2418,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadMetadata(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2431,7 +2451,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
@@ -2471,6 +2491,8 @@ public abstract class CloudBlob implements ListBlobItem {
     @DoesServiceRequest
     public final void uploadProperties(final AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -2503,12 +2525,21 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                blob.updatePropertiesFromResponse(request);
+                blob.updateEtagAndLastModifiedFromResponse(request);
                 return null;
             }
         };
 
         ExecutionEngine
                 .executeWithRetry(this.blobServiceClient, this, impl, options.getRetryPolicyFactory(), opContext);
+    }
+
+    /**
+     * Asserts that write operation is not done for snapshot.
+     */
+    protected void assertNoWriteOperationForSnapshot() {
+        if (isSnapshot()) {
+            throw new IllegalArgumentException("Cannot perform this operation on a blob representing a snapshot.");
+        }
     }
 }
