@@ -27,14 +27,6 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * 
  */
 public abstract class IdempotentClientFilter extends ClientFilter {
-
-    /**
-     * 
-     */
-    public IdempotentClientFilter() {
-        // TODO Auto-generated constructor stub
-    }
-
     /* (non-Javadoc)
      * @see com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api.client.ClientRequest)
      */

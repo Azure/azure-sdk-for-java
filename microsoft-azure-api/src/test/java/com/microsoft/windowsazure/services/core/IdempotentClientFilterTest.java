@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.core;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -32,46 +33,49 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * 
  */
 public class IdempotentClientFilterTest {
+    Client client;
+    RetryFilter retry;
+    CountingFilter filter1;
+    CountingFilter filter2;
+
+    @Before
+    public void setup() {
+        client = Client.create();
+        client.addFilter(new MockSinkFilter());
+
+        retry = new RetryFilter();
+        filter1 = new CountingFilter();
+        filter2 = new CountingFilter();
+        filter2.key = "secondfilter";
+    }
 
     @Test
     public void filterRunsFirstTime() throws Exception {
-        CountingFilter filterInTest = new CountingFilter();
-
-        Client client = getClient();
-        client.addFilter(filterInTest);
+        client.addFilter(filter1);
 
         WebResource r = client.resource("http://test.example");
         ClientResponse response = r.get(ClientResponse.class);
 
         assertEquals(ClientResponse.Status.ACCEPTED, response.getClientResponseStatus());
 
-        assertEquals(1, filterInTest.count);
+        assertEquals(1, filter1.count);
     }
 
     @Test
     public void filterRunsOnlyOnceWhenRequestIsRetried() throws Exception {
-        RetryFilter retry = new RetryFilter();
         retry.triesLeft = 3;
-        CountingFilter filterInTest = new CountingFilter();
-
-        Client client = getClient();
-        client.addFilter(filterInTest);
+        client.addFilter(filter1);
         client.addFilter(retry);
 
         WebResource r = client.resource("http://test.example");
         ClientResponse response = r.get(ClientResponse.class);
 
         assertEquals(ClientResponse.Status.ACCEPTED, response.getClientResponseStatus());
-        assertEquals(1, filterInTest.count);
+        assertEquals(1, filter1.count);
     }
 
     @Test
     public void multipleIdempotentFiltersRunFirstTime() throws Exception {
-        CountingFilter filter1 = new CountingFilter();
-        CountingFilter filter2 = new CountingFilter();
-        filter2.key = "secondfilter";
-
-        Client client = getClient();
         client.addFilter(filter1);
         client.addFilter(filter2);
 
@@ -82,19 +86,12 @@ public class IdempotentClientFilterTest {
 
         assertEquals(1, filter1.count);
         assertEquals(1, filter2.count);
-
     }
 
     @Test
     public void multipleIdempotentFiltersRunOnceWhenRetried() throws Exception {
-        CountingFilter filter1 = new CountingFilter();
-        CountingFilter filter2 = new CountingFilter();
-        filter2.key = "secondfilter";
-
-        RetryFilter retry = new RetryFilter();
         retry.triesLeft = 4;
 
-        Client client = getClient();
         client.addFilter(filter1);
         client.addFilter(filter2);
         client.addFilter(retry);
@@ -110,10 +107,7 @@ public class IdempotentClientFilterTest {
 
     @Test
     public void idempotentFilterRunsAgainOnSecondRequest() throws Exception {
-        CountingFilter filterInTest = new CountingFilter();
-
-        Client client = getClient();
-        client.addFilter(filterInTest);
+        client.addFilter(filter1);
 
         WebResource r = client.resource("http://test.example");
         r.get(ClientResponse.class);
@@ -121,13 +115,7 @@ public class IdempotentClientFilterTest {
         r = client.resource("http://test.example");
         r.get(ClientResponse.class);
 
-        assertEquals(2, filterInTest.count);
-    }
-
-    private Client getClient() {
-        Client client = Client.create();
-        client.addFilter(new MockSinkFilter());
-        return client;
+        assertEquals(2, filter1.count);
     }
 
     private class RetryFilter extends ClientFilter {
