@@ -120,18 +120,20 @@ public final class CloudQueueClientTests extends QueueTestBase {
             NumberFormat myFormat = NumberFormat.getInstance();
             myFormat.setMinimumIntegerDigits(4);
 
-            for (int i = 0; i < totalLimit - count; i++) {
-                String sub = myFormat.format(i);
+            for (int i = 0, j = 0; i < totalLimit - count; j++) {
+                String sub = myFormat.format(j);
                 CloudQueue q = new CloudQueue(AppendQueueName(httpAcc.getQueueEndpoint(),
                         String.format("listqueue" + sub.replace(",", ""))), qClient);
-                q.createIfNotExist();
+                if (q.createIfNotExist())
+                    i++;
+            }
+
+            count = 0;
+            for (CloudQueue queue : qClient.listQueues()) {
+                count++;
             }
         }
 
-        count = 0;
-        for (CloudQueue queue : qClient.listQueues()) {
-            count++;
-        }
         Assert.assertTrue(count >= totalLimit);
 
         ResultSegment<CloudQueue> segment = qClient.listQueuesSegmented();
