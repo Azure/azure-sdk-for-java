@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -27,11 +26,11 @@ import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 
@@ -88,7 +87,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public List<AssetInfo> listAssets() throws ServiceException;
+    public ListResult<AssetInfo> listAssets() throws ServiceException;
 
     /**
      * List assets.
@@ -99,7 +98,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException;
+    public ListResult<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException;
 
     /**
      * Update asset.
@@ -157,7 +156,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    List<AccessPolicyInfo> listAccessPolicies() throws ServiceException;
+    ListResult<AccessPolicyInfo> listAccessPolicies() throws ServiceException;
 
     /**
      * List access policies.
@@ -168,7 +167,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException;
+    ListResult<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException;
 
     /**
      * Creates the locator.
@@ -222,7 +221,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public ListLocatorsResult listLocators() throws ServiceException;
+    public ListResult<LocatorInfo> listLocators() throws ServiceException;
 
     /**
      * Delete locator.
@@ -244,7 +243,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) throws ServiceException;
+    public ListResult<LocatorInfo> listLocators(ListLocatorsOptions listLocatorOptions) throws ServiceException;
 
     /**
      * Update locator.
@@ -265,7 +264,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public ListMediaProcessorsResult listMediaProcessors() throws ServiceException;
+    public ListResult<MediaProcessorInfo> listMediaProcessors() throws ServiceException;
 
     /**
      * List media processors.
@@ -276,7 +275,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
+    public ListResult<MediaProcessorInfo> listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException;
 
 }

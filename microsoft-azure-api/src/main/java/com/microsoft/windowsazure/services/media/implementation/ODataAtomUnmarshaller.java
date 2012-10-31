@@ -38,6 +38,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.ODataActionType;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
  * This class implements unmarshalling from OData over Atom into Java
@@ -74,7 +75,7 @@ public class ODataAtomUnmarshaller {
      * @throws JAXBException
      * @throws ServiceException
      */
-    public <T extends ODataEntity> List<T> unmarshalFeed(InputStream stream, Class<T> contentType)
+    public <T extends ODataEntity> ListResult<T> unmarshalFeed(InputStream stream, Class<T> contentType)
             throws JAXBException, ServiceException {
         validateNotNull(stream, "stream");
         validateNotNull(contentType, "contentType");
@@ -89,7 +90,7 @@ public class ODataAtomUnmarshaller {
                 entries.add(contentFromEntry(contentType, marshallingContentType, entry));
             }
         }
-        return entries;
+        return new ListResult<T>(entries);
     }
 
     /**

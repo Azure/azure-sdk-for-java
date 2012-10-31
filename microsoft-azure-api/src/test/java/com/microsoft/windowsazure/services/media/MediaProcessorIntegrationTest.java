@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 
 public class MediaProcessorIntegrationTest extends IntegrationTestBase {
@@ -52,12 +52,12 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors();
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.listMediaProcessors();
 
         // Assert
         assertNotNull("listMediaProcessorsResult", listMediaProcessorsResult);
-        assertTrue("listMediaProcessorsResult size > 0", listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
-        List<MediaProcessorInfo> ps = listMediaProcessorsResult.getMediaProcessorInfos();
+        assertTrue("listMediaProcessorsResult size > 0", listMediaProcessorsResult.size() > 0);
+        List<MediaProcessorInfo> ps = listMediaProcessorsResult;
         for (int i = 0; i < ps.size(); i++) {
             MediaProcessorInfo mediaProcessorInfo = ps.get(i);
             verifyMediaProcessorInfo("mediaProcessorInfo:" + i, mediaProcessorInfo);
@@ -73,12 +73,13 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         listMediaProcessorsOptions.getQueryParameters().add("$top", "2");
 
         // Act
-        ListMediaProcessorsResult listMediaProcessorsResult = service.listMediaProcessors(listMediaProcessorsOptions);
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service
+                .listMediaProcessors(listMediaProcessorsOptions);
 
         // Assert
         assertNotNull("listMediaProcessorsResult", listMediaProcessorsResult);
-        assertEquals("listMediaProcessors size", 1, listMediaProcessorsResult.getMediaProcessorInfos().size());
-        MediaProcessorInfo mediaProcessorInfo = listMediaProcessorsResult.getMediaProcessorInfos().get(0);
+        assertEquals("listMediaProcessors size", 1, listMediaProcessorsResult.size());
+        MediaProcessorInfo mediaProcessorInfo = listMediaProcessorsResult.get(0);
         verifyMediaProcessorInfo("mediaProcessorInfo", "nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10",
                 "Storage Decryption", "Storage Decryption", "", "Microsoft", "1.5.3", mediaProcessorInfo);
     }
