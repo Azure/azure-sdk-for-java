@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -80,6 +81,7 @@ public class MediaRestProxy implements MediaContract {
 
     /** The channel. */
     private Client channel;
+    private RedirectFilter redirectFilter;
 
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
@@ -91,6 +93,8 @@ public class MediaRestProxy implements MediaContract {
      * 
      * @param channel
      *            the channel
+     * @param uri
+     *            the uri
      * @param authFilter
      *            the auth filter
      * @param redirectFilter
@@ -103,6 +107,7 @@ public class MediaRestProxy implements MediaContract {
             VersionHeadersFilter versionHeadersFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
+        this.redirectFilter = redirectFilter;
 
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
@@ -215,6 +220,10 @@ public class MediaRestProxy implements MediaContract {
         String entityPath = String.format("%s(\'%s\')/%s", parentEntityType, escapedEntityId, childEntityType);
 
         return getResource(entityPath);
+    }
+
+    private URI getBaseURI() {
+        return this.redirectFilter.getBaseURI();
     }
 
     /**
@@ -591,7 +600,7 @@ public class MediaRestProxy implements MediaContract {
         WebResource resource = getResource("$batch");
         MediaBatchOperations mediaBatchOperations = null;
         try {
-            mediaBatchOperations = new MediaBatchOperations(channel.resource("").getURI());
+            mediaBatchOperations = new MediaBatchOperations(getBaseURI());
         }
         catch (JAXBException e) {
             throw new ServiceException(e);

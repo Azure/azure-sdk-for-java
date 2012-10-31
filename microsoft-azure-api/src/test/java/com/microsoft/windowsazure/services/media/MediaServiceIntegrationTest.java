@@ -520,12 +520,15 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertTrue(listMediaProcessorsResult.getMediaProcessorInfos().size() > 0);
     }
 
-    @Ignore
     @Test
     public void createJobWithTaskSuccess() throws ServiceException {
         // Arrange
+        AssetInfo assetInfo = service.createAsset();
         CreateJobOptions createJobOptions = new CreateJobOptions();
+        createJobOptions.addInputMediaAsset(assetInfo.getUri());
         List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
+        CreateTaskOptions createTaskOptionsInstance = new CreateTaskOptions();
+        createTaskOptions.add(createTaskOptionsInstance);
 
         // Act 
         JobInfo jobInfo = service.createJob(createJobOptions, createTaskOptions);
@@ -547,7 +550,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(jobInfo);
     }
 
-    @Ignore
     @Test
     public void listJobsSuccess() throws ServiceException {
         // Arrange
@@ -564,7 +566,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(listJobsResult);
     }
 
-    @Ignore
     @Test
     public void listTopJobsSuccess() throws ServiceException {
         // Arrange
@@ -581,7 +582,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore
     @Test
     public void cancelJobSuccess() throws ServiceException {
         // Arrange 
@@ -606,7 +606,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Assert
     }
 
-    @Ignore
     @Test
     public void listTasksSuccess() throws ServiceException {
         // Arrange
@@ -623,7 +622,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore
     @Test
     public void listTasksWithOptionsSuccess() throws ServiceException {
         // Arrange
@@ -641,7 +639,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertEquals(1, listTasksResult.getTaskInfos().size());
     }
 
-    @Ignore
     @Test
     public void listJobTasksSuccess() throws ServiceException {
         // Arrange
@@ -656,7 +653,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(listTasksResult);
     }
 
-    @Ignore
     @Test
     public void listJobTasksInvalidIdFailed() throws ServiceException {
         // Arrange
@@ -669,7 +665,6 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @Ignore
     @Test
     public void listJobTasksSuccessWithOptionsSuccess() throws ServiceException {
         // Arrange

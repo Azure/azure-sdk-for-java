@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
 import java.util.Date;
 
 import com.microsoft.windowsazure.services.core.utils.DateConverter;
@@ -180,6 +181,15 @@ public class AssetInfo extends ODataEntity<AssetType> {
      */
     public AssetInfo setOptions(EncryptionOption options) {
         getContent().setOptions(options.getCode());
+        return this;
+    }
+
+    public URI getUri() {
+        return getEntry().getLink();
+    }
+
+    public AssetInfo setUri(URI uri) {
+        getEntry().setLink(uri);
         return this;
     }
 }

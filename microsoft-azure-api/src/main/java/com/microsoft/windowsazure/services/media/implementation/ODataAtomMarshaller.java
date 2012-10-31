@@ -100,11 +100,12 @@ public class ODataAtomMarshaller {
     @SuppressWarnings("unchecked")
     private JAXBElement<EntryType> createEntry(Object content) {
         ContentType atomContent = new ContentType();
+        EntryType atomEntry = new EntryType();
+
         atomContent.setType("application/xml");
         atomContent.getContent().add(
                 new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), content.getClass(), content));
 
-        EntryType atomEntry = new EntryType();
         atomEntry.getEntryChildren().add(
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
 

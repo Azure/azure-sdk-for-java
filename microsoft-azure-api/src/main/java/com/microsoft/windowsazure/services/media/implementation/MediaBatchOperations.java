@@ -84,7 +84,10 @@ public class MediaBatchOperations {
         List<DataSource> bodyPartContents = new ArrayList<DataSource>();
         int contentId = 1;
 
-        int jobContentId = addJobPart(bodyPartContents, contentId);
+        URI jobURI = UriBuilder.fromUri(serviceURI).path("Jobs").build();
+        int jobContentId = addJobPart(bodyPartContents, jobURI, contentId);
+        contentId++;
+
         URI taskURI = UriBuilder.fromUri(serviceURI).path(String.format("$%d", jobContentId)).path("Tasks").build();
         addTaskPart(bodyPartContents, taskURI, contentId);
 
@@ -103,7 +106,7 @@ public class MediaBatchOperations {
      * @throws JAXBException
      *             the jAXB exception
      */
-    private int addJobPart(List<DataSource> bodyPartContents, int contentId) throws JAXBException {
+    private int addJobPart(List<DataSource> bodyPartContents, URI jobURI, int contentId) throws JAXBException {
         int jobContentId = contentId;
         ValidateJobOperation();
 
@@ -112,8 +115,7 @@ public class MediaBatchOperations {
             if (operation instanceof CreateJobOperation) {
                 CreateJobOperation createJobOperation = (CreateJobOperation) operation;
                 jobContentId = contentId;
-                URI jobUri = null;
-                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getJob(), jobUri, contentId);
+                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getJob(), jobURI, contentId);
                 contentId++;
                 if (bodyPartContent != null) {
                     bodyPartContents.add(bodyPartContent);
@@ -155,7 +157,8 @@ public class MediaBatchOperations {
             DataSource bodyPartContent = null;
             if (operation instanceof CreateTaskOperation) {
                 CreateTaskOperation createTaskOperation = (CreateTaskOperation) operation;
-                bodyPartContent = createBatchCreateEntityPart("Tasks", createTaskOperation, taskURI, contentId);
+                bodyPartContent = createBatchCreateEntityPart("Tasks", createTaskOperation.getTask(), taskURI,
+                        contentId);
                 contentId++;
             }
 

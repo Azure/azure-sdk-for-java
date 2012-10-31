@@ -56,4 +56,8 @@ public class RedirectFilter extends ClientFilter {
         }
         return response;
     }
+
+    public URI getBaseURI() {
+        return this.locationManager.getBaseURI();
+    }
 }

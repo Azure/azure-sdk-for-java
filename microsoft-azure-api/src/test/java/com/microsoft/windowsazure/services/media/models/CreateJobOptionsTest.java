@@ -16,7 +16,12 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.ws.rs.core.UriBuilder;
 
 import org.junit.Test;
 
@@ -64,11 +69,13 @@ public class CreateJobOptionsTest {
     @Test
     public void testGetSetInputMediaAssets() {
         // Arrange
-        String expectedInputMediaAssets = "testGetSetInputMediaAssets";
+        URI expectedInputMediaAsset = UriBuilder.fromUri("http://www.contoso.com/asset(123)").build();
+        List<URI> expectedInputMediaAssets = new ArrayList<URI>();
+        expectedInputMediaAssets.add(expectedInputMediaAsset);
         CreateJobOptions createJobOptions = new CreateJobOptions();
 
         // Act
-        String actualInputMediaAssets = createJobOptions.setInputMediaAssets(expectedInputMediaAssets)
+        List<URI> actualInputMediaAssets = createJobOptions.addInputMediaAsset(expectedInputMediaAsset)
                 .getInputMediaAssets();
 
         // Assert
@@ -78,11 +85,13 @@ public class CreateJobOptionsTest {
     @Test
     public void testGetSetOutputMediaAssets() {
         // Arrange
-        String expectedOutputMediaAssets = "testGetSetOutputMediaAssets";
+        URI expectedOutputMediaAsset = UriBuilder.fromUri("http://www.contoso.com/asset(123)").build();
+        List<URI> expectedOutputMediaAssets = new ArrayList<URI>();
+        expectedOutputMediaAssets.add(expectedOutputMediaAsset);
         CreateJobOptions createJobOptions = new CreateJobOptions();
 
         // Act
-        String actualOutputMediaAssets = createJobOptions.setOutputMediaAssets(expectedOutputMediaAssets)
+        List<URI> actualOutputMediaAssets = createJobOptions.addOutputMediaAsset(expectedOutputMediaAsset)
                 .getOutputMediaAssets();
 
         // Assert
