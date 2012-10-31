@@ -21,9 +21,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
@@ -57,11 +58,6 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         assertNotNull(message + " Created", policy.getCreated());
         assertNotNull(message + " LastModified", policy.getLastModified());
         assertEquals(message + " Created & LastModified", policy.getCreated(), policy.getLastModified());
-    }
-
-    @Before
-    public void setupInstance() throws Exception {
-        service = MediaService.create(config);
     }
 
     @Test
@@ -199,5 +195,18 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.deleteAccessPolicy(validButNonexistAccessPolicyId);
+    }
+
+    @Test
+    public void canUploadBlockBlobWithExplicitRetry() throws Exception {
+        String name = testPolicyPrefix + "canUploadBlockBlobWithExplicitRetry";
+        double duration = 1;
+        EnumSet<AccessPolicyPermission> write = EnumSet.of(AccessPolicyPermission.WRITE);
+        service.createAccessPolicy(name + "1", duration, write);
+
+        ExponentialRetryPolicy forceRetryPolicy = new ExponentialRetryPolicy(1, 1, new int[] { 201 });
+        MediaContract forceRetryService = service.withFilter(new RetryPolicyFilter(forceRetryPolicy));
+
+        forceRetryService.createAccessPolicy(name + "2", duration, write);
     }
 }
