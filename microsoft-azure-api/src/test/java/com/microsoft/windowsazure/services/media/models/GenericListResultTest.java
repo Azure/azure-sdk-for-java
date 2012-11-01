@@ -314,9 +314,6 @@ public class GenericListResultTest {
             catch (NoSuchElementException ex) {
                 // Ok, we expected this
             }
-            catch (Exception ex) {
-                fail("Unexpected exception was thrown");
-            }
         }
     }
 
@@ -334,9 +331,6 @@ public class GenericListResultTest {
             catch (NoSuchElementException ex) {
                 // Ok, we expected this
             }
-            catch (Exception ex) {
-                fail("Unexpected exception was thrown");
-            }
         }
     }
 
@@ -351,9 +345,6 @@ public class GenericListResultTest {
         }
         catch (UnsupportedOperationException ex) {
             // This is ok
-        }
-        catch (Exception ex) {
-            fail("Expected UnsupportedOperationException, got something else");
         }
     }
 

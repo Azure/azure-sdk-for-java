@@ -199,7 +199,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canRetryAccessPolicyCreation() throws Exception {
-        String name = testPolicyPrefix + "canUploadBlockBlobWithExplicitRetry";
+        String name = testPolicyPrefix + "canRetryAccessPolicyCreationPolicy";
         double duration = 1;
         EnumSet<AccessPolicyPermission> write = EnumSet.of(AccessPolicyPermission.WRITE);
         service.createAccessPolicy(name + "1", duration, write);

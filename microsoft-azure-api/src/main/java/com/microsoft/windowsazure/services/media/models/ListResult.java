@@ -96,13 +96,12 @@ public class ListResult<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return listIterator(0);
+        return contents.listIterator();
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        List<T> l = Collections.unmodifiableList(contents);
-        return l.listIterator(index);
+        return contents.listIterator(index);
 
     }
 
