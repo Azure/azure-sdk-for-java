@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
+import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -71,11 +73,11 @@ public class JobType implements MediaServiceDTO {
 
     /** The output media assets. */
     @XmlElement(name = "OutputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected String outputMediaAssets;
+    protected List<URI> outputMediaAssets;
 
     /** The input media assets. */
     @XmlElement(name = "InputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected String inputMediaAssets;
+    protected List<URI> inputMediaAssets;
 
     /** The tasks. */
     @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
@@ -286,18 +288,18 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the output media assets
      */
-    public String getOutputMediaAssets() {
+    public List<URI> getOutputMediaAssets() {
         return outputMediaAssets;
     }
 
     /**
      * Sets the output media assets.
      * 
-     * @param outputMediaAssets
+     * @param uriList
      *            the new output media assets
      */
-    public JobType setOutputMediaAssets(String outputMediaAssets) {
-        this.outputMediaAssets = outputMediaAssets;
+    public JobType setOutputMediaAssets(List<URI> uriList) {
+        this.outputMediaAssets = uriList;
         return this;
     }
 
@@ -306,18 +308,18 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the input media assets
      */
-    public String getInputMediaAssets() {
+    public List<URI> getInputMediaAssets() {
         return inputMediaAssets;
     }
 
     /**
      * Sets the input media assets.
      * 
-     * @param inputMediaAssets
+     * @param uriList
      *            the new input media assets
      */
-    public JobType setInputMediaAssets(String inputMediaAssets) {
-        this.inputMediaAssets = inputMediaAssets;
+    public JobType setInputMediaAssets(List<URI> uriList) {
+        this.inputMediaAssets = uriList;
         return this;
     }
 
