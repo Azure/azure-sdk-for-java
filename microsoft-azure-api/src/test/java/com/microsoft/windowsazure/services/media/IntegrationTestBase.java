@@ -16,7 +16,7 @@ import org.junit.rules.ExpectedException;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
 public abstract class IntegrationTestBase {
@@ -101,8 +101,8 @@ public abstract class IntegrationTestBase {
 
     private static void removeAllTestLocators() {
         try {
-            ListLocatorsResult listLocatorsResult = service.listLocators();
-            for (LocatorInfo locatorInfo : listLocatorsResult.getLocatorInfos()) {
+            ListResult<LocatorInfo> listLocatorsResult = service.listLocators();
+            for (LocatorInfo locatorInfo : listLocatorsResult) {
                 AssetInfo ai = service.getAsset(locatorInfo.getAssetId());
                 if (ai.getName().startsWith(testAssetPrefix)) {
                     service.deleteLocator(locatorInfo.getId());

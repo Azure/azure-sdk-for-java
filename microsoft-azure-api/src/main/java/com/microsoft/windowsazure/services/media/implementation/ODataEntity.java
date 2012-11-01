@@ -17,13 +17,13 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
  * Class wrapping deserialized OData entities. Allows easy
@@ -86,7 +86,7 @@ public abstract class ODataEntity<T> {
      * @return true if it's List&lt;OEntity> or derive from.
      */
     public static boolean isODataEntityCollectionType(Class<?> type, Type genericType) {
-        if (List.class != type) {
+        if (ListResult.class != type) {
             return false;
         }
 

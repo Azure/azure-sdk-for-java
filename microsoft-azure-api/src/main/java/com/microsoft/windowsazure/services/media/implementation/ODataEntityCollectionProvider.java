@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -16,13 +15,14 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 
 /**
  * Jersey provider to unmarshal lists of entities from Media Services.
  * 
  */
-public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterProvider<List<ODataEntity<?>>> {
+public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterProvider<ListResult<ODataEntity<?>>> {
     private final ODataAtomUnmarshaller unmarshaller;
 
     public ODataEntityCollectionProvider() throws JAXBException {
@@ -35,9 +35,9 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
     }
 
     @Override
-    public List<ODataEntity<?>> readFrom(Class<List<ODataEntity<?>>> type, Type genericType, Annotation[] annotations,
-            MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-            throws IOException, WebApplicationException {
+    public ListResult<ODataEntity<?>> readFrom(Class<ListResult<ODataEntity<?>>> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
+            InputStream entityStream) throws IOException, WebApplicationException {
 
         String responseType = mediaType.getParameters().get("type");
         try {
@@ -74,7 +74,7 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
      * @throws UnsupportedOperationException
      */
     @Override
-    public void writeTo(List<ODataEntity<?>> t, Class<?> type, Type genericType, Annotation[] annotations,
+    public void writeTo(ListResult<ODataEntity<?>> t, Class<?> type, Type genericType, Annotation[] annotations,
             MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
 

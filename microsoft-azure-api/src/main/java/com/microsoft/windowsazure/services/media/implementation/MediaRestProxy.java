@@ -19,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -43,10 +42,9 @@ import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.ListOptions;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
@@ -254,11 +252,11 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
      */
     @Override
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
+    public ListResult<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
         WebResource resource = getResource("Assets", listAssetsOptions);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .get(new GenericType<List<AssetInfo>>() {
+                .get(new GenericType<ListResult<AssetInfo>>() {
                 });
     }
 
@@ -266,7 +264,7 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets()
      */
     @Override
-    public List<AssetInfo> listAssets() {
+    public ListResult<AssetInfo> listAssets() {
         ListAssetsOptions listAssetsOptions = new ListAssetsOptions();
         return listAssets(listAssetsOptions);
     }
@@ -331,7 +329,7 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAccessPolicies()
      */
     @Override
-    public List<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
+    public ListResult<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
         return listAccessPolicies(null);
     }
 
@@ -339,11 +337,11 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAccessPolicies()
      */
     @Override
-    public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
+    public ListResult<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
         WebResource resource = getResource("AccessPolicies", options);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .get(new GenericType<List<AccessPolicyInfo>>() {
+                .get(new GenericType<ListResult<AccessPolicyInfo>>() {
                 });
     }
 
@@ -396,7 +394,7 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators()
      */
     @Override
-    public ListLocatorsResult listLocators() {
+    public ListResult<LocatorInfo> listLocators() {
         return listLocators(null);
     }
 
@@ -404,16 +402,12 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators(com.microsoft.windowsazure.services.media.models.ListLocatorsOptions)
      */
     @Override
-    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
+    public ListResult<LocatorInfo> listLocators(ListLocatorsOptions listLocatorOptions) {
         WebResource resource = getResource("Locators", listLocatorOptions);
 
-        List<LocatorInfo> locatorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
-                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<LocatorInfo>>() {
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<ListResult<LocatorInfo>>() {
                 });
-        ListLocatorsResult listLocatorsResult = new ListLocatorsResult();
-        listLocatorsResult.setLocatorInfos(locatorInfoList);
-        return listLocatorsResult;
-
     }
 
     /* (non-Javadoc)
@@ -449,7 +443,7 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors()
      */
     @Override
-    public ListMediaProcessorsResult listMediaProcessors() {
+    public ListResult<MediaProcessorInfo> listMediaProcessors() {
         return this.listMediaProcessors(null);
     }
 
@@ -457,15 +451,12 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors(com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions)
      */
     @Override
-    public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
+    public ListResult<MediaProcessorInfo> listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
         WebResource resource = getResource("MediaProcessors", listMediaProcessorsOptions);
 
-        List<MediaProcessorInfo> mediaProcessorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
-                .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<MediaProcessorInfo>>() {
+        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
+                .get(new GenericType<ListResult<MediaProcessorInfo>>() {
                 });
-        ListMediaProcessorsResult listMediaProcessorsResult = new ListMediaProcessorsResult();
-        listMediaProcessorsResult.setMediaProcessorInfos(mediaProcessorInfoList);
-        return listMediaProcessorsResult;
     }
 
 }

@@ -34,7 +34,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
@@ -201,17 +201,16 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         }
 
         // Act
-        ListLocatorsResult listLocatorsResult = service.listLocators();
+        ListResult<LocatorInfo> listLocatorsResult = service.listLocators();
 
         // Assert
         assertNotNull(listLocatorsResult);
-        verifyListResultContains("listLocatorsResult", expectedLocators, listLocatorsResult.getLocatorInfos(),
-                new ComponentDelegate() {
-                    @Override
-                    public void verifyEquals(String message, Object expected, Object actual) {
-                        verifyLocatorInfosEqual(message, (LocatorInfo) expected, (LocatorInfo) actual);
-                    }
-                });
+        verifyListResultContains("listLocatorsResult", expectedLocators, listLocatorsResult, new ComponentDelegate() {
+            @Override
+            public void verifyEquals(String message, Object expected, Object actual) {
+                verifyLocatorInfosEqual(message, (LocatorInfo) expected, (LocatorInfo) actual);
+            }
+        });
     }
 
     @Test
@@ -228,9 +227,9 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                         + "')");
         options.getQueryParameters().add("$top", "3");
 
-        ListLocatorsResult result = service.listLocators(options);
+        ListResult<LocatorInfo> result = service.listLocators(options);
 
-        assertEquals(2, result.getLocatorInfos().size());
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -285,15 +284,15 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         CreateLocatorOptions createLocatorOptions = new CreateLocatorOptions();
         LocatorInfo locatorInfo = service.createLocator(accessPolicyInfo.getId(), assetInfo.getId(), locatorType,
                 createLocatorOptions);
-        ListLocatorsResult listLocatorsResult = service.listLocators();
-        int assetCountBaseline = listLocatorsResult.getLocatorInfos().size();
+        ListResult<LocatorInfo> listLocatorsResult = service.listLocators();
+        int assetCountBaseline = listLocatorsResult.size();
 
         // Act
         service.deleteLocator(locatorInfo.getId());
 
         // Assert
         listLocatorsResult = service.listLocators();
-        assertEquals("listLocatorsResult.size", assetCountBaseline - 1, listLocatorsResult.getLocatorInfos().size());
+        assertEquals("listLocatorsResult.size", assetCountBaseline - 1, listLocatorsResult.size());
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
