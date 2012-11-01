@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -35,11 +34,11 @@ import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -167,7 +166,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets()
      */
     @Override
-    public List<AssetInfo> listAssets() throws ServiceException {
+    public ListResult<AssetInfo> listAssets() throws ServiceException {
         try {
             return service.listAssets();
         }
@@ -183,7 +182,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAssets(com.microsoft.windowsazure.services.media.models.ListAssetsOptions)
      */
     @Override
-    public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException {
+    public ListResult<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) throws ServiceException {
         try {
             return service.listAssets(listAssetsOptions);
         }
@@ -232,7 +231,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#getAccessPolicies()
      */
     @Override
-    public List<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
+    public ListResult<AccessPolicyInfo> listAccessPolicies() throws ServiceException {
         try {
             return service.listAccessPolicies();
         }
@@ -279,7 +278,7 @@ public class MediaExceptionProcessor implements MediaContract {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#listAccessPolicies(com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions)
      */@Override
-    public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
+    public ListResult<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
         try {
             return service.listAccessPolicies(options);
         }
@@ -361,7 +360,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators()
      */
     @Override
-    public ListLocatorsResult listLocators() throws ServiceException {
+    public ListResult<LocatorInfo> listLocators() throws ServiceException {
         try {
             return service.listLocators();
         }
@@ -377,7 +376,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listLocators(com.microsoft.windowsazure.services.media.models.ListLocatorsOptions)
      */
     @Override
-    public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorsOptions) throws ServiceException {
+    public ListResult<LocatorInfo> listLocators(ListLocatorsOptions listLocatorsOptions) throws ServiceException {
         try {
             return service.listLocators(listLocatorsOptions);
         }
@@ -410,7 +409,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors()
      */
     @Override
-    public ListMediaProcessorsResult listMediaProcessors() throws ServiceException {
+    public ListResult<MediaProcessorInfo> listMediaProcessors() throws ServiceException {
         try {
             return service.listMediaProcessors();
         }
@@ -426,7 +425,7 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#listMediaProcessors(com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions)
      */
     @Override
-    public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
+    public ListResult<MediaProcessorInfo> listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions)
             throws ServiceException {
         try {
             return service.listMediaProcessors(listMediaProcessorsOptions);
