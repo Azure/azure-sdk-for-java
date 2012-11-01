@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +34,15 @@ public class CreateJobOptions {
     private Integer priority;
 
     /** The input media assets. */
-    private List<URI> inputMediaAssets;
+    private final List<URI> inputMediaAssets;
 
     /** The output media assets. */
-    private List<URI> outputMediaAssets;
+    private final List<URI> outputMediaAssets;
+
+    public CreateJobOptions() {
+        this.inputMediaAssets = new ArrayList<URI>();
+        this.outputMediaAssets = new ArrayList<URI>();
+    }
 
     /**
      * Gets the start time.

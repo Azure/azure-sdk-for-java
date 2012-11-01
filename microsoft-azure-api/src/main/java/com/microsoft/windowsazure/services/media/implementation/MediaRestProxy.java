@@ -632,7 +632,7 @@ public class MediaRestProxy implements MediaContract {
             throw new ServiceException(e);
         }
 
-        ClientResponse clientResponse = resource.type(MediaType.APPLICATION_ATOM_XML)
+        ClientResponse clientResponse = resource.type(mimeMultipart.getContentType())
                 .accept(MediaType.APPLICATION_ATOM_XML).post(ClientResponse.class, mimeMultipart);
 
         JobInfo jobInfo = new JobInfo();

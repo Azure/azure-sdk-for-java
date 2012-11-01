@@ -17,15 +17,20 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilder;
+import javax.xml.bind.JAXBElement;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.implementation.atom.IdType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
@@ -525,7 +530,33 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         // Arrange
         AssetInfo assetInfo = service.createAsset();
         CreateJobOptions createJobOptions = new CreateJobOptions();
-        createJobOptions.addInputMediaAsset(assetInfo.getUri());
+        List<Object> children = assetInfo.getChildren();
+        String uri = "";
+        for (Object object : children) {
+
+            JAXBElement<IdType> jaxbIdType = null;
+
+            try {
+                jaxbIdType = (JAXBElement<IdType>) object;
+            }
+            catch (ClassCastException e) {
+
+            }
+            if (jaxbIdType != null) {
+                IdType idtype = null;
+                try {
+                    idtype = jaxbIdType.getValue();
+                }
+                catch (ClassCastException e) {
+
+                }
+                if (idtype != null) {
+                    uri = idtype.getValue();
+                }
+            }
+        }
+        URI inputMediaAsset = UriBuilder.fromPath(uri).build();
+        createJobOptions.addInputMediaAsset(inputMediaAsset);
         List<CreateTaskOptions> createTaskOptions = new ArrayList<CreateTaskOptions>();
         CreateTaskOptions createTaskOptionsInstance = new CreateTaskOptions();
         createTaskOptions.add(createTaskOptionsInstance);

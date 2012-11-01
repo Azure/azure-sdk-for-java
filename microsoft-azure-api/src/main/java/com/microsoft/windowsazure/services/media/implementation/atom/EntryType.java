@@ -192,7 +192,7 @@ public class EntryType {
     }
 
     public URI getLink() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

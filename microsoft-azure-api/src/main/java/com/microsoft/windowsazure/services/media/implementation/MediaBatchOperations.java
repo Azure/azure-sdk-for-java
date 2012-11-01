@@ -182,11 +182,27 @@ public class MediaBatchOperations {
     private MimeMultipart toMimeMultipart(List<DataSource> bodyPartContents) throws MessagingException, IOException {
         // Create unique part boundary strings
         String batchId = String.format("batch_%s", UUID.randomUUID().toString());
+
+        MimeMultipart changeSets = createChangeSets(bodyPartContents);
+        MimeBodyPart mimeBodyPart = createMimeBodyPart(batchId, changeSets);
+
+        MimeMultipart mimeMultipart = new MimeMultipart(new SetBoundaryMultipartDataSource(batchId));
+        mimeMultipart.addBodyPart(mimeBodyPart);
+        return mimeMultipart;
+
+    }
+
+    private MimeBodyPart createMimeBodyPart(String batchId, MimeMultipart changeSets) throws MessagingException {
+        MimeBodyPart mimeBodyPart = new MimeBodyPart();
+        mimeBodyPart.setContent(changeSets);
+        String contentType = String.format("multipart/mixed; boundary=%s", batchId);
+        mimeBodyPart.setHeader("Content-Type", contentType);
+        return mimeBodyPart;
+    }
+
+    private MimeMultipart createChangeSets(List<DataSource> bodyPartContents) throws MessagingException {
         String changeSet = String.format("changeset_%s", UUID.randomUUID().toString());
 
-        //
-        // Build inner list of change sets containing the list of body part content
-        //
         MimeMultipart changeSets = new MimeMultipart(new SetBoundaryMultipartDataSource(changeSet));
 
         for (DataSource bodyPart : bodyPartContents) {
@@ -199,22 +215,7 @@ public class MediaBatchOperations {
             changeSets.addBodyPart(mimeBodyPart);
         }
 
-        //
-        // Build outer "batch" body part
-        //
-        MimeBodyPart batchbody = new MimeBodyPart();
-        batchbody.setContent(changeSets);
-        //Note: Both content type and encoding need to be set *after* setting content, because
-        //      MimeBodyPart implementation replaces them when calling "setContent".
-        batchbody.setHeader("Content-Type", changeSets.getContentType());
-
-        //
-        // Build outer "batch" multipart
-        //
-        MimeMultipart batch = new MimeMultipart(new SetBoundaryMultipartDataSource(batchId));
-        batch.addBodyPart(batchbody);
-        return batch;
-
+        return changeSets;
     }
 
     /**
