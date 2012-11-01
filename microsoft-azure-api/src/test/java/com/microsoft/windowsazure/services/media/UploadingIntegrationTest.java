@@ -108,4 +108,16 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
         blobWriter.commitBlobBlocks("canCommitBlobBlocksWithOptions", blockList, options);
     }
 
+    @Test
+    public void canUploadBlockBlobWithExplicitRetry() throws Exception {
+        InputStream blobContent = new ByteArrayInputStream(firstPrimes);
+        blobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry1", blobContent);
+
+        ExponentialRetryPolicy forceRetryPolicy = new ExponentialRetryPolicy(1, 1, new int[] { 201 });
+        WritableBlobContainerContract forceRetryBlobWriter = blobWriter.withFilter(new RetryPolicyFilter(
+                forceRetryPolicy));
+
+        blobContent.reset();
+        forceRetryBlobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry2", blobContent);
+    }
 }
