@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -25,8 +26,9 @@ public abstract class IntegrationTestBase {
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
 
-    protected static final String validButNonexistAssetId = "nb:cid:UUID:00000000-0000-4a00-0000-000000000000";
-    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:bce3863e-830b-49f5-9199-7cfaff52935f";
+    protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
+    protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
+    protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
 
     protected static final String invalidId = "notAValidId";
 
@@ -151,6 +153,33 @@ public abstract class IntegrationTestBase {
             for (int i = 0; i < expectedInfos.size(); i++) {
                 delegate.verifyEquals(message + ": orderedAndFilteredActualInfo " + i, expectedInfos.get(i),
                         orderedAndFilteredActualInfo.get(i));
+            }
+        }
+    }
+
+    protected void assertDateApproxEquals(Date expected, Date actual) {
+        assertDateApproxEquals("", expected, actual);
+    }
+
+    protected void assertDateApproxEquals(String message, Date expected, Date actual) {
+        // Default allows for a 30 seconds difference in dates, for clock skew, network delays, etc.
+        long deltaInMilliseconds = 30000;
+
+        if (expected == null || actual == null) {
+            assertEquals(message, expected, actual);
+        }
+        else {
+            long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+
+            // TODO: Remove this time-zone workaround when fixed:
+            // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/413
+            if (diffInMilliseconds > deltaInMilliseconds) {
+                // Just hard-code time-zone offset of 7 hours for now.
+                diffInMilliseconds = Math.abs(diffInMilliseconds - 7 * 60 * 60 * 1000);
+            }
+
+            if (diffInMilliseconds > deltaInMilliseconds) {
+                assertEquals(message, expected, actual);
             }
         }
     }

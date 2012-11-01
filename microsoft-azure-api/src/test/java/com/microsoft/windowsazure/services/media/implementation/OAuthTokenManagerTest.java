@@ -52,7 +52,7 @@ public class OAuthTokenManagerTest {
         String acsBaseUri = "testurl";
         String accountName = "testname";
         String accountPassword = "testpassword";
-        String scope = "urn:WindowsAzureMediaServices";
+        String scope = "testscope";
 
         client = new OAuthTokenManager(contract, dateFactory, acsBaseUri, accountName, accountPassword, scope);
 
@@ -77,8 +77,7 @@ public class OAuthTokenManagerTest {
                 wrapResponse.setExpiresIn(83);
                 return wrapResponse;
             }
-        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword",
-                "urn:WindowsAzureMediaServices");
+        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
 
     }
 
@@ -113,8 +112,7 @@ public class OAuthTokenManagerTest {
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-1", accessToken3);
 
-        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword",
-                "urn:WindowsAzureMediaServices");
+        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
     }
 
     @Test
@@ -134,8 +132,7 @@ public class OAuthTokenManagerTest {
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-2", accessToken3);
 
-        verify(contract, times(2)).getAccessToken(new URI("testurl"), "testname", "testpassword",
-                "urn:WindowsAzureMediaServices");
+        verify(contract, times(2)).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
     }
 
 }

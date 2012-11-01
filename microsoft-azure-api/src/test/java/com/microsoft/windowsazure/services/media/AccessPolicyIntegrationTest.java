@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
+import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 
 public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private void verifyInfosEqual(String message, AccessPolicyInfo expected, AccessPolicyInfo actual) {
@@ -59,31 +60,26 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " Created & LastModified", policy.getCreated(), policy.getLastModified());
     }
 
-    @Before
-    public void setupInstance() throws Exception {
-        service = MediaService.create(config);
-    }
-
     @Test
     public void canCreateAccessPolicy() throws Exception {
         String testName = testPolicyPrefix + "CanCreate";
         double duration = 5;
 
-        AccessPolicyInfo policy = service.createAccessPolicy(testName, duration);
+        AccessPolicyInfo policy = service.createAccessPolicy(testName, duration,
+                EnumSet.of(AccessPolicyPermission.WRITE));
 
         verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.WRITE, policy);
     }
 
     @Test
-    public void canCreateAccessPolicyOptions() throws Exception {
-        String testName = testPolicyPrefix + "CanCreateOptions";
+    public void canCreateAccessPolicyWithReadPermissions() throws Exception {
+        String testName = testPolicyPrefix + "CanCreateRead";
         double duration = 5;
-        AccessPolicyPermission permission = AccessPolicyPermission.READ;
-        CreateAccessPolicyOptions options = new CreateAccessPolicyOptions().addPermissions(permission);
 
-        AccessPolicyInfo policy = service.createAccessPolicy(testName, duration, options);
+        AccessPolicyInfo policy = service.createAccessPolicy(testName, duration,
+                EnumSet.of(AccessPolicyPermission.READ));
 
-        verifyPolicyProperties("policy", testName, duration, permission, policy);
+        verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.READ, policy);
     }
 
     // TODO: Null name or duration?
@@ -92,7 +88,8 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     public void canGetSinglePolicyById() throws Exception {
         String expectedName = testPolicyPrefix + "GetOne";
         double duration = 1;
-        AccessPolicyInfo policyToGet = service.createAccessPolicy(expectedName, duration);
+        AccessPolicyInfo policyToGet = service.createAccessPolicy(expectedName, duration,
+                EnumSet.of(AccessPolicyPermission.WRITE));
 
         AccessPolicyInfo retrievedPolicy = service.getAccessPolicy(policyToGet.getId());
 
@@ -123,8 +120,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
         List<AccessPolicyInfo> expectedAccessPolicies = new ArrayList<AccessPolicyInfo>();
         for (int i = 0; i < policyNames.length; i++) {
-            AccessPolicyInfo policy = service.createAccessPolicy(policyNames[i], duration,
-                    new CreateAccessPolicyOptions().addPermissions(permissions));
+            AccessPolicyInfo policy = service.createAccessPolicy(policyNames[i], duration, permissions);
             expectedAccessPolicies.add(policy);
         }
 
@@ -139,13 +135,37 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
                 });
     }
 
+    @Test
+    public void canUseQueryParametersWhenListingAccessPolicies() throws Exception {
+        String[] policyNames = new String[] { testPolicyPrefix + "ListThree", testPolicyPrefix + "ListFour",
+                testPolicyPrefix + "ListFive", testPolicyPrefix + "ListSix", testPolicyPrefix + "ListSeven" };
+
+        double duration = 3;
+        EnumSet<AccessPolicyPermission> permissions = EnumSet.of(AccessPolicyPermission.WRITE,
+                AccessPolicyPermission.LIST);
+
+        List<AccessPolicyInfo> expectedAccessPolicies = new ArrayList<AccessPolicyInfo>();
+        for (int i = 0; i < policyNames.length; i++) {
+            AccessPolicyInfo policy = service.createAccessPolicy(policyNames[i], duration, permissions);
+            expectedAccessPolicies.add(policy);
+        }
+
+        ListAccessPolicyOptions options = new ListAccessPolicyOptions();
+        options.getQueryParameters().add("$top", "2");
+
+        List<AccessPolicyInfo> actualAccessPolicies = service.listAccessPolicies(options);
+
+        assertEquals(2, actualAccessPolicies.size());
+    }
+
     // Note: Access Policy cannot be updated.
 
     @Test
     public void canDeleteAccessPolicyById() throws Exception {
         String policyName = testPolicyPrefix + "ToDelete";
         double duration = 1;
-        AccessPolicyInfo policyToDelete = service.createAccessPolicy(policyName, duration);
+        AccessPolicyInfo policyToDelete = service.createAccessPolicy(policyName, duration,
+                EnumSet.of(AccessPolicyPermission.WRITE));
         List<AccessPolicyInfo> listPoliciesResult = service.listAccessPolicies();
         int policyCountBaseline = listPoliciesResult.size();
 
@@ -175,5 +195,18 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.deleteAccessPolicy(validButNonexistAccessPolicyId);
+    }
+
+    @Test
+    public void canUploadBlockBlobWithExplicitRetry() throws Exception {
+        String name = testPolicyPrefix + "canUploadBlockBlobWithExplicitRetry";
+        double duration = 1;
+        EnumSet<AccessPolicyPermission> write = EnumSet.of(AccessPolicyPermission.WRITE);
+        service.createAccessPolicy(name + "1", duration, write);
+
+        ExponentialRetryPolicy forceRetryPolicy = new ExponentialRetryPolicy(1, 1, new int[] { 201 });
+        MediaContract forceRetryService = service.withFilter(new RetryPolicyFilter(forceRetryPolicy));
+
+        forceRetryService.createAccessPolicy(name + "2", duration, write);
     }
 }

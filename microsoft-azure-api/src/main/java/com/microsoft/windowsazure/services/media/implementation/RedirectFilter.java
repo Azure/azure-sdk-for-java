@@ -18,20 +18,23 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class RedirectFilter extends ClientFilter {
+public class RedirectFilter extends IdempotentClientFilter {
     private final ResourceLocationManager locationManager;
 
     public RedirectFilter(ResourceLocationManager locationManager) {
         this.locationManager = locationManager;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+     */
     @Override
-    public ClientResponse handle(ClientRequest request) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest request) throws ClientHandlerException {
         if (request == null) {
             throw new IllegalArgumentException("Request should not be null");
         }

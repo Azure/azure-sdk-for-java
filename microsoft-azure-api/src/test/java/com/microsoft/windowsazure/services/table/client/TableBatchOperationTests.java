@@ -288,11 +288,9 @@ public class TableBatchOperationTests extends TableTestBase {
         }
         catch (TableServiceException ex) {
             Assert.assertEquals(ex.getMessage(), "Precondition Failed");
-            String errorAfterSemiColon = ex.getExtendedErrorInformation().getErrorMessage();
-            errorAfterSemiColon = errorAfterSemiColon.substring(errorAfterSemiColon.indexOf(":") + 1);
-            Assert.assertTrue(errorAfterSemiColon
-                    .startsWith("The condition specified using HTTP conditional header(s) is not met."));
-            Assert.assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ConditionNotMet");
+            Assert.assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            Assert.assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
         }
     }
 

@@ -14,13 +14,14 @@
  */
 package com.microsoft.windowsazure.services.media;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
@@ -40,7 +41,6 @@ import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -128,27 +128,14 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *            name of access policy
      * @param durationInMinutes
      *            Duration in minutes that blob access will be granted when using this access policy
+     * @param permissions
+     *            Permissions that the access policy should grant.
      * @return Created access policy
      * @throws ServiceException
      *             the service exception
      */
-    AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes) throws ServiceException;
-
-    /**
-     * Create the access policy with the given options.
-     * 
-     * @param accessPolicyName
-     *            name of access policy
-     * @param durationInMinutes
-     *            Duration in minutes that blob access will be granted when using this access policy
-     * @param options
-     *            options for creation
-     * @return the created access policy
-     * @throws ServiceException
-     *             the service exception
-     */
     AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
-            CreateAccessPolicyOptions options) throws ServiceException;
+            EnumSet<AccessPolicyPermission> permissions) throws ServiceException;
 
     /**
      * Delete the access policy with the given id.
@@ -250,12 +237,11 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * 
      * @param locatorId
      *            the id
-     * @throws UniformInterfaceException
-     *             the uniform interface exception
+     * 
      * @throws ServiceException
      *             the service exception
      */
-    public void deleteLocator(String locatorId) throws UniformInterfaceException, ServiceException;
+    public void deleteLocator(String locatorId) throws ServiceException;
 
     /**
      * List locators.

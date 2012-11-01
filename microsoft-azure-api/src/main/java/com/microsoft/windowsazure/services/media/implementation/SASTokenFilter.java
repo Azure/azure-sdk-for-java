@@ -19,16 +19,16 @@ import java.net.URISyntaxException;
 
 import javax.ws.rs.core.UriBuilder;
 
+import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * Filter responsible for adding SAS tokens to outgoing requests.
  * 
  */
-public class SASTokenFilter extends ClientFilter {
+public class SASTokenFilter extends IdempotentClientFilter {
     private final String sasToken;
 
     /**
@@ -44,10 +44,10 @@ public class SASTokenFilter extends ClientFilter {
     }
 
     /* (non-Javadoc)
-     * @see com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api.client.ClientRequest)
+     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest cr) throws ClientHandlerException {
         UriBuilder newUri = UriBuilder.fromUri(cr.getURI());
         String currentQuery = cr.getURI().getRawQuery();
         if (currentQuery == null) {
@@ -63,5 +63,4 @@ public class SASTokenFilter extends ClientFilter {
 
         return getNext().handle(cr);
     }
-
 }

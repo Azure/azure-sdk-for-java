@@ -21,19 +21,6 @@ import org.junit.Test;
 public class UpdateAssetOptionsTest {
 
     @Test
-    public void testGetSetState() {
-        // Arrange
-        AssetState expectedState = AssetState.Published;
-        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
-
-        // Act
-        AssetState actualState = updateAssetOptions.setState(expectedState).getState();
-
-        // Assert
-        assertEquals(expectedState, actualState);
-    }
-
-    @Test
     public void testGetSetAlternateId() {
         // Arrange
         String expectedAlternateId = "testAlternateId";
@@ -57,19 +44,6 @@ public class UpdateAssetOptionsTest {
 
         // Assert
         assertEquals(expectedName, actualName);
-    }
-
-    @Test
-    public void testGetSetOptions() {
-        // Arrange
-        EncryptionOption expectedOptions = EncryptionOption.None;
-        UpdateAssetOptions updateAssetOptions = new UpdateAssetOptions();
-
-        // Act
-        EncryptionOption actualOptions = updateAssetOptions.setOptions(expectedOptions).getOptions();
-
-        // Assert
-        assertEquals(expectedOptions, actualOptions);
     }
 
 }
