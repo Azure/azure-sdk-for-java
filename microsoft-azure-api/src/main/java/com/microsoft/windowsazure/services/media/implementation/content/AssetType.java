@@ -15,12 +15,12 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.microsoft.windowsazure.services.core.utils.DateConverter;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 /**
@@ -38,10 +38,10 @@ public class AssetType implements MediaServiceDTO {
     protected int state;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected XMLGregorianCalendar created;
+    protected Date created;
 
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected XMLGregorianCalendar lastModified;
+    protected Date lastModified;
 
     @XmlElement(name = "AlternateId", namespace = Constants.ODATA_DATA_NS)
     protected String alternateId;
@@ -85,7 +85,7 @@ public class AssetType implements MediaServiceDTO {
     /**
      * @return the created
      */
-    public XMLGregorianCalendar getCreated() {
+    public Date getCreated() {
         return created;
     }
 
@@ -93,14 +93,14 @@ public class AssetType implements MediaServiceDTO {
      * @param created
      *            the created to set
      */
-    public void setCreated(XMLGregorianCalendar created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
     /**
      * @return the lastModified
      */
-    public XMLGregorianCalendar getLastModified() {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -108,7 +108,7 @@ public class AssetType implements MediaServiceDTO {
      * @param lastModified
      *            the lastModified to set
      */
-    public void setLastModified(XMLGregorianCalendar lastModified) {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -160,9 +160,9 @@ public class AssetType implements MediaServiceDTO {
     public static AssetType create(AssetInfo assetInfo) {
         AssetType assetType = new AssetType();
         assetType.setAlternateId(assetInfo.getAlternateId());
-        assetType.setCreated(DateConverter.DateToXMLGregorianCalendar(assetInfo.getCreated()));
+        assetType.setCreated(assetInfo.getCreated());
         assetType.setId(assetInfo.getId());
-        assetType.setLastModified(DateConverter.DateToXMLGregorianCalendar(assetInfo.getLastModified()));
+        assetType.setLastModified(assetInfo.getLastModified());
         assetType.setName(assetInfo.getName());
         assetType.setOptions(assetInfo.getOptions().getCode());
         assetType.setState(assetInfo.getState().getCode());

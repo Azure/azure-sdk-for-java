@@ -317,7 +317,7 @@ final class BlobDeserializationHelper {
                 }
                 else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
                     properties.setLeaseStatus(LeaseStatus.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.COPY_STATUS_ELEMENT)));
+                            Constants.LEASE_STATUS_ELEMENT)));
                 }
                 else if (name.equals(Constants.LEASE_STATE_ELEMENT)) {
                     properties.setLeaseState(LeaseState.parse(Utility.readElementFromXMLReader(xmlr,

@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
-import com.microsoft.windowsazure.services.core.utils.DateConverter;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
@@ -109,7 +108,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * @return the date
      */
     public Date getCreated() {
-        return DateConverter.XMLGregorianCalendarToDate(this.getContent().getCreated());
+        return this.getContent().getCreated();
     }
 
     /**
@@ -120,7 +119,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * @return the asset info
      */
     public AssetInfo setCreated(Date created) {
-        getContent().setCreated(DateConverter.DateToXMLGregorianCalendar(created));
+        getContent().setCreated(created);
         return this;
     }
 
@@ -130,7 +129,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * @return the date
      */
     public Date getLastModified() {
-        return DateConverter.XMLGregorianCalendarToDate(getContent().getLastModified());
+        return getContent().getLastModified();
     }
 
     /**
@@ -141,7 +140,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * @return the asset info
      */
     public AssetInfo setLastModified(Date lastModified) {
-        getContent().setLastModified(DateConverter.DateToXMLGregorianCalendar(lastModified));
+        getContent().setLastModified(lastModified);
         return this;
     }
 

@@ -416,8 +416,8 @@ class AtomPubParser {
         }
 
         if (!isTableEntry) {
-            Utility.assertNotNullOrEmpty(TableConstants.PARTITION_KEY, entity.getPartitionKey());
-            Utility.assertNotNullOrEmpty(TableConstants.ROW_KEY, entity.getRowKey());
+            Utility.assertNotNull(TableConstants.PARTITION_KEY, entity.getPartitionKey());
+            Utility.assertNotNull(TableConstants.ROW_KEY, entity.getRowKey());
             Utility.assertNotNull(TableConstants.TIMESTAMP, entity.getTimestamp());
         }
 

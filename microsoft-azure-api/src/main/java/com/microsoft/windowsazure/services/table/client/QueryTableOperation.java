@@ -62,7 +62,7 @@ public class QueryTableOperation extends TableOperation {
      */
     QueryTableOperation(final String partitionKey, final String rowKey) {
         super(null, TableOperationType.RETRIEVE);
-        Utility.assertNotNullOrEmpty("partitionKey", partitionKey);
+        Utility.assertNotNull("partitionKey", partitionKey);
         this.partitionKey = partitionKey;
         this.rowKey = rowKey;
     }

@@ -46,7 +46,6 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
@@ -62,6 +61,7 @@ import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptio
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
 import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
+import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
@@ -167,6 +167,14 @@ public class MediaRestProxy implements MediaContract {
         WebResource resource = getChannel().resource(entityName);
         for (ServiceFilter filter : filters) {
             resource.addFilter(new ClientFilterAdapter(filter));
+        }
+        return resource;
+    }
+
+    private WebResource getResource(String entityName, ListOptions options) {
+        WebResource resource = getResource(entityName);
+        if (options != null) {
+            resource = resource.queryParams(options.getQueryParameters());
         }
         return resource;
     }
@@ -326,10 +334,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AssetInfo> listAssets(ListAssetsOptions listAssetsOptions) {
-        WebResource resource = getResource("Assets");
-        if ((listAssetsOptions != null) && (listAssetsOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listAssetsOptions.getQueryParameters());
-        }
+        WebResource resource = getResource("Assets", listAssetsOptions);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AssetInfo>>() {
@@ -354,13 +359,6 @@ public class MediaRestProxy implements MediaContract {
         AssetType updatedAssetType = new AssetType();
         updatedAssetType.setAlternateId(updateAssetOptions.getAlternateId());
         updatedAssetType.setName(updateAssetOptions.getName());
-        if (updateAssetOptions.getOptions() != null) {
-            updatedAssetType.setOptions(updateAssetOptions.getOptions().getCode());
-        }
-
-        if (updateAssetOptions.getState() != null) {
-            updatedAssetType.setState(updateAssetOptions.getState().getCode());
-        }
 
         ClientResponse clientResponse = mergeRequest("Assets", assetId, ClientResponse.class, updatedAssetType);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
@@ -375,28 +373,14 @@ public class MediaRestProxy implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double)
-     */
-    @Override
-    public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes)
-            throws ServiceException {
-        return createAccessPolicy(accessPolicyName, durationInMinutes, null);
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAccessPolicy(double, com.microsoft.windowsazure.services.media.models.CreateAccessPolicyOptions)
      */
     @Override
     public AccessPolicyInfo createAccessPolicy(String accessPolicyName, double durationInMinutes,
-            CreateAccessPolicyOptions options) throws ServiceException {
-
-        if (options == null) {
-            options = new CreateAccessPolicyOptions().addPermissions(EnumSet.of(AccessPolicyPermission.WRITE));
-        }
+            EnumSet<AccessPolicyPermission> permissions) throws ServiceException {
 
         AccessPolicyType requestData = new AccessPolicyType().setDurationInMinutes(durationInMinutes)
-                .setName(accessPolicyName)
-                .setPermissions(AccessPolicyPermission.bitsFromPermissions(options.getPermissions()));
+                .setName(accessPolicyName).setPermissions(AccessPolicyPermission.bitsFromPermissions(permissions));
 
         WebResource resource = getResource("AccessPolicies");
 
@@ -435,7 +419,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public List<AccessPolicyInfo> listAccessPolicies(ListAccessPolicyOptions options) throws ServiceException {
-        WebResource resource = getResource("AccessPolicies");
+        WebResource resource = getResource("AccessPolicies", options);
 
         return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
                 .get(new GenericType<List<AccessPolicyInfo>>() {
@@ -500,7 +484,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public ListLocatorsResult listLocators(ListLocatorsOptions listLocatorOptions) {
-        WebResource resource = getResource("Locators");
+        WebResource resource = getResource("Locators", listLocatorOptions);
 
         List<LocatorInfo> locatorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
                 .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<LocatorInfo>>() {
@@ -553,11 +537,7 @@ public class MediaRestProxy implements MediaContract {
      */
     @Override
     public ListMediaProcessorsResult listMediaProcessors(ListMediaProcessorsOptions listMediaProcessorsOptions) {
-        WebResource resource = getResource("MediaProcessors");
-
-        if ((listMediaProcessorsOptions != null) && (listMediaProcessorsOptions.getQueryParameters() != null)) {
-            resource = resource.queryParams(listMediaProcessorsOptions.getQueryParameters());
-        }
+        WebResource resource = getResource("MediaProcessors", listMediaProcessorsOptions);
 
         List<MediaProcessorInfo> mediaProcessorInfoList = resource.type(MediaType.APPLICATION_ATOM_XML)
                 .accept(MediaType.APPLICATION_ATOM_XML).get(new GenericType<List<MediaProcessorInfo>>() {
