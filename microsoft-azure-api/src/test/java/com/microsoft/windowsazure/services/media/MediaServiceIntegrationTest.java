@@ -595,6 +595,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(listJobsResult);
+        assertEquals(2, listJobsResult.getJobInfos().size());
     }
 
     @Test
@@ -684,7 +685,7 @@ public class MediaServiceIntegrationTest extends IntegrationTestBase {
         assertNotNull(listTasksResult);
     }
 
-    @Test
+    @Test(expected = ServiceException.class)
     public void listJobTasksInvalidIdFailed() throws ServiceException {
         // Arrange
 

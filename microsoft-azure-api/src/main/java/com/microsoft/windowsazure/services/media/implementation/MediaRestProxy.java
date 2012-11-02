@@ -265,6 +265,22 @@ public class MediaRestProxy implements MediaContract {
         return listTasksResult;
     }
 
+    private CreateJobOperation createCreateJobOperation(CreateJobOptions createJobOptions) {
+        JobType jobType = new JobType();
+        if (createJobOptions != null) {
+            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
+            jobType.setName(createJobOptions.getName());
+            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
+            jobType.setPriority(createJobOptions.getPriority());
+            jobType.setStartTime(createJobOptions.getStartTime());
+        }
+
+        CreateJobOperation createJobOperation = new CreateJobOperation();
+        createJobOperation.setJob(jobType);
+
+        return createJobOperation;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.MediaContract#createAsset()
      */
@@ -588,15 +604,6 @@ public class MediaRestProxy implements MediaContract {
     public JobInfo createJob(CreateJobOptions createJobOptions, List<CreateTaskOptions> createTaskOptions)
             throws ServiceException {
 
-        JobType jobType = new JobType();
-        if (createJobOptions != null) {
-            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
-            jobType.setName(createJobOptions.getName());
-            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
-            jobType.setPriority(createJobOptions.getPriority());
-            jobType.setStartTime(createJobOptions.getStartTime());
-        }
-
         WebResource resource = getResource("$batch");
         MediaBatchOperations mediaBatchOperations = null;
         try {
@@ -608,8 +615,9 @@ public class MediaRestProxy implements MediaContract {
         catch (ParserConfigurationException e) {
             throw new ServiceException(e);
         }
-        CreateJobOperation createJobOperation = new CreateJobOperation();
-        createJobOperation.setJob(jobType);
+
+        CreateJobOperation createJobOperation = createCreateJobOperation(createJobOptions);
+
         mediaBatchOperations.addOperation(createJobOperation);
         for (CreateTaskOptions createTaskOptionsInstance : createTaskOptions) {
             CreateTaskOperation createTaskOperation = new CreateTaskOperation();
