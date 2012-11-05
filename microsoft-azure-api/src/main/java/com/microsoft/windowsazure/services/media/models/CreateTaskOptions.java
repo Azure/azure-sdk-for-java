@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Class CreateTaskOptions.
@@ -53,10 +55,10 @@ public class CreateTaskOptions {
     private String initializationVector;
 
     /** The input media assets. */
-    private String inputMediaAssets;
+    private List<URI> inputMediaAssets;
 
     /** The output media assets. */
-    private String outputMediaAssets;
+    private List<URI> outputMediaAssets;
 
     /**
      * Gets the start time.
@@ -128,7 +130,7 @@ public class CreateTaskOptions {
      *            the input media assets
      * @return the creates the job options
      */
-    public CreateTaskOptions setInputMediaAssets(String inputMediaAssets) {
+    public CreateTaskOptions setInputMediaAssets(List<URI> inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
         return this;
     }
@@ -138,7 +140,7 @@ public class CreateTaskOptions {
      * 
      * @return the input media assets
      */
-    public String getInputMediaAssets() {
+    public List<URI> getInputMediaAssets() {
         return this.inputMediaAssets;
     }
 
@@ -149,7 +151,7 @@ public class CreateTaskOptions {
      *            the output media assets
      * @return the creates the job options
      */
-    public CreateTaskOptions setOutputMediaAssets(String outputMediaAssets) {
+    public CreateTaskOptions setOutputMediaAssets(List<URI> outputMediaAssets) {
         this.outputMediaAssets = outputMediaAssets;
         return this;
     }
@@ -159,7 +161,7 @@ public class CreateTaskOptions {
      * 
      * @return the output media assets
      */
-    public String getOutputMediaAssets() {
+    public List<URI> getOutputMediaAssets() {
         return this.outputMediaAssets;
     }
 
@@ -300,6 +302,16 @@ public class CreateTaskOptions {
      */
     public CreateTaskOptions setInitializationVector(String initializationVector) {
         this.initializationVector = initializationVector;
+        return this;
+    }
+
+    public CreateTaskOptions addInputMediaAsset(URI inputMediaAsset) {
+        this.inputMediaAssets.add(inputMediaAsset);
+        return this;
+    }
+
+    public CreateTaskOptions addOutputMediaAsset(URI outputMediaAsset) {
+        this.outputMediaAssets.add(outputMediaAsset);
         return this;
     }
 

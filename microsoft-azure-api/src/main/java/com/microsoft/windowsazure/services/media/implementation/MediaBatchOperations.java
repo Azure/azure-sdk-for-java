@@ -58,12 +58,13 @@ public class MediaBatchOperations {
      * 
      * @param serviceURI
      *            the service uri
-     * @throws JAXBException
-     *             the jAXB exception
      * @throws ParserConfigurationException
-     *             the parser configuration exception
+     * @throws JAXBException
      */
     public MediaBatchOperations(URI serviceURI) throws JAXBException, ParserConfigurationException {
+        if (serviceURI == null) {
+            throw new IllegalArgumentException("The service URI cannot be null.");
+        }
         this.serviceURI = serviceURI;
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
         this.operations = new ArrayList<Operation>();
@@ -340,6 +341,10 @@ public class MediaBatchOperations {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Operation> getOperations() {
+        return operations;
     }
 
 }
