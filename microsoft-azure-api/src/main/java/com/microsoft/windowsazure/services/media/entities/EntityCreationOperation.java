@@ -15,12 +15,11 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-
 /**
  * 
  *
  */
-public interface EntityCreationOperation<T> extends EntityOperation<T> {
+public interface EntityCreationOperation<T> extends EntityOperationSingleResult<T> {
 
     /**
      * Get the object to be sent to the server containing

@@ -20,9 +20,12 @@ import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.sun.jersey.api.client.GenericType;
 
 /**
  * 
@@ -114,6 +117,7 @@ public class Asset {
     }
 
     private static class GetterImpl implements EntityGetOperation<AssetInfo> {
+
         private final String assetId;
 
         public GetterImpl(String assetId) {
@@ -155,6 +159,54 @@ public class Asset {
         @Override
         public Class<AssetInfo> getResponseClass() {
             return AssetInfo.class;
+        }
+    }
+
+    public static EntityListOperation<AssetInfo> list() {
+        return new ListerImpl();
+    }
+
+    private static class ListerImpl implements EntityListOperation<AssetInfo> {
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
+         */
+        @Override
+        public MultivaluedMap<String, String> getQueryParameters() {
+            return null;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getUri()
+         */
+        @Override
+        public String getUri() {
+            return "Assets";
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getContentType()
+         */
+        @Override
+        public MediaType getContentType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getAcceptType()
+         */
+        @Override
+        public MediaType getAcceptType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getResponseGenericType()
+         */
+        @Override
+        public GenericType<ListResult<AssetInfo>> getResponseGenericType() {
+            return new GenericType<ListResult<AssetInfo>>() {
+            };
         }
     }
 }

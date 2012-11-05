@@ -15,26 +15,26 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
-public interface EntityOperation<T> {
+import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.sun.jersey.api.client.GenericType;
+
+/**
+ * Operation class to retrieve a list of entities
+ * 
+ */
+public interface EntityListOperation<T> extends EntityOperation<T> {
 
     /**
-     * Get the URI the creation request should be sent to.
+     * Get query parameters to add to the uri
      * 
-     * @return The uri
+     * @return The query parameters collection
      */
-    public abstract String getUri();
+    MultivaluedMap<String, String> getQueryParameters();
 
     /**
-     * Get the MIME type for the content that's being sent to the server.
-     * 
-     * @return The MIME type
+     * Get a GenericType object representing the result list type
      */
-    public abstract MediaType getContentType();
-
-    /**
-     * Get the MIME type that we're expecting the server to send back.
-     */
-    public abstract MediaType getAcceptType();
+    GenericType<ListResult<T>> getResponseGenericType();
 }

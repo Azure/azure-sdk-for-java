@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.media.entities;
 
 import static org.junit.Assert.*;
 
+import java.net.URLEncoder;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
@@ -60,12 +62,20 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetGetReturnsExpectedUri() {
+    public void assetGetReturnsExpectedUri() throws Exception {
         String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
-        String expectedUri = String.format("Assets('%s')", sampleAssetId);
+        String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
 
         EntityGetOperation<AssetInfo> getter = Asset.get(sampleAssetId);
 
         assertEquals(expectedUri, getter.getUri());
+    }
+
+    @Test
+    public void assetListReturnsExpectedUri() {
+        EntityListOperation<AssetInfo> lister = Asset.list();
+
+        assertEquals("Assets", lister.getUri());
+        assertNull(lister.getQueryParameters());
     }
 }

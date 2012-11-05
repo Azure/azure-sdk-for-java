@@ -19,5 +19,5 @@ package com.microsoft.windowsazure.services.media.entities;
  * Get operation for Entities
  * 
  */
-public interface EntityGetOperation<T> extends EntityOperation<T> {
+public interface EntityGetOperation<T> extends EntityOperationSingleResult<T> {
 }
