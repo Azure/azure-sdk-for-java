@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 /**
  * Tests for the methods and factories of the Asset entity.
@@ -38,5 +39,33 @@ public class AssetEntityTest {
         assertNull(payload.getAlternateId());
         assertNull(payload.getName());
         assertEquals(0, payload.getOptions());
+    }
+
+    @Test
+    public void assetCreateCanSetAssetName() {
+        String name = "assetCreateCanSetAssetName";
+
+        Asset.Creator creator = Asset.create().name("assetCreateCanSetAssetName");
+
+        AssetType payload = (AssetType) creator.getRequestContents();
+
+        assertNotNull(payload);
+        assertNull(payload.getId());
+        assertEquals(0, payload.getState());
+        assertNull(payload.getCreated());
+        assertNull(payload.getLastModified());
+        assertNull(payload.getAlternateId());
+        assertEquals(name, payload.getName());
+        assertEquals(0, payload.getOptions());
+    }
+
+    @Test
+    public void assetGetReturnsExpectedUri() {
+        String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
+        String expectedUri = String.format("Assets('%s')", sampleAssetId);
+
+        EntityGetOperation<AssetInfo> getter = Asset.get(sampleAssetId);
+
+        assertEquals(expectedUri, getter.getUri());
     }
 }

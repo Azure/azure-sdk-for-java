@@ -15,15 +15,17 @@
 
 package com.microsoft.windowsazure.services.media;
 
+import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
 
 /**
  * Contract for interacting with the back end service
  * providing various odata entities.
  * 
  */
-public interface MediaEntityContract {
+public interface MediaEntityContract extends FilterableService<MediaEntityContract> {
 
     /**
      * Create a new instance of an entity
@@ -35,4 +37,14 @@ public interface MediaEntityContract {
      *         The created entity
      */
     <T> T create(EntityCreationOperation<T> creator) throws ServiceException;
+
+    /**
+     * Retrieve an existing entity by id
+     * 
+     * @param getter
+     *            object providing the details of the entity to be retrieved
+     * @return The retrieved entity
+     * @throws ServiceException
+     */
+    <T> T get(EntityGetOperation<T> getter) throws ServiceException;
 }

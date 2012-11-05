@@ -21,40 +21,33 @@ import javax.ws.rs.core.MediaType;
  * 
  *
  */
-public interface EntityCreationOperation<T> {
-
+public interface EntityGetOperation<T> {
     /**
-     * Get the URI the creation request should be sent to.
+     * Get the URI required to retrieve an entity
      * 
-     * @return The uri
+     * @return The URI
      */
-    public String getUri();
+    String getUri();
 
     /**
-     * Get the object to be sent to the server containing
-     * the request data for entity creation.
+     * Get the media type for content sent to the server
      * 
-     * @return The payload to be marshalled and sent to the server.
-     */
-    Object getRequestContents();
-
-    /**
-     * Get the MIME type for the content that's being sent to the server.
-     * 
-     * @return The MIME type
+     * @return media type
      */
     MediaType getContentType();
 
     /**
-     * Get the MIME type that we're expecting the server to send back.
+     * Get the media type for the response back from the server
+     * 
+     * @return media type
      */
     MediaType getAcceptType();
 
     /**
-     * Get the Java class object for the type that the response should
-     * be unmarshalled into.
+     * Get the Java class that the returned data
+     * will be unmarshalled into
      * 
-     * @return Class object for response.
+     * @return Class object
      */
     Class<T> getResponseClass();
 }

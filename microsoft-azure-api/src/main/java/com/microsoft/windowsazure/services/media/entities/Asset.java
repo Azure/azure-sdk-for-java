@@ -15,7 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.InvalidParameterException;
+
+import javax.ws.rs.core.MediaType;
+
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
 /**
  * 
@@ -26,21 +33,128 @@ public class Asset {
     private Asset() {
     }
 
-    public class Info {
-        public String getId() {
-            return "a";
+    public static Creator create() {
+        return new CreatorImpl();
+    }
+
+    public interface Creator extends EntityCreationOperation<AssetInfo> {
+        /**
+         * Set the name of the asset to be created
+         * 
+         * @param name
+         *            The name
+         * @return The creator object (for call chaining)
+         */
+        Creator name(String name);
+
+        /**
+         * Sets the alternate id of the asset to be created.
+         * 
+         * @param alternateId
+         *            The id
+         * 
+         * @return The creator object (for call chaining)
+         */
+        Creator alternateId(String alternateId);
+    }
+
+    private static class CreatorImpl implements Creator {
+        private String name;
+        private String alternateId;
+
+        @Override
+        public String getUri() {
+            return "Assets";
         }
-    }
 
-    public static EntityCreationOperation<Asset.Info> create() {
-        return new Creator();
-    }
+        @Override
+        public MediaType getContentType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
 
-    private static class Creator implements EntityCreationOperation<Info> {
+        @Override
+        public MediaType getAcceptType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
+
+        @Override
+        public Class<AssetInfo> getResponseClass() {
+            return AssetInfo.class;
+        }
 
         @Override
         public Object getRequestContents() {
-            return new AssetType();
+            AssetType assetType = new AssetType();
+            assetType.setName(name);
+            assetType.setAlternateId(alternateId);
+            return assetType;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.Asset.Creator#name(java.lang.String)
+         */
+        @Override
+        public Creator name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.Asset.Creator#alternateId(java.lang.String)
+         */
+        @Override
+        public Creator alternateId(String alternateId) {
+            this.alternateId = alternateId;
+            return this;
+        }
+    }
+
+    public static EntityGetOperation<AssetInfo> get(String assetId) {
+        return new GetterImpl(assetId);
+    }
+
+    private static class GetterImpl implements EntityGetOperation<AssetInfo> {
+        private final String assetId;
+
+        public GetterImpl(String assetId) {
+            super();
+            this.assetId = assetId;
+        }
+
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(assetId);
+            }
+            return String.format("Assets('%s')", escapedEntityId);
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getContentType()
+         */
+        @Override
+        public MediaType getContentType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getAcceptType()
+         */
+        @Override
+        public MediaType getAcceptType() {
+            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getResponseClass()
+         */
+        @Override
+        public Class<AssetInfo> getResponseClass() {
+            return AssetInfo.class;
         }
     }
 }
