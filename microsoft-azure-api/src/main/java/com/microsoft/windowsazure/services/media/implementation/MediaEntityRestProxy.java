@@ -32,7 +32,9 @@ import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaEntityContract;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.models.ListOptions;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 
@@ -214,4 +216,16 @@ public class MediaEntityRestProxy implements MediaEntityContract {
 
         return resource.type(getter.getContentType()).accept(getter.getAcceptType()).get(getter.getResponseClass());
     }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaEntityContract#list(com.microsoft.windowsazure.services.media.entities.EntityListOperation)
+     */
+    @Override
+    public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
+        WebResource resource = getResource(lister.getUri());
+
+        return resource.type(lister.getContentType()).accept(lister.getAcceptType())
+                .get(lister.getResponseGenericType());
+    }
+
 }

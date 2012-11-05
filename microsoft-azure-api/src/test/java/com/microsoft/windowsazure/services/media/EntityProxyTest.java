@@ -2,11 +2,15 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.entities.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 
 public class EntityProxyTest extends IntegrationTestBase {
     private static MediaEntityContract entityService;
@@ -50,5 +54,28 @@ public class EntityProxyTest extends IntegrationTestBase {
         assertEquals(createdAsset.getId(), retrieved.getId());
         assertEquals(createdAsset.getName(), retrieved.getName());
 
+    }
+
+    @Test
+    public void canListAllAssets() throws Exception {
+        int numAssetsToCreate = 4;
+        Set<String> expectedAssets = new HashSet<String>();
+
+        for (int i = 0; i < numAssetsToCreate; ++i) {
+            AssetInfo asset = entityService.create(Asset.create().name(
+                    testAssetPrefix + "canList" + Integer.toString(i)));
+            expectedAssets.add(asset.getId());
+        }
+
+        ListResult<AssetInfo> assets = entityService.list(Asset.list());
+
+        assertTrue(assets.size() >= numAssetsToCreate);
+
+        for (AssetInfo asset : assets) {
+            if (expectedAssets.contains(asset.getId())) {
+                expectedAssets.remove(asset.getId());
+            }
+        }
+        assertEquals(0, expectedAssets.size());
     }
 }

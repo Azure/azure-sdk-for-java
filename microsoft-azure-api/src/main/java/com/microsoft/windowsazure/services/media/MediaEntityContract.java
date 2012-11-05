@@ -19,6 +19,8 @@ import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
  * Contract for interacting with the back end service
@@ -47,4 +49,15 @@ public interface MediaEntityContract extends FilterableService<MediaEntityContra
      * @throws ServiceException
      */
     <T> T get(EntityGetOperation<T> getter) throws ServiceException;
+
+    /**
+     * Retrieve a list of entities
+     * 
+     * @param lister
+     *            object providing details of entities to list
+     * @return The resulting list
+     * @throws ServiceException
+     */
+    <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
+
 }
