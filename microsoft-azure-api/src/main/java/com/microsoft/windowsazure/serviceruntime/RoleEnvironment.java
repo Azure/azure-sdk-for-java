@@ -468,7 +468,7 @@ public final class RoleEnvironment {
 
         Calendar expiration = Calendar.getInstance();
         expiration.setTime(expiration_utc);
-        
+
         CurrentState newState = new AcquireCurrentState(clientId, currentGoalState.get().getIncarnation(),
                 currentStatus, expiration);
 
