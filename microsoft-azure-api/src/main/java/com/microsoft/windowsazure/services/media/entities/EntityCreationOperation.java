@@ -15,20 +15,12 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import javax.ws.rs.core.MediaType;
 
 /**
  * 
  *
  */
-public interface EntityCreationOperation<T> {
-
-    /**
-     * Get the URI the creation request should be sent to.
-     * 
-     * @return The uri
-     */
-    public String getUri();
+public interface EntityCreationOperation<T> extends EntityOperation<T> {
 
     /**
      * Get the object to be sent to the server containing
@@ -37,24 +29,4 @@ public interface EntityCreationOperation<T> {
      * @return The payload to be marshalled and sent to the server.
      */
     Object getRequestContents();
-
-    /**
-     * Get the MIME type for the content that's being sent to the server.
-     * 
-     * @return The MIME type
-     */
-    MediaType getContentType();
-
-    /**
-     * Get the MIME type that we're expecting the server to send back.
-     */
-    MediaType getAcceptType();
-
-    /**
-     * Get the Java class object for the type that the response should
-     * be unmarshalled into.
-     * 
-     * @return Class object for response.
-     */
-    Class<T> getResponseClass();
 }

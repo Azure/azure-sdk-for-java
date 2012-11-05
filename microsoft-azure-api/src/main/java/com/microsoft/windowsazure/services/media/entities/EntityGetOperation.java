@@ -15,39 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import javax.ws.rs.core.MediaType;
-
 /**
+ * Get operation for Entities
  * 
- *
  */
-public interface EntityGetOperation<T> {
-    /**
-     * Get the URI required to retrieve an entity
-     * 
-     * @return The URI
-     */
-    String getUri();
-
-    /**
-     * Get the media type for content sent to the server
-     * 
-     * @return media type
-     */
-    MediaType getContentType();
-
-    /**
-     * Get the media type for the response back from the server
-     * 
-     * @return media type
-     */
-    MediaType getAcceptType();
-
-    /**
-     * Get the Java class that the returned data
-     * will be unmarshalled into
-     * 
-     * @return Class object
-     */
-    Class<T> getResponseClass();
+public interface EntityGetOperation<T> extends EntityOperation<T> {
 }
