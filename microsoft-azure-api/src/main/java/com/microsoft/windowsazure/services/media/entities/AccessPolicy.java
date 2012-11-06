@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.InvalidParameterException;
 import java.util.EnumSet;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -110,6 +113,30 @@ public class AccessPolicy {
         public GenericType<ListResult<AccessPolicyInfo>> getResponseGenericType() {
             return new GenericType<ListResult<AccessPolicyInfo>>() {
             };
+        }
+    }
+
+    public static EntityDeleteOperation delete(String accessPolicyId) {
+        return new DeleteImpl(accessPolicyId);
+    }
+
+    private static class DeleteImpl implements EntityDeleteOperation {
+        private final String accessPolicyId;
+
+        public DeleteImpl(String id) {
+            this.accessPolicyId = id;
+        }
+
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(accessPolicyId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(accessPolicyId);
+            }
+            return String.format("%s('%s')", "AccessPolicies", escapedEntityId);
         }
     }
 }

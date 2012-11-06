@@ -83,4 +83,9 @@ public class AccessPolicyEntityTest {
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
         assertEquals(2, lister.getQueryParameters().size());
     }
+
+    @Test
+    public void deleteReturnsExpectedUri() throws Exception {
+        assertEquals(expectedUri, AccessPolicy.delete(examplePolicyId).getUri());
+    }
 }
