@@ -33,39 +33,15 @@ public class Asset {
     }
 
     public static Creator create() {
-        return new CreatorImpl();
+        return new Creator();
     }
 
-    /**
-     * Interface defining optional fields that can be set at asset creation.
-     * 
-     */
-    public interface Creator extends EntityCreationOperation<AssetInfo> {
-        /**
-         * Set the name of the asset to be created
-         * 
-         * @param name
-         *            The name
-         * @return The creator object (for call chaining)
-         */
-        Creator name(String name);
-
-        /**
-         * Sets the alternate id of the asset to be created.
-         * 
-         * @param alternateId
-         *            The id
-         * 
-         * @return The creator object (for call chaining)
-         */
-        Creator alternateId(String alternateId);
-    }
-
-    private static class CreatorImpl extends EntityOperationSingleResultBase<AssetInfo> implements Creator {
+    public static class Creator extends EntityOperationSingleResultBase<AssetInfo> implements
+            EntityCreationOperation<AssetInfo> {
         private String name;
         private String alternateId;
 
-        public CreatorImpl() {
+        public Creator() {
             super("Assets", AssetInfo.class);
         }
 
@@ -77,19 +53,26 @@ public class Asset {
             return assetType;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.Asset.Creator#name(java.lang.String)
+        /**
+         * Set the name of the asset to be created
+         * 
+         * @param name
+         *            The name
+         * @return The creator object (for call chaining)
          */
-        @Override
         public Creator name(String name) {
             this.name = name;
             return this;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.Asset.Creator#alternateId(java.lang.String)
+        /**
+         * Sets the alternate id of the asset to be created.
+         * 
+         * @param alternateId
+         *            The id
+         * 
+         * @return The creator object (for call chaining)
          */
-        @Override
         public Creator alternateId(String alternateId) {
             this.alternateId = alternateId;
             return this;
@@ -137,38 +120,14 @@ public class Asset {
      * @return the update operation
      */
     public static Updater update(String assetId) {
-        return new UpdaterImpl(assetId);
+        return new Updater(assetId);
     }
 
-    /**
-     * Interface defining which fields can be updated after asset creation
-     * 
-     */
-    public interface Updater extends EntityUpdateOperation {
-        /**
-         * Sets new name for asset
-         * 
-         * @param name
-         *            The new name
-         * @return Updater instance
-         */
-        Updater name(String name);
-
-        /**
-         * Sets new alternate id for asset
-         * 
-         * @param alternateId
-         *            the new alternate id
-         * @return Updater instance
-         */
-        Updater alternateId(String alternateId);
-    }
-
-    private static class UpdaterImpl extends EntityOperationBase implements Updater {
+    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
         private String name;
         private String alternateId;
 
-        protected UpdaterImpl(String assetId) {
+        protected Updater(String assetId) {
             super(new EntityOperationBase.EntityIdUriBuilder("Assets", assetId));
         }
 
@@ -180,13 +139,25 @@ public class Asset {
             return assetType;
         }
 
-        @Override
+        /**
+         * Sets new name for asset
+         * 
+         * @param name
+         *            The new name
+         * @return Updater instance
+         */
         public Updater name(String name) {
             this.name = name;
             return this;
         }
 
-        @Override
+        /**
+         * Sets new alternate id for asset
+         * 
+         * @param alternateId
+         *            the new alternate id
+         * @return Updater instance
+         */
         public Updater alternateId(String alternateId) {
             this.alternateId = alternateId;
             return this;
