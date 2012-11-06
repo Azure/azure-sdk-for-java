@@ -30,6 +30,11 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase impl
         this.responseClass = responseClass;
     }
 
+    public EntityOperationSingleResultBase(EntityOperationBase.EntityUriBuilder uriBuilder, Class<T> responseClass) {
+        super(uriBuilder);
+        this.responseClass = responseClass;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entities.EntityOperationSingleResult#getResponseClass()
      */

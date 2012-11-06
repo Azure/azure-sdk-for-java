@@ -15,6 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.InvalidParameterException;
+
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -23,13 +27,22 @@ import javax.ws.rs.core.MediaType;
  * 
  */
 public abstract class EntityOperationBase implements EntityOperation {
-    private final String uri;
+    private final EntityUriBuilder uriBuilder;
 
     /**
      * 
      */
-    protected EntityOperationBase(String uri) {
-        this.uri = uri;
+    protected EntityOperationBase(final String uri) {
+        this.uriBuilder = new EntityUriBuilder() {
+            @Override
+            public String getUri() {
+                return uri;
+            }
+        };
+    }
+
+    protected EntityOperationBase(EntityUriBuilder uriBuilder) {
+        this.uriBuilder = uriBuilder;
     }
 
     /* (non-Javadoc)
@@ -37,7 +50,7 @@ public abstract class EntityOperationBase implements EntityOperation {
      */
     @Override
     public String getUri() {
-        return uri;
+        return uriBuilder.getUri();
     }
 
     /* (non-Javadoc)
@@ -54,5 +67,35 @@ public abstract class EntityOperationBase implements EntityOperation {
     @Override
     public MediaType getAcceptType() {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
+    }
+
+    public interface EntityUriBuilder {
+        String getUri();
+    }
+
+    public static class EntityIdUriBuilder implements EntityUriBuilder {
+        private final String entityType;
+        private final String entityId;
+
+        public EntityIdUriBuilder(String entityName, String entityId) {
+            super();
+            this.entityType = entityName;
+            this.entityId = entityId;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityOperationBase.EntityUriBuilder#getUri()
+         */
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(entityId);
+            }
+            return String.format("%s('%s')", entityType, escapedEntityId);
+        }
     }
 }

@@ -103,23 +103,8 @@ public class Asset {
     private static class GetterImpl extends EntityOperationSingleResultBase<AssetInfo> implements
             EntityGetOperation<AssetInfo> {
 
-        private final String assetId;
-
         public GetterImpl(String assetId) {
-            super("Assets", AssetInfo.class);
-            this.assetId = assetId;
-        }
-
-        @Override
-        public String getUri() {
-            String escapedEntityId;
-            try {
-                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new InvalidParameterException(assetId);
-            }
-            return String.format("%s('%s')", super.getUri(), escapedEntityId);
+            super(new EntityOperationBase.EntityIdUriBuilder("Assets", assetId), AssetInfo.class);
         }
     }
 
@@ -173,25 +158,11 @@ public class Asset {
     }
 
     private static class UpdaterImpl extends EntityOperationBase implements Updater {
-        private final String assetId;
         private String name;
         private String alternateId;
 
         protected UpdaterImpl(String assetId) {
-            super("Assets");
-            this.assetId = assetId;
-        }
-
-        @Override
-        public String getUri() {
-            String escapedEntityId;
-            try {
-                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new InvalidParameterException(assetId);
-            }
-            return String.format("%s('%s')", super.getUri(), escapedEntityId);
+            super(new EntityOperationBase.EntityIdUriBuilder("Assets", assetId));
         }
 
         @Override
