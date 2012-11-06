@@ -15,26 +15,26 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import javax.ws.rs.core.MediaType;
-
-public interface EntityOperation {
+/**
+ * 
+ * 
+ */
+public class EntityOperationSingleResultBase<T> extends EntityOperationBase implements EntityOperationSingleResult<T> {
+    private final Class<T> responseClass;
 
     /**
-     * Get the URI the creation request should be sent to.
      * 
-     * @return The uri
      */
-    public abstract String getUri();
+    public EntityOperationSingleResultBase(String uri, Class<T> responseClass) {
+        super(uri);
+        this.responseClass = responseClass;
+    }
 
-    /**
-     * Get the MIME type for the content that's being sent to the server.
-     * 
-     * @return The MIME type
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entities.EntityOperationSingleResult#getResponseClass()
      */
-    public abstract MediaType getContentType();
-
-    /**
-     * Get the MIME type that we're expecting the server to send back.
-     */
-    public abstract MediaType getAcceptType();
+    @Override
+    public Class<T> getResponseClass() {
+        return responseClass;
+    }
 }

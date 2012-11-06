@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-public interface EntityOperationSingleResult<T> extends EntityOperation<T> {
+public interface EntityOperationSingleResult<T> extends EntityOperation {
     /**
      * Get the Java class object for the type that the response should
      * be unmarshalled into.

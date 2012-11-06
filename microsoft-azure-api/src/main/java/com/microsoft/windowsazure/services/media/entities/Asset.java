@@ -19,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
@@ -61,28 +60,12 @@ public class Asset {
         Creator alternateId(String alternateId);
     }
 
-    private static class CreatorImpl implements Creator {
+    private static class CreatorImpl extends EntityOperationSingleResultBase<AssetInfo> implements Creator {
         private String name;
         private String alternateId;
 
-        @Override
-        public String getUri() {
-            return "Assets";
-        }
-
-        @Override
-        public MediaType getContentType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
-        }
-
-        @Override
-        public MediaType getAcceptType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
-        }
-
-        @Override
-        public Class<AssetInfo> getResponseClass() {
-            return AssetInfo.class;
+        public CreatorImpl() {
+            super("Assets", AssetInfo.class);
         }
 
         @Override
@@ -116,12 +99,13 @@ public class Asset {
         return new GetterImpl(assetId);
     }
 
-    private static class GetterImpl implements EntityGetOperation<AssetInfo> {
+    private static class GetterImpl extends EntityOperationSingleResultBase<AssetInfo> implements
+            EntityGetOperation<AssetInfo> {
 
         private final String assetId;
 
         public GetterImpl(String assetId) {
-            super();
+            super("Assets", AssetInfo.class);
             this.assetId = assetId;
         }
 
@@ -134,31 +118,7 @@ public class Asset {
             catch (UnsupportedEncodingException e) {
                 throw new InvalidParameterException(assetId);
             }
-            return String.format("Assets('%s')", escapedEntityId);
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getContentType()
-         */
-        @Override
-        public MediaType getContentType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getAcceptType()
-         */
-        @Override
-        public MediaType getAcceptType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityGetOperation#getResponseClass()
-         */
-        @Override
-        public Class<AssetInfo> getResponseClass() {
-            return AssetInfo.class;
+            return String.format("%s('%s')", super.getUri(), escapedEntityId);
         }
     }
 
@@ -166,7 +126,7 @@ public class Asset {
         return new ListerImpl();
     }
 
-    private static class ListerImpl implements EntityListOperation<AssetInfo> {
+    private static class ListerImpl extends EntityOperationBase implements EntityListOperation<AssetInfo> {
 
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
@@ -176,28 +136,8 @@ public class Asset {
             return null;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getUri()
-         */
-        @Override
-        public String getUri() {
-            return "Assets";
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getContentType()
-         */
-        @Override
-        public MediaType getContentType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getAcceptType()
-         */
-        @Override
-        public MediaType getAcceptType() {
-            return MediaType.APPLICATION_ATOM_XML_TYPE;
+        public ListerImpl() {
+            super("Assets");
         }
 
         /* (non-Javadoc)
