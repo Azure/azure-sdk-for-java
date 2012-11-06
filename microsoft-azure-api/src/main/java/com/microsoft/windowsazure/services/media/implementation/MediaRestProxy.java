@@ -59,9 +59,9 @@ import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
-import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
@@ -287,6 +287,32 @@ public class MediaRestProxy implements MediaContract {
         createJobOperation.setJob(jobType);
 
         return createJobOperation;
+    }
+
+    private CreateTaskOperation createTaskOperation(CreateTaskOptions createTaskOptions) {
+        CreateTaskOperation createTaskOperation = new CreateTaskOperation();
+
+        if (createTaskOptions == null) {
+            throw new IllegalArgumentException("The create task options cannot be null.");
+        }
+
+        TaskType taskType = new TaskType();
+        taskType.setConfiguration(createTaskOptions.getConfiguration());
+        taskType.setMediaProcessorId(createTaskOptions.getMediaProcessorId());
+        taskType.setName(createTaskOptions.getName());
+        taskType.setPriority(createTaskOptions.getPriority());
+        taskType.setStartTime(createTaskOptions.getStartTime());
+        taskType.setTaskBody(createTaskOptions.getTaskBody());
+        taskType.setEncryptionKeyId(createTaskOptions.getEncryptionKeyId());
+        taskType.setEncryptionScheme(createTaskOptions.getEncryptionScheme());
+        taskType.setEncryptionVersion(createTaskOptions.getEncryptionVersion());
+        taskType.setInitializationVector(createTaskOptions.getInitializationVector());
+        taskType.setInputMediaAssets(createTaskOptions.getInputMediaAssets());
+        taskType.setOutputMediaAssets(createTaskOptions.getOutputMediaAssets());
+
+        createTaskOperation.setTask(taskType);
+
+        return createTaskOperation;
     }
 
     /* (non-Javadoc)
@@ -600,9 +626,7 @@ public class MediaRestProxy implements MediaContract {
 
         mediaBatchOperations.addOperation(createJobOperation);
         for (CreateTaskOptions createTaskOptionsInstance : createTaskOptions) {
-            CreateTaskOperation createTaskOperation = new CreateTaskOperation();
-            TaskType taskType = createTaskType(createTaskOptionsInstance);
-            createTaskOperation.setTask(taskType);
+            CreateTaskOperation createTaskOperation = createTaskOperation(createTaskOptionsInstance);
             mediaBatchOperations.addOperation(createTaskOperation);
         }
 
@@ -626,35 +650,6 @@ public class MediaRestProxy implements MediaContract {
         JobInfo jobInfo = new JobInfo();
         return jobInfo;
 
-    }
-
-    /**
-     * Creates the task type.
-     * 
-     * @param createTaskOptions
-     *            the create task options
-     * @return the task type
-     */
-    private TaskType createTaskType(CreateTaskOptions createTaskOptions) {
-        if (createTaskOptions == null) {
-            throw new IllegalArgumentException("The create task options cannot be null.");
-        }
-
-        TaskType taskType = new TaskType();
-        taskType.setConfiguration(createTaskOptions.getConfiguration());
-        taskType.setMediaProcessorId(createTaskOptions.getMediaProcessorId());
-        taskType.setName(createTaskOptions.getName());
-        taskType.setPriority(createTaskOptions.getPriority());
-        taskType.setStartTime(createTaskOptions.getStartTime());
-        taskType.setTaskBody(createTaskOptions.getTaskBody());
-        taskType.setEncryptionKeyId(createTaskOptions.getEncryptionKeyId());
-        taskType.setEncryptionScheme(createTaskOptions.getEncryptionScheme());
-        taskType.setEncryptionVersion(createTaskOptions.getEncryptionVersion());
-        taskType.setInitializationVector(createTaskOptions.getInitializationVector());
-        taskType.setInputMediaAssets(createTaskOptions.getInputMediaAssets());
-        taskType.setOutputMediaAssets(createTaskOptions.getOutputMediaAssets());
-
-        return taskType;
     }
 
     /* (non-Javadoc)

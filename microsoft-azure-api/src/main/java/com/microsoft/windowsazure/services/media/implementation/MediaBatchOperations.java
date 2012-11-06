@@ -82,6 +82,12 @@ public class MediaBatchOperations {
      *             the jAXB exception
      */
     public MimeMultipart getMimeMultipart() throws MessagingException, IOException, JAXBException {
+        List<DataSource> bodyPartContents = createRequestBody();
+        return toMimeMultipart(bodyPartContents);
+
+    }
+
+    private List<DataSource> createRequestBody() throws JAXBException {
         List<DataSource> bodyPartContents = new ArrayList<DataSource>();
         int contentId = 1;
 
@@ -91,8 +97,7 @@ public class MediaBatchOperations {
 
         URI taskURI = UriBuilder.fromUri(serviceURI).path(String.format("$%d", jobContentId)).path("Tasks").build();
         addTaskPart(bodyPartContents, taskURI, contentId);
-
-        return toMimeMultipart(bodyPartContents);
+        return bodyPartContents;
 
     }
 
