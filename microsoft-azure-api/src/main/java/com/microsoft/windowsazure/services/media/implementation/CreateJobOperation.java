@@ -13,11 +13,21 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.models;
+package com.microsoft.windowsazure.services.media.implementation;
 
-/**
- * The Class ListTasksOptions.
- */
-public class ListTasksOptions extends ListOptions {
+import com.microsoft.windowsazure.services.media.implementation.content.JobType;
+
+public class CreateJobOperation implements Operation {
+
+    private JobType jobType;
+
+    public CreateJobOperation setJob(JobType jobType) {
+        this.jobType = jobType;
+        return this;
+    }
+
+    public JobType getJob() {
+        return this.jobType;
+    }
 
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.models;
+package com.microsoft.windowsazure.services.media.implementation;
 
-/**
- * The Class ListTasksOptions.
- */
-public class ListTasksOptions extends ListOptions {
+public interface Operation {
 
 }

@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -260,7 +262,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the input media assets
      */
-    public String getInputMediaAssets() {
+    public List<URI> getInputMediaAssets() {
         return getContent().getInputMediaAssets();
     }
 
@@ -271,7 +273,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the input media assets
      * @return the job info
      */
-    public JobInfo setInputMediaAssets(String inputMediaAssets) {
+    public JobInfo setInputMediaAssets(List<URI> inputMediaAssets) {
         getContent().setInputMediaAssets(inputMediaAssets);
         return this;
     }
@@ -281,7 +283,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the output media assets
      */
-    public String getOutputMediaAssets() {
+    public List<URI> getOutputMediaAssets() {
         return getContent().getOutputMediaAssets();
     }
 
@@ -292,7 +294,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the output media assets
      * @return the job info
      */
-    public JobInfo setOutputMediaAssets(String outputMediaAssets) {
+    public JobInfo setOutputMediaAssets(List<URI> outputMediaAssets) {
         getContent().setOutputMediaAssets(outputMediaAssets);
         return this;
     }

@@ -15,7 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -26,6 +28,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
  * 
  */
 public class AssetInfo extends ODataEntity<AssetType> {
+
+    private URI uri;
 
     public AssetInfo(EntryType entry, AssetType content) {
         super(entry, content);
@@ -181,4 +185,18 @@ public class AssetInfo extends ODataEntity<AssetType> {
         getContent().setOptions(options.getCode());
         return this;
     }
+
+    public URI getUri() {
+        return this.getEntry().getLink();
+    }
+
+    public AssetInfo setUri(URI uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    public List<Object> getChildren() {
+        return this.getEntry().getEntryChildren();
+    }
+
 }

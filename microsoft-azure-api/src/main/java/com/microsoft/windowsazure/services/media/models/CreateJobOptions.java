@@ -14,7 +14,10 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Class CreateJobOptions.
@@ -31,10 +34,15 @@ public class CreateJobOptions {
     private Integer priority;
 
     /** The input media assets. */
-    private String inputMediaAssets;
+    private final List<URI> inputMediaAssets;
 
     /** The output media assets. */
-    private String outputMediaAssets;
+    private final List<URI> outputMediaAssets;
+
+    public CreateJobOptions() {
+        this.inputMediaAssets = new ArrayList<URI>();
+        this.outputMediaAssets = new ArrayList<URI>();
+    }
 
     /**
      * Gets the start time.
@@ -106,8 +114,8 @@ public class CreateJobOptions {
      *            the input media assets
      * @return the creates the job options
      */
-    public CreateJobOptions setInputMediaAssets(String inputMediaAssets) {
-        this.inputMediaAssets = inputMediaAssets;
+    public CreateJobOptions addInputMediaAsset(URI inputMediaAsset) {
+        this.inputMediaAssets.add(inputMediaAsset);
         return this;
     }
 
@@ -116,7 +124,7 @@ public class CreateJobOptions {
      * 
      * @return the input media assets
      */
-    public String getInputMediaAssets() {
+    public List<URI> getInputMediaAssets() {
         return this.inputMediaAssets;
     }
 
@@ -127,8 +135,8 @@ public class CreateJobOptions {
      *            the output media assets
      * @return the creates the job options
      */
-    public CreateJobOptions setOutputMediaAssets(String outputMediaAssets) {
-        this.outputMediaAssets = outputMediaAssets;
+    public CreateJobOptions addOutputMediaAsset(URI outputMediaAsset) {
+        this.outputMediaAssets.add(outputMediaAsset);
         return this;
     }
 
@@ -137,7 +145,7 @@ public class CreateJobOptions {
      * 
      * @return the output media assets
      */
-    public String getOutputMediaAssets() {
+    public List<URI> getOutputMediaAssets() {
         return this.outputMediaAssets;
     }
 

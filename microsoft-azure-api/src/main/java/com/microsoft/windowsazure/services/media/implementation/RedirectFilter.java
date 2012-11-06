@@ -59,4 +59,8 @@ public class RedirectFilter extends IdempotentClientFilter {
         }
         return response;
     }
+
+    public URI getBaseURI() {
+        return this.locationManager.getBaseURI();
+    }
 }

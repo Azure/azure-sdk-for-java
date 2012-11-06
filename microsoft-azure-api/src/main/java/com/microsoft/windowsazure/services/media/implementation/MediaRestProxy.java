@@ -15,14 +15,20 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,12 +42,14 @@ import com.microsoft.windowsazure.services.media.implementation.content.AccessPo
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
+import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.CreateJobOptions;
 import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.CreateTaskOptions;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListAccessPolicyOptions;
 import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
@@ -51,9 +59,9 @@ import com.microsoft.windowsazure.services.media.models.ListLocatorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListLocatorsResult;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsResult;
+import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksOptions;
 import com.microsoft.windowsazure.services.media.models.ListTasksResult;
-import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
@@ -73,6 +81,7 @@ public class MediaRestProxy implements MediaContract {
 
     /** The channel. */
     private Client channel;
+    private RedirectFilter redirectFilter;
 
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
@@ -84,6 +93,8 @@ public class MediaRestProxy implements MediaContract {
      * 
      * @param channel
      *            the channel
+     * @param uri
+     *            the uri
      * @param authFilter
      *            the auth filter
      * @param redirectFilter
@@ -96,6 +107,7 @@ public class MediaRestProxy implements MediaContract {
             VersionHeadersFilter versionHeadersFilter) {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
+        this.redirectFilter = redirectFilter;
 
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
@@ -218,6 +230,10 @@ public class MediaRestProxy implements MediaContract {
         return getResource(entityPath);
     }
 
+    private URI getBaseURI() {
+        return this.redirectFilter.getBaseURI();
+    }
+
     /**
      * Merge request.
      * 
@@ -255,6 +271,48 @@ public class MediaRestProxy implements MediaContract {
         ListTasksResult listTasksResult = new ListTasksResult();
         listTasksResult.setTaskInfos(taskInfoList);
         return listTasksResult;
+    }
+
+    private CreateJobOperation createCreateJobOperation(CreateJobOptions createJobOptions) {
+        JobType jobType = new JobType();
+        if (createJobOptions != null) {
+            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
+            jobType.setName(createJobOptions.getName());
+            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
+            jobType.setPriority(createJobOptions.getPriority());
+            jobType.setStartTime(createJobOptions.getStartTime());
+        }
+
+        CreateJobOperation createJobOperation = new CreateJobOperation();
+        createJobOperation.setJob(jobType);
+
+        return createJobOperation;
+    }
+
+    private CreateTaskOperation createTaskOperation(CreateTaskOptions createTaskOptions) {
+        CreateTaskOperation createTaskOperation = new CreateTaskOperation();
+
+        if (createTaskOptions == null) {
+            throw new IllegalArgumentException("The create task options cannot be null.");
+        }
+
+        TaskType taskType = new TaskType();
+        taskType.setConfiguration(createTaskOptions.getConfiguration());
+        taskType.setMediaProcessorId(createTaskOptions.getMediaProcessorId());
+        taskType.setName(createTaskOptions.getName());
+        taskType.setPriority(createTaskOptions.getPriority());
+        taskType.setStartTime(createTaskOptions.getStartTime());
+        taskType.setTaskBody(createTaskOptions.getTaskBody());
+        taskType.setEncryptionKeyId(createTaskOptions.getEncryptionKeyId());
+        taskType.setEncryptionScheme(createTaskOptions.getEncryptionScheme());
+        taskType.setEncryptionVersion(createTaskOptions.getEncryptionVersion());
+        taskType.setInitializationVector(createTaskOptions.getInitializationVector());
+        taskType.setInputMediaAssets(createTaskOptions.getInputMediaAssets());
+        taskType.setOutputMediaAssets(createTaskOptions.getOutputMediaAssets());
+
+        createTaskOperation.setTask(taskType);
+
+        return createTaskOperation;
     }
 
     /* (non-Javadoc)
@@ -549,23 +607,49 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#createJob(com.microsoft.windowsazure.services.media.models.CreateJobOptions)
      */
     @Override
-    public JobInfo createJob(List<TaskInfo> taskInfos, CreateJobOptions createJobOptions) {
-        JobType jobType = new JobType();
-        String taskString = "<?xml version=\"1.0\" encoding=\"utf-16\"?><taskBody><inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset></taskBody>";
-        jobType.setTaskBody(taskString);
+    public JobInfo createJob(CreateJobOptions createJobOptions, List<CreateTaskOptions> createTaskOptions)
+            throws ServiceException {
 
-        if (createJobOptions != null) {
-            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
-            jobType.setName(createJobOptions.getName());
-            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
-            jobType.setPriority(createJobOptions.getPriority());
-            jobType.setStartTime(createJobOptions.getStartTime());
+        WebResource resource = getResource("$batch");
+        MediaBatchOperations mediaBatchOperations = null;
+        try {
+            mediaBatchOperations = new MediaBatchOperations(getBaseURI());
+        }
+        catch (JAXBException e) {
+            throw new ServiceException(e);
+        }
+        catch (ParserConfigurationException e) {
+            throw new ServiceException(e);
         }
 
-        WebResource resource = getResource("Jobs");
+        CreateJobOperation createJobOperation = createCreateJobOperation(createJobOptions);
 
-        return resource.type(MediaType.APPLICATION_ATOM_XML).accept(MediaType.APPLICATION_ATOM_XML)
-                .post(JobInfo.class, jobType);
+        mediaBatchOperations.addOperation(createJobOperation);
+        for (CreateTaskOptions createTaskOptionsInstance : createTaskOptions) {
+            CreateTaskOperation createTaskOperation = createTaskOperation(createTaskOptionsInstance);
+            mediaBatchOperations.addOperation(createTaskOperation);
+        }
+
+        MimeMultipart mimeMultipart;
+        try {
+            mimeMultipart = mediaBatchOperations.getMimeMultipart();
+        }
+        catch (MessagingException e) {
+            throw new ServiceException(e);
+        }
+        catch (IOException e) {
+            throw new ServiceException(e);
+        }
+        catch (JAXBException e) {
+            throw new ServiceException(e);
+        }
+
+        ClientResponse clientResponse = resource.type(mimeMultipart.getContentType())
+                .accept(MediaType.APPLICATION_ATOM_XML).post(ClientResponse.class, mimeMultipart);
+
+        JobInfo jobInfo = new JobInfo();
+        return jobInfo;
+
     }
 
     /* (non-Javadoc)
