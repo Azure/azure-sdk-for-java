@@ -15,6 +15,58 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-public interface Operation {
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
+import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
+import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+
+public class Operation {
+
+    protected String verb;
+    protected EntryType entryType;
+
+    public Operation() {
+        this.entryType = new EntryType();
+    }
+
+    public EntryType getEntityType() {
+        return entryType;
+    }
+
+    public void setEntityType(EntryType entryType) {
+        this.entryType = entryType;
+    }
+
+    protected void setVerb(String verb) {
+        this.verb = verb;
+    }
+
+    protected String getVerb() {
+        return this.verb;
+    }
+
+    protected void addContentObject(Object contentObject) {
+        ContentType atomContent = new ContentType();
+        atomContent.setType("application/xml");
+        atomContent.getContent().add(
+                new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), atomContent.getClass(),
+                        atomContent));
+
+        this.entryType.getEntryChildren().add(
+                new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
+    }
+
+    protected void addLink(String title, String href, String type, String rel) {
+        LinkType linkType = new LinkType();
+        linkType.setTitle(title);
+        linkType.setHref(href);
+        linkType.setType(type);
+        linkType.setRel(rel);
+        this.entryType.getEntryChildren().add(
+                new JAXBElement(new QName(Constants.ATOM_NS, "link"), LinkType.class, linkType));
+
+    }
 }

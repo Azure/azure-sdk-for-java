@@ -276,15 +276,14 @@ public class MediaRestProxy implements MediaContract {
     private CreateJobOperation createCreateJobOperation(CreateJobOptions createJobOptions) {
         JobType jobType = new JobType();
         if (createJobOptions != null) {
-            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
             jobType.setName(createJobOptions.getName());
-            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
             jobType.setPriority(createJobOptions.getPriority());
             jobType.setStartTime(createJobOptions.getStartTime());
         }
 
         CreateJobOperation createJobOperation = new CreateJobOperation();
-        createJobOperation.setJob(jobType);
+        createJobOperation.setJob(createJobOptions.getInputMediaAssets(), createJobOptions.getOutputMediaAssets(),
+                jobType);
 
         return createJobOperation;
     }

@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
-public class CreateTaskOperation implements Operation {
+public class CreateTaskOperation extends Operation {
 
     private TaskType taskType;
 

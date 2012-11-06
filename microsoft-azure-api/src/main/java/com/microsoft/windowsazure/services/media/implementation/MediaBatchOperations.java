@@ -121,7 +121,8 @@ public class MediaBatchOperations {
             if (operation instanceof CreateJobOperation) {
                 CreateJobOperation createJobOperation = (CreateJobOperation) operation;
                 jobContentId = contentId;
-                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getJob(), jobURI, contentId);
+                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getEntityType(), jobURI,
+                        contentId);
                 contentId++;
                 if (bodyPartContent != null) {
                     bodyPartContents.add(bodyPartContent);

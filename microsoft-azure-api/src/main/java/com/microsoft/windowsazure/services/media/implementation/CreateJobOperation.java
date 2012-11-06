@@ -15,19 +15,30 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.net.URI;
+import java.util.List;
+
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
-public class CreateJobOperation implements Operation {
+public class CreateJobOperation extends Operation {
 
-    private JobType jobType;
-
-    public CreateJobOperation setJob(JobType jobType) {
-        this.jobType = jobType;
-        return this;
+    public CreateJobOperation() {
+        this.verb = "POST";
     }
 
-    public JobType getJob() {
-        return this.jobType;
+    public CreateJobOperation setJob(List<URI> inputMediaAssets, List<URI> outputMediaAssets, JobType jobType) {
+        addContentObject(jobType);
+        for (URI inputMediaAsset : inputMediaAssets) {
+            addLink("InputMediaAssets", inputMediaAsset.toString(), "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
+
+        for (URI outputMediaAsset : outputMediaAssets) {
+            addLink("OutputMediaAssets", outputMediaAsset.toString(), "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
+
+        return this;
     }
 
 }

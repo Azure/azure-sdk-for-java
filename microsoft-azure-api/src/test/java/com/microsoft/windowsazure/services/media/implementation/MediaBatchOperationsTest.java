@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
@@ -99,7 +101,10 @@ public class MediaBatchOperationsTest {
         JobType jobType = new JobType();
         TaskType taskType = new TaskType();
         CreateTaskOperation createTaskOperation = new CreateTaskOperation().setTask(taskType);
-        CreateJobOperation createJobOperation = new CreateJobOperation().setJob(jobType);
+        List<URI> inputMediaAssets = new ArrayList<URI>();
+        List<URI> outputMediaAssets = new ArrayList<URI>();
+        CreateJobOperation createJobOperation = new CreateJobOperation().setJob(inputMediaAssets, outputMediaAssets,
+                jobType);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
