@@ -214,4 +214,28 @@ public class Asset {
             return this;
         }
     }
+
+    public static EntityDeleteOperation delete(String id) {
+        return new DeleteImpl(id);
+    }
+
+    private static class DeleteImpl implements EntityDeleteOperation {
+        private final String assetId;
+
+        public DeleteImpl(String id) {
+            this.assetId = id;
+        }
+
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(assetId);
+            }
+            return String.format("%s('%s')", "Assets", escapedEntityId);
+        }
+    }
 }

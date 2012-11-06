@@ -32,6 +32,10 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class AssetEntityTest {
     static final String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
+    private final String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
+
+    public AssetEntityTest() throws Exception {
+    }
 
     @Test
     public void assetCreateReturnsDefaultCreatePayload() {
@@ -99,8 +103,6 @@ public class AssetEntityTest {
     @Test
     public void assetUpdateReturnsExpectedUri() throws Exception {
         EntityUpdateOperation updater = Asset.update(sampleAssetId);
-        String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
-
         assertEquals(expectedUri, updater.getUri());
     }
 
@@ -117,4 +119,12 @@ public class AssetEntityTest {
         assertEquals(expectedName, payload.getName());
         assertEquals(expectedAltId, payload.getAlternateId());
     }
+
+    @Test
+    public void assetDeleteReturnsExpectedUri() throws Exception {
+        EntityDeleteOperation deleter = Asset.delete(sampleAssetId);
+
+        assertEquals(expectedUri, deleter.getUri());
+    }
+
 }

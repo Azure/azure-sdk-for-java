@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaEntityContract;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityOperation;
@@ -173,4 +174,13 @@ public class MediaEntityRestProxy implements MediaEntityContract {
 
         PipelineHelpers.ThrowIfNotSuccess(response);
     }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaEntityContract#delete(com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation)
+     */
+    @Override
+    public void delete(EntityDeleteOperation deleter) throws ServiceException {
+        getResource(deleter.getUri()).delete();
+    }
+
 }

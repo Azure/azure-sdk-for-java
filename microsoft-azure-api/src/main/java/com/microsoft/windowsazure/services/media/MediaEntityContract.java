@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityUpdateOperation;
@@ -69,4 +70,13 @@ public interface MediaEntityContract extends FilterableService<MediaEntityContra
      * @throws ServiceException
      */
     void update(EntityUpdateOperation updater) throws ServiceException;
+
+    /**
+     * Delete an asset
+     * 
+     * @param deleter
+     *            Object providing details of the delete
+     * @throws ServiceException
+     */
+    void delete(EntityDeleteOperation deleter) throws ServiceException;
 }

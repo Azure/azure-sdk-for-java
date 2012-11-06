@@ -62,13 +62,7 @@ public class EntityProxyTest extends IntegrationTestBase {
     @Test
     public void canListAllAssets() throws Exception {
         int numAssetsToCreate = 4;
-        Set<String> expectedAssets = new HashSet<String>();
-
-        for (int i = 0; i < numAssetsToCreate; ++i) {
-            AssetInfo asset = entityService.create(Asset.create().name(
-                    testAssetPrefix + "canList" + Integer.toString(i)));
-            expectedAssets.add(asset.getId());
-        }
+        Set<String> expectedAssets = createTestAssets(numAssetsToCreate, "canList");
 
         ListResult<AssetInfo> assets = entityService.list(Asset.list());
 
@@ -84,14 +78,7 @@ public class EntityProxyTest extends IntegrationTestBase {
 
     @Test
     public void canListAssetsWithQueryParameters() throws Exception {
-        int numAssetsToCreate = 4;
-        Set<String> expectedAssets = new HashSet<String>();
-
-        for (int i = 0; i < numAssetsToCreate; ++i) {
-            AssetInfo asset = entityService.create(Asset.create().name(
-                    testAssetPrefix + "withQuery" + Integer.toString(i)));
-            expectedAssets.add(asset.getId());
-        }
+        createTestAssets(4, "withQuery");
 
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add("$top", "2");
@@ -115,5 +102,38 @@ public class EntityProxyTest extends IntegrationTestBase {
         assertEquals(initialAsset.getId(), updatedAsset.getId());
         assertEquals(newName, updatedAsset.getName());
         assertEquals(newAltId, updatedAsset.getAlternateId());
+    }
+
+    @Test
+    public void canDeleteAssetsById() throws Exception {
+        int numToDelete = 3;
+        Set<String> assetsToDelete = createTestAssets(numToDelete, "toDelete");
+
+        ListResult<AssetInfo> currentAssets = entityService.list(Asset.list());
+
+        for (String id : assetsToDelete) {
+            entityService.delete(Asset.delete(id));
+        }
+
+        ListResult<AssetInfo> afterDeleteAssets = entityService.list(Asset.list());
+
+        assertEquals(currentAssets.size() - numToDelete, afterDeleteAssets.size());
+
+        for (AssetInfo asset : afterDeleteAssets) {
+            assetsToDelete.remove(asset.getId());
+        }
+
+        assertEquals(numToDelete, assetsToDelete.size());
+    }
+
+    private Set<String> createTestAssets(int numAssets, String namePart) throws Exception {
+        Set<String> expectedAssets = new HashSet<String>();
+
+        for (int i = 0; i < numAssets; ++i) {
+            AssetInfo asset = entityService.create(Asset.create()
+                    .name(testAssetPrefix + namePart + Integer.toString(i)));
+            expectedAssets.add(asset.getId());
+        }
+        return expectedAssets;
     }
 }
