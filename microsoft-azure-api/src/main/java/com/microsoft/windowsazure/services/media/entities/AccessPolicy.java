@@ -58,4 +58,14 @@ public class AccessPolicy {
 
     }
 
+    public static EntityGetOperation<AccessPolicyInfo> get(String accessPolicyId) {
+        return new GetterImpl(accessPolicyId);
+    }
+
+    private static class GetterImpl extends EntityOperationSingleResultBase<AccessPolicyInfo> implements
+            EntityGetOperation<AccessPolicyInfo> {
+        public GetterImpl(String accessPolicyId) {
+            super(new EntityOperationBase.EntityIdUriBuilder("AccessPolicies", accessPolicyId), AccessPolicyInfo.class);
+        }
+    }
 }

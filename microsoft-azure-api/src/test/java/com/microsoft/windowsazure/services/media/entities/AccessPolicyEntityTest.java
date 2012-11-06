@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.entities;
 
 import static org.junit.Assert.*;
 
+import java.net.URLEncoder;
 import java.util.EnumSet;
 
 import org.junit.Test;
@@ -30,6 +31,12 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
  * 
  */
 public class AccessPolicyEntityTest {
+    private static final String examplePolicyId = "nb:pid:UUID:c577052a-6c0a-45b0-bf15-3ff3a2a41802";
+    private final String expectedUri;
+
+    public AccessPolicyEntityTest() throws Exception {
+        expectedUri = String.format("AccessPolicies('%s')", URLEncoder.encode(examplePolicyId, "UTF-8"));
+    }
 
     @Test
     public void createAccessPolicyProvidesExpectedPayload() throws Exception {
@@ -45,7 +52,12 @@ public class AccessPolicyEntityTest {
         assertEquals(name, payload.getName());
         assertEquals(duration, payload.getDurationInMinutes(), 0.0);
         assertEquals(AccessPolicyPermission.bitsFromPermissions(permissions), payload.getPermissions());
-
     }
 
+    @Test
+    public void getReturnsExpectedUri() throws Exception {
+        EntityGetOperation<AccessPolicyInfo> getter = AccessPolicy.get(examplePolicyId);
+
+        assertEquals(expectedUri, getter.getUri());
+    }
 }
