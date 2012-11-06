@@ -63,7 +63,7 @@ public interface MediaEntityContract extends FilterableService<MediaEntityContra
     <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
 
     /**
-     * Update an existing asset
+     * Update an existing entity
      * 
      * @param updater
      *            Object providing details of the update
@@ -72,7 +72,7 @@ public interface MediaEntityContract extends FilterableService<MediaEntityContra
     void update(EntityUpdateOperation updater) throws ServiceException;
 
     /**
-     * Delete an asset
+     * Delete an entity
      * 
      * @param deleter
      *            Object providing details of the delete
