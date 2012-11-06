@@ -19,10 +19,13 @@ import static org.junit.Assert.*;
 
 import java.net.URLEncoder;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for the methods and factories of the Asset entity.
@@ -76,6 +79,20 @@ public class AssetEntityTest {
         EntityListOperation<AssetInfo> lister = Asset.list();
 
         assertEquals("Assets", lister.getUri());
-        assertNull(lister.getQueryParameters());
+        assertNotNull(lister.getQueryParameters());
+        assertEquals(0, lister.getQueryParameters().size());
+    }
+
+    @Test
+    public void assetListCanTakeQueryParameters() {
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+        queryParams.add("$top", "10");
+        queryParams.add("$skip", "2");
+
+        EntityListOperation<AssetInfo> lister = Asset.list(queryParams);
+
+        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
+        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
+        assertEquals(2, lister.getQueryParameters().size());
     }
 }

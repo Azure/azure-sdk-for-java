@@ -224,8 +224,8 @@ public class MediaEntityRestProxy implements MediaEntityContract {
     public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
         WebResource resource = getResource(lister.getUri());
 
-        return resource.type(lister.getContentType()).accept(lister.getAcceptType())
-                .get(lister.getResponseGenericType());
+        return resource.queryParams(lister.getQueryParameters()).type(lister.getContentType())
+                .accept(lister.getAcceptType()).get(lister.getResponseGenericType());
     }
 
 }

@@ -25,6 +25,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * 
@@ -126,18 +127,29 @@ public class Asset {
         return new ListerImpl();
     }
 
+    public static EntityListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
+        return new ListerImpl(queryParameters);
+    }
+
     private static class ListerImpl extends EntityOperationBase implements EntityListOperation<AssetInfo> {
+        private final MultivaluedMap<String, String> queryParameters;
+
+        public ListerImpl() {
+            super("Assets");
+            queryParameters = new MultivaluedMapImpl();
+        }
+
+        public ListerImpl(MultivaluedMap<String, String> queryParameters) {
+            this();
+            this.queryParameters.putAll(queryParameters);
+        }
 
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
          */
         @Override
         public MultivaluedMap<String, String> getQueryParameters() {
-            return null;
-        }
-
-        public ListerImpl() {
-            super("Assets");
+            return queryParameters;
         }
 
         /* (non-Javadoc)
