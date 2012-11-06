@@ -15,9 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.InvalidParameterException;
 import java.util.EnumSet;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -27,7 +24,6 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * 
@@ -71,65 +67,18 @@ public class AccessPolicy {
     }
 
     public static EntityListOperation<AccessPolicyInfo> list() {
-        return new ListerImpl();
+        return new DefaultListOperation<AccessPolicyInfo>("AccessPolicies",
+                new GenericType<ListResult<AccessPolicyInfo>>() {
+                });
     }
 
     public static EntityListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new ListerImpl(queryParameters);
-    }
-
-    private static class ListerImpl extends EntityOperationBase implements EntityListOperation<AccessPolicyInfo> {
-        private final MultivaluedMap<String, String> queryParameters;
-
-        public ListerImpl() {
-            super("AccessPolicies");
-            queryParameters = new MultivaluedMapImpl();
-        }
-
-        public ListerImpl(MultivaluedMap<String, String> queryParameters) {
-            this();
-            this.queryParameters.putAll(queryParameters);
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
-         */
-        @Override
-        public MultivaluedMap<String, String> getQueryParameters() {
-            return queryParameters;
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getResponseGenericType()
-         */
-        @Override
-        public GenericType<ListResult<AccessPolicyInfo>> getResponseGenericType() {
-            return new GenericType<ListResult<AccessPolicyInfo>>() {
-            };
-        }
+        return new DefaultListOperation<AccessPolicyInfo>("AccessPolicies",
+                new GenericType<ListResult<AccessPolicyInfo>>() {
+                }, queryParameters);
     }
 
     public static EntityDeleteOperation delete(String accessPolicyId) {
-        return new DeleteImpl(accessPolicyId);
-    }
-
-    private static class DeleteImpl implements EntityDeleteOperation {
-        private final String accessPolicyId;
-
-        public DeleteImpl(String id) {
-            this.accessPolicyId = id;
-        }
-
-        @Override
-        public String getUri() {
-            String escapedEntityId;
-            try {
-                escapedEntityId = URLEncoder.encode(accessPolicyId, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new InvalidParameterException(accessPolicyId);
-            }
-            return String.format("%s('%s')", "AccessPolicies", escapedEntityId);
-        }
+        return new DefaultDeleteOperation("AccessPolicies", accessPolicyId);
     }
 }

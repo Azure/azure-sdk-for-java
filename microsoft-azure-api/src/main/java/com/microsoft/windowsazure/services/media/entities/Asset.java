@@ -15,17 +15,12 @@
 
 package com.microsoft.windowsazure.services.media.entities;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.InvalidParameterException;
-
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * 
@@ -101,42 +96,13 @@ public class Asset {
     }
 
     public static EntityListOperation<AssetInfo> list() {
-        return new ListerImpl();
+        return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
+        });
     }
 
     public static EntityListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new ListerImpl(queryParameters);
-    }
-
-    private static class ListerImpl extends EntityOperationBase implements EntityListOperation<AssetInfo> {
-        private final MultivaluedMap<String, String> queryParameters;
-
-        public ListerImpl() {
-            super("Assets");
-            queryParameters = new MultivaluedMapImpl();
-        }
-
-        public ListerImpl(MultivaluedMap<String, String> queryParameters) {
-            this();
-            this.queryParameters.putAll(queryParameters);
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
-         */
-        @Override
-        public MultivaluedMap<String, String> getQueryParameters() {
-            return queryParameters;
-        }
-
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getResponseGenericType()
-         */
-        @Override
-        public GenericType<ListResult<AssetInfo>> getResponseGenericType() {
-            return new GenericType<ListResult<AssetInfo>>() {
-            };
-        }
+        return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
+        }, queryParameters);
     }
 
     public static Updater update(String assetId) {
@@ -178,27 +144,7 @@ public class Asset {
         }
     }
 
-    public static EntityDeleteOperation delete(String id) {
-        return new DeleteImpl(id);
-    }
-
-    private static class DeleteImpl implements EntityDeleteOperation {
-        private final String assetId;
-
-        public DeleteImpl(String id) {
-            this.assetId = id;
-        }
-
-        @Override
-        public String getUri() {
-            String escapedEntityId;
-            try {
-                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new InvalidParameterException(assetId);
-            }
-            return String.format("%s('%s')", "Assets", escapedEntityId);
-        }
+    public static EntityDeleteOperation delete(String assetId) {
+        return new DefaultDeleteOperation("Assets", assetId);
     }
 }
