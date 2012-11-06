@@ -28,14 +28,17 @@ import org.apache.commons.logging.LogFactory;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaEntityContract;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListOptions;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -228,4 +231,16 @@ public class MediaEntityRestProxy implements MediaEntityContract {
                 .accept(lister.getAcceptType()).get(lister.getResponseGenericType());
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaEntityContract#update(com.microsoft.windowsazure.services.media.entities.EntityUpdateOperation)
+     */
+    @Override
+    public void update(EntityUpdateOperation updater) throws ServiceException {
+        WebResource resource = getResource(updater.getUri());
+
+        ClientResponse response = resource.type(updater.getContentType()).accept(updater.getAcceptType())
+                .header("X-HTTP-METHOD", "MERGE").post(ClientResponse.class, updater.getRequestContents());
+
+        PipelineHelpers.ThrowIfNotSuccess(response);
+    }
 }

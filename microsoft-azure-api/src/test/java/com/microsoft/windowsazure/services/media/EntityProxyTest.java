@@ -100,4 +100,20 @@ public class EntityProxyTest extends IntegrationTestBase {
 
         assertEquals(2, assets.size());
     }
+
+    @Test
+    public void canUpdateAssetNameAndAltId() throws Exception {
+        String newName = testAssetPrefix + "newName";
+        String newAltId = "updated alt id";
+
+        AssetInfo initialAsset = entityService.create(Asset.create().name(testAssetPrefix + "originalName"));
+
+        entityService.update(Asset.update(initialAsset.getId()).name(newName).alternateId(newAltId));
+
+        AssetInfo updatedAsset = entityService.get(Asset.get(initialAsset.getId()));
+
+        assertEquals(initialAsset.getId(), updatedAsset.getId());
+        assertEquals(newName, updatedAsset.getName());
+        assertEquals(newAltId, updatedAsset.getAlternateId());
+    }
 }

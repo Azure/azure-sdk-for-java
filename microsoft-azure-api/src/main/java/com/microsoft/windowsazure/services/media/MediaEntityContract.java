@@ -20,6 +20,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entities.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
@@ -60,4 +61,12 @@ public interface MediaEntityContract extends FilterableService<MediaEntityContra
      */
     <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
 
+    /**
+     * Update an existing asset
+     * 
+     * @param updater
+     *            Object providing details of the update
+     * @throws ServiceException
+     */
+    void update(EntityUpdateOperation updater) throws ServiceException;
 }

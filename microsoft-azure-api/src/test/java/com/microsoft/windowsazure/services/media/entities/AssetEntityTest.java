@@ -31,6 +31,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * Tests for the methods and factories of the Asset entity.
  */
 public class AssetEntityTest {
+    static final String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
 
     @Test
     public void assetCreateReturnsDefaultCreatePayload() {
@@ -66,7 +67,6 @@ public class AssetEntityTest {
 
     @Test
     public void assetGetReturnsExpectedUri() throws Exception {
-        String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
         String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
 
         EntityGetOperation<AssetInfo> getter = Asset.get(sampleAssetId);
@@ -94,5 +94,27 @@ public class AssetEntityTest {
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
         assertEquals(2, lister.getQueryParameters().size());
+    }
+
+    @Test
+    public void assetUpdateReturnsExpectedUri() throws Exception {
+        EntityUpdateOperation updater = Asset.update(sampleAssetId);
+        String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
+
+        assertEquals(expectedUri, updater.getUri());
+    }
+
+    @Test
+    public void assetUpdateCanSetNameAndAltId() throws Exception {
+
+        String expectedName = "newAssetName";
+        String expectedAltId = "newAltId";
+
+        EntityUpdateOperation updater = Asset.update(sampleAssetId).name(expectedName).alternateId(expectedAltId);
+
+        AssetType payload = (AssetType) updater.getRequestContents();
+
+        assertEquals(expectedName, payload.getName());
+        assertEquals(expectedAltId, payload.getAlternateId());
     }
 }

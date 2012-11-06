@@ -161,4 +161,57 @@ public class Asset {
             };
         }
     }
+
+    public static Updater update(String assetId) {
+        return new UpdaterImpl(assetId);
+    }
+
+    public interface Updater extends EntityUpdateOperation {
+        Updater name(String name);
+
+        Updater alternateId(String alternateId);
+    }
+
+    private static class UpdaterImpl extends EntityOperationBase implements Updater {
+        private final String assetId;
+        private String name;
+        private String alternateId;
+
+        protected UpdaterImpl(String assetId) {
+            super("Assets");
+            this.assetId = assetId;
+        }
+
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(assetId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(assetId);
+            }
+            return String.format("%s('%s')", super.getUri(), escapedEntityId);
+        }
+
+        @Override
+        public Object getRequestContents() {
+            AssetType assetType = new AssetType();
+            assetType.setName(name);
+            assetType.setAlternateId(alternateId);
+            return assetType;
+        }
+
+        @Override
+        public Updater name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public Updater alternateId(String alternateId) {
+            this.alternateId = alternateId;
+            return this;
+        }
+    }
 }
