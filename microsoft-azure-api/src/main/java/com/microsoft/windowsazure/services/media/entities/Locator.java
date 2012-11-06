@@ -47,41 +47,18 @@ public class Locator {
      * @return the operation
      */
     public static Creator create(String accessPolicyId, String assetId, LocatorType locatorType) {
-        return new CreatorImpl(accessPolicyId, assetId, locatorType);
+        return new Creator(accessPolicyId, assetId, locatorType);
     }
 
-    /**
-     * Interface defining optional parameters that can get set when creating a locator
-     * 
-     */
-    public interface Creator extends EntityCreationOperation<LocatorInfo> {
-        /**
-         * Set the date and time for when the locator starts to be available
-         * 
-         * @param startDateTime
-         *            The date/time
-         * @return The creator instance (for function chaining)
-         */
-        Creator startDateTime(Date startDateTime);
-
-        /**
-         * Set the date and time at which the locator will expire
-         * 
-         * @param expirationDateTime
-         *            Expiration date and time
-         * @return The creator instance (for function chaining)
-         */
-        Creator expirationDateTime(Date expirationDateTime);
-    }
-
-    private static class CreatorImpl extends EntityOperationSingleResultBase<LocatorInfo> implements Creator {
+    public static class Creator extends EntityOperationSingleResultBase<LocatorInfo> implements
+            EntityCreationOperation<LocatorInfo> {
         private final String accessPolicyId;
         private final String assetId;
         private final LocatorType locatorType;
         private Date startDateTime;
         private Date expirationDateTime;
 
-        protected CreatorImpl(String accessPolicyId, String assetId, LocatorType locatorType) {
+        protected Creator(String accessPolicyId, String assetId, LocatorType locatorType) {
             super(ENTITY_SET, LocatorInfo.class);
             this.accessPolicyId = accessPolicyId;
             this.assetId = assetId;
@@ -95,13 +72,25 @@ public class Locator {
                     .setType(locatorType.getCode());
         }
 
-        @Override
+        /**
+         * Set the date and time for when the locator starts to be available
+         * 
+         * @param startDateTime
+         *            The date/time
+         * @return The creator instance (for function chaining)
+         */
         public Creator startDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
             return this;
         }
 
-        @Override
+        /**
+         * Set the date and time at which the locator will expire
+         * 
+         * @param expirationDateTime
+         *            Expiration date and time
+         * @return The creator instance (for function chaining)
+         */
         public Creator expirationDateTime(Date expirationDateTime) {
             this.expirationDateTime = expirationDateTime;
             return this;
@@ -149,38 +138,14 @@ public class Locator {
      * @return the update operation
      */
     public static Updater update(String locatorId) {
-        return new UpdaterImpl(locatorId);
+        return new Updater(locatorId);
     }
 
-    /**
-     * Interface defining fields that can be updated after locator has been created.
-     * 
-     */
-    public interface Updater extends EntityUpdateOperation {
-        /**
-         * Set when the locator will become available
-         * 
-         * @param startDateTime
-         *            the date & time
-         * @return Updater instance
-         */
-        Updater startDateTime(Date startDateTime);
-
-        /**
-         * Set when the locator will expire
-         * 
-         * @param expirationDateTime
-         *            the expiration date & time
-         * @return Updater instance
-         */
-        Updater expirationDateTime(Date expirationDateTime);
-    }
-
-    private static class UpdaterImpl extends EntityOperationBase implements Updater {
+    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
         private Date startDateTime;
         private Date expirationDateTime;
 
-        public UpdaterImpl(String locatorId) {
+        public Updater(String locatorId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, locatorId));
         }
 
@@ -189,13 +154,25 @@ public class Locator {
             return new LocatorRestType().setStartTime(startDateTime).setExpirationDateTime(expirationDateTime);
         }
 
-        @Override
+        /**
+         * Set when the locator will become available
+         * 
+         * @param startDateTime
+         *            the date & time
+         * @return Updater instance
+         */
         public Updater startDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
             return this;
         }
 
-        @Override
+        /**
+         * Set when the locator will expire
+         * 
+         * @param expirationDateTime
+         *            the expiration date & time
+         * @return Updater instance
+         */
         public Updater expirationDateTime(Date expirationDateTime) {
             this.expirationDateTime = expirationDateTime;
             return this;

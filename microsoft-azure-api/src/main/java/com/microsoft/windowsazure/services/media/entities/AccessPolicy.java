@@ -47,16 +47,16 @@ public class AccessPolicy {
      */
     public static EntityCreationOperation<AccessPolicyInfo> create(String name, double durationInMinutes,
             EnumSet<AccessPolicyPermission> permissions) {
-        return new CreatorImpl(name, durationInMinutes, permissions);
+        return new Creator(name, durationInMinutes, permissions);
     }
 
-    private static class CreatorImpl extends EntityOperationSingleResultBase<AccessPolicyInfo> implements
+    private static class Creator extends EntityOperationSingleResultBase<AccessPolicyInfo> implements
             EntityCreationOperation<AccessPolicyInfo> {
         private final String policyName;
         private final double durationInMinutes;
         private final EnumSet<AccessPolicyPermission> permissions;
 
-        public CreatorImpl(String policyName, double durationInMinutes, EnumSet<AccessPolicyPermission> permissions) {
+        public Creator(String policyName, double durationInMinutes, EnumSet<AccessPolicyPermission> permissions) {
 
             super("AccessPolicies", AccessPolicyInfo.class);
 
