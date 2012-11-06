@@ -17,9 +17,14 @@ package com.microsoft.windowsazure.services.media.entities;
 
 import java.util.EnumSet;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
+import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * 
@@ -66,6 +71,45 @@ public class AccessPolicy {
             EntityGetOperation<AccessPolicyInfo> {
         public GetterImpl(String accessPolicyId) {
             super(new EntityOperationBase.EntityIdUriBuilder("AccessPolicies", accessPolicyId), AccessPolicyInfo.class);
+        }
+    }
+
+    public static EntityListOperation<AccessPolicyInfo> list() {
+        return new ListerImpl();
+    }
+
+    public static EntityListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
+        return new ListerImpl(queryParameters);
+    }
+
+    private static class ListerImpl extends EntityOperationBase implements EntityListOperation<AccessPolicyInfo> {
+        private final MultivaluedMap<String, String> queryParameters;
+
+        public ListerImpl() {
+            super("AccessPolicies");
+            queryParameters = new MultivaluedMapImpl();
+        }
+
+        public ListerImpl(MultivaluedMap<String, String> queryParameters) {
+            this();
+            this.queryParameters.putAll(queryParameters);
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
+         */
+        @Override
+        public MultivaluedMap<String, String> getQueryParameters() {
+            return queryParameters;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getResponseGenericType()
+         */
+        @Override
+        public GenericType<ListResult<AccessPolicyInfo>> getResponseGenericType() {
+            return new GenericType<ListResult<AccessPolicyInfo>>() {
+            };
         }
     }
 }

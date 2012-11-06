@@ -20,11 +20,14 @@ import static org.junit.Assert.*;
 import java.net.URLEncoder;
 import java.util.EnumSet;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for access policy entity
@@ -59,5 +62,25 @@ public class AccessPolicyEntityTest {
         EntityGetOperation<AccessPolicyInfo> getter = AccessPolicy.get(examplePolicyId);
 
         assertEquals(expectedUri, getter.getUri());
+    }
+
+    @Test
+    public void listReturnsExpectedUri() throws Exception {
+        EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list();
+
+        assertEquals("AccessPolicies", lister.getUri());
+    }
+
+    @Test
+    public void listWithQueryParametersReturnsThem() throws Exception {
+        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+        queryParams.add("$top", "10");
+        queryParams.add("$skip", "2");
+
+        EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list(queryParams);
+
+        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
+        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
+        assertEquals(2, lister.getQueryParameters().size());
     }
 }
