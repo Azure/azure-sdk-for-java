@@ -97,15 +97,7 @@ public class Asset {
     }
 
     public static EntityGetOperation<AssetInfo> get(String assetId) {
-        return new GetterImpl(assetId);
-    }
-
-    private static class GetterImpl extends EntityOperationSingleResultBase<AssetInfo> implements
-            EntityGetOperation<AssetInfo> {
-
-        public GetterImpl(String assetId) {
-            super(new EntityOperationBase.EntityIdUriBuilder("Assets", assetId), AssetInfo.class);
-        }
+        return new DefaultGetterOperation<AssetInfo>("Assets", assetId, AssetInfo.class);
     }
 
     public static EntityListOperation<AssetInfo> list() {
