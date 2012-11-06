@@ -32,12 +32,24 @@ public class MediaProcessor {
     private MediaProcessor() {
     }
 
+    /**
+     * Create an operation to list all Media processors
+     * 
+     * @return the list operation
+     */
     public static EntityListOperation<MediaProcessorInfo> list() {
         return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
                 new GenericType<ListResult<MediaProcessorInfo>>() {
                 });
     }
 
+    /**
+     * Create an operation to list all media processors that satisfy the given query parameters
+     * 
+     * @param queryParameters
+     *            query parameters to pass with the request
+     * @return the list operation
+     */
     public static EntityListOperation<MediaProcessorInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
                 new GenericType<ListResult<MediaProcessorInfo>>() {

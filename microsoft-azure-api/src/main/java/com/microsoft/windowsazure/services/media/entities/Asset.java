@@ -23,6 +23,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.GenericType;
 
 /**
+ * Class for creating operations to manipulate Asset entities.
  * 
  */
 public class Asset {
@@ -35,6 +36,10 @@ public class Asset {
         return new CreatorImpl();
     }
 
+    /**
+     * Interface defining optional fields that can be set at asset creation.
+     * 
+     */
     public interface Creator extends EntityCreationOperation<AssetInfo> {
         /**
          * Set the name of the asset to be created
@@ -91,27 +96,71 @@ public class Asset {
         }
     }
 
+    /**
+     * Create an operation object that will get the state of the given asset.
+     * 
+     * @param assetId
+     *            id of asset to retrieve
+     * @return the get operation
+     */
     public static EntityGetOperation<AssetInfo> get(String assetId) {
         return new DefaultGetterOperation<AssetInfo>("Assets", assetId, AssetInfo.class);
     }
 
+    /**
+     * Create an operation that will list all the assets.
+     * 
+     * @return The list operation
+     */
     public static EntityListOperation<AssetInfo> list() {
         return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
         });
     }
 
+    /**
+     * Create an operation that will list all the assets which match the given query parameters
+     * 
+     * @param queryParameters
+     *            query parameters to pass to the server.
+     * @return the list operation.
+     */
     public static EntityListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
         }, queryParameters);
     }
 
+    /**
+     * Create an operation that will update the given asset
+     * 
+     * @param assetId
+     *            id of the asset to update
+     * @return the update operation
+     */
     public static Updater update(String assetId) {
         return new UpdaterImpl(assetId);
     }
 
+    /**
+     * Interface defining which fields can be updated after asset creation
+     * 
+     */
     public interface Updater extends EntityUpdateOperation {
+        /**
+         * Sets new name for asset
+         * 
+         * @param name
+         *            The new name
+         * @return Updater instance
+         */
         Updater name(String name);
 
+        /**
+         * Sets new alternate id for asset
+         * 
+         * @param alternateId
+         *            the new alternate id
+         * @return Updater instance
+         */
         Updater alternateId(String alternateId);
     }
 
@@ -144,6 +193,13 @@ public class Asset {
         }
     }
 
+    /**
+     * Create an operation to delete the given asset
+     * 
+     * @param assetId
+     *            id of asset to delete
+     * @return the delete operation
+     */
     public static EntityDeleteOperation delete(String assetId) {
         return new DefaultDeleteOperation("Assets", assetId);
     }

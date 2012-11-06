@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.microsoft.windowsazure.services.media.entities;
 
 import java.util.Date;
@@ -36,10 +35,25 @@ public class Locator {
     private Locator() {
     }
 
+    /**
+     * Create an operation to create a new locator entity
+     * 
+     * @param accessPolicyId
+     *            id of access policy for locator
+     * @param assetId
+     *            id of asset for locator
+     * @param locatorType
+     *            locator type
+     * @return the operation
+     */
     public static Creator create(String accessPolicyId, String assetId, LocatorType locatorType) {
         return new CreatorImpl(accessPolicyId, assetId, locatorType);
     }
 
+    /**
+     * Interface defining optional parameters that can get set when creating a locator
+     * 
+     */
     public interface Creator extends EntityCreationOperation<LocatorInfo> {
         /**
          * Set the date and time for when the locator starts to be available
@@ -94,27 +108,71 @@ public class Locator {
         }
     }
 
+    /**
+     * Create an operation to get the given locator
+     * 
+     * @param locatorId
+     *            id of locator to retrieve
+     * @return the get operation
+     */
     public static EntityGetOperation<LocatorInfo> get(String locatorId) {
         return new DefaultGetterOperation<LocatorInfo>(ENTITY_SET, locatorId, LocatorInfo.class);
     }
 
+    /**
+     * Create an operation to list all locators
+     * 
+     * @return the list operation
+     */
     public static EntityListOperation<LocatorInfo> list() {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         });
     }
 
+    /**
+     * Create an operation to list all locators matching the given query parameters
+     * 
+     * @param queryParameters
+     *            query parameters to send with the request
+     * @return the list operation
+     */
     public static EntityListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         }, queryParameters);
     }
 
+    /**
+     * Create an operation to update the given locator
+     * 
+     * @param locatorId
+     *            id of locator to update
+     * @return the update operation
+     */
     public static Updater update(String locatorId) {
         return new UpdaterImpl(locatorId);
     }
 
+    /**
+     * Interface defining fields that can be updated after locator has been created.
+     * 
+     */
     public interface Updater extends EntityUpdateOperation {
+        /**
+         * Set when the locator will become available
+         * 
+         * @param startDateTime
+         *            the date & time
+         * @return Updater instance
+         */
         Updater startDateTime(Date startDateTime);
 
+        /**
+         * Set when the locator will expire
+         * 
+         * @param expirationDateTime
+         *            the expiration date & time
+         * @return Updater instance
+         */
         Updater expirationDateTime(Date expirationDateTime);
     }
 
@@ -145,6 +203,13 @@ public class Locator {
 
     }
 
+    /**
+     * Create an operation to delete the given locator
+     * 
+     * @param locatorId
+     *            id of locator to delete
+     * @return the operation
+     */
     public static EntityDeleteOperation delete(String locatorId) {
         return new DefaultDeleteOperation(ENTITY_SET, locatorId);
     }
