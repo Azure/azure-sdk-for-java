@@ -38,8 +38,10 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
+import com.microsoft.windowsazure.services.core.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
+import com.microsoft.windowsazure.services.core.storage.StorageEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
@@ -669,6 +671,50 @@ public class CloudBlobContainerTests extends BlobTestBase {
 
             bClient.listContainersSegmented(null, ContainerListingDetails.ALL, 2, segment.getContinuationToken(), null,
                     null);
+        }
+    }
+
+    @Test
+    public void testSendingRequestEventBlob() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        final ArrayList<Boolean> callList = new ArrayList<Boolean>();
+        OperationContext sendingRequestEventContext = new OperationContext();
+        sendingRequestEventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                callList.add(true);
+            }
+        });
+
+        try {
+            Assert.assertEquals(0, callList.size());
+
+            //Put blob
+            CloudBlob blob = newContainer.getBlockBlobReference("newblob");
+            blob.upload(new ByteArrayInputStream(testData), testData.length, null, null, sendingRequestEventContext);
+            Assert.assertEquals(1, callList.size());
+
+            //Get blob
+            blob.download(new ByteArrayOutputStream(), null, null, sendingRequestEventContext);
+            Assert.assertEquals(2, callList.size());
+
+            //uploadMetadata
+            blob.uploadMetadata(null, null, sendingRequestEventContext);
+            Assert.assertEquals(3, callList.size());
+
+            //uploadMetadata
+            blob.downloadAttributes(null, null, sendingRequestEventContext);
+            Assert.assertEquals(4, callList.size());
+
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
         }
     }
 }
