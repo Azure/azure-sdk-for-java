@@ -29,11 +29,12 @@ import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
 import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
-import com.microsoft.windowsazure.services.media.models.CreateLocatorOptions;
+import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 
@@ -49,18 +50,17 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     public static void setup() throws Exception {
         IntegrationTestBase.setup();
 
-        AssetInfo asset = service.createAsset(new CreateAssetOptions()
-                .setName(testAssetPrefix + "uploadBlockBlobAsset"));
+        AssetInfo asset = service.create(Asset.create().setName(testAssetPrefix + "uploadBlockBlobAsset"));
 
-        AccessPolicyInfo policy = service.createAccessPolicy(testPolicyPrefix + "uploadWritePolicy", 10,
-                EnumSet.of(AccessPolicyPermission.WRITE));
+        AccessPolicyInfo policy = service.create(AccessPolicy.create(testPolicyPrefix + "uploadWritePolicy", 10,
+                EnumSet.of(AccessPolicyPermission.WRITE)));
 
         Date now = new Date();
         Date fiveMinutesAgo = new Date(now.getTime() - (5 * 60 * 1000));
         Date tenMinutesFromNow = new Date(now.getTime() + (10 * 60 * 1000));
 
-        LocatorInfo locator = service.createLocator(policy.getId(), asset.getId(), LocatorType.SAS,
-                new CreateLocatorOptions().setStartTime(fiveMinutesAgo).setExpirationDateTime(tenMinutesFromNow));
+        LocatorInfo locator = service.create(Locator.create(policy.getId(), asset.getId(), LocatorType.SAS)
+                .setStartDateTime(fiveMinutesAgo).setExpirationDateTime(tenMinutesFromNow));
 
         blobWriter = MediaService.createBlobWriter(locator);
 
