@@ -21,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
+import com.microsoft.windowsazure.services.media.implementation.MediaEntityRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
 import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
@@ -51,6 +52,8 @@ public class Exports implements Builder.Exports {
         registry.add(ResourceLocationManager.class);
         registry.add(RedirectFilter.class);
         registry.add(VersionHeadersFilter.class);
+
+        registry.add(MediaEntityContract.class, MediaEntityRestProxy.class);
 
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
             @Override
