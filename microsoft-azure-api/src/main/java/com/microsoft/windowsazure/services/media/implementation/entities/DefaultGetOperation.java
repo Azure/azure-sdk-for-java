@@ -20,13 +20,13 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
  * Generic implementation of the get operation usable for most entities
  * 
  */
-public class DefaultGetterOperation<T> extends EntityOperationSingleResultBase<T> implements EntityGetOperation<T> {
+public class DefaultGetOperation<T> extends EntityOperationSingleResultBase<T> implements EntityGetOperation<T> {
 
     /**
      * @param uri
      * @param responseClass
      */
-    public DefaultGetterOperation(String entityTypeUri, String entityId, Class<T> responseClass) {
+    public DefaultGetOperation(String entityTypeUri, String entityId, Class<T> responseClass) {
         super(new EntityOperationBase.EntityIdUriBuilder(entityTypeUri, entityId), responseClass);
     }
 }

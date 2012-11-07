@@ -20,7 +20,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetterOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
@@ -112,7 +112,7 @@ public class Locator {
      * @return the get operation
      */
     public static EntityGetOperation<LocatorInfo> get(String locatorId) {
-        return new DefaultGetterOperation<LocatorInfo>(ENTITY_SET, locatorId, LocatorInfo.class);
+        return new DefaultGetOperation<LocatorInfo>(ENTITY_SET, locatorId, LocatorInfo.class);
     }
 
     /**
