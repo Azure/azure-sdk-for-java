@@ -35,6 +35,7 @@ import com.sun.jersey.api.client.GenericType;
  * 
  */
 public class Asset {
+    private static final String ENTITY_SET = "Assets";
 
     // Prevent instantiation
     private Asset() {
@@ -50,7 +51,7 @@ public class Asset {
         private String alternateId;
 
         public Creator() {
-            super("Assets", AssetInfo.class);
+            super(ENTITY_SET, AssetInfo.class);
         }
 
         @Override
@@ -95,7 +96,7 @@ public class Asset {
      * @return the get operation
      */
     public static EntityGetOperation<AssetInfo> get(String assetId) {
-        return new DefaultGetterOperation<AssetInfo>("Assets", assetId, AssetInfo.class);
+        return new DefaultGetterOperation<AssetInfo>(ENTITY_SET, assetId, AssetInfo.class);
     }
 
     /**
@@ -104,7 +105,7 @@ public class Asset {
      * @return The list operation
      */
     public static EntityListOperation<AssetInfo> list() {
-        return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
+        return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
         });
     }
 
@@ -116,7 +117,7 @@ public class Asset {
      * @return the list operation.
      */
     public static EntityListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<AssetInfo>("Assets", new GenericType<ListResult<AssetInfo>>() {
+        return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
         }, queryParameters);
     }
 
@@ -136,7 +137,7 @@ public class Asset {
         private String alternateId;
 
         protected Updater(String assetId) {
-            super(new EntityOperationBase.EntityIdUriBuilder("Assets", assetId));
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, assetId));
         }
 
         @Override
@@ -180,6 +181,6 @@ public class Asset {
      * @return the delete operation
      */
     public static EntityDeleteOperation delete(String assetId) {
-        return new DefaultDeleteOperation("Assets", assetId);
+        return new DefaultDeleteOperation(ENTITY_SET, assetId);
     }
 }

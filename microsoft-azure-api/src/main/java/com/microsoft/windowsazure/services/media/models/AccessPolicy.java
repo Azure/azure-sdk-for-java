@@ -36,6 +36,8 @@ import com.sun.jersey.api.client.GenericType;
  */
 public class AccessPolicy {
 
+    private static final String ENTITY_SET = "AccessPolicies";
+
     private AccessPolicy() {
     }
 
@@ -63,7 +65,7 @@ public class AccessPolicy {
 
         public Creator(String policyName, double durationInMinutes, EnumSet<AccessPolicyPermission> permissions) {
 
-            super("AccessPolicies", AccessPolicyInfo.class);
+            super(ENTITY_SET, AccessPolicyInfo.class);
 
             this.policyName = policyName;
             this.durationInMinutes = durationInMinutes;
@@ -86,7 +88,7 @@ public class AccessPolicy {
      * @return the operation
      */
     public static EntityGetOperation<AccessPolicyInfo> get(String accessPolicyId) {
-        return new DefaultGetterOperation<AccessPolicyInfo>("AccessPolicies", accessPolicyId, AccessPolicyInfo.class);
+        return new DefaultGetterOperation<AccessPolicyInfo>(ENTITY_SET, accessPolicyId, AccessPolicyInfo.class);
     }
 
     /**
@@ -95,9 +97,8 @@ public class AccessPolicy {
      * @return the operation
      */
     public static EntityListOperation<AccessPolicyInfo> list() {
-        return new DefaultListOperation<AccessPolicyInfo>("AccessPolicies",
-                new GenericType<ListResult<AccessPolicyInfo>>() {
-                });
+        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
+        });
     }
 
     /**
@@ -108,9 +109,8 @@ public class AccessPolicy {
      * @return the operation
      */
     public static EntityListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<AccessPolicyInfo>("AccessPolicies",
-                new GenericType<ListResult<AccessPolicyInfo>>() {
-                }, queryParameters);
+        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
+        }, queryParameters);
     }
 
     /**
@@ -121,6 +121,6 @@ public class AccessPolicy {
      * @return the delete operation
      */
     public static EntityDeleteOperation delete(String accessPolicyId) {
-        return new DefaultDeleteOperation("AccessPolicies", accessPolicyId);
+        return new DefaultDeleteOperation(ENTITY_SET, accessPolicyId);
     }
 }
