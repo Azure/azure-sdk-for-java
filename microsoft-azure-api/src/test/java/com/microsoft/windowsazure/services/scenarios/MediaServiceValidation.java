@@ -18,18 +18,17 @@ import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.FileInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.CreateTaskOptions;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.JobInfo;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.MockMediaContract;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.JobInfo;
 
 class MediaServiceValidation {
     private final MediaContract service;
     // TODO: Remove this mock
-    private final MockMediaContract serviceMock;
+    private final MediaServiceMocks.MockMediaContract serviceMock;
 
     public MediaServiceValidation(MediaContract service) {
         this.service = service;
-        this.serviceMock = new MockMediaContract();
+        this.serviceMock = new MediaServiceMocks.MockMediaContract();
     }
 
     public void validateAsset(AssetInfo asset, String name, EncryptionOption encryption) throws ServiceException {
@@ -80,7 +79,6 @@ class MediaServiceValidation {
         List<FileInfo> assetFiles = serviceMock.getAssetFiles(asset.getId());
 
         assertNotNull("assetFiles", assetFiles);
-        // TODO: Uncomment
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());
 
         // More general verifications:
@@ -89,12 +87,9 @@ class MediaServiceValidation {
         // * Verify that can query the server for assets matching
         //   * The created asset ID, and get only that one item
         //   * The created asset name, get only that one.
-
-        // 13. If Encrypted, verify file and content key
-        // SKIP
-
-        // TODO: Get the asset encryption info and compare with the file's encryption info
-        // Compare these properties: IsEncrypted, InitializationVector, EncryptionKeyId, EncryptionScheme, EncryptionVersion
+        // * If Encrypted, verify file and content key
+        // * Get the asset encryption info and compare with the file's encryption info
+        // * Compare these properties: IsEncrypted, InitializationVector, EncryptionKeyId, EncryptionScheme, EncryptionVersion
 
         // Compare the asset files with all files
         List<FileInfo> allFiles = serviceMock.getFiles();
@@ -127,7 +122,7 @@ class MediaServiceValidation {
     }
 
     public void validateOutputAssets(List<AssetInfo> outputAssets) throws ServiceException, MalformedURLException {
-        // TODO: How to validate the output assets?
+        // TODO: validate the output assets?
 
         //        for (AssetInfo outputAsset : outputAssets) {
         //            List<URL> urls = wrapper.createOriginUrlsForAppleHLSContent(outputAsset, 1000);
@@ -137,8 +132,7 @@ class MediaServiceValidation {
         //        }
         //
         //        for (URL url : wrapper.createOriginUrlsForStreamingContent(asset, 10)) {
-        //            //     print(url.toString());
-        //            // TODO: more to verify here?
+        //            // TODO: What to verify here?
         //        }
     }
 
@@ -152,7 +146,7 @@ class MediaServiceValidation {
                 break;
             }
             catch (IOException e) {
-                print("Got error, wait a bit and try again");
+                System.out.println("Got error, wait a bit and try again");
                 if (counter < 6) {
                     Thread.sleep(10000);
                 }
@@ -205,9 +199,4 @@ class MediaServiceValidation {
             inputStream2.close();
         }
     }
-
-    private static void print(String name) {
-        System.out.println(name);
-    }
-
 }

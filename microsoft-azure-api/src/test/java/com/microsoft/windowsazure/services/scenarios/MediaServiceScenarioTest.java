@@ -92,7 +92,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        MediaServiceWrapper.JobInfo job = wrapper.createJob("my job createJob", asset, createTasks());
+        MediaServiceMocks.JobInfo job = wrapper.createJob("my job createJob", asset, createTasks());
         validator.validateJob(job, "my job", asset, createTasks());
     }
 
@@ -101,7 +101,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", EncryptionOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
-        MediaServiceWrapper.JobInfo job = wrapper.createJob("my job transformAsset", asset, createTasks());
+        MediaServiceMocks.JobInfo job = wrapper.createJob("my job transformAsset", asset, createTasks());
         signalSetupFinished();
 
         waitForJobToFinish(job);
@@ -109,7 +109,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateOutputAssets(outputAssets);
     }
 
-    private void waitForJobToFinish(MediaServiceWrapper.JobInfo job) throws InterruptedException {
+    private void waitForJobToFinish(MediaServiceMocks.JobInfo job) throws InterruptedException {
         for (int counter = 0; !wrapper.isJobFinished(job); counter++) {
             if (counter > 10) {
                 fail("Took took long for the job to finish");
@@ -118,15 +118,14 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         }
     }
 
-    private List<MediaServiceWrapper.CreateTaskOptions> createTasks() throws ServiceException {
-        List<MediaServiceWrapper.CreateTaskOptions> tasks = new ArrayList<MediaServiceWrapper.CreateTaskOptions>();
+    private List<MediaServiceMocks.CreateTaskOptions> createTasks() throws ServiceException {
+        List<MediaServiceMocks.CreateTaskOptions> tasks = new ArrayList<MediaServiceMocks.CreateTaskOptions>();
         tasks.add(wrapper.createTaskOptionsMp4ToSmoothStreams("MP4 to SS"));
         tasks.add(wrapper.createTaskOptionsSmoothStreamsToHls("SS to HLS"));
         return tasks;
     }
 
     private Hashtable<String, InputStream> getTestAssetFiles() {
-        // TODO: Get smaller asset. 1.2MB is too large.
         Hashtable<String, InputStream> inputFiles = new Hashtable<String, InputStream>();
         inputFiles.put("interview.wmv", getClass().getResourceAsStream("/media/interview.wmv"));
         return inputFiles;

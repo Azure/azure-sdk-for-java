@@ -29,6 +29,11 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateJobOptions;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.JobInfo;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.MockMediaContract;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.TaskCreationOptions;
 
 class MediaServiceWrapper {
     private final MediaContract service;
@@ -43,6 +48,7 @@ class MediaServiceWrapper {
     private final String MEDIA_PROCESSOR_PLAYREADY_PROTECTION = "PlayReady Protection Task";
     private final String MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS = "Smooth Streams to HLS Task";
 
+    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973635.aspx
     private final String configMp4ToSmoothStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
             + "  <name>MP4 to Smooth Streams</name>"
             + "  <id>5e1e1a1c-bba6-11df-8991-0019d1916af0</id>"
@@ -55,6 +61,7 @@ class MediaServiceWrapper {
             + "    <type>Microsoft.Web.Media.TransformManager.MP4toSmooth.MP4toSmooth_Task, Microsoft.Web.Media.TransformManager.MP4toSmooth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
             + "  </taskCode>" + "</taskDefinition>";
 
+    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973636.aspx
     private final String configSmoothStreamsToAppleHttpLiveStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
             + "    <name>Smooth Streams to Apple HTTP Live Streams</name>"
             + "  <id>A72D7A5D-3022-45f2-89B4-1DDC5457C111</id>"
@@ -219,28 +226,6 @@ class MediaServiceWrapper {
         return serviceMock.getJobOutputMediaAssets(job.getId());
     }
 
-    //    // Process
-    //    public List<AssetInfo> waitForJobToComplete(JobInfo initialJobInfo) throws InterruptedException {
-    //        boolean jobCompleted = false;
-    //        int JobProgressInterval = 20000;
-    //        while (!jobCompleted) {
-    //            JobInfo currentJob = serviceMock.getJob(initialJobInfo.getId());
-    //            switch (currentJob.getState()) {
-    //                case Finished:
-    //                case Canceled:
-    //                case Error:
-    //                    jobCompleted = true;
-    //                    break;
-    //                default:
-    //                    print()
-    //                    Thread.sleep(JobProgressInterval);
-    //                    break;
-    //            }
-    //        }
-    //
-    //        return serviceMock.getJobOutputMediaAssets(initialJobInfo.getId());
-    //    }
-
     // Process
     public void cancelJob(JobInfo job) throws InterruptedException {
         // Use the service function
@@ -314,22 +299,15 @@ class MediaServiceWrapper {
         for (AssetInfo asset : assets) {
             if (asset.getName().length() > assetPrefix.length()
                     && asset.getName().substring(0, assetPrefix.length()).equals(assetPrefix)) {
-                print("Looking for locators belonging to asset: " + asset.getId());
                 for (LocatorInfo locator : locators) {
                     if (locator.getAssetId().equals(asset.getId())) {
-                        print("Deleting locator for asset: " + locator.getId());
                         service.deleteLocator(locator.getId());
                     }
                 }
 
-                print("Deleting asset: " + asset.getId());
                 service.deleteAsset(asset.getId());
             }
         }
-    }
-
-    private void print(String string) {
-        System.out.println(string);
     }
 
     public void removeAllAccessPoliciesWithPrefix() throws ServiceException {
@@ -337,98 +315,8 @@ class MediaServiceWrapper {
         for (AccessPolicyInfo accessPolicy : accessPolicies) {
             if (accessPolicy.getName().length() > accessPolicyPrefix.length()
                     && accessPolicy.getName().substring(0, accessPolicyPrefix.length()).equals(accessPolicyPrefix)) {
-                print("Deleting accessPolicy: " + accessPolicy.getId());
                 service.deleteAccessPolicy(accessPolicy.getId());
             }
         }
     }
-
-    // TODO: Replace with real media contract
-    static class MockMediaContract {
-        public List<FileInfo> getAssetFiles(String id) {
-            return new ArrayList<FileInfo>();
-        }
-
-        public JobInfo createJob(CreateJobOptions jobOptions) {
-            return new JobInfo();
-        }
-
-        public JobInfo getJob(String id) {
-            return new JobInfo();
-        }
-
-        public List<AssetInfo> getJobOutputMediaAssets(String id) {
-            return new ArrayList<AssetInfo>();
-        }
-
-        public void cancelJob(String id) {
-        }
-
-        public List<FileInfo> getFiles() {
-            return new ArrayList<FileInfo>();
-        }
-    }
-
-    // TODO: Replace with real JobState
-    static enum JobState {
-        Finished, Canceled, Error
-    }
-
-    // TODO: Replace with real JobInfo
-    static class JobInfo {
-
-        public String getId() {
-            return null;
-        }
-
-        public JobState getState() {
-            return JobState.Finished;
-        }
-    }
-
-    // TODO: Replace with real CreateTaskOptions
-    static class CreateTaskOptions {
-
-        public CreateTaskOptions setName(String string) {
-            return this;
-        }
-
-        public CreateTaskOptions setProcessorId(String id) {
-            return this;
-        }
-
-        public CreateTaskOptions setConfiguration(String string) {
-            return this;
-        }
-
-        public CreateTaskOptions setTaskBody(String string) {
-            return this;
-        }
-
-        public CreateTaskOptions setTaskCreationOptions(TaskCreationOptions options) {
-            return this;
-        }
-    }
-
-    // TODO: Replace with real CreateJobOptions
-    static class CreateJobOptions {
-
-        public CreateJobOptions setName(String jobName) {
-            return this;
-        }
-
-        public CreateJobOptions addInputMediaAsset(String id) {
-            return this;
-        }
-
-        public CreateJobOptions addTask(CreateTaskOptions task) {
-            return this;
-        }
-    }
-
-    // TODO: Replace with real TaskCreationOptions
-    static enum TaskCreationOptions {
-        ProtectedConfiguration
-    }
-
 }
