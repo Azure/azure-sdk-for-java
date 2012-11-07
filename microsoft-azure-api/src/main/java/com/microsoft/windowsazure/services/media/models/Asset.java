@@ -68,7 +68,7 @@ public class Asset {
          *            The name
          * @return The creator object (for call chaining)
          */
-        public Creator name(String name) {
+        public Creator setName(String name) {
             this.name = name;
             return this;
         }
@@ -81,7 +81,7 @@ public class Asset {
          * 
          * @return The creator object (for call chaining)
          */
-        public Creator alternateId(String alternateId) {
+        public Creator setAlternateId(String alternateId) {
             this.alternateId = alternateId;
             return this;
         }
@@ -154,7 +154,7 @@ public class Asset {
          *            The new name
          * @return Updater instance
          */
-        public Updater name(String name) {
+        public Updater setName(String name) {
             this.name = name;
             return this;
         }
@@ -166,7 +166,7 @@ public class Asset {
          *            the new alternate id
          * @return Updater instance
          */
-        public Updater alternateId(String alternateId) {
+        public Updater setAlternateId(String alternateId) {
             this.alternateId = alternateId;
             return this;
         }

@@ -75,8 +75,8 @@ public class LocatorEntityTest {
         Date tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
         EntityCreationOperation<LocatorInfo> creator = Locator
-                .create(exampleAccessPolicyId, exampleAssetId, LocatorType.SAS).startDateTime(now)
-                .expirationDateTime(tomorrow);
+                .create(exampleAccessPolicyId, exampleAssetId, LocatorType.SAS).setStartDateTime(now)
+                .setExpirationDateTime(tomorrow);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
 
@@ -127,8 +127,8 @@ public class LocatorEntityTest {
         Date tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
         Date twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
-        EntityUpdateOperation updater = Locator.update(exampleLocatorId).startDateTime(tenMinutesAgo)
-                .expirationDateTime(twoHoursFromNow);
+        EntityUpdateOperation updater = Locator.update(exampleLocatorId).setStartDateTime(tenMinutesAgo)
+                .setExpirationDateTime(twoHoursFromNow);
 
         LocatorRestType payload = (LocatorRestType) updater.getRequestContents();
 

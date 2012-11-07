@@ -86,7 +86,7 @@ public class Locator {
          *            The date/time
          * @return The creator instance (for function chaining)
          */
-        public Creator startDateTime(Date startDateTime) {
+        public Creator setStartDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
             return this;
         }
@@ -98,7 +98,7 @@ public class Locator {
          *            Expiration date and time
          * @return The creator instance (for function chaining)
          */
-        public Creator expirationDateTime(Date expirationDateTime) {
+        public Creator setExpirationDateTime(Date expirationDateTime) {
             this.expirationDateTime = expirationDateTime;
             return this;
         }
@@ -168,7 +168,7 @@ public class Locator {
          *            the date & time
          * @return Updater instance
          */
-        public Updater startDateTime(Date startDateTime) {
+        public Updater setStartDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
             return this;
         }
@@ -180,7 +180,7 @@ public class Locator {
          *            the expiration date & time
          * @return Updater instance
          */
-        public Updater expirationDateTime(Date expirationDateTime) {
+        public Updater setExpirationDateTime(Date expirationDateTime) {
             this.expirationDateTime = expirationDateTime;
             return this;
         }

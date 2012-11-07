@@ -60,7 +60,7 @@ public class AssetEntityTest {
     public void assetCreateCanSetAssetName() {
         String name = "assetCreateCanSetAssetName";
 
-        Asset.Creator creator = Asset.create().name("assetCreateCanSetAssetName");
+        Asset.Creator creator = Asset.create().setName("assetCreateCanSetAssetName");
 
         AssetType payload = (AssetType) creator.getRequestContents();
 
@@ -117,7 +117,7 @@ public class AssetEntityTest {
         String expectedName = "newAssetName";
         String expectedAltId = "newAltId";
 
-        EntityUpdateOperation updater = Asset.update(sampleAssetId).name(expectedName).alternateId(expectedAltId);
+        EntityUpdateOperation updater = Asset.update(sampleAssetId).setName(expectedName).setAlternateId(expectedAltId);
 
         AssetType payload = (AssetType) updater.getRequestContents();
 

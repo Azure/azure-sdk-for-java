@@ -41,7 +41,7 @@ public class EntityProxyTest extends IntegrationTestBase {
         String name = testAssetPrefix + "AName";
         String altId = "unit test alt id";
 
-        AssetInfo asset = entityService.create(Asset.create().name(name).alternateId(altId));
+        AssetInfo asset = entityService.create(Asset.create().setName(name).setAlternateId(altId));
 
         assertNotNull(asset.getId());
         assertEquals(name, asset.getName());
@@ -50,7 +50,7 @@ public class EntityProxyTest extends IntegrationTestBase {
 
     @Test
     public void canRetrieveAssetById() throws Exception {
-        AssetInfo createdAsset = entityService.create(Asset.create().name(testAssetPrefix + "canRetrieveAssetById"));
+        AssetInfo createdAsset = entityService.create(Asset.create().setName(testAssetPrefix + "canRetrieveAssetById"));
 
         AssetInfo retrieved = entityService.get(Asset.get(createdAsset.getId()));
 
@@ -93,9 +93,9 @@ public class EntityProxyTest extends IntegrationTestBase {
         String newName = testAssetPrefix + "newName";
         String newAltId = "updated alt id";
 
-        AssetInfo initialAsset = entityService.create(Asset.create().name(testAssetPrefix + "originalName"));
+        AssetInfo initialAsset = entityService.create(Asset.create().setName(testAssetPrefix + "originalName"));
 
-        entityService.update(Asset.update(initialAsset.getId()).name(newName).alternateId(newAltId));
+        entityService.update(Asset.update(initialAsset.getId()).setName(newName).setAlternateId(newAltId));
 
         AssetInfo updatedAsset = entityService.get(Asset.get(initialAsset.getId()));
 
@@ -131,7 +131,7 @@ public class EntityProxyTest extends IntegrationTestBase {
 
         for (int i = 0; i < numAssets; ++i) {
             AssetInfo asset = entityService.create(Asset.create()
-                    .name(testAssetPrefix + namePart + Integer.toString(i)));
+                    .setName(testAssetPrefix + namePart + Integer.toString(i)));
             expectedAssets.add(asset.getId());
         }
         return expectedAssets;
