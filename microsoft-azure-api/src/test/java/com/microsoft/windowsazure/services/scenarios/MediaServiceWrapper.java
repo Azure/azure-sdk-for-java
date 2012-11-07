@@ -1,3 +1,18 @@
+/**
+ * Copyright 2012 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.windowsazure.services.scenarios;
 
 import java.io.IOException;
@@ -37,7 +52,6 @@ import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.TaskCreat
 
 class MediaServiceWrapper {
     private final MediaContract service;
-    // TODO: Remove this mock
     private final MockMediaContract serviceMock;
 
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
@@ -104,7 +118,6 @@ class MediaServiceWrapper {
         List<ListResult<AssetInfo>> pages = new ArrayList<ListResult<AssetInfo>>();
         for (int skip = 0; true; skip += pageSize) {
             ListAssetsOptions options = new ListAssetsOptions();
-            // TODO: Remove the hack of adding "": https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/452
             options.getQueryParameters().add("$skip", skip + "");
             options.getQueryParameters().add("$top", pageSize + "");
             options.getQueryParameters().add("$filter", "startswith(Name,'" + rootName + "')");
@@ -126,23 +139,49 @@ class MediaServiceWrapper {
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE));
         LocatorInfo locator = service.createLocator(accessPolicy.getId(), asset.getId(), LocatorType.SAS);
         WritableBlobContainerContract uploader = MediaService.createBlobWriter(locator);
+        boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
             MessageDigest digest = MessageDigest.getInstance("MD5");
-            InputStream inputStream = inputFiles.get(fileName);
-            inputStream = new DigestInputStream(inputStream, digest);
 
-            uploader.createBlockBlob(fileName, inputStream);
+            InputStream inputStream = inputFiles.get(fileName);
+            InputStream digestStream = new DigestInputStream(inputStream, digest);
+            CountingStream countingStream = new CountingStream(digestStream);
+
+            uploader.createBlockBlob(fileName, countingStream);
 
             inputStream.close();
             byte[] md5hash = digest.digest();
             String md5 = Base64.encode(md5hash);
             System.out.println("md5: " + md5);
 
-            // TODO: Use this MD5 to set the associated FileInfo
-            // TODO: Create the associated FileInfos.
+            FileInfo fi = new FileInfo().setContentChecksum(md5).setContentFileSize(countingStream.getCount())
+                    .setIsPrimary(isFirst).setName(fileName).setParentAssetId(asset.getAlternateId());
+            serviceMock.createFileInfo(fi);
+
+            isFirst = false;
         }
         service.deleteLocator(locator.getId());
         service.deleteAccessPolicy(accessPolicy.getId());
+    }
+
+    private static class CountingStream extends InputStream {
+        private final InputStream wrappedStream;
+        private int count;
+
+        public CountingStream(InputStream wrapped) {
+            wrappedStream = wrapped;
+            count = 0;
+        }
+
+        @Override
+        public int read() throws IOException {
+            count++;
+            return wrappedStream.read();
+        }
+
+        public int getCount() {
+            return count;
+        }
     }
 
     // Process

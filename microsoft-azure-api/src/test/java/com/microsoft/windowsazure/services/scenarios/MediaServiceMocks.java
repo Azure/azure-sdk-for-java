@@ -1,3 +1,18 @@
+/**
+ * Copyright 2012 Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.windowsazure.services.scenarios;
 
 import java.util.ArrayList;
@@ -6,9 +21,10 @@ import java.util.List;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.FileInfo;
 
+// TODO: Remove when no longer needed.
+// Tracked by https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/457
 class MediaServiceMocks {
 
-    // TODO: Replace with real media contract
     static class MockMediaContract {
         public List<FileInfo> getAssetFiles(String id) {
             return new ArrayList<FileInfo>();
@@ -32,14 +48,16 @@ class MediaServiceMocks {
         public List<FileInfo> getFiles() {
             return new ArrayList<FileInfo>();
         }
+
+        public FileInfo createFileInfo(FileInfo fi) {
+            return null;
+        }
     }
 
-    // TODO: Replace with real JobState
     static enum JobState {
         Finished, Canceled, Error
     }
 
-    // TODO: Replace with real JobInfo
     static class JobInfo {
 
         public String getId() {
@@ -51,7 +69,6 @@ class MediaServiceMocks {
         }
     }
 
-    // TODO: Replace with real CreateTaskOptions
     static class CreateTaskOptions {
 
         public CreateTaskOptions setName(String string) {
@@ -75,7 +92,6 @@ class MediaServiceMocks {
         }
     }
 
-    // TODO: Replace with real CreateJobOptions
     static class CreateJobOptions {
 
         public CreateJobOptions setName(String jobName) {
@@ -91,9 +107,7 @@ class MediaServiceMocks {
         }
     }
 
-    // TODO: Replace with real TaskCreationOptions
     static enum TaskCreationOptions {
         ProtectedConfiguration
     }
-
 }
