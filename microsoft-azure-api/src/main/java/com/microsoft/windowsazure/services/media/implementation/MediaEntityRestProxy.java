@@ -158,9 +158,7 @@ public class MediaEntityRestProxy implements MediaEntityContract {
      */
     @Override
     public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
-        WebResource resource = getResource(lister.getUri());
-
-        return resource.queryParams(lister.getQueryParameters()).type(lister.getContentType())
+        return getResource(lister.getUri()).queryParams(lister.getQueryParameters()).type(lister.getContentType())
                 .accept(lister.getAcceptType()).get(lister.getResponseGenericType());
     }
 
