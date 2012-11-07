@@ -49,6 +49,8 @@ public class Asset {
             EntityCreationOperation<AssetInfo> {
         private String name;
         private String alternateId;
+        private EncryptionOption options;
+        private AssetState state;
 
         public Creator() {
             super(ENTITY_SET, AssetInfo.class);
@@ -59,6 +61,12 @@ public class Asset {
             AssetType assetType = new AssetType();
             assetType.setName(name);
             assetType.setAlternateId(alternateId);
+            if (options != null) {
+                assetType.setOptions(options.getCode());
+            }
+            if (state != null) {
+                assetType.setState(state.getCode());
+            }
             return assetType;
         }
 
@@ -84,6 +92,16 @@ public class Asset {
          */
         public Creator setAlternateId(String alternateId) {
             this.alternateId = alternateId;
+            return this;
+        }
+
+        public Creator setOptions(EncryptionOption options) {
+            this.options = options;
+            return this;
+        }
+
+        public Creator setState(AssetState state) {
+            this.state = state;
             return this;
         }
     }

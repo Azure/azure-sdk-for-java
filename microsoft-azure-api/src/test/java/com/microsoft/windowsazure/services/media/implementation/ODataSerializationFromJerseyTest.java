@@ -27,10 +27,9 @@ import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.MediaContract;
-import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -90,19 +89,21 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
     @Test
     public void canCreateAssetThroughMediaServiceAPI() throws Exception {
-        MediaContract client = MediaService.create(config);
-        CreateAssetOptions createAssetOptions = new CreateAssetOptions().setName("secondTestAsset");
-        AssetInfo newAsset = client.createAsset(createAssetOptions);
+        MediaContract client = createService();
+        AssetInfo newAsset = client.create(Asset.create().setName("secondTestAsset"));
 
         Assert.assertEquals("secondTestAsset", newAsset.getName());
     }
 
     @Test
     public void canRetrieveListOfAssets() throws Exception {
-        MediaContract client = MediaService.create(config);
-        List<AssetInfo> assets = client.listAssets();
+        MediaContract client = createService();
+        List<AssetInfo> assets = client.list(Asset.list());
 
         Assert.assertNotNull(assets);
     }
 
+    private MediaContract createService() {
+        return config.create(MediaContract.class);
+    }
 }

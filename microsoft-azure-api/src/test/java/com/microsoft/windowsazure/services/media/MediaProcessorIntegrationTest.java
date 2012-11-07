@@ -19,12 +19,15 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class MediaProcessorIntegrationTest extends IntegrationTestBase {
 
@@ -52,7 +55,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act
-        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.listMediaProcessors();
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor.list());
 
         // Assert
         assertNotNull("listMediaProcessorsResult", listMediaProcessorsResult);
@@ -67,14 +70,13 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
     @Test
     public void listMediaProcessorWithOptionSuccess() throws ServiceException {
         // Arrange
-        ListMediaProcessorsOptions listMediaProcessorsOptions = new ListMediaProcessorsOptions();
-        listMediaProcessorsOptions.getQueryParameters().add("$filter",
-                "Id eq 'nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10'");
-        listMediaProcessorsOptions.getQueryParameters().add("$top", "2");
+        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
+        queryParameters.add("$filter", "Id eq 'nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10'");
+        queryParameters.add("$top", "2");
 
         // Act
-        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service
-                .listMediaProcessors(listMediaProcessorsOptions);
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor
+                .list(queryParameters));
 
         // Assert
         assertNotNull("listMediaProcessorsResult", listMediaProcessorsResult);

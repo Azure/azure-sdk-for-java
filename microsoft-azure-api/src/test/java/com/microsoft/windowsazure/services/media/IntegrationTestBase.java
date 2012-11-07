@@ -14,9 +14,12 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
 public abstract class IntegrationTestBase {
@@ -44,6 +47,7 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
 
+        // TODO: Replace with call to MediaService.create once that's updated
         service = MediaService.create(config);
 
         cleanupEnvironment();
@@ -73,10 +77,11 @@ public abstract class IntegrationTestBase {
 
     private static void removeAllTestAccessPolicies() {
         try {
-            List<AccessPolicyInfo> policies = service.listAccessPolicies();
+            List<AccessPolicyInfo> policies = service.list(AccessPolicy.list());
+
             for (AccessPolicyInfo policy : policies) {
                 if (policy.getName().startsWith(testPolicyPrefix)) {
-                    service.deleteAccessPolicy(policy.getId());
+                    service.delete(AccessPolicy.delete(policy.getId()));
                 }
             }
         }
@@ -87,10 +92,10 @@ public abstract class IntegrationTestBase {
 
     private static void removeAllTestAssets() {
         try {
-            List<AssetInfo> listAssetsResult = service.listAssets();
+            List<AssetInfo> listAssetsResult = service.list(Asset.list());
             for (AssetInfo assetInfo : listAssetsResult) {
                 if (assetInfo.getName().startsWith(testAssetPrefix)) {
-                    service.deleteAsset(assetInfo.getId());
+                    service.delete(Asset.delete(assetInfo.getId()));
                 }
             }
         }
@@ -101,11 +106,11 @@ public abstract class IntegrationTestBase {
 
     private static void removeAllTestLocators() {
         try {
-            ListResult<LocatorInfo> listLocatorsResult = service.listLocators();
+            ListResult<LocatorInfo> listLocatorsResult = service.list(Locator.list());
             for (LocatorInfo locatorInfo : listLocatorsResult) {
-                AssetInfo ai = service.getAsset(locatorInfo.getAssetId());
+                AssetInfo ai = service.get(Asset.get(locatorInfo.getAssetId()));
                 if (ai.getName().startsWith(testAssetPrefix)) {
-                    service.deleteLocator(locatorInfo.getId());
+                    service.delete(Locator.delete(locatorInfo.getId()));
                 }
             }
         }
@@ -174,8 +179,8 @@ public abstract class IntegrationTestBase {
             // TODO: Remove this time-zone workaround when fixed:
             // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/413
             if (diffInMilliseconds > deltaInMilliseconds) {
-                // Just hard-code time-zone offset of 7 hours for now.
-                diffInMilliseconds = Math.abs(diffInMilliseconds - 7 * 60 * 60 * 1000);
+                // Just hard-code time-zone offset of 8 hours for now.
+                diffInMilliseconds = Math.abs(diffInMilliseconds - 8 * 60 * 60 * 1000);
             }
 
             if (diffInMilliseconds > deltaInMilliseconds) {

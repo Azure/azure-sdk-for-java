@@ -16,11 +16,11 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class EntityProxyTest extends IntegrationTestBase {
-    private static MediaEntityContract entityService;
+    private static MediaContract entityService;
 
     @BeforeClass
     public static void entityProxyTestSetup() {
-        entityService = config.create(MediaEntityContract.class);
+        entityService = config.create(MediaContract.class);
     }
 
     @Test
