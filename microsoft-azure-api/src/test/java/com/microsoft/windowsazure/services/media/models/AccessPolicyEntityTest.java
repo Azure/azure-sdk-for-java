@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +25,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.sun.jersey.core.util.MultivaluedMapImpl;

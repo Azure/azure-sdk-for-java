@@ -16,67 +16,11 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.entities.EntityCreationOperation;
-import com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.entities.EntityUpdateOperation;
-import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityContract;
 
 /**
- * Contract for interacting with the back end service
- * providing various odata entities.
+ * Contract for interacting with the back end of Media Services
  * 
  */
-public interface MediaEntityContract extends FilterableService<MediaEntityContract> {
-
-    /**
-     * Create a new instance of an entity
-     * 
-     * @param creator
-     *            Object providing the details of the entity to be
-     *            created
-     * @return
-     *         The created entity
-     */
-    <T> T create(EntityCreationOperation<T> creator) throws ServiceException;
-
-    /**
-     * Retrieve an existing entity by id
-     * 
-     * @param getter
-     *            object providing the details of the entity to be retrieved
-     * @return The retrieved entity
-     * @throws ServiceException
-     */
-    <T> T get(EntityGetOperation<T> getter) throws ServiceException;
-
-    /**
-     * Retrieve a list of entities
-     * 
-     * @param lister
-     *            object providing details of entities to list
-     * @return The resulting list
-     * @throws ServiceException
-     */
-    <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
-
-    /**
-     * Update an existing entity
-     * 
-     * @param updater
-     *            Object providing details of the update
-     * @throws ServiceException
-     */
-    void update(EntityUpdateOperation updater) throws ServiceException;
-
-    /**
-     * Delete an entity
-     * 
-     * @param deleter
-     *            Object providing details of the delete
-     * @throws ServiceException
-     */
-    void delete(EntityDeleteOperation deleter) throws ServiceException;
+public interface MediaEntityContract extends FilterableService<MediaEntityContract>, EntityContract {
 }

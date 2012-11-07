@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
+
 
 /**
  * Generic implementation of Delete operation usable by most entities

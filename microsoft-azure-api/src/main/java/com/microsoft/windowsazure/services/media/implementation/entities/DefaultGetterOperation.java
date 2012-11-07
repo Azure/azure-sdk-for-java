@@ -13,11 +13,20 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
+
 
 /**
- * Get operation for Entities
+ * Generic implementation of the get operation usable for most entities
  * 
  */
-public interface EntityGetOperation<T> extends EntityOperationSingleResult<T> {
+public class DefaultGetterOperation<T> extends EntityOperationSingleResultBase<T> implements EntityGetOperation<T> {
+
+    /**
+     * @param uri
+     * @param responseClass
+     */
+    public DefaultGetterOperation(String entityTypeUri, String entityId, Class<T> responseClass) {
+        super(new EntityOperationBase.EntityIdUriBuilder(entityTypeUri, entityId), responseClass);
+    }
 }

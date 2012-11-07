@@ -13,16 +13,21 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.models;
 
 import java.util.EnumSet;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
-import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetterOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
 /**

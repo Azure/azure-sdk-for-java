@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
+
 
 /**
  * Default implementation of EntityOperation<T> to provide

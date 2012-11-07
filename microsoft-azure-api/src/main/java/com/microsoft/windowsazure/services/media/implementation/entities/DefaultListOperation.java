@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.ws.rs.core.MultivaluedMap;
 

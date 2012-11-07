@@ -13,28 +13,20 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
-import javax.ws.rs.core.MultivaluedMap;
-
-import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.sun.jersey.api.client.GenericType;
 
 /**
- * Operation class to retrieve a list of entities
  * 
+ *
  */
-public interface EntityListOperation<T> extends EntityOperation {
+public interface EntityCreationOperation<T> extends EntityOperationSingleResult<T> {
 
     /**
-     * Get query parameters to add to the uri
+     * Get the object to be sent to the server containing
+     * the request data for entity creation.
      * 
-     * @return The query parameters collection
+     * @return The payload to be marshalled and sent to the server.
      */
-    MultivaluedMap<String, String> getQueryParameters();
-
-    /**
-     * Get a GenericType object representing the result list type
-     */
-    GenericType<ListResult<T>> getResponseGenericType();
+    Object getRequestContents();
 }

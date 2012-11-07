@@ -13,19 +13,12 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
+
 
 /**
+ * Get operation for Entities
  * 
- *
  */
-public interface EntityCreationOperation<T> extends EntityOperationSingleResult<T> {
-
-    /**
-     * Get the object to be sent to the server containing
-     * the request data for entity creation.
-     * 
-     * @return The payload to be marshalled and sent to the server.
-     */
-    Object getRequestContents();
+public interface EntityGetOperation<T> extends EntityOperationSingleResult<T> {
 }

@@ -10,7 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.media.entities.Asset;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.core.util.MultivaluedMapImpl;

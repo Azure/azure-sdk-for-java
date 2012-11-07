@@ -13,18 +13,15 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
-/**
- * 
- * 
- */
-public interface EntityUpdateOperation extends EntityOperation {
+
+public interface EntityOperationSingleResult<T> extends EntityOperation {
     /**
-     * Get the contents of the merge request that will
-     * be sent to the server.
+     * Get the Java class object for the type that the response should
+     * be unmarshalled into.
      * 
-     * @return The payload object
+     * @return Class object for response.
      */
-    Object getRequestContents();
+    public abstract Class<T> getResponseClass();
 }

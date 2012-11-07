@@ -1,4 +1,4 @@
-package com.microsoft.windowsazure.services.media.entities;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
 public interface EntityDeleteOperation {
     /**
