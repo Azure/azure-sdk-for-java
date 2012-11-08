@@ -32,7 +32,7 @@ public class Operation {
         this.entryType = new EntryType();
     }
 
-    public EntryType getEntityType() {
+    public EntryType getEntryType() {
         return entryType;
     }
 
@@ -52,8 +52,8 @@ public class Operation {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent.getContent().add(
-                new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), atomContent.getClass(),
-                        atomContent));
+                new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), contentObject.getClass(),
+                        contentObject));
 
         this.entryType.getEntryChildren().add(
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));

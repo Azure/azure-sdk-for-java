@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -178,7 +177,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the running duration
      */
-    public double getRunningDuration() {
+    public Double getRunningDuration() {
         return getContent().getRunningDuration();
     }
 
@@ -189,7 +188,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the running duration
      * @return the job info
      */
-    public JobInfo setRunningDuration(double runningDuration) {
+    public JobInfo setRunningDuration(Double runningDuration) {
         getContent().setRunningDuration(runningDuration);
         return this;
     }
@@ -262,7 +261,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the input media assets
      */
-    public List<URI> getInputMediaAssets() {
+    public List<String> getInputMediaAssets() {
         return getContent().getInputMediaAssets();
     }
 
@@ -273,7 +272,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the input media assets
      * @return the job info
      */
-    public JobInfo setInputMediaAssets(List<URI> inputMediaAssets) {
+    public JobInfo setInputMediaAssets(List<String> inputMediaAssets) {
         getContent().setInputMediaAssets(inputMediaAssets);
         return this;
     }
@@ -283,7 +282,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the output media assets
      */
-    public List<URI> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets() {
         return getContent().getOutputMediaAssets();
     }
 
@@ -294,17 +293,17 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the output media assets
      * @return the job info
      */
-    public JobInfo setOutputMediaAssets(List<URI> outputMediaAssets) {
+    public JobInfo setOutputMediaAssets(List<String> outputMediaAssets) {
         getContent().setOutputMediaAssets(outputMediaAssets);
         return this;
     }
 
     /**
-     * Gets the tasks.
+     * Gets the task body.
      * 
-     * @return the tasks
+     * @return the task body
      */
-    public String getTasks() {
+    public String getTaskBody() {
         return getContent().getTaskBody();
     }
 
@@ -315,8 +314,8 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the tasks
      * @return the job info
      */
-    public JobInfo setTasks(String tasks) {
-        getContent().setTaskBody(tasks);
+    public JobInfo setTaskBody(String taskBody) {
+        getContent().setTaskBody(taskBody);
         return this;
     }
 }

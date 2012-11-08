@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,10 +55,15 @@ public class CreateTaskOptions {
     private String initializationVector;
 
     /** The input media assets. */
-    private List<URI> inputMediaAssets;
+    private List<String> inputMediaAssets;
 
     /** The output media assets. */
-    private List<URI> outputMediaAssets;
+    private List<String> outputMediaAssets;
+
+    public CreateTaskOptions() {
+        this.inputMediaAssets = new ArrayList<String>();
+        this.outputMediaAssets = new ArrayList<String>();
+    }
 
     /**
      * Gets the start time.
@@ -130,7 +135,7 @@ public class CreateTaskOptions {
      *            the input media assets
      * @return the creates the job options
      */
-    public CreateTaskOptions setInputMediaAssets(List<URI> inputMediaAssets) {
+    public CreateTaskOptions setInputMediaAssets(List<String> inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
         return this;
     }
@@ -140,7 +145,7 @@ public class CreateTaskOptions {
      * 
      * @return the input media assets
      */
-    public List<URI> getInputMediaAssets() {
+    public List<String> getInputMediaAssets() {
         return this.inputMediaAssets;
     }
 
@@ -151,7 +156,7 @@ public class CreateTaskOptions {
      *            the output media assets
      * @return the creates the job options
      */
-    public CreateTaskOptions setOutputMediaAssets(List<URI> outputMediaAssets) {
+    public CreateTaskOptions setOutputMediaAssets(List<String> outputMediaAssets) {
         this.outputMediaAssets = outputMediaAssets;
         return this;
     }
@@ -161,7 +166,7 @@ public class CreateTaskOptions {
      * 
      * @return the output media assets
      */
-    public List<URI> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets() {
         return this.outputMediaAssets;
     }
 
@@ -305,12 +310,12 @@ public class CreateTaskOptions {
         return this;
     }
 
-    public CreateTaskOptions addInputMediaAsset(URI inputMediaAsset) {
+    public CreateTaskOptions addInputMediaAsset(String inputMediaAsset) {
         this.inputMediaAssets.add(inputMediaAsset);
         return this;
     }
 
-    public CreateTaskOptions addOutputMediaAsset(URI outputMediaAsset) {
+    public CreateTaskOptions addOutputMediaAsset(String outputMediaAsset) {
         this.outputMediaAssets.add(outputMediaAsset);
         return this;
     }

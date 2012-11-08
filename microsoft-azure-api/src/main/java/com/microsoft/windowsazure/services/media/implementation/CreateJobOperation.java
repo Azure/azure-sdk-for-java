@@ -22,22 +22,28 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
 public class CreateJobOperation extends Operation {
 
-    public CreateJobOperation() {
+    private final URI serviceURI;
+
+    public CreateJobOperation(URI serviceURI) {
         this.verb = "POST";
+        this.serviceURI = serviceURI;
     }
 
-    public CreateJobOperation setJob(List<URI> inputMediaAssets, List<URI> outputMediaAssets, JobType jobType) {
+    public CreateJobOperation setJob(List<String> inputMediaAssets, List<String> outputMediaAssets, JobType jobType) {
+        for (String inputMediaAsset : inputMediaAssets) {
+            addLink("InputMediaAssets",
+                    String.format("%s/Assets('%s')", serviceURI.toString(), inputMediaAsset.toString()),
+                    "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
+
+        for (String outputMediaAsset : outputMediaAssets) {
+            addLink("OutputMediaAssets",
+                    String.format("%s/Assets('%s'", serviceURI.toString(), outputMediaAsset.toString()),
+                    "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
         addContentObject(jobType);
-        for (URI inputMediaAsset : inputMediaAssets) {
-            addLink("InputMediaAssets", inputMediaAsset.toString(), "application/atom+xml;type=feed",
-                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
-        }
-
-        for (URI outputMediaAsset : outputMediaAssets) {
-            addLink("OutputMediaAssets", outputMediaAsset.toString(), "application/atom+xml;type=feed",
-                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
-        }
-
         return this;
     }
 

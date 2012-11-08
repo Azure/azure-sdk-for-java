@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -72,12 +71,10 @@ public class JobType implements MediaServiceDTO {
     protected String templateId;
 
     /** The output media assets. */
-    @XmlElement(name = "OutputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected List<URI> outputMediaAssets;
+    protected List<String> outputMediaAssets;
 
     /** The input media assets. */
-    @XmlElement(name = "InputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected List<URI> inputMediaAssets;
+    protected List<String> inputMediaAssets;
 
     /** The tasks. */
     @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
@@ -288,7 +285,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the output media assets
      */
-    public List<URI> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets() {
         return outputMediaAssets;
     }
 
@@ -298,8 +295,8 @@ public class JobType implements MediaServiceDTO {
      * @param uriList
      *            the new output media assets
      */
-    public JobType setOutputMediaAssets(List<URI> uriList) {
-        this.outputMediaAssets = uriList;
+    public JobType setOutputMediaAssets(List<String> outputMediaAssets) {
+        this.outputMediaAssets = outputMediaAssets;
         return this;
     }
 
@@ -308,7 +305,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the input media assets
      */
-    public List<URI> getInputMediaAssets() {
+    public List<String> getInputMediaAssets() {
         return inputMediaAssets;
     }
 
@@ -318,8 +315,8 @@ public class JobType implements MediaServiceDTO {
      * @param uriList
      *            the new input media assets
      */
-    public JobType setInputMediaAssets(List<URI> uriList) {
-        this.inputMediaAssets = uriList;
+    public JobType setInputMediaAssets(List<String> inputMediaAssets) {
+        this.inputMediaAssets = inputMediaAssets;
         return this;
     }
 

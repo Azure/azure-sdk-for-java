@@ -37,6 +37,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.table.implementation.InputStreamDataSource;
 
 /**
@@ -53,6 +54,8 @@ public class MediaBatchOperations {
     /** The Odata atom marshaller. */
     private final ODataAtomMarshaller oDataAtomMarshaller;
 
+    private final String batchId;
+
     /**
      * Instantiates a new media batch operations.
      * 
@@ -68,6 +71,8 @@ public class MediaBatchOperations {
         this.serviceURI = serviceURI;
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
         this.operations = new ArrayList<Operation>();
+        batchId = String.format("batch_%s", UUID.randomUUID().toString());
+
     }
 
     /**
@@ -121,7 +126,7 @@ public class MediaBatchOperations {
             if (operation instanceof CreateJobOperation) {
                 CreateJobOperation createJobOperation = (CreateJobOperation) operation;
                 jobContentId = contentId;
-                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getEntityType(), jobURI,
+                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getEntryType(), jobURI,
                         contentId);
                 contentId++;
                 if (bodyPartContent != null) {
@@ -164,7 +169,7 @@ public class MediaBatchOperations {
             DataSource bodyPartContent = null;
             if (operation instanceof CreateTaskOperation) {
                 CreateTaskOperation createTaskOperation = (CreateTaskOperation) operation;
-                bodyPartContent = createBatchCreateEntityPart("Tasks", createTaskOperation.getTask(), taskURI,
+                bodyPartContent = createBatchCreateEntityPart("Tasks", createTaskOperation.getEntryType(), taskURI,
                         contentId);
                 contentId++;
             }
@@ -188,10 +193,9 @@ public class MediaBatchOperations {
      */
     private MimeMultipart toMimeMultipart(List<DataSource> bodyPartContents) throws MessagingException, IOException {
         // Create unique part boundary strings
-        String batchId = String.format("batch_%s", UUID.randomUUID().toString());
-
-        MimeMultipart changeSets = createChangeSets(bodyPartContents);
-        MimeBodyPart mimeBodyPart = createMimeBodyPart(batchId, changeSets);
+        String changeSetId = String.format("changeset_%s", UUID.randomUUID().toString());
+        MimeMultipart changeSets = createChangeSets(bodyPartContents, changeSetId);
+        MimeBodyPart mimeBodyPart = createMimeBodyPart(changeSets, changeSetId);
 
         MimeMultipart mimeMultipart = new MimeMultipart(new SetBoundaryMultipartDataSource(batchId));
         mimeMultipart.addBodyPart(mimeBodyPart);
@@ -199,18 +203,18 @@ public class MediaBatchOperations {
 
     }
 
-    private MimeBodyPart createMimeBodyPart(String batchId, MimeMultipart changeSets) throws MessagingException {
+    private MimeBodyPart createMimeBodyPart(MimeMultipart changeSets, String changeSetId) throws MessagingException {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setContent(changeSets);
-        String contentType = String.format("multipart/mixed; boundary=%s", batchId);
+        String contentType = String.format("multipart/mixed; boundary=%s", changeSetId);
         mimeBodyPart.setHeader("Content-Type", contentType);
         return mimeBodyPart;
     }
 
-    private MimeMultipart createChangeSets(List<DataSource> bodyPartContents) throws MessagingException {
-        String changeSet = String.format("changeset_%s", UUID.randomUUID().toString());
+    private MimeMultipart createChangeSets(List<DataSource> bodyPartContents, String changeSetId)
+            throws MessagingException {
 
-        MimeMultipart changeSets = new MimeMultipart(new SetBoundaryMultipartDataSource(changeSet));
+        MimeMultipart changeSets = new MimeMultipart(new SetBoundaryMultipartDataSource(changeSetId));
 
         for (DataSource bodyPart : bodyPartContents) {
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -240,10 +244,10 @@ public class MediaBatchOperations {
      * @throws JAXBException
      *             the jAXB exception
      */
-    private DataSource createBatchCreateEntityPart(String entityName, Object entity, URI uri, int contentId)
+    private DataSource createBatchCreateEntityPart(String entityName, EntryType entryType, URI uri, int contentId)
             throws JAXBException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        this.oDataAtomMarshaller.marshalEntry(entity, stream);
+        this.oDataAtomMarshaller.marshalEntryType(entryType, stream);
         byte[] bytes = stream.toByteArray();
 
         // adds header
@@ -251,6 +255,8 @@ public class MediaBatchOperations {
         headers.addHeader("Content-ID", Integer.toString(contentId));
         headers.addHeader("Content-Type", "application/atom+xml;type=entry");
         headers.addHeader("Content-Length", Integer.toString(bytes.length));
+        headers.addHeader("DataServiceVersion", "1.0;NetFx");
+        headers.addHeader("MaxDataServiceVersion", "3.0;NetFx");
 
         // adds body
         ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
@@ -351,6 +357,10 @@ public class MediaBatchOperations {
 
     public List<Operation> getOperations() {
         return operations;
+    }
+
+    public String getBatchId() {
+        return this.batchId;
     }
 
 }

@@ -101,8 +101,8 @@ public class MediaBatchOperationsTest {
         JobType jobType = new JobType();
         TaskType taskType = new TaskType();
         CreateTaskOperation createTaskOperation = new CreateTaskOperation().setTask(taskType);
-        List<URI> inputMediaAssets = new ArrayList<URI>();
-        List<URI> outputMediaAssets = new ArrayList<URI>();
+        List<String> inputMediaAssets = new ArrayList<String>();
+        List<String> outputMediaAssets = new ArrayList<String>();
         CreateJobOperation createJobOperation = new CreateJobOperation().setJob(inputMediaAssets, outputMediaAssets,
                 jobType);
 

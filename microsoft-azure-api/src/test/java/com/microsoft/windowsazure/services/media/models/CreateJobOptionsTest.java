@@ -16,12 +16,9 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.ws.rs.core.UriBuilder;
 
 import org.junit.Test;
 
@@ -69,13 +66,13 @@ public class CreateJobOptionsTest {
     @Test
     public void testGetSetInputMediaAssets() {
         // Arrange
-        URI expectedInputMediaAsset = UriBuilder.fromUri("http://www.contoso.com/asset(123)").build();
-        List<URI> expectedInputMediaAssets = new ArrayList<URI>();
+        String expectedInputMediaAsset = "http://www.contoso.com/asset(123)";
+        List<String> expectedInputMediaAssets = new ArrayList<String>();
         expectedInputMediaAssets.add(expectedInputMediaAsset);
         CreateJobOptions createJobOptions = new CreateJobOptions();
 
         // Act
-        List<URI> actualInputMediaAssets = createJobOptions.addInputMediaAsset(expectedInputMediaAsset)
+        List<String> actualInputMediaAssets = createJobOptions.addInputMediaAsset(expectedInputMediaAsset)
                 .getInputMediaAssets();
 
         // Assert
@@ -85,13 +82,13 @@ public class CreateJobOptionsTest {
     @Test
     public void testGetSetOutputMediaAssets() {
         // Arrange
-        URI expectedOutputMediaAsset = UriBuilder.fromUri("http://www.contoso.com/asset(123)").build();
-        List<URI> expectedOutputMediaAssets = new ArrayList<URI>();
+        String expectedOutputMediaAsset = "http://www.contoso.com/asset(123)";
+        List<String> expectedOutputMediaAssets = new ArrayList<String>();
         expectedOutputMediaAssets.add(expectedOutputMediaAsset);
         CreateJobOptions createJobOptions = new CreateJobOptions();
 
         // Act
-        List<URI> actualOutputMediaAssets = createJobOptions.addOutputMediaAsset(expectedOutputMediaAsset)
+        List<String> actualOutputMediaAssets = createJobOptions.addOutputMediaAsset(expectedOutputMediaAsset)
                 .getOutputMediaAssets();
 
         // Assert

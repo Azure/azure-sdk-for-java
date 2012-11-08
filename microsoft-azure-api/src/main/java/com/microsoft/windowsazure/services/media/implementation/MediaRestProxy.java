@@ -281,7 +281,7 @@ public class MediaRestProxy implements MediaContract {
             jobType.setStartTime(createJobOptions.getStartTime());
         }
 
-        CreateJobOperation createJobOperation = new CreateJobOperation();
+        CreateJobOperation createJobOperation = new CreateJobOperation(this.getBaseURI());
         createJobOperation.setJob(createJobOptions.getInputMediaAssets(), createJobOptions.getOutputMediaAssets(),
                 jobType);
 
@@ -308,6 +308,7 @@ public class MediaRestProxy implements MediaContract {
         taskType.setInitializationVector(createTaskOptions.getInitializationVector());
         taskType.setInputMediaAssets(createTaskOptions.getInputMediaAssets());
         taskType.setOutputMediaAssets(createTaskOptions.getOutputMediaAssets());
+        taskType.setTaskBody(createTaskOptions.getTaskBody());
 
         createTaskOperation.setTask(taskType);
 
@@ -657,7 +658,7 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public JobInfo cancelJob(String jobId) throws ServiceException {
         try {
-            return getResource("CancelJob").queryParam("jobId", jobId).get(JobInfo.class);
+            return getResource("CancelJob").queryParam("jobId", String.format("'%s'", jobId)).get(JobInfo.class);
         }
         catch (UniformInterfaceException e) {
             throw new ServiceException(e);
