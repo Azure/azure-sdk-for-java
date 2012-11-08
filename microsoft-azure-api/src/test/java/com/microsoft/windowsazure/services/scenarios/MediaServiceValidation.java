@@ -28,6 +28,7 @@ import java.util.List;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
@@ -59,7 +60,7 @@ class MediaServiceValidation {
         assertEquals("initialFiles.size", 0, initialFiles.size());
 
         // Reload asset from server for ID
-        AssetInfo reloadedAsset = service.getAsset(asset.getId());
+        AssetInfo reloadedAsset = service.get(Asset.get(asset.getId()));
 
         // Verify names match
         assertNotNull("reloadedAsset", reloadedAsset);

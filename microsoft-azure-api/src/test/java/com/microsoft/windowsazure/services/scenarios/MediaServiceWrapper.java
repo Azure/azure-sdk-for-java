@@ -32,17 +32,19 @@ import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
+import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.CreateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.FileInfo;
-import com.microsoft.windowsazure.services.media.models.ListAssetsOptions;
-import com.microsoft.windowsazure.services.media.models.ListMediaProcessorsOptions;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateJobOptions;
 import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
@@ -109,20 +111,19 @@ class MediaServiceWrapper {
     // Manage
     public AssetInfo createAsset(String name, EncryptionOption encryption) throws ServiceException {
         // Create asset. The SDK's top-level method is the simplest way to do that.
-        return service.createAsset(new CreateAssetOptions().setName(name).setAlternateId("altId")
-                .setOptions(encryption));
+        return service.create(Asset.create().setName(name).setAlternateId("altId").setOptions(encryption));
     }
 
     public List<ListResult<AssetInfo>> getAssetSortedPagedResults(String rootName, int pageSize)
             throws ServiceException {
         List<ListResult<AssetInfo>> pages = new ArrayList<ListResult<AssetInfo>>();
         for (int skip = 0; true; skip += pageSize) {
-            ListAssetsOptions options = new ListAssetsOptions();
-            options.getQueryParameters().add("$skip", skip + "");
-            options.getQueryParameters().add("$top", pageSize + "");
-            options.getQueryParameters().add("$filter", "startswith(Name,'" + rootName + "')");
-            options.getQueryParameters().add("$orderby", "Name");
-            ListResult<AssetInfo> listAssetResult = service.listAssets(options);
+            EntityListOperation<AssetInfo> listOperation = Asset.list();
+            listOperation.getQueryParameters().add("$skip", skip + "");
+            listOperation.getQueryParameters().add("$top", pageSize + "");
+            listOperation.getQueryParameters().add("$filter", "startswith(Name,'" + rootName + "')");
+            listOperation.getQueryParameters().add("$orderby", "Name");
+            ListResult<AssetInfo> listAssetResult = service.list(listOperation);
             pages.add(listAssetResult);
             if (listAssetResult.size() == 0) {
                 break;
@@ -135,9 +136,9 @@ class MediaServiceWrapper {
     // Ingest
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes, Hashtable<String, InputStream> inputFiles)
             throws ServiceException, IOException, NoSuchAlgorithmException {
-        AccessPolicyInfo accessPolicy = service.createAccessPolicy(accessPolicyPrefix + "tempAccessPolicy",
-                uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE));
-        LocatorInfo locator = service.createLocator(accessPolicy.getId(), asset.getId(), LocatorType.SAS);
+        AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
+                uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+        LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
         WritableBlobContainerContract uploader = MediaService.createBlobWriter(locator);
         boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
@@ -160,8 +161,8 @@ class MediaServiceWrapper {
 
             isFirst = false;
         }
-        service.deleteLocator(locator.getId());
-        service.deleteAccessPolicy(accessPolicy.getId());
+        service.delete(Locator.delete(locator.getId()));
+        service.delete(AccessPolicy.delete(accessPolicy.getId()));
     }
 
     private static class CountingStream extends InputStream {
@@ -242,9 +243,9 @@ class MediaServiceWrapper {
     }
 
     private String getMediaProcessorIdByName(String processorName) throws ServiceException {
-        ListMediaProcessorsOptions options = new ListMediaProcessorsOptions();
-        options.getQueryParameters().putSingle("$filter", "Name eq '" + processorName + "'");
-        MediaProcessorInfo processor = service.listMediaProcessors(options).get(0);
+        EntityListOperation<MediaProcessorInfo> operation = MediaProcessor.list();
+        operation.getQueryParameters().putSingle("$filter", "Name eq '" + processorName + "'");
+        MediaProcessorInfo processor = service.list(operation).get(0);
         return processor.getId();
     }
 
@@ -296,9 +297,9 @@ class MediaServiceWrapper {
             boolean isSmooth, String suffix, LocatorType locatorType) throws ServiceException, MalformedURLException {
         List<URL> ret = new ArrayList<URL>();
 
-        AccessPolicyInfo readAP = service.createAccessPolicy(accessPolicyPrefix + "tempAccessPolicy",
-                availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ));
-        LocatorInfo readLocator = service.createLocator(readAP.getId(), asset.getId(), locatorType);
+        AccessPolicyInfo readAP = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
+                availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
+        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
 
         List<FileInfo> publishedFiles = serviceMock.getAssetFiles(asset.getId());
         for (FileInfo fi : publishedFiles) {
@@ -331,30 +332,30 @@ class MediaServiceWrapper {
     }
 
     public void removeAllAssetsWithPrefix(String assetPrefix) throws ServiceException {
-        ListResult<LocatorInfo> locators = service.listLocators();
-        ListAssetsOptions options = new ListAssetsOptions();
-        options.getQueryParameters().add("$filter", "startswith(Name,'" + assetPrefix + "')");
-        List<AssetInfo> assets = service.listAssets(options);
+        ListResult<LocatorInfo> locators = service.list(Locator.list());
+        EntityListOperation<AssetInfo> operation = Asset.list();
+        operation.getQueryParameters().add("$filter", "startswith(Name,'" + assetPrefix + "')");
+        List<AssetInfo> assets = service.list(operation);
         for (AssetInfo asset : assets) {
             if (asset.getName().length() > assetPrefix.length()
                     && asset.getName().substring(0, assetPrefix.length()).equals(assetPrefix)) {
                 for (LocatorInfo locator : locators) {
                     if (locator.getAssetId().equals(asset.getId())) {
-                        service.deleteLocator(locator.getId());
+                        service.delete(Locator.delete(locator.getId()));
                     }
                 }
 
-                service.deleteAsset(asset.getId());
+                service.delete(Asset.delete(asset.getId()));
             }
         }
     }
 
     public void removeAllAccessPoliciesWithPrefix() throws ServiceException {
-        List<AccessPolicyInfo> accessPolicies = service.listAccessPolicies();
+        List<AccessPolicyInfo> accessPolicies = service.list(AccessPolicy.list());
         for (AccessPolicyInfo accessPolicy : accessPolicies) {
             if (accessPolicy.getName().length() > accessPolicyPrefix.length()
                     && accessPolicy.getName().substring(0, accessPolicyPrefix.length()).equals(accessPolicyPrefix)) {
-                service.deleteAccessPolicy(accessPolicy.getId());
+                service.delete(AccessPolicy.delete(accessPolicy.getId()));
             }
         }
     }
