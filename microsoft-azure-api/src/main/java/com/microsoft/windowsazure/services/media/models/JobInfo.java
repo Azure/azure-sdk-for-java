@@ -43,7 +43,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * Instantiates a new job info.
      */
     public JobInfo() {
-        super(new JobType());
+        super(new EntryType(), new JobType());
     }
 
     /**

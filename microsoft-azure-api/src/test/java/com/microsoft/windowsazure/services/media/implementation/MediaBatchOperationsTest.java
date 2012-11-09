@@ -65,7 +65,7 @@ public class MediaBatchOperationsTest {
     public void addCreateJobOperationToMediaBatchOperationsSuccess() throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        CreateJobOperation createJobOperation = new CreateJobOperation();
+        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -103,8 +103,8 @@ public class MediaBatchOperationsTest {
         CreateTaskOperation createTaskOperation = new CreateTaskOperation().setTask(taskType);
         List<String> inputMediaAssets = new ArrayList<String>();
         List<String> outputMediaAssets = new ArrayList<String>();
-        CreateJobOperation createJobOperation = new CreateJobOperation().setJob(inputMediaAssets, outputMediaAssets,
-                jobType);
+        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri).setJob(inputMediaAssets,
+                outputMediaAssets, jobType);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);

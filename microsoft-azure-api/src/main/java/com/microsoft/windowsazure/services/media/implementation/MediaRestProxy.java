@@ -15,17 +15,28 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.activation.DataSource;
 import javax.inject.Inject;
+import javax.mail.BodyPart;
+import javax.mail.Header;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetHeaders;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimePartDataSource;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,6 +49,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
@@ -68,11 +80,14 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.UpdateAssetOptions;
 import com.microsoft.windowsazure.services.media.models.UpdateLocatorOptions;
+import com.microsoft.windowsazure.services.table.implementation.InputStreamDataSource;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.header.InBoundHeaders;
+import com.sun.jersey.core.util.ReaderWriter;
 
 /**
  * The Class MediaRestProxy.
@@ -82,6 +97,7 @@ public class MediaRestProxy implements MediaContract {
     /** The channel. */
     private Client channel;
     private RedirectFilter redirectFilter;
+    private ODataAtomUnmarshaller oDataAtomUnmarshaller;
 
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
@@ -108,6 +124,13 @@ public class MediaRestProxy implements MediaContract {
         this.channel = channel;
         this.filters = new ServiceFilter[0];
         this.redirectFilter = redirectFilter;
+        try {
+            this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
+        }
+        catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
@@ -313,6 +336,123 @@ public class MediaRestProxy implements MediaContract {
         createTaskOperation.setTask(taskType);
 
         return createTaskOperation;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void parseBatchResult(ClientResponse response, MediaBatchOperations mediaBatchOperations)
+            throws IOException, ServiceException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        InputStream inputStream = response.getEntityInputStream();
+        ReaderWriter.writeTo(inputStream, byteArrayOutputStream);
+        response.setEntityInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        JobInfo jobInfo;
+
+        List<DataSource> parts = parseParts(response.getEntityInputStream(),
+                response.getHeaders().getFirst("Content-Type"));
+
+        if (parts.size() == 0 || parts.size() > mediaBatchOperations.getOperations().size()) {
+            throw new UniformInterfaceException(String.format(
+                    "Batch response from server does not contain the correct amount "
+                            + "of parts (expecting %d, received %d instead)", parts.size(), mediaBatchOperations
+                            .getOperations().size()), response);
+        }
+
+        ArrayList<Object> result = new ArrayList<Object>();
+        for (int i = 0; i < parts.size(); i++) {
+            DataSource ds = parts.get(i);
+            Operation operation = mediaBatchOperations.getOperations().get(i);
+
+            StatusLine status = StatusLine.create(ds);
+            InternetHeaders headers = parseHeaders(ds);
+            InputStream content = parseEntity(ds);
+
+            if (status.getStatus() >= 400) {
+
+                InBoundHeaders inBoundHeaders = new InBoundHeaders();
+                @SuppressWarnings("unchecked")
+                Enumeration<Header> e = headers.getAllHeaders();
+                while (e.hasMoreElements()) {
+                    Header header = e.nextElement();
+                    inBoundHeaders.putSingle(header.getName(), header.getValue());
+                }
+
+                ClientResponse clientResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content, null);
+
+                UniformInterfaceException exception = new UniformInterfaceException(clientResponse);
+                ServiceException serviceException = new ServiceException(exception);
+                throw serviceException;
+            }
+            else if (operation instanceof CreateJobOperation) {
+
+                try {
+                    jobInfo = oDataAtomUnmarshaller.unmarshalEntry(content, JobInfo.class);
+                    CreateJobOperation createJobOperation = (CreateJobOperation) operation;
+                    createJobOperation.setJobInfo(jobInfo);
+                }
+                catch (JAXBException e) {
+                    throw new ServiceException(e);
+                }
+            }
+            else if (operation instanceof CreateTaskOperation) {
+                EntryType entryType = null;
+                try {
+                    entryType = oDataAtomUnmarshaller.unmarshalEntry(content);
+                }
+                catch (JAXBException e) {
+                    throw new ServiceException(e);
+                }
+            }
+        }
+    }
+
+    public InternetHeaders parseHeaders(DataSource ds) {
+        try {
+            return new InternetHeaders(ds.getInputStream());
+        }
+        catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public InputStream parseEntity(DataSource ds) {
+        try {
+            return ds.getInputStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<DataSource> parseParts(final InputStream entityInputStream, final String contentType) {
+        try {
+            return parsePartsCore(entityInputStream, contentType);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<DataSource> parsePartsCore(InputStream entityInputStream, String contentType)
+            throws MessagingException, IOException {
+        DataSource ds = new InputStreamDataSource(entityInputStream, contentType);
+        MimeMultipart batch = new MimeMultipart(ds);
+        MimeBodyPart batchBody = (MimeBodyPart) batch.getBodyPart(0);
+
+        MimeMultipart changeSets = new MimeMultipart(new MimePartDataSource(batchBody));
+
+        List<DataSource> result = new ArrayList<DataSource>();
+        for (int i = 0; i < changeSets.getCount(); i++) {
+            BodyPart part = changeSets.getBodyPart(i);
+
+            result.add(new InputStreamDataSource(part.getInputStream(), part.getContentType()));
+        }
+        return result;
     }
 
     /* (non-Javadoc)
@@ -647,8 +787,15 @@ public class MediaRestProxy implements MediaContract {
         ClientResponse clientResponse = resource.type(mimeMultipart.getContentType())
                 .accept(MediaType.APPLICATION_ATOM_XML).post(ClientResponse.class, mimeMultipart);
 
-        JobInfo jobInfo = new JobInfo();
-        return jobInfo;
+        try {
+            parseBatchResult(clientResponse, mediaBatchOperations);
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return createJobOperation.getJobInfo();
 
     }
 
