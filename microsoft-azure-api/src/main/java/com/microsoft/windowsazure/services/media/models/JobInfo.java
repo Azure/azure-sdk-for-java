@@ -156,7 +156,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the priority
      */
-    public int getPriority() {
+    public Integer getPriority() {
         return getContent().getPriority();
     }
 
@@ -167,7 +167,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the priority
      * @return the job info
      */
-    public JobInfo setPriority(int priority) {
+    public JobInfo setPriority(Integer priority) {
         getContent().setPriority(priority);
         return this;
     }
@@ -219,7 +219,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the state
      */
-    public int getState() {
+    public Integer getState() {
         return getContent().getState();
     }
 
@@ -230,7 +230,7 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the state
      * @return the job info
      */
-    public JobInfo setState(int state) {
+    public JobInfo setState(Integer state) {
         getContent().setState(state);
         return this;
     }

@@ -803,13 +803,10 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
      */
     @Override
-    public JobInfo cancelJob(String jobId) throws ServiceException {
-        try {
-            return getResource("CancelJob").queryParam("jobId", String.format("'%s'", jobId)).get(JobInfo.class);
-        }
-        catch (UniformInterfaceException e) {
-            throw new ServiceException(e);
-        }
+    public void cancelJob(String jobId) throws ServiceException {
+        ClientResponse clientResponse = getResource("CancelJob").queryParam("jobId", String.format("'%s'", jobId)).get(
+                ClientResponse.class);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
     /* (non-Javadoc)

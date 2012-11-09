@@ -354,7 +354,7 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * @throws ServiceException
      *             the service exception
      */
-    public JobInfo cancelJob(String jobId) throws ServiceException;
+    public void cancelJob(String jobId) throws ServiceException;
 
     /**
      * List tasks.

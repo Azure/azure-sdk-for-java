@@ -485,9 +485,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
      */
     @Override
-    public JobInfo cancelJob(String jobId) throws ServiceException {
+    public void cancelJob(String jobId) throws ServiceException {
         try {
-            return service.cancelJob(jobId);
+            service.cancelJob(jobId);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

@@ -205,7 +205,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the running duration
      */
-    public double getRunningDuration() {
+    public Double getRunningDuration() {
         return runningDuration;
     }
 
@@ -215,7 +215,7 @@ public class JobType implements MediaServiceDTO {
      * @param runningDuration
      *            the new running duration
      */
-    public JobType setRunningDuration(double runningDuration) {
+    public JobType setRunningDuration(Double runningDuration) {
         this.runningDuration = runningDuration;
         return this;
     }
