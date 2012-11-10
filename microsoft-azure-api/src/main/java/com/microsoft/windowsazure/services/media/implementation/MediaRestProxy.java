@@ -872,4 +872,9 @@ public class MediaRestProxy implements MediaContract {
         return this.listJobTasks(jobId, null);
     }
 
+    @Override
+    public void deleteJob(String jobId) throws ServiceException {
+        getResource("Jobs", jobId).delete();
+    }
+
 }

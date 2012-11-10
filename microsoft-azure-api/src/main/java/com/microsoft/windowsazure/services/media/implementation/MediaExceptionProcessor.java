@@ -608,4 +608,17 @@ public class MediaExceptionProcessor implements MediaContract {
             throw processCatch(new ServiceException(e));
         }
     }
+
+    @Override
+    public void deleteJob(String jobId) throws ServiceException {
+        try {
+            service.deleteJob(jobId);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
 }
