@@ -19,6 +19,10 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
 
 public class CreateTaskOperation extends Operation {
 
+    public CreateTaskOperation() {
+        this.verb = "POST";
+    }
+
     public CreateTaskOperation setTask(TaskType taskType) {
         addContentObject(taskType);
         return this;

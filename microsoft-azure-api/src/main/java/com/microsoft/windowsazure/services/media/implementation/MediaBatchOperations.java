@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -28,17 +29,25 @@ import java.util.UUID;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
+import javax.mail.BodyPart;
 import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimePartDataSource;
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.table.implementation.InputStreamDataSource;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.core.header.InBoundHeaders;
+import com.sun.jersey.core.util.ReaderWriter;
 
 /**
  * The Class MediaBatchOperations.
@@ -53,6 +62,9 @@ public class MediaBatchOperations {
 
     /** The Odata atom marshaller. */
     private final ODataAtomMarshaller oDataAtomMarshaller;
+
+    /** The o data atom unmarshaller. */
+    private ODataAtomUnmarshaller oDataAtomUnmarshaller;
 
     private final String batchId;
 
@@ -72,6 +84,13 @@ public class MediaBatchOperations {
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
         this.operations = new ArrayList<Operation>();
         batchId = String.format("batch_%s", UUID.randomUUID().toString());
+        try {
+            this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
+        }
+        catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -126,8 +145,8 @@ public class MediaBatchOperations {
             if (operation instanceof CreateJobOperation) {
                 CreateJobOperation createJobOperation = (CreateJobOperation) operation;
                 jobContentId = contentId;
-                bodyPartContent = createBatchCreateEntityPart("Jobs", createJobOperation.getEntryType(), jobURI,
-                        contentId);
+                bodyPartContent = createBatchCreateEntityPart(createJobOperation.getVerb(), "Jobs",
+                        createJobOperation.getEntryType(), jobURI, contentId);
                 contentId++;
                 if (bodyPartContent != null) {
                     bodyPartContents.add(bodyPartContent);
@@ -169,8 +188,8 @@ public class MediaBatchOperations {
             DataSource bodyPartContent = null;
             if (operation instanceof CreateTaskOperation) {
                 CreateTaskOperation createTaskOperation = (CreateTaskOperation) operation;
-                bodyPartContent = createBatchCreateEntityPart("Tasks", createTaskOperation.getEntryType(), taskURI,
-                        contentId);
+                bodyPartContent = createBatchCreateEntityPart(createTaskOperation.getVerb(), "Tasks",
+                        createTaskOperation.getEntryType(), taskURI, contentId);
                 contentId++;
             }
 
@@ -244,8 +263,8 @@ public class MediaBatchOperations {
      * @throws JAXBException
      *             the jAXB exception
      */
-    private DataSource createBatchCreateEntityPart(String entityName, EntryType entryType, URI uri, int contentId)
-            throws JAXBException {
+    private DataSource createBatchCreateEntityPart(String verb, String entityName, EntryType entryType, URI uri,
+            int contentId) throws JAXBException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         this.oDataAtomMarshaller.marshalEntryType(entryType, stream);
         byte[] bytes = stream.toByteArray();
@@ -260,13 +279,176 @@ public class MediaBatchOperations {
 
         // adds body
         ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
-        addHttpMethod(httpRequest, "POST", uri);
+        addHttpMethod(httpRequest, verb, uri);
         appendHeaders(httpRequest, headers);
         appendEntity(httpRequest, new ByteArrayInputStream(bytes));
 
         DataSource bodyPartContent = new InputStreamDataSource(new ByteArrayInputStream(httpRequest.toByteArray()),
                 "application/http");
         return bodyPartContent;
+    }
+
+    /**
+     * Parses the batch result.
+     * 
+     * @param response
+     *            the response
+     * @param mediaBatchOperations
+     *            the media batch operations
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws ServiceException
+     *             the service exception
+     */
+    @SuppressWarnings("rawtypes")
+    public void parseBatchResult(ClientResponse response) throws IOException, ServiceException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        InputStream inputStream = response.getEntityInputStream();
+        ReaderWriter.writeTo(inputStream, byteArrayOutputStream);
+        response.setEntityInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        JobInfo jobInfo;
+
+        List<DataSource> parts = parseParts(response.getEntityInputStream(),
+                response.getHeaders().getFirst("Content-Type"));
+
+        if (parts.size() == 0 || parts.size() > operations.size()) {
+            throw new UniformInterfaceException(String.format(
+                    "Batch response from server does not contain the correct amount "
+                            + "of parts (expecting %d, received %d instead)", parts.size(), operations.size()),
+                    response);
+        }
+
+        ArrayList<Object> result = new ArrayList<Object>();
+        for (int i = 0; i < parts.size(); i++) {
+            DataSource ds = parts.get(i);
+            Operation operation = operations.get(i);
+
+            StatusLine status = StatusLine.create(ds);
+            InternetHeaders headers = parseHeaders(ds);
+            InputStream content = parseEntity(ds);
+
+            if (status.getStatus() >= 400) {
+
+                InBoundHeaders inBoundHeaders = new InBoundHeaders();
+                @SuppressWarnings("unchecked")
+                Enumeration<Header> e = headers.getAllHeaders();
+                while (e.hasMoreElements()) {
+                    Header header = e.nextElement();
+                    inBoundHeaders.putSingle(header.getName(), header.getValue());
+                }
+
+                ClientResponse clientResponse = new ClientResponse(status.getStatus(), inBoundHeaders, content, null);
+
+                UniformInterfaceException uniformInterfaceException = new UniformInterfaceException(clientResponse);
+                throw uniformInterfaceException;
+            }
+            else if (operation instanceof CreateJobOperation) {
+
+                try {
+                    jobInfo = oDataAtomUnmarshaller.unmarshalEntry(content, JobInfo.class);
+                    CreateJobOperation createJobOperation = (CreateJobOperation) operation;
+                    createJobOperation.setJobInfo(jobInfo);
+                }
+                catch (JAXBException e) {
+                    throw new ServiceException(e);
+                }
+            }
+            else if (operation instanceof CreateTaskOperation) {
+                EntryType entryType = null;
+                try {
+                    entryType = oDataAtomUnmarshaller.unmarshalEntry(content);
+                }
+                catch (JAXBException e) {
+                    throw new ServiceException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Parses the headers.
+     * 
+     * @param ds
+     *            the ds
+     * @return the internet headers
+     */
+    public InternetHeaders parseHeaders(DataSource ds) {
+        try {
+            return new InternetHeaders(ds.getInputStream());
+        }
+        catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Parses the entity.
+     * 
+     * @param ds
+     *            the ds
+     * @return the input stream
+     */
+    public InputStream parseEntity(DataSource ds) {
+        try {
+            return ds.getInputStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Parses the parts.
+     * 
+     * @param entityInputStream
+     *            the entity input stream
+     * @param contentType
+     *            the content type
+     * @return the list
+     */
+    public List<DataSource> parseParts(final InputStream entityInputStream, final String contentType) {
+        try {
+            return parsePartsCore(entityInputStream, contentType);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Parses the parts core.
+     * 
+     * @param entityInputStream
+     *            the entity input stream
+     * @param contentType
+     *            the content type
+     * @return the list
+     * @throws MessagingException
+     *             the messaging exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    private List<DataSource> parsePartsCore(InputStream entityInputStream, String contentType)
+            throws MessagingException, IOException {
+        DataSource dataSource = new InputStreamDataSource(entityInputStream, contentType);
+        MimeMultipart batch = new MimeMultipart(dataSource);
+        MimeBodyPart batchBody = (MimeBodyPart) batch.getBodyPart(0);
+
+        MimeMultipart changeSets = new MimeMultipart(new MimePartDataSource(batchBody));
+
+        List<DataSource> result = new ArrayList<DataSource>();
+        for (int i = 0; i < changeSets.getCount(); i++) {
+            BodyPart part = changeSets.getBodyPart(i);
+
+            result.add(new InputStreamDataSource(part.getInputStream(), part.getContentType()));
+        }
+        return result;
     }
 
     /**

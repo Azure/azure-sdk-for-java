@@ -47,11 +47,14 @@ public class StatusLine {
 
     private static void expect(Reader reader, String string) {
         try {
+            byte[] byteArray = string.getBytes();
+            int ch;
             for (int i = 0; i < string.length(); i++) {
-                int ch = reader.read();
-                if (ch < 0)
+                ch = reader.read();
+                if (ch != byteArray[i]) {
                     throw new RuntimeException(String.format("Expected '%s', found '%s' instead", string,
                             string.substring(0, i) + ch));
+                }
             }
         }
         catch (IOException e) {

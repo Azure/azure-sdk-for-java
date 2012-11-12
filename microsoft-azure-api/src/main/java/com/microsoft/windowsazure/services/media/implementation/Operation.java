@@ -48,6 +48,7 @@ public class Operation {
         return this.verb;
     }
 
+    @SuppressWarnings("unchecked")
     protected void addContentObject(Object contentObject) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
@@ -59,6 +60,7 @@ public class Operation {
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
     }
 
+    @SuppressWarnings("unchecked")
     protected void addLink(String title, String href, String type, String rel) {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);
@@ -69,4 +71,5 @@ public class Operation {
                 new JAXBElement(new QName(Constants.ATOM_NS, "link"), LinkType.class, linkType));
 
     }
+
 }
