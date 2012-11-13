@@ -81,6 +81,6 @@ public interface EntityContract {
      *            Object providing details of the action
      * @throws ServiceException
      */
-    public abstract void action(ActionOperation<T> action) throws ServiceException;
+    public abstract void action(EntityActionOperation action) throws ServiceException;
 
 }

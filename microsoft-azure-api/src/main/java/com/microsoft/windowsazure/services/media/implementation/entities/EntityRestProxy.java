@@ -78,4 +78,12 @@ public class EntityRestProxy implements EntityContract {
         getResource(deleter.getUri()).delete();
     }
 
+    @Override
+    public void action(EntityActionOperation entityActionOperation) {
+        ClientResponse clientResponse = getResource(entityActionOperation.getUri())
+                .queryParams(entityActionOperation.getQueryParameters()).type(entityActionOperation.getContentType())
+                .accept(entityActionOperation.getAcceptType()).post(ClientResponse.class);
+        entityActionOperation.processResponse(clientResponse);
+    }
+
 }

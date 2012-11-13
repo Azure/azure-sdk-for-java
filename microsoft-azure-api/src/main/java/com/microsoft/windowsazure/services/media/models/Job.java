@@ -28,9 +28,11 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.CreateJobOperation;
 import com.microsoft.windowsazure.services.media.implementation.CreateTaskOperation;
 import com.microsoft.windowsazure.services.media.implementation.MediaBatchOperations;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
@@ -187,7 +189,8 @@ public class Job {
         return new DefaultDeleteOperation(ENTITY_SET, jobId);
     }
 
-    public static Object cancel(String jobId) {
-        return null;
+    public static EntityActionOperation cancel(String jobId) {
+        return new DefaultActionOperation(ENTITY_SET, "Cancel")
+                .addQueryParameter("jobId", String.format("'%s'", jobId));
     }
 }
