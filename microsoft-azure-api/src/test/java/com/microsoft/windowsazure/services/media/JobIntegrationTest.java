@@ -34,7 +34,7 @@ import com.microsoft.windowsazure.services.media.models.ListJobsResult;
 public class JobIntegrationTest extends IntegrationTestBase {
 
     private final String testJobPrefix = "testJobPrefix";
-    private final String taskBody = "<?xml version=\"1.0\" encoding=\"utf-16\"?><taskBody>"
+    private final String taskBody = "<?xml version=\"1.0\" encoding=\"utf-8\"?><taskBody>"
             + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset>" + "</taskBody>";
 
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
@@ -93,7 +93,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         List<CreateTaskOptions> createTaskOptionsList = new ArrayList<CreateTaskOptions>();
         createTaskOptionsList.add(createTaskOptions);
-        JobInfo expectedJob = new JobInfo();
+        JobInfo expectedJob = createJob("My EncodingJob");
         expectedJob.setName("My Encoding Job");
         expectedJob.setPriority(3);
         expectedJob.setRunningDuration(0.0);
@@ -109,19 +109,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     @Test
     public void getJobSuccess() throws Exception {
         // Arrange
-        CreateAssetOptions createAssetOptions = new CreateAssetOptions();
-        AssetInfo assetInfo = service.createAsset(createAssetOptions);
-        CreateJobOptions createJobOptions = new CreateJobOptions();
-        createJobOptions.setName("My Encoding Job");
-        createJobOptions.setPriority(3);
-        createJobOptions.addInputMediaAsset(assetInfo.getId());
-        CreateTaskOptions createTaskOptions = new CreateTaskOptions();
-        createTaskOptions.setConfiguration("H.264 256k DSL CBR");
-        createTaskOptions.setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5");
-        createTaskOptions.setName("My encoding Task");
-        createTaskOptions.setTaskBody(taskBody);
-        List<CreateTaskOptions> createTaskOptionsList = new ArrayList<CreateTaskOptions>();
-        createTaskOptionsList.add(createTaskOptions);
+
         JobInfo expectedJob = new JobInfo();
         expectedJob.setName("My Encoding Job");
         expectedJob.setPriority(3);
@@ -225,12 +213,22 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteJobSuccess() {
+    public void deleteJobSuccess() throws ServiceException {
         // Arrange
+        JobInfo jobInfo = createJob("deleteJobSuccess");
+        service.cancelJob(jobInfo.getId());
+        JobInfo cancellingJobInfo = service.getJob(jobInfo.getId());
+        while (cancellingJobInfo.getState() == 6) {
+            cancellingJobInfo = service.getJob(jobInfo.getId());
+        }
 
         // Act 
 
+        service.deleteJob(jobInfo.getId());
+
         // Assert
+        expectedException.expect(ServiceException.class);
+        service.getJob(jobInfo.getId());
 
     }
 
