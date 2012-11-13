@@ -23,4 +23,5 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityC
  * 
  */
 public interface MediaContract extends FilterableService<MediaContract>, EntityContract {
+
 }
