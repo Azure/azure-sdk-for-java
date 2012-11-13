@@ -24,6 +24,12 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 

@@ -31,7 +31,8 @@ public class CreateTaskOptionsTest {
         CreateTaskOptions createTaskOptions = new CreateTaskOptions();
 
         // Act
-        String actualTaskConfiguration = createTaskOptions.setName(expectedTaskConfiguration).getConfiguration();
+        String actualTaskConfiguration = createTaskOptions.setConfiguration(expectedTaskConfiguration)
+                .getConfiguration();
 
         // Assert
         assertEquals(expectedTaskConfiguration, actualTaskConfiguration);

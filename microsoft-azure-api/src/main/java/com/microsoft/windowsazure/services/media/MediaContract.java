@@ -16,9 +16,11 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityContract;
 
 /**
  * Contract for interacting with the back end of Media Services
  * 
  */
+public interface MediaContract extends FilterableService<MediaContract>, EntityContract {
 }
