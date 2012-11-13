@@ -17,17 +17,14 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
-public class CreateTaskOperation implements Operation {
+public class CreateTaskOperation extends Operation {
 
-    private TaskType taskType;
+    public CreateTaskOperation() {
+        this.verb = "POST";
+    }
 
     public CreateTaskOperation setTask(TaskType taskType) {
-        this.taskType = taskType;
+        addContentObject(taskType);
         return this;
     }
-
-    public TaskType getTask() {
-        return this.taskType;
-    }
-
 }

@@ -15,19 +15,46 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.net.URI;
+import java.util.List;
+
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 
-public class CreateJobOperation implements Operation {
+public class CreateJobOperation extends Operation {
 
-    private JobType jobType;
+    private final URI assetServiceURI;
+    private JobInfo jobInfo;
 
-    public CreateJobOperation setJob(JobType jobType) {
-        this.jobType = jobType;
+    public CreateJobOperation(URI assetServiceURI) {
+        this.verb = "POST";
+        this.assetServiceURI = assetServiceURI;
+    }
+
+    public CreateJobOperation setJob(List<String> inputMediaAssets, List<String> outputMediaAssets, JobType jobType) {
+        for (String inputMediaAsset : inputMediaAssets) {
+            addLink("InputMediaAssets",
+                    String.format("%s/Assets('%s')", assetServiceURI.toString(), inputMediaAsset.toString()),
+                    "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
+
+        for (String outputMediaAsset : outputMediaAssets) {
+            addLink("OutputMediaAssets",
+                    String.format("%s/Assets('%s'", assetServiceURI.toString(), outputMediaAsset.toString()),
+                    "application/atom+xml;type=feed",
+                    "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+        }
+        addContentObject(jobType);
         return this;
     }
 
-    public JobType getJob() {
-        return this.jobType;
+    public void setJobInfo(JobInfo jobInfo) {
+        this.jobInfo = jobInfo;
+    }
+
+    public JobInfo getJobInfo() {
+        return this.jobInfo;
     }
 
 }

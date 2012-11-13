@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,14 +33,14 @@ public class CreateJobOptions {
     private Integer priority;
 
     /** The input media assets. */
-    private final List<URI> inputMediaAssets;
+    private final List<String> inputMediaAssets;
 
     /** The output media assets. */
-    private final List<URI> outputMediaAssets;
+    private final List<String> outputMediaAssets;
 
     public CreateJobOptions() {
-        this.inputMediaAssets = new ArrayList<URI>();
-        this.outputMediaAssets = new ArrayList<URI>();
+        this.inputMediaAssets = new ArrayList<String>();
+        this.outputMediaAssets = new ArrayList<String>();
     }
 
     /**
@@ -114,7 +113,7 @@ public class CreateJobOptions {
      *            the input media assets
      * @return the creates the job options
      */
-    public CreateJobOptions addInputMediaAsset(URI inputMediaAsset) {
+    public CreateJobOptions addInputMediaAsset(String inputMediaAsset) {
         this.inputMediaAssets.add(inputMediaAsset);
         return this;
     }
@@ -124,7 +123,7 @@ public class CreateJobOptions {
      * 
      * @return the input media assets
      */
-    public List<URI> getInputMediaAssets() {
+    public List<String> getInputMediaAssets() {
         return this.inputMediaAssets;
     }
 
@@ -135,7 +134,7 @@ public class CreateJobOptions {
      *            the output media assets
      * @return the creates the job options
      */
-    public CreateJobOptions addOutputMediaAsset(URI outputMediaAsset) {
+    public CreateJobOptions addOutputMediaAsset(String outputMediaAsset) {
         this.outputMediaAssets.add(outputMediaAsset);
         return this;
     }
@@ -145,7 +144,7 @@ public class CreateJobOptions {
      * 
      * @return the output media assets
      */
-    public List<URI> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets() {
         return this.outputMediaAssets;
     }
 

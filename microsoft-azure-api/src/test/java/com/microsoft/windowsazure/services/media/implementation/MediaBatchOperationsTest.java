@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
@@ -63,7 +65,7 @@ public class MediaBatchOperationsTest {
     public void addCreateJobOperationToMediaBatchOperationsSuccess() throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        CreateJobOperation createJobOperation = new CreateJobOperation();
+        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -99,7 +101,10 @@ public class MediaBatchOperationsTest {
         JobType jobType = new JobType();
         TaskType taskType = new TaskType();
         CreateTaskOperation createTaskOperation = new CreateTaskOperation().setTask(taskType);
-        CreateJobOperation createJobOperation = new CreateJobOperation().setJob(jobType);
+        List<String> inputMediaAssets = new ArrayList<String>();
+        List<String> outputMediaAssets = new ArrayList<String>();
+        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri).setJob(inputMediaAssets,
+                outputMediaAssets, jobType);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);

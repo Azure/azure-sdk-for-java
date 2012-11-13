@@ -8,7 +8,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation.atom;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -189,16 +188,6 @@ public class EntryType {
      */
     public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
-    }
-
-    public URI getLink() {
-
-        return null;
-    }
-
-    public void setLink(URI uri) {
-        // TODO Auto-generated method stub
-
     }
 
 }

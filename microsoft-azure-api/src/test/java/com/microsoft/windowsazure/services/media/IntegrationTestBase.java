@@ -133,8 +133,9 @@ public abstract class IntegrationTestBase {
         try {
             for (T expectedInfo : expectedInfos) {
                 Method getId = expectedInfo.getClass().getMethod("getId");
+                String expectedId = (String) getId.invoke(expectedInfo);
                 for (T actualInfo : actualInfos) {
-                    if (((String) getId.invoke(actualInfo)).equals(getId.invoke(expectedInfo))) {
+                    if (((String) getId.invoke(actualInfo)).equals(expectedId)) {
                         orderedAndFilteredActualInfo.add(actualInfo);
                         break;
                     }

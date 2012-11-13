@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -85,11 +84,9 @@ public class TaskType implements MediaServiceDTO {
     @XmlElement(name = "InitializationVector", namespace = Constants.ODATA_DATA_NS)
     protected String initializationVector;
 
-    @XmlElement(name = "OutputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected List<URI> outputMediaAssets;
+    protected List<String> outputMediaAssets;
 
-    @XmlElement(name = "InputMediaAssets", namespace = Constants.ODATA_DATA_NS)
-    protected List<URI> inputMediaAssets;
+    protected List<String> inputMediaAssets;
 
     public String getId() {
         return id;
@@ -235,19 +232,19 @@ public class TaskType implements MediaServiceDTO {
         this.initializationVector = initializationVector;
     }
 
-    public List<URI> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets() {
         return outputMediaAssets;
     }
 
-    public void setOutputMediaAssets(List<URI> outputMediaAssets) {
+    public void setOutputMediaAssets(List<String> outputMediaAssets) {
         this.outputMediaAssets = outputMediaAssets;
     }
 
-    public List<URI> getInputMediaAssets() {
+    public List<String> getInputMediaAssets() {
         return inputMediaAssets;
     }
 
-    public void setInputMediaAssets(List<URI> inputMediaAssets) {
+    public void setInputMediaAssets(List<String> inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
     }
 }

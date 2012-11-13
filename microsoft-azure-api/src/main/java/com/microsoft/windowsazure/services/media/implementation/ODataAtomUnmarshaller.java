@@ -208,7 +208,7 @@ public class ODataAtomUnmarshaller {
         }
     }
 
-    private EntryType unmarshalEntry(InputStream stream) throws JAXBException {
+    public EntryType unmarshalEntry(InputStream stream) throws JAXBException {
         JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(new StreamSource(stream), EntryType.class);
         return entryElement.getValue();
     }

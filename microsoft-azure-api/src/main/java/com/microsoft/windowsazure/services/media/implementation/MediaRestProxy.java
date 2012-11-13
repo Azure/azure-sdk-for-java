@@ -81,10 +81,13 @@ public class MediaRestProxy implements MediaContract {
 
     /** The channel. */
     private Client channel;
+
+    /** The redirect filter. */
     private RedirectFilter redirectFilter;
 
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
+
     /** The filters. */
     ServiceFilter[] filters;
 
@@ -93,8 +96,6 @@ public class MediaRestProxy implements MediaContract {
      * 
      * @param channel
      *            the channel
-     * @param uri
-     *            the uri
      * @param authFilter
      *            the auth filter
      * @param redirectFilter
@@ -171,6 +172,15 @@ public class MediaRestProxy implements MediaContract {
         return resource;
     }
 
+    /**
+     * Gets the resource.
+     * 
+     * @param entityName
+     *            the entity name
+     * @param options
+     *            the options
+     * @return the resource
+     */
     private WebResource getResource(String entityName, ListOptions options) {
         WebResource resource = getResource(entityName);
         if (options != null) {
@@ -230,6 +240,11 @@ public class MediaRestProxy implements MediaContract {
         return getResource(entityPath);
     }
 
+    /**
+     * Gets the base uri.
+     * 
+     * @return the base uri
+     */
     private URI getBaseURI() {
         return this.redirectFilter.getBaseURI();
     }
@@ -260,6 +275,15 @@ public class MediaRestProxy implements MediaContract {
         return builder.post(c, requestEntity);
     }
 
+    /**
+     * List web resource tasks.
+     * 
+     * @param webResource
+     *            the web resource
+     * @param listTasksOptions
+     *            the list tasks options
+     * @return the list tasks result
+     */
     private ListTasksResult listWebResourceTasks(WebResource webResource, ListTasksOptions listTasksOptions) {
         if ((listTasksOptions != null) && (listTasksOptions.getQueryParameters() != null)) {
             webResource = webResource.queryParams(listTasksOptions.getQueryParameters());
@@ -273,22 +297,35 @@ public class MediaRestProxy implements MediaContract {
         return listTasksResult;
     }
 
+    /**
+     * Creates the create job operation.
+     * 
+     * @param createJobOptions
+     *            the create job options
+     * @return the creates the job operation
+     */
     private CreateJobOperation createCreateJobOperation(CreateJobOptions createJobOptions) {
         JobType jobType = new JobType();
         if (createJobOptions != null) {
-            jobType.setInputMediaAssets(createJobOptions.getInputMediaAssets());
             jobType.setName(createJobOptions.getName());
-            jobType.setOutputMediaAssets(createJobOptions.getOutputMediaAssets());
             jobType.setPriority(createJobOptions.getPriority());
             jobType.setStartTime(createJobOptions.getStartTime());
         }
 
-        CreateJobOperation createJobOperation = new CreateJobOperation();
-        createJobOperation.setJob(jobType);
+        CreateJobOperation createJobOperation = new CreateJobOperation(this.getBaseURI());
+        createJobOperation.setJob(createJobOptions.getInputMediaAssets(), createJobOptions.getOutputMediaAssets(),
+                jobType);
 
         return createJobOperation;
     }
 
+    /**
+     * Creates the task operation.
+     * 
+     * @param createTaskOptions
+     *            the create task options
+     * @return the creates the task operation
+     */
     private CreateTaskOperation createTaskOperation(CreateTaskOptions createTaskOptions) {
         CreateTaskOperation createTaskOperation = new CreateTaskOperation();
 
@@ -309,6 +346,7 @@ public class MediaRestProxy implements MediaContract {
         taskType.setInitializationVector(createTaskOptions.getInitializationVector());
         taskType.setInputMediaAssets(createTaskOptions.getInputMediaAssets());
         taskType.setOutputMediaAssets(createTaskOptions.getOutputMediaAssets());
+        taskType.setTaskBody(createTaskOptions.getTaskBody());
 
         createTaskOperation.setTask(taskType);
 
@@ -647,8 +685,14 @@ public class MediaRestProxy implements MediaContract {
         ClientResponse clientResponse = resource.type(mimeMultipart.getContentType())
                 .accept(MediaType.APPLICATION_ATOM_XML).post(ClientResponse.class, mimeMultipart);
 
-        JobInfo jobInfo = new JobInfo();
-        return jobInfo;
+        try {
+            mediaBatchOperations.parseBatchResult(clientResponse);
+        }
+        catch (IOException e) {
+            throw new ServiceException(e);
+        }
+
+        return createJobOperation.getJobInfo();
 
     }
 
@@ -656,13 +700,10 @@ public class MediaRestProxy implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.MediaContract#cancelJob(java.lang.String)
      */
     @Override
-    public JobInfo cancelJob(String jobId) throws ServiceException {
-        try {
-            return getResource("CancelJob").queryParam("jobId", jobId).get(JobInfo.class);
-        }
-        catch (UniformInterfaceException e) {
-            throw new ServiceException(e);
-        }
+    public void cancelJob(String jobId) throws ServiceException {
+        ClientResponse clientResponse = getResource("CancelJob").queryParam("jobId", String.format("'%s'", jobId)).get(
+                ClientResponse.class);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
     /* (non-Javadoc)
@@ -726,6 +767,14 @@ public class MediaRestProxy implements MediaContract {
     @Override
     public ListTasksResult listJobTasks(String jobId) throws ServiceException {
         return this.listJobTasks(jobId, null);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#deleteJob(java.lang.String)
+     */
+    @Override
+    public void deleteJob(String jobId) throws ServiceException {
+        getResource("Jobs", jobId).delete();
     }
 
 }

@@ -97,6 +97,11 @@ public class ODataAtomMarshaller {
         marshaller.marshal(createEntry(content), stream);
     }
 
+    public void marshalEntryType(EntryType entryType, OutputStream stream) throws JAXBException {
+        marshaller.marshal(
+                new JAXBElement<EntryType>(new QName(Constants.ATOM_NS, "entry"), EntryType.class, entryType), stream);
+    }
+
     @SuppressWarnings("unchecked")
     private JAXBElement<EntryType> createEntry(Object content) {
         ContentType atomContent = new ContentType();

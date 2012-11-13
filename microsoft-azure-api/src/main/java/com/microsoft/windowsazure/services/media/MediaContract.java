@@ -290,10 +290,10 @@ public interface MediaContract extends FilterableService<MediaContract> {
     /**
      * Creates the job.
      * 
-     * @param createTaskOptions
-     *            the create task options
      * @param createJobOptions
      *            the create job options
+     * @param createTaskOptions
+     *            the create task options
      * @return the job info
      * @throws ServiceException
      *             the service exception
@@ -350,11 +350,10 @@ public interface MediaContract extends FilterableService<MediaContract> {
      * 
      * @param jobId
      *            the job id
-     * @return
      * @throws ServiceException
      *             the service exception
      */
-    public JobInfo cancelJob(String jobId) throws ServiceException;
+    public void cancelJob(String jobId) throws ServiceException;
 
     /**
      * List tasks.
@@ -399,5 +398,15 @@ public interface MediaContract extends FilterableService<MediaContract> {
      *             the service exception
      */
     public ListTasksResult listJobTasks(String jobId, ListTasksOptions listTasksOptions) throws ServiceException;
+
+    /**
+     * Delete job.
+     * 
+     * @param jobId
+     *            the job id
+     * @throws ServiceException
+     *             the service exception
+     */
+    public void deleteJob(String jobId) throws ServiceException;
 
 }
