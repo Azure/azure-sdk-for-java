@@ -76,4 +76,22 @@ public class ObjectFactory {
     public MediaProcessorType createMediaProcessorType() {
         return new MediaProcessorType();
     }
+
+    /**
+     * Create an instance of {@link JobType}
+     *
+     * @return a new JobType instance.
+     */
+    public JobType createJobType() {
+        return new JobType();
+    }
+
+    /**
+     * Create an instance of {@link TaskType}
+     *
+     * @return a new TaskType instance.
+     */
+    public TaskType createTaskType() {
+        return new TaskType();
+    }
 }

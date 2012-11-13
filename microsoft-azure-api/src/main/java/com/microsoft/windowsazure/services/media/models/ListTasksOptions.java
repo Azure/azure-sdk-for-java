@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media;
-
-import com.microsoft.windowsazure.services.core.FilterableService;
+package com.microsoft.windowsazure.services.media.models;
 
 /**
- * Contract for interacting with the back end of Media Services
- * 
+ * The Class ListTasksOptions.
  */
+public class ListTasksOptions extends ListOptions {
+
 }

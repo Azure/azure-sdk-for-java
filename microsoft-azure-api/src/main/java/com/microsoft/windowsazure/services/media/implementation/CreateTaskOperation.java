@@ -13,12 +13,18 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media;
+package com.microsoft.windowsazure.services.media.implementation;
 
-import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
-/**
- * Contract for interacting with the back end of Media Services
- * 
- */
+public class CreateTaskOperation extends Operation {
+
+    public CreateTaskOperation() {
+        this.verb = "POST";
+    }
+
+    public CreateTaskOperation setTask(TaskType taskType) {
+        addContentObject(taskType);
+        return this;
+    }
 }

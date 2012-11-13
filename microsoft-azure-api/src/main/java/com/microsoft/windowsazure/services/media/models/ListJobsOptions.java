@@ -12,13 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.microsoft.windowsazure.services.media;
-
-import com.microsoft.windowsazure.services.core.FilterableService;
+package com.microsoft.windowsazure.services.media.models;
 
 /**
- * Contract for interacting with the back end of Media Services
- * 
+ * The Class ListJobsOptions.
  */
+public class ListJobsOptions extends ListOptions {
+
 }

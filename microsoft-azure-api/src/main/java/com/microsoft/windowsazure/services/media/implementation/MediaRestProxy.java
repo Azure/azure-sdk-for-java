@@ -24,14 +24,12 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.media.MediaContract;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityRestProxy;
 import com.sun.jersey.api.client.Client;
 
 /**
  * 
  *
  */
-public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
 
@@ -77,6 +75,5 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         ServiceFilter[] filters = getFilters();
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new MediaRestProxy(getChannel(), newFilters);
     }
 }
