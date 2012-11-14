@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.ws.rs.core.MediaType;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
+
 public interface EntityOperation {
 
     /**
@@ -30,8 +32,9 @@ public interface EntityOperation {
      * Get the MIME type for the content that's being sent to the server.
      * 
      * @return The MIME type
+     * @throws ServiceException
      */
-    public abstract MediaType getContentType();
+    public abstract MediaType getContentType() throws ServiceException;
 
     /**
      * Get the MIME type that we're expecting the server to send back.

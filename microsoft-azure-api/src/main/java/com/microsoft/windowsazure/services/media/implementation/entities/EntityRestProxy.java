@@ -87,8 +87,9 @@ public class EntityRestProxy implements EntityContract {
      * @param operation
      *            the operation
      * @return the resource
+     * @throws ServiceException
      */
-    private Builder getResource(EntityOperation operation) {
+    private Builder getResource(EntityOperation operation) throws ServiceException {
         return getResource(operation.getUri()).type(operation.getContentType()).accept(operation.getAcceptType());
     }
 

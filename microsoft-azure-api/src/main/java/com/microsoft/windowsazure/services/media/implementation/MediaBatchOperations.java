@@ -24,7 +24,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.activation.DataHandler;
@@ -36,6 +38,7 @@ import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimePartDataSource;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -85,9 +88,9 @@ public class MediaBatchOperations {
         }
         this.serviceURI = serviceURI;
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
+        this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
         this.entityBatchOperations = new ArrayList<EntityBatchOperation>();
         batchId = String.format("batch_%s", UUID.randomUUID().toString());
-        this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
     }
 
     /**
@@ -207,7 +210,6 @@ public class MediaBatchOperations {
      *             Signals that an I/O exception has occurred.
      */
     private MimeMultipart toMimeMultipart(List<DataSource> bodyPartContents) throws MessagingException, IOException {
-        // Create unique part boundary strings
         String changeSetId = String.format("changeset_%s", UUID.randomUUID().toString());
         MimeMultipart changeSets = createChangeSets(bodyPartContents, changeSetId);
         MimeBodyPart mimeBodyPart = createMimeBodyPart(changeSets, changeSetId);
@@ -539,6 +541,13 @@ public class MediaBatchOperations {
 
     public String getBatchId() {
         return this.batchId;
+    }
+
+    public MediaType getContentType() {
+        Map<String, String> parameters = new Hashtable<String, String>();
+        parameters.put("boundary", this.batchId);
+        MediaType contentType = new MediaType("multipart", "mixed", parameters);
+        return contentType;
     }
 
 }

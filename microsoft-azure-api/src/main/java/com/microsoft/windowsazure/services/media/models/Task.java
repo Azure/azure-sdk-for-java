@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.models;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
@@ -26,17 +27,28 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityG
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Task entities.
  * 
  */
 public class Task {
+
+    /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Tasks";
 
     // Prevent instantiation
+    /**
+     * Instantiates a new task.
+     */
     private Task() {
     }
 
+    /**
+     * Creates the.
+     * 
+     * @return the creates the batch operation
+     */
     public static CreateBatchOperation create() {
         return new CreateBatchOperation();
     }
@@ -63,7 +75,7 @@ public class Task {
     }
 
     /**
-     * Create an operation that will list all the tasks which match the given query parameters
+     * Create an operation that will list all the tasks which match the given query parameters.
      * 
      * @param queryParameters
      *            query parameters to pass to the server.
@@ -74,48 +86,111 @@ public class Task {
         }, queryParameters);
     }
 
+    /**
+     * The Class CreateBatchOperation.
+     */
     public static class CreateBatchOperation extends EntityBatchOperation {
-        private String configuration;
-        private String mediaProcessorId;
-        private String name;
-        private String taskBody;
 
+        /** The task type. */
+        private final TaskType taskType;
+
+        /**
+         * Instantiates a new creates the batch operation.
+         */
+        public CreateBatchOperation() {
+            this.verb = "POST";
+            taskType = new TaskType();
+            addContentObject(taskType);
+        }
+
+        /**
+         * Sets the configuration.
+         * 
+         * @param configuration
+         *            the configuration
+         * @return the creates the batch operation
+         */
         public CreateBatchOperation setConfiguration(String configuration) {
-            this.configuration = configuration;
+            this.taskType.setConfiguration(configuration);
             return this;
         }
 
+        /**
+         * Gets the configuration.
+         * 
+         * @return the configuration
+         */
         public String getConfiguration() {
-            return this.configuration;
+            return this.taskType.getConfiguration();
         }
 
-        public CreateBatchOperation setMediaProcessorId(String mediaProcessorId) {
-            this.mediaProcessorId = mediaProcessorId;
-            return this;
-        }
-
+        /**
+         * Sets the name.
+         * 
+         * @param name
+         *            the name
+         * @return the creates the batch operation
+         */
         public CreateBatchOperation setName(String name) {
-            this.name = name;
+            this.taskType.setName(name);
             return this;
         }
 
+        /**
+         * Gets the name.
+         * 
+         * @return the name
+         */
         public String getName() {
-            return this.name;
+            return this.taskType.getName();
         }
 
+        /**
+         * Sets the task body.
+         * 
+         * @param taskBody
+         *            the task body
+         * @return the creates the batch operation
+         */
         public CreateBatchOperation setTaskBody(String taskBody) {
-            this.taskBody = taskBody;
+            this.taskType.setTaskBody(taskBody);
             return this;
         }
 
+        /**
+         * Gets the task body.
+         * 
+         * @return the task body
+         */
         public String getTaskBody() {
-            return this.taskBody;
+            return this.taskType.getTaskBody();
+        }
+
+        /**
+         * Gets the media processor id.
+         * 
+         * @return the media processor id
+         */
+        public String getMediaProcessorId() {
+            return this.taskType.getMediaProcessorId();
+        }
+
+        /**
+         * Sets the media processor id.
+         * 
+         * @param mediaProcessorId
+         *            the media processor id
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setMediaProcessorId(String mediaProcessorId) {
+            this.taskType.setMediaProcessorId(mediaProcessorId);
+            return this;
         }
 
     }
 
     /**
-     * Create an operation to delete the given task
+     * Create an operation to delete the given task.
      * 
      * @param taskId
      *            id of task to delete

@@ -21,6 +21,7 @@ import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 
 /**
  * Default implementation of EntityOperation<T> to provide
@@ -58,7 +59,7 @@ public abstract class EntityOperationBase implements EntityOperation {
      * @see com.microsoft.windowsazure.services.media.entities.EntityOperation#getContentType()
      */
     @Override
-    public MediaType getContentType() {
+    public MediaType getContentType() throws ServiceException {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
     }
 

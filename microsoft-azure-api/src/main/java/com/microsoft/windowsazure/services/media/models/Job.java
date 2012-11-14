@@ -23,12 +23,14 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.MediaBatchOperations;
+import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
@@ -61,6 +63,8 @@ public class Job {
     /**
      * Creates the.
      * 
+     * @param serviceUri
+     *            the service uri
      * @return the creator
      */
     public static Creator create(URI serviceUri) {
@@ -88,27 +92,17 @@ public class Job {
         /** The service uri. */
         private URI serviceUri;
 
+        /** The content type. */
+        private MediaType contentType;
+
         /** The task create batch operations. */
         private final List<Task.CreateBatchOperation> taskCreateBatchOperations;
 
-        /**
-         * Instantiates a new creator.
-         * 
-         * @param serviceUri
-         *            the service uri
-         */
-        public Creator(URI serviceUri) {
-            super(ENTITY_SET, JobInfo.class);
-            this.serviceUri = serviceUri;
-            this.inputMediaAssets = new ArrayList<String>();
-            this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
-        }
+        private Boolean fresh;
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
-         */
-        @Override
-        public Object getRequestContents() throws ServiceException {
+        private MimeMultipart mimeMultipart;;
+
+        private void buildMimeMultipart() throws ServiceException {
             MediaBatchOperations mediaBatchOperations = null;
 
             try {
@@ -128,7 +122,6 @@ public class Job {
                 mediaBatchOperations.addOperation(taskCreateBatchOperation);
             }
 
-            MimeMultipart mimeMultipart;
             try {
                 mimeMultipart = mediaBatchOperations.getMimeMultipart();
             }
@@ -140,6 +133,33 @@ public class Job {
             }
             catch (JAXBException e) {
                 throw new ServiceException(e);
+            }
+
+            this.contentType = mediaBatchOperations.getContentType();
+            fresh = false;
+        }
+
+        /**
+         * Instantiates a new creator.
+         * 
+         * @param serviceUri
+         *            the service uri
+         */
+        public Creator(URI serviceUri) {
+            super(ENTITY_SET, JobInfo.class);
+            this.serviceUri = serviceUri;
+            this.inputMediaAssets = new ArrayList<String>();
+            this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
+            this.fresh = true;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         */
+        @Override
+        public Object getRequestContents() throws ServiceException {
+            if (fresh) {
+                buildMimeMultipart();
             }
             return mimeMultipart;
         }
@@ -153,6 +173,7 @@ public class Job {
          */
         public Creator addTaskCreator(Task.CreateBatchOperation taskCreateBatchOperation) {
             this.taskCreateBatchOperations.add(taskCreateBatchOperation);
+            this.fresh = true;
             return this;
         }
 
@@ -165,6 +186,7 @@ public class Job {
          */
         public Creator setName(String name) {
             this.name = name;
+            this.fresh = true;
             return this;
         }
 
@@ -186,6 +208,7 @@ public class Job {
          */
         public Creator setPriority(Integer priority) {
             this.priority = priority;
+            this.fresh = true;
             return this;
         }
 
@@ -216,6 +239,7 @@ public class Job {
          */
         public Creator setStartTime(Date startTime) {
             this.startTime = startTime;
+            this.fresh = true;
             return this;
         }
 
@@ -246,6 +270,7 @@ public class Job {
          */
         public Creator addInputMediaAsset(String assetId) {
             this.inputMediaAssets.add(assetId);
+            this.fresh = true;
             return this;
         }
 
@@ -267,7 +292,27 @@ public class Job {
          */
         public Creator setServiceUri(URI serviceUri) {
             this.serviceUri = serviceUri;
+            this.fresh = true;
             return this;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getContentType()
+         */
+        @Override
+        public MediaType getContentType() throws ServiceException {
+            if (fresh) {
+                buildMimeMultipart();
+            }
+            return this.contentType;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getUri()
+         */
+        @Override
+        public String getUri() {
+            return "$batch";
         }
     }
 
@@ -287,6 +332,7 @@ public class Job {
          */
         public CreateBatchOperation(URI serviceUri) {
             this.serviceUri = serviceUri;
+            this.verb = "POST";
         }
 
         /**
@@ -298,7 +344,28 @@ public class Job {
          */
         public static CreateBatchOperation create(Creator creator) {
             CreateBatchOperation createBatchOperation = new CreateBatchOperation(creator.getServiceUri());
+
+            JobType jobType = new JobType();
+            jobType.setStartTime(creator.getStartTime());
+            jobType.setName(creator.getName());
+            jobType.setPriority(creator.getPriority());
+
+            for (String inputMediaAsset : creator.getInputMediaAssets()) {
+                createBatchOperation.addLink("InputMediaAssets", String.format("%s/Assets('%s')", createBatchOperation
+                        .getServiceUri().toString(), inputMediaAsset.toString()), "application/atom+xml;type=feed",
+                        "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+            }
+            createBatchOperation.addContentObject(jobType);
             return createBatchOperation;
+        }
+
+        /**
+         * Gets the service uri.
+         * 
+         * @return the service uri
+         */
+        public URI getServiceUri() {
+            return this.serviceUri;
         }
 
         /** The job info. */

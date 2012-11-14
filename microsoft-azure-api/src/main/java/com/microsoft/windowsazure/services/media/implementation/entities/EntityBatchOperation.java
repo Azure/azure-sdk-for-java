@@ -49,7 +49,7 @@ public class EntityBatchOperation {
     }
 
     @SuppressWarnings("unchecked")
-    protected void addContentObject(Object contentObject) {
+    public void addContentObject(Object contentObject) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent.getContent().add(
