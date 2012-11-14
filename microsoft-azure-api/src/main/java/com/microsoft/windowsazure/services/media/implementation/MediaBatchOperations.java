@@ -454,11 +454,11 @@ public class MediaBatchOperations {
     /**
      * Adds the operation.
      * 
-     * @param operation
+     * @param entityBatchOperation
      *            the operation
      */
-    public void addOperation(Operation operation) {
-        this.operations.add(operation);
+    public void addOperation(EntityBatchOperation entityBatchOperation) {
+        this.operations.add(entityBatchOperation);
     }
 
     /**

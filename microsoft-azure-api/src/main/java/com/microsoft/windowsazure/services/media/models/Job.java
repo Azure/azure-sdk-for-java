@@ -15,18 +15,15 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
-import javax.print.attribute.standard.JobState;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.CreateJobOperation;
-import com.microsoft.windowsazure.services.media.implementation.CreateTaskOperation;
 import com.microsoft.windowsazure.services.media.implementation.MediaBatchOperations;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
@@ -57,51 +54,45 @@ public class Job {
 
     public static class Creator extends EntityOperationSingleResultBase<JobInfo> implements
             EntityCreationOperation<JobInfo> {
+        private Date startTime;
         private String name;
-        private String alternateId;
-        private EncryptionOption options;
-        private JobState state;
+        private Integer priority;
+        private final List<String> inputMediaAssets;
+        private URI serviceUri;
+        private final List<Task.Creator> taskCreators;
+
+        private CreateJobOperation createCreateJobOperation() {
+            CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri);
+            return createJobOperation;
+        }
 
         public Creator() {
             super(ENTITY_SET, JobInfo.class);
+            this.inputMediaAssets = new ArrayList<String>();
+            this.taskCreators = new ArrayList<Task.Creator>();
         }
 
         @Override
         public Object getRequestContents() {
             MediaBatchOperations mediaBatchOperations = null;
-            try {
-                mediaBatchOperations = new MediaBatchOperations(getBaseURI());
-            }
-            catch (JAXBException e) {
-                throw new ServiceException(e);
-            }
-            catch (ParserConfigurationException e) {
-                throw new ServiceException(e);
-            }
 
-            CreateJobOperation createJobOperation = createCreateJobOperation(createJobOptions);
+            mediaBatchOperations = new MediaBatchOperations(serviceUri);
+
+            CreateJobOperation createJobOperation = createCreateJobOperation();
 
             mediaBatchOperations.addOperation(createJobOperation);
-            for (CreateTaskOptions createTaskOptionsInstance : createTaskOptions) {
-                CreateTaskOperation createTaskOperation = createTaskOperation(createTaskOptionsInstance);
-                mediaBatchOperations.addOperation(createTaskOperation);
+            for (EntityCreationOperation<Task> taskCreator : taskCreateOperations) {
+                mediaBatchOperations.addOperation(taskCreator);
             }
 
             MimeMultipart mimeMultipart;
-            try {
-                mimeMultipart = mediaBatchOperations.getMimeMultipart();
-            }
-            catch (MessagingException e) {
-                throw new ServiceException(e);
-            }
-            catch (IOException e) {
-                throw new ServiceException(e);
-            }
-            catch (JAXBException e) {
-                throw new ServiceException(e);
-            }
-
+            mimeMultipart = mediaBatchOperations.getMimeMultipart();
             return mimeMultipart;
+        }
+
+        public Creator addTaskCreator(Task.Creator taskCreator) {
+            this.taskCreators.add(taskCreator);
+            return this;
         }
 
         /**
@@ -116,32 +107,39 @@ public class Job {
             return this;
         }
 
-        /**
-         * Sets the alternate id of the job to be created.
-         * 
-         * @param alternateId
-         *            The id
-         * 
-         * @return The creator object (for call chaining)
-         */
-        public Creator setAlternateId(String alternateId) {
-            this.alternateId = alternateId;
+        public String getName() {
+            return this.name;
+        }
+
+        public Creator setPriority(Integer priority) {
+            this.priority = priority;
             return this;
         }
 
-        public Creator setOptions(EncryptionOption options) {
-            this.options = options;
+        public Integer getPriority() {
+            return this.priority;
+        }
+
+        public Date getStartTime() {
+            return startTime;
+        }
+
+        public Creator setStartTime(Date startTime) {
+            this.startTime = startTime;
             return this;
         }
 
-        public Creator setState(JobState state) {
-            this.state = state;
-            return this;
+        public List<String> getInputMediaAssets() {
+            return inputMediaAssets;
         }
 
-        public Object setPriority(int i) {
-            // TODO Auto-generated method stub
-            return null;
+        public List<Task.Creator> getTaskCreators() {
+            return this.taskCreators;
+        }
+
+        public Creator addInputMediaAsset(String assetId) {
+            this.inputMediaAssets.add(assetId);
+            return this;
         }
     }
 

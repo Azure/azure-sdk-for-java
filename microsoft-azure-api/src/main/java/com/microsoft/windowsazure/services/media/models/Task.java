@@ -50,7 +50,9 @@ public class Task {
         private String name;
         private String alternateId;
         private EncryptionOption options;
-        private TaskState state;
+        private String taskBody;
+        private String configuration;
+        private String mediaProcessorId;
 
         public Creator() {
             super(ENTITY_SET, TaskInfo.class);
@@ -82,33 +84,33 @@ public class Task {
             return this;
         }
 
-        /**
-         * Sets the alternate id of the task to be created.
-         * 
-         * @param alternateId
-         *            The id
-         * 
-         * @return The creator object (for call chaining)
-         */
-        public Creator setAlternateId(String alternateId) {
-            this.alternateId = alternateId;
+        public String getConfiguration() {
+            return this.configuration;
+        }
+
+        public Creator setConfiguration(String configuration) {
+            this.configuration = configuration;
             return this;
         }
 
-        public Creator setOptions(EncryptionOption options) {
-            this.options = options;
+        public String getMediaProcessorId() {
+            return this.mediaProcessorId;
+        }
+
+        public Creator setMediaProcessorId(String mediaProcessorId) {
+            this.mediaProcessorId = mediaProcessorId;
             return this;
         }
 
-        public Creator setState(TaskState state) {
-            this.state = state;
+        public String getTaskBody() {
+            return taskBody;
+        }
+
+        public Creator setTaskBody(String taskBody) {
+            this.taskBody = taskBody;
             return this;
         }
 
-        public Object setConfiguration(String string) {
-            // TODO Auto-generated method stub
-            return null;
-        }
     }
 
     /**

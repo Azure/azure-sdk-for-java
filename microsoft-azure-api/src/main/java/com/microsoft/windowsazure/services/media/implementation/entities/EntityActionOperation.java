@@ -30,7 +30,7 @@ public interface EntityActionOperation extends EntityOperation {
      * 
      * @return the query parameters
      */
-    MultivaluedMap getQueryParameters();
+    MultivaluedMap<String, String> getQueryParameters();
 
     /**
      * Adds the query parameter.

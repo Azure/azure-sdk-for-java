@@ -67,7 +67,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
                 .setName("My Encoding Job")
                 .setPriority(3)
                 .addInputMediaAsset(assetInfo.getId())
-                .addTask(
+                .addTaskCreator(
                         Task.create().setConfiguration("H.264 256k DSL CBR")
                                 .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
                                 .setName("My encoding Task").setTaskBody(taskBody)));
@@ -90,7 +90,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
                 .setName("My Encoding Job")
                 .setPriority(3)
                 .addInputMediaAsset(assetInfo.getId())
-                .addTask(
+                .addTaskCreator(
                         Task.create().setConfiguration("H.264 256k DSL CBR")
                                 .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
                                 .setName("My encoding Task").setTaskBody(taskBody)));
