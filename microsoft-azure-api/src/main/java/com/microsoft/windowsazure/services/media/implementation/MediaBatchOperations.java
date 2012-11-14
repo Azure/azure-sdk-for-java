@@ -67,7 +67,7 @@ public class MediaBatchOperations {
     private final ODataAtomMarshaller oDataAtomMarshaller;
 
     /** The o data atom unmarshaller. */
-    private ODataAtomUnmarshaller oDataAtomUnmarshaller;
+    private final ODataAtomUnmarshaller oDataAtomUnmarshaller;
 
     private final String batchId;
 
@@ -87,14 +87,7 @@ public class MediaBatchOperations {
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
         this.entityBatchOperations = new ArrayList<EntityBatchOperation>();
         batchId = String.format("batch_%s", UUID.randomUUID().toString());
-        try {
-            this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
-        }
-        catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+        this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
     }
 
     /**

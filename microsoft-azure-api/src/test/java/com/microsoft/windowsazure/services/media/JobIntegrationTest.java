@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +63,9 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
     private JobInfo createJob(String name) throws ServiceException {
         AssetInfo assetInfo = service.create(Asset.create().setName(name));
+        URI serviceUri = service.getRestServiceUri();
         return service.create(Job
-                .create()
+                .create(serviceUri)
                 .setName("My Encoding Job")
                 .setPriority(3)
                 .addInputMediaAsset(assetInfo.getId())
@@ -83,10 +85,11 @@ public class JobIntegrationTest extends IntegrationTestBase {
         expectedJob.setPriority(3);
         expectedJob.setRunningDuration(0.0);
         expectedJob.setState(0);
+        URI serviceURI = service.getRestServiceUri();
 
         // Act
         JobInfo actualJob = service.create(Job
-                .create()
+                .create(serviceURI)
                 .setName("My Encoding Job")
                 .setPriority(3)
                 .addInputMediaAsset(assetInfo.getId())

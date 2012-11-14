@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.net.URI;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -34,6 +36,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
+// TODO: Auto-generated Javadoc
 /**
  * /**
  * Wrapper implementation of <code>MediaEntityContract</code> that
@@ -42,7 +45,10 @@ import com.sun.jersey.api.client.UniformInterfaceException;
  */
 public class MediaExceptionProcessor implements MediaContract {
 
+    /** The service. */
     private final MediaContract service;
+
+    /** The log. */
     private static Log log = LogFactory.getLog(MediaContract.class);
 
     /**
@@ -167,6 +173,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     */
     @Override
     public void action(EntityActionOperation action) throws ServiceException {
         try {
@@ -178,6 +187,11 @@ public class MediaExceptionProcessor implements MediaContract {
         catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
+    }
+
+    @Override
+    public URI getRestServiceUri() {
+        return service.getRestServiceUri();
     }
 
 }

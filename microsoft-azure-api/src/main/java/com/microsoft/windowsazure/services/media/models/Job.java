@@ -63,8 +63,8 @@ public class Job {
      * 
      * @return the creator
      */
-    public static Creator create() {
-        return new Creator();
+    public static Creator create(URI serviceUri) {
+        return new Creator(serviceUri);
     }
 
     /**
@@ -93,9 +93,13 @@ public class Job {
 
         /**
          * Instantiates a new creator.
+         * 
+         * @param serviceUri
+         *            the service uri
          */
-        public Creator() {
+        public Creator(URI serviceUri) {
             super(ENTITY_SET, JobInfo.class);
+            this.serviceUri = serviceUri;
             this.inputMediaAssets = new ArrayList<String>();
             this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
         }
@@ -244,12 +248,46 @@ public class Job {
             this.inputMediaAssets.add(assetId);
             return this;
         }
+
+        /**
+         * Gets the service uri.
+         * 
+         * @return the service uri
+         */
+        public URI getServiceUri() {
+            return this.serviceUri;
+        }
+
+        /**
+         * Sets the service uri.
+         * 
+         * @param serviceUri
+         *            the service uri
+         * @return the creator
+         */
+        public Creator setServiceUri(URI serviceUri) {
+            this.serviceUri = serviceUri;
+            return this;
+        }
     }
 
     /**
      * The Class CreateBatchOperation.
      */
     public static class CreateBatchOperation extends EntityBatchOperation {
+
+        /** The service uri. */
+        private final URI serviceUri;
+
+        /**
+         * Instantiates a new creates the batch operation.
+         * 
+         * @param serviceUri
+         *            the service uri
+         */
+        public CreateBatchOperation(URI serviceUri) {
+            this.serviceUri = serviceUri;
+        }
 
         /**
          * Creates the.
@@ -259,12 +297,20 @@ public class Job {
          * @return the creates the batch operation
          */
         public static CreateBatchOperation create(Creator creator) {
-            CreateBatchOperation createBatchOperation = new CreateBatchOperation();
+            CreateBatchOperation createBatchOperation = new CreateBatchOperation(creator.getServiceUri());
             return createBatchOperation;
         }
 
+        /** The job info. */
         private JobInfo jobInfo;
 
+        /**
+         * Sets the job info.
+         * 
+         * @param jobInfo
+         *            the job info
+         * @return the creates the batch operation
+         */
         public CreateBatchOperation setJobInfo(JobInfo jobInfo) {
             this.jobInfo = jobInfo;
             return this;

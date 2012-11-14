@@ -19,8 +19,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
@@ -30,8 +28,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.media.implementation.content.JobType;
-import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.Task;
 
 public class MediaBatchOperationsTest {
 
@@ -65,7 +63,7 @@ public class MediaBatchOperationsTest {
     public void addCreateJobOperationToMediaBatchOperationsSuccess() throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri);
+        Job.CreateBatchOperation createJobOperation = new Job.CreateBatchOperation(serviceUri);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -82,11 +80,11 @@ public class MediaBatchOperationsTest {
             ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        CreateTaskOperation createTaskOperation = new CreateTaskOperation();
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation();
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
-        mediaBatchOperations.addOperation(createTaskOperation);
+        mediaBatchOperations.addOperation(taskCreateBatchOperation);
 
         // Assert
         assertNotNull(mediaBatchOperations);
@@ -98,18 +96,13 @@ public class MediaBatchOperationsTest {
             IOException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        JobType jobType = new JobType();
-        TaskType taskType = new TaskType();
-        CreateTaskOperation createTaskOperation = new CreateTaskOperation().setTask(taskType);
-        List<String> inputMediaAssets = new ArrayList<String>();
-        List<String> outputMediaAssets = new ArrayList<String>();
-        CreateJobOperation createJobOperation = new CreateJobOperation(serviceUri).setJob(inputMediaAssets,
-                outputMediaAssets, jobType);
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation();
+        Job.CreateBatchOperation jobCreateBatchOperation = new Job.CreateBatchOperation(serviceUri);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
-        mediaBatchOperations.addOperation(createJobOperation);
-        mediaBatchOperations.addOperation(createTaskOperation);
+        mediaBatchOperations.addOperation(jobCreateBatchOperation);
+        mediaBatchOperations.addOperation(taskCreateBatchOperation);
         MimeMultipart mimeMultipart = mediaBatchOperations.getMimeMultipart();
 
         // Assert

@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
 import java.util.Date;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
@@ -28,18 +27,27 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
  */
 public class AssetInfo extends ODataEntity<AssetType> {
 
-    private URI uri;
-
+    /**
+     * Instantiates a new asset info.
+     * 
+     * @param entry
+     *            the entry
+     * @param content
+     *            the content
+     */
     public AssetInfo(EntryType entry, AssetType content) {
         super(entry, content);
     }
 
+    /**
+     * Instantiates a new asset info.
+     */
     public AssetInfo() {
         super(new AssetType());
     }
 
     /**
-     * Get the asset id
+     * Get the asset id.
      * 
      * @return the id
      */
@@ -48,7 +56,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set the id
+     * Set the id.
      * 
      * @param id
      *            the id
@@ -60,7 +68,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get the asset name
+     * Get the asset name.
      * 
      * @return the name
      */
@@ -69,7 +77,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * set the name
+     * set the name.
      * 
      * @param name
      *            the name
@@ -81,7 +89,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get the asset state
+     * Get the asset state.
      * 
      * @return the state
      */
@@ -90,7 +98,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set the state
+     * Set the state.
      * 
      * @param state
      *            the state
@@ -102,7 +110,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get the creation date
+     * Get the creation date.
      * 
      * @return the date
      */
@@ -111,7 +119,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set creation date
+     * Set creation date.
      * 
      * @param created
      *            the date
@@ -123,7 +131,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get last modified date
+     * Get last modified date.
      * 
      * @return the date
      */
@@ -132,7 +140,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set last modified date
+     * Set last modified date.
      * 
      * @param lastModified
      *            the date
@@ -144,7 +152,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get the alternate id
+     * Get the alternate id.
      * 
      * @return the id
      */
@@ -153,7 +161,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set the alternate id
+     * Set the alternate id.
      * 
      * @param alternateId
      *            the id
@@ -165,12 +173,24 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get the options
+     * Get the options.
      * 
      * @return the options
      */
     public EncryptionOption getOptions() {
         return EncryptionOption.fromCode(getContent().getOptions());
+    }
+
+    /**
+     * Sets the options.
+     * 
+     * @param encryptionOption
+     *            the encryption option
+     * @return the asset info
+     */
+    public AssetInfo setOptions(EncryptionOption encryptionOption) {
+        getContent().setOptions(encryptionOption.getCode());
+        return this;
     }
 
 }
