@@ -42,8 +42,10 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityD
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Job entities.
  * 
@@ -98,12 +100,23 @@ public class Job {
         /** The task create batch operations. */
         private final List<Task.CreateBatchOperation> taskCreateBatchOperations;
 
+        /** The fresh. */
         private Boolean fresh;
 
+        /** The mime multipart. */
         private MimeMultipart mimeMultipart;;
 
+        /** The media batch operations. */
+        private MediaBatchOperations mediaBatchOperations;
+
+        /**
+         * Builds the mime multipart.
+         * 
+         * @throws ServiceException
+         *             the service exception
+         */
         private void buildMimeMultipart() throws ServiceException {
-            MediaBatchOperations mediaBatchOperations = null;
+            mediaBatchOperations = null;
 
             try {
                 mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -136,7 +149,7 @@ public class Job {
             }
 
             this.contentType = mediaBatchOperations.getContentType();
-            fresh = false;
+            this.fresh = false;
         }
 
         /**
@@ -162,6 +175,36 @@ public class Job {
                 buildMimeMultipart();
             }
             return mimeMultipart;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase#getResponseClass()
+         */
+        @Override
+        public Class getResponseClass() {
+            return ClientResponse.class;
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#processResponse(java.lang.Object)
+         */
+        @Override
+        public Object processResponse(Object clientResponse) throws ServiceException {
+            try {
+                this.mediaBatchOperations.parseBatchResult((ClientResponse) clientResponse);
+            }
+            catch (IOException e) {
+                throw new ServiceException(e);
+            }
+            JobInfo jobInfo = null;
+            for (EntityBatchOperation entityBatchOperation : this.mediaBatchOperations.getOperations()) {
+                if (entityBatchOperation instanceof Job.CreateBatchOperation) {
+                    jobInfo = ((Job.CreateBatchOperation) entityBatchOperation).getJobInfo();
+                    break;
+                }
+            }
+            return jobInfo;
+
         }
 
         /**
@@ -324,6 +367,9 @@ public class Job {
         /** The service uri. */
         private final URI serviceUri;
 
+        /** The job info. */
+        private JobInfo jobInfo;
+
         /**
          * Instantiates a new creates the batch operation.
          * 
@@ -368,9 +414,6 @@ public class Job {
             return this.serviceUri;
         }
 
-        /** The job info. */
-        private JobInfo jobInfo;
-
         /**
          * Sets the job info.
          * 
@@ -381,6 +424,15 @@ public class Job {
         public CreateBatchOperation setJobInfo(JobInfo jobInfo) {
             this.jobInfo = jobInfo;
             return this;
+        }
+
+        /**
+         * Gets the job info.
+         * 
+         * @return the job info
+         */
+        public JobInfo getJobInfo() {
+            return this.jobInfo;
         }
 
     }

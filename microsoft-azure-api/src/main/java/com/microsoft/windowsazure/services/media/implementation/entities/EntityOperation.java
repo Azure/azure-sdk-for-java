@@ -40,4 +40,5 @@ public interface EntityOperation {
      * Get the MIME type that we're expecting the server to send back.
      */
     public abstract MediaType getAcceptType();
+
 }

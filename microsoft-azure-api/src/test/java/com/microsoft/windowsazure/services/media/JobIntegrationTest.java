@@ -159,7 +159,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         }
 
         MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.add("top", "2");
+        queryParameters.add("$top", "2");
         ListResult<JobInfo> listJobsResult = service.list(Job.list(queryParameters));
 
         // Assert
