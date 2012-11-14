@@ -19,7 +19,6 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.sun.jersey.api.client.ClientResponse;
 
-// TODO: Auto-generated Javadoc
 /**
  * Action operation for Entities.
  */

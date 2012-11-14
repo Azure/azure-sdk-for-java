@@ -22,32 +22,25 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-// TODO: Auto-generated Javadoc
 /**
  * Generic implementation of Delete operation usable by most entities.
  */
 public class DefaultActionOperation implements EntityActionOperation {
 
-    /** The entity set. */
-    private final String entitySet;
-
-    /** The verb. */
-    private final String verb;
+    /** The name. */
+    private final String name;
 
     /** The query parameters. */
-    private final MultivaluedMap queryParameters;
+    private final MultivaluedMap<String, String> queryParameters;
 
     /**
      * The default action operation.
      * 
-     * @param entitySet
-     *            the entity set
-     * @param verb
-     *            the verb
+     * @param name
+     *            the name
      */
-    public DefaultActionOperation(String entitySet, String verb) {
-        this.entitySet = entitySet;
-        this.verb = verb;
+    public DefaultActionOperation(String name) {
+        this.name = name;
         this.queryParameters = new MultivaluedMapImpl();
     }
 
@@ -56,15 +49,24 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     @Override
     public String getUri() {
-        return String.format("%s/%s", entitySet, verb);
+        return name;
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getQueryParameters()
      */
     @Override
-    public MultivaluedMap getQueryParameters() {
+    public MultivaluedMap<String, String> getQueryParameters() {
         return this.queryParameters;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
+     */
+    @Override
+    public EntityActionOperation addQueryParameter(String key, String value) {
+        this.queryParameters.add(key, value);
+        return this;
     }
 
     /* (non-Javadoc)
@@ -81,15 +83,6 @@ public class DefaultActionOperation implements EntityActionOperation {
     @Override
     public MediaType getAcceptType() {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
-     */
-    @Override
-    public EntityActionOperation addQueryParameter(String key, String value) {
-        this.queryParameters.add(key, value);
-        return null;
     }
 
     /* (non-Javadoc)

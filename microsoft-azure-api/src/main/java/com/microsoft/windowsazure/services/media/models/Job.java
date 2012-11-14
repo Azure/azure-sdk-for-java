@@ -370,7 +370,6 @@ public class Job {
      * @return the entity action operation
      */
     public static EntityActionOperation cancel(String jobId) {
-        return new DefaultActionOperation(ENTITY_SET, "Cancel")
-                .addQueryParameter("jobId", String.format("'%s'", jobId));
+        return new DefaultActionOperation("CancelJob").addQueryParameter("jobId", String.format("'%s'", jobId));
     }
 }

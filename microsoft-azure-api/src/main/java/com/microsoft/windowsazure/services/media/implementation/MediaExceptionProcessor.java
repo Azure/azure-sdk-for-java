@@ -36,7 +36,6 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-// TODO: Auto-generated Javadoc
 /**
  * /**
  * Wrapper implementation of <code>MediaEntityContract</code> that
@@ -189,6 +188,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getRestServiceUri()
+     */
     @Override
     public URI getRestServiceUri() {
         return service.getRestServiceUri();
