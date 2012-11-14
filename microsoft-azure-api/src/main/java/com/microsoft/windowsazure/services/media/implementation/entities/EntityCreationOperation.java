@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 
 /**
  * 
@@ -27,6 +28,7 @@ public interface EntityCreationOperation<T> extends EntityOperationSingleResult<
      * the request data for entity creation.
      * 
      * @return The payload to be marshalled and sent to the server.
+     * @throws ServiceException
      */
-    Object getRequestContents();
+    Object getRequestContents() throws ServiceException;
 }

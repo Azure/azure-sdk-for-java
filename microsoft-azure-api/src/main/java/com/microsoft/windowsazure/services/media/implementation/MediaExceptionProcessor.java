@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
@@ -157,6 +158,19 @@ public class MediaExceptionProcessor implements MediaContract {
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
         try {
             service.delete(deleter);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void action(EntityActionOperation action) throws ServiceException {
+        try {
+            service.action(action);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

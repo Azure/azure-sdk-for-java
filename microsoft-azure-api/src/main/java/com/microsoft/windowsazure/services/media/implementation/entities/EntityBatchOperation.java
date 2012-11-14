@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -23,12 +23,12 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 
-public class Operation {
+public class EntityBatchOperation {
 
     protected String verb;
     protected EntryType entryType;
 
-    public Operation() {
+    public EntityBatchOperation() {
         this.entryType = new EntryType();
     }
 
@@ -44,7 +44,7 @@ public class Operation {
         this.verb = verb;
     }
 
-    protected String getVerb() {
+    public String getVerb() {
         return this.verb;
     }
 

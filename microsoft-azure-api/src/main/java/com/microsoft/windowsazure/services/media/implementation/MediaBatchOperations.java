@@ -42,7 +42,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
+import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.table.implementation.InputStreamDataSource;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -55,7 +58,7 @@ import com.sun.jersey.core.util.ReaderWriter;
 public class MediaBatchOperations {
 
     /** The operations. */
-    private final List<Operation> operations;
+    private final List<EntityBatchOperation> entityBatchOperations;
 
     /** The service uri. */
     private final URI serviceURI;
@@ -82,7 +85,7 @@ public class MediaBatchOperations {
         }
         this.serviceURI = serviceURI;
         this.oDataAtomMarshaller = new ODataAtomMarshaller();
-        this.operations = new ArrayList<Operation>();
+        this.entityBatchOperations = new ArrayList<EntityBatchOperation>();
         batchId = String.format("batch_%s", UUID.randomUUID().toString());
         try {
             this.oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
@@ -140,13 +143,13 @@ public class MediaBatchOperations {
         int jobContentId = contentId;
         ValidateJobOperation();
 
-        for (Operation operation : operations) {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
             DataSource bodyPartContent = null;
-            if (operation instanceof CreateJobOperation) {
-                CreateJobOperation createJobOperation = (CreateJobOperation) operation;
+            if (entityBatchOperation instanceof Job.CreateBatchOperation) {
+                Job.CreateBatchOperation jobCreateBatchOperation = (Job.CreateBatchOperation) entityBatchOperation;
                 jobContentId = contentId;
-                bodyPartContent = createBatchCreateEntityPart(createJobOperation.getVerb(), "Jobs",
-                        createJobOperation.getEntryType(), jobURI, contentId);
+                bodyPartContent = createBatchCreateEntityPart(jobCreateBatchOperation.getVerb(), "Jobs",
+                        jobCreateBatchOperation.getEntryType(), jobURI, contentId);
                 contentId++;
                 if (bodyPartContent != null) {
                     bodyPartContents.add(bodyPartContent);
@@ -159,8 +162,8 @@ public class MediaBatchOperations {
 
     private void ValidateJobOperation() {
         int jobCount = 0;
-        for (Operation operation : operations) {
-            if (operation instanceof CreateJobOperation) {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
+            if (entityBatchOperation instanceof Job.CreateBatchOperation) {
                 jobCount++;
             }
         }
@@ -184,10 +187,10 @@ public class MediaBatchOperations {
      *             the jAXB exception
      */
     private void addTaskPart(List<DataSource> bodyPartContents, URI taskURI, int contentId) throws JAXBException {
-        for (Operation operation : operations) {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
             DataSource bodyPartContent = null;
-            if (operation instanceof CreateTaskOperation) {
-                CreateTaskOperation createTaskOperation = (CreateTaskOperation) operation;
+            if (entityBatchOperation instanceof Task.CreateBatchOperation) {
+                Task.CreateBatchOperation createTaskOperation = (Task.CreateBatchOperation) entityBatchOperation;
                 bodyPartContent = createBatchCreateEntityPart(createTaskOperation.getVerb(), "Tasks",
                         createTaskOperation.getEntryType(), taskURI, contentId);
                 contentId++;
@@ -311,17 +314,17 @@ public class MediaBatchOperations {
         List<DataSource> parts = parseParts(response.getEntityInputStream(),
                 response.getHeaders().getFirst("Content-Type"));
 
-        if (parts.size() == 0 || parts.size() > operations.size()) {
+        if (parts.size() == 0 || parts.size() > entityBatchOperations.size()) {
             throw new UniformInterfaceException(String.format(
                     "Batch response from server does not contain the correct amount "
-                            + "of parts (expecting %d, received %d instead)", parts.size(), operations.size()),
-                    response);
+                            + "of parts (expecting %d, received %d instead)", parts.size(),
+                    entityBatchOperations.size()), response);
         }
 
         ArrayList<Object> result = new ArrayList<Object>();
         for (int i = 0; i < parts.size(); i++) {
             DataSource ds = parts.get(i);
-            Operation operation = operations.get(i);
+            EntityBatchOperation entityBatchOperation = entityBatchOperations.get(i);
 
             StatusLine status = StatusLine.create(ds);
             InternetHeaders headers = parseHeaders(ds);
@@ -342,18 +345,18 @@ public class MediaBatchOperations {
                 UniformInterfaceException uniformInterfaceException = new UniformInterfaceException(clientResponse);
                 throw uniformInterfaceException;
             }
-            else if (operation instanceof CreateJobOperation) {
+            else if (entityBatchOperation instanceof Job.CreateBatchOperation) {
 
                 try {
                     jobInfo = oDataAtomUnmarshaller.unmarshalEntry(content, JobInfo.class);
-                    CreateJobOperation createJobOperation = (CreateJobOperation) operation;
-                    createJobOperation.setJobInfo(jobInfo);
+                    Job.CreateBatchOperation jobCreateBatchOperation = (Job.CreateBatchOperation) entityBatchOperation;
+                    jobCreateBatchOperation.setJobInfo(jobInfo);
                 }
                 catch (JAXBException e) {
                     throw new ServiceException(e);
                 }
             }
-            else if (operation instanceof CreateTaskOperation) {
+            else if (entityBatchOperation instanceof Task.CreateBatchOperation) {
                 EntryType entryType = null;
                 try {
                     entryType = oDataAtomUnmarshaller.unmarshalEntry(content);
@@ -458,7 +461,7 @@ public class MediaBatchOperations {
      *            the operation
      */
     public void addOperation(EntityBatchOperation entityBatchOperation) {
-        this.operations.add(entityBatchOperation);
+        this.entityBatchOperations.add(entityBatchOperation);
     }
 
     /**
@@ -537,8 +540,8 @@ public class MediaBatchOperations {
         }
     }
 
-    public List<Operation> getOperations() {
-        return operations;
+    public List<EntityBatchOperation> getOperations() {
+        return entityBatchOperations;
     }
 
     public String getBatchId() {

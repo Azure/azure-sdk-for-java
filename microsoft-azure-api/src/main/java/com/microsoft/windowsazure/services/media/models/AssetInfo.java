@@ -173,16 +173,4 @@ public class AssetInfo extends ODataEntity<AssetType> {
         return EncryptionOption.fromCode(getContent().getOptions());
     }
 
-    /**
-     * Set the options
-     * 
-     * @param options
-     *            the options
-     * @return the asset info
-     */
-    public AssetInfo setOptions(EncryptionOption options) {
-        getContent().setOptions(options.getCode());
-        return this;
-    }
-
 }

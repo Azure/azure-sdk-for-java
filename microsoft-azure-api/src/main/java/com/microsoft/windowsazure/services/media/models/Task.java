@@ -17,17 +17,13 @@ package com.microsoft.windowsazure.services.media.models;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -41,76 +37,8 @@ public class Task {
     private Task() {
     }
 
-    public static Creator create() {
-        return new Creator();
-    }
-
-    public static class Creator extends EntityOperationSingleResultBase<TaskInfo> implements
-            EntityCreationOperation<TaskInfo> {
-        private String name;
-        private String alternateId;
-        private EncryptionOption options;
-        private String taskBody;
-        private String configuration;
-        private String mediaProcessorId;
-
-        public Creator() {
-            super(ENTITY_SET, TaskInfo.class);
-        }
-
-        @Override
-        public Object getRequestContents() {
-            TaskType taskType = new TaskType();
-            taskType.setName(name);
-            taskType.setAlternateId(alternateId);
-            if (options != null) {
-                taskType.setOptions(options.getCode());
-            }
-            if (state != null) {
-                taskType.setState(state.getCode());
-            }
-            return taskType;
-        }
-
-        /**
-         * Set the name of the task to be created
-         * 
-         * @param name
-         *            The name
-         * @return The creator object (for call chaining)
-         */
-        public Creator setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public String getConfiguration() {
-            return this.configuration;
-        }
-
-        public Creator setConfiguration(String configuration) {
-            this.configuration = configuration;
-            return this;
-        }
-
-        public String getMediaProcessorId() {
-            return this.mediaProcessorId;
-        }
-
-        public Creator setMediaProcessorId(String mediaProcessorId) {
-            this.mediaProcessorId = mediaProcessorId;
-            return this;
-        }
-
-        public String getTaskBody() {
-            return taskBody;
-        }
-
-        public Creator setTaskBody(String taskBody) {
-            this.taskBody = taskBody;
-            return this;
-        }
-
+    public static CreateBatchOperation create() {
+        return new CreateBatchOperation();
     }
 
     /**
@@ -146,56 +74,44 @@ public class Task {
         }, queryParameters);
     }
 
-    /**
-     * Create an operation that will update the given task
-     * 
-     * @param taskId
-     *            id of the task to update
-     * @return the update operation
-     */
-    public static Updater update(String taskId) {
-        return new Updater(taskId);
-    }
-
-    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+    public static class CreateBatchOperation extends EntityBatchOperation {
+        private String configuration;
+        private String mediaProcessorId;
         private String name;
-        private String alternateId;
+        private String taskBody;
 
-        protected Updater(String taskId) {
-            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, taskId));
+        public CreateBatchOperation setConfiguration(String configuration) {
+            this.configuration = configuration;
+            return this;
         }
 
-        @Override
-        public Object getRequestContents() {
-            TaskType taskType = new TaskType();
-            taskType.setName(name);
-            taskType.setAlternateId(alternateId);
-            return taskType;
+        public String getConfiguration() {
+            return this.configuration;
         }
 
-        /**
-         * Sets new name for task
-         * 
-         * @param name
-         *            The new name
-         * @return Updater instance
-         */
-        public Updater setName(String name) {
+        public CreateBatchOperation setMediaProcessorId(String mediaProcessorId) {
+            this.mediaProcessorId = mediaProcessorId;
+            return this;
+        }
+
+        public CreateBatchOperation setName(String name) {
             this.name = name;
             return this;
         }
 
-        /**
-         * Sets new alternate id for task
-         * 
-         * @param alternateId
-         *            the new alternate id
-         * @return Updater instance
-         */
-        public Updater setAlternateId(String alternateId) {
-            this.alternateId = alternateId;
+        public String getName() {
+            return this.name;
+        }
+
+        public CreateBatchOperation setTaskBody(String taskBody) {
+            this.taskBody = taskBody;
             return this;
         }
+
+        public String getTaskBody() {
+            return this.taskBody;
+        }
+
     }
 
     /**
