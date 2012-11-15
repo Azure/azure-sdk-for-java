@@ -182,7 +182,7 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Sets the options.
+     * Set the options.
      * 
      * @param encryptionOption
      *            the encryption option

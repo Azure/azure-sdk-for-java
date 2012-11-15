@@ -36,19 +36,21 @@ public class EntityBatchOperation {
         return entryType;
     }
 
-    public void setEntityType(EntryType entryType) {
+    public EntityBatchOperation setEntityType(EntryType entryType) {
         this.entryType = entryType;
+        return this;
     }
 
-    protected void setVerb(String verb) {
+    protected EntityBatchOperation setVerb(String verb) {
         this.verb = verb;
+        return this;
     }
 
     public String getVerb() {
         return this.verb;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addContentObject(Object contentObject) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
@@ -60,7 +62,7 @@ public class EntityBatchOperation {
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void addLink(String title, String href, String type, String rel) {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);

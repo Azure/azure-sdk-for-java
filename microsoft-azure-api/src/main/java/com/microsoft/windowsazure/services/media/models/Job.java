@@ -45,7 +45,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityO
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Job entities.
  * 
@@ -115,20 +114,19 @@ public class Job {
          * @throws ServiceException
          *             the service exception
          */
-        private void buildMimeMultipart() throws ServiceException {
+        private void buildMimeMultipart() {
             mediaBatchOperations = null;
+            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(this);
 
             try {
                 mediaBatchOperations = new MediaBatchOperations(serviceUri);
             }
             catch (JAXBException e) {
-                throw new ServiceException(e);
+                throw new RuntimeException(e);
             }
             catch (ParserConfigurationException e) {
-                throw new ServiceException(e);
+                throw new RuntimeException(e);
             }
-
-            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(this);
 
             mediaBatchOperations.addOperation(createJobBatchOperation);
             for (Task.CreateBatchOperation taskCreateBatchOperation : taskCreateBatchOperations) {
@@ -139,13 +137,13 @@ public class Job {
                 mimeMultipart = mediaBatchOperations.getMimeMultipart();
             }
             catch (MessagingException e) {
-                throw new ServiceException(e);
+                throw new RuntimeException(e);
             }
             catch (IOException e) {
-                throw new ServiceException(e);
+                throw new RuntimeException(e);
             }
             catch (JAXBException e) {
-                throw new ServiceException(e);
+                throw new RuntimeException(e);
             }
 
             this.contentType = mediaBatchOperations.getContentType();
