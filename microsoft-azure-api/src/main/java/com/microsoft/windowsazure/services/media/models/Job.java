@@ -178,6 +178,7 @@ public class Job {
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase#getResponseClass()
          */
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         public Class getResponseClass() {
             return ClientResponse.class;

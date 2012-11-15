@@ -19,15 +19,12 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.api.client.GenericType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Task entities.
  * 
@@ -51,17 +48,6 @@ public class Task {
      */
     public static CreateBatchOperation create() {
         return new CreateBatchOperation();
-    }
-
-    /**
-     * Create an operation object that will get the state of the given task.
-     * 
-     * @param taskId
-     *            id of task to retrieve
-     * @return the get operation
-     */
-    public static EntityGetOperation<TaskInfo> get(String taskId) {
-        return new DefaultGetOperation<TaskInfo>(ENTITY_SET, taskId, TaskInfo.class);
     }
 
     /**
