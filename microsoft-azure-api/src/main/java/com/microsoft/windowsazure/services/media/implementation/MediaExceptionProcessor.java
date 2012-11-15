@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.net.URI;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +26,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
@@ -41,7 +44,10 @@ import com.sun.jersey.api.client.UniformInterfaceException;
  */
 public class MediaExceptionProcessor implements MediaContract {
 
+    /** The service. */
     private final MediaContract service;
+
+    /** The log. */
     private static Log log = LogFactory.getLog(MediaContract.class);
 
     /**
@@ -164,6 +170,30 @@ public class MediaExceptionProcessor implements MediaContract {
         catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     */
+    @Override
+    public void action(EntityActionOperation action) throws ServiceException {
+        try {
+            service.action(action);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getRestServiceUri()
+     */
+    @Override
+    public URI getRestServiceUri() {
+        return service.getRestServiceUri();
     }
 
 }

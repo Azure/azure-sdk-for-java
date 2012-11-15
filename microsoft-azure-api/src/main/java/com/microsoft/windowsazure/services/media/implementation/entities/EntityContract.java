@@ -74,4 +74,13 @@ public interface EntityContract {
      */
     public abstract void delete(EntityDeleteOperation deleter) throws ServiceException;
 
+    /**
+     * Perform an action on an entity
+     * 
+     * @param action
+     *            Object providing details of the action
+     * @throws ServiceException
+     */
+    public abstract void action(EntityActionOperation action) throws ServiceException;
+
 }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation;
+package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -23,12 +23,12 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 
-public class Operation {
+public class EntityBatchOperation {
 
     protected String verb;
     protected EntryType entryType;
 
-    public Operation() {
+    public EntityBatchOperation() {
         this.entryType = new EntryType();
     }
 
@@ -36,20 +36,22 @@ public class Operation {
         return entryType;
     }
 
-    public void setEntityType(EntryType entryType) {
+    public EntityBatchOperation setEntityType(EntryType entryType) {
         this.entryType = entryType;
+        return this;
     }
 
-    protected void setVerb(String verb) {
+    protected EntityBatchOperation setVerb(String verb) {
         this.verb = verb;
+        return this;
     }
 
-    protected String getVerb() {
+    public String getVerb() {
         return this.verb;
     }
 
-    @SuppressWarnings("unchecked")
-    protected void addContentObject(Object contentObject) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void addContentObject(Object contentObject) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent.getContent().add(
@@ -60,7 +62,7 @@ public class Operation {
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected void addLink(String title, String href, String type, String rel) {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);

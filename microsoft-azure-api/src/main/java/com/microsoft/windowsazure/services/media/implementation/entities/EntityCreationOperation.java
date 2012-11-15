@@ -15,10 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Interface EntityCreationOperation.
  * 
- *
+ * @param <T>
+ *            the generic type
  */
 public interface EntityCreationOperation<T> extends EntityOperationSingleResult<T> {
 
@@ -27,6 +31,19 @@ public interface EntityCreationOperation<T> extends EntityOperationSingleResult<
      * the request data for entity creation.
      * 
      * @return The payload to be marshalled and sent to the server.
+     * @throws ServiceException
+     *             the service exception
      */
-    Object getRequestContents();
+    Object getRequestContents() throws ServiceException;
+
+    /**
+     * Post response process.
+     * 
+     * @param rawResponse
+     *            the raw response
+     * @return the object
+     * @throws ServiceException
+     *             the service exception
+     */
+    Object processResponse(Object rawResponse) throws ServiceException;
 }
