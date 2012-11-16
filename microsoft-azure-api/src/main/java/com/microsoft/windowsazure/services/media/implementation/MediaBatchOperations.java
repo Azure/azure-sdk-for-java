@@ -370,7 +370,7 @@ public class MediaBatchOperations {
      *            the ds
      * @return the internet headers
      */
-    public InternetHeaders parseHeaders(DataSource ds) {
+    private InternetHeaders parseHeaders(DataSource ds) {
         try {
             return new InternetHeaders(ds.getInputStream());
         }
@@ -389,7 +389,7 @@ public class MediaBatchOperations {
      *            the ds
      * @return the input stream
      */
-    public InputStream parseEntity(DataSource ds) {
+    private InputStream parseEntity(DataSource ds) {
         try {
             return ds.getInputStream();
         }
@@ -407,7 +407,7 @@ public class MediaBatchOperations {
      *            the content type
      * @return the list
      */
-    public List<DataSource> parseParts(final InputStream entityInputStream, final String contentType) {
+    private List<DataSource> parseParts(final InputStream entityInputStream, final String contentType) {
         try {
             return parsePartsCore(entityInputStream, contentType);
         }

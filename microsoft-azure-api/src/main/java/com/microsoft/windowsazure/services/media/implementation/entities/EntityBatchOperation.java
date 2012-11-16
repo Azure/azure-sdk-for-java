@@ -51,7 +51,7 @@ public class EntityBatchOperation {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void addContentObject(Object contentObject) {
+    public EntityBatchOperation addContentObject(Object contentObject) {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent.getContent().add(
@@ -60,10 +60,11 @@ public class EntityBatchOperation {
 
         this.entryType.getEntryChildren().add(
                 new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
+        return this;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void addLink(String title, String href, String type, String rel) {
+    protected EntityBatchOperation addLink(String title, String href, String type, String rel) {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);
         linkType.setHref(href);
@@ -71,6 +72,7 @@ public class EntityBatchOperation {
         linkType.setRel(rel);
         this.entryType.getEntryChildren().add(
                 new JAXBElement(new QName(Constants.ATOM_NS, "link"), LinkType.class, linkType));
+        return this;
 
     }
 

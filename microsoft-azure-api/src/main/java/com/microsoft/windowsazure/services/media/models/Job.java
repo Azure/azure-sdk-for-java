@@ -342,7 +342,7 @@ public class Job {
          * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getContentType()
          */
         @Override
-        public MediaType getContentType() throws ServiceException {
+        public MediaType getContentType() {
             if (fresh) {
                 buildMimeMultipart();
             }

@@ -34,7 +34,7 @@ public interface EntityOperation {
      * @return The MIME type
      * @throws ServiceException
      */
-    public abstract MediaType getContentType() throws ServiceException;
+    public abstract MediaType getContentType();
 
     /**
      * Get the MIME type that we're expecting the server to send back.
