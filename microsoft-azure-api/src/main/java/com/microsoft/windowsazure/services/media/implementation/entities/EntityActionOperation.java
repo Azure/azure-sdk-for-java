@@ -15,30 +15,38 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.sun.jersey.api.client.ClientResponse;
 
-public interface EntityOperation {
+/**
+ * Action operation for Entities.
+ */
+public interface EntityActionOperation extends EntityOperation {
 
     /**
-     * Get the URI the creation request should be sent to.
+     * Gets the query parameters.
      * 
-     * @return The uri
+     * @return the query parameters
      */
-    public abstract String getUri();
+    MultivaluedMap<String, String> getQueryParameters();
 
     /**
-     * Get the MIME type for the content that's being sent to the server.
+     * Adds the query parameter.
      * 
-     * @return The MIME type
-     * @throws ServiceException
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return the entity action operation
      */
-    public abstract MediaType getContentType();
+    EntityActionOperation addQueryParameter(String key, String value);
 
     /**
-     * Get the MIME type that we're expecting the server to send back.
+     * Process response.
+     * 
+     * @param clientResponse
+     *            the client response
      */
-    public abstract MediaType getAcceptType();
-
+    void processResponse(ClientResponse clientResponse);
 }

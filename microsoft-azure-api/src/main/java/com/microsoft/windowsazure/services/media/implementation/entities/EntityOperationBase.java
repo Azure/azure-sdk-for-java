@@ -21,7 +21,6 @@ import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
 
-
 /**
  * Default implementation of EntityOperation<T> to provide
  * default values for common methods.

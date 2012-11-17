@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 
 /**
  * 
@@ -42,5 +43,9 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase impl
     @Override
     public Class<T> getResponseClass() {
         return responseClass;
+    }
+
+    public Object processResponse(Object rawResponse) throws ServiceException {
+        return rawResponse;
     }
 }

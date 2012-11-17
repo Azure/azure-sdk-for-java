@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media;
 
+import java.net.URI;
+
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityContract;
 
@@ -23,4 +25,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityC
  * 
  */
 public interface MediaContract extends FilterableService<MediaContract>, EntityContract {
+
+    URI getRestServiceUri();
+
 }

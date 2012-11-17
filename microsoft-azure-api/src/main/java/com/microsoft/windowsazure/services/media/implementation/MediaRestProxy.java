@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.net.URI;
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -35,6 +36,8 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
 
+    private RedirectFilter redirectFilter;
+
     /**
      * Instantiates a new media rest proxy.
      * 
@@ -52,6 +55,7 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
             VersionHeadersFilter versionHeadersFilter) {
         super(channel, new ServiceFilter[0]);
 
+        this.redirectFilter = redirectFilter;
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
         channel.addFilter(versionHeadersFilter);
@@ -78,5 +82,10 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
         return new MediaRestProxy(getChannel(), newFilters);
+    }
+
+    @Override
+    public URI getRestServiceUri() {
+        return this.redirectFilter.getBaseURI();
     }
 }
