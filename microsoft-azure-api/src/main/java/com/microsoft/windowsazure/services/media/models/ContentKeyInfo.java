@@ -21,6 +21,7 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ContentKeyInfo.
  */
@@ -36,6 +37,13 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      */
     public ContentKeyInfo(EntryType entry, ContentKeyRestType content) {
         super(entry, content);
+    }
+
+    /**
+     * Instantiates a new content key info.
+     */
+    public ContentKeyInfo() {
+        super(new ContentKeyRestType());
     }
 
     /**
