@@ -35,7 +35,7 @@ import com.sun.jersey.api.client.GenericType;
 public class ContentKey {
 
     /** The Constant ENTITY_SET. */
-    private static final String ENTITY_SET = "AccessPolicies";
+    private static final String ENTITY_SET = "ContentKeys";
 
     /**
      * Instantiates a new content key.

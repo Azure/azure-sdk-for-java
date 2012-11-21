@@ -90,7 +90,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void cannotGetSingleContentKeyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(ContentKey.get(invalidId));
     }
 
@@ -164,14 +164,14 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void cannotDeleteContentKeyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(ContentKey.delete(invalidId));
     }
 
     @Test
     public void canDeleteContentKeyByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(ContentKey.delete(validButNonexistContentKeyId));
     }
 
