@@ -29,40 +29,66 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityO
 import com.sun.jersey.api.client.GenericType;
 
 /**
- * Class for creating operations to manipulate Access Policy entities.
+ * Class for creating operations to manipulate content key entities.
  * 
  */
 public class ContentKey {
 
+    /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "AccessPolicies";
 
+    /**
+     * Instantiates a new content key.
+     */
     private ContentKey() {
     }
 
     /**
-     * Creates an operation to create a new access policy
+     * Creates an operation to create a new content key.
      * 
-     * @param name
-     *            name of the access policy
-     * @param durationInMinutes
-     *            how long the access policy will be in force
-     * @param permissions
-     *            permissions allowed by this access policy
+     * @param id
+     *            the id
+     * @param contentKeyType
+     *            the content key type
+     * @param encryptedContentKey
+     *            the encrypted content key
      * @return The operation
      */
-    public static EntityCreationOperation<ContentKeyInfo> create(String id, ContentKeyType contentKeyType,
-            String encryptedContentKey) {
+    public static Creator create(String id, ContentKeyType contentKeyType, String encryptedContentKey) {
         return new Creator(id, contentKeyType, encryptedContentKey);
     }
 
+    /**
+     * The Class Creator.
+     */
     private static class Creator extends EntityOperationSingleResultBase<ContentKeyInfo> implements
             EntityCreationOperation<ContentKeyInfo> {
-        private final String id;
+
+        /** The id. */
+        private String id;
+
+        /** The content key type. */
         private ContentKeyType contentKeyType;
-        private final String encryptedContentKey;
+
+        /** The encrypted content key. */
+        private String encryptedContentKey;
+
+        /** The name. */
         private String name;
+
+        /** The checksum. */
         private String checksum;
 
+        /**
+         * Instantiates a new creator.
+         * 
+         * @param id
+         *            the id
+         * @param contentKeyType
+         *            the content key type
+         * @param encryptedContentKey
+         *            the encrypted content key
+         */
         public Creator(String id, ContentKeyType contentKeyType, String encryptedContentKey) {
 
             super(ENTITY_SET, ContentKeyInfo.class);
@@ -72,6 +98,9 @@ public class ContentKey {
             this.encryptedContentKey = encryptedContentKey;
         }
 
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         */
         @Override
         public Object getRequestContents() {
             ContentKeyRestType contentKeyRestType = new ContentKeyRestType();
@@ -85,26 +114,117 @@ public class ContentKey {
             return contentKeyRestType;
         }
 
+        /**
+         * Gets the content key type.
+         * 
+         * @return the content key type
+         */
         public ContentKeyType getContentKeyType() {
             return contentKeyType;
         }
 
-        public EntityOperationSingleResultBase<ContentKeyInfo> setContentKeyType(ContentKeyType contentKeyType) {
+        /**
+         * Sets the content key type.
+         * 
+         * @param contentKeyType
+         *            the content key type
+         * @return the creator
+         */
+        public Creator setContentKeyType(ContentKeyType contentKeyType) {
             this.contentKeyType = contentKeyType;
             return this;
         }
 
+        /**
+         * Gets the encrypted content key.
+         * 
+         * @return the encrypted content key
+         */
         public String getEncryptedContentKey() {
             return encryptedContentKey;
         }
 
+        /**
+         * Sets the encrypted content key.
+         * 
+         * @param encryptedContentKey
+         *            the encrypted content key
+         * @return the creator
+         */
+        public Creator setEncryptedContentKey(String encryptedContentKey) {
+            this.encryptedContentKey = encryptedContentKey;
+            return this;
+        }
+
+        /**
+         * Gets the id.
+         * 
+         * @return the id
+         */
+        public String getId() {
+            return id;
+        }
+
+        /**
+         * Sets the id.
+         * 
+         * @param id
+         *            the id
+         * @return the creator
+         */
+        public Creator setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        /**
+         * Gets the name.
+         * 
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Sets the name.
+         * 
+         * @param name
+         *            the name
+         * @return the creator
+         */
+        public Creator setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * Gets the checksum.
+         * 
+         * @return the checksum
+         */
+        public String getChecksum() {
+            return checksum;
+        }
+
+        /**
+         * Sets the checksum.
+         * 
+         * @param checksum
+         *            the checksum
+         * @return the creator
+         */
+        public Creator setChecksum(String checksum) {
+            this.checksum = checksum;
+            return this;
+        }
     }
 
     /**
-     * Create an operation that will retrieve the given access policy
+     * Create an operation that will retrieve the given content key.
      * 
      * @param ContentKeyId
-     *            id of access policy to retrieve
+     *            id of content key to retrieve
      * @return the operation
      */
     public static EntityGetOperation<ContentKeyInfo> get(String ContentKeyId) {
@@ -112,7 +232,7 @@ public class ContentKey {
     }
 
     /**
-     * Create an operation that will retrieve all access policies
+     * Create an operation that will retrieve all access policies.
      * 
      * @return the operation
      */
@@ -122,7 +242,7 @@ public class ContentKey {
     }
 
     /**
-     * Create an operation that will retrieve all access policies that match the given query parameters
+     * Create an operation that will retrieve all access policies that match the given query parameters.
      * 
      * @param queryParameters
      *            query parameters to add to the request
@@ -134,10 +254,10 @@ public class ContentKey {
     }
 
     /**
-     * Create an operation to delete the given access policy
+     * Create an operation to delete the given content key.
      * 
      * @param ContentKeyId
-     *            id of access policy to delete
+     *            id of content key to delete
      * @return the delete operation
      */
     public static EntityDeleteOperation delete(String ContentKeyId) {

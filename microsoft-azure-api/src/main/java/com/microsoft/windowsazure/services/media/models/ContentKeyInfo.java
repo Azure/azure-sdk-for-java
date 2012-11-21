@@ -147,7 +147,7 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the check sum
      */
-    public String getCheckSum() {
+    public String getChecksum() {
         return getContent().getChecksum();
     }
 
