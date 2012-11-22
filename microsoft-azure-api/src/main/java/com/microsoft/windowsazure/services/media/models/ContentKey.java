@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityL
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate content key entities.
  * 
@@ -61,7 +62,7 @@ public class ContentKey {
     /**
      * The Class Creator.
      */
-    private static class Creator extends EntityOperationSingleResultBase<ContentKeyInfo> implements
+    public static class Creator extends EntityOperationSingleResultBase<ContentKeyInfo> implements
             EntityCreationOperation<ContentKeyInfo> {
 
         /** The id. */

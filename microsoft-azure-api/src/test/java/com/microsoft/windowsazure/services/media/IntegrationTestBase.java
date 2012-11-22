@@ -18,6 +18,8 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -74,6 +76,20 @@ public abstract class IntegrationTestBase {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
+        removeAllTestContentKeys();
+    }
+
+    private static void removeAllTestContentKeys() {
+        try {
+            List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list());
+
+            for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
+                service.delete(ContentKey.delete(contentKeyInfo.getId()));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestAccessPolicies() {

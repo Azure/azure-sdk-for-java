@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -33,11 +34,17 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
-    private final String validButNonexistContentKeyId = "nb:kid:80dfe751-e5a1-4b29-a992-4a75276473af";
+    private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
     private final String testName = testContentKeyPrefix + "CanCreate";
-    private final String testContentKeyId = "nb:kid:80dfe751-e5a1-4b29-a992-4a75276473ae";
-    private final ContentKeyType testContentKeyType = ContentKeyType.ConfigurationEncryption;
+    private final String testContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473ae";
+    private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
     private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
+
+    private String createRandomContentKeyId() {
+        UUID uuid = UUID.randomUUID();
+        String randomContentKey = String.format("nb:kid:UUID:%s", uuid);
+        return randomContentKey;
+    }
 
     private void verifyInfosEqual(String message, ContentKeyInfo expected, ContentKeyInfo actual) {
         verifyContentKeyProperties(message, expected.getId(), expected.getContentKeyType(),
@@ -53,38 +60,42 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " ContentKeyType", contentKeyType, actual.getContentKeyType());
         assertEquals(message + " EncryptedContentKey", encryptedContentKey, actual.getEncryptedContentKey());
         assertEquals(message + " Name", name, actual.getName());
-        assertEquals(message + " ProtectionKeyId", actual.getProtectionKeyId());
-        assertEquals(message + " ProtectionKeyType", actual.getProtectionKeyType());
-        assertEquals(message + " Checksum", actual.getChecksum());
+        assertEquals(message + " ProtectionKeyId", protectionKeyId, actual.getProtectionKeyId());
+        assertEquals(message + " ProtectionKeyType", protectionKeyType, actual.getProtectionKeyType());
+        assertEquals(message + " Checksum", checksum, actual.getChecksum());
     }
 
     @Test
     public void canCreateContentKey() throws Exception {
         // Arrange
+        String testCanCreateContentKeyId = createRandomContentKeyId();
+        String testCanCreateContentKeyName = "testCanCreateContentKey";
 
         // Act
-        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
-                testEncryptedContentKey));
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testCanCreateContentKeyId, testContentKeyType,
+                testEncryptedContentKey).setName(testCanCreateContentKeyName));
 
         // Assert
-        verifyContentKeyProperties("ContentKey", testContentKeyId, testContentKeyType, testEncryptedContentKey,
-                testName, null, null, "", contentKeyInfo);
+        verifyContentKeyProperties("ContentKey", testCanCreateContentKeyId, testContentKeyType,
+                testEncryptedContentKey, testCanCreateContentKeyName, "", ProtectionKeyType.fromCode(0), "",
+                contentKeyInfo);
     }
 
     @Test
     public void canGetSingleContentKeyById() throws Exception {
         // Arrange
         String expectedName = testContentKeyPrefix + "GetOne";
-        ContentKeyInfo ContentKeyToGet = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
-                testEncryptedContentKey));
+        String testGetSingleContentKeyByIdId = createRandomContentKeyId();
+        ContentKeyInfo ContentKeyToGet = service.create(ContentKey.create(testGetSingleContentKeyByIdId,
+                testContentKeyType, testEncryptedContentKey).setName(expectedName));
 
         // Act
         ContentKeyInfo retrievedContentKeyInfo = service.get(ContentKey.get(ContentKeyToGet.getId()));
 
         // Assert
         assertEquals(ContentKeyToGet.getId(), retrievedContentKeyInfo.getId());
-        verifyContentKeyProperties("ContentKey", testContentKeyId, testContentKeyType, testEncryptedContentKey,
-                testName, null, null, "", retrievedContentKeyInfo);
+        verifyContentKeyProperties("ContentKey", testGetSingleContentKeyByIdId, testContentKeyType,
+                testEncryptedContentKey, expectedName, "", ProtectionKeyType.fromCode(0), "", retrievedContentKeyInfo);
     }
 
     @Test
@@ -97,24 +108,23 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canRetrieveListOfContentKeys() throws Exception {
         String[] ContentKeyNames = new String[] { testContentKeyPrefix + "ListOne", testContentKeyPrefix + "ListTwo" };
-        double duration = 3;
 
-        List<ContentKeyInfo> expectedAccessPolicies = new ArrayList<ContentKeyInfo>();
+        List<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
         for (int i = 0; i < ContentKeyNames.length; i++) {
-            ContentKeyInfo contentKey = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
-                    testEncryptedContentKey));
-            expectedAccessPolicies.add(contentKey);
+            String testCanRetrieveListOfContentKeysId = createRandomContentKeyId();
+            ContentKeyInfo contentKey = service.create(ContentKey.create(testCanRetrieveListOfContentKeysId,
+                    testContentKeyType, testEncryptedContentKey));
+            expectedContentKeys.add(contentKey);
         }
 
-        List<ContentKeyInfo> actualAccessPolicies = service.list(ContentKey.list());
+        List<ContentKeyInfo> actualContentKeys = service.list(ContentKey.list());
 
-        verifyListResultContains("listAccessPolicies", expectedAccessPolicies, actualAccessPolicies,
-                new ComponentDelegate() {
-                    @Override
-                    public void verifyEquals(String message, Object expected, Object actual) {
-                        verifyInfosEqual(message, (ContentKeyInfo) expected, (ContentKeyInfo) actual);
-                    }
-                });
+        verifyListResultContains("listContentKeyss", expectedContentKeys, actualContentKeys, new ComponentDelegate() {
+            @Override
+            public void verifyEquals(String message, Object expected, Object actual) {
+                verifyInfosEqual(message, (ContentKeyInfo) expected, (ContentKeyInfo) actual);
+            }
+        });
     }
 
     @Test
@@ -123,42 +133,41 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
                 testContentKeyPrefix + "ListFour", testContentKeyPrefix + "ListFive", testContentKeyPrefix + "ListSix",
                 testContentKeyPrefix + "ListSeven" };
 
-        List<ContentKeyInfo> expectedAccessPolicies = new ArrayList<ContentKeyInfo>();
+        List<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
         for (int i = 0; i < ContentKeyNames.length; i++) {
-            ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
-                    testEncryptedContentKey));
-            expectedAccessPolicies.add(contentKeyInfo);
+            ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(createRandomContentKeyId(),
+                    testContentKeyType, testEncryptedContentKey));
+            expectedContentKeys.add(contentKeyInfo);
         }
 
         MultivaluedMap<String, String> options = new MultivaluedMapImpl();
         options.add("$top", "2");
 
-        List<ContentKeyInfo> actualAccessPolicies = service.list(ContentKey.list(options));
+        List<ContentKeyInfo> actualContentKeys = service.list(ContentKey.list(options));
 
-        assertEquals(2, actualAccessPolicies.size());
+        assertEquals(2, actualContentKeys.size());
     }
 
     @Test
     public void canDeleteContentKeyById() throws Exception {
-        String ContentKeyName = testContentKeyPrefix + "ToDelete";
-        double duration = 1;
-        ContentKeyInfo ContentKeyToDelete = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
-                testEncryptedContentKey));
-        List<ContentKeyInfo> listPoliciesResult = service.list(ContentKey.list());
-        int ContentKeyCountBaseline = listPoliciesResult.size();
+        String contentKeyName = testContentKeyPrefix + "ToDelete";
+        ContentKeyInfo contentKeyToDelete = service.create(ContentKey.create(createRandomContentKeyId(),
+                testContentKeyType, testEncryptedContentKey));
+        List<ContentKeyInfo> listContentKeysResult = service.list(ContentKey.list());
+        int ContentKeyCountBaseline = listContentKeysResult.size();
 
-        service.delete(ContentKey.delete(ContentKeyToDelete.getId()));
+        service.delete(ContentKey.delete(contentKeyToDelete.getId()));
 
-        listPoliciesResult = service.list(ContentKey.list());
-        assertEquals("listPoliciesResult.size", ContentKeyCountBaseline - 1, listPoliciesResult.size());
+        listContentKeysResult = service.list(ContentKey.list());
+        assertEquals("listPoliciesResult.size", ContentKeyCountBaseline - 1, listContentKeysResult.size());
 
         for (ContentKeyInfo contentKey : service.list(ContentKey.list())) {
-            assertFalse(ContentKeyToDelete.getId().equals(contentKey.getId()));
+            assertFalse(contentKeyToDelete.getId().equals(contentKey.getId()));
         }
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(ContentKey.get(ContentKeyToDelete.getId()));
+        service.get(ContentKey.get(contentKeyToDelete.getId()));
     }
 
     @Test
@@ -169,9 +178,9 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canDeleteContentKeyByNonexistId() throws Exception {
+    public void cannotDeleteContentKeyByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(400));
+        expectedException.expect(new ServiceExceptionMatcher(404));
         service.delete(ContentKey.delete(validButNonexistContentKeyId));
     }
 
