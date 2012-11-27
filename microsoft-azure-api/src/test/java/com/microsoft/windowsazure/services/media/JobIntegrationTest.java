@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -75,6 +76,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
                                 .setName("My encoding Task").setTaskBody(taskBody)));
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void createJobSuccess() throws Exception {
         // Arrange
@@ -102,6 +104,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         verifyJobInfoEqual("actualJob", expectedJob, actualJob);
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void getJobSuccess() throws Exception {
         // Arrange
@@ -127,6 +130,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         service.get(Job.get(invalidId));
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void listJobSuccess() throws ServiceException {
         // Arrange
@@ -147,6 +151,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         });
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void canListJobsWithOptions() throws ServiceException {
         String[] assetNames = new String[] { testJobPrefix + "assetListOptionsA", testJobPrefix + "assetListOptionsB",
@@ -166,6 +171,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listJobsResult.size());
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void cancelJobSuccess() throws Exception {
         // Arrange
@@ -192,6 +198,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         // Assert
     }
 
+    @Ignore("due to issue 480")
     @Test
     public void deleteJobSuccess() throws ServiceException {
         // Arrange
