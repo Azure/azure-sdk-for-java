@@ -123,7 +123,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     @Test
     public void getJobInvalidIdFailed() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Job.get(invalidId));
     }
 
@@ -184,7 +184,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     public void cancelJobFailedWithInvalidId() throws ServiceException {
         // Arrange 
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
 
         // Act
         service.action(Job.cancel(invalidId));
@@ -215,7 +215,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     public void deleteJobIvalidIdFail() throws ServiceException {
         // Arrange 
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
 
         // Act
         service.delete(Job.delete(invalidId));
