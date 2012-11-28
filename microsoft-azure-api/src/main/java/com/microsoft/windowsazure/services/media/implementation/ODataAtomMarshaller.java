@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.FeedType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
@@ -129,6 +130,7 @@ public class ODataAtomMarshaller {
         classes.add(JobType.class);
         classes.add(LocatorRestType.class);
         classes.add(TaskType.class);
+        classes.add(ContentKeyRestType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }

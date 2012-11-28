@@ -33,7 +33,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AssetType }
+     * Create an instance of {@link AssetType }.
      * 
      * @return a new AssetType instance.
      */
@@ -42,7 +42,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ODataActionType }
+     * Create an instance of {@link ODataActionType }.
      * 
      * @return a new ODataActionType instance.
      */
@@ -51,7 +51,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AccessPolicyType }
+     * Create an instance of {@link AccessPolicyType }.
      * 
      * @return a new AccessPolicyType instance.
      */
@@ -60,8 +60,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LocatorRestType }
-     *
+     * Create an instance of {@link LocatorRestType }.
+     * 
      * @return a new LocatorRestType instance.
      */
     public LocatorRestType createLocatorRestType() {
@@ -69,8 +69,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link MediaProcessorType }
-     *
+     * Create an instance of {@link MediaProcessorType }.
+     * 
      * @return a new MediaProcessorType instance.
      */
     public MediaProcessorType createMediaProcessorType() {
@@ -78,8 +78,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JobType}
-     *
+     * Create an instance of {@link JobType}.
+     * 
      * @return a new JobType instance.
      */
     public JobType createJobType() {
@@ -87,11 +87,20 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TaskType}
-     *
+     * Create an instance of {@link TaskType}.
+     * 
      * @return a new TaskType instance.
      */
     public TaskType createTaskType() {
         return new TaskType();
+    }
+
+    /**
+     * Creates a new Object object.
+     * 
+     * @return the content key rest type
+     */
+    public ContentKeyRestType createContentKeyRestType() {
+        return new ContentKeyRestType();
     }
 }

@@ -17,37 +17,34 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
 
+import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+
+// TODO: Auto-generated Javadoc
 /**
  * The Class ContentKeyInfo.
  */
-public class ContentKeyInfo {
+public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
 
-    /** The id. */
-    private String id;
+    /**
+     * Instantiates a new content key info.
+     * 
+     * @param entry
+     *            the entry
+     * @param content
+     *            the content
+     */
+    public ContentKeyInfo(EntryType entry, ContentKeyRestType content) {
+        super(entry, content);
+    }
 
-    /** The created. */
-    private Date created;
-
-    /** The last modified. */
-    private Date lastModified;
-
-    /** The content key type. */
-    private ContentKeyType contentKeyType;
-
-    /** The encrypted content key. */
-    private String encryptedContentKey;
-
-    /** The name. */
-    private String name;
-
-    /** The protection key id. */
-    private String protectionKeyId;
-
-    /** The check sum. */
-    private String checkSum;
-
-    /** The protection key type. */
-    private ProtectionKeyType protectionKeyType;
+    /**
+     * Instantiates a new content key info.
+     */
+    public ContentKeyInfo() {
+        super(new ContentKeyRestType());
+    }
 
     /**
      * Gets the id.
@@ -55,7 +52,7 @@ public class ContentKeyInfo {
      * @return the id
      */
     public String getId() {
-        return this.id;
+        return getContent().getId();
     }
 
     /**
@@ -66,7 +63,7 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setId(String id) {
-        this.id = id;
+        getContent().setId(id);
         return this;
     }
 
@@ -77,9 +74,18 @@ public class ContentKeyInfo {
      *            the created
      * @return the content key info
      */
-    public ContentKeyInfo setCreate(Date created) {
-        this.created = created;
+    public ContentKeyInfo setCreated(Date created) {
+        getContent().setCreated(created);
         return this;
+    }
+
+    /**
+     * Gets the created.
+     * 
+     * @return the created
+     */
+    public Date getCreated() {
+        return getContent().getCreated();
     }
 
     /**
@@ -88,7 +94,7 @@ public class ContentKeyInfo {
      * @return the last modified
      */
     public Date getLastModified() {
-        return this.lastModified;
+        return getContent().getLastModified();
     }
 
     /**
@@ -99,7 +105,7 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+        getContent().setLastModified(lastModified);
         return this;
     }
 
@@ -109,7 +115,7 @@ public class ContentKeyInfo {
      * @return the name
      */
     public String getName() {
-        return this.name;
+        return getContent().getName();
     }
 
     /**
@@ -120,19 +126,19 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setName(String name) {
-        this.name = name;
+        getContent().setName(name);
         return this;
     }
 
     /**
      * Sets the check sum.
      * 
-     * @param checkSum
+     * @param checksum
      *            the check sum
      * @return the content key info
      */
-    public ContentKeyInfo setCheckSum(String checkSum) {
-        this.checkSum = checkSum;
+    public ContentKeyInfo setChecksum(String checksum) {
+        getContent().setChecksum(checksum);
         return this;
     }
 
@@ -141,8 +147,8 @@ public class ContentKeyInfo {
      * 
      * @return the check sum
      */
-    public String getCheckSum() {
-        return this.checkSum;
+    public String getChecksum() {
+        return getContent().getChecksum();
     }
 
     /**
@@ -153,7 +159,7 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setProtectionKeyType(ProtectionKeyType protectionKeyType) {
-        this.protectionKeyType = protectionKeyType;
+        getContent().setProtectionKeyType(protectionKeyType.getCode());
         return this;
     }
 
@@ -163,7 +169,7 @@ public class ContentKeyInfo {
      * @return the protection key type
      */
     public ProtectionKeyType getProtectionKeyType() {
-        return this.protectionKeyType;
+        return ProtectionKeyType.fromCode(getContent().getProtectionKeyType());
     }
 
     /**
@@ -174,7 +180,7 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setProtectionKeyId(String protectionKeyId) {
-        this.protectionKeyId = protectionKeyId;
+        getContent().setProtectionKeyId(protectionKeyId);
         return this;
     }
 
@@ -184,7 +190,7 @@ public class ContentKeyInfo {
      * @return the protection key id
      */
     public String getProtectionKeyId() {
-        return this.protectionKeyId;
+        return getContent().getProtectionKeyId();
     }
 
     /**
@@ -195,7 +201,7 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setEncryptedContentKey(String encryptedContentKey) {
-        this.encryptedContentKey = encryptedContentKey;
+        getContent().setEncryptedContentKey(encryptedContentKey);
         return this;
     }
 
@@ -205,7 +211,7 @@ public class ContentKeyInfo {
      * @return the encrypted content key
      */
     public String getEncryptedContentKey() {
-        return this.encryptedContentKey;
+        return getContent().getEncryptedContentKey();
     }
 
     /**
@@ -216,7 +222,12 @@ public class ContentKeyInfo {
      * @return the content key info
      */
     public ContentKeyInfo setContentKeyType(ContentKeyType contentKeyType) {
-        this.contentKeyType = contentKeyType;
+        if (contentKeyType == null) {
+            getContent().setContentKeyType(null);
+        }
+        else {
+            getContent().setContentKeyType(contentKeyType.getCode());
+        }
         return this;
     }
 
@@ -226,28 +237,11 @@ public class ContentKeyInfo {
      * @return the content key type
      */
     public ContentKeyType getContentKeyType() {
-        return this.contentKeyType;
+        Integer contentKeyTypeInteger = getContent().getContentKeyType();
+        ContentKeyType contentKeyType = null;
+        if (contentKeyTypeInteger != null) {
+            contentKeyType = ContentKeyType.fromCode(contentKeyTypeInteger);
+        }
+        return contentKeyType;
     }
-
-    /**
-     * Sets the created.
-     * 
-     * @param created
-     *            the created
-     * @return the content key info
-     */
-    public ContentKeyInfo setCreated(Date created) {
-        this.created = created;
-        return this;
-    }
-
-    /**
-     * Gets the created.
-     * 
-     * @return the created
-     */
-    public Date getCreated() {
-        return this.created;
-    }
-
 }
