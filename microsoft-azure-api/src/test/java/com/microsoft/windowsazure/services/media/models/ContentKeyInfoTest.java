@@ -138,7 +138,7 @@ public class ContentKeyInfoTest {
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
 
         // Act 
-        String actualCheckSum = contentKeyInfo.setCheckSum(expectedCheckSum).getCheckSum();
+        String actualCheckSum = contentKeyInfo.setChecksum(expectedCheckSum).getChecksum();
 
         // Assert
         assertEquals(expectedCheckSum, actualCheckSum);
