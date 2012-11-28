@@ -29,9 +29,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityC
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
-import com.microsoft.windowsazure.services.media.models.Locator;
-import com.microsoft.windowsazure.services.media.models.LocatorInfo;
-import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -85,6 +82,48 @@ public class LocatorEntityTest {
         assertEquals(LocatorType.SAS.getCode(), locatorType.getType());
         assertEquals(now, locatorType.getStartTime());
         assertEquals(tomorrow, locatorType.getExpirationDateTime());
+    }
+
+    @Test
+    public void createLocatorCanSetPath() throws Exception {
+
+        String expectedPath = "testExpectedPath";
+
+        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+                LocatorType.SAS).setPath(expectedPath);
+
+        LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
+
+        assertEquals(expectedPath, locatorType.getPath());
+
+    }
+
+    @Test
+    public void createLocatorCanSetBaseUri() throws Exception {
+
+        String expectedBaseUri = "testExpectedBaseUri";
+
+        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+                LocatorType.SAS).setBaseUri(expectedBaseUri);
+
+        LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
+
+        assertEquals(expectedBaseUri, locatorType.getBaseUri());
+
+    }
+
+    @Test
+    public void createLocatorCanSetContentAccessComponent() throws Exception {
+
+        String expectedContentAccessComponent = "testExpectedContentAccessComponent";
+
+        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+                LocatorType.SAS).setContentAccessComponent(expectedContentAccessComponent);
+
+        LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
+
+        assertEquals(expectedContentAccessComponent, locatorType.getContentAccessComponent());
+
     }
 
     @Test

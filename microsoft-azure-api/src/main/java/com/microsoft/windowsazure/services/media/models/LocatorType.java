@@ -28,8 +28,8 @@ public enum LocatorType {
     SAS(1),
     /** The Origin. */
     Origin(2),
-    /** The Windows azure cdn. */
-    WindowsAzureCDN(3);
+    /** The third party locator. */
+    ThirdParty(3);
 
     /** The locator type code. */
     private int locatorTypeCode;
@@ -69,7 +69,7 @@ public enum LocatorType {
             case 2:
                 return LocatorType.Origin;
             case 3:
-                return LocatorType.WindowsAzureCDN;
+                return LocatorType.ThirdParty;
             default:
                 throw new InvalidParameterException("type");
         }

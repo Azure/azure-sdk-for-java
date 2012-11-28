@@ -31,19 +31,23 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityO
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
- * Implementation of Locator entity
- * 
+ * Implementation of Locator entity.
  */
 public class Locator {
 
+    /** The Constant ENTITY_SET. */
     private final static String ENTITY_SET = "Locators";
 
+    /**
+     * Instantiates a new locator.
+     */
     private Locator() {
     }
 
     /**
-     * Create an operation to create a new locator entity
+     * Create an operation to create a new locator entity.
      * 
      * @param accessPolicyId
      *            id of access policy for locator
@@ -57,14 +61,46 @@ public class Locator {
         return new Creator(accessPolicyId, assetId, locatorType);
     }
 
+    /**
+     * The Class Creator.
+     */
     public static class Creator extends EntityOperationSingleResultBase<LocatorInfo> implements
             EntityCreationOperation<LocatorInfo> {
+
+        /** The access policy id. */
         private final String accessPolicyId;
+
+        /** The asset id. */
         private final String assetId;
-        private final LocatorType locatorType;
-        private Date startDateTime;
+
+        /** The base uri. */
+        private String baseUri;
+
+        /** The content access token. */
+        private String contentAccessComponent;
+
+        /** The expiration date time. */
         private Date expirationDateTime;
 
+        /** The locator type. */
+        private final LocatorType locatorType;
+
+        /** The path. */
+        private String path;
+
+        /** The start date time. */
+        private Date startDateTime;
+
+        /**
+         * Instantiates a new creator.
+         * 
+         * @param accessPolicyId
+         *            the access policy id
+         * @param assetId
+         *            the asset id
+         * @param locatorType
+         *            the locator type
+         */
         protected Creator(String accessPolicyId, String assetId, LocatorType locatorType) {
             super(ENTITY_SET, LocatorInfo.class);
             this.accessPolicyId = accessPolicyId;
@@ -72,15 +108,43 @@ public class Locator {
             this.locatorType = locatorType;
         }
 
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         */
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setAccessPolicyId(accessPolicyId).setAssetId(assetId)
                     .setStartTime(startDateTime).setExpirationDateTime(expirationDateTime)
-                    .setType(locatorType.getCode());
+                    .setType(locatorType.getCode()).setBaseUri(baseUri)
+                    .setContentAccessComponent(contentAccessComponent).setPath(path);
         }
 
         /**
-         * Set the date and time for when the locator starts to be available
+         * Sets the base uri.
+         * 
+         * @param baseUri
+         *            the base uri
+         * @return the creator
+         */
+        public Creator setBaseUri(String baseUri) {
+            this.baseUri = baseUri;
+            return this;
+        }
+
+        /**
+         * Sets the path.
+         * 
+         * @param path
+         *            the path
+         * @return the creator
+         */
+        public Creator setPath(String path) {
+            this.path = path;
+            return this;
+        }
+
+        /**
+         * Set the date and time for when the locator starts to be available.
          * 
          * @param startDateTime
          *            The date/time
@@ -92,7 +156,7 @@ public class Locator {
         }
 
         /**
-         * Set the date and time at which the locator will expire
+         * Set the date and time at which the locator will expire.
          * 
          * @param expirationDateTime
          *            Expiration date and time
@@ -102,10 +166,21 @@ public class Locator {
             this.expirationDateTime = expirationDateTime;
             return this;
         }
+
+        /**
+         * Sets the content access component.
+         * 
+         * @param contentAccessComponent
+         * @return The creator instance
+         */
+        public Creator setContentAccessComponent(String contentAccessComponent) {
+            this.contentAccessComponent = contentAccessComponent;
+            return this;
+        }
     }
 
     /**
-     * Create an operation to get the given locator
+     * Create an operation to get the given locator.
      * 
      * @param locatorId
      *            id of locator to retrieve
@@ -116,7 +191,7 @@ public class Locator {
     }
 
     /**
-     * Create an operation to list all locators
+     * Create an operation to list all locators.
      * 
      * @return the list operation
      */
@@ -126,7 +201,7 @@ public class Locator {
     }
 
     /**
-     * Create an operation to list all locators matching the given query parameters
+     * Create an operation to list all locators matching the given query parameters.
      * 
      * @param queryParameters
      *            query parameters to send with the request
@@ -138,7 +213,7 @@ public class Locator {
     }
 
     /**
-     * Create an operation to update the given locator
+     * Create an operation to update the given locator.
      * 
      * @param locatorId
      *            id of locator to update
@@ -148,21 +223,37 @@ public class Locator {
         return new Updater(locatorId);
     }
 
+    /**
+     * The Class Updater.
+     */
     public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+
+        /** The start date time. */
         private Date startDateTime;
+
+        /** The expiration date time. */
         private Date expirationDateTime;
 
+        /**
+         * Instantiates a new updater.
+         * 
+         * @param locatorId
+         *            the locator id
+         */
         public Updater(String locatorId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, locatorId));
         }
 
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation#getRequestContents()
+         */
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setStartTime(startDateTime).setExpirationDateTime(expirationDateTime);
         }
 
         /**
-         * Set when the locator will become available
+         * Set when the locator will become available.
          * 
          * @param startDateTime
          *            the date & time
@@ -174,7 +265,7 @@ public class Locator {
         }
 
         /**
-         * Set when the locator will expire
+         * Set when the locator will expire.
          * 
          * @param expirationDateTime
          *            the expiration date & time
@@ -188,7 +279,7 @@ public class Locator {
     }
 
     /**
-     * Create an operation to delete the given locator
+     * Create an operation to delete the given locator.
      * 
      * @param locatorId
      *            id of locator to delete

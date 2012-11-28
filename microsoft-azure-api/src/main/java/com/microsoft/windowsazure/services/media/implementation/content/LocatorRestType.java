@@ -56,6 +56,14 @@ public class LocatorRestType implements MediaServiceDTO {
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
     protected Date startTime;
 
+    /** The base uri. */
+    @XmlElement(name = "BaseUri", namespace = Constants.ODATA_DATA_NS)
+    private String baseUri;
+
+    /** The content access component. */
+    @XmlElement(name = "ContentAccessComponent", namespace = Constants.ODATA_DATA_NS)
+    private String contentAccessComponent;
+
     /**
      * Gets the id.
      * 
@@ -117,15 +125,6 @@ public class LocatorRestType implements MediaServiceDTO {
     public LocatorRestType setType(int type) {
         this.type = type;
         return this;
-    }
-
-    /**
-     * Gets the path.
-     * 
-     * @return the path
-     */
-    public String getPath() {
-        return this.path;
     }
 
     /**
@@ -192,6 +191,15 @@ public class LocatorRestType implements MediaServiceDTO {
     }
 
     /**
+     * Gets the path.
+     * 
+     * @return the path
+     */
+    public String getPath() {
+        return this.path;
+    }
+
+    /**
      * Sets the path.
      * 
      * @param path
@@ -200,6 +208,48 @@ public class LocatorRestType implements MediaServiceDTO {
      */
     public LocatorRestType setPath(String path) {
         this.path = path;
+        return this;
+    }
+
+    /**
+     * Gets the base uri.
+     * 
+     * @return the base uri
+     */
+    public String getBaseUri() {
+        return this.baseUri;
+    }
+
+    /**
+     * Sets the base uri.
+     * 
+     * @param baseUri
+     *            the base uri
+     * @return the locator rest type
+     */
+    public LocatorRestType setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+        return this;
+    }
+
+    /**
+     * Gets the content access component.
+     * 
+     * @return the content access component
+     */
+    public String getContentAccessComponent() {
+        return this.contentAccessComponent;
+    }
+
+    /**
+     * Sets the content access component.
+     * 
+     * @param contentAccessComponent
+     *            the content access component
+     * @return the locator rest type
+     */
+    public LocatorRestType setContentAccessComponent(String contentAccessComponent) {
+        this.contentAccessComponent = contentAccessComponent;
         return this;
     }
 }
