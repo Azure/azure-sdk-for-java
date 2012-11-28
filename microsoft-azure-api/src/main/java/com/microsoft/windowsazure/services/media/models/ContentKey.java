@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityL
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate content key entities.
  * 
@@ -116,78 +115,6 @@ public class ContentKey {
         }
 
         /**
-         * Gets the content key type.
-         * 
-         * @return the content key type
-         */
-        public ContentKeyType getContentKeyType() {
-            return contentKeyType;
-        }
-
-        /**
-         * Sets the content key type.
-         * 
-         * @param contentKeyType
-         *            the content key type
-         * @return the creator
-         */
-        public Creator setContentKeyType(ContentKeyType contentKeyType) {
-            this.contentKeyType = contentKeyType;
-            return this;
-        }
-
-        /**
-         * Gets the encrypted content key.
-         * 
-         * @return the encrypted content key
-         */
-        public String getEncryptedContentKey() {
-            return encryptedContentKey;
-        }
-
-        /**
-         * Sets the encrypted content key.
-         * 
-         * @param encryptedContentKey
-         *            the encrypted content key
-         * @return the creator
-         */
-        public Creator setEncryptedContentKey(String encryptedContentKey) {
-            this.encryptedContentKey = encryptedContentKey;
-            return this;
-        }
-
-        /**
-         * Gets the id.
-         * 
-         * @return the id
-         */
-        public String getId() {
-            return id;
-        }
-
-        /**
-         * Sets the id.
-         * 
-         * @param id
-         *            the id
-         * @return the creator
-         */
-        public Creator setId(String id) {
-            this.id = id;
-            return this;
-        }
-
-        /**
-         * Gets the name.
-         * 
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
          * Sets the name.
          * 
          * @param name
@@ -197,15 +124,6 @@ public class ContentKey {
         public Creator setName(String name) {
             this.name = name;
             return this;
-        }
-
-        /**
-         * Gets the checksum.
-         * 
-         * @return the checksum
-         */
-        public String getChecksum() {
-            return checksum;
         }
 
         /**

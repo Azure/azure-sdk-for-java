@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-// TODO: Auto-generated Javadoc
 /**
  * This type maps the XML returned in the odata ATOM serialization
  * for Asset entities.

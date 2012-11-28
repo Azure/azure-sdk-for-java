@@ -35,8 +35,6 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
     private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
-    private final String testName = testContentKeyPrefix + "CanCreate";
-    private final String testContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473ae";
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
     private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
 
