@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
+import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
@@ -39,7 +40,7 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
-import com.microsoft.windowsazure.services.media.models.FileInfo;
+import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -155,8 +156,9 @@ class MediaServiceWrapper {
             String md5 = Base64.encode(md5hash);
             System.out.println("md5: " + md5);
 
-            FileInfo fi = new FileInfo().setContentChecksum(md5).setContentFileSize(countingStream.getCount())
-                    .setIsPrimary(isFirst).setName(fileName).setParentAssetId(asset.getAlternateId());
+            AssetFileInfo fi = new AssetFileInfo(null, new AssetFileType().setContentChecksum(md5)
+                    .setContentFileSize(new Long(countingStream.getCount())).setIsPrimary(isFirst).setName(fileName)
+                    .setParentAssetId(asset.getAlternateId()));
             serviceMock.createFileInfo(fi);
 
             isFirst = false;
@@ -301,8 +303,8 @@ class MediaServiceWrapper {
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
         LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
 
-        List<FileInfo> publishedFiles = serviceMock.getAssetFiles(asset.getId());
-        for (FileInfo fi : publishedFiles) {
+        List<AssetFileInfo> publishedFiles = serviceMock.getAssetFiles(asset.getId());
+        for (AssetFileInfo fi : publishedFiles) {
             if (isSmooth) {
                 // Smooth Streaming format ends with ".ism*"
                 int index = fi.getName().lastIndexOf('.');
