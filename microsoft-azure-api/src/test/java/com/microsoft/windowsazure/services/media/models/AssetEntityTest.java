@@ -28,8 +28,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityD
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
-import com.microsoft.windowsazure.services.media.models.Asset;
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -53,7 +51,7 @@ public class AssetEntityTest {
         assertNull(payload.getLastModified());
         assertNull(payload.getAlternateId());
         assertNull(payload.getName());
-        assertEquals(0, payload.getOptions());
+        assertNull(payload.getOptions());
     }
 
     @Test
@@ -71,7 +69,7 @@ public class AssetEntityTest {
         assertNull(payload.getLastModified());
         assertNull(payload.getAlternateId());
         assertEquals(name, payload.getName());
-        assertEquals(0, payload.getOptions());
+        assertNull(payload.getOptions());
     }
 
     @Test
