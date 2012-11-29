@@ -56,7 +56,7 @@ public class ODataDateParsingTest {
 
         String formatted = new ODataDateAdapter().marshal(sampleDate);
 
-        assertTrue(formatted.contains("2012"));
+        assertEquals("2012-12-28T17:43:12Z", formatted);
 
     }
 

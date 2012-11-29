@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.DatatypeConverter;
@@ -30,9 +31,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class ODataDateAdapter extends XmlAdapter<String, Date> {
 
     private final static Pattern hasTimezoneRegex;
+    private final static TimeZone utc;
 
     static {
         hasTimezoneRegex = Pattern.compile("^.*(\\+|-)\\d\\d:\\d\\d$");
+
+        utc = TimeZone.getDefault();
+        utc.setRawOffset(0);
     }
 
     @Override
@@ -48,6 +53,7 @@ public class ODataDateAdapter extends XmlAdapter<String, Date> {
     public String marshal(Date date) throws Exception {
         Calendar dateToMarshal = Calendar.getInstance();
         dateToMarshal.setTime(date);
+        dateToMarshal.setTimeZone(utc);
         return DatatypeConverter.printDateTime(dateToMarshal);
     }
 
