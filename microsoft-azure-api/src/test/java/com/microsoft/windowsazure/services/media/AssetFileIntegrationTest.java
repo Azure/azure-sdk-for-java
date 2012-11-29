@@ -226,9 +226,8 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         assertEquals(expected.getEncryptionScheme(), actual.getEncryptionScheme());
         assertEquals(expected.getEncryptionVersion(), actual.getEncryptionVersion());
         assertEquals(expected.getInitializationVector(), actual.getInitializationVector());
-        // TODO: Turn these checks back on after we fix the date timezone serialization issue #413
-        //assertEquals(expected.getCreated(), actual.getCreated());
-        //assertEquals(expected.getLastModified(), actual.getLastModified());
+        assertDateApproxEquals(expected.getCreated(), actual.getCreated());
+        assertDateApproxEquals(expected.getLastModified(), actual.getLastModified());
         assertEquals(expected.getMimeType(), actual.getMimeType());
     }
 
