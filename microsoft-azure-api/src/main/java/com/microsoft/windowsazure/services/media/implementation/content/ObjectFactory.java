@@ -103,4 +103,13 @@ public class ObjectFactory {
     public ContentKeyRestType createContentKeyRestType() {
         return new ContentKeyRestType();
     }
+
+    /**
+     * Create an instance of {@link AssetFileType}
+     * 
+     * @return a new AssetFileType instance.
+     */
+    public AssetFileType createAssetFileType() {
+        return new AssetFileType();
+    }
 }
