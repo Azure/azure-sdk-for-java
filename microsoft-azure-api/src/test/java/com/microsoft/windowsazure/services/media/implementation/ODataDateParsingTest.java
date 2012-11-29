@@ -127,4 +127,17 @@ public class ODataDateParsingTest {
         assertEquals(100, millis);
 
     }
+
+    @Test
+    public void stringWithFractionalSecondsAndTimezoneOffsetParses() throws Exception {
+        String exampleDate = "2012-11-28T17:43:12.1-08:00";
+        Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
+
+        Calendar expectedTime = new GregorianCalendar(2012, 10, 28, 17, 43, 12);
+        expectedTime.setTimeZone(pst);
+        expectedTime.set(Calendar.MILLISECOND, 100);
+
+        assertEquals(expectedTime.getTimeInMillis(), parsedTime.getTime());
+
+    }
 }
