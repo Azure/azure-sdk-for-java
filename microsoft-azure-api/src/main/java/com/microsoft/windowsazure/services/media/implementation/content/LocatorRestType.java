@@ -20,6 +20,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.microsoft.windowsazure.services.media.implementation.ODataDateAdapter;
 
 /**
  * Wrapper DTO for Media Services Locator.
@@ -34,6 +37,7 @@ public class LocatorRestType implements MediaServiceDTO {
 
     /** The expiration date time. */
     @XmlElement(name = "ExpirationDateTime", namespace = Constants.ODATA_DATA_NS)
+    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date expirationDateTime;
 
     /** The type. */
@@ -54,6 +58,7 @@ public class LocatorRestType implements MediaServiceDTO {
 
     /** The start time. */
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
+    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date startTime;
 
     /** The base uri. */

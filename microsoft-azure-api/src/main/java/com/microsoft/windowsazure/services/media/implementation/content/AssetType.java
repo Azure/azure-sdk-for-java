@@ -20,6 +20,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.microsoft.windowsazure.services.media.implementation.ODataDateAdapter;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization
@@ -36,9 +39,11 @@ public class AssetType implements MediaServiceDTO {
     protected int state;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
+    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date created;
 
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
+    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date lastModified;
 
     @XmlElement(name = "AlternateId", namespace = Constants.ODATA_DATA_NS)
