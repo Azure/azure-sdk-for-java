@@ -21,9 +21,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.microsoft.windowsazure.services.media.implementation.ODataDateAdapter;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization
@@ -43,17 +40,14 @@ public class JobType implements MediaServiceDTO {
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date lastModified;
 
     /** The end time. */
     @XmlElement(name = "EndTime", namespace = Constants.ODATA_DATA_NS)
-    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date endTime;
 
     /** The priority. */
@@ -66,7 +60,6 @@ public class JobType implements MediaServiceDTO {
 
     /** The start time. */
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
-    @XmlJavaTypeAdapter(ODataDateAdapter.class)
     protected Date startTime;
 
     /** The state. */
