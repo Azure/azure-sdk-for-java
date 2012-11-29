@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -33,11 +34,20 @@ import org.junit.Test;
  * 
  */
 public class ODataDateParsingTest {
+    private static TimeZone utc;
+    private static TimeZone pst;
+
+    @BeforeClass
+    public static void setupClass() {
+        utc = TimeZone.getDefault();
+        utc.setRawOffset(0);
+
+        pst = TimeZone.getDefault();
+        pst.setRawOffset(-8 * 60 * 60 * 1000);
+    }
 
     @Test
     public void canConvertDateToString() throws Exception {
-        TimeZone utc = TimeZone.getDefault();
-        //utc.setRawOffset(0);
 
         Calendar sampleTime = new GregorianCalendar(2012, 11, 28, 17, 43, 12);
         sampleTime.setTimeZone(utc);
@@ -56,9 +66,6 @@ public class ODataDateParsingTest {
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
 
-        TimeZone pst = TimeZone.getDefault();
-        pst.setRawOffset(-8 * 60 * 60 * 1000);
-
         Calendar expectedTime = new GregorianCalendar(2012, 10, 28, 17, 43, 12);
         expectedTime.setTimeZone(pst);
 
@@ -70,9 +77,6 @@ public class ODataDateParsingTest {
         String exampleDate = "2012-11-28T17:43:12Z";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
-
-        TimeZone utc = TimeZone.getDefault();
-        utc.setRawOffset(0);
 
         Calendar expectedTime = new GregorianCalendar(2012, 10, 28, 17, 43, 12);
         expectedTime.setTimeZone(utc);
@@ -86,12 +90,41 @@ public class ODataDateParsingTest {
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
 
-        TimeZone utc = TimeZone.getDefault();
-        utc.setRawOffset(0);
-
         Calendar expectedTime = new GregorianCalendar(2012, 10, 28, 17, 43, 12);
         expectedTime.setTimeZone(utc);
 
         assertEquals(expectedTime.getTimeInMillis(), parsedTime.getTime());
+    }
+
+    @Test
+    public void stringWithFractionalTimeReturnsCorrectMillisecondsTo100nsBoundary() throws Exception {
+        String exampleDate = "2012-11-28T17:43:12.1234567Z";
+
+        Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
+
+        Calendar timeToNearestSecond = Calendar.getInstance();
+        timeToNearestSecond.setTimeZone(utc);
+        timeToNearestSecond.set(2012, 10, 28, 17, 43, 12);
+        timeToNearestSecond.set(Calendar.MILLISECOND, 0);
+
+        long millis = parsedTime.getTime() - timeToNearestSecond.getTimeInMillis();
+
+        assertEquals(123, millis);
+    }
+
+    @Test
+    public void stringWithFractionalTimeReturnsCorrectMillisecondsAsFractionNotCount() throws Exception {
+        String exampleDate = "2012-11-28T17:43:12.1Z";
+
+        Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
+
+        Calendar timeToNearestSecond = Calendar.getInstance();
+        timeToNearestSecond.setTimeZone(utc);
+        timeToNearestSecond.set(2012, 10, 28, 17, 43, 12);
+        timeToNearestSecond.set(Calendar.MILLISECOND, 0);
+
+        long millis = parsedTime.getTime() - timeToNearestSecond.getTimeInMillis();
+        assertEquals(100, millis);
+
     }
 }
