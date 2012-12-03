@@ -32,7 +32,7 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
-import com.microsoft.windowsazure.services.media.models.FileInfo;
+import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
 import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.JobInfo;
@@ -55,7 +55,7 @@ class MediaServiceValidation {
         assertEquals("asset.getOptions", encryption, asset.getOptions());
 
         // Verify no files by default.
-        List<FileInfo> initialFiles = serviceMock.getAssetFiles(asset.getId());
+        List<AssetFileInfo> initialFiles = serviceMock.getAssetFiles(asset.getId());
         assertNotNull("initialFiles", initialFiles);
         assertEquals("initialFiles.size", 0, initialFiles.size());
 
@@ -91,7 +91,7 @@ class MediaServiceValidation {
 
     public void validateAssetFiles(AssetInfo asset, Hashtable<String, InputStream> inputFiles) throws ServiceException,
             IOException, NoSuchAlgorithmException {
-        List<FileInfo> assetFiles = serviceMock.getAssetFiles(asset.getId());
+        List<AssetFileInfo> assetFiles = serviceMock.getAssetFiles(asset.getId());
 
         assertNotNull("assetFiles", assetFiles);
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());
@@ -107,11 +107,11 @@ class MediaServiceValidation {
         // * Compare these properties: IsEncrypted, InitializationVector, EncryptionKeyId, EncryptionScheme, EncryptionVersion
 
         // Compare the asset files with all files
-        List<FileInfo> allFiles = serviceMock.getFiles();
-        for (FileInfo assetFile : assetFiles) {
+        List<AssetFileInfo> allFiles = serviceMock.getFiles();
+        for (AssetFileInfo assetFile : assetFiles) {
             assertEquals("fi.getParentAssetId", asset.getId(), assetFile.getParentAssetId());
-            FileInfo match = null;
-            for (FileInfo aFile : allFiles) {
+            AssetFileInfo match = null;
+            for (AssetFileInfo aFile : allFiles) {
                 if (aFile.getId().equals(assetFile.getId())) {
                     match = aFile;
                     break;
@@ -175,7 +175,7 @@ class MediaServiceValidation {
         return reader;
     }
 
-    public void assertFileInfosEqual(String message, FileInfo fi, FileInfo match) {
+    public void assertFileInfosEqual(String message, AssetFileInfo fi, AssetFileInfo match) {
         assertNotNull(message + ":fi", fi);
         assertNotNull(message + ":match", match);
         assertEquals(message + ":getContentChecksum", fi.getContentChecksum(), match.getContentChecksum());
