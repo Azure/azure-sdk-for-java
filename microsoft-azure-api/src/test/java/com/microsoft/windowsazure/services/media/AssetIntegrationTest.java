@@ -140,7 +140,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     @Test
     public void getAssetInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Asset.get(invalidId));
     }
 

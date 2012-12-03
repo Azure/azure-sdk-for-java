@@ -18,6 +18,8 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -28,6 +30,7 @@ public abstract class IntegrationTestBase {
 
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
+    protected static final String testContentKeyPrefix = "testContentKey";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -73,6 +76,20 @@ public abstract class IntegrationTestBase {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
+        removeAllTestContentKeys();
+    }
+
+    private static void removeAllTestContentKeys() {
+        try {
+            List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list());
+
+            for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
+                service.delete(ContentKey.delete(contentKeyInfo.getId()));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestAccessPolicies() {
@@ -176,13 +193,6 @@ public abstract class IntegrationTestBase {
         }
         else {
             long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
-
-            // TODO: Remove this time-zone workaround when fixed:
-            // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/413
-            if (diffInMilliseconds > deltaInMilliseconds) {
-                // Just hard-code time-zone offset of 8 hours for now.
-                diffInMilliseconds = Math.abs(diffInMilliseconds - 8 * 60 * 60 * 1000);
-            }
 
             if (diffInMilliseconds > deltaInMilliseconds) {
                 assertEquals(message, expected, actual);

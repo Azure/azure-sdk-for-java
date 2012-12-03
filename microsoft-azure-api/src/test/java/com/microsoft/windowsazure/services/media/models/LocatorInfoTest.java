@@ -52,7 +52,7 @@ public class LocatorInfoTest {
     @Test
     public void testGetSetType() {
         // Arrange
-        LocatorType expectedLocatorType = LocatorType.WindowsAzureCDN;
+        LocatorType expectedLocatorType = LocatorType.Origin;
         LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act 
@@ -114,4 +114,31 @@ public class LocatorInfoTest {
         assertEquals(expectedStartTime, actualStartTime);
     }
 
+    @Test
+    public void testGetSetBaseUri() {
+        // Arrange
+        String expectedBaseUri = "testBaseUri";
+        LocatorInfo locatorInfo = new LocatorInfo();
+
+        // Act
+        String actualBaseUri = locatorInfo.setBaseUri(expectedBaseUri).getBaseUri();
+
+        // Assert 
+        assertEquals(expectedBaseUri, actualBaseUri);
+    }
+
+    @Test
+    public void testGetSetContentAccessComponent() {
+        // Arrange
+        String expectedContentAccessComponent = "testContentAccessToken";
+        LocatorInfo locatorInfo = new LocatorInfo();
+
+        // Act
+        String actualContentAccessComponent = locatorInfo.setContentAccessComponent(expectedContentAccessComponent)
+                .getContentAccessToken();
+
+        // Assert 
+        assertEquals(expectedContentAccessComponent, actualContentAccessComponent);
+
+    }
 }

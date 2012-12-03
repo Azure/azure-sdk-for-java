@@ -192,4 +192,46 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
         return getContent().getStartTime();
     }
 
+    /**
+     * Gets the base uri.
+     * 
+     * @return the base uri
+     */
+    public String getBaseUri() {
+        return getContent().getBaseUri();
+    }
+
+    /**
+     * Sets the base uri.
+     * 
+     * @param baseUri
+     *            the base uri
+     * @return the locator info
+     */
+    public LocatorInfo setBaseUri(String baseUri) {
+        this.getContent().setBaseUri(baseUri);
+        return this;
+    }
+
+    /**
+     * Sets the content access component.
+     * 
+     * @param contentAccessComponent
+     *            the content access component
+     * @return the locator info
+     */
+    public LocatorInfo setContentAccessComponent(String contentAccessComponent) {
+        this.getContent().setContentAccessComponent(contentAccessComponent);
+        return this;
+    }
+
+    /**
+     * Gets the content access token.
+     * 
+     * @return the content access token
+     */
+    public String getContentAccessToken() {
+        return this.getContent().getContentAccessComponent();
+    }
+
 }

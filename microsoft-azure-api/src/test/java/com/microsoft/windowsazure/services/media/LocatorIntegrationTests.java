@@ -174,7 +174,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void getLocatorInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Locator.get(invalidId));
     }
 
@@ -191,8 +191,8 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         LocatorType locatorType = LocatorType.SAS;
         List<LocatorInfo> expectedLocators = new ArrayList<LocatorInfo>();
         for (int i = 0; i < 2; i++) {
-            expectedLocators.add(service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
-                    locatorType)));
+            expectedLocators
+                    .add(service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(), locatorType)));
         }
 
         // Act
@@ -294,7 +294,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void deleteLocatorInvalidIdFailed() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(Locator.delete(invalidId));
     }
 }

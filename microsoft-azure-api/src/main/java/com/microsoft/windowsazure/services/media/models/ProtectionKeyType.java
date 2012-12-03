@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
 /**
  * The Enum ProtectionKeyType.
  */
@@ -44,4 +46,21 @@ public enum ProtectionKeyType {
     public int getCode() {
         return protectionKeyTypeCode;
     }
+
+    /**
+     * Create an ProtectionKeyType instance from the corresponding int.
+     * 
+     * @param protectionKeyTypeCode
+     *            protectionKeyTypeCode as integer
+     * @return new ProtectionKeyType instance
+     */
+    public static ProtectionKeyType fromCode(int protectionKeyTypeCode) {
+        switch (protectionKeyTypeCode) {
+            case 0:
+                return ProtectionKeyType.X509CertificateThumbprint;
+            default:
+                throw new InvalidParameterException("state");
+        }
+    }
+
 }

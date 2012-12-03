@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.security.InvalidParameterException;
+
+// TODO: Auto-generated Javadoc
 /**
  * 
  * Specifies the type of a content key.
@@ -49,5 +52,25 @@ public enum ContentKeyType {
      */
     public int getCode() {
         return contentKeyTypeCode;
+    }
+
+    /**
+     * From code.
+     * 
+     * @param code
+     *            the code
+     * @return the content key type
+     */
+    public static ContentKeyType fromCode(int code) {
+        switch (code) {
+            case 0:
+                return ContentKeyType.CommonEncryption;
+            case 1:
+                return ContentKeyType.StorageEncryption;
+            case 2:
+                return ContentKeyType.ConfigurationEncryption;
+            default:
+                throw new InvalidParameterException("code");
+        }
     }
 }

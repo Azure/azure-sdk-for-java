@@ -21,8 +21,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import com.microsoft.windowsazure.services.media.models.AssetInfo;
-
 /**
  * This type maps the XML returned in the odata ATOM serialization
  * for Asset entities.
@@ -50,7 +48,7 @@ public class AssetType implements MediaServiceDTO {
     protected String name;
 
     @XmlElement(name = "Options", namespace = Constants.ODATA_DATA_NS)
-    protected int options;
+    protected Integer options;
 
     /**
      * @return the id
@@ -145,7 +143,7 @@ public class AssetType implements MediaServiceDTO {
     /**
      * @return the options
      */
-    public int getOptions() {
+    public Integer getOptions() {
         return options;
     }
 
@@ -153,19 +151,7 @@ public class AssetType implements MediaServiceDTO {
      * @param options
      *            the options to set
      */
-    public void setOptions(int options) {
+    public void setOptions(Integer options) {
         this.options = options;
-    }
-
-    public static AssetType create(AssetInfo assetInfo) {
-        AssetType assetType = new AssetType();
-        assetType.setAlternateId(assetInfo.getAlternateId());
-        assetType.setCreated(assetInfo.getCreated());
-        assetType.setId(assetInfo.getId());
-        assetType.setLastModified(assetInfo.getLastModified());
-        assetType.setName(assetInfo.getName());
-        assetType.setOptions(assetInfo.getOptions().getCode());
-        assetType.setState(assetInfo.getState().getCode());
-        return assetType;
     }
 }
