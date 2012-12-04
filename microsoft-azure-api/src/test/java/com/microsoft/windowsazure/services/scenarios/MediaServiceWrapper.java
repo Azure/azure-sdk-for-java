@@ -38,9 +38,9 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
-import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -278,14 +278,14 @@ class MediaServiceWrapper {
     public List<URL> createOriginUrlsForStreamingContent(AssetInfo asset, int availabilityWindowInMinutes)
             throws ServiceException, MalformedURLException {
         return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true, "",
-                LocatorType.Origin);
+                LocatorType.OnDemandOrigin);
     }
 
     // Deliver
     public List<URL> createOriginUrlsForAppleHLSContent(AssetInfo asset, int availabilityWindowInMinutes)
             throws ServiceException, MalformedURLException {
         return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true,
-                "(format=m3u8-aapl)", LocatorType.Origin);
+                "(format=m3u8-aapl)", LocatorType.OnDemandOrigin);
     }
 
     // Deliver

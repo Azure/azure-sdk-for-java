@@ -52,7 +52,7 @@ public class LocatorInfoTest {
     @Test
     public void testGetSetType() {
         // Arrange
-        LocatorType expectedLocatorType = LocatorType.Origin;
+        LocatorType expectedLocatorType = LocatorType.SAS;
         LocatorInfo locatorInfo = new LocatorInfo();
 
         // Act 
