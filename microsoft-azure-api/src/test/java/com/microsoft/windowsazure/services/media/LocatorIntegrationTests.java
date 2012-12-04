@@ -106,7 +106,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void createLocatorSuccess() throws ServiceException {
         // Arrange
-        LocatorType locatorType = LocatorType.Origin;
+        LocatorType locatorType = LocatorType.SAS;
         Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfoRead, assetInfo);
 
         // Act
@@ -229,7 +229,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void updateLocatorSuccess() throws ServiceException {
         // Arrange
-        LocatorType locatorType = LocatorType.Origin;
+        LocatorType locatorType = LocatorType.OnDemandOrigin;
         LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfoRead.getId(), assetInfo.getId(),
                 locatorType));
 
@@ -252,7 +252,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     @Test
     public void updateLocatorNoChangesSuccess() throws ServiceException {
         // Arrange
-        LocatorType locatorType = LocatorType.Origin;
+        LocatorType locatorType = LocatorType.OnDemandOrigin;
         Date expirationDateTime = new Date();
         expirationDateTime.setTime(expirationDateTime.getTime() + tenMinutesInMS);
         Date startTime = new Date();
