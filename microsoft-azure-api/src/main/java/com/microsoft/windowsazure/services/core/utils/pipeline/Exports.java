@@ -73,6 +73,7 @@ public class Exports implements Builder.Exports {
             public Client create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 Client client = Client.create(clientConfig);
+                // client.addFilter(new LoggingFilter());
                 return client;
             }
         });
@@ -82,7 +83,7 @@ public class Exports implements Builder.Exports {
             public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
                 HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
-                //client.addFilter(new LoggingFilter());
+                // client.addFilter(new LoggingFilter());
                 return client;
             }
         });
