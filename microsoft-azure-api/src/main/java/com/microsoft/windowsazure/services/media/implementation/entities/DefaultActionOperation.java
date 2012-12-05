@@ -28,10 +28,10 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class DefaultActionOperation implements EntityActionOperation {
 
     /** The name. */
-    private final String name;
+    protected String name;
 
     /** The query parameters. */
-    private final MultivaluedMap<String, String> queryParameters;
+    protected final MultivaluedMap<String, String> queryParameters;
 
     /**
      * The default action operation.
@@ -40,7 +40,11 @@ public class DefaultActionOperation implements EntityActionOperation {
      *            the name
      */
     public DefaultActionOperation(String name) {
+        this();
         this.name = name;
+    }
+
+    public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
     }
 
@@ -91,5 +95,15 @@ public class DefaultActionOperation implements EntityActionOperation {
     @Override
     public void processResponse(ClientResponse clientResponse) {
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
+    @Override
+    public String getVerb() {
+        return "GET";
+    }
+
+    @Override
+    public Object getRequestContents() {
+        return null;
     }
 }

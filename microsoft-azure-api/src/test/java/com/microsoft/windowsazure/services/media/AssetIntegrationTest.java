@@ -17,17 +17,24 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -267,5 +274,43 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.delete(Asset.delete(validButNonexistAssetId));
+    }
+
+    @Test
+    public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
+        // Arrange
+        String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
+        AssetInfo assetInfo = service.create(Asset.create().setName(originalTestName));
+        String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
+        String encryptedContentKey = "dummyEncryptedContentKey";
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, ContentKeyType.CommonEncryption,
+                encryptedContentKey));
+        URI serviceUri = service.getRestServiceUri();
+        URI contentKeyUri = new URI(String.format("%s/ContentKeys('%s')", serviceUri, contentKeyId));
+
+        // Act
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
+
+        // Assert
+        AssetInfo retrievedAssetInfo = service.get(Asset.get(assetInfo.getId()));
+        List<LinkType> links = retrievedAssetInfo.getLinkedContentKeys();
+        LinkType contentKeyLink = links.get(0);
+        assertEquals(contentKeyUri, contentKeyLink.getHref());
+
+    }
+
+    @Test
+    public void linkAssetContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
+        // Arrange
+        String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
+        URI invalidContentKeyUri = new URI("https://server/api/ContentKeys('nb:kid:UUID:invalidContentKeyId')");
+
+        // Act
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
+        service.action(Asset.linkContentKey(validButNonexistAssetId, invalidContentKeyUri));
+
+        // Assert
+
     }
 }

@@ -145,8 +145,10 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
-        ClientResponse clientResponse = getResource(entityActionOperation.getUri()).queryParams(
-                entityActionOperation.getQueryParameters()).get(ClientResponse.class);
+        WebResource webResource = getResource(entityActionOperation.getUri()).queryParams(
+                entityActionOperation.getQueryParameters());
+        ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class,
+                entityActionOperation.getRequestContents());
         entityActionOperation.processResponse(clientResponse);
     }
 

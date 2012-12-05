@@ -15,10 +15,13 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
 /**
@@ -191,6 +194,10 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public AssetInfo setOptions(EncryptionOption encryptionOption) {
         getContent().setOptions(encryptionOption.getCode());
         return this;
+    }
+
+    public List<LinkType> getLinkedContentKeys() {
+        return new ArrayList<LinkType>();
     }
 
 }
