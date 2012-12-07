@@ -65,13 +65,13 @@ public class ContentKey {
             EntityCreationOperation<ContentKeyInfo> {
 
         /** The id. */
-        private String id;
+        private final String id;
 
         /** The content key type. */
-        private ContentKeyType contentKeyType;
+        private final ContentKeyType contentKeyType;
 
         /** The encrypted content key. */
-        private String encryptedContentKey;
+        private final String encryptedContentKey;
 
         /** The name. */
         private String name;
@@ -182,4 +182,5 @@ public class ContentKey {
     public static EntityDeleteOperation delete(String ContentKeyId) {
         return new DefaultDeleteOperation(ENTITY_SET, ContentKeyId);
     }
+
 }

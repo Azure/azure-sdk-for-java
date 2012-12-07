@@ -79,8 +79,9 @@ public interface EntityContract {
      * 
      * @param action
      *            Object providing details of the action
+     * @return
      * @throws ServiceException
      */
-    public abstract void action(EntityActionOperation action) throws ServiceException;
+    public abstract Object action(EntityActionOperation action) throws ServiceException;
 
 }
