@@ -29,13 +29,13 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityR
 import com.sun.jersey.api.client.Client;
 
 /**
- * 
- *
+ * The Class MediaRestProxy.
  */
 public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     /** The log. */
     static Log log = LogFactory.getLog(MediaContract.class);
 
+    /** The redirect filter. */
     private RedirectFilter redirectFilter;
 
     /**
@@ -84,6 +84,9 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         return new MediaRestProxy(getChannel(), newFilters);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#getRestServiceUri()
+     */
     @Override
     public URI getRestServiceUri() {
         return this.redirectFilter.getBaseURI();
