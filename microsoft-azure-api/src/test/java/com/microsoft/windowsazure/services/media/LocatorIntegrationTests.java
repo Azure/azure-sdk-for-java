@@ -127,7 +127,7 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
 
         // Act
         LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfoRead.getId(), assetInfo.getId(),
-                locatorType).setId(UUID.randomUUID().toString()));
+                locatorType).setId(String.format("nb:lid:UUID:%s", UUID.randomUUID().toString())));
 
         // Assert
         verifyLocatorProperties("locatorInfo", accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType, null,
