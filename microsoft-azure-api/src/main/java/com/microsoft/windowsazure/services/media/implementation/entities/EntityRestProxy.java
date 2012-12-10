@@ -146,7 +146,7 @@ public class EntityRestProxy implements EntityContract {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation entityActionOperation) throws ServiceException {
+    public Object action(EntityActionOperation entityActionOperation) throws ServiceException {
         Builder webResource = getResource(entityActionOperation.getUri())
                 .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
                 .accept(MediaType.APPLICATION_XML_TYPE)

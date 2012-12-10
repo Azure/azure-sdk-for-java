@@ -28,11 +28,30 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public class EntityLinkOperation extends DefaultActionOperation {
 
+    /** The master entity set. */
     private final String masterEntitySet;
+
+    /** The master entity id. */
     private final String masterEntityId;
+
+    /** The slave entity set. */
     private final String slaveEntitySet;
+
+    /** The slave entity uri. */
     private final URI slaveEntityUri;
 
+    /**
+     * Instantiates a new entity link operation.
+     * 
+     * @param masterEntitySet
+     *            the master entity set
+     * @param masterEntityId
+     *            the master entity id
+     * @param slaveEntitySet
+     *            the slave entity set
+     * @param slaveEntityUri
+     *            the slave entity uri
+     */
     public EntityLinkOperation(String masterEntitySet, String masterEntityId, String slaveEntitySet, URI slaveEntityUri) {
         super();
         this.masterEntitySet = masterEntitySet;
@@ -56,6 +75,9 @@ public class EntityLinkOperation extends DefaultActionOperation {
         return String.format("%s('%s')/$links/%s", masterEntitySet, escapedEntityId, slaveEntitySet);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#getVerb()
+     */
     @Override
     public String getVerb() {
         return "POST";
@@ -65,14 +87,16 @@ public class EntityLinkOperation extends DefaultActionOperation {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
      */
     @Override
-    public void processResponse(ClientResponse clientResponse) {
+    public Object processResponse(ClientResponse clientResponse) {
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        return null;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#getRequestContents()
+     */
     @Override
     public Object getRequestContents() {
-        // EntryType entryType = new EntryType();
-        // return entryType;
         String result = String
                 .format("<?xml version=\"1.0\" encoding=\"utf-8\"?><uri xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">%s</uri>",
                         this.slaveEntityUri);

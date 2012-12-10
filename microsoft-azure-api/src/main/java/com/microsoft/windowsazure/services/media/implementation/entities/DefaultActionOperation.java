@@ -50,6 +50,9 @@ public class DefaultActionOperation implements EntityActionOperation {
         this.name = name;
     }
 
+    /**
+     * Instantiates a new default action operation.
+     */
     public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
     }
@@ -128,16 +131,19 @@ public class DefaultActionOperation implements EntityActionOperation {
         return null;
     }
 
-<<<<<<< HEAD
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getVerb()
+     */
     @Override
     public String getVerb() {
         return "GET";
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getRequestContents()
+     */
     @Override
     public Object getRequestContents() {
         return null;
     }
-=======
->>>>>>> 56132c721e587657bb3708b9589313b1e7366bea
 }
