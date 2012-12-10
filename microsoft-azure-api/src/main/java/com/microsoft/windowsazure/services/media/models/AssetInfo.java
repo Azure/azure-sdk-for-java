@@ -15,16 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.JAXBElement;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
-import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
 /**
@@ -197,24 +191,6 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public AssetInfo setOptions(EncryptionOption encryptionOption) {
         getContent().setOptions(encryptionOption.getCode());
         return this;
-    }
-
-    public List<URI> getContentKeyLinks() {
-        List<Object> children = getEntry().getEntryChildren();
-        List<URI> contentKeyLinks = new ArrayList<URI>();
-        for (Object object : children) {
-            if (object instanceof JAXBElement<?>) {
-                Object valueObject = ((JAXBElement) object).getValue();
-                if (valueObject instanceof LinkType) {
-                    LinkType linkType = (LinkType) valueObject;
-                    if ((linkType != null) && (linkType.getTitle().equals("ContentKeys"))) {
-                        URI uri = URI.create(linkType.getHref());
-                        contentKeyLinks.add(uri);
-                    }
-                }
-            }
-        }
-        return contentKeyLinks;
     }
 
 }

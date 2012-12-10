@@ -152,8 +152,6 @@ public class EntityRestProxy implements EntityContract {
                 .accept(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
         ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
-        //,
-        //        entityActionOperation.getRequestContents());
         entityActionOperation.processResponse(clientResponse);
     }
 
