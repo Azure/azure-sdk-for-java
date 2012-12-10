@@ -33,10 +33,10 @@ public class MediaConfigurationTest {
 
         // Assert
         assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("oauth.client.secret"));
-        assertEquals("testScope", configuration.getProperty("oauth.scope"));
+        assertEquals("testOAuthUri", configuration.getProperty("media.oauth.uri"));
+        assertEquals("testClientId", configuration.getProperty("media.oauth.client.id"));
+        assertEquals("testClientSecret", configuration.getProperty("media.oauth.client.secret"));
+        assertEquals("testScope", configuration.getProperty("media.oauth.scope"));
     }
 
     @Test
@@ -52,9 +52,9 @@ public class MediaConfigurationTest {
         // Assert
         assertEquals("preexistingValue", configuration.getProperty("preexistingName"));
         assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("oauth.client.secret"));
+        assertEquals("testOAuthUri", configuration.getProperty("media.oauth.uri"));
+        assertEquals("testClientId", configuration.getProperty("media.oauth.client.id"));
+        assertEquals("testClientSecret", configuration.getProperty("media.oauth.client.secret"));
 
     }
 
@@ -72,9 +72,9 @@ public class MediaConfigurationTest {
         // Assert
         assertEquals("preexistingValue", configuration.getProperty("preexistingName"));
         assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("testProfile.media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("testProfile.oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("testProfile.oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("testProfile.oauth.client.secret"));
+        assertEquals("testOAuthUri", configuration.getProperty("testProfile.media.oauth.uri"));
+        assertEquals("testClientId", configuration.getProperty("testProfile.media.oauth.client.id"));
+        assertEquals("testClientSecret", configuration.getProperty("testProfile.media.oauth.client.secret"));
     }
 
 }
