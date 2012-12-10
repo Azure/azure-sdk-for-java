@@ -51,7 +51,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 public class CloudBlobContainerTests extends BlobTestBase {
     /**
      * test SharedAccess of container.
-     * d
      * 
      * @XSCLCaseName ContainerInfoSharedAccess
      */
