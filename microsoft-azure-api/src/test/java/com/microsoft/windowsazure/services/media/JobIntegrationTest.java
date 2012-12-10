@@ -38,6 +38,7 @@ import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -96,7 +97,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,
-            Integer state, String templateId, List<String> inputMediaAssets, List<String> outputMediaAssets,
+            JobState state, String templateId, List<String> inputMediaAssets, List<String> outputMediaAssets,
             JobInfo actualJob) {
         assertNotNull(message, actualJob);
         assertEquals(message + " Name", testName, actualJob.getName());
@@ -133,7 +134,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         expectedJob.setName("My Encoding Job");
         expectedJob.setPriority(3);
         expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(0);
+        expectedJob.setState(JobState.Queued);
 
         AccessPolicyInfo accessPolicyInfo = createWritableAccessPolicy("createJobSuccess", 10);
         LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
@@ -169,7 +170,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         expectedJob.setName("My Encoding Job");
         expectedJob.setPriority(3);
         expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(0);
+        expectedJob.setState(JobState.Queued);
         String jobId = createJob("getJobSuccess").getId();
 
         // Act
@@ -235,7 +236,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         JobInfo canceledJob = service.get(Job.get(jobInfo.getId()));
-        assertEquals((Integer) 6, canceledJob.getState());
+        assertEquals(6, canceledJob.getState());
 
     }
 
@@ -257,7 +258,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         JobInfo jobInfo = createJob("deleteJobSuccess");
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
-        while (cancellingJobInfo.getState() == 6) {
+        while (cancellingJobInfo.getState() == JobState.Canceling) {
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         }
 
