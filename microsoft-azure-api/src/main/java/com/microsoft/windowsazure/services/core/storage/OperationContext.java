@@ -92,7 +92,7 @@ public final class OperationContext {
      * Reserved for internal use.
      */
     // Used internally for download resume.
-    private volatile int currentOperationByteCount;
+    private volatile long currentOperationByteCount;
 
     /**
      * Creates an instance of the <code>OperationContext</code> class.
@@ -112,7 +112,7 @@ public final class OperationContext {
     /**
      * @return the currentOperationByteCount
      */
-    public int getCurrentOperationByteCount() {
+    public long getCurrentOperationByteCount() {
         return this.currentOperationByteCount;
     }
 
@@ -203,7 +203,7 @@ public final class OperationContext {
      * @param currentOperationByteCount
      *            the currentOperationByteCount to set
      */
-    public void setCurrentOperationByteCount(final int currentOperationByteCount) {
+    public void setCurrentOperationByteCount(final long currentOperationByteCount) {
         this.currentOperationByteCount = currentOperationByteCount;
     }
 
