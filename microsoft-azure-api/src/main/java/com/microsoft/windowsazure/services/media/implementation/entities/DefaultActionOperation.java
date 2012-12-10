@@ -30,6 +30,12 @@ public class DefaultActionOperation implements EntityActionOperation {
     /** The name. */
     protected String name;
 
+    /** The content type. */
+    private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
+
+    /** The accept type. */
+    private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
+
     /** The query parameters. */
     protected final MultivaluedMap<String, String> queryParameters;
 
@@ -68,7 +74,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
      */
     @Override
-    public EntityActionOperation addQueryParameter(String key, String value) {
+    public DefaultActionOperation addQueryParameter(String key, String value) {
         this.queryParameters.add(key, value);
         return this;
     }
@@ -78,7 +84,19 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     @Override
     public MediaType getContentType() {
-        return MediaType.APPLICATION_ATOM_XML_TYPE;
+        return this.contentType;
+    }
+
+    /**
+     * Sets the content type.
+     * 
+     * @param contentType
+     *            the content type
+     * @return the default action operation
+     */
+    public DefaultActionOperation setContentType(MediaType contentType) {
+        this.contentType = contentType;
+        return this;
     }
 
     /* (non-Javadoc)
@@ -86,17 +104,31 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     @Override
     public MediaType getAcceptType() {
-        return MediaType.APPLICATION_ATOM_XML_TYPE;
+        return this.acceptType;
+    }
+
+    /**
+     * Sets the accept type.
+     * 
+     * @param acceptType
+     *            the accept type
+     * @return the default action operation
+     */
+    public DefaultActionOperation setAcceptType(MediaType acceptType) {
+        this.acceptType = acceptType;
+        return this;
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
      */
     @Override
-    public void processResponse(ClientResponse clientResponse) {
+    public Object processResponse(ClientResponse clientResponse) {
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        return null;
     }
 
+<<<<<<< HEAD
     @Override
     public String getVerb() {
         return "GET";
@@ -106,4 +138,6 @@ public class DefaultActionOperation implements EntityActionOperation {
     public Object getRequestContents() {
         return null;
     }
+=======
+>>>>>>> 56132c721e587657bb3708b9589313b1e7366bea
 }

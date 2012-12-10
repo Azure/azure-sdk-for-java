@@ -148,11 +148,11 @@ public class EntityRestProxy implements EntityContract {
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
         Builder webResource = getResource(entityActionOperation.getUri())
-                .queryParams(entityActionOperation.getQueryParameters()).accept(MediaType.APPLICATION_ATOM_XML_TYPE)
+                .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
                 .accept(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
         ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
-        entityActionOperation.processResponse(clientResponse);
+        return entityActionOperation.processResponse(clientResponse);
     }
 
 }

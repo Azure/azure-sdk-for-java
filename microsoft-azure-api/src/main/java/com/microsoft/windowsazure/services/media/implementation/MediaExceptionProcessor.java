@@ -176,9 +176,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation action) throws ServiceException {
+    public Object action(EntityActionOperation action) throws ServiceException {
         try {
-            service.action(action);
+            return service.action(action);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
