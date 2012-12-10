@@ -21,7 +21,6 @@ import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
-import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
@@ -54,7 +53,7 @@ public class EntityLinkOperation extends DefaultActionOperation {
         catch (UnsupportedEncodingException e) {
             throw new InvalidParameterException(masterEntityId);
         }
-        return String.format("%s('%s')/%s", masterEntitySet, escapedEntityId, slaveEntitySet);
+        return String.format("%s('%s')/$links/%s", masterEntitySet, escapedEntityId, slaveEntitySet);
     }
 
     @Override
@@ -72,8 +71,12 @@ public class EntityLinkOperation extends DefaultActionOperation {
 
     @Override
     public Object getRequestContents() {
-        EntryType entryType = new EntryType();
-        return entryType;
+        // EntryType entryType = new EntryType();
+        // return entryType;
+        String result = String
+                .format("<?xml version=\"1.0\" encoding=\"utf-8\"?><uri xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">%s</uri>",
+                        this.slaveEntityUri);
 
+        return result;
     }
 }

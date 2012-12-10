@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
+import javax.ws.rs.core.MediaType;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
@@ -145,10 +147,13 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
-        WebResource webResource = getResource(entityActionOperation.getUri()).queryParams(
-                entityActionOperation.getQueryParameters());
-        ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class,
-                entityActionOperation.getRequestContents());
+        Builder webResource = getResource(entityActionOperation.getUri())
+                .queryParams(entityActionOperation.getQueryParameters()).accept(MediaType.APPLICATION_ATOM_XML_TYPE)
+                .accept(MediaType.APPLICATION_XML_TYPE)
+                .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
+        ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
+        //,
+        //        entityActionOperation.getRequestContents());
         entityActionOperation.processResponse(clientResponse);
     }
 
