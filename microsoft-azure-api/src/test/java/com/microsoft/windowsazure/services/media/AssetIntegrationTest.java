@@ -319,7 +319,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Act
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.action(Asset.linkContentKey(validButNonexistAssetId, invalidContentKeyUri));
 
         // Assert
