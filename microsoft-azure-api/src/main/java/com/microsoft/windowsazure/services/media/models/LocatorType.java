@@ -27,9 +27,7 @@ public enum LocatorType {
     /** The sas. */
     SAS(1),
     /** The Origin. */
-    Origin(2),
-    /** The third party locator. */
-    ThirdParty(3);
+    OnDemandOrigin(2);
 
     /** The locator type code. */
     private int locatorTypeCode;
@@ -67,9 +65,7 @@ public enum LocatorType {
             case 1:
                 return LocatorType.SAS;
             case 2:
-                return LocatorType.Origin;
-            case 3:
-                return LocatorType.ThirdParty;
+                return LocatorType.OnDemandOrigin;
             default:
                 throw new InvalidParameterException("type");
         }

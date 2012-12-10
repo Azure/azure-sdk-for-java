@@ -20,16 +20,16 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class FileInfoTest {
+import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
+
+public class AssetFileInfoTest {
 
     @Test
     public void testGetSetId() {
-        // Arrange
         String expectedId = "testId";
-        FileInfo file = new FileInfo();
+        AssetFileInfo file = new AssetFileInfo(null, new AssetFileType().setId(expectedId));
 
-        // Act
-        String actualId = file.setId(expectedId).getId();
+        String actualId = file.getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -37,12 +37,10 @@ public class FileInfoTest {
 
     @Test
     public void testGetSetName() {
-        // Arrange
         String expectedName = "testName";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setName(expectedName));
 
-        // Act
-        String actualName = fileInfo.setName(expectedName).getName();
+        String actualName = fileInfo.getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -51,41 +49,34 @@ public class FileInfoTest {
     @Test
     public void testGetSetContentFileSize() {
         // Arrange
-        int expectedContentFileSize = 1234;
-        FileInfo fileInfo = new FileInfo();
+        Long expectedContentFileSize = 1234l;
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setContentFileSize(expectedContentFileSize));
 
         // Act
-        int actualContentFileSize = fileInfo.setContentFileSize(expectedContentFileSize).getContentFileSize();
+        long actualContentFileSize = fileInfo.getContentFileSize().longValue();
 
         // Assert
-        assertEquals(expectedContentFileSize, actualContentFileSize);
+        assertEquals(expectedContentFileSize.longValue(), actualContentFileSize);
 
     }
 
     @Test
     public void testGetSetParentAssetId() {
-        // Arrange
         String expectedParentAssetId = "testParentAssetId";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setParentAssetId(expectedParentAssetId));
 
-        // Act
-        String actualParentAssetId = fileInfo.setParentAssetId(expectedParentAssetId).getParentAssetId();
+        String actualParentAssetId = fileInfo.getParentAssetId();
 
-        // Assert
         assertEquals(expectedParentAssetId, actualParentAssetId);
     }
 
     @Test
     public void testGetSetEncryptionVersion() {
-        // Arrange 
         String expectedEncryptionVersion = "testEncryptionVersion";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionVersion(expectedEncryptionVersion));
 
-        // Act 
-        String actualEncryptionVersion = fileInfo.setEncryptionVersion(expectedEncryptionVersion)
-                .getEncryptionVersion();
+        String actualEncryptionVersion = fileInfo.getEncryptionVersion();
 
-        // Assert
         assertEquals(expectedEncryptionVersion, actualEncryptionVersion);
     }
 
@@ -93,10 +84,10 @@ public class FileInfoTest {
     public void testGetSetEncryptionScheme() {
         // Arrange
         String expectedEncryptionScheme = "testEncryptionScheme";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionScheme(expectedEncryptionScheme));
 
         // Act
-        String actualEncryptionScheme = fileInfo.setEncryptionScheme(expectedEncryptionScheme).getEncryptionScheme();
+        String actualEncryptionScheme = fileInfo.getEncryptionScheme();
 
         // Assert
         assertEquals(expectedEncryptionScheme, actualEncryptionScheme);
@@ -106,10 +97,10 @@ public class FileInfoTest {
     public void testGetSetIsEncrypted() {
         // Arrange 
         Boolean expectedIsEncrypted = true;
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setIsEncrypted(expectedIsEncrypted));
 
         // Act
-        Boolean actualIsEncrypted = fileInfo.setIsEncrypted(expectedIsEncrypted).getIsEncrypted();
+        Boolean actualIsEncrypted = fileInfo.getIsEncrypted();
 
         // Assert
         assertEquals(expectedIsEncrypted, actualIsEncrypted);
@@ -117,28 +108,21 @@ public class FileInfoTest {
 
     @Test
     public void testGetSetEncryptionKeyId() {
-        // Arrange 
         String expectedEncryptionKeyId = "testEncryptionKeyId";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionKeyId(expectedEncryptionKeyId));
 
-        // Act
-        String actualEncryptionKeyId = fileInfo.setEncryptionKeyId(expectedEncryptionKeyId).getEncryptionKeyId();
+        String actualEncryptionKeyId = fileInfo.getEncryptionKeyId();
 
-        // Assert 
         assertEquals(expectedEncryptionKeyId, actualEncryptionKeyId);
     }
 
     @Test
     public void testGetSetInitializationVector() {
-        // Arrange 
         String expectedInitializationVector = "testInitializationVector";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setInitializationVector(expectedInitializationVector));
 
-        // Act
-        String actualInitializationVector = fileInfo.setInitializationVector(expectedInitializationVector)
-                .getInitializationVector();
+        String actualInitializationVector = fileInfo.getInitializationVector();
 
-        // Assert 
         assertEquals(expectedInitializationVector, actualInitializationVector);
 
     }
@@ -147,10 +131,10 @@ public class FileInfoTest {
     public void testGetSetIsPrimary() {
         // Arrange
         Boolean expectedIsPrimary = true;
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setIsPrimary(expectedIsPrimary));
 
         // Act
-        Boolean actualIsPrimary = fileInfo.setIsPrimary(expectedIsPrimary).getIsPrimary();
+        Boolean actualIsPrimary = fileInfo.getIsPrimary();
 
         // Assert 
         assertEquals(expectedIsPrimary, actualIsPrimary);
@@ -158,53 +142,41 @@ public class FileInfoTest {
 
     @Test
     public void testGetSetLastModified() {
-        // Arrange 
         Date expectedLastModified = new Date();
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setLastModified(expectedLastModified));
 
-        // Act 
-        Date actualLastModified = fileInfo.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = fileInfo.getLastModified();
 
-        // Assert
         assertEquals(expectedLastModified, actualLastModified);
     }
 
     @Test
     public void testGetSetCreated() {
-        // Arrange
         Date expectedCreated = new Date();
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setCreated(expectedCreated));
 
-        // Act 
-        Date actualCreated = fileInfo.setCreated(expectedCreated).getCreated();
+        Date actualCreated = fileInfo.getCreated();
 
-        // Assert
         assertEquals(expectedCreated, actualCreated);
     }
 
     @Test
     public void testGetSetMimeType() {
-        // Arrange
         String expectedMimeType = "testMimeType";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setMimeType(expectedMimeType));
 
-        // Act 
-        String actualMimeType = fileInfo.setMimeType(expectedMimeType).getMimeType();
+        String actualMimeType = fileInfo.getMimeType();
 
-        // Assert 
         assertEquals(expectedMimeType, actualMimeType);
     }
 
     @Test
     public void testGetSetContentChecksum() {
-        // Arrange 
         String expectedContentChecksum = "testContentChecksum";
-        FileInfo fileInfo = new FileInfo();
+        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setContentChecksum(expectedContentChecksum));
 
-        // Act
-        String actualContentChecksum = fileInfo.setContentChecksum(expectedContentChecksum).getContentChecksum();
+        String actualContentChecksum = fileInfo.getContentChecksum();
 
-        // Assert
         assertEquals(expectedContentChecksum, actualContentChecksum);
     }
 }

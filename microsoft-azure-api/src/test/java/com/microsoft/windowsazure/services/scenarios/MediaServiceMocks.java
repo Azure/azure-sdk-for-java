@@ -19,15 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.FileInfo;
+import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 
 // TODO: Remove when no longer needed.
 // Tracked by https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/457
 class MediaServiceMocks {
 
     static class MockMediaContract {
-        public List<FileInfo> getAssetFiles(String id) {
-            return new ArrayList<FileInfo>();
+        public List<AssetFileInfo> getAssetFiles(String id) {
+            return new ArrayList<AssetFileInfo>();
         }
 
         public JobInfo createJob(CreateJobOptions jobOptions) {
@@ -45,11 +45,11 @@ class MediaServiceMocks {
         public void cancelJob(String id) {
         }
 
-        public List<FileInfo> getFiles() {
-            return new ArrayList<FileInfo>();
+        public List<AssetFileInfo> getFiles() {
+            return new ArrayList<AssetFileInfo>();
         }
 
-        public FileInfo createFileInfo(FileInfo fi) {
+        public AssetFileInfo createFileInfo(AssetFileInfo fi) {
             return null;
         }
     }

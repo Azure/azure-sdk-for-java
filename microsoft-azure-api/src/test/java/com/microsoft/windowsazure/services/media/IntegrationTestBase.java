@@ -194,13 +194,6 @@ public abstract class IntegrationTestBase {
         else {
             long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
 
-            // TODO: Remove this time-zone workaround when fixed:
-            // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/413
-            if (diffInMilliseconds > deltaInMilliseconds) {
-                // Just hard-code time-zone offset of 8 hours for now.
-                diffInMilliseconds = Math.abs(diffInMilliseconds - 8 * 60 * 60 * 1000);
-            }
-
             if (diffInMilliseconds > deltaInMilliseconds) {
                 assertEquals(message, expected, actual);
             }
