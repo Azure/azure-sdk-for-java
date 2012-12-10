@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityO
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Implementation of Locator entity.
  */
@@ -91,6 +90,9 @@ public class Locator {
         /** The start date time. */
         private Date startDateTime;
 
+        /** The id. */
+        private String id;
+
         /**
          * Instantiates a new creator.
          * 
@@ -113,7 +115,7 @@ public class Locator {
          */
         @Override
         public Object getRequestContents() {
-            return new LocatorRestType().setAccessPolicyId(accessPolicyId).setAssetId(assetId)
+            return new LocatorRestType().setId(id).setAccessPolicyId(accessPolicyId).setAssetId(assetId)
                     .setStartTime(startDateTime).setExpirationDateTime(expirationDateTime)
                     .setType(locatorType.getCode()).setBaseUri(baseUri)
                     .setContentAccessComponent(contentAccessComponent).setPath(path);
@@ -171,10 +173,23 @@ public class Locator {
          * Sets the content access component.
          * 
          * @param contentAccessComponent
+         *            the content access component
          * @return The creator instance
          */
         public Creator setContentAccessComponent(String contentAccessComponent) {
             this.contentAccessComponent = contentAccessComponent;
+            return this;
+        }
+
+        /**
+         * Sets the id.
+         * 
+         * @param id
+         *            the id
+         * @return the entity creation operation
+         */
+        public EntityCreationOperation<LocatorInfo> setId(String id) {
+            this.id = id;
             return this;
         }
     }
