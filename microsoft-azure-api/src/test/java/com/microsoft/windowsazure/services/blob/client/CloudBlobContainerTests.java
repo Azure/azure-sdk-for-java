@@ -38,8 +38,11 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
+import com.microsoft.windowsazure.services.core.storage.RetryNoRetry;
+import com.microsoft.windowsazure.services.core.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
+import com.microsoft.windowsazure.services.core.storage.StorageEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
@@ -671,4 +674,100 @@ public class CloudBlobContainerTests extends BlobTestBase {
                     null);
         }
     }
+
+    @Test
+    public void testSendingRequestEventBlob() throws StorageException, URISyntaxException, IOException,
+            InterruptedException {
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        final ArrayList<Boolean> callList = new ArrayList<Boolean>();
+        OperationContext sendingRequestEventContext = new OperationContext();
+        sendingRequestEventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                callList.add(true);
+            }
+        });
+
+        try {
+            Assert.assertEquals(0, callList.size());
+
+            //Put blob
+            CloudBlob blob = newContainer.getBlockBlobReference("newblob");
+            blob.upload(new ByteArrayInputStream(testData), testData.length, null, null, sendingRequestEventContext);
+            Assert.assertEquals(1, callList.size());
+
+            //Get blob
+            blob.download(new ByteArrayOutputStream(), null, null, sendingRequestEventContext);
+            Assert.assertEquals(2, callList.size());
+
+            //uploadMetadata
+            blob.uploadMetadata(null, null, sendingRequestEventContext);
+            Assert.assertEquals(3, callList.size());
+
+            //uploadMetadata
+            blob.downloadAttributes(null, null, sendingRequestEventContext);
+            Assert.assertEquals(4, callList.size());
+
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testCurrentOperationByteCount() throws URISyntaxException, StorageException, IOException {
+        final int blockLength = 4 * 1024 * 1024;
+        final Random randGenerator = new Random();
+        String blobName = "testblob" + Integer.toString(randGenerator.nextInt(50000));
+        blobName = blobName.replace('-', '_');
+
+        final CloudBlobContainer containerRef = bClient.getContainerReference(BlobTestBase.testSuiteContainerName);
+
+        final CloudBlockBlob blobRef = containerRef.getBlockBlobReference(blobName);
+
+        final ArrayList<byte[]> byteList = new ArrayList<byte[]>();
+        final ArrayList<BlockEntry> blockList = new ArrayList<BlockEntry>();
+
+        int numberOfBlocks = 4;
+
+        for (int m = 0; m < numberOfBlocks; m++) {
+            final byte[] buff = new byte[blockLength];
+            randGenerator.nextBytes(buff);
+            byteList.add(buff);
+            blobRef.uploadBlock("ABC" + m, new ByteArrayInputStream(buff), blockLength);
+
+            blockList.add(new BlockEntry("ABC" + m, BlockSearchMode.LATEST));
+        }
+
+        blobRef.commitBlockList(blockList);
+
+        OperationContext operationContext = new OperationContext();
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setTimeoutIntervalInMs(1000);
+        options.setRetryPolicyFactory(new RetryNoRetry());
+        try {
+            final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
+            blobRef.download(downloadedDataStream, null, options, operationContext);
+        }
+        catch (Exception e) {
+            Assert.assertEquals(0, operationContext.getCurrentOperationByteCount());
+        }
+
+        operationContext = new OperationContext();
+        options = new BlobRequestOptions();
+        options.setTimeoutIntervalInMs(90000);
+
+        final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
+        blobRef.download(downloadedDataStream, null, options, operationContext);
+
+        Assert.assertEquals(blockLength * numberOfBlocks, operationContext.getCurrentOperationByteCount());
+
+        blobRef.delete();
+    }
+
 }
