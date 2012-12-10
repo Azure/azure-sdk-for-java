@@ -70,7 +70,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
 
         service.action(AssetFile.createFileInfos(asset.getId()));
 
-        ListResult<AssetFileInfo> files = service.list(AssetFile.list());
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
 
         assertEquals(1, files.size());
         AssetFileInfo file = files.get(0);
