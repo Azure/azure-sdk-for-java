@@ -236,7 +236,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         JobInfo canceledJob = service.get(Job.get(jobInfo.getId()));
-        assertEquals(6, canceledJob.getState());
+        assertEquals(JobState.Canceling, canceledJob.getState());
 
     }
 
