@@ -19,31 +19,30 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
+import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
-import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.JobInfo;
+import com.microsoft.windowsazure.services.media.models.Task;
 
 class MediaServiceValidation {
     private final MediaContract service;
-    private final MediaServiceMocks.MockMediaContract serviceMock;
 
     public MediaServiceValidation(MediaContract service) {
         this.service = service;
-        this.serviceMock = new MediaServiceMocks.MockMediaContract();
     }
 
     public void validateAsset(AssetInfo asset, String name, EncryptionOption encryption) throws ServiceException {
@@ -55,7 +54,7 @@ class MediaServiceValidation {
         assertEquals("asset.getOptions", encryption, asset.getOptions());
 
         // Verify no files by default.
-        List<AssetFileInfo> initialFiles = serviceMock.getAssetFiles(asset.getId());
+        List<AssetFileInfo> initialFiles = service.list(AssetFile.list(asset.getId()));
         assertNotNull("initialFiles", initialFiles);
         assertEquals("initialFiles.size", 0, initialFiles.size());
 
@@ -83,15 +82,15 @@ class MediaServiceValidation {
 
         assertEquals("sumSizeOfPages", assetNames.size(), sumSizeOfPages);
         assertEquals("size of last page", 0, pages.get(pages.size() - 1).size());
-        // Can do this comparison directly because the incoming pages are assumed to be sorted.
-        for (int i = 0; i < assetNames.size(); i++) {
-            assertEquals("Asset name:" + i, assetNames.get(i), actualAssetNames.get(i));
-        }
+
+        // Do not worry about comparing the details of the sorted pages,
+        // because Media Services splits on the internal order, then sorts
+        // each page individually.
     }
 
     public void validateAssetFiles(AssetInfo asset, Hashtable<String, InputStream> inputFiles) throws ServiceException,
             IOException, NoSuchAlgorithmException {
-        List<AssetFileInfo> assetFiles = serviceMock.getAssetFiles(asset.getId());
+        List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset.getId()));
 
         assertNotNull("assetFiles", assetFiles);
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());
@@ -107,7 +106,7 @@ class MediaServiceValidation {
         // * Compare these properties: IsEncrypted, InitializationVector, EncryptionKeyId, EncryptionScheme, EncryptionVersion
 
         // Compare the asset files with all files
-        List<AssetFileInfo> allFiles = serviceMock.getFiles();
+        List<AssetFileInfo> allFiles = service.list(AssetFile.list());
         for (AssetFileInfo assetFile : assetFiles) {
             assertEquals("fi.getParentAssetId", asset.getId(), assetFile.getParentAssetId());
             AssetFileInfo match = null;
@@ -132,22 +131,29 @@ class MediaServiceValidation {
         }
     }
 
-    public void validateJob(JobInfo job, String string, AssetInfo asset, List<CreateTaskOptions> createTasks) {
-        // Add validation
+    public void validateJob(JobInfo job, String name, AssetInfo asset, List<Task.CreateBatchOperation> createTasks) {
+        assertDateApproxEquals("getEndTime", new Date(), job.getCreated());
+        assertEquals("job.getName", name, job.getName());
+
+        // TODO: Uncomment when fixed:
+        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
+        //        List<String> inputAssets = job.getInputMediaAssets();
+        //        assertNotNull("inputAssets", inputAssets);
+        //        assertEquals("inputAssets.size()", 1, inputAssets.size());
+        //        assertEquals("inputAssets.get(0)", asset.getId(), inputAssets.get(0));
+        //
+        //        List<String> outputAssets = job.getOutputMediaAssets();
+        //        assertNotNull("outputAssets", outputAssets);
+        //        assertEquals("outputAssets.size()", createTasks.size(), outputAssets.size());
     }
 
-    public void validateOutputAssets(List<AssetInfo> outputAssets) throws ServiceException, MalformedURLException {
-        // Add validation for the output assets. Will be simple to do once
+    public void validateOutputAssets(List<AssetInfo> outputAssets) throws ServiceException {
+        // TODO: Uncomment when fixed:
+        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
 
-        //        for (AssetInfo outputAsset : outputAssets) {
-        //            List<URL> urls = wrapper.createOriginUrlsForAppleHLSContent(outputAsset, 1000);
-        //            for (URL url : urls) {
-        //                System.out.println(url);
-        //            }
-        //        }
-        //
-        //        for (URL url : wrapper.createOriginUrlsForStreamingContent(asset, 10)) {
-        //            // TODO: What to verify here?
+        //        assertNotNull("outputAssets", outputAssets);
+        //        for (AssetInfo asset : outputAssets) {
+        //            this.validateAsset(asset, null, null);
         //        }
     }
 
@@ -191,6 +197,22 @@ class MediaServiceValidation {
         assertEquals(message + ":getMimeType", fi.getMimeType(), match.getMimeType());
         assertEquals(message + ":getName", fi.getName(), match.getName());
         assertEquals(message + ":getParentAssetId", fi.getParentAssetId(), match.getParentAssetId());
+    }
+
+    protected void assertDateApproxEquals(String message, Date expected, Date actual) {
+        // Default allows for a 30 seconds difference in dates, for clock skew, network delays, etc.
+        long deltaInMilliseconds = 30000;
+
+        if (expected == null || actual == null) {
+            assertEquals(message, expected, actual);
+        }
+        else {
+            long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+
+            if (diffInMilliseconds > deltaInMilliseconds) {
+                assertEquals(message, expected, actual);
+            }
+        }
     }
 
     private void assertStreamsEqual(InputStream inputStream1, InputStream inputStream2) throws IOException {

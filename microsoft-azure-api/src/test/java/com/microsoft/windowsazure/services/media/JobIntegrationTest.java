@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -40,9 +39,7 @@ import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
-import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
@@ -83,17 +80,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         service.action(AssetFile.createFileInfos(assetInfo.getId()));
         return assetInfo.getId();
-    }
-
-    private LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes,
-            int expirationDeltaMinutes) throws ServiceException {
-
-        Date now = new Date();
-        Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
-        Date expire = new Date(now.getTime() + (expirationDeltaMinutes * 60 * 1000));
-
-        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS)
-                .setStartDateTime(start).setExpirationDateTime(expire));
     }
 
     private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,

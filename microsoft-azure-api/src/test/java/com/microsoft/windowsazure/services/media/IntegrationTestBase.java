@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.Asset;
@@ -23,6 +24,7 @@ import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 
 public abstract class IntegrationTestBase {
     protected static MediaContract service;
@@ -138,6 +140,17 @@ public abstract class IntegrationTestBase {
 
     interface ComponentDelegate {
         void verifyEquals(String message, Object expected, Object actual);
+    }
+
+    protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes,
+            int expirationDeltaMinutes) throws ServiceException {
+
+        Date now = new Date();
+        Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
+        Date expire = new Date(now.getTime() + (expirationDeltaMinutes * 60 * 1000));
+
+        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS)
+                .setStartDateTime(start).setExpirationDateTime(expire));
     }
 
     protected <T> void verifyListResultContains(List<T> expectedInfos, Collection<T> actualInfos,
