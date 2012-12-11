@@ -33,7 +33,7 @@ public class AssetType implements MediaServiceDTO {
     protected String id;
 
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected int state;
+    protected Integer state;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
     protected Date created;
@@ -68,7 +68,7 @@ public class AssetType implements MediaServiceDTO {
     /**
      * @return the state
      */
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
@@ -76,7 +76,7 @@ public class AssetType implements MediaServiceDTO {
      * @param state
      *            the state to set
      */
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
