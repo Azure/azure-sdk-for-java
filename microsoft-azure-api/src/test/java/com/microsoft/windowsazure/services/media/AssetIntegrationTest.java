@@ -278,7 +278,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         service.delete(Asset.delete(validButNonexistAssetId));
     }
 
-    // @Ignore("due to issue 507")
+    @Ignore("due to issue 507")
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
         // Arrange
