@@ -40,7 +40,7 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.Job.Creator;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
@@ -107,7 +107,7 @@ class MediaServiceWrapper {
     }
 
     // Manage
-    public AssetInfo createAsset(String name, EncryptionOption encryption) throws ServiceException {
+    public AssetInfo createAsset(String name, AssetOption encryption) throws ServiceException {
         // Create asset. The SDK's top-level method is the simplest way to do that.
         return service.create(Asset.create().setName(name).setAlternateId("altId").setOptions(encryption));
     }
