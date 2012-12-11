@@ -219,8 +219,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the state
      */
-    public Integer getState() {
-        return getContent().getState();
+    public JobState getState() {
+        return JobState.fromCode(getContent().getState());
     }
 
     /**
@@ -230,8 +230,8 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the state
      * @return the job info
      */
-    public JobInfo setState(Integer state) {
-        getContent().setState(state);
+    public JobInfo setState(JobState state) {
+        getContent().setState(state.getCode());
         return this;
     }
 

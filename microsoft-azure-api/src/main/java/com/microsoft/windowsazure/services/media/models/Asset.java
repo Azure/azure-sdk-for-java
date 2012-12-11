@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.net.URI;
+
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
@@ -24,6 +26,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityLinkOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
@@ -35,27 +38,54 @@ import com.sun.jersey.api.client.GenericType;
  * 
  */
 public class Asset {
+
+    /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Assets";
 
     // Prevent instantiation
+    /**
+     * Instantiates a new asset.
+     */
     private Asset() {
     }
 
+    /**
+     * Creates the.
+     * 
+     * @return the creator
+     */
     public static Creator create() {
         return new Creator();
     }
 
+    /**
+     * The Class Creator.
+     */
     public static class Creator extends EntityOperationSingleResultBase<AssetInfo> implements
             EntityCreationOperation<AssetInfo> {
+
+        /** The name. */
         private String name;
+
+        /** The alternate id. */
         private String alternateId;
+
+        /** The options. */
         private EncryptionOption options;
+
+        /** The state. */
         private AssetState state;
 
+        /**
+         * Instantiates a new creator.
+         */
         public Creator() {
             super(ENTITY_SET, AssetInfo.class);
         }
 
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         */
         @Override
         public Object getRequestContents() {
             AssetType assetType = new AssetType();
@@ -71,7 +101,7 @@ public class Asset {
         }
 
         /**
-         * Set the name of the asset to be created
+         * Set the name of the asset to be created.
          * 
          * @param name
          *            The name
@@ -95,11 +125,25 @@ public class Asset {
             return this;
         }
 
+        /**
+         * Sets the options.
+         * 
+         * @param options
+         *            the options
+         * @return the creator
+         */
         public Creator setOptions(EncryptionOption options) {
             this.options = options;
             return this;
         }
 
+        /**
+         * Sets the state.
+         * 
+         * @param state
+         *            the state
+         * @return the creator
+         */
         public Creator setState(AssetState state) {
             this.state = state;
             return this;
@@ -128,7 +172,7 @@ public class Asset {
     }
 
     /**
-     * Create an operation that will list all the assets which match the given query parameters
+     * Create an operation that will list all the assets which match the given query parameters.
      * 
      * @param queryParameters
      *            query parameters to pass to the server.
@@ -140,7 +184,7 @@ public class Asset {
     }
 
     /**
-     * Create an operation that will update the given asset
+     * Create an operation that will update the given asset.
      * 
      * @param assetId
      *            id of the asset to update
@@ -150,14 +194,30 @@ public class Asset {
         return new Updater(assetId);
     }
 
+    /**
+     * The Class Updater.
+     */
     public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+
+        /** The name. */
         private String name;
+
+        /** The alternate id. */
         private String alternateId;
 
+        /**
+         * Instantiates a new updater.
+         * 
+         * @param assetId
+         *            the asset id
+         */
         protected Updater(String assetId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, assetId));
         }
 
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation#getRequestContents()
+         */
         @Override
         public Object getRequestContents() {
             AssetType assetType = new AssetType();
@@ -167,7 +227,7 @@ public class Asset {
         }
 
         /**
-         * Sets new name for asset
+         * Sets new name for asset.
          * 
          * @param name
          *            The new name
@@ -179,7 +239,7 @@ public class Asset {
         }
 
         /**
-         * Sets new alternate id for asset
+         * Sets new alternate id for asset.
          * 
          * @param alternateId
          *            the new alternate id
@@ -192,7 +252,7 @@ public class Asset {
     }
 
     /**
-     * Create an operation to delete the given asset
+     * Create an operation to delete the given asset.
      * 
      * @param assetId
      *            id of asset to delete
@@ -201,4 +261,18 @@ public class Asset {
     public static EntityDeleteOperation delete(String assetId) {
         return new DefaultDeleteOperation(ENTITY_SET, assetId);
     }
+
+    /**
+     * Link content key.
+     * 
+     * @param assetId
+     *            the asset id
+     * @param contentKeyUri
+     *            the content key uri
+     * @return the entity action operation
+     */
+    public static EntityLinkOperation linkContentKey(String assetId, URI contentKeyUri) {
+        return new EntityLinkOperation("Assets", assetId, "ContentKeys", contentKeyUri);
+    }
+
 }
