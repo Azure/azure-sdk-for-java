@@ -20,16 +20,18 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+
 public class ContentKeyInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null, new ContentKeyRestType().setId(expectedId));
 
         // Act 
-        String actualId = contentKeyInfo.setId(expectedId).getId();
+        String actualId = contentKeyInfo.getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -39,10 +41,10 @@ public class ContentKeyInfoTest {
     public void testGetSetCreated() {
         // Arrange
         Date expectedCreated = new Date();
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null, new ContentKeyRestType().setCreated(expectedCreated));
 
         // Act
-        Date actualCreated = contentKeyInfo.setCreated(expectedCreated).getCreated();
+        Date actualCreated = contentKeyInfo.getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -52,10 +54,11 @@ public class ContentKeyInfoTest {
     public void testGetSetLastModified() {
         // Arrange
         Date expectedLastModified = new Date();
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setLastModified(expectedLastModified));
 
         // Act
-        Date actualLastModified = contentKeyInfo.setLastModified(expectedLastModified).getLastModified();
+        Date actualLastModified = contentKeyInfo.getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
@@ -65,11 +68,11 @@ public class ContentKeyInfoTest {
     public void testGetSetContentKeyType() {
         // Arrange
         ContentKeyType expectedContentKeyType = ContentKeyType.ConfigurationEncryption;
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setContentKeyType(expectedContentKeyType.getCode()));
 
         // Act 
-        ContentKeyType actualContentKeyType = contentKeyInfo.setContentKeyType(expectedContentKeyType)
-                .getContentKeyType();
+        ContentKeyType actualContentKeyType = contentKeyInfo.getContentKeyType();
 
         // Assert
         assertEquals(expectedContentKeyType, actualContentKeyType);
@@ -80,11 +83,11 @@ public class ContentKeyInfoTest {
     public void testGetSetEncryptedContentKey() {
         // Arrange 
         String expectedEncryptedContentKey = "testX509Certificate";
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setEncryptedContentKey(expectedEncryptedContentKey));
 
         // Act
-        String actualEncryptedContentKey = contentKeyInfo.setEncryptedContentKey(expectedEncryptedContentKey)
-                .getEncryptedContentKey();
+        String actualEncryptedContentKey = contentKeyInfo.getEncryptedContentKey();
 
         // Assert
         assertEquals(expectedEncryptedContentKey, actualEncryptedContentKey);
@@ -94,10 +97,10 @@ public class ContentKeyInfoTest {
     public void testGetSetName() {
         // Arrange
         String expectedName = "expectedName";
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null, new ContentKeyRestType().setName(expectedName));
 
         // Act
-        String actualName = contentKeyInfo.setName(expectedName).getName();
+        String actualName = contentKeyInfo.getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -107,10 +110,11 @@ public class ContentKeyInfoTest {
     public void testGetSetProtectionKeyId() {
         // Arrange 
         String expectedProtectionKeyId = "expectedProtectionKeyId";
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setProtectionKeyId(expectedProtectionKeyId));
 
         // Act
-        String actualProtectionKeyId = contentKeyInfo.setProtectionKeyId(expectedProtectionKeyId).getProtectionKeyId();
+        String actualProtectionKeyId = contentKeyInfo.getProtectionKeyId();
 
         // Assert 
         assertEquals(expectedProtectionKeyId, actualProtectionKeyId);
@@ -121,11 +125,11 @@ public class ContentKeyInfoTest {
     public void testGetSetProtectionKeyType() {
         // Arrange
         ProtectionKeyType expectedProtectionKeyType = ProtectionKeyType.X509CertificateThumbprint;
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setProtectionKeyType(expectedProtectionKeyType.getCode()));
 
         // Act
-        ProtectionKeyType actualProtectionKeyType = contentKeyInfo.setProtectionKeyType(expectedProtectionKeyType)
-                .getProtectionKeyType();
+        ProtectionKeyType actualProtectionKeyType = contentKeyInfo.getProtectionKeyType();
 
         // Assert
         assertEquals(expectedProtectionKeyType, actualProtectionKeyType);
@@ -135,10 +139,10 @@ public class ContentKeyInfoTest {
     public void testGetSetCheckSum() {
         // Arrange 
         String expectedCheckSum = "testCheckSum";
-        ContentKeyInfo contentKeyInfo = new ContentKeyInfo();
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null, new ContentKeyRestType().setChecksum(expectedCheckSum));
 
         // Act 
-        String actualCheckSum = contentKeyInfo.setChecksum(expectedCheckSum).getChecksum();
+        String actualCheckSum = contentKeyInfo.getChecksum();
 
         // Assert
         assertEquals(expectedCheckSum, actualCheckSum);

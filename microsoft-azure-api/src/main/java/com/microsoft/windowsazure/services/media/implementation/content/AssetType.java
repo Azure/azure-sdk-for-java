@@ -61,8 +61,9 @@ public class AssetType implements MediaServiceDTO {
      * @param id
      *            the id to set
      */
-    public void setId(String id) {
+    public AssetType setId(String id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -76,8 +77,9 @@ public class AssetType implements MediaServiceDTO {
      * @param state
      *            the state to set
      */
-    public void setState(Integer state) {
+    public AssetType setState(Integer state) {
         this.state = state;
+        return this;
     }
 
     /**
@@ -91,8 +93,9 @@ public class AssetType implements MediaServiceDTO {
      * @param created
      *            the created to set
      */
-    public void setCreated(Date created) {
+    public AssetType setCreated(Date created) {
         this.created = created;
+        return this;
     }
 
     /**
@@ -106,8 +109,9 @@ public class AssetType implements MediaServiceDTO {
      * @param lastModified
      *            the lastModified to set
      */
-    public void setLastModified(Date lastModified) {
+    public AssetType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+        return this;
     }
 
     /**
@@ -121,8 +125,9 @@ public class AssetType implements MediaServiceDTO {
      * @param alternateId
      *            the alternateId to set
      */
-    public void setAlternateId(String alternateId) {
+    public AssetType setAlternateId(String alternateId) {
         this.alternateId = alternateId;
+        return this;
     }
 
     /**
@@ -136,8 +141,9 @@ public class AssetType implements MediaServiceDTO {
      * @param name
      *            the name to set
      */
-    public void setName(String name) {
+    public AssetType setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -151,7 +157,8 @@ public class AssetType implements MediaServiceDTO {
      * @param options
      *            the options to set
      */
-    public void setOptions(Integer options) {
+    public AssetType setOptions(Integer options) {
         this.options = options;
+        return this;
     }
 }

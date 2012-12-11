@@ -40,43 +40,12 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
     }
 
     /**
-     * Instantiates a new content key info.
-     */
-    public ContentKeyInfo() {
-        super(new ContentKeyRestType());
-    }
-
-    /**
      * Gets the id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Sets the id.
-     * 
-     * @param id
-     *            the id
-     * @return the content key info
-     */
-    public ContentKeyInfo setId(String id) {
-        getContent().setId(id);
-        return this;
-    }
-
-    /**
-     * Sets the create.
-     * 
-     * @param created
-     *            the created
-     * @return the content key info
-     */
-    public ContentKeyInfo setCreated(Date created) {
-        getContent().setCreated(created);
-        return this;
     }
 
     /**
@@ -98,48 +67,12 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
     }
 
     /**
-     * Sets the last modified.
-     * 
-     * @param lastModified
-     *            the last modified
-     * @return the content key info
-     */
-    public ContentKeyInfo setLastModified(Date lastModified) {
-        getContent().setLastModified(lastModified);
-        return this;
-    }
-
-    /**
      * Gets the name.
      * 
      * @return the name
      */
     public String getName() {
         return getContent().getName();
-    }
-
-    /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name
-     * @return the content key info
-     */
-    public ContentKeyInfo setName(String name) {
-        getContent().setName(name);
-        return this;
-    }
-
-    /**
-     * Sets the check sum.
-     * 
-     * @param checksum
-     *            the check sum
-     * @return the content key info
-     */
-    public ContentKeyInfo setChecksum(String checksum) {
-        getContent().setChecksum(checksum);
-        return this;
     }
 
     /**
@@ -152,36 +85,12 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
     }
 
     /**
-     * Sets the protection key type.
-     * 
-     * @param protectionKeyType
-     *            the protection key type
-     * @return the content key info
-     */
-    public ContentKeyInfo setProtectionKeyType(ProtectionKeyType protectionKeyType) {
-        getContent().setProtectionKeyType(protectionKeyType.getCode());
-        return this;
-    }
-
-    /**
      * Gets the protection key type.
      * 
      * @return the protection key type
      */
     public ProtectionKeyType getProtectionKeyType() {
         return ProtectionKeyType.fromCode(getContent().getProtectionKeyType());
-    }
-
-    /**
-     * Sets the protection key id.
-     * 
-     * @param protectionKeyId
-     *            the protection key id
-     * @return the content key info
-     */
-    public ContentKeyInfo setProtectionKeyId(String protectionKeyId) {
-        getContent().setProtectionKeyId(protectionKeyId);
-        return this;
     }
 
     /**
@@ -194,41 +103,12 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
     }
 
     /**
-     * Sets the encrypted content key.
-     * 
-     * @param encryptedContentKey
-     *            the encrypted content key
-     * @return the content key info
-     */
-    public ContentKeyInfo setEncryptedContentKey(String encryptedContentKey) {
-        getContent().setEncryptedContentKey(encryptedContentKey);
-        return this;
-    }
-
-    /**
      * Gets the encrypted content key.
      * 
      * @return the encrypted content key
      */
     public String getEncryptedContentKey() {
         return getContent().getEncryptedContentKey();
-    }
-
-    /**
-     * Sets the content key type.
-     * 
-     * @param contentKeyType
-     *            the content key type
-     * @return the content key info
-     */
-    public ContentKeyInfo setContentKeyType(ContentKeyType contentKeyType) {
-        if (contentKeyType == null) {
-            getContent().setContentKeyType(null);
-        }
-        else {
-            getContent().setContentKeyType(contentKeyType.getCode());
-        }
-        return this;
     }
 
     /**
