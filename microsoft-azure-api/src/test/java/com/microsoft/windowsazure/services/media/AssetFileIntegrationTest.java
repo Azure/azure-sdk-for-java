@@ -62,7 +62,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
     public void canCreateFileForUploadedBlob() throws Exception {
         AssetInfo asset = createTestAsset("createFileForUploadedBlob");
         LocatorInfo locator = createLocator(writePolicy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, BLOB_NAME, firstPrimes);
 
@@ -79,7 +79,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
     public void canCreateFileEntityDirectly() throws Exception {
         AssetInfo asset = createTestAsset("createFileEntityDirectly");
         LocatorInfo locator = createLocator(writePolicy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, BLOB_NAME_2, firstPrimes);
 
@@ -104,7 +104,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AccessPolicyInfo policy = createWritePolicy("createWithMultipleFiles", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
 
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "blob1.bin", firstPrimes);
         createAndUploadBlob(blobWriter, "blob2.bin", onesAndZeros);
@@ -141,7 +141,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AssetInfo asset = createTestAsset("createAndUpdate");
         AccessPolicyInfo policy = createWritePolicy("createAndUpdate", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "toUpdate.bin", firstPrimes);
 
@@ -159,7 +159,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AssetInfo asset = createTestAsset("deleteFile");
         AccessPolicyInfo policy = createWritePolicy("deleteFile", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "todelete.bin", firstPrimes);
         createAndUploadBlob(blobWriter, "tokeep.bin", onesAndZeros);

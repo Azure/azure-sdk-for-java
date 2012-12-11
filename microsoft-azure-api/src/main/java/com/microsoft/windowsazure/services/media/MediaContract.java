@@ -19,6 +19,7 @@ import java.net.URI;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityContract;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
 /**
  * Contract for interacting with the back end of Media Services
@@ -28,4 +29,13 @@ public interface MediaContract extends FilterableService<MediaContract>, EntityC
 
     URI getRestServiceUri();
 
+    /**
+     * Creates an instance of the <code>WritableBlobContainerContract</code> API that will
+     * write to the blob container given by the provided locator.
+     * 
+     * @param locator
+     *            locator specifying where to upload to
+     * @return the implementation of <code>WritableBlobContainerContract</code>
+     */
+    WritableBlobContainerContract createBlobWriter(LocatorInfo locator);
 }

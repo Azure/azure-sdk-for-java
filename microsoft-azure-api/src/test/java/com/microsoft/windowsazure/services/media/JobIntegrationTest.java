@@ -72,7 +72,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         AssetInfo assetInfo = service.create(Asset.create().setName(name));
         AccessPolicyInfo accessPolicyInfo = createWritableAccessPolicy(name, 10);
         LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
         createAndUploadBlob(blobWriter, testBlobName, testBlobData);
 
         service.create(AssetFile.create(assetInfo.getId(), testBlobName).setIsPrimary(true).setIsEncrypted(false)
@@ -124,7 +124,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         AccessPolicyInfo accessPolicyInfo = createWritableAccessPolicy("createJobSuccess", 10);
         LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
         createAndUploadBlob(blobWriter, "blob1.bin", testBlobData);
 
         service.create(AssetFile.create(assetInfo.getId(), "blob1.bin").setIsPrimary(true).setIsEncrypted(false)
