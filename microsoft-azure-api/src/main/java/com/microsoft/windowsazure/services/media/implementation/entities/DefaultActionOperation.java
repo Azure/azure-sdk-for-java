@@ -28,7 +28,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class DefaultActionOperation implements EntityActionOperation {
 
     /** The name. */
-    private final String name;
+    protected String name;
 
     /** The content type. */
     private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
@@ -37,7 +37,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
     /** The query parameters. */
-    private final MultivaluedMap<String, String> queryParameters;
+    protected final MultivaluedMap<String, String> queryParameters;
 
     /**
      * The default action operation.
@@ -46,7 +46,14 @@ public class DefaultActionOperation implements EntityActionOperation {
      *            the name
      */
     public DefaultActionOperation(String name) {
+        this();
         this.name = name;
+    }
+
+    /**
+     * Instantiates a new default action operation.
+     */
+    public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
     }
 
@@ -124,4 +131,19 @@ public class DefaultActionOperation implements EntityActionOperation {
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getVerb()
+     */
+    @Override
+    public String getVerb() {
+        return "GET";
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getRequestContents()
+     */
+    @Override
+    public Object getRequestContents() {
+        return null;
+    }
 }
