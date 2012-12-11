@@ -70,7 +70,7 @@ public class TaskType implements MediaServiceDTO {
     protected String taskBody;
 
     @XmlElement(name = "Options", namespace = Constants.ODATA_DATA_NS)
-    protected int options;
+    protected Integer options;
 
     @XmlElement(name = "EncryptionKeyId", namespace = Constants.ODATA_DATA_NS)
     protected String encryptionKeyId;
