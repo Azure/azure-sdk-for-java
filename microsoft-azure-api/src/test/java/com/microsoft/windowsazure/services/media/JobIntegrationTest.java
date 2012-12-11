@@ -29,6 +29,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
@@ -116,11 +117,8 @@ public class JobIntegrationTest extends IntegrationTestBase {
         // Arrange
         AssetInfo assetInfo = service.create(Asset.create());
 
-        JobInfo expectedJob = new JobInfo();
-        expectedJob.setName("My Encoding Job");
-        expectedJob.setPriority(3);
-        expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(JobState.Queued);
+        JobInfo expectedJob = new JobInfo(null, new JobType().setName("My Encoding Job").setPriority(3)
+                .setRunningDuration(0.0).setState(JobState.Queued.getCode()));
 
         AccessPolicyInfo accessPolicyInfo = createWritableAccessPolicy("createJobSuccess", 10);
         LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
@@ -152,11 +150,9 @@ public class JobIntegrationTest extends IntegrationTestBase {
     @Test
     public void getJobSuccess() throws Exception {
         // Arrange
-        JobInfo expectedJob = new JobInfo();
-        expectedJob.setName("My Encoding Job");
-        expectedJob.setPriority(3);
-        expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(JobState.Queued);
+        JobInfo expectedJob = new JobInfo(null, new JobType().setName("My Encoding Job").setPriority(3)
+                .setRunningDuration(0.0).setState(JobState.Queued.getCode()));
+
         String jobId = createJob("getJobSuccess").getId();
 
         // Act
