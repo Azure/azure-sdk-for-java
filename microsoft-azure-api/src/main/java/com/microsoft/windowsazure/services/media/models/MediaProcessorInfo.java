@@ -39,31 +39,12 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType> {
     }
 
     /**
-     * Instantiates a new media processor info.
-     */
-    public MediaProcessorInfo() {
-        super(new MediaProcessorType());
-    }
-
-    /**
      * Get the asset id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Set the id.
-     * 
-     * @param id
-     *            the id
-     * @return the asset info
-     */
-    public MediaProcessorInfo setId(String id) {
-        getContent().setId(id);
-        return this;
     }
 
     /**
@@ -76,36 +57,12 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType> {
     }
 
     /**
-     * set the name.
-     * 
-     * @param name
-     *            the name
-     * @return the asset info
-     */
-    public MediaProcessorInfo setName(String name) {
-        this.getContent().setName(name);
-        return this;
-    }
-
-    /**
      * Gets the description.
      * 
      * @return the description
      */
     public String getDescription() {
         return this.getContent().getDescription();
-    }
-
-    /**
-     * Sets the description.
-     * 
-     * @param description
-     *            the description
-     * @return the media processor info
-     */
-    public MediaProcessorInfo setDescription(String description) {
-        this.getContent().setDescription(description);
-        return this;
     }
 
     /**
@@ -118,18 +75,6 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType> {
     }
 
     /**
-     * Sets the sku.
-     * 
-     * @param sku
-     *            the sku
-     * @return the media processor info
-     */
-    public MediaProcessorInfo setSku(String sku) {
-        this.getContent().setSku(sku);
-        return this;
-    }
-
-    /**
      * Gets the vendor.
      * 
      * @return the vendor
@@ -139,35 +84,11 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType> {
     }
 
     /**
-     * Sets the vendor.
-     * 
-     * @param vendor
-     *            the vendor
-     * @return the media processor info
-     */
-    public MediaProcessorInfo setVendor(String vendor) {
-        this.getContent().setVendor(vendor);
-        return this;
-    }
-
-    /**
      * Gets the version.
      * 
      * @return the version
      */
     public String getVersion() {
         return this.getContent().getVersion();
-    }
-
-    /**
-     * Sets the version.
-     * 
-     * @param version
-     *            the version
-     * @return the media processor info
-     */
-    public MediaProcessorInfo setVersion(String version) {
-        this.getContent().setVersion(version);
-        return this;
     }
 }
