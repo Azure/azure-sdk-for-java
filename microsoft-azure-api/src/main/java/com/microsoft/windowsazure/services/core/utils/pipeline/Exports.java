@@ -32,39 +32,34 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
+                TimeoutSettings timeoutSettings = builder.build(profile, TimeoutSettings.class, properties);
+                timeoutSettings.applyTimeout(clientConfig);
+                return clientConfig;
+            }
+        });
+
+        registry.add(new Builder.Factory<TimeoutSettings>() {
+
+            @Override
+            public TimeoutSettings create(String profile, Builder builder, Map<String, Object> properties) {
+                Object connectTimeout = null;
+                Object readTimeout = null;
+
                 profile = normalizeProfile(profile);
-
-                // Lower levels of the stack assume timeouts are set. 
-                // Set default timeout on clientConfig in case user
-                // hasn't set it yet in their configuration
-
-                clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, new Integer(90 * 1000));
-                clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, new Integer(90 * 1000));
 
                 for (Entry<String, Object> entry : properties.entrySet()) {
                     Object propertyValue = entry.getValue();
                     String propertyKey = entry.getKey();
 
                     if (propertyKey.equals(profile + Configuration.PROPERTY_CONNECT_TIMEOUT)) {
-                        propertyKey = ClientConfig.PROPERTY_CONNECT_TIMEOUT;
+                        connectTimeout = propertyValue;
                     }
                     if (propertyKey.equals(profile + Configuration.PROPERTY_READ_TIMEOUT)) {
-                        propertyKey = ClientConfig.PROPERTY_READ_TIMEOUT;
+                        readTimeout = propertyValue;
                     }
-
-                    // ClientConfig requires instance of Integer to properly set
-                    // timeouts, but config file will deliver strings. Special
-                    // case these timeout properties and convert them to Integer
-                    // if necessary.
-                    if (propertyKey.equals(ClientConfig.PROPERTY_CONNECT_TIMEOUT)
-                            || propertyKey.equals(ClientConfig.PROPERTY_READ_TIMEOUT)) {
-                        if (propertyValue instanceof String) {
-                            propertyValue = Integer.valueOf((String) propertyValue);
-                        }
-                    }
-                    clientConfig.getProperties().put(propertyKey, propertyValue);
                 }
-                return clientConfig;
+
+                return new TimeoutSettings(connectTimeout, readTimeout);
             }
         });
 

@@ -30,7 +30,6 @@ import java.util.List;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
-import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
@@ -138,7 +137,8 @@ class MediaServiceWrapper {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
         LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
-        WritableBlobContainerContract uploader = MediaService.createBlobWriter(locator);
+
+        WritableBlobContainerContract uploader = service.createBlobWriter(locator);
 
         Hashtable<String, AssetFileInfo> infoToUpload = new Hashtable<String, AssetFileInfo>();
 

@@ -54,7 +54,7 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
 
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
 
-        blobWriter = MediaService.createBlobWriter(locator);
+        blobWriter = service.createBlobWriter(locator);
 
         ExponentialRetryPolicy retryPolicy = new ExponentialRetryPolicy(5000, 5, new int[] { 400, 404 });
         blobWriter = blobWriter.withFilter(new RetryPolicyFilter(retryPolicy));
