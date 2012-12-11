@@ -20,44 +20,90 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.MediaUriType;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
- * Generic implementation of Delete operation usable by most entities.
+ * Generic implementation of $link operation of two entities.
  */
 public class EntityLinkOperation extends DefaultActionOperation {
 
     /** The master entity set. */
-    private final String masterEntitySet;
+    private final String primaryEntitySet;
 
     /** The master entity id. */
-    private final String masterEntityId;
+    private final String primaryEntityId;
 
     /** The slave entity set. */
-    private final String slaveEntitySet;
+    private final String secondaryEntitySet;
 
     /** The slave entity uri. */
-    private final URI slaveEntityUri;
+    private final URI secondaryEntityUri;
+
+    /** The jaxb context. */
+    private final JAXBContext jaxbContext;
+
+    /** The marshaller. */
+    private final Marshaller marshaller;
+
+    /** The document builder. */
+    private final DocumentBuilder documentBuilder;
+
+    /** The document builder factory. */
+    private final DocumentBuilderFactory documentBuilderFactory;
 
     /**
      * Instantiates a new entity link operation.
      * 
-     * @param masterEntitySet
+     * @param primaryEntitySet
      *            the master entity set
-     * @param masterEntityId
+     * @param primaryEntityId
      *            the master entity id
-     * @param slaveEntitySet
+     * @param secondaryEntitySet
      *            the slave entity set
-     * @param slaveEntityUri
+     * @param secondaryEntityUri
      *            the slave entity uri
      */
-    public EntityLinkOperation(String masterEntitySet, String masterEntityId, String slaveEntitySet, URI slaveEntityUri) {
+    public EntityLinkOperation(String primaryEntitySet, String primaryEntityId, String secondaryEntitySet,
+            URI secondaryEntityUri) {
         super();
-        this.masterEntitySet = masterEntitySet;
-        this.masterEntityId = masterEntityId;
-        this.slaveEntitySet = slaveEntitySet;
-        this.slaveEntityUri = slaveEntityUri;
+        this.primaryEntitySet = primaryEntitySet;
+        this.primaryEntityId = primaryEntityId;
+        this.secondaryEntitySet = secondaryEntitySet;
+        this.secondaryEntityUri = secondaryEntityUri;
+        try {
+            jaxbContext = JAXBContext.newInstance(MediaUriType.class);
+        }
+        catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            marshaller = jaxbContext.createMarshaller();
+        }
+        catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /* (non-Javadoc)
@@ -67,12 +113,12 @@ public class EntityLinkOperation extends DefaultActionOperation {
     public String getUri() {
         String escapedEntityId;
         try {
-            escapedEntityId = URLEncoder.encode(masterEntityId, "UTF-8");
+            escapedEntityId = URLEncoder.encode(primaryEntityId, "UTF-8");
         }
         catch (UnsupportedEncodingException e) {
-            throw new InvalidParameterException(masterEntityId);
+            throw new InvalidParameterException("UTF-8 encoding is not supported.");
         }
-        return String.format("%s('%s')/$links/%s", masterEntitySet, escapedEntityId, slaveEntitySet);
+        return String.format("%s('%s')/$links/%s", primaryEntitySet, escapedEntityId, secondaryEntitySet);
     }
 
     /* (non-Javadoc)
@@ -97,10 +143,18 @@ public class EntityLinkOperation extends DefaultActionOperation {
      */
     @Override
     public Object getRequestContents() {
-        String result = String
-                .format("<?xml version=\"1.0\" encoding=\"utf-8\"?><uri xmlns=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">%s</uri>",
-                        this.slaveEntityUri);
-
-        return result;
+        MediaUriType mediaUriType = new MediaUriType();
+        mediaUriType.setUri(this.secondaryEntityUri.toString());
+        JAXBElement<MediaUriType> mediaUriTypeElement = new JAXBElement<MediaUriType>(new QName(
+                Constants.ODATA_DATA_NS, "uri"), MediaUriType.class, mediaUriType);
+        Document document = documentBuilder.newDocument();
+        document.setXmlStandalone(true);
+        try {
+            marshaller.marshal(mediaUriTypeElement, document);
+        }
+        catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        return document;
     }
 }

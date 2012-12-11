@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -279,7 +278,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         service.delete(Asset.delete(validButNonexistAssetId));
     }
 
-    @Ignore("due to issue 507")
+    // @Ignore("due to issue 507")
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
         // Arrange

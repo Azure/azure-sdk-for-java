@@ -272,7 +272,6 @@ public class Asset {
      * @return the entity action operation
      */
     public static EntityLinkOperation linkContentKey(String assetId, URI contentKeyUri) {
-
         return new EntityLinkOperation("Assets", assetId, "ContentKeys", contentKeyUri);
     }
 
