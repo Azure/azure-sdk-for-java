@@ -47,7 +47,22 @@ public interface EntityActionOperation extends EntityOperation {
      * 
      * @param clientResponse
      *            the client response
-     * @return
+     * @return the object
      */
     Object processResponse(ClientResponse clientResponse);
+
+    /**
+     * Gets the verb.
+     * 
+     * @return the verb
+     */
+    String getVerb();
+
+    /**
+     * Gets the request contents.
+     * 
+     * @return the request contents
+     */
+    Object getRequestContents();
+
 }
