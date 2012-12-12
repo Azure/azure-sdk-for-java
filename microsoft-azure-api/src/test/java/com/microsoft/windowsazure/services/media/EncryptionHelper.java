@@ -21,12 +21,16 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -37,6 +41,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
 public class EncryptionHelper {
     public static void RSAOAEP() throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException,
@@ -109,6 +115,25 @@ public class EncryptionHelper {
         cOut.write(cipherText);
         cOut.close();
         System.out.println("plain : " + new String(bOut.toByteArray()));
+    }
+
+    public static byte[] EncryptSymmetricKey(String publicKeyString, byte[] inputData) throws InvalidKeySpecException,
+            NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, NoSuchPaddingException,
+            IllegalBlockSizeException, BadPaddingException {
+        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(
+                new X509EncodedKeySpec(Base64.decode(publicKeyString)));
+        return EncryptSymmetricKey(publicKey, inputData);
+
+    }
+
+    public static byte[] EncryptSymmetricKey(Key publicKey, byte[] inputData) throws NoSuchAlgorithmException,
+            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+            BadPaddingException {
+        Cipher cipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
+        SecureRandom secureRandom = new SecureRandom();
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
+        byte[] cipherText = cipher.doFinal(inputData);
+        return cipherText;
     }
 
 }

@@ -15,17 +15,35 @@
 
 package com.microsoft.windowsazure.services.media;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.UUID;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
@@ -59,39 +77,76 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void uploadAesProtectedAssetAndDecryptSuccess() throws Exception {
+    public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
+        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
 
         // Act
         byte[] aesKey = EncryptionHelper.create256BitRandomVector();
         byte[] initializationVector = EncryptionHelper.create256BitRandomVector();
 
-        AssetInfo assetInfo = createAsset("uploadAesProtectedAssetSuccess");
-        String protectionKey = getProtectionKey(ContentKeyType.StorageEncryption);
-        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, protectionKey, assetFileName);
-        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, initializationVector);
-        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyInfo.getId()));
+        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess"));
+        String protectionKeyId = (String) service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId);
+        URI contentKeyUri = createContentKeyUri(service.getRestServiceUri(), contentKeyInfo.getId());
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
+
+        byte[] encryptedContent = EncryptFile(smallWMVInputStream, aesKey, initializationVector);
+        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, protectionKeyId, encryptedContent, aesKey,
+                initializationVector);
+
+        // executeDecodingJob(assetInfo);
 
         // Assert
+        // verify the file downloaded is identical to the one that is uploaded. 
 
     }
 
-    private ContentKeyInfo createContentKey(byte[] aesKey, byte[] initializationVector) {
+    private AssetFileInfo uploadEncryptedAssetFile(AssetInfo assetInfo, String protectionKeyId,
+            byte[] encryptedContent, byte[] aesKey, byte[] initializationVector) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private String getProtectionKey(EncryptionOption storageencrypted) {
-        // TODO Auto-generated method stub
-        return null;
+    private URI createContentKeyUri(URI rootUri, String contentKeyId) {
+        return URI.create(String.format("%s/ContentKeys('%s')", contentKeyId));
+    }
+
+    private byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
+            throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IOException {
+        // preparation
+        SecretKeySpec key = new SecretKeySpec(aesKey, "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
+        Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding", "BC");
+
+        // encryption
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
+        // teArrayInputStream byteArrayInputStream = new ByteArrayInputStream(input);
+        CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int ch;
+        while ((ch = cipherInputStream.read()) >= 0) {
+            byteArrayOutputStream.write(ch);
+        }
+
+        byte[] cipherText = byteArrayOutputStream.toByteArray();
+        return cipherText;
+    }
+
+    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId)
+            throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
+            NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ServiceException {
+        String contentKeyId = createRandomContentKeyId();
+        byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKeyId, aesKey);
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, contentKeyType,
+                Base64.encode(encryptedContentKey)));
+        return contentKeyInfo;
     }
 
     private AssetInfo createAsset(String string) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private String createRandomInitializationVector() {
         // TODO Auto-generated method stub
         return null;
     }
