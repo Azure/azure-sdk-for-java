@@ -24,7 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.TimeoutSettings;
+import com.microsoft.windowsazure.services.core.utils.pipeline.ClientConfigSettings;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityRestProxy;
@@ -44,7 +44,7 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     /** The redirect filter. */
     private RedirectFilter redirectFilter;
 
-    private final TimeoutSettings timeoutSettings;
+    private final ClientConfigSettings clientConfigSettings;
 
     /**
      * Instantiates a new media rest proxy.
@@ -57,16 +57,16 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      *            the redirect filter
      * @param versionHeadersFilter
      *            the version headers filter
-     * @param timeoutSettings
-     *            Currently configured HTTP client timeouts
+     * @param clientConfigSettings
+     *            Currently configured HTTP client settings
      * 
      */
     @Inject
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
-            VersionHeadersFilter versionHeadersFilter, TimeoutSettings timeoutSettings) {
+            VersionHeadersFilter versionHeadersFilter, ClientConfigSettings clientConfigSettings) {
         super(channel, new ServiceFilter[0]);
 
-        this.timeoutSettings = timeoutSettings;
+        this.clientConfigSettings = clientConfigSettings;
         this.redirectFilter = redirectFilter;
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
@@ -80,12 +80,12 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      *            the channel
      * @param filters
      *            the filters
-     * @param timeoutSettings
-     *            currently configured HTTP client timeouts
+     * @param clientConfigSettings
+     *            currently configured HTTP client settings
      */
-    private MediaRestProxy(Client channel, ServiceFilter[] filters, TimeoutSettings timeoutSettings) {
+    private MediaRestProxy(Client channel, ServiceFilter[] filters, ClientConfigSettings clientConfigSettings) {
         super(channel, filters);
-        this.timeoutSettings = timeoutSettings;
+        this.clientConfigSettings = clientConfigSettings;
     }
 
     /* (non-Javadoc)
@@ -96,7 +96,7 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         ServiceFilter[] filters = getFilters();
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new MediaRestProxy(getChannel(), newFilters, timeoutSettings);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
     }
 
     /* (non-Javadoc)
@@ -151,8 +151,9 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
 
     private Client createUploaderClient() {
         ClientConfig clientConfig = new DefaultClientConfig();
-        timeoutSettings.applyTimeout(clientConfig);
+        clientConfigSettings.applyConfig(clientConfig);
         Client client = Client.create(clientConfig);
+        clientConfigSettings.applyConfig(client);
         return client;
     }
 }
