@@ -21,6 +21,8 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -33,6 +35,7 @@ public abstract class IntegrationTestBase {
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
     protected static final String testContentKeyPrefix = "testContentKey";
+    protected static final String testJobPrefix = "testJobPrefix";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -52,7 +55,6 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
 
-        // TODO: Replace with call to MediaService.create once that's updated
         service = MediaService.create(config);
 
         cleanupEnvironment();
@@ -79,6 +81,7 @@ public abstract class IntegrationTestBase {
         removeAllTestAssets();
         removeAllTestAccessPolicies();
         removeAllTestContentKeys();
+        removeAllTestJobs();
     }
 
     private static void removeAllTestContentKeys() {
@@ -130,6 +133,20 @@ public abstract class IntegrationTestBase {
                 AssetInfo ai = service.get(Asset.get(locatorInfo.getAssetId()));
                 if (ai.getName().startsWith(testAssetPrefix)) {
                     service.delete(Locator.delete(locatorInfo.getId()));
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void removeAllTestJobs() {
+        try {
+            ListResult<JobInfo> jobs = service.list(Job.list());
+            for (JobInfo job : jobs) {
+                if (job.getName().startsWith(testAssetPrefix)) {
+                    service.delete(Job.delete(job.getId()));
                 }
             }
         }
