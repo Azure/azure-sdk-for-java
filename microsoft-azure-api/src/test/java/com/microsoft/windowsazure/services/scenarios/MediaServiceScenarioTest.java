@@ -32,7 +32,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
@@ -60,8 +60,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
 
     @Test
     public void newAsset() throws Exception {
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "newAsset", EncryptionOption.None);
-        validator.validateAsset(asset, testAssetPrefix + "newAsset", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "newAsset", AssetOption.None);
+        validator.validateAsset(asset, testAssetPrefix + "newAsset", AssetOption.None);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         String rootName = testAssetPrefix + "pageOverAssets";
         List<String> assetNames = createListOfAssetNames(rootName, 4);
         for (String assetName : assetNames) {
-            wrapper.createAsset(assetName, EncryptionOption.None);
+            wrapper.createAsset(assetName, AssetOption.None);
         }
         signalSetupFinished();
 
@@ -81,7 +81,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void uploadFiles() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadFiles", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadFiles", AssetOption.None);
         signalSetupFinished();
 
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
@@ -91,7 +91,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void downloadFiles() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
@@ -102,7 +102,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void createJob() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "createJob", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "createJob", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
@@ -114,7 +114,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void transformAsset() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         String jobName = "my job transformAsset";
         JobInfo job = wrapper.createJob(jobName, asset, createTasks());

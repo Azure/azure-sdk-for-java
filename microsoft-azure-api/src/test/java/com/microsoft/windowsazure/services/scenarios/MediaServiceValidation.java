@@ -33,7 +33,7 @@ import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetState;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
@@ -45,7 +45,7 @@ class MediaServiceValidation {
         this.service = service;
     }
 
-    public void validateAsset(AssetInfo asset, String name, EncryptionOption encryption) throws ServiceException {
+    public void validateAsset(AssetInfo asset, String name, AssetOption encryption) throws ServiceException {
         // Check the asset state.
         assertNotNull("asset", asset);
         assertNotNull("asset.getId", asset.getId());
