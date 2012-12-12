@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.services.core.utils.pipeline;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.core.Builder.Registry;
@@ -32,34 +31,21 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
-                TimeoutSettings timeoutSettings = builder.build(profile, TimeoutSettings.class, properties);
-                timeoutSettings.applyTimeout(clientConfig);
+                ClientConfigSettings settings = builder.build(profile, ClientConfigSettings.class, properties);
+                settings.applyConfig(clientConfig);
                 return clientConfig;
             }
         });
 
-        registry.add(new Builder.Factory<TimeoutSettings>() {
+        registry.add(new Builder.Factory<ClientConfigSettings>() {
 
             @Override
-            public TimeoutSettings create(String profile, Builder builder, Map<String, Object> properties) {
-                Object connectTimeout = null;
-                Object readTimeout = null;
+            public ClientConfigSettings create(String profile, Builder builder, Map<String, Object> properties) {
+                Object connectTimeout = getPropertyIfExists(profile, properties, Configuration.PROPERTY_CONNECT_TIMEOUT);
+                Object readTimeout = getPropertyIfExists(profile, properties, Configuration.PROPERTY_READ_TIMEOUT);
 
-                profile = normalizeProfile(profile);
-
-                for (Entry<String, Object> entry : properties.entrySet()) {
-                    Object propertyValue = entry.getValue();
-                    String propertyKey = entry.getKey();
-
-                    if (propertyKey.equals(profile + Configuration.PROPERTY_CONNECT_TIMEOUT)) {
-                        connectTimeout = propertyValue;
-                    }
-                    if (propertyKey.equals(profile + Configuration.PROPERTY_READ_TIMEOUT)) {
-                        readTimeout = propertyValue;
-                    }
-                }
-
-                return new TimeoutSettings(connectTimeout, readTimeout);
+                return new ClientConfigSettings(connectTimeout, readTimeout, getPropertyIfExists(profile, properties,
+                        Configuration.PROPERTY_LOG_HTTP_REQUESTS) != null);
             }
         });
 
@@ -67,8 +53,9 @@ public class Exports implements Builder.Exports {
             @Override
             public Client create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
+                ClientConfigSettings settings = builder.build(profile, ClientConfigSettings.class, properties);
                 Client client = Client.create(clientConfig);
-                // client.addFilter(new LoggingFilter());
+                settings.applyConfig(client);
                 return client;
             }
         });
@@ -77,15 +64,16 @@ public class Exports implements Builder.Exports {
             @Override
             public HttpURLConnectionClient create(String profile, Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, ClientConfig.class, properties);
+                ClientConfigSettings settings = builder.build(profile, ClientConfigSettings.class, properties);
                 HttpURLConnectionClient client = HttpURLConnectionClient.create(clientConfig);
-                // client.addFilter(new LoggingFilter());
+                settings.applyConfig(client);
                 return client;
             }
         });
     }
 
     private static String normalizeProfile(String profile) {
-        if (profile == null) {
+        if (profile == null || profile.equals("")) {
             return "";
         }
 
@@ -94,5 +82,14 @@ public class Exports implements Builder.Exports {
         }
 
         return profile + ".";
+    }
+
+    private static Object getPropertyIfExists(String profile, Map<String, Object> properties, String propertyName) {
+        String fullPropertyName = normalizeProfile(profile) + propertyName;
+
+        if (properties.containsKey(fullPropertyName)) {
+            return properties.get(fullPropertyName);
+        }
+        return null;
     }
 }

@@ -15,35 +15,70 @@
 
 package com.microsoft.windowsazure.services.core.utils.pipeline;
 
+import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 
 /**
  * Class used for injecting timeout settings into the various places that need it.
  * 
  */
-public class TimeoutSettings {
+public class ClientConfigSettings {
     private static final int DEFAULT_TIMEOUT_MS = 90 * 1000;
 
     private final Integer connectTimeout;
     private final Integer readTimeout;
+    private final boolean shouldLog;
 
     /**
-     * Construct a {@link TimeoutSettings} object with the default
-     * timeout.
+     * Construct a {@link ClientConfigSettings} object with the default
+     * settings.
      */
-    public TimeoutSettings() {
+    public ClientConfigSettings() {
         connectTimeout = Integer.valueOf(null);
         readTimeout = Integer.valueOf(null);
+        shouldLog = false;
     }
 
-    public TimeoutSettings(Object connectTimeout, Object readTimeout) {
+    /**
+     * Construct a {@link ClientConfigSettings} object wit the given
+     * settings.
+     * 
+     * @param connectTimeout
+     *            Connection timeout in milliseconds
+     * @param readTimeout
+     *            read timeout in milliseconds
+     * @param shouldLog
+     *            if true, add logging filter to clients.
+     */
+    public ClientConfigSettings(Object connectTimeout, Object readTimeout, boolean shouldLog) {
         this.connectTimeout = getTimeout(connectTimeout);
         this.readTimeout = getTimeout(readTimeout);
+        this.shouldLog = shouldLog;
     }
 
-    public void applyTimeout(ClientConfig clientConfig) {
+    /**
+     * Update the given {@link ClientConfig} object with the appropriate
+     * settings from configuration.
+     * 
+     * @param clientConfig
+     *            object to update.
+     */
+    public void applyConfig(ClientConfig clientConfig) {
         clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, connectTimeout);
         clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, readTimeout);
+    }
+
+    /**
+     * Update the given {@link client} object with the appropriate settings
+     * from configuration.
+     * 
+     * @param client
+     */
+    public void applyConfig(Client client) {
+        if (shouldLog) {
+            client.addFilter(new LoggingFilter());
+        }
     }
 
     private Integer getTimeout(Object timeoutValue) {

@@ -35,6 +35,12 @@ public class Configuration {
      */
     public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.readTimeout";
 
+    /**
+     * Property name to control if HTTP logging to console is on or off. If property is set, logging is on, regardless
+     * of value.
+     */
+    public static final String PROPERTY_LOG_HTTP_REQUESTS = "com.microsoft.windowsazure.services.core.Configuration.logHttpRequests";
+
     private static Configuration instance;
     Map<String, Object> properties;
     Builder builder;
