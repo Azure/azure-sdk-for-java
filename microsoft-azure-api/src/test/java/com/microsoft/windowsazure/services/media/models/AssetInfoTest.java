@@ -108,11 +108,12 @@ public class AssetInfoTest {
     @Test
     public void testGetSetOptions() {
         // Arrange
-        EncryptionOption expectedOptions = EncryptionOption.None;
+
+        AssetOption expectedOptions = AssetOption.None;
         AssetInfo assetInfo = new AssetInfo(null, new AssetType().setOptions(expectedOptions.getCode()));
 
         // Act
-        EncryptionOption actualOptions = assetInfo.getOptions();
+        AssetOption actualOptions = assetInfo.getOptions();
 
         // Assert
         assertEquals(expectedOptions, actualOptions);

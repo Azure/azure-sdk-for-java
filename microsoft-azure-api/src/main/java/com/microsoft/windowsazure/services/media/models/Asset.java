@@ -71,7 +71,7 @@ public class Asset {
         private String alternateId;
 
         /** The options. */
-        private EncryptionOption options;
+        private AssetOption options;
 
         /** The state. */
         private AssetState state;
@@ -132,7 +132,7 @@ public class Asset {
          *            the options
          * @return the creator
          */
-        public Creator setOptions(EncryptionOption options) {
+        public Creator setOptions(AssetOption options) {
             this.options = options;
             return this;
         }
