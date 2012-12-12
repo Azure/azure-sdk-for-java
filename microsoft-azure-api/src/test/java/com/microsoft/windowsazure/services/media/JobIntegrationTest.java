@@ -50,7 +50,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class JobIntegrationTest extends IntegrationTestBase {
 
     private static AssetInfo assetInfo;
-    private static final byte[] testBlobData = new byte[] { 0, 1, 2 };
+    private static final byte[] testBlobData = new byte[] { 4, 8, 15, 16, 23, 42 };
 
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
