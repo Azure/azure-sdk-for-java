@@ -62,7 +62,7 @@ public class Job {
     }
 
     /**
-     * Creates the.
+     * Creates an operation to create a new job.
      * 
      * @param serviceUri
      *            the service uri
