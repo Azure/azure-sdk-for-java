@@ -67,13 +67,11 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorCanSetTimes() throws Exception {
+    public void createLocatorCanSetStartTime() throws Exception {
         Date now = new Date();
-        Date tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
-        EntityCreationOperation<LocatorInfo> creator = Locator
-                .create(exampleAccessPolicyId, exampleAssetId, LocatorType.SAS).setStartDateTime(now)
-                .setExpirationDateTime(tomorrow);
+        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+                LocatorType.SAS).setStartDateTime(now);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
 
@@ -81,7 +79,6 @@ public class LocatorEntityTest {
         assertEquals(exampleAccessPolicyId, locatorType.getAccessPolicyId());
         assertEquals(LocatorType.SAS.getCode(), locatorType.getType().intValue());
         assertEquals(now, locatorType.getStartTime());
-        assertEquals(tomorrow, locatorType.getExpirationDateTime());
     }
 
     @Test

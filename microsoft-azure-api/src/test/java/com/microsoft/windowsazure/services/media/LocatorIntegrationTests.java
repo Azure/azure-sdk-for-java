@@ -134,27 +134,13 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void createLocatorOptionsSetExpirationDateTimeSuccess() throws ServiceException {
-        // Arrange
-        Date expectedExpirationDateTime = new Date();
-        expectedExpirationDateTime.setTime(expectedExpirationDateTime.getTime() + tenMinutesInMS);
-        LocatorType locatorType = LocatorType.SAS;
-
-        // Act
-        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
-                locatorType).setExpirationDateTime(expectedExpirationDateTime));
-        // Assert 
-        verifyLocatorProperties("locatorInfo", accessPolicyInfo.getId(), assetInfo.getId(), locatorType, null,
-                expectedExpirationDateTime, locatorInfo);
-    }
-
-    @Test
     public void createLocatorOptionsSetStartTimeSuccess() throws ServiceException {
         // Arrange
         Date expectedStartDateTime = new Date();
         expectedStartDateTime.setTime(expectedStartDateTime.getTime() + tenMinutesInMS);
         LocatorType locatorType = LocatorType.SAS;
-        Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfo, assetInfo);
+        Date expectedExpirationDateTime = new Date(expectedStartDateTime.getTime()
+                + (long) accessPolicyInfo.getDurationInMinutes() * minuteInMS);
 
         // Act
         LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
@@ -171,11 +157,9 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         LocatorType locatorType = LocatorType.SAS;
         Date expectedStartDateTime = new Date();
         expectedStartDateTime.setTime(expectedStartDateTime.getTime() + tenMinutesInMS);
-        Date expectedExpirationDateTime = new Date(expectedStartDateTime.getTime() + tenMinutesInMS);
 
-        LocatorInfo expectedLocatorInfo = service.create(Locator
-                .create(accessPolicyInfo.getId(), assetInfo.getId(), locatorType)
-                .setStartDateTime(expectedStartDateTime).setExpirationDateTime(expectedExpirationDateTime));
+        LocatorInfo expectedLocatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                locatorType).setStartDateTime(expectedStartDateTime));
 
         // Act
         LocatorInfo actualLocatorInfo = service.get(Locator.get(expectedLocatorInfo.getId()));
@@ -271,9 +255,8 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         Date startTime = new Date();
         startTime.setTime(startTime.getTime() - tenMinutesInMS);
 
-        LocatorInfo locatorInfo = service.create(Locator
-                .create(accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType)
-                .setExpirationDateTime(expirationDateTime).setStartDateTime(startTime));
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfoRead.getId(), assetInfo.getId(),
+                locatorType).setStartDateTime(startTime));
 
         // Act
         service.update(Locator.update(locatorInfo.getId()));
