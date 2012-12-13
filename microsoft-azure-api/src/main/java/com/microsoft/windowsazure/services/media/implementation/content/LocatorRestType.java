@@ -38,7 +38,7 @@ public class LocatorRestType implements MediaServiceDTO {
 
     /** The type. */
     @XmlElement(name = "Type", namespace = Constants.ODATA_DATA_NS)
-    protected int type;
+    protected Integer type;
 
     /** The path. */
     @XmlElement(name = "Path", namespace = Constants.ODATA_DATA_NS)
@@ -111,7 +111,7 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the type
      */
-    public int getType() {
+    public Integer getType() {
         return this.type;
     }
 
@@ -122,7 +122,7 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the type
      * @return the locator rest type
      */
-    public LocatorRestType setType(int type) {
+    public LocatorRestType setType(Integer type) {
         this.type = type;
         return this;
     }

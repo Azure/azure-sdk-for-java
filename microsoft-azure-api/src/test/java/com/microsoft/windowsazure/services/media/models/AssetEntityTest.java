@@ -46,7 +46,7 @@ public class AssetEntityTest {
 
         assertNotNull(payload);
         assertNull(payload.getId());
-        assertEquals(0, payload.getState());
+        assertNull(payload.getState());
         assertNull(payload.getCreated());
         assertNull(payload.getLastModified());
         assertNull(payload.getAlternateId());
@@ -64,7 +64,7 @@ public class AssetEntityTest {
 
         assertNotNull(payload);
         assertNull(payload.getId());
-        assertEquals(0, payload.getState());
+        assertNull(payload.getState());
         assertNull(payload.getCreated());
         assertNull(payload.getLastModified());
         assertNull(payload.getAlternateId());

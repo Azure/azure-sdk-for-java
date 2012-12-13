@@ -37,9 +37,7 @@ import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
-import com.microsoft.windowsazure.services.media.models.LocatorType;
 
 public class AssetFileIntegrationTest extends IntegrationTestBase {
 
@@ -64,13 +62,13 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
     public void canCreateFileForUploadedBlob() throws Exception {
         AssetInfo asset = createTestAsset("createFileForUploadedBlob");
         LocatorInfo locator = createLocator(writePolicy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, BLOB_NAME, firstPrimes);
 
         service.action(AssetFile.createFileInfos(asset.getId()));
 
-        ListResult<AssetFileInfo> files = service.list(AssetFile.list());
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
 
         assertEquals(1, files.size());
         AssetFileInfo file = files.get(0);
@@ -81,7 +79,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
     public void canCreateFileEntityDirectly() throws Exception {
         AssetInfo asset = createTestAsset("createFileEntityDirectly");
         LocatorInfo locator = createLocator(writePolicy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, BLOB_NAME_2, firstPrimes);
 
@@ -106,7 +104,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AccessPolicyInfo policy = createWritePolicy("createWithMultipleFiles", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
 
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "blob1.bin", firstPrimes);
         createAndUploadBlob(blobWriter, "blob2.bin", onesAndZeros);
@@ -119,7 +117,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
                 .setIsEncrypted(false).setContentFileSize(new Long(onesAndZeros.length)));
 
         AssetFileInfo file3 = service.create(AssetFile.create(asset.getId(), "blob3.bin").setIsPrimary(false)
-                .setIsEncrypted(false).setContentFileSize(new Long(countingUp.length)));
+                .setIsEncrypted(false).setContentFileSize(new Long(countingUp.length)).setContentChecksum("1234"));
 
         ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
 
@@ -133,9 +131,9 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
             }
         });
 
-        assertAssetFileInfoEquals(file1, results.get(0));
-        assertAssetFileInfoEquals(file2, results.get(1));
-        assertAssetFileInfoEquals(file3, results.get(2));
+        assertAssetFileInfoEquals("results.get(0)", file1, results.get(0));
+        assertAssetFileInfoEquals("results.get(1)", file2, results.get(1));
+        assertAssetFileInfoEquals("results.get(2)", file3, results.get(2));
     }
 
     @Test
@@ -143,7 +141,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AssetInfo asset = createTestAsset("createAndUpdate");
         AccessPolicyInfo policy = createWritePolicy("createAndUpdate", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "toUpdate.bin", firstPrimes);
 
@@ -161,7 +159,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AssetInfo asset = createTestAsset("deleteFile");
         AccessPolicyInfo policy = createWritePolicy("deleteFile", 10);
         LocatorInfo locator = createLocator(policy, asset, 5, 10);
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locator);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
 
         createAndUploadBlob(blobWriter, "todelete.bin", firstPrimes);
         createAndUploadBlob(blobWriter, "tokeep.bin", onesAndZeros);
@@ -195,17 +193,6 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
                 EnumSet.of(AccessPolicyPermission.WRITE)));
     }
 
-    private static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes,
-            int expirationDeltaMinutes) throws ServiceException {
-
-        Date now = new Date();
-        Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
-        Date expire = new Date(now.getTime() + (expirationDeltaMinutes * 60 * 1000));
-
-        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS)
-                .setStartDateTime(start).setExpirationDateTime(expire));
-    }
-
     private static void createAndUploadBlob(WritableBlobContainerContract blobWriter, String blobName, byte[] data)
             throws ServiceException {
         InputStream blobContent = new ByteArrayInputStream(data);
@@ -216,19 +203,36 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
     // Assertion helpers
     //
 
-    private void assertAssetFileInfoEquals(AssetFileInfo expected, AssetFileInfo actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getParentAssetId(), actual.getParentAssetId());
-        assertEquals(expected.getIsPrimary(), actual.getIsPrimary());
-        assertEquals(expected.getIsEncrypted(), actual.getIsEncrypted());
-        assertEquals(expected.getEncryptionKeyId(), actual.getEncryptionKeyId());
-        assertEquals(expected.getEncryptionScheme(), actual.getEncryptionScheme());
-        assertEquals(expected.getEncryptionVersion(), actual.getEncryptionVersion());
-        assertEquals(expected.getInitializationVector(), actual.getInitializationVector());
-        assertDateApproxEquals(expected.getCreated(), actual.getCreated());
-        assertDateApproxEquals(expected.getLastModified(), actual.getLastModified());
-        assertEquals(expected.getMimeType(), actual.getMimeType());
+    private void assertAssetFileInfoEquals(String message, AssetFileInfo expected, AssetFileInfo actual) {
+        verifyAssetInfoProperties(message, expected.getId(), expected.getName(), expected.getParentAssetId(),
+                expected.getIsPrimary(), expected.getIsEncrypted(), expected.getEncryptionKeyId(),
+                expected.getEncryptionScheme(), expected.getEncryptionVersion(), expected.getInitializationVector(),
+                expected.getCreated(), expected.getLastModified(), expected.getContentChecksum(),
+                expected.getMimeType(), actual);
+    }
+
+    private void verifyAssetInfoProperties(String message, String id, String name, String parentAssetId,
+            boolean isPrimary, boolean isEncrypted, String encryptionKeyId, String encryptionScheme,
+            String encryptionVersion, String initializationVector, Date created, Date lastModified,
+            String contentChecksum, String mimeType, AssetFileInfo assetFile) {
+        assertNotNull(message, assetFile);
+
+        assertEquals(message + ".getId", id, assetFile.getId());
+        assertEquals(message + ".getName", name, assetFile.getName());
+        assertEquals(message + ".getParentAssetId", parentAssetId, assetFile.getParentAssetId());
+        assertEquals(message + ".getIsPrimary", isPrimary, assetFile.getIsPrimary());
+
+        assertEquals(message + ".getIsEncrypted", isEncrypted, assetFile.getIsEncrypted());
+        assertEquals(message + ".getEncryptionKeyId", encryptionKeyId, assetFile.getEncryptionKeyId());
+        assertEquals(message + ".getEncryptionScheme", encryptionScheme, assetFile.getEncryptionScheme());
+        assertEquals(message + ".getEncryptionVersion", encryptionVersion, assetFile.getEncryptionVersion());
+        assertEquals(message + ".getInitializationVector", initializationVector, assetFile.getInitializationVector());
+
+        assertDateApproxEquals(message + ".getCreated", created, assetFile.getCreated());
+        assertDateApproxEquals(message + ".getLastModified", lastModified, assetFile.getLastModified());
+        assertEquals(message + ".getContentChecksum", contentChecksum, assetFile.getContentChecksum());
+        assertEquals(message + ".getMimeType", mimeType, assetFile.getMimeType());
+
     }
 
 }

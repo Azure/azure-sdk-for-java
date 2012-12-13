@@ -40,31 +40,12 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Instantiates a new asset info.
-     */
-    public AssetInfo() {
-        super(new AssetType());
-    }
-
-    /**
      * Get the asset id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Set the id.
-     * 
-     * @param id
-     *            the id
-     * @return the asset info
-     */
-    public AssetInfo setId(String id) {
-        getContent().setId(id);
-        return this;
     }
 
     /**
@@ -77,36 +58,12 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * set the name.
-     * 
-     * @param name
-     *            the name
-     * @return the asset info
-     */
-    public AssetInfo setName(String name) {
-        this.getContent().setName(name);
-        return this;
-    }
-
-    /**
      * Get the asset state.
      * 
      * @return the state
      */
     public AssetState getState() {
         return AssetState.fromCode(getContent().getState());
-    }
-
-    /**
-     * Set the state.
-     * 
-     * @param state
-     *            the state
-     * @return the asset info
-     */
-    public AssetInfo setState(AssetState state) {
-        getContent().setState(state.getCode());
-        return this;
     }
 
     /**
@@ -119,36 +76,12 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set creation date.
-     * 
-     * @param created
-     *            the date
-     * @return the asset info
-     */
-    public AssetInfo setCreated(Date created) {
-        getContent().setCreated(created);
-        return this;
-    }
-
-    /**
      * Get last modified date.
      * 
      * @return the date
      */
     public Date getLastModified() {
         return getContent().getLastModified();
-    }
-
-    /**
-     * Set last modified date.
-     * 
-     * @param lastModified
-     *            the date
-     * @return the asset info
-     */
-    public AssetInfo setLastModified(Date lastModified) {
-        getContent().setLastModified(lastModified);
-        return this;
     }
 
     /**
@@ -161,36 +94,11 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Set the alternate id.
-     * 
-     * @param alternateId
-     *            the id
-     * @return the asset info
-     */
-    public AssetInfo setAlternateId(String alternateId) {
-        getContent().setAlternateId(alternateId);
-        return this;
-    }
-
-    /**
      * Get the options.
      * 
      * @return the options
      */
-    public EncryptionOption getOptions() {
-        return EncryptionOption.fromCode(getContent().getOptions());
+    public AssetOption getOptions() {
+        return AssetOption.fromCode(getContent().getOptions());
     }
-
-    /**
-     * Set the options.
-     * 
-     * @param encryptionOption
-     *            the encryption option
-     * @return the asset info
-     */
-    public AssetInfo setOptions(EncryptionOption encryptionOption) {
-        getContent().setOptions(encryptionOption.getCode());
-        return this;
-    }
-
 }

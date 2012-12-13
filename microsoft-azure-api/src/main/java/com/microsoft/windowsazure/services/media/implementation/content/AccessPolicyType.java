@@ -41,10 +41,10 @@ public class AccessPolicyType implements MediaServiceDTO {
     protected String name;
 
     @XmlElement(name = "DurationInMinutes", namespace = Constants.ODATA_DATA_NS)
-    protected double durationInMinutes;
+    protected Double durationInMinutes;
 
     @XmlElement(name = "Permissions", namespace = Constants.ODATA_DATA_NS)
-    protected int permissions;
+    protected Integer permissions;
 
     /**
      * @return the id
@@ -113,7 +113,7 @@ public class AccessPolicyType implements MediaServiceDTO {
     /**
      * @return the durationInMinutes
      */
-    public double getDurationInMinutes() {
+    public Double getDurationInMinutes() {
         return durationInMinutes;
     }
 
@@ -129,7 +129,7 @@ public class AccessPolicyType implements MediaServiceDTO {
     /**
      * @return the permissions
      */
-    public int getPermissions() {
+    public Integer getPermissions() {
         return permissions;
     }
 
@@ -137,7 +137,7 @@ public class AccessPolicyType implements MediaServiceDTO {
      * @param permissions
      *            the permissions to set
      */
-    public AccessPolicyType setPermissions(int permissions) {
+    public AccessPolicyType setPermissions(Integer permissions) {
         this.permissions = permissions;
         return this;
     }
