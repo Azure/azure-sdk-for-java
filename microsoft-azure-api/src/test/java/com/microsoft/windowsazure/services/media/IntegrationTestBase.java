@@ -14,15 +14,19 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 
 public abstract class IntegrationTestBase {
     protected static MediaContract service;
@@ -31,6 +35,7 @@ public abstract class IntegrationTestBase {
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
     protected static final String testContentKeyPrefix = "testContentKey";
+    protected static final String testJobPrefix = "testJobPrefix";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -50,7 +55,6 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
 
-        // TODO: Replace with call to MediaService.create once that's updated
         service = MediaService.create(config);
 
         cleanupEnvironment();
@@ -77,6 +81,7 @@ public abstract class IntegrationTestBase {
         removeAllTestAssets();
         removeAllTestAccessPolicies();
         removeAllTestContentKeys();
+        removeAllTestJobs();
     }
 
     private static void removeAllTestContentKeys() {
@@ -136,8 +141,33 @@ public abstract class IntegrationTestBase {
         }
     }
 
+    private static void removeAllTestJobs() {
+        try {
+            ListResult<JobInfo> jobs = service.list(Job.list());
+            for (JobInfo job : jobs) {
+                if (job.getName().startsWith(testAssetPrefix)) {
+                    service.delete(Job.delete(job.getId()));
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     interface ComponentDelegate {
         void verifyEquals(String message, Object expected, Object actual);
+    }
+
+    protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes,
+            int expirationDeltaMinutes) throws ServiceException {
+
+        Date now = new Date();
+        Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
+        Date expire = new Date(now.getTime() + (expirationDeltaMinutes * 60 * 1000));
+
+        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS)
+                .setStartDateTime(start).setExpirationDateTime(expire));
     }
 
     protected <T> void verifyListResultContains(List<T> expectedInfos, Collection<T> actualInfos,

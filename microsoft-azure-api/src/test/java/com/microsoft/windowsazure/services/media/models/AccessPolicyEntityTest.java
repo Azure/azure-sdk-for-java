@@ -28,9 +28,6 @@ import com.microsoft.windowsazure.services.media.implementation.content.AccessPo
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.models.AccessPolicy;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -58,7 +55,7 @@ public class AccessPolicyEntityTest {
 
         assertEquals(name, payload.getName());
         assertEquals(duration, payload.getDurationInMinutes(), 0.0);
-        assertEquals(AccessPolicyPermission.bitsFromPermissions(permissions), payload.getPermissions());
+        assertEquals(AccessPolicyPermission.bitsFromPermissions(permissions), payload.getPermissions().intValue());
     }
 
     @Test

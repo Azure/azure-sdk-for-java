@@ -30,7 +30,6 @@ import java.util.List;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
-import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
@@ -38,24 +37,23 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.Job.Creator;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateJobOptions;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.CreateTaskOptions;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.JobInfo;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.MockMediaContract;
-import com.microsoft.windowsazure.services.scenarios.MediaServiceMocks.TaskCreationOptions;
+import com.microsoft.windowsazure.services.media.models.Task;
 
 class MediaServiceWrapper {
     private final MediaContract service;
-    private final MockMediaContract serviceMock;
 
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
 
@@ -106,11 +104,10 @@ class MediaServiceWrapper {
 
     public MediaServiceWrapper(MediaContract service) {
         this.service = service;
-        this.serviceMock = new MockMediaContract();
     }
 
     // Manage
-    public AssetInfo createAsset(String name, EncryptionOption encryption) throws ServiceException {
+    public AssetInfo createAsset(String name, AssetOption encryption) throws ServiceException {
         // Create asset. The SDK's top-level method is the simplest way to do that.
         return service.create(Asset.create().setName(name).setAlternateId("altId").setOptions(encryption));
     }
@@ -140,7 +137,11 @@ class MediaServiceWrapper {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
         LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
-        WritableBlobContainerContract uploader = MediaService.createBlobWriter(locator);
+
+        WritableBlobContainerContract uploader = service.createBlobWriter(locator);
+
+        Hashtable<String, AssetFileInfo> infoToUpload = new Hashtable<String, AssetFileInfo>();
+
         boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
             MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -159,10 +160,22 @@ class MediaServiceWrapper {
             AssetFileInfo fi = new AssetFileInfo(null, new AssetFileType().setContentChecksum(md5)
                     .setContentFileSize(new Long(countingStream.getCount())).setIsPrimary(isFirst).setName(fileName)
                     .setParentAssetId(asset.getAlternateId()));
-            serviceMock.createFileInfo(fi);
+            infoToUpload.put(fileName, fi);
 
             isFirst = false;
         }
+
+        service.action(AssetFile.createFileInfos(asset.getId()));
+        for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getId()))) {
+
+            AssetFileInfo x = infoToUpload.get(assetFile.getName());
+            System.out.println(x);
+            service.update(AssetFile.update(assetFile.getId()).setContentChecksum(x.getContentChecksum())
+                    .setContentFileSize(x.getContentFileSize()).setIsPrimary(x.getIsPrimary()));
+        }
+
+        service.list(AssetFile.list(asset.getId()));
+
         service.delete(Locator.delete(locator.getId()));
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
     }
@@ -188,60 +201,66 @@ class MediaServiceWrapper {
     }
 
     // Process
-    public JobInfo createJob(String jobName, AssetInfo inputAsset, List<CreateTaskOptions> tasks) {
-        CreateJobOptions jobOptions = new CreateJobOptions().setName(jobName).addInputMediaAsset(inputAsset.getId());
+    public JobInfo createJob(String jobName, AssetInfo inputAsset, List<Task.CreateBatchOperation> tasks)
+            throws ServiceException {
+        Creator jobCreator = Job.create(service.getRestServiceUri()).setName(jobName)
+                .addInputMediaAsset(inputAsset.getId()).setPriority(2);
 
-        for (CreateTaskOptions task : tasks) {
-            jobOptions.addTask(task);
+        for (Task.CreateBatchOperation task : tasks) {
+            jobCreator.addTaskCreator(task);
         }
 
-        return serviceMock.createJob(jobOptions);
+        return service.create(jobCreator);
     }
 
     // Process
-    public CreateTaskOptions createTaskOptionsWindowsAzureMediaEncoder(String taskName) throws ServiceException {
-        return new CreateTaskOptions()
-                .setName(taskName)
-                .setProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER))
-                .setConfiguration("H.264 256k DSL CBR")
-                .setTaskBody(
-                        "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
-                                + "<outputAsset>JobOutputAsset(0)</outputAsset></taskBody>");
+    public Task.CreateBatchOperation createTaskOptionsWindowsAzureMediaEncoder(String taskName, int inputAssetId,
+            int outputAssetId) throws ServiceException {
+        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
+                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER))
+                .setConfiguration("H.264 256k DSL CBR");
+        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+        return taskCreate;
     }
 
     // Process
-    public CreateTaskOptions createTaskOptionsPlayReadyProtection(String taskName, String playReadyConfiguration)
-            throws ServiceException {
-        return new CreateTaskOptions()
+    public Task.CreateBatchOperation createTaskOptionsPlayReadyProtection(String taskName,
+            String playReadyConfiguration, int inputAssetId, int outputAssetId) throws ServiceException {
+        Task.CreateBatchOperation taskCreate = Task
+                .create()
                 .setName(taskName)
-                .setTaskCreationOptions(TaskCreationOptions.ProtectedConfiguration)
-                .setProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION))
-                .setConfiguration(playReadyConfiguration)
-                .setTaskBody(
-                        "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
-                                + "<outputAsset>JobOutputAsset(0)</outputAsset></taskBody>");
+                // TODO: Re-enable
+                // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/499
+                // .setTaskCreationOptions(TaskCreationOptions.ProtectedConfiguration)
+                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION))
+                .setConfiguration(playReadyConfiguration);
+        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+        return taskCreate;
     }
 
     // Process
-    public CreateTaskOptions createTaskOptionsMp4ToSmoothStreams(String taskName) throws ServiceException {
-        return new CreateTaskOptions()
-                .setName(taskName)
-                .setProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS))
-                .setConfiguration(configMp4ToSmoothStreams)
-                .setTaskBody(
-                        "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
-                                + "<outputAsset>JobOutputAsset(0)</outputAsset></taskBody>");
+    public Task.CreateBatchOperation createTaskOptionsMp4ToSmoothStreams(String taskName, int inputAssetId,
+            int outputAssetId) throws ServiceException {
+        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
+                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS))
+                .setConfiguration(configMp4ToSmoothStreams);
+        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+        return taskCreate;
     }
 
     // Process
-    public CreateTaskOptions createTaskOptionsSmoothStreamsToHls(String taskName) throws ServiceException {
-        return new CreateTaskOptions()
-                .setName(taskName)
-                .setProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS))
-                .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams)
-                .setTaskBody(
-                        "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
-                                + "<outputAsset>JobOutputAsset(0)</outputAsset></taskBody>");
+    public Task.CreateBatchOperation createTaskOptionsSmoothStreamsToHls(String taskName, int inputAssetId,
+            int outputAssetId) throws ServiceException {
+        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
+                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS))
+                .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams);
+        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+        return taskCreate;
+    }
+
+    private void setTaskBody(Task.CreateBatchOperation taskCreate, int inputAssetId, int outputAssetId) {
+        taskCreate.setTaskBody("<taskBody><inputAsset>JobInputAsset(" + inputAssetId + ")</inputAsset>"
+                + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>");
     }
 
     private String getMediaProcessorIdByName(String processorName) throws ServiceException {
@@ -252,8 +271,8 @@ class MediaServiceWrapper {
     }
 
     // Process
-    public boolean isJobFinished(JobInfo initialJobInfo) {
-        JobInfo currentJob = serviceMock.getJob(initialJobInfo.getId());
+    public boolean isJobFinished(JobInfo initialJobInfo) throws ServiceException {
+        JobInfo currentJob = service.get(Job.get(initialJobInfo.getId()));
         switch (currentJob.getState()) {
             case Finished:
             case Canceled:
@@ -264,14 +283,22 @@ class MediaServiceWrapper {
         }
     }
 
-    public List<AssetInfo> getJobOutputMediaAssets(JobInfo job) {
-        return serviceMock.getJobOutputMediaAssets(job.getId());
+    public List<AssetInfo> getJobOutputMediaAssets(JobInfo job) throws ServiceException {
+        List<String> outputMediaAssets = job.getOutputMediaAssets();
+        if (outputMediaAssets == null) {
+            return null;
+        }
+        List<AssetInfo> ret = new ArrayList<AssetInfo>();
+        for (String assetId : outputMediaAssets) {
+            ret.add(service.get(Asset.get(assetId)));
+        }
+        return ret;
     }
 
     // Process
-    public void cancelJob(JobInfo job) throws InterruptedException {
+    public void cancelJob(JobInfo job) throws ServiceException {
         // Use the service function
-        serviceMock.cancelJob(job.getId());
+        service.action(Job.cancel(job.getId()));
     }
 
     // Deliver
@@ -303,7 +330,7 @@ class MediaServiceWrapper {
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
         LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
 
-        List<AssetFileInfo> publishedFiles = serviceMock.getAssetFiles(asset.getId());
+        List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getId()));
         for (AssetFileInfo fi : publishedFiles) {
             if (isSmooth) {
                 // Smooth Streaming format ends with ".ism*"
@@ -343,11 +370,23 @@ class MediaServiceWrapper {
                     && asset.getName().substring(0, assetPrefix.length()).equals(assetPrefix)) {
                 for (LocatorInfo locator : locators) {
                     if (locator.getAssetId().equals(asset.getId())) {
-                        service.delete(Locator.delete(locator.getId()));
+                        try {
+                            service.delete(Locator.delete(locator.getId()));
+                        }
+                        catch (ServiceException e) {
+                            // Don't worry if cannot delete now.
+                            // Might be held on to by a running job
+                        }
                     }
                 }
 
-                service.delete(Asset.delete(asset.getId()));
+                try {
+                    service.delete(Asset.delete(asset.getId()));
+                }
+                catch (ServiceException e) {
+                    // Don't worry if cannot delete now.
+                    // Might be held on to by a running job
+                }
             }
         }
     }
@@ -357,7 +396,13 @@ class MediaServiceWrapper {
         for (AccessPolicyInfo accessPolicy : accessPolicies) {
             if (accessPolicy.getName().length() > accessPolicyPrefix.length()
                     && accessPolicy.getName().substring(0, accessPolicyPrefix.length()).equals(accessPolicyPrefix)) {
-                service.delete(AccessPolicy.delete(accessPolicy.getId()));
+                try {
+                    service.delete(AccessPolicy.delete(accessPolicy.getId()));
+                }
+                catch (ServiceException e) {
+                    // Don't worry if cannot delete now.
+                    // Might be held on to by a running job
+                }
             }
         }
     }

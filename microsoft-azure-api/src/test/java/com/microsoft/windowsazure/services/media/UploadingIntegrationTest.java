@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.EnumSet;
 
 import org.junit.BeforeClass;
@@ -34,9 +33,7 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
-import com.microsoft.windowsazure.services.media.models.LocatorType;
 
 /**
  * Testing uploading in various permutations.
@@ -55,14 +52,9 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
         AccessPolicyInfo policy = service.create(AccessPolicy.create(testPolicyPrefix + "uploadWritePolicy", 10,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
 
-        Date now = new Date();
-        Date fiveMinutesAgo = new Date(now.getTime() - (5 * 60 * 1000));
-        Date tenMinutesFromNow = new Date(now.getTime() + (10 * 60 * 1000));
+        LocatorInfo locator = createLocator(policy, asset, 5, 10);
 
-        LocatorInfo locator = service.create(Locator.create(policy.getId(), asset.getId(), LocatorType.SAS)
-                .setStartDateTime(fiveMinutesAgo).setExpirationDateTime(tenMinutesFromNow));
-
-        blobWriter = MediaService.createBlobWriter(locator);
+        blobWriter = service.createBlobWriter(locator);
 
         ExponentialRetryPolicy retryPolicy = new ExponentialRetryPolicy(5000, 5, new int[] { 400, 404 });
         blobWriter = blobWriter.withFilter(new RetryPolicyFilter(retryPolicy));

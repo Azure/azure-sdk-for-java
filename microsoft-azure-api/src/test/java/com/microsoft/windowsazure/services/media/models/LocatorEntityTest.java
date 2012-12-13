@@ -61,7 +61,7 @@ public class LocatorEntityTest {
 
         assertEquals(exampleAssetId, locatorType.getAssetId());
         assertEquals(exampleAccessPolicyId, locatorType.getAccessPolicyId());
-        assertEquals(LocatorType.SAS.getCode(), locatorType.getType());
+        assertEquals(LocatorType.SAS.getCode(), locatorType.getType().intValue());
         assertNull(locatorType.getStartTime());
         assertNull(locatorType.getExpirationDateTime());
     }
@@ -79,7 +79,7 @@ public class LocatorEntityTest {
 
         assertEquals(exampleAssetId, locatorType.getAssetId());
         assertEquals(exampleAccessPolicyId, locatorType.getAccessPolicyId());
-        assertEquals(LocatorType.SAS.getCode(), locatorType.getType());
+        assertEquals(LocatorType.SAS.getCode(), locatorType.getType().intValue());
         assertEquals(now, locatorType.getStartTime());
         assertEquals(tomorrow, locatorType.getExpirationDateTime());
     }

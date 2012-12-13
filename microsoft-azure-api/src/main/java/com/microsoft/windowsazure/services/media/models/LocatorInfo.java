@@ -39,31 +39,12 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     }
 
     /**
-     * Instantiates a new locator info.
-     */
-    public LocatorInfo() {
-        super(new LocatorRestType());
-    }
-
-    /**
      * Gets the id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Sets the id.
-     * 
-     * @param id
-     *            the id
-     * @return the locator info
-     */
-    public LocatorInfo setId(String id) {
-        getContent().setId(id);
-        return this;
     }
 
     /**
@@ -76,48 +57,12 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     }
 
     /**
-     * Sets the expiration date time.
-     * 
-     * @param expirationDateTime
-     *            the expiration date time
-     * @return the locator info
-     */
-    public LocatorInfo setExpirationDateTime(Date expirationDateTime) {
-        getContent().setExpirationDateTime(expirationDateTime);
-        return this;
-    }
-
-    /**
-     * Sets the locator type.
-     * 
-     * @param locatorType
-     *            the locator type
-     * @return the locator info
-     */
-    public LocatorInfo setLocatorType(LocatorType locatorType) {
-        getContent().setType(locatorType.getCode());
-        return this;
-    }
-
-    /**
      * Gets the locator type.
      * 
      * @return the locator type
      */
     public LocatorType getLocatorType() {
         return LocatorType.fromCode(getContent().getType());
-    }
-
-    /**
-     * Sets the path.
-     * 
-     * @param path
-     *            the path
-     * @return the locator info
-     */
-    public LocatorInfo setPath(String path) {
-        getContent().setPath(path);
-        return this;
     }
 
     /**
@@ -130,18 +75,6 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     }
 
     /**
-     * Sets the access policy id.
-     * 
-     * @param accessPolicyId
-     *            the access policy id
-     * @return the locator info
-     */
-    public LocatorInfo setAccessPolicyId(String accessPolicyId) {
-        getContent().setAccessPolicyId(accessPolicyId);
-        return this;
-    }
-
-    /**
      * Gets the access policy id.
      * 
      * @return the access policy id
@@ -151,36 +84,12 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     }
 
     /**
-     * Sets the asset id.
-     * 
-     * @param assetId
-     *            the asset id
-     * @return the locator info
-     */
-    public LocatorInfo setAssetId(String assetId) {
-        getContent().setAssetId(assetId);
-        return this;
-    }
-
-    /**
      * Gets the asset id.
      * 
      * @return the asset id
      */
     public String getAssetId() {
         return getContent().getAssetId();
-    }
-
-    /**
-     * Sets the start time.
-     * 
-     * @param startTime
-     *            the start time
-     * @return the locator info
-     */
-    public LocatorInfo setStartTime(Date startTime) {
-        getContent().setStartTime(startTime);
-        return this;
     }
 
     /**
@@ -202,30 +111,6 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     }
 
     /**
-     * Sets the base uri.
-     * 
-     * @param baseUri
-     *            the base uri
-     * @return the locator info
-     */
-    public LocatorInfo setBaseUri(String baseUri) {
-        this.getContent().setBaseUri(baseUri);
-        return this;
-    }
-
-    /**
-     * Sets the content access component.
-     * 
-     * @param contentAccessComponent
-     *            the content access component
-     * @return the locator info
-     */
-    public LocatorInfo setContentAccessComponent(String contentAccessComponent) {
-        this.getContent().setContentAccessComponent(contentAccessComponent);
-        return this;
-    }
-
-    /**
      * Gets the content access token.
      * 
      * @return the content access token
@@ -233,5 +118,4 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     public String getContentAccessToken() {
         return this.getContent().getContentAccessComponent();
     }
-
 }

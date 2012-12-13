@@ -22,67 +22,76 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 
+/**
+ * Type containing data about access policies.
+ * 
+ */
 public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
 
+    /**
+     * Creates a new {@link AccessPolicyInfo} wrapping the given ATOM
+     * entry and content objects.
+     * 
+     * @param entry
+     *            Entry containing this AccessPolicy data
+     * @param content
+     *            Content with the AccessPolicy data
+     */
     public AccessPolicyInfo(EntryType entry, AccessPolicyType content) {
         super(entry, content);
     }
 
-    public AccessPolicyInfo() {
-        super(new AccessPolicyType());
-    }
-
+    /**
+     * Get the access policy id.
+     * 
+     * @return the id.
+     */
     public String getId() {
         return getContent().getId();
     }
 
-    public AccessPolicyInfo setId(String id) {
-        getContent().setId(id);
-        return this;
-    }
-
+    /**
+     * Get the creation date.
+     * 
+     * @return the date.
+     */
     public Date getCreated() {
         return getContent().getCreated();
     }
 
-    public AccessPolicyInfo setCreated(Date created) {
-        getContent().setCreated(created);
-        return this;
-    }
-
+    /**
+     * Get the last modified date.
+     * 
+     * @return the date.
+     */
     public Date getLastModified() {
         return getContent().getLastModified();
     }
 
-    public AccessPolicyInfo setLastModified(Date lastModified) {
-        getContent().setLastModified(lastModified);
-        return this;
-    }
-
+    /**
+     * Get the name.
+     * 
+     * @return the name.
+     */
     public String getName() {
         return getContent().getName();
     }
 
-    public AccessPolicyInfo setName(String name) {
-        getContent().setName(name);
-        return this;
-    }
-
+    /**
+     * Get the duration.
+     * 
+     * @return the duration.
+     */
     public double getDurationInMinutes() {
         return getContent().getDurationInMinutes();
     }
 
-    public AccessPolicyInfo setDurationInMinutes(double durationInMinutes) {
-        getContent().setDurationInMinutes(durationInMinutes);
-        return this;
-    }
-
+    /**
+     * Get the permissions.
+     * 
+     * @return the permissions.
+     */
     public EnumSet<AccessPolicyPermission> getPermissions() {
         return AccessPolicyPermission.permissionsFromBits(getContent().getPermissions());
-    }
-
-    public AccessPolicyInfo setPermissions(EnumSet<AccessPolicyPermission> permissions) {
-        getContent().setPermissions(AccessPolicyPermission.bitsFromPermissions(permissions));
-        return this;
     }
 }
