@@ -55,13 +55,12 @@ public class JobIntegrationTest extends IntegrationTestBase {
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
                 expected.getState(), expected.getTemplateId(), expected.getCreated(), expected.getLastModified(),
-                expected.getStartTime(), expected.getEndTime(), expected.getInputMediaAssets(),
-                expected.getOutputMediaAssets(), actual);
+                expected.getStartTime(), expected.getEndTime(), actual);
     }
 
     private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,
             JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
-            List<String> inputMediaAssets, List<String> outputMediaAssets, JobInfo actualJob) {
+            JobInfo actualJob) {
         assertNotNull(message, actualJob);
 
         assertNotNull(message + "Id", actualJob.getId());
@@ -77,11 +76,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertDateApproxEquals(message + " LastModified", lastModified, actualJob.getLastModified());
         assertDateApproxEquals(message + " StartTime", startTime, actualJob.getStartTime());
         assertDateApproxEquals(message + " EndTime", endTime, actualJob.getEndTime());
-
-        // TODO: Add test for accessing the input and output media assets when fixed:
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
-        assertEquals(message + " InputMediaAssets", inputMediaAssets, actualJob.getInputMediaAssets());
-        assertEquals(message + " OutputMediaAssets", outputMediaAssets, actualJob.getOutputMediaAssets());
 
         // TODO: Add test for accessing the tasks when fixed:
         // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/531
@@ -139,8 +133,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         Date created = new Date();
         Date lastModified = new Date();
         Date stateTime = null;
@@ -152,7 +144,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -163,8 +155,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         Date created = new Date();
         Date lastModified = new Date();
         Date stateTime = null;
@@ -179,7 +169,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -190,8 +180,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         String jobId = createJob(name).getId();
         Date created = new Date();
         Date lastModified = new Date();
@@ -203,7 +191,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -296,7 +284,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteJobIvalidIdFail() throws ServiceException {
+    public void deleteJobInvalidIdFail() throws ServiceException {
         // Arrange 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
@@ -305,5 +293,30 @@ public class JobIntegrationTest extends IntegrationTestBase {
         service.delete(Job.delete(invalidId));
 
         // Assert
+    }
+
+    @Test
+    public void canGetInputOutputAssetsFromJob() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromJob";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
+
+        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<AssetInfo> inputs = service.list(Asset.list(actualJob.getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(actualJob.getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
     }
 }

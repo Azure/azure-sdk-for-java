@@ -284,15 +284,7 @@ class MediaServiceWrapper {
     }
 
     public List<AssetInfo> getJobOutputMediaAssets(JobInfo job) throws ServiceException {
-        List<String> outputMediaAssets = job.getOutputMediaAssets();
-        if (outputMediaAssets == null) {
-            return null;
-        }
-        List<AssetInfo> ret = new ArrayList<AssetInfo>();
-        for (String assetId : outputMediaAssets) {
-            ret.add(service.get(Asset.get(assetId)));
-        }
-        return ret;
+        return service.list(Asset.list(job.getOutputAssetsLink()));
     }
 
     // Process
