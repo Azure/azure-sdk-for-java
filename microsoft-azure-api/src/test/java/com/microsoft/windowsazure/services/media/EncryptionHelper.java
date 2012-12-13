@@ -32,6 +32,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -143,6 +144,21 @@ public class EncryptionHelper {
         cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
         byte[] cipherText = cipher.doFinal(inputData);
         return cipherText;
+    }
+
+    public static String calculateChecksum(UUID uuid, byte[] aesKey) throws NoSuchAlgorithmException,
+            NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+            InvalidKeyException {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING", "BC");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+        byte[] encryptionResult = cipher.doFinal(uuid.toString().getBytes());
+        byte[] checksumByteArray = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            checksumByteArray[i] = encryptionResult[i];
+        }
+        String checksum = Base64.encode(checksumByteArray);
+        return checksum;
     }
 
 }

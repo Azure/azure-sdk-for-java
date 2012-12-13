@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,7 @@ import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.EnumSet;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -40,13 +42,20 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.Locator;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
@@ -55,8 +64,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
     private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
 
-    private String createRandomContentKeyId() {
-        UUID uuid = UUID.randomUUID();
+    private String createContentKeyId(UUID uuid) {
         String randomContentKey = String.format("nb:kid:UUID:%s", uuid);
         return randomContentKey;
     }
@@ -84,23 +92,29 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         // Arrange
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
-
-        // Act
         byte[] aesKey = EncryptionHelper.createRandomVector(128);
         byte[] initializationVector = EncryptionHelper.createRandomVector(128);
+        int durationInMinutes = 10;
 
+        // Act
         AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
                 .setOptions(EncryptionOption.StorageEncrypted));
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.StorageEncryption));
-        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
+                durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        String protectionKey = getProtectionKey();
+
         ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKey);
-        URI contentKeyUri = createContentKeyUri(service.getRestServiceUri(), contentKeyInfo.getId());
-        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
+
+        linkContentKey(assetInfo, contentKeyInfo);
 
         byte[] encryptedContent = EncryptFile(smallWMVInputStream, aesKey, initializationVector);
-        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, protectionKeyId, encryptedContent, aesKey,
-                initializationVector);
+        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
+                "uploadAesProtectedAssetSuccess", encryptedContent);
 
         // executeDecodingJob(assetInfo);
 
@@ -109,10 +123,28 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
     }
 
-    private AssetFileInfo uploadEncryptedAssetFile(AssetInfo assetInfo, String protectionKeyId,
-            byte[] encryptedContent, byte[] aesKey, byte[] initializationVector) {
-        // TODO Auto-generated method stub
-        return null;
+    private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException {
+        URI contentKeyUri = createContentKeyUri(service.getRestServiceUri(), contentKeyInfo.getId());
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
+    }
+
+    private String getProtectionKey() throws ServiceException {
+        String protectionKeyId = (String) service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        return protectionKey;
+    }
+
+    private AssetFileInfo uploadEncryptedAssetFile(AssetInfo assetInfo, LocatorInfo locatorInfo,
+            ContentKeyInfo contentKeyInfo, String blobName, byte[] encryptedContent) throws ServiceException {
+        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locatorInfo);
+        InputStream blobContent = new ByteArrayInputStream(encryptedContent);
+        blobWriter.createBlockBlob(blobName, blobContent);
+        AssetFileInfo assetFileInfo = service.create(AssetFile.create(assetInfo.getId(), blobName).setIsPrimary(true)
+                .setIsEncrypted(true).setContentFileSize(new Long(encryptedContent.length))
+                .setEncryptionScheme("StorageEncryption").setEncryptionVersion("1.0")
+                .setEncryptionKeyId(contentKeyInfo.getId()));
+        return assetFileInfo;
     }
 
     private URI createContentKeyUri(URI rootUri, String contentKeyId) {
@@ -146,10 +178,13 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
             throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
             NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ServiceException,
             CertificateException {
-        String contentKeyId = createRandomContentKeyId();
+        UUID contentKeyIdUuid = UUID.randomUUID();
+        String contentKeyId = createContentKeyId(contentKeyIdUuid);
         byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateChecksum(contentKeyIdUuid, aesKey);
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, contentKeyType,
-                Base64.encode(encryptedContentKey)));
+                encryptedContentKeyString).setChecksum(checksum));
         return contentKeyInfo;
     }
 
