@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
@@ -91,8 +90,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     private JobInfo createJob(String name) throws ServiceException {
-        URI serviceUri = service.getRestServiceUri();
-        return service.create(Job.create(serviceUri).setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
+        return service.create(Job.create().setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
     }
 
@@ -139,7 +137,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         Date endTime = null;
 
         // Act
-        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
                 .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
 
         // Assert
@@ -164,7 +162,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         tasks.add(getTaskCreator(1));
 
         // Act
-        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
                 .addInputMediaAsset(assetInfo.getId()).addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
 
         // Assert

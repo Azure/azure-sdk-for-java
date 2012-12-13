@@ -203,8 +203,7 @@ class MediaServiceWrapper {
     // Process
     public JobInfo createJob(String jobName, AssetInfo inputAsset, List<Task.CreateBatchOperation> tasks)
             throws ServiceException {
-        Creator jobCreator = Job.create(service.getRestServiceUri()).setName(jobName)
-                .addInputMediaAsset(inputAsset.getId()).setPriority(2);
+        Creator jobCreator = Job.create().setName(jobName).addInputMediaAsset(inputAsset.getId()).setPriority(2);
 
         for (Task.CreateBatchOperation task : tasks) {
             jobCreator.addTaskCreator(task);

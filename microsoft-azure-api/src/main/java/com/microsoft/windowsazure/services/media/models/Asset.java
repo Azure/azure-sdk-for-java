@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityL
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
@@ -228,6 +229,14 @@ public class Asset {
         }
 
         /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+         */
+        @Override
+        public void setProxyData(EntityProxyData proxyData) {
+            // Deliberately empty
+        }
+
+        /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation#getRequestContents()
          */
         @Override
@@ -286,5 +295,4 @@ public class Asset {
     public static EntityLinkOperation linkContentKey(String assetId, URI contentKeyUri) {
         return new EntityLinkOperation("Assets", assetId, "ContentKeys", contentKeyUri);
     }
-
 }

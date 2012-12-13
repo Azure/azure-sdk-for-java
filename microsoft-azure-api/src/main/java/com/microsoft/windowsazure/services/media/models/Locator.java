@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityG
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
@@ -265,6 +266,14 @@ public class Locator {
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setStartTime(startDateTime).setExpirationDateTime(expirationDateTime);
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+         */
+        @Override
+        public void setProxyData(EntityProxyData proxyData) {
+            // Deliberately empty
         }
 
         /**

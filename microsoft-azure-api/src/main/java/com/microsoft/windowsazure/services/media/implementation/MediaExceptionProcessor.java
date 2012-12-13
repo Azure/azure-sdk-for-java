@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.net.URI;
-
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -188,14 +186,6 @@ public class MediaExceptionProcessor implements MediaContract {
         catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#getRestServiceUri()
-     */
-    @Override
-    public URI getRestServiceUri() {
-        return service.getRestServiceUri();
     }
 
     /* (non-Javadoc)
