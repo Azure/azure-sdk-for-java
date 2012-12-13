@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -118,7 +118,21 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 expectedExpirationDateTime, locatorInfo);
     }
 
-    @Ignore("due to media service bug 596240")
+    @Test
+    public void createLocatorWithSpecifiedIdSuccess() throws ServiceException {
+        // Arrange
+        LocatorType locatorType = LocatorType.SAS;
+        Date expectedExpirationDateTime = calculateDefaultExpectedExpDate(accessPolicyInfoRead, assetInfo);
+
+        // Act
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfoRead.getId(), assetInfo.getId(),
+                locatorType).setId(String.format("nb:lid:UUID:%s", UUID.randomUUID().toString())));
+
+        // Assert
+        verifyLocatorProperties("locatorInfo", accessPolicyInfoRead.getId(), assetInfo.getId(), locatorType, null,
+                expectedExpirationDateTime, locatorInfo);
+    }
+
     @Test
     public void createLocatorOptionsSetExpirationDateTimeSuccess() throws ServiceException {
         // Arrange
@@ -134,7 +148,6 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 expectedExpirationDateTime, locatorInfo);
     }
 
-    @Ignore("due to media service bug 596240")
     @Test
     public void createLocatorOptionsSetStartTimeSuccess() throws ServiceException {
         // Arrange

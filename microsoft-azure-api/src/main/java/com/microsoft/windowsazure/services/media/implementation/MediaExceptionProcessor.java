@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
@@ -33,6 +34,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityG
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -176,9 +178,9 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation action) throws ServiceException {
+    public Object action(EntityActionOperation action) throws ServiceException {
         try {
-            service.action(action);
+            return service.action(action);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -194,6 +196,14 @@ public class MediaExceptionProcessor implements MediaContract {
     @Override
     public URI getRestServiceUri() {
         return service.getRestServiceUri();
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.MediaContract#createBlobWriter(com.microsoft.windowsazure.services.media.models.LocatorInfo)
+     */
+    @Override
+    public WritableBlobContainerContract createBlobWriter(LocatorInfo locator) {
+        return service.createBlobWriter(locator);
     }
 
 }

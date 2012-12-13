@@ -32,24 +32,24 @@ public class MediaConfiguration {
      * Defines the OAUTH configuration URI constant.
      * 
      */
-    public static final String OAUTH_URI = "oauth.uri";
+    public static final String OAUTH_URI = "media.oauth.uri";
 
     /**
      * Defines the OAUTH configuration client ID constant.
      * 
      */
-    public static final String OAUTH_CLIENT_ID = "oauth.client.id";
+    public static final String OAUTH_CLIENT_ID = "media.oauth.client.id";
 
     /**
      * Defines the OAUTH configuration client secret constant.
      * 
      */
-    public static final String OAUTH_CLIENT_SECRET = "oauth.client.secret";
+    public static final String OAUTH_CLIENT_SECRET = "media.oauth.client.secret";
 
     /**
      * Defines the SCOPE of the media service sent to OAUTH.
      */
-    public static final String OAUTH_SCOPE = "oauth.scope";
+    public static final String OAUTH_SCOPE = "media.oauth.scope";
 
     /**
      * Creates a media service configuration using the specified media service base URI, OAUTH URI,

@@ -21,65 +21,69 @@ import java.util.EnumSet;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
+
 public class AccessPolicyInfoTest {
 
     @Test
     public void getSetId() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         String expected = "expectedId";
 
-        String actual = policy.setId(expected).getId();
+        AccessPolicyInfo policy = new AccessPolicyInfo(null, new AccessPolicyType().setId(expected));
+
+        String actual = policy.getId();
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getSetCreated() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         Date expected = new Date();
+        AccessPolicyInfo policy = new AccessPolicyInfo(null, new AccessPolicyType().setCreated(expected));
 
-        Date actual = policy.setCreated(expected).getCreated();
+        Date actual = policy.getCreated();
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getSetLastModified() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         Date expected = new Date();
+        AccessPolicyInfo policy = new AccessPolicyInfo(null, new AccessPolicyType().setLastModified(expected));
 
-        Date actual = policy.setLastModified(expected).getLastModified();
+        Date actual = policy.getLastModified();
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getSetName() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         String expected = "policy name goes here";
+        AccessPolicyInfo policy = new AccessPolicyInfo(null, new AccessPolicyType().setName(expected));
 
-        String actual = policy.setName(expected).getName();
+        String actual = policy.getName();
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getSetDurationInMinutes() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         double expected = 60; // arbitrary value
+        AccessPolicyInfo policy = new AccessPolicyInfo(null, new AccessPolicyType().setDurationInMinutes(expected));
 
-        double actual = policy.setDurationInMinutes(expected).getDurationInMinutes();
+        double actual = policy.getDurationInMinutes();
 
         Assert.assertEquals(expected, actual, 0.0);
     }
 
     @Test
     public void getSetPermissions() {
-        AccessPolicyInfo policy = new AccessPolicyInfo();
         EnumSet<AccessPolicyPermission> expected = EnumSet
                 .of(AccessPolicyPermission.LIST, AccessPolicyPermission.WRITE);
+        AccessPolicyInfo policy = new AccessPolicyInfo(null,
+                new AccessPolicyType().setPermissions(AccessPolicyPermission.bitsFromPermissions(expected)));
 
-        EnumSet<AccessPolicyPermission> actual = policy.setPermissions(expected).getPermissions();
+        EnumSet<AccessPolicyPermission> actual = policy.getPermissions();
 
         Assert.assertEquals(expected, actual);
     }

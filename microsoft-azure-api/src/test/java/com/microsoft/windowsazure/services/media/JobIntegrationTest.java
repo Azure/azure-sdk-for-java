@@ -17,110 +17,181 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class JobIntegrationTest extends IntegrationTestBase {
 
-    private final String testJobPrefix = "testJobPrefix";
-    private final String taskBody = "<?xml version=\"1.0\" encoding=\"utf-8\"?><taskBody>"
-            + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset>" + "</taskBody>";
+    private static AssetInfo assetInfo;
+    private static final byte[] testBlobData = new byte[] { 4, 8, 15, 16, 23, 42 };
 
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
-                expected.getState(), expected.getTemplateId(), expected.getInputMediaAssets(),
-                expected.getOutputMediaAssets(), actual);
+                expected.getState(), expected.getTemplateId(), expected.getCreated(), expected.getLastModified(),
+                expected.getStartTime(), expected.getEndTime(), actual);
     }
 
     private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,
-            Integer state, String templateId, List<String> inputMediaAssets, List<String> outputMediaAssets,
+            JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
             JobInfo actualJob) {
         assertNotNull(message, actualJob);
+
+        assertNotNull(message + "Id", actualJob.getId());
+
         assertEquals(message + " Name", testName, actualJob.getName());
         // comment out due to issue 464
         // assertEquals(message + " Priority", priority, actualJob.getPriority());
         assertEquals(message + " RunningDuration", runningDuration, actualJob.getRunningDuration());
         assertEquals(message + " State", state, actualJob.getState());
-        // commented out due to issue 463
-        // assertEquals(message + " TemplateId", templateId, actualJob.getTemplateId());
-        assertEquals(message + " InputMediaAssets", inputMediaAssets, actualJob.getInputMediaAssets());
-        assertEquals(message + " OutputMediaAssets", outputMediaAssets, actualJob.getOutputMediaAssets());
+        assertEqualsNullEmpty(message + " TemplateId", templateId, actualJob.getTemplateId());
+
+        assertDateApproxEquals(message + " Created", created, actualJob.getCreated());
+        assertDateApproxEquals(message + " LastModified", lastModified, actualJob.getLastModified());
+        assertDateApproxEquals(message + " StartTime", startTime, actualJob.getStartTime());
+        assertDateApproxEquals(message + " EndTime", endTime, actualJob.getEndTime());
+
+        // TODO: Add test for accessing the tasks when fixed:
+        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/531
+    }
+
+    private void assertEqualsNullEmpty(String message, String expected, String actual) {
+        if ((expected == null || expected.length() == 0) && (actual == null || actual.length() == 0)) {
+            // both nullOrEmpty, so match.
+        }
+        else {
+            assertEquals(message, expected, actual);
+        }
     }
 
     private JobInfo createJob(String name) throws ServiceException {
-        AssetInfo assetInfo = service.create(Asset.create().setName(name));
         URI serviceUri = service.getRestServiceUri();
-        return service.create(Job
-                .create(serviceUri)
-                .setName("My Encoding Job")
-                .setPriority(3)
-                .addInputMediaAsset(assetInfo.getId())
-                .addTaskCreator(
-                        Task.create().setConfiguration("H.264 256k DSL CBR")
-                                .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
-                                .setName("My encoding Task").setTaskBody(taskBody)));
+        return service.create(Job.create(serviceUri).setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(getTaskCreator(0)));
     }
 
-    @Ignore("due to issue 480")
+    private CreateBatchOperation getTaskCreator(int outputAssetPosition) {
+        return Task
+                .create()
+                .setConfiguration("H.264 256k DSL CBR")
+                .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
+                .setName("My encoding Task")
+                .setTaskBody(
+                        "<taskBody>" + "<inputAsset>JobInputAsset(0)</inputAsset>" + "<outputAsset>JobOutputAsset("
+                                + outputAssetPosition + ")</outputAsset>" + "</taskBody>");
+    }
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        IntegrationTestBase.setup();
+
+        String name = UUID.randomUUID().toString();
+        String testBlobName = "test" + name + ".bin";
+        assetInfo = service.create(Asset.create().setName(testAssetPrefix + name));
+
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix + name, 10,
+                EnumSet.of(AccessPolicyPermission.WRITE)));
+        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
+        InputStream blobContent = new ByteArrayInputStream(testBlobData);
+        blobWriter.createBlockBlob(testBlobName, blobContent);
+
+        service.action(AssetFile.createFileInfos(assetInfo.getId()));
+    }
+
     @Test
     public void createJobSuccess() throws Exception {
         // Arrange
-        AssetInfo assetInfo = service.create(Asset.create());
-
-        JobInfo expectedJob = new JobInfo();
-        expectedJob.setName("My Encoding Job");
-        expectedJob.setPriority(3);
-        expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(0);
-        URI serviceURI = service.getRestServiceUri();
+        String name = testJobPrefix + "createJobSuccess";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
 
         // Act
-        JobInfo actualJob = service.create(Job
-                .create(serviceURI)
-                .setName("My Encoding Job")
-                .setPriority(3)
-                .addInputMediaAsset(assetInfo.getId())
-                .addTaskCreator(
-                        Task.create().setConfiguration("H.264 256k DSL CBR")
-                                .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
-                                .setName("My encoding Task").setTaskBody(taskBody)));
+        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
 
         // Assert
-        verifyJobInfoEqual("actualJob", expectedJob, actualJob);
+        verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
+                endTime, actualJob);
     }
 
-    @Ignore("due to issue 480")
+    @Test
+    public void createJobTwoTasksSuccess() throws Exception {
+        // Arrange
+        String name = testJobPrefix + "createJobSuccess";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
+        List<CreateBatchOperation> tasks = new ArrayList<CreateBatchOperation>();
+        tasks.add(getTaskCreator(0));
+        tasks.add(getTaskCreator(1));
+
+        // Act
+        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
+
+        // Assert
+        verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
+                endTime, actualJob);
+    }
+
     @Test
     public void getJobSuccess() throws Exception {
         // Arrange
-
-        JobInfo expectedJob = new JobInfo();
-        expectedJob.setName("My Encoding Job");
-        expectedJob.setPriority(3);
-        expectedJob.setRunningDuration(0.0);
-        expectedJob.setState(0);
-        String jobId = createJob("getJobSuccess").getId();
+        String name = testJobPrefix + "getJobSuccess";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        String jobId = createJob(name).getId();
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
 
         // Act
         JobInfo actualJob = service.get(Job.get(jobId));
 
         // Assert
-        verifyJobInfoEqual("actualJob", expectedJob, actualJob);
+        verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
+                endTime, actualJob);
     }
 
     @Test
@@ -130,11 +201,10 @@ public class JobIntegrationTest extends IntegrationTestBase {
         service.get(Job.get(invalidId));
     }
 
-    @Ignore("due to issue 480")
     @Test
     public void listJobSuccess() throws ServiceException {
         // Arrange
-        JobInfo jobInfo = createJob("listJobSuccess");
+        JobInfo jobInfo = createJob(testJobPrefix + "listJobSuccess");
         List<JobInfo> jobInfos = new ArrayList<JobInfo>();
         jobInfos.add(jobInfo);
         ListResult<JobInfo> expectedListJobsResult = new ListResult<JobInfo>(jobInfos);
@@ -151,15 +221,12 @@ public class JobIntegrationTest extends IntegrationTestBase {
         });
     }
 
-    @Ignore("due to issue 480")
     @Test
     public void canListJobsWithOptions() throws ServiceException {
-        String[] assetNames = new String[] { testJobPrefix + "assetListOptionsA", testJobPrefix + "assetListOptionsB",
-                testJobPrefix + "assetListOptionsC", testJobPrefix + "assetListOptionsD" };
+        String[] assetNameSuffixes = new String[] { "A", "B", "C", "D" };
         List<JobInfo> expectedJobs = new ArrayList<JobInfo>();
-        for (int i = 0; i < assetNames.length; i++) {
-            String name = assetNames[i];
-            JobInfo jobInfo = createJob(name);
+        for (String suffix : assetNameSuffixes) {
+            JobInfo jobInfo = createJob(testJobPrefix + "assetListOptions" + suffix);
             expectedJobs.add(jobInfo);
         }
 
@@ -171,18 +238,17 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listJobsResult.size());
     }
 
-    @Ignore("due to issue 480")
     @Test
     public void cancelJobSuccess() throws Exception {
         // Arrange
-        JobInfo jobInfo = createJob("cancelJobSuccess");
+        JobInfo jobInfo = createJob(testJobPrefix + "cancelJobSuccess");
 
         // Act
         service.action(Job.cancel(jobInfo.getId()));
 
         // Assert
         JobInfo canceledJob = service.get(Job.get(jobInfo.getId()));
-        assertEquals((Integer) 6, canceledJob.getState());
+        assertEquals(JobState.Canceling, canceledJob.getState());
 
     }
 
@@ -198,14 +264,13 @@ public class JobIntegrationTest extends IntegrationTestBase {
         // Assert
     }
 
-    @Ignore("due to issue 480")
     @Test
     public void deleteJobSuccess() throws ServiceException {
         // Arrange
-        JobInfo jobInfo = createJob("deleteJobSuccess");
+        JobInfo jobInfo = createJob(testJobPrefix + "deleteJobSuccess");
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
-        while (cancellingJobInfo.getState() == 6) {
+        while (cancellingJobInfo.getState() == JobState.Canceling) {
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         }
 
@@ -219,7 +284,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteJobIvalidIdFail() throws ServiceException {
+    public void deleteJobInvalidIdFail() throws ServiceException {
         // Arrange 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
@@ -228,5 +293,30 @@ public class JobIntegrationTest extends IntegrationTestBase {
         service.delete(Job.delete(invalidId));
 
         // Assert
+    }
+
+    @Test
+    public void canGetInputOutputAssetsFromJob() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromJob";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
+
+        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<AssetInfo> inputs = service.list(Asset.list(actualJob.getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(actualJob.getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
     }
 }

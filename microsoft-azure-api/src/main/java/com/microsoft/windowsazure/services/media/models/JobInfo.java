@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
-import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -40,31 +39,12 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Instantiates a new job info.
-     */
-    public JobInfo() {
-        super(new EntryType(), new JobType());
-    }
-
-    /**
      * Gets the id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Sets the id.
-     * 
-     * @param id
-     *            the id
-     * @return the job info
-     */
-    public JobInfo setId(String id) {
-        getContent().setId(id);
-        return this;
     }
 
     /**
@@ -77,36 +57,12 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name
-     * @return the job info
-     */
-    public JobInfo setName(String name) {
-        getContent().setName(name);
-        return this;
-    }
-
-    /**
      * Gets the created.
      * 
      * @return the created
      */
     public Date getCreated() {
         return getContent().getCreated();
-    }
-
-    /**
-     * Sets the created.
-     * 
-     * @param created
-     *            the created
-     * @return the job info
-     */
-    public JobInfo setCreated(Date created) {
-        getContent().setCreated(created);
-        return this;
     }
 
     /**
@@ -119,36 +75,12 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the last modified.
-     * 
-     * @param lastModified
-     *            the last modified
-     * @return the job info
-     */
-    public JobInfo setLastModified(Date lastModified) {
-        getContent().setLastModified(lastModified);
-        return this;
-    }
-
-    /**
      * Gets the end time.
      * 
      * @return the end time
      */
     public Date getEndTime() {
         return getContent().getEndTime();
-    }
-
-    /**
-     * Sets the end time.
-     * 
-     * @param endTime
-     *            the end time
-     * @return the job info
-     */
-    public JobInfo setEndTime(Date endTime) {
-        getContent().setEndTime(endTime);
-        return this;
     }
 
     /**
@@ -161,36 +93,12 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the priority.
-     * 
-     * @param priority
-     *            the priority
-     * @return the job info
-     */
-    public JobInfo setPriority(Integer priority) {
-        getContent().setPriority(priority);
-        return this;
-    }
-
-    /**
      * Gets the running duration.
      * 
      * @return the running duration
      */
     public Double getRunningDuration() {
         return getContent().getRunningDuration();
-    }
-
-    /**
-     * Sets the running duration.
-     * 
-     * @param runningDuration
-     *            the running duration
-     * @return the job info
-     */
-    public JobInfo setRunningDuration(Double runningDuration) {
-        getContent().setRunningDuration(runningDuration);
-        return this;
     }
 
     /**
@@ -203,36 +111,12 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the start time.
-     * 
-     * @param startTime
-     *            the start time
-     * @return the job info
-     */
-    public JobInfo setStartTime(Date startTime) {
-        getContent().setStartTime(startTime);
-        return this;
-    }
-
-    /**
      * Gets the state.
      * 
      * @return the state
      */
-    public Integer getState() {
-        return getContent().getState();
-    }
-
-    /**
-     * Sets the state.
-     * 
-     * @param state
-     *            the state
-     * @return the job info
-     */
-    public JobInfo setState(Integer state) {
-        getContent().setState(state);
-        return this;
+    public JobState getState() {
+        return JobState.fromCode(getContent().getState());
     }
 
     /**
@@ -245,60 +129,6 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the template id.
-     * 
-     * @param templateId
-     *            the template id
-     * @return the job info
-     */
-    public JobInfo setTemplateId(String templateId) {
-        getContent().setTemplateId(templateId);
-        return this;
-    }
-
-    /**
-     * Gets the input media assets.
-     * 
-     * @return the input media assets
-     */
-    public List<String> getInputMediaAssets() {
-        return getContent().getInputMediaAssets();
-    }
-
-    /**
-     * Sets the input media assets.
-     * 
-     * @param inputMediaAssets
-     *            the input media assets
-     * @return the job info
-     */
-    public JobInfo setInputMediaAssets(List<String> inputMediaAssets) {
-        getContent().setInputMediaAssets(inputMediaAssets);
-        return this;
-    }
-
-    /**
-     * Gets the output media assets.
-     * 
-     * @return the output media assets
-     */
-    public List<String> getOutputMediaAssets() {
-        return getContent().getOutputMediaAssets();
-    }
-
-    /**
-     * Sets the output media assets.
-     * 
-     * @param outputMediaAssets
-     *            the output media assets
-     * @return the job info
-     */
-    public JobInfo setOutputMediaAssets(List<String> outputMediaAssets) {
-        getContent().setOutputMediaAssets(outputMediaAssets);
-        return this;
-    }
-
-    /**
      * Gets the task body.
      * 
      * @return the task body
@@ -308,14 +138,20 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Sets the tasks.
+     * Get a link which, when listed, will return the input assets for the job
      * 
-     * @param tasks
-     *            the tasks
-     * @return the job info
+     * @return Link if found, null if not.
      */
-    public JobInfo setTaskBody(String taskBody) {
-        getContent().setTaskBody(taskBody);
-        return this;
+    public LinkInfo getInputAssetsLink() {
+        return getRelationLink("InputMediaAssets");
+    }
+
+    /**
+     * Get a link which, when listed, will return the output assets for the job
+     * 
+     * @return Link if found, null if not.
+     */
+    public LinkInfo getOutputAssetsLink() {
+        return getRelationLink("OutputMediaAssets");
     }
 }

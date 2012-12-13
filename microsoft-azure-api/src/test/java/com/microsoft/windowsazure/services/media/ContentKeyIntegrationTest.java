@@ -150,7 +150,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     public void canDeleteContentKeyById() throws Exception {
         String contentKeyName = testContentKeyPrefix + "ToDelete";
         ContentKeyInfo contentKeyToDelete = service.create(ContentKey.create(createRandomContentKeyId(),
-                testContentKeyType, testEncryptedContentKey));
+                testContentKeyType, testEncryptedContentKey).setName(contentKeyName));
         List<ContentKeyInfo> listContentKeysResult = service.list(ContentKey.list());
         int ContentKeyCountBaseline = listContentKeysResult.size();
 

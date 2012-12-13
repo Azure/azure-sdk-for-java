@@ -18,16 +18,18 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.content.MediaProcessorType;
+
 public class MediaProcessorInfoTest {
 
     @Test
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null, new MediaProcessorType().setId(expectedId));
 
         // Act 
-        String actualId = mediaProcessorInfo.setId(expectedId).getId();
+        String actualId = mediaProcessorInfo.getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -38,10 +40,11 @@ public class MediaProcessorInfoTest {
     public void testGetSetName() {
         // Arrange
         String expectedName = "testName";
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
+                new MediaProcessorType().setName(expectedName));
 
         // Act
-        String actualName = mediaProcessorInfo.setName(expectedName).getName();
+        String actualName = mediaProcessorInfo.getName();
 
         // Assert
         assertEquals(expectedName, actualName);
@@ -52,10 +55,11 @@ public class MediaProcessorInfoTest {
         // Arrange
         String expectedDescription = "testDescription";
 
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
+                new MediaProcessorType().setDescription(expectedDescription));
 
         // Act 
-        String actualDescription = mediaProcessorInfo.setDescription(expectedDescription).getDescription();
+        String actualDescription = mediaProcessorInfo.getDescription();
 
         // Assert
         assertEquals(expectedDescription, actualDescription);
@@ -66,10 +70,11 @@ public class MediaProcessorInfoTest {
     public void testGetSetSku() throws Exception {
         // Arrange
         String expectedSku = "testSku";
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
+                new MediaProcessorType().setSku(expectedSku));
 
         // Act
-        String actualSku = mediaProcessorInfo.setSku(expectedSku).getSku();
+        String actualSku = mediaProcessorInfo.getSku();
 
         // Assert
         assertEquals(expectedSku, actualSku);
@@ -79,10 +84,11 @@ public class MediaProcessorInfoTest {
     public void testGetSetVendor() {
         // Arrange
         String expectedVendor = "testVendor";
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
+                new MediaProcessorType().setVendor(expectedVendor));
 
         // Act
-        String actualVendor = mediaProcessorInfo.setVendor(expectedVendor).getVendor();
+        String actualVendor = mediaProcessorInfo.getVendor();
 
         // Assert
         assertEquals(expectedVendor, actualVendor);
@@ -92,10 +98,11 @@ public class MediaProcessorInfoTest {
     public void testGetSetVersion() {
         // Arrange
         String expectedVersion = "testVersion";
-        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo();
+        MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
+                new MediaProcessorType().setVersion(expectedVersion));
 
         // Act
-        String actualVersion = mediaProcessorInfo.setVersion(expectedVersion).getVersion();
+        String actualVersion = mediaProcessorInfo.getVersion();
 
         // Assert
         assertEquals(expectedVersion, actualVersion);

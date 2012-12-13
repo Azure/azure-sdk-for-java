@@ -39,31 +39,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Instantiates a new task info.
-     */
-    public TaskInfo() {
-        super(new TaskType());
-    }
-
-    /**
      * Gets the id.
      * 
      * @return the id
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Sets the id.
-     * 
-     * @param id
-     *            the id
-     * @return the task info
-     */
-    public TaskInfo setId(String id) {
-        getContent().setId(id);
-        return this;
     }
 
     /**
@@ -76,36 +57,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the configuration.
-     * 
-     * @param configuration
-     *            the configuration
-     * @return the task info
-     */
-    public TaskInfo setConfiguration(String configuration) {
-        getContent().setConfiguration(configuration);
-        return this;
-    }
-
-    /**
      * Gets the end time.
      * 
      * @return the end time
      */
     public Date getEndTime() {
         return getContent().getEndTime();
-    }
-
-    /**
-     * Sets the end time.
-     * 
-     * @param endTime
-     *            the end time
-     * @return the task info
-     */
-    public TaskInfo setEndTime(Date endTime) {
-        getContent().setEndTime(endTime);
-        return this;
     }
 
     /**
@@ -118,36 +75,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the error details.
-     * 
-     * @param errorDetails
-     *            the error details
-     * @return the task info
-     */
-    public TaskInfo setErrorDetails(String errorDetails) {
-        getContent().setErrorDetails(errorDetails);
-        return this;
-    }
-
-    /**
      * Gets the media processor id.
      * 
      * @return the media processor id
      */
     public String getMediaProcessorId() {
         return getContent().getMediaProcessorId();
-    }
-
-    /**
-     * Sets the media processor id.
-     * 
-     * @param mediaProcessorId
-     *            the media processor id
-     * @return the task info
-     */
-    public TaskInfo setMediaProcessorId(String mediaProcessorId) {
-        getContent().setMediaProcessorId(mediaProcessorId);
-        return this;
     }
 
     /**
@@ -160,36 +93,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name
-     * @return the task info
-     */
-    public TaskInfo setName(String name) {
-        getContent().setName(name);
-        return this;
-    }
-
-    /**
      * Gets the perf message.
      * 
      * @return the perf message
      */
     public String getPerfMessage() {
         return getContent().getPerfMessage();
-    }
-
-    /**
-     * Sets the perf message.
-     * 
-     * @param perfMessage
-     *            the perf message
-     * @return the task info
-     */
-    public TaskInfo setPerfMessage(String perfMessage) {
-        getContent().setPerfMessage(perfMessage);
-        return this;
     }
 
     /**
@@ -202,35 +111,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the priority.
-     * 
-     * @param priority
-     *            the priority
-     * @return the task info
-     */
-    public TaskInfo setPriority(Integer priority) {
-        getContent().setPriority(priority);
-        return this;
-    }
-
-    /**
      * Gets the progress.
      * 
      * @return the progress
      */
     public Double getProgress() {
         return getContent().getProgress();
-    }
-
-    /**
-     * 
-     * @param progress
-     *            the progress
-     * @return the task info
-     */
-    public TaskInfo setProgress(Double progress) {
-        getContent().setProgress(progress);
-        return this;
     }
 
     /**
@@ -243,36 +129,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the running duration.
-     * 
-     * @param runningDuration
-     *            the running duration
-     * @return the task info
-     */
-    public TaskInfo setRunningDuration(double runningDuration) {
-        getContent().setRunningDuration(runningDuration);
-        return this;
-    }
-
-    /**
      * Gets the start time.
      * 
      * @return the start time
      */
     public Date getStartTime() {
         return getContent().getStartTime();
-    }
-
-    /**
-     * Sets the start time.
-     * 
-     * @param startTime
-     *            the start time
-     * @return the task info
-     */
-    public TaskInfo setStartTime(Date startTime) {
-        getContent().setStartTime(startTime);
-        return this;
     }
 
     /**
@@ -285,36 +147,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the state.
-     * 
-     * @param state
-     *            the state
-     * @return the task info
-     */
-    public TaskInfo setState(Integer state) {
-        getContent().setState(state);
-        return this;
-    }
-
-    /**
      * Gets the task body.
      * 
      * @return the task body
      */
     public String getTaskBody() {
         return getContent().getTaskBody();
-    }
-
-    /**
-     * Sets the task body.
-     * 
-     * @param taskBody
-     *            the task body
-     * @return the task info
-     */
-    public TaskInfo setTaskBody(String taskBody) {
-        getContent().setTaskBody(taskBody);
-        return this;
     }
 
     /**
@@ -327,36 +165,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the options.
-     * 
-     * @param options
-     *            the options
-     * @return the task info
-     */
-    public TaskInfo setOptions(Integer options) {
-        getContent().setOptions(options);
-        return this;
-    }
-
-    /**
      * Gets the encryption key id.
      * 
      * @return the encryption key id
      */
     public String getEncryptionKeyId() {
         return getContent().getEncryptionKeyId();
-    }
-
-    /**
-     * Sets the encryption key id.
-     * 
-     * @param encryptionKeyId
-     *            the encryption key id
-     * @return the task info
-     */
-    public TaskInfo setEncryptionKeyId(String encryptionKeyId) {
-        getContent().setEncryptionKeyId(encryptionKeyId);
-        return this;
     }
 
     /**
@@ -369,36 +183,12 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Sets the encryption scheme.
-     * 
-     * @param encryptionScheme
-     *            the encryption scheme
-     * @return the task info
-     */
-    public TaskInfo setEncryptionScheme(String encryptionScheme) {
-        getContent().setEncryptionScheme(encryptionScheme);
-        return this;
-    }
-
-    /**
      * Gets the encryption version.
      * 
      * @return the encryption version
      */
     public String getEncryptionVersion() {
         return getContent().getEncryptionVersion();
-    }
-
-    /**
-     * Sets the encryption version.
-     * 
-     * @param encryptionVersion
-     *            the encryption version
-     * @return the task info
-     */
-    public TaskInfo setEncryptionVersion(String encryptionVersion) {
-        getContent().setEncryptionVersion(encryptionVersion);
-        return this;
     }
 
     /**
@@ -409,17 +199,4 @@ public class TaskInfo extends ODataEntity<TaskType> {
     public String getInitializationVector() {
         return getContent().getInitializationVector();
     }
-
-    /**
-     * Sets the initialization vector.
-     * 
-     * @param initializationVector
-     *            the initialization vector
-     * @return the task info
-     */
-    public TaskInfo setInitializationVector(String initializationVector) {
-        getContent().setInitializationVector(initializationVector);
-        return this;
-    }
-
 }

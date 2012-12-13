@@ -26,15 +26,16 @@ import java.util.UUID;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.MediaService;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.Task;
 
 public class MediaServiceScenarioTest extends ScenarioTestBase {
     private static final String rootTestAssetPrefix = "testAssetPrefix-";
@@ -59,8 +60,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
 
     @Test
     public void newAsset() throws Exception {
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "newAsset", EncryptionOption.None);
-        validator.validateAsset(asset, testAssetPrefix + "newAsset", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "newAsset", AssetOption.None);
+        validator.validateAsset(asset, testAssetPrefix + "newAsset", AssetOption.None);
     }
 
     @Test
@@ -69,7 +70,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         String rootName = testAssetPrefix + "pageOverAssets";
         List<String> assetNames = createListOfAssetNames(rootName, 4);
         for (String assetName : assetNames) {
-            wrapper.createAsset(assetName, EncryptionOption.None);
+            wrapper.createAsset(assetName, AssetOption.None);
         }
         signalSetupFinished();
 
@@ -77,22 +78,20 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateAssetSortedPages(pages, assetNames, 3);
     }
 
-    @Ignore("Needs https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/277")
     @Test
     public void uploadFiles() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadFiles", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadFiles", AssetOption.None);
         signalSetupFinished();
 
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         validator.validateAssetFiles(asset, getTestAssetFiles());
     }
 
-    @Ignore("Needs https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/277")
     @Test
     public void downloadFiles() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
@@ -103,20 +102,22 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void createJob() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "createJob", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "createJob", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        MediaServiceMocks.JobInfo job = wrapper.createJob("my job createJob", asset, createTasks());
-        validator.validateJob(job, "my job", asset, createTasks());
+        String jobName = "my job createJob";
+        JobInfo job = wrapper.createJob(jobName, asset, createTasks());
+        validator.validateJob(job, jobName, asset, createTasks());
     }
 
     @Test
     public void transformAsset() throws Exception {
         signalSetupStarting();
-        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", EncryptionOption.None);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
-        MediaServiceMocks.JobInfo job = wrapper.createJob("my job transformAsset", asset, createTasks());
+        String jobName = "my job transformAsset";
+        JobInfo job = wrapper.createJob(jobName, asset, createTasks());
         signalSetupFinished();
 
         waitForJobToFinish(job);
@@ -124,19 +125,20 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateOutputAssets(outputAssets);
     }
 
-    private void waitForJobToFinish(MediaServiceMocks.JobInfo job) throws InterruptedException {
+    private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {
         for (int counter = 0; !wrapper.isJobFinished(job); counter++) {
             if (counter > 10) {
                 fail("Took took long for the job to finish");
             }
-            Thread.sleep(20000);
+            Thread.sleep(10000);
         }
     }
 
-    private List<MediaServiceMocks.CreateTaskOptions> createTasks() throws ServiceException {
-        List<MediaServiceMocks.CreateTaskOptions> tasks = new ArrayList<MediaServiceMocks.CreateTaskOptions>();
-        tasks.add(wrapper.createTaskOptionsMp4ToSmoothStreams("MP4 to SS"));
-        tasks.add(wrapper.createTaskOptionsSmoothStreamsToHls("SS to HLS"));
+    private List<Task.CreateBatchOperation> createTasks() throws ServiceException {
+        List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
+
+        tasks.add(wrapper.createTaskOptionsMp4ToSmoothStreams("MP4 to SS", 0, 0));
+        tasks.add(wrapper.createTaskOptionsSmoothStreamsToHls("SS to HLS", 0, 1));
         return tasks;
     }
 

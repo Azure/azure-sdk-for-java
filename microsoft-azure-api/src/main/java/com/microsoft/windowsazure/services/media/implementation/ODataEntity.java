@@ -17,12 +17,16 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
@@ -40,6 +44,7 @@ public abstract class ODataEntity<T> {
         this.content = content;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected ODataEntity(T content) {
         this.content = content;
 
@@ -63,6 +68,77 @@ public abstract class ODataEntity<T> {
      */
     protected T getContent() {
         return content;
+    }
+
+    /**
+     * Test if the entity contains a link with the given rel attribute.
+     * 
+     * @param rel
+     *            Rel of link to check for
+     * @return True if link is found, false if not.
+     */
+    public boolean hasLink(String rel) {
+        return getLink(rel) != null;
+    }
+
+    /**
+     * Get the link with the given rel attribute
+     * 
+     * @param rel
+     *            rel of link to retrieve
+     * @return The link if found, null if not.
+     */
+    public LinkInfo getLink(String rel) {
+        for (Object child : entry.getEntryChildren()) {
+
+            LinkType link = LinkFromChild(child);
+            if (link != null && link.getRel().equals(rel)) {
+                return new LinkInfo(link);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the link to navigate an OData relationship
+     * 
+     * @param relationName
+     *            name of the OData relationship
+     * @return the link if found, null if not.
+     */
+    public LinkInfo getRelationLink(String relationName) {
+        return getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
+    }
+
+    /**
+     * Return the links from this entry
+     * 
+     * @return List of the links.
+     */
+    public List<LinkInfo> getLinks() {
+        ArrayList<LinkInfo> links = new ArrayList<LinkInfo>();
+        for (Object child : entry.getEntryChildren()) {
+            LinkType link = LinkFromChild(child);
+            if (link != null) {
+                links.add(new LinkInfo(link));
+            }
+        }
+        return links;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static LinkType LinkFromChild(Object child) {
+        if (child instanceof JAXBElement) {
+            return LinkFromElement((JAXBElement) child);
+        }
+        return null;
+    }
+
+    private static LinkType LinkFromElement(@SuppressWarnings("rawtypes") JAXBElement element) {
+        if (element.getDeclaredType() == LinkType.class) {
+            return (LinkType) element.getValue();
+        }
+        return null;
     }
 
     /**
