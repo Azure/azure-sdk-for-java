@@ -184,6 +184,18 @@ public class Asset {
     }
 
     /**
+     * Create an operation that will list all the assets at the given link.
+     * 
+     * @param link
+     *            Link to request assets from.
+     * @return The list operation.
+     */
+    public static EntityListOperation<AssetInfo> list(LinkInfo link) {
+        return new DefaultListOperation<AssetInfo>(link.getHref(), new GenericType<ListResult<AssetInfo>>() {
+        });
+    }
+
+    /**
      * Create an operation that will update the given asset.
      * 
      * @param assetId
