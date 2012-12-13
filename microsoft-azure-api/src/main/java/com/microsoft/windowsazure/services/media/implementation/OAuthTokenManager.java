@@ -89,22 +89,16 @@ public class OAuthTokenManager {
      */
     public String getAccessToken() throws ServiceException, URISyntaxException {
         Date now = dateFactory.getDate();
-        OAuthTokenResponse oAuth2TokenResponse = null;
+        if (this.activeToken == null || now.after(this.activeToken.getExpiresUtc())) {
+            OAuthTokenResponse oAuth2TokenResponse = contract.getAccessToken(acsBaseUri, clientId, clientSecret, scope);
+            Date expiresUtc = new Date(now.getTime() + oAuth2TokenResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
 
-        if (this.activeToken == null) {
-            this.activeToken = new ActiveToken();
+            ActiveToken newToken = new ActiveToken();
+            newToken.setAccessToken(oAuth2TokenResponse.getAccessToken());
+            newToken.setExpiresUtc(expiresUtc);
+
+            this.activeToken = newToken;
         }
-        else if (now.before(this.activeToken.getExpiresUtc())) {
-            return this.activeToken.getAccessToken();
-        }
-
-        oAuth2TokenResponse = contract.getAccessToken(acsBaseUri, clientId, clientSecret, scope);
-        Date expiresUtc = new Date(now.getTime() + oAuth2TokenResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
-
-        this.activeToken.setAccessToken(oAuth2TokenResponse.getAccessToken());
-        this.activeToken.setExpiresUtc(expiresUtc);
-
-        return oAuth2TokenResponse.getAccessToken();
+        return this.activeToken.getAccessToken();
     }
-
 }
