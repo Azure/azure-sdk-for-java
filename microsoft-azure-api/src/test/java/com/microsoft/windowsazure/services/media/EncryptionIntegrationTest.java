@@ -49,10 +49,10 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -98,7 +98,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
         // Act
         AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
-                .setOptions(EncryptionOption.StorageEncrypted));
+                .setOptions(AssetOption.StorageEncrypted));
 
         AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
                 durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
@@ -137,7 +137,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
     private AssetFileInfo uploadEncryptedAssetFile(AssetInfo assetInfo, LocatorInfo locatorInfo,
             ContentKeyInfo contentKeyInfo, String blobName, byte[] encryptedContent) throws ServiceException {
-        WritableBlobContainerContract blobWriter = MediaService.createBlobWriter(locatorInfo);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
         InputStream blobContent = new ByteArrayInputStream(encryptedContent);
         blobWriter.createBlockBlob(blobName, blobContent);
         AssetFileInfo assetFileInfo = service.create(AssetFile.create(assetInfo.getId(), blobName).setIsPrimary(true)
