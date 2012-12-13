@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.MediaProcessorType;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 
 /**
@@ -85,7 +86,7 @@ public class LinkRetrievalTest {
 
     @Test
     public void canRetrieveEntireLinkByRel() {
-        LinkType link = info.getLink(link2.getRel());
+        LinkInfo link = info.getLink(link2.getRel());
 
         assertLinksEqual(link2, link);
     }
@@ -97,16 +98,17 @@ public class LinkRetrievalTest {
 
     @Test
     public void getLinksReturnsTwoExpectedLinksInOrder() {
-        List<LinkType> links = info.getLinks();
+        List<LinkInfo> links = info.getLinks();
 
         assertEquals(2, links.size());
         assertLinksEqual(link1, links.get(0));
         assertLinksEqual(link2, links.get(1));
     }
 
-    private static void assertLinksEqual(LinkType expected, LinkType actual) {
+    private static void assertLinksEqual(LinkType expected, LinkInfo actual) {
         assertEquals(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getRel(), actual.getRel());
         assertEquals(expected.getHref(), actual.getHref());
+        assertEquals(expected.getType(), actual.getType());
     }
 }

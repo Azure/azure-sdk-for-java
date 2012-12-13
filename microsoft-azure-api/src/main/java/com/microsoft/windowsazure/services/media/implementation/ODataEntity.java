@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.media.implementation.atom.ContentType
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
@@ -87,12 +88,12 @@ public abstract class ODataEntity<T> {
      *            rel of link to retrieve
      * @return The link if found, null if not.
      */
-    public LinkType getLink(String rel) {
+    public LinkInfo getLink(String rel) {
         for (Object child : entry.getEntryChildren()) {
 
             LinkType link = LinkFromChild(child);
             if (link != null && link.getRel().equals(rel)) {
-                return link;
+                return new LinkInfo(link);
             }
         }
         return null;
@@ -103,12 +104,12 @@ public abstract class ODataEntity<T> {
      * 
      * @return List of the links.
      */
-    public List<LinkType> getLinks() {
-        ArrayList<LinkType> links = new ArrayList<LinkType>();
+    public List<LinkInfo> getLinks() {
+        ArrayList<LinkInfo> links = new ArrayList<LinkInfo>();
         for (Object child : entry.getEntryChildren()) {
             LinkType link = LinkFromChild(child);
             if (link != null) {
-                links.add(link);
+                links.add(new LinkInfo(link));
             }
         }
         return links;
