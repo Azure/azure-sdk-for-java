@@ -70,28 +70,28 @@ public abstract class ODataEntity<T> {
     }
 
     /**
-     * Test if the entity contains a link with the given title.
+     * Test if the entity contains a link with the given rel attribute.
      * 
-     * @param title
-     *            Title of link to check for
-     * @return True if link is included, false if not.
+     * @param rel
+     *            Rel of link to check for
+     * @return True if link is found, false if not.
      */
-    public boolean hasLink(String title) {
-        return getLink(title) != null;
+    public boolean hasLink(String rel) {
+        return getLink(rel) != null;
     }
 
     /**
-     * Get the link with the given title
+     * Get the link with the given rel attribute
      * 
-     * @param title
-     *            Title of link to retrieve
+     * @param rel
+     *            rel of link to retrieve
      * @return The link if found, null if not.
      */
-    public LinkType getLink(String title) {
+    public LinkType getLink(String rel) {
         for (Object child : entry.getEntryChildren()) {
 
             LinkType link = LinkFromChild(child);
-            if (link != null && link.getTitle().equals(title)) {
+            if (link != null && link.getRel().equals(rel)) {
                 return link;
             }
         }

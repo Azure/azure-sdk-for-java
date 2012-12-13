@@ -75,7 +75,7 @@ public class LinkRetrievalTest {
 
     @Test
     public void canRetrieveSingleLinkFromEntity() {
-        assertTrue(info.hasLink("someLink"));
+        assertTrue(info.hasLink(link1.getRel()));
     }
 
     @Test
@@ -84,8 +84,8 @@ public class LinkRetrievalTest {
     }
 
     @Test
-    public void canRetrieveEntireLinkByTitle() {
-        LinkType link = info.getLink("someOtherLink");
+    public void canRetrieveEntireLinkByRel() {
+        LinkType link = info.getLink(link2.getRel());
 
         assertLinksEqual(link2, link);
     }
