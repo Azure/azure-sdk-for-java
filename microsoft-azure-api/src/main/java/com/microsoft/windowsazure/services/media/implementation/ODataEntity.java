@@ -17,11 +17,14 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
@@ -40,6 +43,7 @@ public abstract class ODataEntity<T> {
         this.content = content;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected ODataEntity(T content) {
         this.content = content;
 
@@ -63,6 +67,66 @@ public abstract class ODataEntity<T> {
      */
     protected T getContent() {
         return content;
+    }
+
+    /**
+     * Test if the entity contains a link with the given title.
+     * 
+     * @param title
+     *            Title of link to check for
+     * @return True if link is included, false if not.
+     */
+    public boolean hasLink(String title) {
+        return getLink(title) != null;
+    }
+
+    /**
+     * Get the link with the given title
+     * 
+     * @param title
+     *            Title of link to retrieve
+     * @return The link if found, null if not.
+     */
+    public LinkType getLink(String title) {
+        for (Object child : entry.getEntryChildren()) {
+
+            LinkType link = LinkFromChild(child);
+            if (link != null && link.getTitle().equals(title)) {
+                return link;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Return the links from this entry
+     * 
+     * @return List of the links.
+     */
+    public List<LinkType> getLinks() {
+        ArrayList<LinkType> links = new ArrayList<LinkType>();
+        for (Object child : entry.getEntryChildren()) {
+            LinkType link = LinkFromChild(child);
+            if (link != null) {
+                links.add(link);
+            }
+        }
+        return links;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static LinkType LinkFromChild(Object child) {
+        if (child instanceof JAXBElement) {
+            return LinkFromElement((JAXBElement) child);
+        }
+        return null;
+    }
+
+    private static LinkType LinkFromElement(@SuppressWarnings("rawtypes") JAXBElement element) {
+        if (element.getDeclaredType() == LinkType.class) {
+            return (LinkType) element.getValue();
+        }
+        return null;
     }
 
     /**
