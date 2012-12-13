@@ -25,7 +25,6 @@ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -134,7 +133,6 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 expectedExpirationDateTime, locatorInfo);
     }
 
-    @Ignore("due to media service bug 596240")
     @Test
     public void createLocatorOptionsSetExpirationDateTimeSuccess() throws ServiceException {
         // Arrange
@@ -150,7 +148,6 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                 expectedExpirationDateTime, locatorInfo);
     }
 
-    @Ignore("due to media service bug 596240")
     @Test
     public void createLocatorOptionsSetStartTimeSuccess() throws ServiceException {
         // Arrange

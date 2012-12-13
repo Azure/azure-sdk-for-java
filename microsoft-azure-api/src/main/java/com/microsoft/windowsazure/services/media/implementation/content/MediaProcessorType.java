@@ -56,8 +56,9 @@ public class MediaProcessorType implements MediaServiceDTO {
      * @param id
      *            the id to set
      */
-    public void setId(String id) {
+    public MediaProcessorType setId(String id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -71,39 +72,44 @@ public class MediaProcessorType implements MediaServiceDTO {
      * @param name
      *            the name to set
      */
-    public void setName(String name) {
+    public MediaProcessorType setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String description) {
+    public MediaProcessorType setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getSku() {
         return this.sku;
     }
 
-    public void setSku(String sku) {
+    public MediaProcessorType setSku(String sku) {
         this.sku = sku;
+        return this;
     }
 
     public String getVendor() {
         return vendor;
     }
 
-    public void setVendor(String vendor) {
+    public MediaProcessorType setVendor(String vendor) {
         this.vendor = vendor;
+        return this;
     }
 
     public String getVersion() {
         return this.version;
     }
 
-    public void setVersion(String version) {
+    public MediaProcessorType setVersion(String version) {
         this.version = version;
+        return this;
     }
 }

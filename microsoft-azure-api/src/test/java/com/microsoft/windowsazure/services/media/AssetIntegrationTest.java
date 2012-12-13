@@ -38,7 +38,7 @@ import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.microsoft.windowsazure.services.media.models.EncryptionOption;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class AssetIntegrationTest extends IntegrationTestBase {
@@ -49,12 +49,12 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     private void verifyAssetProperties(String message, String testName, String altId,
-            EncryptionOption encryptionOption, AssetState assetState, AssetInfo actualAsset) {
+            AssetOption encryptionOption, AssetState assetState, AssetInfo actualAsset) {
         verifyAssetProperties(message, testName, altId, encryptionOption, assetState, null, null, null, actualAsset);
     }
 
     private void verifyAssetProperties(String message, String testName, String altId,
-            EncryptionOption encryptionOption, AssetState assetState, String id, Date created, Date lastModified,
+            AssetOption encryptionOption, AssetState assetState, String id, Date created, Date lastModified,
             AssetInfo actualAsset) {
         assertNotNull(message, actualAsset);
         assertEquals(message + " Name", testName, actualAsset.getName());
@@ -77,7 +77,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         // Arrange
         String testName = testAssetPrefix + "createAssetOptionsSuccess";
         String altId = "altId";
-        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetOption encryptionOption = AssetOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
 
         // Act
@@ -113,7 +113,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         try {
             actualAsset = service.create(Asset.create());
             // Assert
-            verifyAssetProperties("actualAsset", "", "", EncryptionOption.None, AssetState.Initialized, actualAsset);
+            verifyAssetProperties("actualAsset", "", "", AssetOption.None, AssetState.Initialized, actualAsset);
         }
         finally {
             // Clean up the anonymous asset now while we have the id, because we
@@ -134,7 +134,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         // Arrange
         String testName = testAssetPrefix + "GetAssetSuccess";
         String altId = "altId";
-        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetOption encryptionOption = AssetOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
 
         AssetInfo assetInfo = service.create(Asset.create().setName(testName).setAlternateId(altId)
@@ -165,7 +165,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     public void listAssetSuccess() throws ServiceException {
         // Arrange
         String altId = "altId";
-        EncryptionOption encryptionOption = EncryptionOption.StorageEncrypted;
+        AssetOption encryptionOption = AssetOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
 
         String[] assetNames = new String[] { testAssetPrefix + "assetA", testAssetPrefix + "assetB" };
@@ -213,7 +213,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     public void updateAssetSuccess() throws Exception {
         // Arrange
         String originalTestName = testAssetPrefix + "updateAssetSuccessOriginal";
-        EncryptionOption originalEncryptionOption = EncryptionOption.StorageEncrypted;
+        AssetOption originalEncryptionOption = AssetOption.StorageEncrypted;
         AssetState originalAssetState = AssetState.Initialized;
         AssetInfo originalAsset = service.create(Asset.create().setName(originalTestName).setAlternateId("altId")
                 .setOptions(originalEncryptionOption));
@@ -285,7 +285,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         // Arrange
         String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
         AssetInfo assetInfo = service.create(Asset.create().setName(originalTestName)
-                .setOptions(EncryptionOption.StorageEncrypted));
+                .setOptions(AssetOption.StorageEncrypted));
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId,
