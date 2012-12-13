@@ -69,10 +69,6 @@ public class JobType implements MediaServiceDTO {
     @XmlElement(name = "TemplateId", namespace = Constants.ODATA_DATA_NS)
     protected String templateId;
 
-    /** The tasks. */
-    @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
-    protected String taskBody;
-
     /**
      * Gets the id.
      * 
@@ -270,26 +266,6 @@ public class JobType implements MediaServiceDTO {
      */
     public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
-        return this;
-    }
-
-    /**
-     * Gets the tasks.
-     * 
-     * @return the tasks
-     */
-    public String getTaskBody() {
-        return taskBody;
-    }
-
-    /**
-     * Sets the tasks.
-     * 
-     * @param tasks
-     *            the new tasks
-     */
-    public JobType setTaskBody(String taskBody) {
-        this.taskBody = taskBody;
         return this;
     }
 
