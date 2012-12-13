@@ -21,16 +21,16 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -70,8 +70,7 @@ public class EncryptionHelper {
         System.out.println("plain : " + new String(plainText));
     }
 
-    public static byte[] create256BitRandomVector() {
-        int numberOfBits = 256;
+    public static byte[] createRandomVector(int numberOfBits) {
         int numberOfBytes = numberOfBits / 8;
         byte[] aesKey = new byte[numberOfBytes];
         Random random = new Random();
@@ -117,12 +116,22 @@ public class EncryptionHelper {
         System.out.println("plain : " + new String(bOut.toByteArray()));
     }
 
-    public static byte[] EncryptSymmetricKey(String publicKeyString, byte[] inputData) throws InvalidKeySpecException,
+    public static byte[] EncryptSymmetricKey(String protectionKey, byte[] inputData) throws InvalidKeySpecException,
             NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, NoSuchPaddingException,
-            IllegalBlockSizeException, BadPaddingException {
-        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(
-                new X509EncodedKeySpec(Base64.decode(publicKeyString)));
-        return EncryptSymmetricKey(publicKey, inputData);
+            IllegalBlockSizeException, BadPaddingException, CertificateException {
+
+        X509Certificate x509Certificate = createX509CertificateFromString(protectionKey);
+        //X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(Base64.decode(publicKeyString));
+        // PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(x509EncodedKeySpec);
+        return EncryptSymmetricKey(x509Certificate.getPublicKey(), inputData);
+
+    }
+
+    private static X509Certificate createX509CertificateFromString(String protectionKey) throws CertificateException {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.decode(protectionKey));
+        X509Certificate x509cert = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
+        return x509cert;
 
     }
 

@@ -23,6 +23,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
+import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.UUID;
 
@@ -44,6 +46,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
+import com.microsoft.windowsazure.services.media.models.EncryptionOption;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
@@ -79,16 +82,19 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     @Test
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
 
         // Act
-        byte[] aesKey = EncryptionHelper.create256BitRandomVector();
-        byte[] initializationVector = EncryptionHelper.create256BitRandomVector();
+        byte[] aesKey = EncryptionHelper.createRandomVector(128);
+        byte[] initializationVector = EncryptionHelper.createRandomVector(128);
 
-        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess"));
+        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
+                .setOptions(EncryptionOption.StorageEncrypted));
         String protectionKeyId = (String) service.action(ProtectionKey
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
-        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId);
+        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKey);
         URI contentKeyUri = createContentKeyUri(service.getRestServiceUri(), contentKeyInfo.getId());
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
 
@@ -110,7 +116,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     private URI createContentKeyUri(URI rootUri, String contentKeyId) {
-        return URI.create(String.format("%s/ContentKeys('%s')", contentKeyId));
+        return URI.create(String.format("%s/ContentKeys('%s')", rootUri, contentKeyId));
     }
 
     private byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
@@ -136,11 +142,12 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return cipherText;
     }
 
-    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId)
+    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKey)
             throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
-            NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ServiceException {
+            NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ServiceException,
+            CertificateException {
         String contentKeyId = createRandomContentKeyId();
-        byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKeyId, aesKey);
+        byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKey, aesKey);
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, contentKeyType,
                 Base64.encode(encryptedContentKey)));
         return contentKeyInfo;
