@@ -44,10 +44,16 @@ public class Task {
     /**
      * Creates the.
      * 
+     * @param mediaProcessorId
+     *            the media processor id
+     * @param taskBody
+     *            the task body
+     * @param options
+     *            the options
      * @return the creates the batch operation
      */
-    public static CreateBatchOperation create() {
-        return new CreateBatchOperation();
+    public static CreateBatchOperation create(String mediaProcessorId, String taskBody, int options) {
+        return new CreateBatchOperation(mediaProcessorId, taskBody, options);
     }
 
     /**
@@ -82,11 +88,42 @@ public class Task {
 
         /**
          * Instantiates a new creates the batch operation.
+         * 
+         * @param mediaProcessorId
+         *            the media processor id
+         * @param taskBody
+         *            the task body
+         * @param options
+         *            the options
          */
-        public CreateBatchOperation() {
+        public CreateBatchOperation(String mediaProcessorId, String taskBody, int options) {
             this.verb = "POST";
             taskType = new TaskType();
             addContentObject(taskType);
+            this.taskType.setMediaProcessorId(mediaProcessorId);
+            this.taskType.setTaskBody(taskBody);
+            this.taskType.setOptions(options);
+        }
+
+        /**
+         * Gets the options.
+         * 
+         * @return the options
+         */
+        public int getOptions() {
+            return this.taskType.getOptions();
+        }
+
+        /**
+         * Sets the options.
+         * 
+         * @param options
+         *            the options
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setOptions(int options) {
+            this.taskType.setOptions(options);
+            return this;
         }
 
         /**
@@ -173,6 +210,110 @@ public class Task {
             return this;
         }
 
+        /**
+         * Gets the priority.
+         * 
+         * @return the priority
+         */
+        public Integer getPriority() {
+            return this.taskType.getPriority();
+        }
+
+        /**
+         * Sets the priority.
+         * 
+         * @param priority
+         *            the priority
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setPriority(int priority) {
+            this.taskType.setPriority(priority);
+            return this;
+        }
+
+        /**
+         * Gets the encryption key id.
+         * 
+         * @return the encryption key id
+         */
+        public String getEncryptionKeyId() {
+            return this.taskType.getEncryptionKeyId();
+        }
+
+        /**
+         * Sets the encryption key id.
+         * 
+         * @param encryptionKeyId
+         *            the encryption key id
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionKeyId(String encryptionKeyId) {
+            this.taskType.setEncryptionKeyId(encryptionKeyId);
+            return this;
+        }
+
+        /**
+         * Gets the encryption scheme.
+         * 
+         * @return the encryption scheme
+         */
+        public String getEncryptionScheme() {
+            return this.taskType.getEncryptionScheme();
+        }
+
+        /**
+         * Sets the encryption scheme.
+         * 
+         * @param encryptionScheme
+         *            the encryption scheme
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionScheme(String encryptionScheme) {
+            this.taskType.setEncryptionScheme(encryptionScheme);
+            return this;
+        }
+
+        /**
+         * Gets the encryption version.
+         * 
+         * @return the encryption version
+         */
+        public String getEncryptionVersion() {
+            return this.taskType.getEncryptionVersion();
+        }
+
+        /**
+         * Sets the encryption version.
+         * 
+         * @param encryptionVersion
+         *            the encryption version
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionVersion(String encryptionVersion) {
+            this.taskType.setEncryptionVersion(encryptionVersion);
+            return this;
+        }
+
+        /**
+         * Gets the initialization vector.
+         * 
+         * @return the initialization vector
+         */
+        public String getInitializationVector() {
+            return this.taskType.getInitializationVector();
+        }
+
+        /**
+         * Sets the initialization vector.
+         * 
+         * @param initializationVector
+         *            the initialization vector
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setInitializationVector(String initializationVector) {
+            this.taskType.setInitializationVector(initializationVector);
+            return this;
+        }
     }
 
     /**
