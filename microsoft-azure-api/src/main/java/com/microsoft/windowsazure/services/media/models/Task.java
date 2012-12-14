@@ -78,6 +78,18 @@ public class Task {
     }
 
     /**
+     * Create an operation that will list the tasks pointed to by the given link
+     * 
+     * @param link
+     *            link to tasks
+     * @return the list operation.
+     */
+    public static DefaultListOperation<TaskInfo> list(LinkInfo link) {
+        return new DefaultListOperation<TaskInfo>(link.getHref(), new GenericType<ListResult<TaskInfo>>() {
+        });
+    }
+
+    /**
      * The Class CreateBatchOperation.
      */
     public static class CreateBatchOperation extends EntityBatchOperation {
