@@ -101,4 +101,13 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public AssetOption getOptions() {
         return AssetOption.fromCode(getContent().getOptions());
     }
+
+    /**
+     * Get a link to the asset's content keys
+     * 
+     * @return the link
+     */
+    public LinkInfo getContentKeysLink() {
+        return getRelationLink("ContentKeys");
+    }
 }
