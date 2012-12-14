@@ -19,15 +19,12 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class MediaProcessorIntegrationTest extends IntegrationTestBase {
 
@@ -69,16 +66,9 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void listMediaProcessorWithOptionSuccess() throws ServiceException {
-        // Arrange
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.add("$filter", "Id eq 'nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10'");
-        queryParameters.add("$top", "2");
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor.list().setTop(2)
+                .set("$filter", "Id eq 'nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10'"));
 
-        // Act
-        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor
-                .list(queryParameters));
-
-        // Assert
         assertNotNull("listMediaProcessorsResult", listMediaProcessorsResult);
         assertEquals("listMediaProcessors size", 1, listMediaProcessorsResult.size());
         MediaProcessorInfo mediaProcessorInfo = listMediaProcessorsResult.get(0);

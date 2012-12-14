@@ -25,8 +25,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,7 +42,6 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class JobIntegrationTest extends IntegrationTestBase {
 
@@ -228,9 +225,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
             expectedJobs.add(jobInfo);
         }
 
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.add("$top", "2");
-        ListResult<JobInfo> listJobsResult = service.list(Job.list(queryParameters));
+        ListResult<JobInfo> listJobsResult = service.list(Job.list().setTop(2));
 
         // Assert
         assertEquals(2, listJobsResult.size());

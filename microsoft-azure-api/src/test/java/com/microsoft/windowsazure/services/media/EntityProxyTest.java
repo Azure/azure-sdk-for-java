@@ -5,15 +5,12 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class EntityProxyTest extends IntegrationTestBase {
     private static MediaContract entityService;
@@ -80,10 +77,7 @@ public class EntityProxyTest extends IntegrationTestBase {
     public void canListAssetsWithQueryParameters() throws Exception {
         createTestAssets(4, "withQuery");
 
-        MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-        params.add("$top", "2");
-
-        ListResult<AssetInfo> assets = entityService.list(Asset.list(params));
+        ListResult<AssetInfo> assets = entityService.list(Asset.list().setTop(2));
 
         assertEquals(2, assets.size());
     }
@@ -130,8 +124,8 @@ public class EntityProxyTest extends IntegrationTestBase {
         Set<String> expectedAssets = new HashSet<String>();
 
         for (int i = 0; i < numAssets; ++i) {
-            AssetInfo asset = entityService.create(Asset.create()
-                    .setName(testAssetPrefix + namePart + Integer.toString(i)));
+            AssetInfo asset = entityService.create(Asset.create().setName(
+                    testAssetPrefix + namePart + Integer.toString(i)));
             expectedAssets.add(asset.getId());
         }
         return expectedAssets;
