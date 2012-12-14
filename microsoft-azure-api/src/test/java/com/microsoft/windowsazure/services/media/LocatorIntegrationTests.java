@@ -37,7 +37,6 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class LocatorIntegrationTests extends IntegrationTestBase {
 
@@ -213,12 +212,12 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
                     LocatorType.SAS)));
         }
 
-        MultivaluedMapImpl options = new MultivaluedMapImpl();
-        options.add("$filter", "(Id eq '" + expectedLocators.get(1).getId() + "') or (" + "Id eq '"
-                + expectedLocators.get(3).getId() + "')");
-        options.add("$top", "3");
-
-        ListResult<LocatorInfo> result = service.list(Locator.list(options));
+        ListResult<LocatorInfo> result = service.list(Locator
+                .list()
+                .setTop(3)
+                .set("$filter",
+                        "(Id eq '" + expectedLocators.get(1).getId() + "') or (" + "Id eq '"
+                                + expectedLocators.get(3).getId() + "')"));
 
         assertEquals(2, result.size());
     }

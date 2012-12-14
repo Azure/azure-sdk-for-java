@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityA
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
@@ -196,7 +195,7 @@ public class AssetFile {
      * 
      * @return The list operation to pass to rest proxy.
      */
-    public static EntityListOperation<AssetFileInfo> list() {
+    public static DefaultListOperation<AssetFileInfo> list() {
         return new DefaultListOperation<AssetFileInfo>(ENTITY_SET, new GenericType<ListResult<AssetFileInfo>>() {
         });
     }
@@ -208,7 +207,7 @@ public class AssetFile {
      *            asset to list files for
      * @return the list operation object
      */
-    public static EntityListOperation<AssetFileInfo> list(String assetId) {
+    public static DefaultListOperation<AssetFileInfo> list(String assetId) {
         String assetUri = new EntityOperationBase.EntityIdUriBuilder("Assets", assetId).getUri() + "/Files";
         return new DefaultListOperation<AssetFileInfo>(assetUri, new GenericType<ListResult<AssetFileInfo>>() {
         });

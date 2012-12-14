@@ -24,7 +24,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
@@ -155,7 +154,7 @@ public class ContentKey {
      * 
      * @return the operation
      */
-    public static EntityListOperation<ContentKeyInfo> list() {
+    public static DefaultListOperation<ContentKeyInfo> list() {
         return new DefaultListOperation<ContentKeyInfo>(ENTITY_SET, new GenericType<ListResult<ContentKeyInfo>>() {
         });
     }
@@ -167,7 +166,7 @@ public class ContentKey {
      *            query parameters to add to the request
      * @return the operation
      */
-    public static EntityListOperation<ContentKeyInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<ContentKeyInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<ContentKeyInfo>(ENTITY_SET, new GenericType<ListResult<ContentKeyInfo>>() {
         }, queryParameters);
     }

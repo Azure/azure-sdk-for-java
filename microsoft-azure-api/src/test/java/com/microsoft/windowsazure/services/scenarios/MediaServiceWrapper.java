@@ -116,11 +116,9 @@ class MediaServiceWrapper {
             throws ServiceException {
         List<ListResult<AssetInfo>> pages = new ArrayList<ListResult<AssetInfo>>();
         for (int skip = 0; true; skip += pageSize) {
-            EntityListOperation<AssetInfo> listOperation = Asset.list();
-            listOperation.getQueryParameters().add("$skip", skip + "");
-            listOperation.getQueryParameters().add("$top", pageSize + "");
-            listOperation.getQueryParameters().add("$filter", "startswith(Name,'" + rootName + "')");
-            listOperation.getQueryParameters().add("$orderby", "Name");
+            EntityListOperation<AssetInfo> listOperation = Asset.list().setTop(pageSize).setSkip(skip)
+                    .set("$filter", "startswith(Name,'" + rootName + "')").set("$orderby", "Name");
+
             ListResult<AssetInfo> listAssetResult = service.list(listOperation);
             pages.add(listAssetResult);
             if (listAssetResult.size() == 0) {

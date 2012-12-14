@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -30,7 +28,6 @@ import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.ProtectionKeyType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
@@ -138,10 +135,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
             expectedContentKeys.add(contentKeyInfo);
         }
 
-        MultivaluedMap<String, String> options = new MultivaluedMapImpl();
-        options.add("$top", "2");
-
-        List<ContentKeyInfo> actualContentKeys = service.list(ContentKey.list(options));
+        List<ContentKeyInfo> actualContentKeys = service.list(ContentKey.list().setTop(2));
 
         assertEquals(2, actualContentKeys.size());
     }

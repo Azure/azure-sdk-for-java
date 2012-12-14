@@ -27,7 +27,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityC
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityLinkOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
@@ -167,7 +166,7 @@ public class Asset {
      * 
      * @return The list operation
      */
-    public static EntityListOperation<AssetInfo> list() {
+    public static DefaultListOperation<AssetInfo> list() {
         return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
         });
     }
@@ -179,7 +178,7 @@ public class Asset {
      *            query parameters to pass to the server.
      * @return the list operation.
      */
-    public static EntityListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
         }, queryParameters);
     }
@@ -191,7 +190,7 @@ public class Asset {
      *            Link to request assets from.
      * @return The list operation.
      */
-    public static EntityListOperation<AssetInfo> list(LinkInfo link) {
+    public static DefaultListOperation<AssetInfo> list(LinkInfo link) {
         return new DefaultListOperation<AssetInfo>(link.getHref(), new GenericType<ListResult<AssetInfo>>() {
         });
     }

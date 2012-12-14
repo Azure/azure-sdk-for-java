@@ -40,7 +40,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityB
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -426,7 +425,7 @@ public class Job {
      * 
      * @return The list operation
      */
-    public static EntityListOperation<JobInfo> list() {
+    public static DefaultListOperation<JobInfo> list() {
         return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
         });
     }
@@ -438,7 +437,7 @@ public class Job {
      *            query parameters to pass to the server.
      * @return the list operation.
      */
-    public static EntityListOperation<JobInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<JobInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
         }, queryParameters);
     }

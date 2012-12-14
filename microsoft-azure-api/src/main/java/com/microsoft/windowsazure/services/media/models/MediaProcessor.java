@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.media.models;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -37,7 +36,7 @@ public class MediaProcessor {
      * 
      * @return the list operation
      */
-    public static EntityListOperation<MediaProcessorInfo> list() {
+    public static DefaultListOperation<MediaProcessorInfo> list() {
         return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
                 new GenericType<ListResult<MediaProcessorInfo>>() {
                 });
@@ -50,7 +49,7 @@ public class MediaProcessor {
      *            query parameters to pass with the request
      * @return the list operation
      */
-    public static EntityListOperation<MediaProcessorInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<MediaProcessorInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
                 new GenericType<ListResult<MediaProcessorInfo>>() {
                 }, queryParameters);
