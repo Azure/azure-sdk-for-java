@@ -96,13 +96,10 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
     private CreateBatchOperation getTaskCreator(int outputAssetPosition) {
         return Task
-                .create()
-                .setConfiguration("H.264 256k DSL CBR")
-                .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
-                .setName("My encoding Task")
-                .setTaskBody(
+                .create("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5",
                         "<taskBody>" + "<inputAsset>JobInputAsset(0)</inputAsset>" + "<outputAsset>JobOutputAsset("
-                                + outputAssetPosition + ")</outputAsset>" + "</taskBody>");
+                                + outputAssetPosition + ")</outputAsset>" + "</taskBody>")
+                .setConfiguration("H.264 256k DSL CBR").setName("My encoding Task");
     }
 
     @BeforeClass
