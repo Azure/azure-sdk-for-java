@@ -68,8 +68,8 @@ public class Job {
      *            the service uri
      * @return the creator
      */
-    public static Creator create(URI serviceUri) {
-        return new Creator(serviceUri);
+    public static Creator create() {
+        return new Creator();
     }
 
     /**
@@ -89,9 +89,6 @@ public class Job {
 
         /** The input media assets. */
         private final List<String> inputMediaAssets;
-
-        /** The service uri. */
-        private URI serviceUri;
 
         /** The content type. */
         private MediaType contentType;
@@ -114,9 +111,9 @@ public class Job {
          * @throws ServiceException
          *             the service exception
          */
-        private void buildMimeMultipart() {
+        private void buildMimeMultipart(URI serviceUri) {
             mediaBatchOperations = null;
-            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(this);
+            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(serviceUri, this);
 
             try {
                 mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -156,9 +153,8 @@ public class Job {
          * @param serviceUri
          *            the service uri
          */
-        public Creator(URI serviceUri) {
+        public Creator() {
             super(ENTITY_SET, JobInfo.class);
-            this.serviceUri = serviceUri;
             this.inputMediaAssets = new ArrayList<String>();
             this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
             this.fresh = true;
@@ -170,7 +166,7 @@ public class Job {
         @Override
         public Object getRequestContents() throws ServiceException {
             if (fresh) {
-                buildMimeMultipart();
+                buildMimeMultipart(getProxyData().getServiceUri());
             }
             return mimeMultipart;
         }
@@ -316,35 +312,13 @@ public class Job {
             return this;
         }
 
-        /**
-         * Gets the service uri.
-         * 
-         * @return the service uri
-         */
-        public URI getServiceUri() {
-            return this.serviceUri;
-        }
-
-        /**
-         * Sets the service uri.
-         * 
-         * @param serviceUri
-         *            the service uri
-         * @return the creator
-         */
-        public Creator setServiceUri(URI serviceUri) {
-            this.serviceUri = serviceUri;
-            this.fresh = true;
-            return this;
-        }
-
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getContentType()
          */
         @Override
         public MediaType getContentType() {
             if (fresh) {
-                buildMimeMultipart();
+                buildMimeMultipart(getProxyData().getServiceUri());
             }
             return this.contentType;
         }
@@ -387,8 +361,8 @@ public class Job {
          *            the creator
          * @return the creates the batch operation
          */
-        public static CreateBatchOperation create(Creator creator) {
-            CreateBatchOperation createBatchOperation = new CreateBatchOperation(creator.getServiceUri());
+        public static CreateBatchOperation create(URI serviceUri, Creator creator) {
+            CreateBatchOperation createBatchOperation = new CreateBatchOperation(serviceUri);
 
             JobType jobType = new JobType();
             jobType.setStartTime(creator.getStartTime());

@@ -35,6 +35,8 @@ public interface EntityListOperation<T> extends EntityOperation {
 
     /**
      * Get a GenericType object representing the result list type
+     * 
+     * @return the type of the operation's result
      */
     GenericType<ListResult<T>> getResponseGenericType();
 }
