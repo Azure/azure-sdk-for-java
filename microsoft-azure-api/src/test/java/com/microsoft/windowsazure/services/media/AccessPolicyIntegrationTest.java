@@ -103,7 +103,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canGetSinglePolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(AccessPolicy.get(invalidId));
     }
 
@@ -189,7 +189,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canDeleteAccessPolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(AccessPolicy.delete(invalidId));
     }
 

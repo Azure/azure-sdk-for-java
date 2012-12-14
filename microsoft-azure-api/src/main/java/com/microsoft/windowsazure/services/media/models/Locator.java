@@ -78,9 +78,6 @@ public class Locator {
         /** The content access token. */
         private String contentAccessComponent;
 
-        /** The expiration date time. */
-        private Date expirationDateTime;
-
         /** The locator type. */
         private final LocatorType locatorType;
 
@@ -116,8 +113,7 @@ public class Locator {
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setId(id).setAccessPolicyId(accessPolicyId).setAssetId(assetId)
-                    .setStartTime(startDateTime).setExpirationDateTime(expirationDateTime)
-                    .setType(locatorType.getCode()).setBaseUri(baseUri)
+                    .setStartTime(startDateTime).setType(locatorType.getCode()).setBaseUri(baseUri)
                     .setContentAccessComponent(contentAccessComponent).setPath(path);
         }
 
@@ -154,18 +150,6 @@ public class Locator {
          */
         public Creator setStartDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
-            return this;
-        }
-
-        /**
-         * Set the date and time at which the locator will expire.
-         * 
-         * @param expirationDateTime
-         *            Expiration date and time
-         * @return The creator instance (for function chaining)
-         */
-        public Creator setExpirationDateTime(Date expirationDateTime) {
-            this.expirationDateTime = expirationDateTime;
             return this;
         }
 
