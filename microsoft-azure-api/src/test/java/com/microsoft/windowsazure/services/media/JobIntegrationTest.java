@@ -42,6 +42,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 
 public class JobIntegrationTest extends IntegrationTestBase {
 
@@ -289,13 +290,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
     public void canGetInputOutputAssetsFromJob() throws Exception {
         String name = testJobPrefix + "canGetInputOutputAssetsFromJob";
         int priority = 3;
-        double duration = 0.0;
-        JobState state = JobState.Queued;
-        String templateId = null;
-        Date created = new Date();
-        Date lastModified = new Date();
-        Date stateTime = null;
-        Date endTime = null;
 
         JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
                 .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
@@ -309,4 +303,37 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertEquals(1, outputs.size());
         assertTrue(outputs.get(0).getName().contains(name));
     }
+
+    @Test
+    public void canGetTasksFromJob() throws Exception {
+        String name = testJobPrefix + "canGetTaskAssetsFromJob";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void canGetInputOutputAssetsFromTask() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromTask";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+        ListResult<AssetInfo> inputs = service.list(Asset.list(tasks.get(0).getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(tasks.get(0).getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
+    }
+
 }

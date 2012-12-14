@@ -199,4 +199,22 @@ public class TaskInfo extends ODataEntity<TaskType> {
     public String getInitializationVector() {
         return getContent().getInitializationVector();
     }
+
+    /**
+     * Gets link to the task's input assets
+     * 
+     * @return the link
+     */
+    public LinkInfo getInputAssetsLink() {
+        return getRelationLink("InputMediaAssets");
+    }
+
+    /**
+     * Gets link to the task's output assets
+     * 
+     * @return the link
+     */
+    public LinkInfo getOutputAssetsLink() {
+        return getRelationLink("OutputMediaAssets");
+    }
 }
