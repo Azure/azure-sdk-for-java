@@ -52,8 +52,8 @@ public class Task {
      *            the options
      * @return the creates the batch operation
      */
-    public static CreateBatchOperation create(String mediaProcessorId, String taskBody, int options) {
-        return new CreateBatchOperation(mediaProcessorId, taskBody, options);
+    public static CreateBatchOperation create(String mediaProcessorId, String taskBody) {
+        return new CreateBatchOperation(mediaProcessorId, taskBody);
     }
 
     /**
@@ -96,13 +96,12 @@ public class Task {
          * @param options
          *            the options
          */
-        public CreateBatchOperation(String mediaProcessorId, String taskBody, int options) {
+        public CreateBatchOperation(String mediaProcessorId, String taskBody) {
             this.verb = "POST";
             taskType = new TaskType();
             addContentObject(taskType);
             this.taskType.setMediaProcessorId(mediaProcessorId);
             this.taskType.setTaskBody(taskBody);
-            this.taskType.setOptions(options);
         }
 
         /**

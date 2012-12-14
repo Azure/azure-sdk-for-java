@@ -80,7 +80,10 @@ public class MediaBatchOperationsTest {
             ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation();
+        String mediaProcessorId = "testMediaProcessorId";
+        String taskBody = "testTaskBody";
+
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(mediaProcessorId, taskBody);
 
         // Act
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -95,8 +98,10 @@ public class MediaBatchOperationsTest {
     public void getMimeMultipartSuccess() throws JAXBException, ParserConfigurationException, MessagingException,
             IOException {
         // Arrange
+        String mediaProcessorId = "testMediaProcessorId";
+        String taskBody = "testTaskBody";
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation();
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(mediaProcessorId, taskBody);
         Job.CreateBatchOperation jobCreateBatchOperation = new Job.CreateBatchOperation(serviceUri);
 
         // Act

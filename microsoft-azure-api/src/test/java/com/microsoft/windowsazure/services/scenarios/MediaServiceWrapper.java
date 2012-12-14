@@ -216,51 +216,53 @@ class MediaServiceWrapper {
     // Process
     public Task.CreateBatchOperation createTaskOptionsWindowsAzureMediaEncoder(String taskName, int inputAssetId,
             int outputAssetId) throws ServiceException {
-        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
-                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER))
-                .setConfiguration("H.264 256k DSL CBR");
-        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+        String taskBody = getTaskBody(inputAssetId, outputAssetId);
+        Task.CreateBatchOperation taskCreate = Task
+                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER), taskBody)
+                .setName(taskName).setConfiguration("H.264 256k DSL CBR");
+
         return taskCreate;
     }
 
     // Process
     public Task.CreateBatchOperation createTaskOptionsPlayReadyProtection(String taskName,
             String playReadyConfiguration, int inputAssetId, int outputAssetId) throws ServiceException {
+        String taskBody = getTaskBody(inputAssetId, outputAssetId);
         Task.CreateBatchOperation taskCreate = Task
-                .create()
-                .setName(taskName)
+                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION), taskBody).setName(taskName)
                 // TODO: Re-enable
                 // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/499
                 // .setTaskCreationOptions(TaskCreationOptions.ProtectedConfiguration)
-                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION))
                 .setConfiguration(playReadyConfiguration);
-        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+
         return taskCreate;
     }
 
     // Process
     public Task.CreateBatchOperation createTaskOptionsMp4ToSmoothStreams(String taskName, int inputAssetId,
             int outputAssetId) throws ServiceException {
-        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
-                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS))
+        String taskBody = getTaskBody(inputAssetId, outputAssetId);
+        Task.CreateBatchOperation taskCreate = Task
+                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS), taskBody).setName(taskName)
                 .setConfiguration(configMp4ToSmoothStreams);
-        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+
         return taskCreate;
     }
 
     // Process
     public Task.CreateBatchOperation createTaskOptionsSmoothStreamsToHls(String taskName, int inputAssetId,
             int outputAssetId) throws ServiceException {
-        Task.CreateBatchOperation taskCreate = Task.create().setName(taskName)
-                .setMediaProcessorId(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS))
+        String taskBody = getTaskBody(inputAssetId, outputAssetId);
+        Task.CreateBatchOperation taskCreate = Task
+                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS), taskBody).setName(taskName)
                 .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams);
-        setTaskBody(taskCreate, inputAssetId, outputAssetId);
+
         return taskCreate;
     }
 
-    private void setTaskBody(Task.CreateBatchOperation taskCreate, int inputAssetId, int outputAssetId) {
-        taskCreate.setTaskBody("<taskBody><inputAsset>JobInputAsset(" + inputAssetId + ")</inputAsset>"
-                + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>");
+    private String getTaskBody(int inputAssetId, int outputAssetId) {
+        return "<taskBody><inputAsset>JobInputAsset(" + inputAssetId + ")</inputAsset>"
+                + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>";
     }
 
     private String getMediaProcessorIdByName(String processorName) throws ServiceException {
