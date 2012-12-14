@@ -53,10 +53,13 @@ import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
+import com.microsoft.windowsazure.services.media.models.Task;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
 
@@ -116,11 +119,16 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
                 "uploadAesProtectedAssetSuccess", encryptedContent);
 
-        // executeDecodingJob(assetInfo);
+        decodeAsset(assetInfo);
 
         // Assert
         // verify the file downloaded is identical to the one that is uploaded. 
 
+    }
+
+    private void decodeAsset(AssetInfo assetInfo) throws ServiceException {
+        JobInfo jobInfo = service.create(Job.create(service.getRestServiceUri()).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(Task.create()));
     }
 
     private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException {
@@ -186,11 +194,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, contentKeyType,
                 encryptedContentKeyString).setChecksum(checksum));
         return contentKeyInfo;
-    }
-
-    private AssetInfo createAsset(String string) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
