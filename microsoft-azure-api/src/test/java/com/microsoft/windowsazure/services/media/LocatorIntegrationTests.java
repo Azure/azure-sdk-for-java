@@ -292,4 +292,16 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(Locator.delete(invalidId));
     }
+
+    @Test
+    public void canGetLocatorBackFromAsset() throws Exception {
+        LocatorInfo locator = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        ListResult<LocatorInfo> locators = service.list(Locator.list(assetInfo.getLocatorsLink()));
+
+        assertEquals(1, locators.size());
+        assertEquals(locator.getId(), locators.get(0).getId());
+
+    }
 }

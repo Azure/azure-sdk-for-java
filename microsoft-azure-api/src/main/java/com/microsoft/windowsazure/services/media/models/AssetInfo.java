@@ -119,4 +119,13 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public LinkInfo getContentKeysLink() {
         return getRelationLink("ContentKeys");
     }
+
+    /**
+     * Get a link to the asset's locators
+     * 
+     * @return the link
+     */
+    public LinkInfo getLocatorsLink() {
+        return getRelationLink("Locators");
+    }
 }
