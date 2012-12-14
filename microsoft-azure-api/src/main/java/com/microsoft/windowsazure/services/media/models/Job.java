@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.media.models;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -76,9 +75,6 @@ public class Job {
      */
     public static class Creator extends EntityOperationSingleResultBase<JobInfo> implements
             EntityCreationOperation<JobInfo> {
-
-        /** The start time. */
-        private Date startTime;
 
         /** The name. */
         private String name;
@@ -259,28 +255,6 @@ public class Job {
         }
 
         /**
-         * Gets the start time.
-         * 
-         * @return the start time
-         */
-        public Date getStartTime() {
-            return startTime;
-        }
-
-        /**
-         * Sets the start time.
-         * 
-         * @param startTime
-         *            the start time
-         * @return the creator
-         */
-        public Creator setStartTime(Date startTime) {
-            this.startTime = startTime;
-            this.fresh = true;
-            return this;
-        }
-
-        /**
          * Gets the input media assets.
          * 
          * @return the input media assets
@@ -364,7 +338,6 @@ public class Job {
             CreateBatchOperation createBatchOperation = new CreateBatchOperation(serviceUri);
 
             JobType jobType = new JobType();
-            jobType.setStartTime(creator.getStartTime());
             jobType.setName(creator.getName());
             jobType.setPriority(creator.getPriority());
 
