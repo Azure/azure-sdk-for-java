@@ -105,15 +105,6 @@ public class Task {
         }
 
         /**
-         * Gets the options.
-         * 
-         * @return the options
-         */
-        public int getOptions() {
-            return this.taskType.getOptions();
-        }
-
-        /**
          * Sets the options.
          * 
          * @param options
@@ -138,15 +129,6 @@ public class Task {
         }
 
         /**
-         * Gets the configuration.
-         * 
-         * @return the configuration
-         */
-        public String getConfiguration() {
-            return this.taskType.getConfiguration();
-        }
-
-        /**
          * Sets the name.
          * 
          * @param name
@@ -156,15 +138,6 @@ public class Task {
         public CreateBatchOperation setName(String name) {
             this.taskType.setName(name);
             return this;
-        }
-
-        /**
-         * Gets the name.
-         * 
-         * @return the name
-         */
-        public String getName() {
-            return this.taskType.getName();
         }
 
         /**
@@ -180,24 +153,6 @@ public class Task {
         }
 
         /**
-         * Gets the task body.
-         * 
-         * @return the task body
-         */
-        public String getTaskBody() {
-            return this.taskType.getTaskBody();
-        }
-
-        /**
-         * Gets the media processor id.
-         * 
-         * @return the media processor id
-         */
-        public String getMediaProcessorId() {
-            return this.taskType.getMediaProcessorId();
-        }
-
-        /**
          * Sets the media processor id.
          * 
          * @param mediaProcessorId
@@ -207,15 +162,6 @@ public class Task {
         public CreateBatchOperation setMediaProcessorId(String mediaProcessorId) {
             this.taskType.setMediaProcessorId(mediaProcessorId);
             return this;
-        }
-
-        /**
-         * Gets the priority.
-         * 
-         * @return the priority
-         */
-        public Integer getPriority() {
-            return this.taskType.getPriority();
         }
 
         /**
@@ -231,15 +177,6 @@ public class Task {
         }
 
         /**
-         * Gets the encryption key id.
-         * 
-         * @return the encryption key id
-         */
-        public String getEncryptionKeyId() {
-            return this.taskType.getEncryptionKeyId();
-        }
-
-        /**
          * Sets the encryption key id.
          * 
          * @param encryptionKeyId
@@ -249,15 +186,6 @@ public class Task {
         public CreateBatchOperation setEncryptionKeyId(String encryptionKeyId) {
             this.taskType.setEncryptionKeyId(encryptionKeyId);
             return this;
-        }
-
-        /**
-         * Gets the encryption scheme.
-         * 
-         * @return the encryption scheme
-         */
-        public String getEncryptionScheme() {
-            return this.taskType.getEncryptionScheme();
         }
 
         /**
@@ -273,15 +201,6 @@ public class Task {
         }
 
         /**
-         * Gets the encryption version.
-         * 
-         * @return the encryption version
-         */
-        public String getEncryptionVersion() {
-            return this.taskType.getEncryptionVersion();
-        }
-
-        /**
          * Sets the encryption version.
          * 
          * @param encryptionVersion
@@ -291,15 +210,6 @@ public class Task {
         public CreateBatchOperation setEncryptionVersion(String encryptionVersion) {
             this.taskType.setEncryptionVersion(encryptionVersion);
             return this;
-        }
-
-        /**
-         * Gets the initialization vector.
-         * 
-         * @return the initialization vector
-         */
-        public String getInitializationVector() {
-            return this.taskType.getInitializationVector();
         }
 
         /**
