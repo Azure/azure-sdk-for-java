@@ -26,6 +26,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * Generic implementation of Delete operation usable by most entities.
  */
 public class DefaultActionOperation implements EntityActionOperation {
+    private EntityProxyData proxyData;
 
     /** The name. */
     protected String name;
@@ -55,6 +56,23 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+     */
+    @Override
+    public void setProxyData(EntityProxyData proxyData) {
+        this.proxyData = proxyData;
+    }
+
+    /**
+     * Get the current proxy data
+     * 
+     * @return the proxy data
+     */
+    protected EntityProxyData getProxyData() {
+        return proxyData;
     }
 
     /* (non-Javadoc)
