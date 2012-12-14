@@ -25,7 +25,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
@@ -195,7 +194,7 @@ public class Locator {
      * 
      * @return the list operation
      */
-    public static EntityListOperation<LocatorInfo> list() {
+    public static DefaultListOperation<LocatorInfo> list() {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         });
     }
@@ -207,7 +206,7 @@ public class Locator {
      *            query parameters to send with the request
      * @return the list operation
      */
-    public static EntityListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         }, queryParameters);
     }

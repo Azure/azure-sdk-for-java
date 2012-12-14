@@ -26,7 +26,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
@@ -96,7 +95,7 @@ public class AccessPolicy {
      * 
      * @return the operation
      */
-    public static EntityListOperation<AccessPolicyInfo> list() {
+    public static DefaultListOperation<AccessPolicyInfo> list() {
         return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
         });
     }
@@ -108,7 +107,7 @@ public class AccessPolicy {
      *            query parameters to add to the request
      * @return the operation
      */
-    public static EntityListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
         }, queryParameters);
     }

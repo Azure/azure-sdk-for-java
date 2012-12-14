@@ -39,7 +39,6 @@ import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class AssetIntegrationTest extends IntegrationTestBase {
 
@@ -199,9 +198,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
             expectedAssets.add(service.create(Asset.create().setName(name)));
         }
 
-        MultivaluedMapImpl options = new MultivaluedMapImpl();
-        options.add("$top", "2");
-        Collection<AssetInfo> listAssetResult = service.list(Asset.list(options));
+        Collection<AssetInfo> listAssetResult = service.list(Asset.list().setTop(2));
 
         // Assert
 
