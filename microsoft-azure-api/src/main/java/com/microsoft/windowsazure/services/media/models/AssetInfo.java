@@ -103,6 +103,15 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
+     * Get a link to the asset's files
+     * 
+     * @return the link
+     */
+    public LinkInfo getAssetFilesLink() {
+        return getRelationLink("Files");
+    }
+
+    /**
      * Get a link to the asset's content keys
      * 
      * @return the link

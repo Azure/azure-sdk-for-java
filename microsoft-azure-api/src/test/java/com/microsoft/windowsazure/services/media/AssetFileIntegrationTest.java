@@ -68,7 +68,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
 
         service.action(AssetFile.createFileInfos(asset.getId()));
 
-        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         assertEquals(1, files.size());
         AssetFileInfo file = files.get(0);
@@ -85,7 +85,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
 
         service.create(AssetFile.create(asset.getId(), BLOB_NAME_2));
 
-        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         boolean found = false;
         for (AssetFileInfo file : files) {
@@ -119,7 +119,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
         AssetFileInfo file3 = service.create(AssetFile.create(asset.getId(), "blob3.bin").setIsPrimary(false)
                 .setIsEncrypted(false).setContentFileSize(new Long(countingUp.length)).setContentChecksum("1234"));
 
-        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getId()));
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         assertEquals(3, files.size());
 
@@ -166,7 +166,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
 
         service.action(AssetFile.createFileInfos(asset.getId()));
 
-        ListResult<AssetFileInfo> originalFiles = service.list(AssetFile.list(asset.getId()));
+        ListResult<AssetFileInfo> originalFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         assertEquals(2, originalFiles.size());
 
         for (AssetFileInfo file : originalFiles) {
@@ -176,7 +176,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase {
             }
         }
 
-        ListResult<AssetFileInfo> newFiles = service.list(AssetFile.list(asset.getId()));
+        ListResult<AssetFileInfo> newFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         assertEquals(1, newFiles.size());
         assertEquals("tokeep.bin", newFiles.get(0).getName());
     }
