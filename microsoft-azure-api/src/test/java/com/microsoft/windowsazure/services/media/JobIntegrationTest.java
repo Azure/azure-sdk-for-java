@@ -117,7 +117,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix + name, 10,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
-        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
+        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5);
         WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
         InputStream blobContent = new ByteArrayInputStream(testBlobData);
         blobWriter.createBlockBlob(testBlobName, blobContent);
