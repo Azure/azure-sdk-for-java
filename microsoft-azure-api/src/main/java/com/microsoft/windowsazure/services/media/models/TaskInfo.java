@@ -142,8 +142,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the state
      */
-    public Integer getState() {
-        return getContent().getState();
+    public TaskState getState() {
+        return TaskState.fromCode(getContent().getState());
     }
 
     /**
@@ -160,8 +160,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the options
      */
-    public Integer getOptions() {
-        return getContent().getOptions();
+    public TaskOption getOptions() {
+        return TaskOption.fromCode(getContent().getOptions());
     }
 
     /**
