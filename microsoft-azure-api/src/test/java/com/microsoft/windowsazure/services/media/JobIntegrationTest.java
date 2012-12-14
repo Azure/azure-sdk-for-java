@@ -316,4 +316,24 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         assertEquals(1, tasks.size());
     }
+
+    @Test
+    public void canGetInputOutputAssetsFromTask() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromTask";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+        ListResult<AssetInfo> inputs = service.list(Asset.list(tasks.get(0).getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(tasks.get(0).getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
+    }
+
 }
