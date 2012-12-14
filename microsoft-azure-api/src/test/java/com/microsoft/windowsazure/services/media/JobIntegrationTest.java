@@ -305,7 +305,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         Date stateTime = null;
         Date endTime = null;
 
-        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
                 .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
 
         ListResult<AssetInfo> inputs = service.list(Asset.list(actualJob.getInputAssetsLink()));
