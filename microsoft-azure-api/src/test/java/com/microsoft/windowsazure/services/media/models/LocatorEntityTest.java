@@ -157,19 +157,16 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void locatorUpdateCanStartAndExpirationTime() throws Exception {
+    public void locatorUpdateCanSetStarTime() throws Exception {
         Date now = new Date();
 
         Date tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
-        Date twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
-        EntityUpdateOperation updater = Locator.update(exampleLocatorId).setStartDateTime(tenMinutesAgo)
-                .setExpirationDateTime(twoHoursFromNow);
+        EntityUpdateOperation updater = Locator.update(exampleLocatorId).setStartDateTime(tenMinutesAgo);
 
         LocatorRestType payload = (LocatorRestType) updater.getRequestContents();
 
         assertEquals(tenMinutesAgo, payload.getStartTime());
-        assertEquals(twoHoursFromNow, payload.getExpirationDateTime());
     }
 
     @Test

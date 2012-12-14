@@ -230,9 +230,6 @@ public class Locator {
         /** The start date time. */
         private Date startDateTime;
 
-        /** The expiration date time. */
-        private Date expirationDateTime;
-
         /**
          * Instantiates a new updater.
          * 
@@ -248,7 +245,7 @@ public class Locator {
          */
         @Override
         public Object getRequestContents() {
-            return new LocatorRestType().setStartTime(startDateTime).setExpirationDateTime(expirationDateTime);
+            return new LocatorRestType().setStartTime(startDateTime);
         }
 
         /* (non-Javadoc)
@@ -270,19 +267,6 @@ public class Locator {
             this.startDateTime = startDateTime;
             return this;
         }
-
-        /**
-         * Set when the locator will expire.
-         * 
-         * @param expirationDateTime
-         *            the expiration date & time
-         * @return Updater instance
-         */
-        public Updater setExpirationDateTime(Date expirationDateTime) {
-            this.expirationDateTime = expirationDateTime;
-            return this;
-        }
-
     }
 
     /**
