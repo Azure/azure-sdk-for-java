@@ -104,11 +104,11 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T create(EntityCreationOperation<T> creator) throws ServiceException {
+    public <T> T create(EntityCreateOperation<T> creator) throws ServiceException {
         creator.setProxyData(createProxyData());
         Object rawResponse = getResource(creator).post(creator.getResponseClass(),
                 creator.getRequestContents());

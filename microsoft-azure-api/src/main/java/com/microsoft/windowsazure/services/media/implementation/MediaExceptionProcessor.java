@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
@@ -92,10 +92,10 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation)
      */
     @Override
-    public <T> T create(EntityCreationOperation<T> creator) throws ServiceException {
+    public <T> T create(EntityCreateOperation<T> creator) throws ServiceException {
         try {
             return service.create(creator);
         }
