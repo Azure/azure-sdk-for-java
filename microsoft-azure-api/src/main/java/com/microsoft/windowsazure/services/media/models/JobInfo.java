@@ -133,8 +133,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo getInputAssetsLink() {
-        return getRelationLink("InputMediaAssets");
+    public LinkInfo<AssetInfo> getInputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("InputMediaAssets");
     }
 
     /**
@@ -142,8 +142,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo getOutputAssetsLink() {
-        return getRelationLink("OutputMediaAssets");
+    public LinkInfo<AssetInfo> getOutputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("OutputMediaAssets");
     }
 
     /**
@@ -151,7 +151,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the tasks link
      */
-    public LinkInfo getTasksLink() {
-        return getRelationLink("Tasks");
+    public LinkInfo<TaskInfo> getTasksLink() {
+        return this.<TaskInfo> getRelationLink("Tasks");
     }
 }

@@ -88,12 +88,12 @@ public abstract class ODataEntity<T> {
      *            rel of link to retrieve
      * @return The link if found, null if not.
      */
-    public LinkInfo getLink(String rel) {
+    public <U extends ODataEntity<?>> LinkInfo<U> getLink(String rel) {
         for (Object child : entry.getEntryChildren()) {
 
             LinkType link = LinkFromChild(child);
             if (link != null && link.getRel().equals(rel)) {
-                return new LinkInfo(link);
+                return new LinkInfo<U>(link);
             }
         }
         return null;
@@ -106,8 +106,8 @@ public abstract class ODataEntity<T> {
      *            name of the OData relationship
      * @return the link if found, null if not.
      */
-    public LinkInfo getRelationLink(String relationName) {
-        return getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
+    public <U extends ODataEntity<?>> LinkInfo<U> getRelationLink(String relationName) {
+        return this.<U> getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
     }
 
     /**
@@ -115,6 +115,7 @@ public abstract class ODataEntity<T> {
      * 
      * @return List of the links.
      */
+    @SuppressWarnings("rawtypes")
     public List<LinkInfo> getLinks() {
         ArrayList<LinkInfo> links = new ArrayList<LinkInfo>();
         for (Object child : entry.getEntryChildren()) {
