@@ -162,6 +162,17 @@ public class Asset {
     }
 
     /**
+     * Get the asset at the given link
+     * 
+     * @param link
+     *            the link
+     * @return the get operation
+     */
+    public static EntityGetOperation<AssetInfo> get(LinkInfo link) {
+        return new DefaultGetOperation<AssetInfo>(link.getHref(), AssetInfo.class);
+    }
+
+    /**
      * Create an operation that will list all the assets.
      * 
      * @return The list operation
