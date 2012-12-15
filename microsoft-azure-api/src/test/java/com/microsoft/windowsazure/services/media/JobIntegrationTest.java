@@ -174,8 +174,9 @@ public class JobIntegrationTest extends IntegrationTestBase {
         tasks.add(getTaskCreator(1));
 
         // Act
-        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
-                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
+        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name)
+                .setStartTime(new Date()).setPriority(priority).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,

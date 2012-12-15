@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -55,9 +58,12 @@ import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessor;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 
@@ -66,6 +72,10 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
     private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
+    private final String expressionEncoder = "Windows Azure Media Encoder";
+    private final String wameV1Preset = "H.264 256k DSL CBR";
+    private final String wameV2Preset = "H264 Broadband SD 4x3";
+    private final String strorageDecryptionProcessor = "Storage Decryption";
 
     private String createContentKeyId(UUID uuid) {
         String randomContentKey = String.format("nb:kid:UUID:%s", uuid);
@@ -100,35 +110,82 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         int durationInMinutes = 10;
 
         // Act
+
+        // creates asset
         AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
                 .setOptions(AssetOption.StorageEncrypted));
 
+        // creates writable access policy
         AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
                 durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
 
+        // creates locator for the input media asset
         LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
                 LocatorType.SAS));
 
+        // gets the public key for storage encryption. 
+
         String protectionKey = getProtectionKey();
 
+        // creates the content key with encrypted 
         ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKey);
 
+        // link the content key with the asset. 
         linkContentKey(assetInfo, contentKeyInfo);
 
+        // encrypt the file.
         byte[] encryptedContent = EncryptFile(smallWMVInputStream, aesKey, initializationVector);
+
+        // upload the encrypted file to the server.  
         AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
                 "uploadAesProtectedAssetSuccess", encryptedContent);
 
-        decodeAsset(assetInfo);
+        // submit and execute the decoding job. 
+        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);
 
-        // Assert
-        // verify the file downloaded is identical to the one that is uploaded. 
+        // assert 
+        assertEquals(JobState.Finished, jobInfo.getState());
 
     }
 
-    private void decodeAsset(AssetInfo assetInfo) throws ServiceException {
-        JobInfo jobInfo = service.create(Job.create(service.getRestServiceUri()).addInputMediaAsset(assetInfo.getId())
-                .addTaskCreator(Task.create()));
+    private JobInfo decodeAsset(String name, AssetInfo assetInfo) throws ServiceException, InterruptedException {
+        MediaProcessorInfo mediaProcessorInfo = GetMediaProcessor(strorageDecryptionProcessor);
+        JobInfo jobInfo = createJob(name, assetInfo, mediaProcessorInfo);
+        return waitJobForCompletion(jobInfo);
+
+    }
+
+    private JobInfo createJob(String name, AssetInfo assetInfo, MediaProcessorInfo mediaProcessorInfo)
+            throws ServiceException {
+        String configuration = "H.264 256k DSL CBR";
+        String taskBody = "<taskBody>"
+                + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset></taskBody>";
+        JobInfo jobInfo = service.create(Job
+                .create(service.getRestServiceUri())
+                .addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(
+                        Task.create().setMediaProcessorId(mediaProcessorInfo.getId()).setName(name)
+                                .setConfiguration(configuration).setTaskBody(taskBody)));
+        return jobInfo;
+    }
+
+    private JobInfo waitJobForCompletion(JobInfo jobInfo) throws ServiceException, InterruptedException {
+        JobInfo currentJobInfo = jobInfo;
+        while (currentJobInfo.getState().getCode() < 3) {
+            currentJobInfo = service.get(Job.get(jobInfo.getId()));
+            Thread.sleep(4000);
+        }
+        return currentJobInfo;
+    }
+
+    private MediaProcessorInfo GetMediaProcessor(String mediaProcessorName) throws ServiceException {
+        List<MediaProcessorInfo> mediaProcessorInfos = service.list(MediaProcessor.list());
+        for (MediaProcessorInfo mediaProcessorInfo : mediaProcessorInfos) {
+            if (mediaProcessorInfo.getName().equals(mediaProcessorName)) {
+                return mediaProcessorInfo;
+            }
+        }
+        return null;
     }
 
     private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException {
