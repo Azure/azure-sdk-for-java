@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityLinkOperation;
@@ -62,7 +62,7 @@ public class Asset {
      * The Class Creator.
      */
     public static class Creator extends EntityOperationSingleResultBase<AssetInfo> implements
-            EntityCreationOperation<AssetInfo> {
+            EntityCreateOperation<AssetInfo> {
 
         /** The name. */
         private String name;
@@ -84,7 +84,7 @@ public class Asset {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() {

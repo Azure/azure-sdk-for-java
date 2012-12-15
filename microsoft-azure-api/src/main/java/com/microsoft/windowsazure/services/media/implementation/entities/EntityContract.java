@@ -34,7 +34,7 @@ public interface EntityContract {
      * @return
      *         The created entity
      */
-    public abstract <T> T create(EntityCreationOperation<T> creator) throws ServiceException;
+    public abstract <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
 
     /**
      * Retrieve an existing entity by id

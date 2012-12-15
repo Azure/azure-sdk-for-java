@@ -22,7 +22,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.LocatorR
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
@@ -64,7 +64,7 @@ public class Locator {
      * The Class Creator.
      */
     public static class Creator extends EntityOperationSingleResultBase<LocatorInfo> implements
-            EntityCreationOperation<LocatorInfo> {
+            EntityCreateOperation<LocatorInfo> {
 
         /** The access policy id. */
         private final String accessPolicyId;
@@ -108,7 +108,7 @@ public class Locator {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() {
@@ -172,7 +172,7 @@ public class Locator {
          *            the id
          * @return the entity creation operation
          */
-        public EntityCreationOperation<LocatorInfo> setId(String id) {
+        public EntityCreateOperation<LocatorInfo> setId(String id) {
             this.id = id;
             return this;
         }

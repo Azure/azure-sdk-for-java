@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
@@ -43,7 +43,7 @@ public class AssetFileEntityTest {
         Boolean expectedIsPrimary = true;
         String expectedMimeType = "application/octet-stream";
 
-        EntityCreationOperation<AssetFileInfo> creator = AssetFile.create(exampleAssetId, expectedName)
+        EntityCreateOperation<AssetFileInfo> creator = AssetFile.create(exampleAssetId, expectedName)
                 .setContentChecksum(expectedChecksum).setContentFileSize(expectedSize)
                 .setEncryptionKeyId(expectedEncryptionKey).setEncryptionScheme(expectedEncryptionScheme)
                 .setEncryptionVersion(expectedEncryptionVersion).setInitializationVector(expectedInitializationVector)

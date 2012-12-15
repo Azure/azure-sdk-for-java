@@ -24,7 +24,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -46,7 +46,7 @@ public class ContentKeyEntityTest {
 
     @Test
     public void createContentKeyHasCorrectUrl() throws Exception {
-        EntityCreationOperation<ContentKeyInfo> creator = ContentKey.create(testContentKeyId, testContentKeyType,
+        EntityCreateOperation<ContentKeyInfo> creator = ContentKey.create(testContentKeyId, testContentKeyType,
                 testEncryptedContentKey);
 
         assertEquals("ContentKeys", creator.getUri());
