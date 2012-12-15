@@ -164,7 +164,7 @@ class MediaServiceWrapper {
         }
 
         service.action(AssetFile.createFileInfos(asset.getId()));
-        for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getId()))) {
+        for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getAssetFilesLink()))) {
 
             AssetFileInfo x = infoToUpload.get(assetFile.getName());
             System.out.println(x);
@@ -172,7 +172,7 @@ class MediaServiceWrapper {
                     .setContentFileSize(x.getContentFileSize()).setIsPrimary(x.getIsPrimary()));
         }
 
-        service.list(AssetFile.list(asset.getId()));
+        service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         service.delete(Locator.delete(locator.getId()));
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
@@ -321,7 +321,7 @@ class MediaServiceWrapper {
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
         LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
 
-        List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getId()));
+        List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
             if (isSmooth) {
                 // Smooth Streaming format ends with ".ism*"
