@@ -22,7 +22,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -44,10 +43,16 @@ public class Task {
     /**
      * Creates the.
      * 
+     * @param mediaProcessorId
+     *            the media processor id
+     * @param taskBody
+     *            the task body
+     * @param options
+     *            the options
      * @return the creates the batch operation
      */
-    public static CreateBatchOperation create() {
-        return new CreateBatchOperation();
+    public static CreateBatchOperation create(String mediaProcessorId, String taskBody) {
+        return new CreateBatchOperation(mediaProcessorId, taskBody);
     }
 
     /**
@@ -55,7 +60,7 @@ public class Task {
      * 
      * @return The list operation
      */
-    public static EntityListOperation<TaskInfo> list() {
+    public static DefaultListOperation<TaskInfo> list() {
         return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
         });
     }
@@ -67,9 +72,21 @@ public class Task {
      *            query parameters to pass to the server.
      * @return the list operation.
      */
-    public static EntityListOperation<TaskInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<TaskInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
         }, queryParameters);
+    }
+
+    /**
+     * Create an operation that will list the tasks pointed to by the given link
+     * 
+     * @param link
+     *            link to tasks
+     * @return the list operation.
+     */
+    public static DefaultListOperation<TaskInfo> list(LinkInfo link) {
+        return new DefaultListOperation<TaskInfo>(link.getHref(), new GenericType<ListResult<TaskInfo>>() {
+        });
     }
 
     /**
@@ -82,11 +99,32 @@ public class Task {
 
         /**
          * Instantiates a new creates the batch operation.
+         * 
+         * @param mediaProcessorId
+         *            the media processor id
+         * @param taskBody
+         *            the task body
+         * @param options
+         *            the options
          */
-        public CreateBatchOperation() {
+        public CreateBatchOperation(String mediaProcessorId, String taskBody) {
             this.verb = "POST";
             taskType = new TaskType();
             addContentObject(taskType);
+            this.taskType.setMediaProcessorId(mediaProcessorId);
+            this.taskType.setTaskBody(taskBody);
+        }
+
+        /**
+         * Sets the options.
+         * 
+         * @param options
+         *            the options
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setOptions(int options) {
+            this.taskType.setOptions(options);
+            return this;
         }
 
         /**
@@ -102,15 +140,6 @@ public class Task {
         }
 
         /**
-         * Gets the configuration.
-         * 
-         * @return the configuration
-         */
-        public String getConfiguration() {
-            return this.taskType.getConfiguration();
-        }
-
-        /**
          * Sets the name.
          * 
          * @param name
@@ -120,15 +149,6 @@ public class Task {
         public CreateBatchOperation setName(String name) {
             this.taskType.setName(name);
             return this;
-        }
-
-        /**
-         * Gets the name.
-         * 
-         * @return the name
-         */
-        public String getName() {
-            return this.taskType.getName();
         }
 
         /**
@@ -144,24 +164,6 @@ public class Task {
         }
 
         /**
-         * Gets the task body.
-         * 
-         * @return the task body
-         */
-        public String getTaskBody() {
-            return this.taskType.getTaskBody();
-        }
-
-        /**
-         * Gets the media processor id.
-         * 
-         * @return the media processor id
-         */
-        public String getMediaProcessorId() {
-            return this.taskType.getMediaProcessorId();
-        }
-
-        /**
          * Sets the media processor id.
          * 
          * @param mediaProcessorId
@@ -173,6 +175,65 @@ public class Task {
             return this;
         }
 
+        /**
+         * Sets the priority.
+         * 
+         * @param priority
+         *            the priority
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setPriority(int priority) {
+            this.taskType.setPriority(priority);
+            return this;
+        }
+
+        /**
+         * Sets the encryption key id.
+         * 
+         * @param encryptionKeyId
+         *            the encryption key id
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionKeyId(String encryptionKeyId) {
+            this.taskType.setEncryptionKeyId(encryptionKeyId);
+            return this;
+        }
+
+        /**
+         * Sets the encryption scheme.
+         * 
+         * @param encryptionScheme
+         *            the encryption scheme
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionScheme(String encryptionScheme) {
+            this.taskType.setEncryptionScheme(encryptionScheme);
+            return this;
+        }
+
+        /**
+         * Sets the encryption version.
+         * 
+         * @param encryptionVersion
+         *            the encryption version
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setEncryptionVersion(String encryptionVersion) {
+            this.taskType.setEncryptionVersion(encryptionVersion);
+            return this;
+        }
+
+        /**
+         * Sets the initialization vector.
+         * 
+         * @param initializationVector
+         *            the initialization vector
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setInitializationVector(String initializationVector) {
+            this.taskType.setInitializationVector(initializationVector);
+            return this;
+        }
     }
 
     /**

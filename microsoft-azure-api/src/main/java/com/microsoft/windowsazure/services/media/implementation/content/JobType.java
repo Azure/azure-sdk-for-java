@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.services.media.implementation.content;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -69,16 +68,6 @@ public class JobType implements MediaServiceDTO {
     /** The template id. */
     @XmlElement(name = "TemplateId", namespace = Constants.ODATA_DATA_NS)
     protected String templateId;
-
-    /** The output media assets. */
-    protected List<String> outputMediaAssets;
-
-    /** The input media assets. */
-    protected List<String> inputMediaAssets;
-
-    /** The tasks. */
-    @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
-    protected String taskBody;
 
     /**
      * Gets the id.
@@ -277,66 +266,6 @@ public class JobType implements MediaServiceDTO {
      */
     public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
-        return this;
-    }
-
-    /**
-     * Gets the output media assets.
-     * 
-     * @return the output media assets
-     */
-    public List<String> getOutputMediaAssets() {
-        return outputMediaAssets;
-    }
-
-    /**
-     * Sets the output media assets.
-     * 
-     * @param uriList
-     *            the new output media assets
-     */
-    public JobType setOutputMediaAssets(List<String> outputMediaAssets) {
-        this.outputMediaAssets = outputMediaAssets;
-        return this;
-    }
-
-    /**
-     * Gets the input media assets.
-     * 
-     * @return the input media assets
-     */
-    public List<String> getInputMediaAssets() {
-        return inputMediaAssets;
-    }
-
-    /**
-     * Sets the input media assets.
-     * 
-     * @param uriList
-     *            the new input media assets
-     */
-    public JobType setInputMediaAssets(List<String> inputMediaAssets) {
-        this.inputMediaAssets = inputMediaAssets;
-        return this;
-    }
-
-    /**
-     * Gets the tasks.
-     * 
-     * @return the tasks
-     */
-    public String getTaskBody() {
-        return taskBody;
-    }
-
-    /**
-     * Sets the tasks.
-     * 
-     * @param tasks
-     *            the new tasks
-     */
-    public JobType setTaskBody(String taskBody) {
-        this.taskBody = taskBody;
         return this;
     }
 

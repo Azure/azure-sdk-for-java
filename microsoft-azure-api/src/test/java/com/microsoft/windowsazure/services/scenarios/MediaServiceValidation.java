@@ -32,8 +32,8 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
+import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
@@ -54,7 +54,7 @@ class MediaServiceValidation {
         assertEquals("asset.getOptions", encryption, asset.getOptions());
 
         // Verify no files by default.
-        List<AssetFileInfo> initialFiles = service.list(AssetFile.list(asset.getId()));
+        List<AssetFileInfo> initialFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         assertNotNull("initialFiles", initialFiles);
         assertEquals("initialFiles.size", 0, initialFiles.size());
 
@@ -90,7 +90,7 @@ class MediaServiceValidation {
 
     public void validateAssetFiles(AssetInfo asset, Hashtable<String, InputStream> inputFiles) throws ServiceException,
             IOException, NoSuchAlgorithmException {
-        List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset.getId()));
+        List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         assertNotNull("assetFiles", assetFiles);
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());

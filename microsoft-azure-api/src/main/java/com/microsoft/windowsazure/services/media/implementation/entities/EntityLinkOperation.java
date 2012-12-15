@@ -144,7 +144,7 @@ public class EntityLinkOperation extends DefaultActionOperation {
     @Override
     public Object getRequestContents() {
         MediaUriType mediaUriType = new MediaUriType();
-        mediaUriType.setUri(this.secondaryEntityUri.toString());
+        mediaUriType.setUri(getProxyData().getServiceUri().toString() + this.secondaryEntityUri.toString());
         JAXBElement<MediaUriType> mediaUriTypeElement = new JAXBElement<MediaUriType>(new QName(
                 Constants.ODATA_DATA_NS, "uri"), MediaUriType.class, mediaUriType);
         Document document = documentBuilder.newDocument();

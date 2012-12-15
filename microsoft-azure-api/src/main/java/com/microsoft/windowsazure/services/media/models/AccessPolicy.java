@@ -26,7 +26,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
@@ -92,11 +91,22 @@ public class AccessPolicy {
     }
 
     /**
+     * Create an operation that will retrieve the access policy at the given link
+     * 
+     * @param link
+     *            the link
+     * @return the operation
+     */
+    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo link) {
+        return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
+    }
+
+    /**
      * Create an operation that will retrieve all access policies
      * 
      * @return the operation
      */
-    public static EntityListOperation<AccessPolicyInfo> list() {
+    public static DefaultListOperation<AccessPolicyInfo> list() {
         return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
         });
     }
@@ -108,7 +118,7 @@ public class AccessPolicy {
      *            query parameters to add to the request
      * @return the operation
      */
-    public static EntityListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
         }, queryParameters);
     }

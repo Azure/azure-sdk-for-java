@@ -19,14 +19,11 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
-
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,7 +42,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 
 public class JobIntegrationTest extends IntegrationTestBase {
 
@@ -55,13 +52,12 @@ public class JobIntegrationTest extends IntegrationTestBase {
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
                 expected.getState(), expected.getTemplateId(), expected.getCreated(), expected.getLastModified(),
-                expected.getStartTime(), expected.getEndTime(), expected.getInputMediaAssets(),
-                expected.getOutputMediaAssets(), actual);
+                expected.getStartTime(), expected.getEndTime(), actual);
     }
 
     private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,
             JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
-            List<String> inputMediaAssets, List<String> outputMediaAssets, JobInfo actualJob) {
+            JobInfo actualJob) {
         assertNotNull(message, actualJob);
 
         assertNotNull(message + "Id", actualJob.getId());
@@ -78,11 +74,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertDateApproxEquals(message + " StartTime", startTime, actualJob.getStartTime());
         assertDateApproxEquals(message + " EndTime", endTime, actualJob.getEndTime());
 
-        // TODO: Add test for accessing the input and output media assets when fixed:
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
-        assertEquals(message + " InputMediaAssets", inputMediaAssets, actualJob.getInputMediaAssets());
-        assertEquals(message + " OutputMediaAssets", outputMediaAssets, actualJob.getOutputMediaAssets());
-
         // TODO: Add test for accessing the tasks when fixed:
         // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/531
     }
@@ -97,20 +88,16 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     private JobInfo createJob(String name) throws ServiceException {
-        URI serviceUri = service.getRestServiceUri();
-        return service.create(Job.create(serviceUri).setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
+        return service.create(Job.create().setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
     }
 
     private CreateBatchOperation getTaskCreator(int outputAssetPosition) {
         return Task
-                .create()
-                .setConfiguration("H.264 256k DSL CBR")
-                .setMediaProcessorId("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5")
-                .setName("My encoding Task")
-                .setTaskBody(
+                .create("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5",
                         "<taskBody>" + "<inputAsset>JobInputAsset(0)</inputAsset>" + "<outputAsset>JobOutputAsset("
-                                + outputAssetPosition + ")</outputAsset>" + "</taskBody>");
+                                + outputAssetPosition + ")</outputAsset>" + "</taskBody>")
+                .setConfiguration("H.264 256k DSL CBR").setName("My encoding Task");
     }
 
     @BeforeClass
@@ -123,7 +110,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix + name, 10,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
-        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5, 10);
+        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5);
         WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
         InputStream blobContent = new ByteArrayInputStream(testBlobData);
         blobWriter.createBlockBlob(testBlobName, blobContent);
@@ -139,20 +126,18 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         Date created = new Date();
         Date lastModified = new Date();
         Date stateTime = null;
         Date endTime = null;
 
         // Act
-        JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name).setPriority(priority)
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
                 .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -163,8 +148,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         Date created = new Date();
         Date lastModified = new Date();
         Date stateTime = null;
@@ -174,13 +157,18 @@ public class JobIntegrationTest extends IntegrationTestBase {
         tasks.add(getTaskCreator(1));
 
         // Act
+<<<<<<< HEAD
         JobInfo actualJob = service.create(Job.create(service.getRestServiceUri()).setName(name)
                 .setStartTime(new Date()).setPriority(priority).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
+=======
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(tasks.get(0)).addTaskCreator(tasks.get(1)));
+>>>>>>> 4b6de12d6114e1b5ce13e5e4a360d8717cf87708
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -191,8 +179,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         double duration = 0.0;
         JobState state = JobState.Queued;
         String templateId = null;
-        List<String> inputMediaAssets = null;
-        List<String> outputMediaAssets = null;
         String jobId = createJob(name).getId();
         Date created = new Date();
         Date lastModified = new Date();
@@ -204,7 +190,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, inputMediaAssets, outputMediaAssets, actualJob);
+                endTime, actualJob);
     }
 
     @Test
@@ -243,9 +229,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
             expectedJobs.add(jobInfo);
         }
 
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.add("$top", "2");
-        ListResult<JobInfo> listJobsResult = service.list(Job.list(queryParameters));
+        ListResult<JobInfo> listJobsResult = service.list(Job.list().setTop(2));
 
         // Assert
         assertEquals(2, listJobsResult.size());
@@ -297,7 +281,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteJobIvalidIdFail() throws ServiceException {
+    public void deleteJobInvalidIdFail() throws ServiceException {
         // Arrange 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
@@ -307,4 +291,55 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
     }
+
+    @Test
+    public void canGetInputOutputAssetsFromJob() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromJob";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<AssetInfo> inputs = service.list(Asset.list(actualJob.getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(actualJob.getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
+    }
+
+    @Test
+    public void canGetTasksFromJob() throws Exception {
+        String name = testJobPrefix + "canGetTaskAssetsFromJob";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void canGetInputOutputAssetsFromTask() throws Exception {
+        String name = testJobPrefix + "canGetInputOutputAssetsFromTask";
+        int priority = 3;
+
+        JobInfo actualJob = service.create(Job.create().setName(name).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+        ListResult<AssetInfo> inputs = service.list(Asset.list(tasks.get(0).getInputAssetsLink()));
+        ListResult<AssetInfo> outputs = service.list(Asset.list(tasks.get(0).getOutputAssetsLink()));
+
+        assertEquals(1, inputs.size());
+        assertEquals(assetInfo.getId(), inputs.get(0).getId());
+
+        assertEquals(1, outputs.size());
+        assertTrue(outputs.get(0).getName().contains(name));
+    }
+
 }

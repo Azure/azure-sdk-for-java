@@ -41,6 +41,44 @@ public class DefaultListOperation<T> extends EntityOperationBase implements Enti
         this.queryParameters.putAll(queryParameters);
     }
 
+    /**
+     * Add a "$top" query parameter to set the number of values to return
+     * 
+     * @param topValue
+     *            number of values to return
+     * @return this
+     */
+    public DefaultListOperation<T> setTop(int topValue) {
+        queryParameters.add("$top", Integer.toString(topValue));
+        return this;
+    }
+
+    /**
+     * Add a "$skip" query parameter to set the number of values to skip
+     * 
+     * @param skipValue
+     *            the number of values to skip
+     * @return this
+     */
+    public DefaultListOperation<T> setSkip(int skipValue) {
+        queryParameters.add("$skip", Integer.toString(skipValue));
+        return this;
+    }
+
+    /**
+     * Add an arbitrary query parameter
+     * 
+     * @param parameterName
+     *            name of query parameter
+     * @param parameterValue
+     *            value for query parameter
+     * @return this
+     */
+    public DefaultListOperation<T> set(String parameterName, String parameterValue) {
+        queryParameters.add(parameterName, parameterValue);
+        return this;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entities.EntityListOperation#getQueryParameters()
      */

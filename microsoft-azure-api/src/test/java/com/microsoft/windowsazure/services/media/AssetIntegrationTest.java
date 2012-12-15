@@ -28,18 +28,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.microsoft.windowsazure.services.media.models.AssetOption;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class AssetIntegrationTest extends IntegrationTestBase {
 
@@ -48,14 +46,13 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 expected.getState(), actual);
     }
 
-    private void verifyAssetProperties(String message, String testName, String altId,
-            AssetOption encryptionOption, AssetState assetState, AssetInfo actualAsset) {
+    private void verifyAssetProperties(String message, String testName, String altId, AssetOption encryptionOption,
+            AssetState assetState, AssetInfo actualAsset) {
         verifyAssetProperties(message, testName, altId, encryptionOption, assetState, null, null, null, actualAsset);
     }
 
-    private void verifyAssetProperties(String message, String testName, String altId,
-            AssetOption encryptionOption, AssetState assetState, String id, Date created, Date lastModified,
-            AssetInfo actualAsset) {
+    private void verifyAssetProperties(String message, String testName, String altId, AssetOption encryptionOption,
+            AssetState assetState, String id, Date created, Date lastModified, AssetInfo actualAsset) {
         assertNotNull(message, actualAsset);
         assertEquals(message + " Name", testName, actualAsset.getName());
         assertEquals(message + " AlternateId", altId, actualAsset.getAlternateId());
@@ -200,9 +197,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
             expectedAssets.add(service.create(Asset.create().setName(name)));
         }
 
-        MultivaluedMapImpl options = new MultivaluedMapImpl();
-        options.add("$top", "2");
-        Collection<AssetInfo> listAssetResult = service.list(Asset.list(options));
+        Collection<AssetInfo> listAssetResult = service.list(Asset.list().setTop(2));
 
         // Assert
 
@@ -279,7 +274,6 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         service.delete(Asset.delete(validButNonexistAssetId));
     }
 
-    @Ignore("due to issue 507")
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
         // Arrange
@@ -288,9 +282,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .setOptions(AssetOption.StorageEncrypted));
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
-        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId,
-                ContentKeyType.StorageEncryption, encryptedContentKey));
-        URI serviceUri = service.getRestServiceUri();
+        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey));
         String escapedContentKeyId;
         try {
             escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
@@ -298,24 +290,22 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         catch (UnsupportedEncodingException e) {
             throw new InvalidParameterException(contentKeyId);
         }
-        URI contentKeyUri = new URI(String.format("%sContentKeys('%s')", serviceUri, escapedContentKeyId));
+        URI contentKeyUri = new URI(String.format("ContentKeys('%s')", escapedContentKeyId));
 
         // Act
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
 
         // Assert
 
-        // List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list(assetInfo.getId()));
-        // ContentKeyInfo contentKeyInfo = contentKeyInfos.get(0)
-        // assertEquals(contentKeyId, contentKeyInfo.getId());
-
+        List<ContentKeyInfo> contentKeys = service.list(ContentKey.list(assetInfo.getContentKeysLink()));
+        assertEquals(1, contentKeys.size());
+        assertEquals(contentKeyId, contentKeys.get(0).getId());
     }
 
     @Test
     public void linkAssetContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
         // Arrange
-        String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
-        URI invalidContentKeyUri = new URI("https://server/api/ContentKeys('nb:kid:UUID:invalidContentKeyId')");
+        URI invalidContentKeyUri = new URI("ContentKeys('nb%3akid%3aUUID%3ainvalidContentKeyId')");
 
         // Act
         expectedException.expect(ServiceException.class);

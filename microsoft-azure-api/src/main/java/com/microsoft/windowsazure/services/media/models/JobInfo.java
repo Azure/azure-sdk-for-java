@@ -16,12 +16,12 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
-import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class JobInfo.
  */
@@ -130,29 +130,29 @@ public class JobInfo extends ODataEntity<JobType> {
     }
 
     /**
-     * Gets the input media assets.
+     * Get a link which, when listed, will return the input assets for the job.
      * 
-     * @return the input media assets
+     * @return Link if found, null if not.
      */
-    public List<String> getInputMediaAssets() {
-        return getContent().getInputMediaAssets();
+    public LinkInfo getInputAssetsLink() {
+        return getRelationLink("InputMediaAssets");
     }
 
     /**
-     * Gets the output media assets.
+     * Get a link which, when listed, will return the output assets for the job.
      * 
-     * @return the output media assets
+     * @return Link if found, null if not.
      */
-    public List<String> getOutputMediaAssets() {
-        return getContent().getOutputMediaAssets();
+    public LinkInfo getOutputAssetsLink() {
+        return getRelationLink("OutputMediaAssets");
     }
 
     /**
-     * Gets the task body.
+     * Gets the tasks link.
      * 
-     * @return the task body
+     * @return the tasks link
      */
-    public String getTaskBody() {
-        return getContent().getTaskBody();
+    public LinkInfo getTasksLink() {
+        return getRelationLink("Tasks");
     }
 }
