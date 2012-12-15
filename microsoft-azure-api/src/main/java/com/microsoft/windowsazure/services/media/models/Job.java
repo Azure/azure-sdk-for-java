@@ -62,8 +62,6 @@ public class Job {
     /**
      * Creates an operation to create a new job.
      * 
-     * @param serviceUri
-     *            the service uri
      * @return the creator
      */
     public static Creator create() {

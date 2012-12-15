@@ -21,7 +21,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -59,6 +61,7 @@ import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -66,6 +69,8 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
+import com.microsoft.windowsazure.services.media.models.TaskState;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
 
@@ -144,6 +149,11 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);
 
         // assert 
+        LinkInfo taskLinkInfo = jobInfo.getTasksLink();
+        List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
+        for (TaskInfo taskInfo : taskInfos) {
+            assertEquals(TaskState.Completed, taskInfo.getState());
+        }
         assertEquals(JobState.Finished, jobInfo.getState());
 
     }
@@ -157,15 +167,11 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
     private JobInfo createJob(String name, AssetInfo assetInfo, MediaProcessorInfo mediaProcessorInfo)
             throws ServiceException {
-        String configuration = "H.264 256k DSL CBR";
+        // String configuration = "H.264 256k DSL CBR";
         String taskBody = "<taskBody>"
-                + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset>JobOutputAsset(0)</outputAsset></taskBody>";
-        JobInfo jobInfo = service.create(Job
-                .create(service.getRestServiceUri())
-                .addInputMediaAsset(assetInfo.getId())
-                .addTaskCreator(
-                        Task.create().setMediaProcessorId(mediaProcessorInfo.getId()).setName(name)
-                                .setConfiguration(configuration).setTaskBody(taskBody)));
+                + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset assetCreationOptions=\"0\" assetName=\"Output\">JobOutputAsset(0)</outputAsset></taskBody>";
+        JobInfo jobInfo = service.create(Job.create().addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(Task.create(mediaProcessorInfo.getId(), taskBody).setName(name)));
         return jobInfo;
     }
 
@@ -188,8 +194,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return null;
     }
 
-    private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException {
-        URI contentKeyUri = createContentKeyUri(service.getRestServiceUri(), contentKeyInfo.getId());
+    private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException,
+            UnsupportedEncodingException {
+        URI contentKeyUri = createContentKeyUri(contentKeyInfo.getId());
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
     }
 
@@ -212,8 +219,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return assetFileInfo;
     }
 
-    private URI createContentKeyUri(URI rootUri, String contentKeyId) {
-        return URI.create(String.format("%s/ContentKeys('%s')", rootUri, contentKeyId));
+    private URI createContentKeyUri(String contentKeyId) throws UnsupportedEncodingException {
+        String escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
+        return URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
     }
 
     private byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
