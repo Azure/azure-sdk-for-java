@@ -100,6 +100,17 @@ public abstract class ODataEntity<T> {
     }
 
     /**
+     * Get the link to navigate an OData relationship
+     * 
+     * @param relationName
+     *            name of the OData relationship
+     * @return the link if found, null if not.
+     */
+    public LinkInfo getRelationLink(String relationName) {
+        return getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
+    }
+
+    /**
      * Return the links from this entry
      * 
      * @return List of the links.

@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientConfigSettings;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityRestProxy;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -100,11 +101,16 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.MediaContract#getRestServiceUri()
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityRestProxy#createProxyData()
      */
     @Override
-    public URI getRestServiceUri() {
-        return this.redirectFilter.getBaseURI();
+    protected EntityProxyData createProxyData() {
+        return new EntityProxyData() {
+            @Override
+            public URI getServiceUri() {
+                return redirectFilter.getBaseURI();
+            }
+        };
     }
 
     /* (non-Javadoc)

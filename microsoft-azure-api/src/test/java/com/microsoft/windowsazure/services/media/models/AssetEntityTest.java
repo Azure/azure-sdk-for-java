@@ -20,10 +20,17 @@ import static org.junit.Assert.*;
 import java.net.URLEncoder;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
+import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.Constants;
+import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
@@ -104,6 +111,16 @@ public class AssetEntityTest {
     }
 
     @Test
+    public void assetListCanTakeQueryParametersChained() {
+        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10).setSkip(2).set("filter", "something");
+
+        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
+        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
+        assertEquals("something", lister.getQueryParameters().getFirst("filter"));
+        assertEquals(3, lister.getQueryParameters().size());
+    }
+
+    @Test
     public void assetUpdateReturnsExpectedUri() throws Exception {
         EntityUpdateOperation updater = Asset.update(sampleAssetId);
         assertEquals(expectedUri, updater.getUri());
@@ -130,4 +147,51 @@ public class AssetEntityTest {
         assertEquals(expectedUri, deleter.getUri());
     }
 
+    private static final String expectedOutputAsset = "Job(someJobId)/OutputAssets";
+    private static final String expectedInputAsset = "Job(someJobId)/InputAssets";
+
+    @Test
+    public void listForLinkReturnsExpectedUri() throws Exception {
+        JobInfo fakeJob = createJob();
+
+        EntityListOperation<AssetInfo> lister = Asset.list(fakeJob.getInputAssetsLink());
+
+        assertEquals(lister.getUri(), expectedInputAsset);
+    }
+
+    private JobInfo createJob() {
+        EntryType fakeJobEntry = new EntryType();
+        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/OutputMediaAssets", expectedOutputAsset,
+                "application/atom+xml;type=feed", "OutputAssets");
+        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/InputMediaAssets", expectedInputAsset,
+                "application/atom+xml;type=feed", "InputAssets");
+
+        JobType payload = new JobType().setId("SomeId").setName("FakeJob");
+        addEntryContent(fakeJobEntry, payload);
+
+        return new JobInfo(fakeJobEntry, payload);
+    }
+
+    private void addEntryLink(EntryType entry, String rel, String href, String type, String title) {
+        LinkType link = new LinkType();
+        link.setRel(rel);
+        link.setHref(href);
+        link.setType(type);
+        link.setTitle(title);
+
+        JAXBElement<LinkType> linkElement = new JAXBElement<LinkType>(new QName("link", Constants.ATOM_NS),
+                LinkType.class, link);
+        entry.getEntryChildren().add(linkElement);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private ContentType addEntryContent(EntryType entry, Object content) {
+        ContentType contentWrapper = new ContentType();
+        contentWrapper.getContent().add(
+                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME, content.getClass(), content));
+
+        entry.getEntryChildren().add(
+                new JAXBElement<ContentType>(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, contentWrapper));
+        return contentWrapper;
+    }
 }

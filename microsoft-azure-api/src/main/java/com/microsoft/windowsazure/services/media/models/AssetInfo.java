@@ -101,4 +101,41 @@ public class AssetInfo extends ODataEntity<AssetType> {
     public AssetOption getOptions() {
         return AssetOption.fromCode(getContent().getOptions());
     }
+
+    /**
+     * Get a link to the asset's files
+     * 
+     * @return the link
+     */
+    public LinkInfo getAssetFilesLink() {
+        return getRelationLink("Files");
+    }
+
+    /**
+     * Get a link to the asset's content keys
+     * 
+     * @return the link
+     */
+    public LinkInfo getContentKeysLink() {
+        return getRelationLink("ContentKeys");
+    }
+
+    /**
+     * Get a link to the asset's locators
+     * 
+     * @return the link
+     */
+    public LinkInfo getLocatorsLink() {
+        return getRelationLink("Locators");
+    }
+
+    /**
+     * Get a link to the asset's locators
+     * 
+     * @return the link
+     */
+    public LinkInfo getParentAssetsLink() {
+        // TODO: NEEDS TESTS once we figure out how to create assets with parents
+        return getRelationLink("ParentAssets");
+    }
 }

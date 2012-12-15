@@ -118,4 +118,22 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
     public String getContentAccessToken() {
         return this.getContent().getContentAccessComponent();
     }
+
+    /**
+     * Return a link that gets this locator's access policy
+     * 
+     * @return the link
+     */
+    public LinkInfo getAccessPolicyLink() {
+        return getRelationLink("AccessPolicy");
+    }
+
+    /**
+     * Return a link that gets this locator's asset
+     * 
+     * @return the link
+     */
+    public LinkInfo getAssetLink() {
+        return getRelationLink("Asset");
+    }
 }

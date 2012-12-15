@@ -15,19 +15,36 @@
 
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
-
 /**
  * Generic implementation of Delete operation usable by most entities
  * 
  */
 public class DefaultDeleteOperation implements EntityDeleteOperation {
     private final EntityOperationBase.EntityUriBuilder uriBuilder;
+    private EntityProxyData proxyData;
 
     /**
      * 
      */
     public DefaultDeleteOperation(String entityUri, String entityId) {
         uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityUri, entityId);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+     */
+    @Override
+    public void setProxyData(EntityProxyData proxyData) {
+        this.proxyData = proxyData;
+    }
+
+    /**
+     * Get currently set proxy data
+     * 
+     * @return the proxyData
+     */
+    protected EntityProxyData getProxyData() {
+        return proxyData;
     }
 
     /* (non-Javadoc)

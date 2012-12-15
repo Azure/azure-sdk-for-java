@@ -25,9 +25,9 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
@@ -78,9 +78,6 @@ public class Locator {
         /** The content access token. */
         private String contentAccessComponent;
 
-        /** The expiration date time. */
-        private Date expirationDateTime;
-
         /** The locator type. */
         private final LocatorType locatorType;
 
@@ -116,8 +113,7 @@ public class Locator {
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setId(id).setAccessPolicyId(accessPolicyId).setAssetId(assetId)
-                    .setStartTime(startDateTime).setExpirationDateTime(expirationDateTime)
-                    .setType(locatorType.getCode()).setBaseUri(baseUri)
+                    .setStartTime(startDateTime).setType(locatorType.getCode()).setBaseUri(baseUri)
                     .setContentAccessComponent(contentAccessComponent).setPath(path);
         }
 
@@ -154,18 +150,6 @@ public class Locator {
          */
         public Creator setStartDateTime(Date startDateTime) {
             this.startDateTime = startDateTime;
-            return this;
-        }
-
-        /**
-         * Set the date and time at which the locator will expire.
-         * 
-         * @param expirationDateTime
-         *            Expiration date and time
-         * @return The creator instance (for function chaining)
-         */
-        public Creator setExpirationDateTime(Date expirationDateTime) {
-            this.expirationDateTime = expirationDateTime;
             return this;
         }
 
@@ -210,7 +194,7 @@ public class Locator {
      * 
      * @return the list operation
      */
-    public static EntityListOperation<LocatorInfo> list() {
+    public static DefaultListOperation<LocatorInfo> list() {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         });
     }
@@ -222,9 +206,21 @@ public class Locator {
      *            query parameters to send with the request
      * @return the list operation
      */
-    public static EntityListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         }, queryParameters);
+    }
+
+    /**
+     * Create an operation that will list all the locators at the given link.
+     * 
+     * @param link
+     *            Link to request locators from.
+     * @return The list operation.
+     */
+    public static DefaultListOperation<LocatorInfo> list(LinkInfo link) {
+        return new DefaultListOperation<LocatorInfo>(link.getHref(), new GenericType<ListResult<LocatorInfo>>() {
+        });
     }
 
     /**
@@ -265,6 +261,14 @@ public class Locator {
         @Override
         public Object getRequestContents() {
             return new LocatorRestType().setStartTime(startDateTime).setExpirationDateTime(expirationDateTime);
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+         */
+        @Override
+        public void setProxyData(EntityProxyData proxyData) {
+            // Deliberately empty
         }
 
         /**

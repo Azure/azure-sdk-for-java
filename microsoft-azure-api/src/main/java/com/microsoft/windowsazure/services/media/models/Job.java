@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.media.models;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -40,7 +39,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityB
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -62,14 +60,14 @@ public class Job {
     }
 
     /**
-     * Creates the.
+     * Creates an operation to create a new job.
      * 
      * @param serviceUri
      *            the service uri
      * @return the creator
      */
-    public static Creator create(URI serviceUri) {
-        return new Creator(serviceUri);
+    public static Creator create() {
+        return new Creator();
     }
 
     /**
@@ -77,9 +75,6 @@ public class Job {
      */
     public static class Creator extends EntityOperationSingleResultBase<JobInfo> implements
             EntityCreationOperation<JobInfo> {
-
-        /** The start time. */
-        private Date startTime;
 
         /** The name. */
         private String name;
@@ -89,9 +84,6 @@ public class Job {
 
         /** The input media assets. */
         private final List<String> inputMediaAssets;
-
-        /** The service uri. */
-        private URI serviceUri;
 
         /** The content type. */
         private MediaType contentType;
@@ -114,9 +106,9 @@ public class Job {
          * @throws ServiceException
          *             the service exception
          */
-        private void buildMimeMultipart() {
+        private void buildMimeMultipart(URI serviceUri) {
             mediaBatchOperations = null;
-            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(this);
+            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(serviceUri, this);
 
             try {
                 mediaBatchOperations = new MediaBatchOperations(serviceUri);
@@ -156,9 +148,8 @@ public class Job {
          * @param serviceUri
          *            the service uri
          */
-        public Creator(URI serviceUri) {
+        public Creator() {
             super(ENTITY_SET, JobInfo.class);
-            this.serviceUri = serviceUri;
             this.inputMediaAssets = new ArrayList<String>();
             this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
             this.fresh = true;
@@ -170,7 +161,7 @@ public class Job {
         @Override
         public Object getRequestContents() throws ServiceException {
             if (fresh) {
-                buildMimeMultipart();
+                buildMimeMultipart(getProxyData().getServiceUri());
             }
             return mimeMultipart;
         }
@@ -264,28 +255,6 @@ public class Job {
         }
 
         /**
-         * Gets the start time.
-         * 
-         * @return the start time
-         */
-        public Date getStartTime() {
-            return startTime;
-        }
-
-        /**
-         * Sets the start time.
-         * 
-         * @param startTime
-         *            the start time
-         * @return the creator
-         */
-        public Creator setStartTime(Date startTime) {
-            this.startTime = startTime;
-            this.fresh = true;
-            return this;
-        }
-
-        /**
          * Gets the input media assets.
          * 
          * @return the input media assets
@@ -316,35 +285,13 @@ public class Job {
             return this;
         }
 
-        /**
-         * Gets the service uri.
-         * 
-         * @return the service uri
-         */
-        public URI getServiceUri() {
-            return this.serviceUri;
-        }
-
-        /**
-         * Sets the service uri.
-         * 
-         * @param serviceUri
-         *            the service uri
-         * @return the creator
-         */
-        public Creator setServiceUri(URI serviceUri) {
-            this.serviceUri = serviceUri;
-            this.fresh = true;
-            return this;
-        }
-
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getContentType()
          */
         @Override
         public MediaType getContentType() {
             if (fresh) {
-                buildMimeMultipart();
+                buildMimeMultipart(getProxyData().getServiceUri());
             }
             return this.contentType;
         }
@@ -387,11 +334,10 @@ public class Job {
          *            the creator
          * @return the creates the batch operation
          */
-        public static CreateBatchOperation create(Creator creator) {
-            CreateBatchOperation createBatchOperation = new CreateBatchOperation(creator.getServiceUri());
+        public static CreateBatchOperation create(URI serviceUri, Creator creator) {
+            CreateBatchOperation createBatchOperation = new CreateBatchOperation(serviceUri);
 
             JobType jobType = new JobType();
-            jobType.setStartTime(creator.getStartTime());
             jobType.setName(creator.getName());
             jobType.setPriority(creator.getPriority());
 
@@ -452,7 +398,7 @@ public class Job {
      * 
      * @return The list operation
      */
-    public static EntityListOperation<JobInfo> list() {
+    public static DefaultListOperation<JobInfo> list() {
         return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
         });
     }
@@ -464,7 +410,7 @@ public class Job {
      *            query parameters to pass to the server.
      * @return the list operation.
      */
-    public static EntityListOperation<JobInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<JobInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
         }, queryParameters);
     }

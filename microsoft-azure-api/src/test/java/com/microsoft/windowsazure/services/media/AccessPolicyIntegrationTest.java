@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
@@ -31,7 +29,6 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private void verifyInfosEqual(String message, AccessPolicyInfo expected, AccessPolicyInfo actual) {
@@ -103,7 +100,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canGetSinglePolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(AccessPolicy.get(invalidId));
     }
 
@@ -153,10 +150,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
             expectedAccessPolicies.add(policy);
         }
 
-        MultivaluedMap<String, String> options = new MultivaluedMapImpl();
-        options.add("$top", "2");
-
-        List<AccessPolicyInfo> actualAccessPolicies = service.list(AccessPolicy.list(options));
+        List<AccessPolicyInfo> actualAccessPolicies = service.list(AccessPolicy.list().setTop(2));
 
         assertEquals(2, actualAccessPolicies.size());
     }
@@ -189,7 +183,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canDeleteAccessPolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(AccessPolicy.delete(invalidId));
     }
 

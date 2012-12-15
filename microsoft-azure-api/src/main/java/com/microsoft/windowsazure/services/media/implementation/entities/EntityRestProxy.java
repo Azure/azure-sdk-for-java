@@ -30,7 +30,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 /**
  * The Class EntityRestProxy.
  */
-public class EntityRestProxy implements EntityContract {
+public abstract class EntityRestProxy implements EntityContract {
 
     /** The channel. */
     private final Client channel;
@@ -69,6 +69,13 @@ public class EntityRestProxy implements EntityContract {
     }
 
     /**
+     * Get the proxy data to pass to operations.
+     * 
+     * @return The proxy data.
+     */
+    protected abstract EntityProxyData createProxyData();
+
+    /**
      * Gets the resource.
      * 
      * @param entityName
@@ -92,7 +99,8 @@ public class EntityRestProxy implements EntityContract {
      * @throws ServiceException
      */
     private Builder getResource(EntityOperation operation) throws ServiceException {
-        return getResource(operation.getUri()).type(operation.getContentType()).accept(operation.getAcceptType());
+        return getResource(operation.getUri()).type(operation.getContentType()).accept(
+                operation.getAcceptType());
     }
 
     /* (non-Javadoc)
@@ -101,7 +109,9 @@ public class EntityRestProxy implements EntityContract {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T create(EntityCreationOperation<T> creator) throws ServiceException {
-        Object rawResponse = getResource(creator).post(creator.getResponseClass(), creator.getRequestContents());
+        creator.setProxyData(createProxyData());
+        Object rawResponse = getResource(creator).post(creator.getResponseClass(),
+                creator.getRequestContents());
         Object processedResponse = creator.processResponse(rawResponse);
         return (T) processedResponse;
     }
@@ -111,6 +121,7 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public <T> T get(EntityGetOperation<T> getter) throws ServiceException {
+        getter.setProxyData(createProxyData());
         return getResource(getter).get(getter.getResponseClass());
     }
 
@@ -119,8 +130,10 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
-        return getResource(lister.getUri()).queryParams(lister.getQueryParameters()).type(lister.getContentType())
-                .accept(lister.getAcceptType()).get(lister.getResponseGenericType());
+        lister.setProxyData(createProxyData());
+        return getResource(lister.getUri()).queryParams(lister.getQueryParameters())
+                .type(lister.getContentType()).accept(lister.getAcceptType())
+                .get(lister.getResponseGenericType());
     }
 
     /* (non-Javadoc)
@@ -128,8 +141,9 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public void update(EntityUpdateOperation updater) throws ServiceException {
-        ClientResponse response = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(ClientResponse.class,
-                updater.getRequestContents());
+        updater.setProxyData(createProxyData());
+        ClientResponse response = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(
+                ClientResponse.class, updater.getRequestContents());
 
         PipelineHelpers.ThrowIfNotSuccess(response);
     }
@@ -139,6 +153,7 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
+        deleter.setProxyData(createProxyData());
         getResource(deleter.getUri()).delete();
     }
 
@@ -147,12 +162,13 @@ public class EntityRestProxy implements EntityContract {
      */
     @Override
     public Object action(EntityActionOperation entityActionOperation) throws ServiceException {
+        entityActionOperation.setProxyData(createProxyData());
+
         Builder webResource = getResource(entityActionOperation.getUri())
-                .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
-                .accept(MediaType.APPLICATION_XML_TYPE)
+                .queryParams(entityActionOperation.getQueryParameters())
+                .accept(entityActionOperation.getAcceptType()).accept(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
         ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
         return entityActionOperation.processResponse(clientResponse);
     }
-
 }

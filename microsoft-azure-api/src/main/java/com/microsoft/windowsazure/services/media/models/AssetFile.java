@@ -28,9 +28,9 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityA
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
@@ -195,21 +195,20 @@ public class AssetFile {
      * 
      * @return The list operation to pass to rest proxy.
      */
-    public static EntityListOperation<AssetFileInfo> list() {
+    public static DefaultListOperation<AssetFileInfo> list() {
         return new DefaultListOperation<AssetFileInfo>(ENTITY_SET, new GenericType<ListResult<AssetFileInfo>>() {
         });
     }
 
     /**
-     * Calls the service to list files for an asset
+     * Create an operation that will list all the AssetFiles at the given link.
      * 
-     * @param assetId
-     *            asset to list files for
-     * @return the list operation object
+     * @param link
+     *            Link to request AssetFiles from.
+     * @return The list operation.
      */
-    public static EntityListOperation<AssetFileInfo> list(String assetId) {
-        String assetUri = new EntityOperationBase.EntityIdUriBuilder("Assets", assetId).getUri() + "/Files";
-        return new DefaultListOperation<AssetFileInfo>(assetUri, new GenericType<ListResult<AssetFileInfo>>() {
+    public static DefaultListOperation<AssetFileInfo> list(LinkInfo link) {
+        return new DefaultListOperation<AssetFileInfo>(link.getHref(), new GenericType<ListResult<AssetFileInfo>>() {
         });
     }
 
@@ -238,6 +237,14 @@ public class AssetFile {
                     .setEncryptionKeyId(encryptionKeyId).setEncryptionScheme(encryptionScheme)
                     .setEncryptionVersion(encryptionVersion).setInitializationVector(initializationVector)
                     .setIsEncrypted(isEncrypted).setIsPrimary(isPrimary).setMimeType(mimeType);
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+         */
+        @Override
+        public void setProxyData(EntityProxyData proxyData) {
+            // Deliberately empty
         }
 
         /**
