@@ -159,15 +159,14 @@ public abstract class IntegrationTestBase {
         void verifyEquals(String message, Object expected, Object actual);
     }
 
-    protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes,
-            int expirationDeltaMinutes) throws ServiceException {
+    protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes)
+            throws ServiceException {
 
         Date now = new Date();
         Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
-        Date expire = new Date(now.getTime() + (expirationDeltaMinutes * 60 * 1000));
 
-        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS)
-                .setStartDateTime(start).setExpirationDateTime(expire));
+        return service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS).setStartDateTime(
+                start));
     }
 
     protected <T> void verifyListResultContains(List<T> expectedInfos, Collection<T> actualInfos,

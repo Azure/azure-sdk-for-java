@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
  */
 public abstract class EntityOperationBase implements EntityOperation {
     private final EntityUriBuilder uriBuilder;
+    private EntityProxyData proxyData;
 
     /**
      * 
@@ -43,6 +44,23 @@ public abstract class EntityOperationBase implements EntityOperation {
 
     protected EntityOperationBase(EntityUriBuilder uriBuilder) {
         this.uriBuilder = uriBuilder;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+     */
+    @Override
+    public void setProxyData(EntityProxyData proxyData) {
+        this.proxyData = proxyData;
+    }
+
+    /**
+     * Get the currently set proxy data
+     * 
+     * @return the proxy data
+     */
+    protected EntityProxyData getProxyData() {
+        return proxyData;
     }
 
     /* (non-Javadoc)

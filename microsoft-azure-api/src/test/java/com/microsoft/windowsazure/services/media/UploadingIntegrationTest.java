@@ -52,7 +52,7 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
         AccessPolicyInfo policy = service.create(AccessPolicy.create(testPolicyPrefix + "uploadWritePolicy", 10,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
 
-        LocatorInfo locator = createLocator(policy, asset, 5, 10);
+        LocatorInfo locator = createLocator(policy, asset, 5);
 
         blobWriter = service.createBlobWriter(locator);
 

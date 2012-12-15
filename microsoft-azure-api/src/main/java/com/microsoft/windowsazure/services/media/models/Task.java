@@ -22,7 +22,6 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -61,7 +60,7 @@ public class Task {
      * 
      * @return The list operation
      */
-    public static EntityListOperation<TaskInfo> list() {
+    public static DefaultListOperation<TaskInfo> list() {
         return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
         });
     }
@@ -73,9 +72,21 @@ public class Task {
      *            query parameters to pass to the server.
      * @return the list operation.
      */
-    public static EntityListOperation<TaskInfo> list(MultivaluedMap<String, String> queryParameters) {
+    public static DefaultListOperation<TaskInfo> list(MultivaluedMap<String, String> queryParameters) {
         return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
         }, queryParameters);
+    }
+
+    /**
+     * Create an operation that will list the tasks pointed to by the given link
+     * 
+     * @param link
+     *            link to tasks
+     * @return the list operation.
+     */
+    public static DefaultListOperation<TaskInfo> list(LinkInfo link) {
+        return new DefaultListOperation<TaskInfo>(link.getHref(), new GenericType<ListResult<TaskInfo>>() {
+        });
     }
 
     /**

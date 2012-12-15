@@ -116,11 +116,9 @@ class MediaServiceWrapper {
             throws ServiceException {
         List<ListResult<AssetInfo>> pages = new ArrayList<ListResult<AssetInfo>>();
         for (int skip = 0; true; skip += pageSize) {
-            EntityListOperation<AssetInfo> listOperation = Asset.list();
-            listOperation.getQueryParameters().add("$skip", skip + "");
-            listOperation.getQueryParameters().add("$top", pageSize + "");
-            listOperation.getQueryParameters().add("$filter", "startswith(Name,'" + rootName + "')");
-            listOperation.getQueryParameters().add("$orderby", "Name");
+            EntityListOperation<AssetInfo> listOperation = Asset.list().setTop(pageSize).setSkip(skip)
+                    .set("$filter", "startswith(Name,'" + rootName + "')").set("$orderby", "Name");
+
             ListResult<AssetInfo> listAssetResult = service.list(listOperation);
             pages.add(listAssetResult);
             if (listAssetResult.size() == 0) {
@@ -166,7 +164,7 @@ class MediaServiceWrapper {
         }
 
         service.action(AssetFile.createFileInfos(asset.getId()));
-        for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getId()))) {
+        for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getAssetFilesLink()))) {
 
             AssetFileInfo x = infoToUpload.get(assetFile.getName());
             System.out.println(x);
@@ -174,7 +172,7 @@ class MediaServiceWrapper {
                     .setContentFileSize(x.getContentFileSize()).setIsPrimary(x.getIsPrimary()));
         }
 
-        service.list(AssetFile.list(asset.getId()));
+        service.list(AssetFile.list(asset.getAssetFilesLink()));
 
         service.delete(Locator.delete(locator.getId()));
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
@@ -203,8 +201,7 @@ class MediaServiceWrapper {
     // Process
     public JobInfo createJob(String jobName, AssetInfo inputAsset, List<Task.CreateBatchOperation> tasks)
             throws ServiceException {
-        Creator jobCreator = Job.create(service.getRestServiceUri()).setName(jobName)
-                .addInputMediaAsset(inputAsset.getId()).setPriority(2);
+        Creator jobCreator = Job.create().setName(jobName).addInputMediaAsset(inputAsset.getId()).setPriority(2);
 
         for (Task.CreateBatchOperation task : tasks) {
             jobCreator.addTaskCreator(task);
@@ -324,7 +321,7 @@ class MediaServiceWrapper {
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
         LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
 
-        List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getId()));
+        List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
             if (isSmooth) {
                 // Smooth Streaming format ends with ".ism*"

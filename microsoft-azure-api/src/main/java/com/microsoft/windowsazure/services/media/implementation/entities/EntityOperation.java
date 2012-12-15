@@ -22,6 +22,13 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 public interface EntityOperation {
 
     /**
+     * Supplies the current proxy information to the action.
+     * 
+     * @param proxyData
+     */
+    void setProxyData(EntityProxyData proxyData);
+
+    /**
      * Get the URI the creation request should be sent to.
      * 
      * @return The uri
@@ -40,5 +47,4 @@ public interface EntityOperation {
      * Get the MIME type that we're expecting the server to send back.
      */
     public abstract MediaType getAcceptType();
-
 }

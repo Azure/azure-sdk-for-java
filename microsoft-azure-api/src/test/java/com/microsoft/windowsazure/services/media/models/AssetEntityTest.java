@@ -111,6 +111,16 @@ public class AssetEntityTest {
     }
 
     @Test
+    public void assetListCanTakeQueryParametersChained() {
+        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10).setSkip(2).set("filter", "something");
+
+        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
+        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
+        assertEquals("something", lister.getQueryParameters().getFirst("filter"));
+        assertEquals(3, lister.getQueryParameters().size());
+    }
+
+    @Test
     public void assetUpdateReturnsExpectedUri() throws Exception {
         EntityUpdateOperation updater = Asset.update(sampleAssetId);
         assertEquals(expectedUri, updater.getUri());

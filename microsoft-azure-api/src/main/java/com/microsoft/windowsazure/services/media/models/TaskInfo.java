@@ -142,8 +142,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the state
      */
-    public Integer getState() {
-        return getContent().getState();
+    public TaskState getState() {
+        return TaskState.fromCode(getContent().getState());
     }
 
     /**
@@ -160,8 +160,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the options
      */
-    public Integer getOptions() {
-        return getContent().getOptions();
+    public TaskOption getOptions() {
+        return TaskOption.fromCode(getContent().getOptions());
     }
 
     /**
@@ -198,5 +198,23 @@ public class TaskInfo extends ODataEntity<TaskType> {
      */
     public String getInitializationVector() {
         return getContent().getInitializationVector();
+    }
+
+    /**
+     * Gets link to the task's input assets
+     * 
+     * @return the link
+     */
+    public LinkInfo getInputAssetsLink() {
+        return getRelationLink("InputMediaAssets");
+    }
+
+    /**
+     * Gets link to the task's output assets
+     * 
+     * @return the link
+     */
+    public LinkInfo getOutputAssetsLink() {
+        return getRelationLink("OutputMediaAssets");
     }
 }
