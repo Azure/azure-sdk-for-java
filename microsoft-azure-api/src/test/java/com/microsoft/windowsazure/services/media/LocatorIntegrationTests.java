@@ -292,4 +292,37 @@ public class LocatorIntegrationTests extends IntegrationTestBase {
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(Locator.delete(invalidId));
     }
+
+    @Test
+    public void canGetLocatorBackFromAsset() throws Exception {
+        LocatorInfo locator = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        ListResult<LocatorInfo> locators = service.list(Locator.list(assetInfo.getLocatorsLink()));
+
+        assertEquals(1, locators.size());
+        assertEquals(locator.getId(), locators.get(0).getId());
+
+    }
+
+    @Test
+    public void canGetAssetFromLocator() throws Exception {
+        LocatorInfo locator = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        AssetInfo asset = service.get(Asset.get(locator.getAssetLink()));
+
+        assertEquals(assetInfo.getId(), asset.getId());
+    }
+
+    @Test
+    public void canGetAccessPolicyFromLocator() throws Exception {
+        LocatorInfo locator = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        AccessPolicyInfo accessPolicy = service.get(AccessPolicy.get(locator.getAccessPolicyLink()));
+
+        assertEquals(accessPolicyInfo.getId(), accessPolicy.getId());
+
+    }
 }

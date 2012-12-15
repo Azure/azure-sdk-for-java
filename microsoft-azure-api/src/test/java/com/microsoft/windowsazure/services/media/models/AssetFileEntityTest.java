@@ -75,14 +75,6 @@ public class AssetFileEntityTest {
     }
 
     @Test
-    public void listFileInfosForAnAssetHasCorrectUri() throws Exception {
-        String expectedUri = String.format("Assets(%s)/Files", encodedAssetId);
-        EntityListOperation<AssetFileInfo> lister = AssetFile.list(exampleAssetId);
-
-        assertEquals(expectedUri, lister.getUri());
-    }
-
-    @Test
     public void listAllFileInfosHasCorrectUri() throws Exception {
         String expectedUri = "Files";
         EntityListOperation<AssetFileInfo> lister = AssetFile.list();

@@ -212,6 +212,18 @@ public class Locator {
     }
 
     /**
+     * Create an operation that will list all the locators at the given link.
+     * 
+     * @param link
+     *            Link to request locators from.
+     * @return The list operation.
+     */
+    public static DefaultListOperation<LocatorInfo> list(LinkInfo link) {
+        return new DefaultListOperation<LocatorInfo>(link.getHref(), new GenericType<ListResult<LocatorInfo>>() {
+        });
+    }
+
+    /**
      * Create an operation to update the given locator.
      * 
      * @param locatorId

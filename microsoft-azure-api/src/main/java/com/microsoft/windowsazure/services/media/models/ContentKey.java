@@ -172,6 +172,18 @@ public class ContentKey {
     }
 
     /**
+     * Create an operation that will list all the content keys at the given link.
+     * 
+     * @param link
+     *            Link to request content keys from.
+     * @return The list operation.
+     */
+    public static DefaultListOperation<ContentKeyInfo> list(LinkInfo link) {
+        return new DefaultListOperation<ContentKeyInfo>(link.getHref(), new GenericType<ListResult<ContentKeyInfo>>() {
+        });
+    }
+
+    /**
      * Create an operation to delete the given content key.
      * 
      * @param ContentKeyId

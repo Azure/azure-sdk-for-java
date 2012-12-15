@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -275,7 +274,6 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         service.delete(Asset.delete(validButNonexistAssetId));
     }
 
-    @Ignore("due to issue 507")
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
         // Arrange
@@ -284,8 +282,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .setOptions(AssetOption.StorageEncrypted));
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
-        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId,
-                ContentKeyType.StorageEncryption, encryptedContentKey));
+        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey));
         String escapedContentKeyId;
         try {
             escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
@@ -300,16 +297,14 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Assert
 
-        // List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list(assetInfo.getId()));
-        // ContentKeyInfo contentKeyInfo = contentKeyInfos.get(0)
-        // assertEquals(contentKeyId, contentKeyInfo.getId());
-
+        List<ContentKeyInfo> contentKeys = service.list(ContentKey.list(assetInfo.getContentKeysLink()));
+        assertEquals(1, contentKeys.size());
+        assertEquals(contentKeyId, contentKeys.get(0).getId());
     }
 
     @Test
     public void linkAssetContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
         // Arrange
-        String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
         URI invalidContentKeyUri = new URI("ContentKeys('nb%3akid%3aUUID%3ainvalidContentKeyId')");
 
         // Act

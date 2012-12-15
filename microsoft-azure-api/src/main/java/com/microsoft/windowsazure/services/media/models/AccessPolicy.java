@@ -91,6 +91,17 @@ public class AccessPolicy {
     }
 
     /**
+     * Create an operation that will retrieve the access policy at the given link
+     * 
+     * @param link
+     *            the link
+     * @return the operation
+     */
+    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo link) {
+        return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
+    }
+
+    /**
      * Create an operation that will retrieve all access policies
      * 
      * @return the operation

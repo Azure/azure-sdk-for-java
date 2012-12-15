@@ -201,15 +201,14 @@ public class AssetFile {
     }
 
     /**
-     * Calls the service to list files for an asset
+     * Create an operation that will list all the AssetFiles at the given link.
      * 
-     * @param assetId
-     *            asset to list files for
-     * @return the list operation object
+     * @param link
+     *            Link to request AssetFiles from.
+     * @return The list operation.
      */
-    public static DefaultListOperation<AssetFileInfo> list(String assetId) {
-        String assetUri = new EntityOperationBase.EntityIdUriBuilder("Assets", assetId).getUri() + "/Files";
-        return new DefaultListOperation<AssetFileInfo>(assetUri, new GenericType<ListResult<AssetFileInfo>>() {
+    public static DefaultListOperation<AssetFileInfo> list(LinkInfo link) {
+        return new DefaultListOperation<AssetFileInfo>(link.getHref(), new GenericType<ListResult<AssetFileInfo>>() {
         });
     }
 
