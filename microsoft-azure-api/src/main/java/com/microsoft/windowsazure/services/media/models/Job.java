@@ -36,7 +36,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
@@ -74,7 +74,7 @@ public class Job {
      * The Class Creator.
      */
     public static class Creator extends EntityOperationSingleResultBase<JobInfo> implements
-            EntityCreationOperation<JobInfo> {
+            EntityCreateOperation<JobInfo> {
 
         /** The name. */
         private String name;
@@ -156,7 +156,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() throws ServiceException {
@@ -176,7 +176,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#processResponse(java.lang.Object)
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#processResponse(java.lang.Object)
          */
         @Override
         public Object processResponse(Object clientResponse) throws ServiceException {

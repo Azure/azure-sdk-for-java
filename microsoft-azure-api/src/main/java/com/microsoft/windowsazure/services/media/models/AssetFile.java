@@ -25,7 +25,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.Default
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
@@ -46,7 +46,7 @@ public class AssetFile {
     }
 
     public static class Creator extends EntityOperationSingleResultBase<AssetFileInfo> implements
-            EntityCreationOperation<AssetFileInfo> {
+            EntityCreateOperation<AssetFileInfo> {
         private final String parentAssetId;
         private final String name;
         private String contentChecksum;

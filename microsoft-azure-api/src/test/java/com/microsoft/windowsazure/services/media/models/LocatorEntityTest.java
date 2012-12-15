@@ -25,7 +25,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
@@ -48,7 +48,7 @@ public class LocatorEntityTest {
 
     @Test
     public void createLocatorHasCorrectUrl() throws Exception {
-        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+        EntityCreateOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
                 LocatorType.SAS);
 
         assertEquals("Locators", creator.getUri());
@@ -70,7 +70,7 @@ public class LocatorEntityTest {
     public void createLocatorCanSetStartTime() throws Exception {
         Date now = new Date();
 
-        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+        EntityCreateOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
                 LocatorType.SAS).setStartDateTime(now);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
@@ -86,7 +86,7 @@ public class LocatorEntityTest {
 
         String expectedPath = "testExpectedPath";
 
-        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+        EntityCreateOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
                 LocatorType.SAS).setPath(expectedPath);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
@@ -100,7 +100,7 @@ public class LocatorEntityTest {
 
         String expectedBaseUri = "testExpectedBaseUri";
 
-        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+        EntityCreateOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
                 LocatorType.SAS).setBaseUri(expectedBaseUri);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
@@ -114,7 +114,7 @@ public class LocatorEntityTest {
 
         String expectedContentAccessComponent = "testExpectedContentAccessComponent";
 
-        EntityCreationOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
+        EntityCreateOperation<LocatorInfo> creator = Locator.create(exampleAccessPolicyId, exampleAssetId,
                 LocatorType.SAS).setContentAccessComponent(expectedContentAccessComponent);
 
         LocatorRestType locatorType = (LocatorRestType) creator.getRequestContents();
