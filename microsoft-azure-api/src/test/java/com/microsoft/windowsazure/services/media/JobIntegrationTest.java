@@ -325,11 +325,20 @@ public class JobIntegrationTest extends IntegrationTestBase {
         JobInfo actualJob = service.create(Job.create().setName(name).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
 
+        JobInfo currentJobInfo = actualJob;
+        while (currentJobInfo.getState().getCode() < 3) {
+            currentJobInfo = service.get(Job.get(actualJob.getId()));
+            Thread.sleep(3000);
+        }
+
         ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
         TaskInfo taskInfo = tasks.get(0);
         List<ErrorDetail> errorDetails = taskInfo.getErrorDetails();
 
         assertEquals(1, errorDetails.size());
+        ErrorDetail errorDetail = errorDetails.get(0);
+        assertNotNull(errorDetail.getCode());
+        assertNotNull(errorDetail.getMessage());
     }
 
     @Test

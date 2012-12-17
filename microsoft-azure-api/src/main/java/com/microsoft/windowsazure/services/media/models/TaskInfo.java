@@ -78,8 +78,10 @@ public class TaskInfo extends ODataEntity<TaskType> {
         List<ErrorDetailType> errorDetailTypes = getContent().getErrorDetails();
         if (errorDetailTypes != null) {
             for (ErrorDetailType errorDetailType : getContent().getErrorDetails()) {
-                ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
-                result.add(errorDetail);
+                if ((errorDetailType.getCode() != null) || (errorDetailType.getMessage() != null)) {
+                    ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
+                    result.add(errorDetail);
+                }
             }
             return result;
         }

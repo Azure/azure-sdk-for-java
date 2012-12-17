@@ -15,19 +15,44 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Class ErrorDetail.
+ */
 public class ErrorDetail {
+
+    /** The code. */
     private final String code;
+
+    /** The message. */
     private final String message;
 
+    /**
+     * Instantiates a new error detail.
+     * 
+     * @param code
+     *            the code
+     * @param message
+     *            the message
+     */
     public ErrorDetail(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
+    /**
+     * Gets the code.
+     * 
+     * @return the code
+     */
     public String getCode() {
         return this.code;
     }
 
+    /**
+     * Gets the message.
+     * 
+     * @return the message
+     */
     public String getMessage() {
         return this.message;
     }

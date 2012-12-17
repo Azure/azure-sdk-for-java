@@ -55,6 +55,7 @@ import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.LinkInfo;
+import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
@@ -148,6 +149,8 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
         for (TaskInfo taskInfo : taskInfos) {
             assertEquals(TaskState.Completed, taskInfo.getState());
+            ListResult<AssetInfo> outputs = service.list(Asset.list(taskInfo.getOutputAssetsLink()));
+            assertEquals(1, outputs.size());
         }
         assertEquals(JobState.Finished, jobInfo.getState());
 
