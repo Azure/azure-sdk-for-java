@@ -130,10 +130,12 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
         // gets the public key for storage encryption. 
 
-        String protectionKey = getProtectionKey();
+        String protectionKeyId = getProtectionKeyId();
+        String protectionKey = getProtectionKey(protectionKeyId);
 
         // creates the content key with encrypted 
-        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKey);
+        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId,
+                protectionKey);
 
         // link the content key with the asset. 
         linkContentKey(assetInfo, contentKeyInfo);
@@ -156,6 +158,12 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         }
         assertEquals(JobState.Finished, jobInfo.getState());
 
+    }
+
+    private String getProtectionKeyId() throws ServiceException {
+        String protectionKeyId = (String) service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        return protectionKeyId;
     }
 
     private JobInfo decodeAsset(String name, AssetInfo assetInfo) throws ServiceException, InterruptedException {
@@ -200,9 +208,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
     }
 
-    private String getProtectionKey() throws ServiceException {
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+    private String getProtectionKey(String protectionKeyId) throws ServiceException {
         String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
         return protectionKey;
     }
@@ -247,17 +253,18 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return cipherText;
     }
 
-    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKey)
-            throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException,
-            NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ServiceException,
-            CertificateException {
+    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId,
+            String protectionKey) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException,
+            NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+            ServiceException, CertificateException {
         UUID contentKeyIdUuid = UUID.randomUUID();
         String contentKeyId = createContentKeyId(contentKeyIdUuid);
         byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKey, aesKey);
         String encryptedContentKeyString = Base64.encode(encryptedContentKey);
         String checksum = EncryptionHelper.calculateChecksum(contentKeyIdUuid, aesKey);
-        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(contentKeyId, contentKeyType,
-                encryptedContentKeyString).setChecksum(checksum));
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(contentKeyId, contentKeyType, encryptedContentKeyString).setChecksum(checksum)
+                .setProtectionKeyId(protectionKeyId));
         return contentKeyInfo;
     }
 

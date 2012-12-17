@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityG
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate content key entities.
  * 
@@ -78,6 +79,9 @@ public class ContentKey {
         /** The checksum. */
         private String checksum;
 
+        /** The protection key id. */
+        private String protectionKeyId;
+
         /**
          * Instantiates a new creator.
          * 
@@ -89,7 +93,6 @@ public class ContentKey {
          *            the encrypted content key
          */
         public Creator(String id, ContentKeyType contentKeyType, String encryptedContentKey) {
-
             super(ENTITY_SET, ContentKeyInfo.class);
 
             this.id = id;
@@ -110,6 +113,7 @@ public class ContentKey {
             contentKeyRestType.setEncryptedContentKey(encryptedContentKey);
             contentKeyRestType.setName(name);
             contentKeyRestType.setChecksum(checksum);
+            contentKeyRestType.setProtectionKeyId(protectionKeyId);
             return contentKeyRestType;
         }
 
@@ -134,6 +138,18 @@ public class ContentKey {
          */
         public Creator setChecksum(String checksum) {
             this.checksum = checksum;
+            return this;
+        }
+
+        /**
+         * Sets the protection key id.
+         * 
+         * @param protectionKeyId
+         *            the protection key id
+         * @return the creator
+         */
+        public Creator setProtectionKeyId(String protectionKeyId) {
+            this.protectionKeyId = protectionKeyId;
             return this;
         }
     }
