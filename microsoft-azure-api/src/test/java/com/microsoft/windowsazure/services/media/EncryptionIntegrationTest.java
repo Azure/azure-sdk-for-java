@@ -99,63 +99,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return protectionKey;
     }
 
-    @Test
-    public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
-        // Arrange
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
-        byte[] aesKey = EncryptionHelper.createRandomVector(256);
-        byte[] initializationVector = EncryptionHelper.createRandomVector(128);
-        int durationInMinutes = 10;
-
-        // Act
-
-        // creates asset
-        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
-                .setOptions(AssetOption.StorageEncrypted));
-
-        // creates writable access policy
-        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
-                durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
-
-        // creates locator for the input media asset
-        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
-                LocatorType.SAS));
-
-        // gets the public key for storage encryption. 
-
-        String protectionKeyId = getProtectionKeyId();
-        String protectionKey = getProtectionKey(protectionKeyId);
-
-        // creates the content key with encrypted 
-        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId,
-                protectionKey);
-
-        // link the content key with the asset. 
-        linkContentKey(assetInfo, contentKeyInfo);
-
-        // encrypt the file.
-        byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);
-
-        // upload the encrypted file to the server.  
-        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
-                "uploadAesProtectedAssetSuccess", encryptedContent);
-
-        // submit and execute the decoding job. 
-        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);
-
-        // assert 
-        LinkInfo taskLinkInfo = jobInfo.getTasksLink();
-        List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
-        for (TaskInfo taskInfo : taskInfos) {
-            assertEquals(TaskState.Completed, taskInfo.getState());
-            ListResult<AssetInfo> outputs = service.list(Asset.list(taskInfo.getOutputAssetsLink()));
-            assertEquals(1, outputs.size());
-        }
-        assertEquals(JobState.Finished, jobInfo.getState());
-
-    }
-
     private String getProtectionKeyId() throws ServiceException {
         String protectionKeyId = (String) service.action(ProtectionKey
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
@@ -239,6 +182,63 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
                 .create(contentKeyId, contentKeyType, encryptedContentKeyString).setChecksum(checksum)
                 .setProtectionKeyId(protectionKeyId));
         return contentKeyInfo;
+    }
+
+    @Test
+    public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
+        // Arrange
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
+        byte[] aesKey = EncryptionHelper.createRandomVector(256);
+        byte[] initializationVector = EncryptionHelper.createRandomVector(128);
+        int durationInMinutes = 10;
+
+        // Act
+
+        // creates asset
+        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
+                .setOptions(AssetOption.StorageEncrypted));
+
+        // creates writable access policy
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
+                durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+
+        // creates locator for the input media asset
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
+                LocatorType.SAS));
+
+        // gets the public key for storage encryption. 
+
+        String protectionKeyId = getProtectionKeyId();
+        String protectionKey = getProtectionKey(protectionKeyId);
+
+        // creates the content key with encrypted 
+        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId,
+                protectionKey);
+
+        // link the content key with the asset. 
+        linkContentKey(assetInfo, contentKeyInfo);
+
+        // encrypt the file.
+        byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);
+
+        // upload the encrypted file to the server.  
+        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
+                "uploadAesProtectedAssetSuccess", encryptedContent);
+
+        // submit and execute the decoding job. 
+        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);
+
+        // assert 
+        LinkInfo taskLinkInfo = jobInfo.getTasksLink();
+        List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
+        for (TaskInfo taskInfo : taskInfos) {
+            assertEquals(TaskState.Completed, taskInfo.getState());
+            ListResult<AssetInfo> outputs = service.list(Asset.list(taskInfo.getOutputAssetsLink()));
+            assertEquals(1, outputs.size());
+        }
+        assertEquals(JobState.Finished, jobInfo.getState());
+
     }
 
 }

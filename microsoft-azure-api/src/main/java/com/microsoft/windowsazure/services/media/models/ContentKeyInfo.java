@@ -21,7 +21,6 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ContentKeyInfo.
  */
