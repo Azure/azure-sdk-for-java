@@ -15,10 +15,13 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -70,8 +73,17 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the error details
      */
-    public String getErrorDetails() {
-        return getContent().getErrorDetails();
+    public List<ErrorDetail> getErrorDetails() {
+        List<ErrorDetail> result = new ArrayList<ErrorDetail>();
+        List<ErrorDetailType> errorDetailTypes = getContent().getErrorDetails();
+        if (errorDetailTypes != null) {
+            for (ErrorDetailType errorDetailType : getContent().getErrorDetails()) {
+                ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
+                result.add(errorDetail);
+            }
+            return result;
+        }
+        return null;
     }
 
     /**

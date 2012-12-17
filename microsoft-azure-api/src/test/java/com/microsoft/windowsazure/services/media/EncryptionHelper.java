@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -159,6 +160,30 @@ public class EncryptionHelper {
         }
         String checksum = Base64.encode(checksumByteArray);
         return checksum;
+    }
+
+    public static byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
+            throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IOException {
+        // preparation
+        SecretKeySpec key = new SecretKeySpec(aesKey, "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
+        Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding", "BC");
+
+        // encryption
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
+        int maxKeyLen = Cipher.getMaxAllowedKeyLength("AES");
+        // teArrayInputStream byteArrayInputStream = new ByteArrayInputStream(input);
+        CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int ch;
+        while ((ch = cipherInputStream.read()) >= 0) {
+            byteArrayOutputStream.write(ch);
+        }
+
+        byte[] cipherText = byteArrayOutputStream.toByteArray();
+        return cipherText;
     }
 
 }

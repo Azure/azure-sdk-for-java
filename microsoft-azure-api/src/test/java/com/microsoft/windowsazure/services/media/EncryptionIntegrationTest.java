@@ -18,13 +18,10 @@ package com.microsoft.windowsazure.services.media;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -36,12 +33,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.Test;
 
@@ -110,7 +103,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         // Arrange
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
-        byte[] aesKey = EncryptionHelper.createRandomVector(128);
+        byte[] aesKey = EncryptionHelper.createRandomVector(256);
         byte[] initializationVector = EncryptionHelper.createRandomVector(128);
         int durationInMinutes = 10;
 
@@ -141,7 +134,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         linkContentKey(assetInfo, contentKeyInfo);
 
         // encrypt the file.
-        byte[] encryptedContent = EncryptFile(smallWMVInputStream, aesKey, initializationVector);
+        byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);
 
         // upload the encrypted file to the server.  
         AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
@@ -228,29 +221,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     private URI createContentKeyUri(String contentKeyId) throws UnsupportedEncodingException {
         String escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
         return URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
-    }
-
-    private byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
-            throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException, IOException {
-        // preparation
-        SecretKeySpec key = new SecretKeySpec(aesKey, "AES");
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
-        Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding", "BC");
-
-        // encryption
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
-        // teArrayInputStream byteArrayInputStream = new ByteArrayInputStream(input);
-        CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int ch;
-        while ((ch = cipherInputStream.read()) >= 0) {
-            byteArrayOutputStream.write(ch);
-        }
-
-        byte[] cipherText = byteArrayOutputStream.toByteArray();
-        return cipherText;
     }
 
     private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId,

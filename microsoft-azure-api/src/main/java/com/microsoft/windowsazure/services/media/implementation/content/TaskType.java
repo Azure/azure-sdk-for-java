@@ -40,7 +40,7 @@ public class TaskType implements MediaServiceDTO {
     protected Date endTime;
 
     @XmlElement(name = "ErrorDetails", namespace = Constants.ODATA_DATA_NS)
-    protected String errorDetails;
+    protected List<ErrorDetailType> errorDetails;
 
     @XmlElement(name = "MediaProcessorId", namespace = Constants.ODATA_DATA_NS)
     protected String mediaProcessorId;
@@ -112,11 +112,11 @@ public class TaskType implements MediaServiceDTO {
         this.endTime = endTime;
     }
 
-    public String getErrorDetails() {
+    public List<ErrorDetailType> getErrorDetails() {
         return errorDetails;
     }
 
-    public void setErrorDetails(String errorDetails) {
+    public void setErrorDetails(List<ErrorDetailType> errorDetails) {
         this.errorDetails = errorDetails;
     }
 
