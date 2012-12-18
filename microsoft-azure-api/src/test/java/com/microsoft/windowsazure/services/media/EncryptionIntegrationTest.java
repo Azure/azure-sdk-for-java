@@ -22,19 +22,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Security;
-import java.security.cert.CertificateException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.junit.Test;
 
@@ -68,35 +59,11 @@ import com.microsoft.windowsazure.services.media.models.TaskState;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
 
-    private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
-    private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
-    private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
-    private final String expressionEncoder = "Windows Azure Media Encoder";
-    private final String wameV1Preset = "H.264 256k DSL CBR";
-    private final String wameV2Preset = "H264 Broadband SD 4x3";
     private final String strorageDecryptionProcessor = "Storage Decryption";
 
     private String createContentKeyId(UUID uuid) {
         String randomContentKey = String.format("nb:kid:UUID:%s", uuid);
         return randomContentKey;
-    }
-
-    private String getProtectionKey(ContentKeyType contentKeyType) {
-        String protectionKeyId = null;
-        try {
-            protectionKeyId = (String) service.action(ProtectionKey.getProtectionKeyId(contentKeyType));
-        }
-        catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
-        String protectionKey;
-        try {
-            protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
-        }
-        catch (ServiceException e) {
-            throw new RuntimeException(e);
-        }
-        return protectionKey;
     }
 
     private String getProtectionKeyId() throws ServiceException {
@@ -170,9 +137,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId,
-            String protectionKey) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException,
-            NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-            ServiceException, CertificateException {
+            String protectionKey) throws Exception {
         UUID contentKeyIdUuid = UUID.randomUUID();
         String contentKeyId = createContentKeyId(contentKeyIdUuid);
         byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKey, aesKey);

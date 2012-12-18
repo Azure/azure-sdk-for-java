@@ -28,7 +28,6 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -46,15 +45,13 @@ public class EncryptionHelper {
 
     public static byte[] createRandomVector(int numberOfBits) {
         int numberOfBytes = numberOfBits / 8;
-        byte[] aesKey = new byte[numberOfBytes];
+        byte[] randomVector = new byte[numberOfBytes];
         Random random = new Random();
-        random.nextBytes(aesKey);
-        return aesKey;
+        random.nextBytes(randomVector);
+        return randomVector;
     }
 
-    public static byte[] EncryptSymmetricKey(String protectionKey, byte[] inputData) throws InvalidKeySpecException,
-            NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, NoSuchPaddingException,
-            IllegalBlockSizeException, BadPaddingException, CertificateException {
+    public static byte[] EncryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
 
         X509Certificate x509Certificate = createX509CertificateFromString(protectionKey);
         return EncryptSymmetricKey(x509Certificate.getPublicKey(), inputData);
