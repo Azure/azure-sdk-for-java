@@ -18,10 +18,8 @@ package com.microsoft.windowsazure.services.media.models;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -236,14 +234,4 @@ public class Task {
         }
     }
 
-    /**
-     * Create an operation to delete the given task.
-     * 
-     * @param taskId
-     *            id of task to delete
-     * @return the delete operation
-     */
-    public static EntityDeleteOperation delete(String taskId) {
-        return new DefaultDeleteOperation(ENTITY_SET, taskId);
-    }
 }
