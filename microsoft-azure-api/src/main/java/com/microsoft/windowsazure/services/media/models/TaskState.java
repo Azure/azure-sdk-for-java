@@ -18,38 +18,46 @@ package com.microsoft.windowsazure.services.media.models;
 import java.security.InvalidParameterException;
 
 /**
- * Enum defining the state of various tasks
- * 
+ * Enum defining the state of various tasks.
  */
 public enum TaskState {
-    /**
-     * No state
-     */
+
+    /** No state. */
     None(0),
 
-    /**
-     * Active
-     */
+    /** Active. */
     Active(1),
 
-    /**
-     * Running
-     */
+    /** Running. */
     Running(2),
 
-    /**
-     * Completed
-     */
-    Completed(3);
+    /** Completed. */
+    Completed(3),
 
+    /** Error. */
+    Error(4),
+
+    /** The Canceled. */
+    Canceled(5),
+
+    /** The Canceling. */
+    Canceling(6);
+
+    /** The code. */
     private int code;
 
+    /**
+     * Instantiates a new task state.
+     * 
+     * @param code
+     *            the code
+     */
     private TaskState(int code) {
         this.code = code;
     }
 
     /**
-     * Get integer code corresponding to enum value
+     * Get integer code corresponding to enum value.
      * 
      * @return the code
      */
@@ -58,7 +66,7 @@ public enum TaskState {
     }
 
     /**
-     * Convert code into enum value
+     * Convert code into enum value.
      * 
      * @param code
      *            the code
@@ -74,6 +82,12 @@ public enum TaskState {
                 return Running;
             case 3:
                 return Completed;
+            case 4:
+                return Error;
+            case 5:
+                return Canceled;
+            case 6:
+                return Canceling;
             default:
                 throw new InvalidParameterException("code");
         }

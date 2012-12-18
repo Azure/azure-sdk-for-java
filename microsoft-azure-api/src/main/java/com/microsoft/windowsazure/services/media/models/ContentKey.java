@@ -78,6 +78,12 @@ public class ContentKey {
         /** The checksum. */
         private String checksum;
 
+        /** The protection key id. */
+        private String protectionKeyId;
+
+        /** The protection key type. */
+        private ProtectionKeyType protectionKeyType;
+
         /**
          * Instantiates a new creator.
          * 
@@ -89,7 +95,6 @@ public class ContentKey {
          *            the encrypted content key
          */
         public Creator(String id, ContentKeyType contentKeyType, String encryptedContentKey) {
-
             super(ENTITY_SET, ContentKeyInfo.class);
 
             this.id = id;
@@ -107,9 +112,13 @@ public class ContentKey {
             if (contentKeyType != null) {
                 contentKeyRestType.setContentKeyType(contentKeyType.getCode());
             }
+            if (protectionKeyType != null) {
+                contentKeyRestType.setProtectionKeyType(protectionKeyType.getCode());
+            }
             contentKeyRestType.setEncryptedContentKey(encryptedContentKey);
             contentKeyRestType.setName(name);
             contentKeyRestType.setChecksum(checksum);
+            contentKeyRestType.setProtectionKeyId(protectionKeyId);
             return contentKeyRestType;
         }
 
@@ -134,6 +143,30 @@ public class ContentKey {
          */
         public Creator setChecksum(String checksum) {
             this.checksum = checksum;
+            return this;
+        }
+
+        /**
+         * Sets the protection key id.
+         * 
+         * @param protectionKeyId
+         *            the protection key id
+         * @return the creator
+         */
+        public Creator setProtectionKeyId(String protectionKeyId) {
+            this.protectionKeyId = protectionKeyId;
+            return this;
+        }
+
+        /**
+         * Sets the protection key type.
+         * 
+         * @param protectionKeyType
+         *            the protection key type
+         * @return the creator
+         */
+        public Creator setProtectionKeyType(ProtectionKeyType protectionKeyType) {
+            this.protectionKeyType = protectionKeyType;
             return this;
         }
     }
