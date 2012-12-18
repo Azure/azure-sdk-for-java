@@ -92,159 +92,179 @@ public class TaskType implements MediaServiceDTO {
         return id;
     }
 
-    public void setId(String id) {
+    public TaskType setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getConfiguration() {
         return configuration;
     }
 
-    public void setConfiguration(String configuration) {
+    public TaskType setConfiguration(String configuration) {
         this.configuration = configuration;
+        return this;
     }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public TaskType setEndTime(Date endTime) {
         this.endTime = endTime;
+        return this;
     }
 
     public String getErrorDetails() {
         return errorDetails;
     }
 
-    public void setErrorDetails(String errorDetails) {
+    public TaskType setErrorDetails(String errorDetails) {
         this.errorDetails = errorDetails;
+        return this;
     }
 
     public String getMediaProcessorId() {
         return mediaProcessorId;
     }
 
-    public void setMediaProcessorId(String mediaProcessorId) {
+    public TaskType setMediaProcessorId(String mediaProcessorId) {
         this.mediaProcessorId = mediaProcessorId;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public TaskType setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getPerfMessage() {
         return perfMessage;
     }
 
-    public void setPerfMessage(String perfMessage) {
+    public TaskType setPerfMessage(String perfMessage) {
         this.perfMessage = perfMessage;
+        return this;
     }
 
     public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public TaskType setPriority(Integer priority) {
         this.priority = priority;
+        return this;
     }
 
     public Double getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public TaskType setProgress(Double progress) {
         this.progress = progress;
+        return this;
     }
 
     public Double getRunningDuration() {
         return runningDuration;
     }
 
-    public void setRunningDuration(Double runningDuration) {
+    public TaskType setRunningDuration(Double runningDuration) {
         this.runningDuration = runningDuration;
+        return this;
     }
 
     public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public TaskType setStartTime(Date startTime) {
         this.startTime = startTime;
+        return this;
     }
 
     public Integer getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public TaskType setState(Integer state) {
         this.state = state;
+        return this;
     }
 
     public String getTaskBody() {
         return taskBody;
     }
 
-    public void setTaskBody(String taskBody) {
+    public TaskType setTaskBody(String taskBody) {
         this.taskBody = taskBody;
+        return this;
     }
 
     public Integer getOptions() {
         return options;
     }
 
-    public void setOptions(Integer options) {
+    public TaskType setOptions(Integer options) {
         this.options = options;
+        return this;
     }
 
     public String getEncryptionKeyId() {
         return encryptionKeyId;
     }
 
-    public void setEncryptionKeyId(String encryptionKeyId) {
+    public TaskType setEncryptionKeyId(String encryptionKeyId) {
         this.encryptionKeyId = encryptionKeyId;
+        return this;
     }
 
     public String getEncryptionScheme() {
         return encryptionScheme;
     }
 
-    public void setEncryptionScheme(String encryptionScheme) {
+    public TaskType setEncryptionScheme(String encryptionScheme) {
         this.encryptionScheme = encryptionScheme;
+        return this;
     }
 
     public String getEncryptionVersion() {
         return encryptionVersion;
     }
 
-    public void setEncryptionVersion(String encryptionVersion) {
+    public TaskType setEncryptionVersion(String encryptionVersion) {
         this.encryptionVersion = encryptionVersion;
+        return this;
     }
 
     public String getInitializationVector() {
         return initializationVector;
     }
 
-    public void setInitializationVector(String initializationVector) {
+    public TaskType setInitializationVector(String initializationVector) {
         this.initializationVector = initializationVector;
+        return this;
     }
 
     public List<String> getOutputMediaAssets() {
         return outputMediaAssets;
     }
 
-    public void setOutputMediaAssets(List<String> outputMediaAssets) {
+    public TaskType setOutputMediaAssets(List<String> outputMediaAssets) {
         this.outputMediaAssets = outputMediaAssets;
+        return this;
     }
 
     public List<String> getInputMediaAssets() {
         return inputMediaAssets;
     }
 
-    public void setInputMediaAssets(List<String> inputMediaAssets) {
+    public TaskType setInputMediaAssets(List<String> inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
+        return this;
     }
 }
