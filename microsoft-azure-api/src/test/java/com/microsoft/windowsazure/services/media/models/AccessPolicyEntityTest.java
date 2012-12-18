@@ -25,7 +25,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -49,7 +49,7 @@ public class AccessPolicyEntityTest {
         EnumSet<AccessPolicyPermission> permissions = EnumSet.of(AccessPolicyPermission.READ,
                 AccessPolicyPermission.LIST);
 
-        EntityCreationOperation<AccessPolicyInfo> creator = AccessPolicy.create(name, duration, permissions);
+        EntityCreateOperation<AccessPolicyInfo> creator = AccessPolicy.create(name, duration, permissions);
 
         AccessPolicyType payload = (AccessPolicyType) creator.getRequestContents();
 

@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.ContentK
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
@@ -61,7 +61,7 @@ public class ContentKey {
      * The Class Creator.
      */
     public static class Creator extends EntityOperationSingleResultBase<ContentKeyInfo> implements
-            EntityCreationOperation<ContentKeyInfo> {
+            EntityCreateOperation<ContentKeyInfo> {
 
         /** The id. */
         private final String id;
@@ -103,7 +103,7 @@ public class ContentKey {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() {
