@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization
@@ -39,8 +40,9 @@ public class TaskType implements MediaServiceDTO {
     @XmlElement(name = "EndTime", namespace = Constants.ODATA_DATA_NS)
     protected Date endTime;
 
-    @XmlElement(name = "ErrorDetails", namespace = Constants.ODATA_DATA_NS)
-    protected String errorDetails;
+    @XmlElementWrapper(name = "ErrorDetails", namespace = Constants.ODATA_DATA_NS)
+    @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
+    protected List<ErrorDetailType> errorDetails;
 
     @XmlElement(name = "MediaProcessorId", namespace = Constants.ODATA_DATA_NS)
     protected String mediaProcessorId;
@@ -115,11 +117,11 @@ public class TaskType implements MediaServiceDTO {
         return this;
     }
 
-    public String getErrorDetails() {
+    public List<ErrorDetailType> getErrorDetails() {
         return errorDetails;
     }
 
-    public TaskType setErrorDetails(String errorDetails) {
+    public TaskType setErrorDetails(List<ErrorDetailType> errorDetails) {
         this.errorDetails = errorDetails;
         return this;
     }

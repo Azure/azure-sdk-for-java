@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.AccessPo
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreationOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
@@ -51,13 +51,13 @@ public class AccessPolicy {
      *            permissions allowed by this access policy
      * @return The operation
      */
-    public static EntityCreationOperation<AccessPolicyInfo> create(String name, double durationInMinutes,
+    public static EntityCreateOperation<AccessPolicyInfo> create(String name, double durationInMinutes,
             EnumSet<AccessPolicyPermission> permissions) {
         return new Creator(name, durationInMinutes, permissions);
     }
 
     private static class Creator extends EntityOperationSingleResultBase<AccessPolicyInfo> implements
-            EntityCreationOperation<AccessPolicyInfo> {
+            EntityCreateOperation<AccessPolicyInfo> {
         private final String policyName;
         private final double durationInMinutes;
         private final EnumSet<AccessPolicyPermission> permissions;
