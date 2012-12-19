@@ -21,15 +21,10 @@ import java.net.URLEncoder;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
-import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
-import com.microsoft.windowsazure.services.media.implementation.content.Constants;
-import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
@@ -44,6 +39,19 @@ public class TaskEntityTest {
     static final String sampleTaskId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
     private final String expectedUri = String.format("Tasks('%s')", URLEncoder.encode(sampleTaskId, "UTF-8"));
 
+    private TaskType getTaskType(EntryType entryType) {
+        for (Object child : entryType.getEntryChildren()) {
+            if (child instanceof JAXBElement) {
+                @SuppressWarnings("rawtypes")
+                JAXBElement element = (JAXBElement) child;
+                if (element.getDeclaredType() == TaskType.class) {
+                    return (TaskType) element.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
     public TaskEntityTest() throws Exception {
     }
 
@@ -51,34 +59,26 @@ public class TaskEntityTest {
     public void TaskCreateReturnsDefaultCreatePayload() {
         String expectedMediaProcessorId = "expectedMediaProcessorId";
         String expectedTaskBody = "expectedTaskBody";
-        TaskType payload = Task.create(expectedMediaProcessorId, expectedTaskBody);
 
-        assertNotNull(payload);
-        assertNull(payload.getId());
-        assertNull(payload.getState());
-        assertNull(payload.getCreated());
-        assertNull(payload.getLastModified());
-        assertNull(payload.getAlternateId());
-        assertNull(payload.getName());
-        assertNull(payload.getOptions());
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedMediaProcessorId, taskType.getMediaProcessorId());
+        assertEquals(expectedTaskBody, taskType.getTaskBody());
     }
 
     @Test
     public void TaskCreateCanSetTaskName() {
-        String name = "TaskCreateCanSetTaskName";
+        String expectedName = "TaskCreateCanSetTaskName";
 
-        Task.Creator creator = Task.create().setName("TaskCreateCanSetTaskName");
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
 
-        TaskType payload = (TaskType) creator.getRequestContents();
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody).setName(expectedName)
+                .getEntryType());
 
-        assertNotNull(payload);
-        assertNull(payload.getId());
-        assertNull(payload.getState());
-        assertNull(payload.getCreated());
-        assertNull(payload.getLastModified());
-        assertNull(payload.getAlternateId());
-        assertEquals(name, payload.getName());
-        assertNull(payload.getOptions());
+        assertNotNull(taskType);
+        assertEquals(expectedName, taskType.getName());
     }
 
     @Test
@@ -161,39 +161,4 @@ public class TaskEntityTest {
         assertEquals(lister.getUri(), expectedInputTask);
     }
 
-    private JobInfo createJob() {
-        EntryType fakeJobEntry = new EntryType();
-        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/OutputMediaTasks", expectedOutputTask,
-                "application/atom+xml;type=feed", "OutputTasks");
-        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/InputMediaTasks", expectedInputTask,
-                "application/atom+xml;type=feed", "InputTasks");
-
-        JobType payload = new JobType().setId("SomeId").setName("FakeJob");
-        addEntryContent(fakeJobEntry, payload);
-
-        return new JobInfo(fakeJobEntry, payload);
-    }
-
-    private void addEntryLink(EntryType entry, String rel, String href, String type, String title) {
-        LinkType link = new LinkType();
-        link.setRel(rel);
-        link.setHref(href);
-        link.setType(type);
-        link.setTitle(title);
-
-        JAXBElement<LinkType> linkElement = new JAXBElement<LinkType>(new QName("link", Constants.ATOM_NS),
-                LinkType.class, link);
-        entry.getEntryChildren().add(linkElement);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private ContentType addEntryContent(EntryType entry, Object content) {
-        ContentType contentWrapper = new ContentType();
-        contentWrapper.getContent().add(
-                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME, content.getClass(), content));
-
-        entry.getEntryChildren().add(
-                new JAXBElement<ContentType>(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, contentWrapper));
-        return contentWrapper;
-    }
 }
