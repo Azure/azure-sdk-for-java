@@ -49,7 +49,9 @@ public class TaskEntityTest {
 
     @Test
     public void TaskCreateReturnsDefaultCreatePayload() {
-        TaskType payload = (TaskType) Task.create().getRequestContents();
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
+        TaskType payload = Task.create(expectedMediaProcessorId, expectedTaskBody);
 
         assertNotNull(payload);
         assertNull(payload.getId());

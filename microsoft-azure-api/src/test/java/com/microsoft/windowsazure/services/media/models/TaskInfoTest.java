@@ -18,9 +18,11 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 public class TaskInfoTest {
@@ -70,27 +72,19 @@ public class TaskInfoTest {
     @Test
     public void testGetSetErrorDetails() throws Exception {
         // Arrange
-        List<ErrorDetail> errorDetails = new ArrayList<ErrorDetail>();
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setLastModified(expectedLastModified));
+        List<ErrorDetail> expectedErrorDetails = new ArrayList<ErrorDetail>();
+        List<ErrorDetailType> expectedErrorDetailsType = new ArrayList<ErrorDetailType>();
+        for (ErrorDetailType errorDetailType : expectedErrorDetailsType) {
+            ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
+            expectedErrorDetails.add(errorDetail);
+        }
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setErrorDetails(expectedErrorDetailsType));
 
         // Act
-        Date actualLastModified = TaskInfo.getLastModified();
+        List<ErrorDetail> actualErrorDetails = taskInfo.getErrorDetails();
 
         // Assert
-        assertEquals(expectedLastModified, actualLastModified);
-    }
-
-    @Test
-    public void testGetSetHistoricalEvents() {
-        // Arrange
-        String expectedAlternateId = "testAlternateId";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setAlternateId(expectedAlternateId));
-
-        // Act
-        String actualAlternateId = TaskInfo.getAlternateId();
-
-        // Assert
-        assertEquals(expectedAlternateId, actualAlternateId);
+        assertEquals(expectedErrorDetails, actualErrorDetails);
     }
 
     @Test
