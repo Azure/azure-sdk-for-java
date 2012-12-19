@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Test;
@@ -28,10 +29,10 @@ public class TaskInfoTest {
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setId(expectedId));
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setId(expectedId));
 
         // Act 
-        String actualId = TaskInfo.getId();
+        String actualId = taskInfo.getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -42,34 +43,34 @@ public class TaskInfoTest {
     public void testGetSetConfiguration() {
         // Arrange
         String expectedConfiguration = "expectedConfiguration";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setState(expectedState.getCode()));
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setConfiguration(expectedConfiguration));
 
         // Act
-        TaskState actualState = TaskInfo.getState();
+        String actualConfiguration = taskInfo.getConfiguration();
 
         // Assert
-        assertEquals(expectedState, actualState);
+        assertEquals(expectedConfiguration, actualConfiguration);
     }
 
     @Test
     public void testGetSetEndTime() throws Exception {
         // Arrange
-        Date expectedCreated = new Date();
+        Date expectedEndTime = new Date();
 
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setCreated(expectedCreated));
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEndTime(expectedEndTime));
 
         // Act 
-        Date actualCreated = TaskInfo.getCreated();
+        Date actualEndTime = taskInfo.getEndTime();
 
         // Assert
-        assertEquals(expectedCreated, actualCreated);
+        assertEquals(expectedEndTime, actualEndTime);
 
     }
 
     @Test
     public void testGetSetErrorDetails() throws Exception {
         // Arrange
-        Date expectedLastModified = new Date();
+        List<ErrorDetail> errorDetails = new ArrayList<ErrorDetail>();
         TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setLastModified(expectedLastModified));
 
         // Act
@@ -121,7 +122,6 @@ public class TaskInfoTest {
 
     public void testGetSetPerfMessage() {
         // Arrange
-
         String expectedPerfMessage = "testGetSetPerfMessage";
         TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setPerfMessage(expectedPerfMessage));
 
@@ -133,54 +133,135 @@ public class TaskInfoTest {
     }
 
     public void testGetSetPriority() {
+        // Arrange
+        int expectedPriority = 3;
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setPriority(expectedPriority));
 
+        // Act
+        int actualPriority = TaskInfo.getPriority();
+
+        // Assert
+        assertEquals(expectedPriority, actualPriority);
     }
 
     public void testGetSetProgress() {
+        // Arrange
+        double expectedProgress = 3;
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setProgress(expectedProgress));
 
+        // Act
+        double actualProgress = TaskInfo.getProgress();
+
+        // Assert
+        assertEquals(expectedProgress, actualProgress, 0.00001);
     }
 
     public void testGetSetRunningDuration() {
+        // Arrange
+        double expectedRunningDuration = 3;
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setRunningDuration(expectedRunningDuration));
 
+        // Act
+        double actualRunningDuration = TaskInfo.getRunningDuration();
+
+        // Assert
+        assertEquals(expectedRunningDuration, actualRunningDuration, 0.00001);
     }
 
     public void testGetSetStartTime() {
+        // Arrange
+        Date expectedStartTime = new Date();
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setStartTime(expectedStartTime));
 
+        // Act
+        Date actualStartTime = TaskInfo.getStartTime();
+
+        // Assert
+        assertEquals(expectedStartTime, actualStartTime);
     }
 
     public void testGetSetState() {
+        // Arrange
+        TaskState expectedState = TaskState.Completed;
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setState(expectedState.getCode()));
 
+        // Act
+        TaskState actualState = TaskInfo.getState();
+
+        // Assert
+        assertEquals(expectedState, actualState);
     }
 
     public void testGetSetTaskBody() {
+        // Arrange
+        String expectedTaskBody = "getSetTaskBody";
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setTaskBody(expectedTaskBody));
 
+        // Act
+        String actualTaskBody = TaskInfo.getTaskBody();
+
+        // Assert
+        assertEquals(expectedTaskBody, actualTaskBody);
     }
 
     public void testGetSetOptions() {
+        // Arrange
+        TaskOption expectedTaskOption = TaskOption.ProtectedConfiguration;
+        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setOptions(expectedTaskOption.getCode()));
 
+        // Act
+        TaskOption actualTaskOption = TaskInfo.getOptions();
+
+        // Assert
+        assertEquals(expectedTaskOption, actualTaskOption);
     }
 
     public void testGetSetEncryptionKeyId() {
+        // Arrange
+        String expectedEncryptionKeyId = "getSetEncryptionKeyId";
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionKeyId(expectedEncryptionKeyId));
 
+        // Act
+        String actualEncryptionKeyId = taskInfo.getEncryptionKeyId();
+
+        // Assert
+        assertEquals(expectedEncryptionKeyId, actualEncryptionKeyId);
     }
 
     public void testGetSetEncryptionScheme() {
+        // Arrange
+        String expectedEncryptionScheme = "getSetEncryptionScheme";
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionScheme(expectedEncryptionScheme));
 
+        // Act
+        String actualEncryptionScheme = taskInfo.getEncryptionScheme();
+
+        // Assert
+        assertEquals(expectedEncryptionScheme, actualEncryptionScheme);
     }
 
     public void testGetSetEncryptionVersion() {
+        // Arrange
+        String expectedEncryptionVersion = "1.5";
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionVersion(expectedEncryptionVersion));
 
+        // Act
+        String actualEncryptionVersion = taskInfo.getEncryptionVersion();
+
+        // Assert
+        assertEquals(expectedEncryptionVersion, actualEncryptionVersion);
     }
 
     public void testGetSetInitializationVector() {
+        // Arrange
+        String expectedInitializationVector = "testInitializationVector";
+        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionVersion(expectedInitializationVector));
 
+        // Act
+        String actualInitializationVector = taskInfo.getEncryptionVersion();
+
+        // Assert
+        assertEquals(expectedInitializationVector, actualInitializationVector);
     }
 
-    public void testGetSetOutputMediaAssets() {
-
-    }
-
-    public void testGetSetInputMediaAssets() {
-
-    }
 }
