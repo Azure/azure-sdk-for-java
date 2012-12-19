@@ -17,30 +17,21 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.AccessPolicy;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
-import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
@@ -48,7 +39,6 @@ import com.microsoft.windowsazure.services.media.models.TaskInfo;
 public class JobIntegrationTest extends IntegrationTestBase {
 
     private static AssetInfo assetInfo;
-    private static final byte[] testBlobData = new byte[] { 4, 8, 15, 16, 23, 42 };
 
     private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
@@ -79,15 +69,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
         // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/531
     }
 
-    private void assertEqualsNullEmpty(String message, String expected, String actual) {
-        if ((expected == null || expected.length() == 0) && (actual == null || actual.length() == 0)) {
-            // both nullOrEmpty, so match.
-        }
-        else {
-            assertEquals(message, expected, actual);
-        }
-    }
-
     private JobInfo createJob(String name) throws ServiceException {
         return service.create(Job.create().setName(name).setPriority(3).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
@@ -104,23 +85,11 @@ public class JobIntegrationTest extends IntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         IntegrationTestBase.setup();
-
-        String name = UUID.randomUUID().toString();
-        String testBlobName = "test" + name + ".bin";
-        assetInfo = service.create(Asset.create().setName(testAssetPrefix + name));
-
-        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix + name, 10,
-                EnumSet.of(AccessPolicyPermission.WRITE)));
-        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5);
-        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
-        InputStream blobContent = new ByteArrayInputStream(testBlobData);
-        blobWriter.createBlockBlob(testBlobName, blobContent);
-
-        service.action(AssetFile.createFileInfos(assetInfo.getId()));
+        assetInfo = setupAssetWithFile();
     }
 
     @Test
-    public void createJobSuccess() throws Exception {
+    public void createJobSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "createJobSuccess";
         int priority = 3;
@@ -142,7 +111,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createJobTwoTasksSuccess() throws Exception {
+    public void createJobTwoTasksSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "createJobSuccess";
         int priority = 3;
@@ -167,7 +136,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getJobSuccess() throws Exception {
+    public void getJobSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "getJobSuccess";
         int priority = 3;
@@ -231,7 +200,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void cancelJobSuccess() throws Exception {
+    public void cancelJobSuccess() throws ServiceException {
         // Arrange
         JobInfo jobInfo = createJob(testJobPrefix + "cancelJobSuccess");
 
@@ -257,12 +226,13 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteJobSuccess() throws ServiceException {
+    public void deleteJobSuccess() throws ServiceException, InterruptedException {
         // Arrange
         JobInfo jobInfo = createJob(testJobPrefix + "deleteJobSuccess");
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         while (cancellingJobInfo.getState() == JobState.Canceling) {
+            Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         }
 
