@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
@@ -38,8 +39,16 @@ public class TaskEntityTest {
             if (child instanceof JAXBElement) {
                 @SuppressWarnings("rawtypes")
                 JAXBElement element = (JAXBElement) child;
-                if (element.getDeclaredType() == TaskType.class) {
-                    return (TaskType) element.getValue();
+                if (element.getDeclaredType() == ContentType.class) {
+                    ContentType contentType = (ContentType) element.getValue();
+                    for (Object grandChild : contentType.getContent()) {
+                        if (grandChild instanceof JAXBElement) {
+                            JAXBElement contentElement = (JAXBElement) grandChild;
+                            TaskType taskType = (TaskType) contentElement.getValue();
+                            return taskType;
+                        }
+                    }
+                    return null;
                 }
             }
         }
@@ -128,7 +137,7 @@ public class TaskEntityTest {
                 .setEncryptionKeyId(expectedEncryptionKeyId).getEntryType());
 
         assertNotNull(taskType);
-        assertEquals(expectedEncryptionKeyId, taskType.getTaskBody());
+        assertEquals(expectedEncryptionKeyId, taskType.getEncryptionKeyId());
     }
 
     @Test
@@ -156,7 +165,7 @@ public class TaskEntityTest {
                 .setEncryptionVersion(expectedEncryptionVersion).getEntryType());
 
         assertNotNull(taskType);
-        assertEquals(expectedEncryptionVersion, taskType.getTaskBody());
+        assertEquals(expectedEncryptionVersion, taskType.getEncryptionVersion());
     }
 
     @Test
@@ -170,6 +179,6 @@ public class TaskEntityTest {
                 .setEncryptionKeyId(expectedInitializationVector).getEntryType());
 
         assertNotNull(taskType);
-        assertEquals(expectedInitializationVector, taskType.getTaskBody());
+        assertEquals(expectedInitializationVector, taskType.getInitializationVector());
     }
 }
