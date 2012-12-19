@@ -19,18 +19,12 @@ import static org.junit.Assert.*;
 
 import java.net.URLEncoder;
 
-import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBElement;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for the methods and factories of the Task entity.
@@ -56,7 +50,7 @@ public class TaskEntityTest {
     }
 
     @Test
-    public void TaskCreateReturnsDefaultCreatePayload() {
+    public void taskCreateReturnsDefaultCreatePayload() {
         String expectedMediaProcessorId = "expectedMediaProcessorId";
         String expectedTaskBody = "expectedTaskBody";
 
@@ -68,7 +62,7 @@ public class TaskEntityTest {
     }
 
     @Test
-    public void TaskCreateCanSetTaskName() {
+    public void taskCreateCanSetTaskName() {
         String expectedName = "TaskCreateCanSetTaskName";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -82,83 +76,100 @@ public class TaskEntityTest {
     }
 
     @Test
-    public void TaskGetReturnsExpectedUri() throws Exception {
-        String expectedUri = String.format("Tasks('%s')", URLEncoder.encode(sampleTaskId, "UTF-8"));
+    public void taskCreateCanSetConfiguration() {
+        String expectedConfiguration = "TaskCreateCanSetTaskCofniguration";
 
-        EntityGetOperation<TaskInfo> getter = Task.get(sampleTaskId);
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
 
-        assertEquals(expectedUri, getter.getUri());
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setConfiguration(expectedConfiguration).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedConfiguration, taskType.getConfiguration());
     }
 
     @Test
-    public void TaskListReturnsExpectedUri() {
-        EntityListOperation<TaskInfo> lister = Task.list();
+    public void taskCreateCanSetPriority() {
+        Integer expectedPriority = 3;
 
-        assertEquals("Tasks", lister.getUri());
-        assertNotNull(lister.getQueryParameters());
-        assertEquals(0, lister.getQueryParameters().size());
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
+
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setPriority(expectedPriority).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedPriority, taskType.getPriority());
     }
 
     @Test
-    public void TaskListCanTakeQueryParameters() {
-        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("$top", "10");
-        queryParams.add("$skip", "2");
+    public void taskCreateCanSetTaskBody() {
+        String expectedTaskBodyResult = "expectedTaskBodyResult";
 
-        EntityListOperation<TaskInfo> lister = Task.list(queryParams);
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
 
-        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
-        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
-        assertEquals(2, lister.getQueryParameters().size());
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setTaskBody(expectedTaskBodyResult).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedTaskBodyResult, taskType.getTaskBody());
     }
 
     @Test
-    public void TaskListCanTakeQueryParametersChained() {
-        EntityListOperation<TaskInfo> lister = Task.list().setTop(10).setSkip(2).set("filter", "something");
+    public void taskCreateCanSetEncryptionKeyId() {
+        String expectedEncryptionKeyId = "expectedEncryptionKeyId";
 
-        assertEquals("10", lister.getQueryParameters().getFirst("$top"));
-        assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
-        assertEquals("something", lister.getQueryParameters().getFirst("filter"));
-        assertEquals(3, lister.getQueryParameters().size());
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
+
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setEncryptionKeyId(expectedEncryptionKeyId).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedEncryptionKeyId, taskType.getTaskBody());
     }
 
     @Test
-    public void TaskUpdateReturnsExpectedUri() throws Exception {
-        EntityUpdateOperation updater = Task.update(sampleTaskId);
-        assertEquals(expectedUri, updater.getUri());
+    public void taskCreateCanSetEncryptionScheme() {
+        String expectedEncryptionScheme = "expectedEncryptionScheme";
+
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
+
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setEncryptionScheme(expectedEncryptionScheme).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedEncryptionScheme, taskType.getEncryptionScheme());
     }
 
     @Test
-    public void TaskUpdateCanSetNameAndAltId() throws Exception {
+    public void taskCreateCanSetEncryptionVersion() {
+        String expectedEncryptionVersion = "expectedEncryptionVersion";
 
-        String expectedName = "newTaskName";
-        String expectedAltId = "newAltId";
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
 
-        EntityUpdateOperation updater = Task.update(sampleTaskId).setName(expectedName).setAlternateId(expectedAltId);
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setEncryptionVersion(expectedEncryptionVersion).getEntryType());
 
-        TaskType payload = (TaskType) updater.getRequestContents();
-
-        assertEquals(expectedName, payload.getName());
-        assertEquals(expectedAltId, payload.getAlternateId());
+        assertNotNull(taskType);
+        assertEquals(expectedEncryptionVersion, taskType.getTaskBody());
     }
 
     @Test
-    public void TaskDeleteReturnsExpectedUri() throws Exception {
-        EntityDeleteOperation deleter = Task.delete(sampleTaskId);
+    public void taskCreateCanSetInitializationVector() {
+        String expectedInitializationVector = "expectedEncryptionKeyId";
 
-        assertEquals(expectedUri, deleter.getUri());
+        String expectedMediaProcessorId = "expectedMediaProcessorId";
+        String expectedTaskBody = "expectedTaskBody";
+
+        TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
+                .setEncryptionKeyId(expectedInitializationVector).getEntryType());
+
+        assertNotNull(taskType);
+        assertEquals(expectedInitializationVector, taskType.getTaskBody());
     }
-
-    private static final String expectedOutputTask = "Job(someJobId)/OutputTasks";
-    private static final String expectedInputTask = "Job(someJobId)/InputTasks";
-
-    @Test
-    public void listForLinkReturnsExpectedUri() throws Exception {
-        JobInfo fakeJob = createJob();
-
-        EntityListOperation<TaskInfo> lister = Task.list(fakeJob.getInputTasksLink());
-
-        assertEquals(lister.getUri(), expectedInputTask);
-    }
-
 }

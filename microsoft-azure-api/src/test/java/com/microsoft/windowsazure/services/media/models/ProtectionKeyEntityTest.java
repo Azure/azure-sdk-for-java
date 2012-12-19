@@ -40,10 +40,11 @@ public class ProtectionKeyEntityTest {
 
     @Test
     public void ProtectionKeyReturnsPayloadWithTheRightProtectionKeyId() {
-        String expectedProtectionKey = "expectedProtectionKey";
-        String actualProtectionKey = ProtectionKey.getProtectionKey(expectedProtectionKey).getQueryParameters()
+        String expectedProtectionKeyId = "expectedProtectionKey";
+        String actualProtectionKeyId = ProtectionKey.getProtectionKey(expectedProtectionKeyId).getQueryParameters()
                 .getFirst("ProtectionKeyId");
+        expectedProtectionKeyId = String.format("'%s'", expectedProtectionKeyId);
 
-        assertEquals(expectedProtectionKey, actualProtectionKey);
+        assertEquals(expectedProtectionKeyId, actualProtectionKeyId);
     }
 }
