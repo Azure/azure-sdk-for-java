@@ -17,20 +17,16 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URI;
 
-import javax.mail.BodyPart;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.implementation.ODataAtomUnmarshaller;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -38,26 +34,13 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class JobEntityTest {
 
-    private JobInfo getJobInfo(MimeMultipart payload) throws MessagingException, IOException, JAXBException,
-            ServiceException {
-        for (int i = 0; i < payload.getCount(); i++) {
-            BodyPart bodyPart = payload.getBodyPart(i);
-            JobInfo jobInfo = parseBodyPart(bodyPart);
-            if (jobInfo != null) {
-                return jobInfo;
+    private EntityProxyData createProxyData() {
+        return new EntityProxyData() {
+            @Override
+            public URI getServiceUri() {
+                return URI.create("http://contoso.com");
             }
-        }
-
-        return null;
-    }
-
-    private JobInfo parseBodyPart(BodyPart bodyPart) throws IOException, MessagingException, JAXBException,
-            ServiceException {
-        JobInfo jobInfo = null;
-        ODataAtomUnmarshaller oDataAtomUnmarshaller = new ODataAtomUnmarshaller();
-        InputStream inputStream = bodyPart.getInputStream();
-        jobInfo = oDataAtomUnmarshaller.unmarshalEntry(inputStream, JobInfo.class);
-        return jobInfo;
+        };
     }
 
     public JobEntityTest() throws Exception {
@@ -65,21 +48,10 @@ public class JobEntityTest {
 
     @Test
     public void JobCreateReturnsDefaultCreatePayload() throws ServiceException {
-        MimeMultipart payload = (MimeMultipart) Job.create().getRequestContents();
+        Job.Creator jobCreator = Job.create();
+        jobCreator.setProxyData(createProxyData());
+        MimeMultipart payload = (MimeMultipart) jobCreator.getRequestContents();
         assertNotNull(payload);
-    }
-
-    @Test
-    public void JobCreateCanSetJobName() throws ServiceException, MessagingException, IOException, JAXBException {
-        String expectedName = "JobCreateCanSetJobName";
-
-        Job.Creator creator = Job.create().setName(expectedName);
-
-        MimeMultipart payload = (MimeMultipart) creator.getRequestContents();
-
-        JobInfo jobInfo = getJobInfo(payload);
-
-        assertEquals(expectedName, jobInfo.getName());
     }
 
     @Test

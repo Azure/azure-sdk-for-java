@@ -176,7 +176,7 @@ public class TaskEntityTest {
         String expectedTaskBody = "expectedTaskBody";
 
         TaskType taskType = getTaskType(Task.create(expectedMediaProcessorId, expectedTaskBody)
-                .setEncryptionKeyId(expectedInitializationVector).getEntryType());
+                .setInitializationVector(expectedInitializationVector).getEntryType());
 
         assertNotNull(taskType);
         assertEquals(expectedInitializationVector, taskType.getInitializationVector());

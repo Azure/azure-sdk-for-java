@@ -114,6 +114,7 @@ public class TaskInfoTest {
         assertEquals(expectedOptions, actualOptions);
     }
 
+    @Test
     public void testGetSetPerfMessage() {
         // Arrange
         String expectedPerfMessage = "testGetSetPerfMessage";
@@ -126,6 +127,7 @@ public class TaskInfoTest {
         assertEquals(expectedPerfMessage, actualPerfMessage);
     }
 
+    @Test
     public void testGetSetPriority() {
         // Arrange
         int expectedPriority = 3;
@@ -138,6 +140,7 @@ public class TaskInfoTest {
         assertEquals(expectedPriority, actualPriority);
     }
 
+    @Test
     public void testGetSetProgress() {
         // Arrange
         double expectedProgress = 3;
@@ -150,6 +153,7 @@ public class TaskInfoTest {
         assertEquals(expectedProgress, actualProgress, 0.00001);
     }
 
+    @Test
     public void testGetSetRunningDuration() {
         // Arrange
         double expectedRunningDuration = 3;
@@ -162,6 +166,7 @@ public class TaskInfoTest {
         assertEquals(expectedRunningDuration, actualRunningDuration, 0.00001);
     }
 
+    @Test
     public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
@@ -174,6 +179,7 @@ public class TaskInfoTest {
         assertEquals(expectedStartTime, actualStartTime);
     }
 
+    @Test
     public void testGetSetState() {
         // Arrange
         TaskState expectedState = TaskState.Completed;
@@ -186,6 +192,7 @@ public class TaskInfoTest {
         assertEquals(expectedState, actualState);
     }
 
+    @Test
     public void testGetSetTaskBody() {
         // Arrange
         String expectedTaskBody = "getSetTaskBody";
@@ -198,6 +205,7 @@ public class TaskInfoTest {
         assertEquals(expectedTaskBody, actualTaskBody);
     }
 
+    @Test
     public void testGetSetOptions() {
         // Arrange
         TaskOption expectedTaskOption = TaskOption.ProtectedConfiguration;
@@ -210,6 +218,7 @@ public class TaskInfoTest {
         assertEquals(expectedTaskOption, actualTaskOption);
     }
 
+    @Test
     public void testGetSetEncryptionKeyId() {
         // Arrange
         String expectedEncryptionKeyId = "getSetEncryptionKeyId";
@@ -222,6 +231,7 @@ public class TaskInfoTest {
         assertEquals(expectedEncryptionKeyId, actualEncryptionKeyId);
     }
 
+    @Test
     public void testGetSetEncryptionScheme() {
         // Arrange
         String expectedEncryptionScheme = "getSetEncryptionScheme";
@@ -234,6 +244,7 @@ public class TaskInfoTest {
         assertEquals(expectedEncryptionScheme, actualEncryptionScheme);
     }
 
+    @Test
     public void testGetSetEncryptionVersion() {
         // Arrange
         String expectedEncryptionVersion = "1.5";
@@ -246,6 +257,7 @@ public class TaskInfoTest {
         assertEquals(expectedEncryptionVersion, actualEncryptionVersion);
     }
 
+    @Test
     public void testGetSetInitializationVector() {
         // Arrange
         String expectedInitializationVector = "testInitializationVector";
