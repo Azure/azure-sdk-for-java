@@ -143,8 +143,6 @@ public class Job {
         /**
          * Instantiates a new creator.
          * 
-         * @param serviceUri
-         *            the service uri
          */
         public Creator() {
             super(ENTITY_SET, JobInfo.class);
