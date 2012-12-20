@@ -35,8 +35,6 @@ public interface WritableBlobContainerContract extends FilterableService<Writabl
     /**
      * Creates a block blob from a content stream.
      * 
-     * @param container
-     *            A {@link String} containing the name of the container to create the blob in.
      * @param blob
      *            A {@link String} containing the name of the blob to create. A blob name can contain any combination of
      *            characters, but reserved URL characters must be properly escaped. A blob name must be at least one
