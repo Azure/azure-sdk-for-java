@@ -23,6 +23,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -147,14 +148,16 @@ class MediaServiceValidation {
         //        assertEquals("outputAssets.size()", createTasks.size(), outputAssets.size());
     }
 
-    public void validateOutputAssets(List<AssetInfo> outputAssets) throws ServiceException {
-        // TODO: Uncomment when fixed:
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
+    public void validateOutputAssets(List<AssetInfo> outputAssets, Enumeration<String> enumeration) {
+        assertNotNull("outputAssets", outputAssets);
+        for (AssetInfo asset : outputAssets) {
 
-        //        assertNotNull("outputAssets", outputAssets);
-        //        for (AssetInfo asset : outputAssets) {
-        //            this.validateAsset(asset, null, null);
-        //        }
+            assertNotNull("asset", asset);
+            assertNotNull("asset.getId", asset.getId());
+            assertFalse("asset.getId != ''", "".equals(asset.getId()));
+            assertEquals("asset.state", AssetState.Initialized, asset.getState());
+            assertEquals("asset.getOptions", AssetOption.None, asset.getOptions());
+        }
     }
 
     // This method is needed because there can be a delay before a new read locator
