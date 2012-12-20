@@ -231,9 +231,11 @@ public class JobIntegrationTest extends IntegrationTestBase {
         JobInfo jobInfo = createJob(testJobPrefix + "deleteJobSuccess");
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
-        while (cancellingJobInfo.getState() == JobState.Canceling) {
+        int retryCounter = 0;
+        while (cancellingJobInfo.getState() == JobState.Canceling && retryCounter < 10) {
             Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
+            retryCounter++;
         }
 
         // Act 
@@ -296,9 +298,11 @@ public class JobIntegrationTest extends IntegrationTestBase {
                 .addTaskCreator(getTaskCreator(0)));
 
         JobInfo currentJobInfo = actualJob;
-        while (currentJobInfo.getState().getCode() < 3) {
+        int retryCounter = 0;
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 10) {
+            Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(actualJob.getId()));
-            Thread.sleep(3000);
+            retryCounter++;
         }
 
         ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));

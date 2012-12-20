@@ -166,11 +166,19 @@ public abstract class IntegrationTestBase {
                     // Job can't be deleted when it's state is
                     // canceling, scheduled,queued or processing
                     try {
-                        if (job.getState() == JobState.Scheduled || job.getState() == JobState.Queued
-                                || job.getState() == JobState.Processing) {
+                        if (isJobBusy(job.getState())) {
                             service.action(Job.cancel(job.getId()));
+                            job = service.get(Job.get(job.getId()));
                         }
-                        else if (job.getState() != JobState.Canceling) {
+
+                        int retryCounter = 0;
+                        while (isJobBusy(job.getState()) && retryCounter < 10) {
+                            Thread.sleep(2000);
+                            job = service.get(Job.get(job.getId()));
+                            retryCounter++;
+                        }
+
+                        if (!isJobBusy(job.getState())) {
                             service.delete(Job.delete(job.getId()));
                         }
                         else {
@@ -186,6 +194,11 @@ public abstract class IntegrationTestBase {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean isJobBusy(JobState state) {
+        return state == JobState.Canceling || state == JobState.Scheduled || state == JobState.Queued
+                || state == JobState.Processing;
     }
 
     interface ComponentDelegate {
