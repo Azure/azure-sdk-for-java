@@ -17,11 +17,13 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.security.Security;
+import java.math.BigInteger;
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -55,132 +57,46 @@ import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
-
     private final String strorageDecryptionProcessor = "Storage Decryption";
-
-    private String createContentKeyId(UUID uuid) {
-        String randomContentKey = String.format("nb:kid:UUID:%s", uuid);
-        return randomContentKey;
-    }
-
-    private String getProtectionKeyId() throws ServiceException {
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.StorageEncryption));
-        return protectionKeyId;
-    }
-
-    private JobInfo decodeAsset(String name, AssetInfo assetInfo) throws ServiceException, InterruptedException {
-        MediaProcessorInfo mediaProcessorInfo = GetMediaProcessor(strorageDecryptionProcessor);
-        JobInfo jobInfo = createJob(name, assetInfo, mediaProcessorInfo);
-        return waitJobForCompletion(jobInfo);
-
-    }
-
-    private JobInfo createJob(String name, AssetInfo assetInfo, MediaProcessorInfo mediaProcessorInfo)
-            throws ServiceException {
-        // String configuration = "H.264 256k DSL CBR";
-        String taskBody = "<taskBody>"
-                + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset assetCreationOptions=\"0\" assetName=\"Output\">JobOutputAsset(0)</outputAsset></taskBody>";
-        JobInfo jobInfo = service.create(Job.create().addInputMediaAsset(assetInfo.getId())
-                .addTaskCreator(Task.create(mediaProcessorInfo.getId(), taskBody).setName(name)));
-        return jobInfo;
-    }
-
-    private JobInfo waitJobForCompletion(JobInfo jobInfo) throws ServiceException, InterruptedException {
-        JobInfo currentJobInfo = jobInfo;
-        while (currentJobInfo.getState().getCode() < 3) {
-            currentJobInfo = service.get(Job.get(jobInfo.getId()));
-            Thread.sleep(4000);
-        }
-        return currentJobInfo;
-    }
-
-    private MediaProcessorInfo GetMediaProcessor(String mediaProcessorName) throws ServiceException {
-        List<MediaProcessorInfo> mediaProcessorInfos = service.list(MediaProcessor.list());
-        for (MediaProcessorInfo mediaProcessorInfo : mediaProcessorInfos) {
-            if (mediaProcessorInfo.getName().equals(mediaProcessorName)) {
-                return mediaProcessorInfo;
-            }
-        }
-        return null;
-    }
-
-    private String getProtectionKey(String protectionKeyId) throws ServiceException {
-        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
-        return protectionKey;
-    }
-
-    private AssetFileInfo uploadEncryptedAssetFile(AssetInfo assetInfo, LocatorInfo locatorInfo,
-            ContentKeyInfo contentKeyInfo, String blobName, byte[] encryptedContent) throws ServiceException {
-        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
-        InputStream blobContent = new ByteArrayInputStream(encryptedContent);
-        blobWriter.createBlockBlob(blobName, blobContent);
-        AssetFileInfo assetFileInfo = service.create(AssetFile.create(assetInfo.getId(), blobName).setIsPrimary(true)
-                .setIsEncrypted(true).setContentFileSize(new Long(encryptedContent.length))
-                .setEncryptionScheme("StorageEncryption").setEncryptionVersion("1.0")
-                .setEncryptionKeyId(contentKeyInfo.getId()));
-        return assetFileInfo;
-    }
-
-    private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId,
-            String protectionKey) throws Exception {
-        UUID contentKeyIdUuid = UUID.randomUUID();
-        String contentKeyId = createContentKeyId(contentKeyIdUuid);
-        byte[] encryptedContentKey = EncryptionHelper.EncryptSymmetricKey(protectionKey, aesKey);
-        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
-        String checksum = EncryptionHelper.calculateChecksum(contentKeyIdUuid, aesKey);
-        ContentKeyInfo contentKeyInfo = service.create(ContentKey
-                .create(contentKeyId, contentKeyType, encryptedContentKeyString).setChecksum(checksum)
-                .setProtectionKeyId(protectionKeyId));
-        return contentKeyInfo;
-    }
 
     @Test
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/SmallWMV.wmv");
-        byte[] aesKey = EncryptionHelper.createRandomVector(256);
-        byte[] initializationVector = EncryptionHelper.createRandomVector(128);
+
+        // Media Services requires 256-bit (32-byte) keys
+        // and 128-bit (16-byte) initialization vectors (IV) for AES encryption, but also
+        // that only the first 8 bytes of the IV is is filled.
+        // Create static ones here for testing purposes.
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        byte[] effectiveIv = new byte[8];
+        random.nextBytes(effectiveIv);
+        byte[] iv = new byte[16];
+        System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
+
+        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
+        InputStream encryptedContent = EncryptionHelper.encryptFile(smallWMVInputStream, aesKey, iv);
         int durationInMinutes = 10;
 
         // Act
-
-        // creates asset
-        AssetInfo assetInfo = service.create(Asset.create().setName("uploadAesProtectedAssetSuccess")
+        AssetInfo assetInfo = service.create(Asset.create().setName(testAssetPrefix + "uploadAesProtectedAssetSuccess")
                 .setOptions(AssetOption.StorageEncrypted));
+        WritableBlobContainerContract blobWriter = getBlobWriter(assetInfo.getId(), durationInMinutes);
 
-        // creates writable access policy
-        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create("uploadAesPortectedAssetSuccess",
-                durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+        // gets the public key for storage encryption.
+        String contentKeyId = makeContentKeyId(aesKey);
 
-        // creates locator for the input media asset
-        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetInfo.getId(),
-                LocatorType.SAS));
+        // link the content key with the asset.
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
 
-        // gets the public key for storage encryption. 
+        // upload the encrypted file to the server.
+        uploadEncryptedAssetFile(assetInfo, blobWriter, "MPEG4-H264.mp4", encryptedContent, contentKeyId, iv);
 
-        String protectionKeyId = getProtectionKeyId();
-        String protectionKey = getProtectionKey(protectionKeyId);
+        // submit and execute the decoding job.
+        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo.getId());
 
-        // creates the content key with encrypted 
-        ContentKeyInfo contentKeyInfo = createContentKey(aesKey, ContentKeyType.StorageEncryption, protectionKeyId,
-                protectionKey);
-
-        // link the content key with the asset. 
-        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyInfo.getId()));
-
-        // encrypt the file.
-        byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);
-
-        // upload the encrypted file to the server.  
-        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
-                "uploadAesProtectedAssetSuccess", encryptedContent);
-
-        // submit and execute the decoding job. 
-        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);
-
-        // assert 
+        // assert
         LinkInfo taskLinkInfo = jobInfo.getTasksLink();
         List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
         for (TaskInfo taskInfo : taskInfos) {
@@ -190,6 +106,135 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         }
         assertEquals(JobState.Finished, jobInfo.getState());
 
+        // Verify that the contents match
+        InputStream expected = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
+
+        ListResult<AssetInfo> outputAssets = service.list(Asset.list(jobInfo.getOutputAssetsLink()));
+        assertEquals(1, outputAssets.size());
+        AssetInfo outputAsset = outputAssets.get(0);
+        ListResult<AssetFileInfo> assetFiles = service.list(AssetFile.list(assetInfo.getAssetFilesLink()));
+        assertEquals(1, assetFiles.size());
+        AssetFileInfo outputFile = assetFiles.get(0);
+
+        InputStream actual = getFileContents(outputAsset.getId(), outputFile.getName(), durationInMinutes);
+        assertStreamsEqual(expected, actual);
     }
 
+    private JobInfo decodeAsset(String name, String inputAssetId) throws ServiceException, InterruptedException {
+        MediaProcessorInfo mediaProcessorInfo = service.list(
+                MediaProcessor.list().set("$filter", "Name eq '" + strorageDecryptionProcessor + "'")).get(0);
+
+        String taskBody = "<taskBody>"
+                + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset assetCreationOptions=\"0\" assetName=\"Output\">JobOutputAsset(0)</outputAsset></taskBody>";
+        JobInfo jobInfo = service.create(Job.create().addInputMediaAsset(inputAssetId)
+                .addTaskCreator(Task.create(mediaProcessorInfo.getId(), taskBody).setName(name)));
+
+        JobInfo currentJobInfo = jobInfo;
+        int retryCounter = 0;
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 10) {
+            Thread.sleep(10000);
+            currentJobInfo = service.get(Job.get(jobInfo.getId()));
+            retryCounter++;
+        }
+        return currentJobInfo;
+    }
+
+    private String makeContentKeyId(byte[] aesKey) throws ServiceException, Exception {
+        String protectionKeyId = (String) service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        String contentKeyIdUuid = UUID.randomUUID().toString();
+        String contentKeyId = String.format("nb:kid:UUID:%s", contentKeyIdUuid);
+
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateContentKeyChecksum(contentKeyIdUuid, aesKey);
+
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                .setChecksum(checksum).setProtectionKeyId(protectionKeyId));
+        return contentKeyInfo.getId();
+    }
+
+    private void uploadEncryptedAssetFile(AssetInfo asset, WritableBlobContainerContract blobWriter, String blobName,
+            InputStream blobContent, String encryptionKeyId, byte[] iv) throws ServiceException {
+        blobWriter.createBlockBlob(blobName, blobContent);
+        service.action(AssetFile.createFileInfos(asset.getId()));
+        ListResult<AssetFileInfo> files = service.list(AssetFile.list(asset.getAssetFilesLink()).set("$filter",
+                "Name eq '" + blobName + "'"));
+        assertEquals(1, files.size());
+        AssetFileInfo file = files.get(0);
+        byte[] sub = new byte[9];
+        // Offset bytes to ensure that the sign-bit is not set.
+        // Media Services expects unsigned Int64 values.
+        System.arraycopy(iv, 0, sub, 1, 8);
+        BigInteger longIv = new BigInteger(sub);
+        String initializationVector = longIv.toString();
+
+        service.update(AssetFile.update(file.getId()).setIsEncrypted(true).setEncryptionKeyId(encryptionKeyId)
+                .setEncryptionScheme("StorageEncryption").setEncryptionVersion("1.0")
+                .setInitializationVector(initializationVector));
+    }
+
+    private WritableBlobContainerContract getBlobWriter(String assetId, int durationInMinutes) throws ServiceException {
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix
+                + "uploadAesPortectedAssetSuccess", durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+
+        // creates locator for the input media asset
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), assetId, LocatorType.SAS));
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
+        return blobWriter;
+    }
+
+    private InputStream getFileContents(String assetId, String fileName, int availabilityWindowInMinutes)
+            throws ServiceException, InterruptedException, IOException {
+        AccessPolicyInfo readAP = service.create(AccessPolicy.create(testPolicyPrefix + "tempAccessPolicy",
+                availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
+        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), assetId, LocatorType.SAS));
+        URL file = new URL(readLocator.getBaseUri() + "/" + fileName + readLocator.getContentAccessToken());
+
+        // There can be a delay before a new read locator is applied for the asset files.
+        InputStream reader = null;
+        for (int counter = 0; true; counter++) {
+            try {
+                reader = file.openConnection().getInputStream();
+                break;
+            }
+            catch (IOException e) {
+                System.out.println("Got error, wait a bit and try again");
+                if (counter < 6) {
+                    Thread.sleep(10000);
+                }
+                else {
+                    // No more retries.
+                    throw e;
+                }
+            }
+        }
+
+        return reader;
+    }
+
+    private void assertStreamsEqual(InputStream inputStream1, InputStream inputStream2) throws IOException {
+        byte[] buffer1 = new byte[1024];
+        byte[] buffer2 = new byte[1024];
+        try {
+            while (true) {
+                int n1 = inputStream1.read(buffer1);
+                int n2 = inputStream2.read(buffer2);
+                assertEquals("number of bytes read from streams", n1, n2);
+                if (n1 == -1) {
+                    break;
+                }
+                for (int i = 0; i < n1; i++) {
+                    assertEquals("byte " + i + " read from streams", buffer1[i], buffer2[i]);
+                }
+            }
+        }
+        finally {
+            inputStream1.close();
+            inputStream2.close();
+        }
+    }
 }
