@@ -96,6 +96,9 @@ public class DefaultListOperation<T> extends EntityOperationBase implements Enti
         return responseType;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#processResponse(java.lang.Object)
+     */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
         return rawResponse;
