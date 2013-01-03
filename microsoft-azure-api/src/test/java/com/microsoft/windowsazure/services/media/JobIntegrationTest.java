@@ -56,7 +56,8 @@ public class JobIntegrationTest extends IntegrationTestBase {
                 expected.getStartTime(), expected.getEndTime(), actual);
     }
 
-    private void verifyJobProperties(String message, String testName, Integer priority, Double runningDuration,
+    @SuppressWarnings("deprecation")
+    private void verifyJobProperties(String message, String testName, Integer priority, double runningDuration,
             JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
             JobInfo actualJob) {
         assertNotNull(message, actualJob);
