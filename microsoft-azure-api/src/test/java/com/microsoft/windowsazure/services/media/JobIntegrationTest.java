@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
@@ -315,6 +316,29 @@ public class JobIntegrationTest extends IntegrationTestBase {
         ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
 
         assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void canGetErrorDetailsFromTask() throws Exception {
+        String name = testJobPrefix + "canGetErrorDetailsFromTask";
+
+        JobInfo actualJob = service.create(Job.create().setName(name).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(getTaskCreator(0)));
+
+        JobInfo currentJobInfo = actualJob;
+        while (currentJobInfo.getState().getCode() < 3) {
+            currentJobInfo = service.get(Job.get(actualJob.getId()));
+            Thread.sleep(3000);
+        }
+
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJob.getTasksLink()));
+        TaskInfo taskInfo = tasks.get(0);
+        List<ErrorDetail> errorDetails = taskInfo.getErrorDetails();
+
+        assertEquals(1, errorDetails.size());
+        ErrorDetail errorDetail = errorDetails.get(0);
+        assertNotNull(errorDetail.getCode());
+        assertNotNull(errorDetail.getMessage());
     }
 
     @Test

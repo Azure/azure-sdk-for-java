@@ -17,14 +17,13 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface EntityCreationOperation.
+ * The Interface EntityCreateOperation.
  * 
  * @param <T>
  *            the generic type
  */
-public interface EntityCreationOperation<T> extends EntityOperationSingleResult<T> {
+public interface EntityCreateOperation<T> extends EntityOperationSingleResult<T> {
 
     /**
      * Get the object to be sent to the server containing
