@@ -36,14 +36,4 @@ public interface EntityCreationOperation<T> extends EntityOperationSingleResult<
      */
     Object getRequestContents() throws ServiceException;
 
-    /**
-     * Post response process.
-     * 
-     * @param rawResponse
-     *            the raw response
-     * @return the object
-     * @throws ServiceException
-     *             the service exception
-     */
-    Object processResponse(Object rawResponse) throws ServiceException;
 }
