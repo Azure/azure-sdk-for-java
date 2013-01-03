@@ -106,9 +106,6 @@ public class LinkRetrievalTest {
     }
 
     private static void assertLinksEqual(LinkType expected, LinkInfo actual) {
-        assertEquals(expected.getTitle(), actual.getTitle());
-        assertEquals(expected.getRel(), actual.getRel());
         assertEquals(expected.getHref(), actual.getHref());
-        assertEquals(expected.getType(), actual.getType());
     }
 }
