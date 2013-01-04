@@ -32,38 +32,11 @@ public class LinkInfo {
     }
 
     /**
-     * Get link rel
-     * 
-     * @return the rel
-     */
-    public String getRel() {
-        return rawLink.getRel();
-    }
-
-    /**
-     * Get link type
-     * 
-     * @return the type
-     */
-    public String getType() {
-        return rawLink.getType();
-    }
-
-    /**
      * Get link href
      * 
      * @return the href
      */
     public String getHref() {
         return rawLink.getHref();
-    }
-
-    /**
-     * Get link title
-     * 
-     * @return the title
-     */
-    public String getTitle() {
-        return rawLink.getTitle();
     }
 }
