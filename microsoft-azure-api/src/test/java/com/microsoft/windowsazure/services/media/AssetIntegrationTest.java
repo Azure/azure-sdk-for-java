@@ -17,11 +17,7 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -283,17 +279,9 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
         service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey));
-        String escapedContentKeyId;
-        try {
-            escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new InvalidParameterException(contentKeyId);
-        }
-        URI contentKeyUri = new URI(String.format("ContentKeys('%s')", escapedContentKeyId));
 
         // Act
-        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
 
         // Assert
 
@@ -305,14 +293,12 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     @Test
     public void linkAssetContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
         // Arrange
-        URI invalidContentKeyUri = new URI("ContentKeys('nb%3akid%3aUUID%3ainvalidContentKeyId')");
 
         // Act
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.action(Asset.linkContentKey(validButNonexistAssetId, invalidContentKeyUri));
+        service.action(Asset.linkContentKey(validButNonexistAssetId, "nb:kid:UUID:invalidContentKeyId"));
 
         // Assert
-
     }
 }

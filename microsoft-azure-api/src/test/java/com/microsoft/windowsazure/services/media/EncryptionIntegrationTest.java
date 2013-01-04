@@ -19,9 +19,6 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.security.Security;
 import java.util.EnumSet;
 import java.util.List;
@@ -108,12 +105,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return null;
     }
 
-    private void linkContentKey(AssetInfo assetInfo, ContentKeyInfo contentKeyInfo) throws ServiceException,
-            UnsupportedEncodingException {
-        URI contentKeyUri = createContentKeyUri(contentKeyInfo.getId());
-        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyUri));
-    }
-
     private String getProtectionKey(String protectionKeyId) throws ServiceException {
         String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
         return protectionKey;
@@ -129,11 +120,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
                 .setEncryptionScheme("StorageEncryption").setEncryptionVersion("1.0")
                 .setEncryptionKeyId(contentKeyInfo.getId()));
         return assetFileInfo;
-    }
-
-    private URI createContentKeyUri(String contentKeyId) throws UnsupportedEncodingException {
-        String escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
-        return URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
     }
 
     private ContentKeyInfo createContentKey(byte[] aesKey, ContentKeyType contentKeyType, String protectionKeyId,
@@ -182,7 +168,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
                 protectionKey);
 
         // link the content key with the asset. 
-        linkContentKey(assetInfo, contentKeyInfo);
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyInfo.getId()));
 
         // encrypt the file.
         byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);

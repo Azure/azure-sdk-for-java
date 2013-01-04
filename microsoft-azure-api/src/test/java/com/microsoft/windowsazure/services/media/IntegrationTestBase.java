@@ -2,11 +2,15 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -17,12 +21,15 @@ import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -116,8 +123,18 @@ public abstract class IntegrationTestBase {
         try {
             List<AssetInfo> listAssetsResult = service.list(Asset.list());
             for (AssetInfo assetInfo : listAssetsResult) {
-                if (assetInfo.getName().startsWith(testAssetPrefix)) {
-                    service.delete(Asset.delete(assetInfo.getId()));
+                try {
+                    if (assetInfo.getName().startsWith(testAssetPrefix)) {
+                        service.delete(Asset.delete(assetInfo.getId()));
+                    }
+                    else if (assetInfo.getName().startsWith("JobOutputAsset(")
+                            && assetInfo.getName().contains(testJobPrefix)) {
+                        // Delete the temp assets associated with Job results.
+                        service.delete(Asset.delete(assetInfo.getId()));
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -145,8 +162,32 @@ public abstract class IntegrationTestBase {
         try {
             ListResult<JobInfo> jobs = service.list(Job.list());
             for (JobInfo job : jobs) {
-                if (job.getName().startsWith(testAssetPrefix)) {
-                    service.delete(Job.delete(job.getId()));
+                if (job.getName().startsWith(testJobPrefix)) {
+                    // Job can't be deleted when it's state is
+                    // canceling, scheduled,queued or processing
+                    try {
+                        if (isJobBusy(job.getState())) {
+                            service.action(Job.cancel(job.getId()));
+                            job = service.get(Job.get(job.getId()));
+                        }
+
+                        int retryCounter = 0;
+                        while (isJobBusy(job.getState()) && retryCounter < 10) {
+                            Thread.sleep(2000);
+                            job = service.get(Job.get(job.getId()));
+                            retryCounter++;
+                        }
+
+                        if (!isJobBusy(job.getState())) {
+                            service.delete(Job.delete(job.getId()));
+                        }
+                        else {
+                            // Not much to do so except wait.
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -155,8 +196,30 @@ public abstract class IntegrationTestBase {
         }
     }
 
+    private static boolean isJobBusy(JobState state) {
+        return state == JobState.Canceling || state == JobState.Scheduled || state == JobState.Queued
+                || state == JobState.Processing;
+    }
+
     interface ComponentDelegate {
         void verifyEquals(String message, Object expected, Object actual);
+    }
+
+    protected static AssetInfo setupAssetWithFile() throws ServiceException {
+        String name = UUID.randomUUID().toString();
+        String testBlobName = "test" + name + ".bin";
+        AssetInfo assetInfo = service.create(Asset.create().setName(testAssetPrefix + name));
+
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix + name, 10,
+                EnumSet.of(AccessPolicyPermission.WRITE)));
+        LocatorInfo locator = createLocator(accessPolicyInfo, assetInfo, 5);
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locator);
+        InputStream blobContent = new ByteArrayInputStream(new byte[] { 4, 8, 15, 16, 23, 42 });
+        blobWriter.createBlockBlob(testBlobName, blobContent);
+
+        service.action(AssetFile.createFileInfos(assetInfo.getId()));
+
+        return assetInfo;
     }
 
     protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy, AssetInfo asset, int startDeltaMinutes)
@@ -206,6 +269,15 @@ public abstract class IntegrationTestBase {
                 delegate.verifyEquals(message + ": orderedAndFilteredActualInfo " + i, expectedInfos.get(i),
                         orderedAndFilteredActualInfo.get(i));
             }
+        }
+    }
+
+    protected void assertEqualsNullEmpty(String message, String expected, String actual) {
+        if ((expected == null || expected.length() == 0) && (actual == null || actual.length() == 0)) {
+            // both nullOrEmpty, so match.
+        }
+        else {
+            assertEquals(message, expected, actual);
         }
     }
 
