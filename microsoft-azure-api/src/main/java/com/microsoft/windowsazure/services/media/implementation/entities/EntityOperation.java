@@ -48,4 +48,15 @@ public interface EntityOperation {
      * Get the MIME type that we're expecting the server to send back.
      */
     public abstract MediaType getAcceptType();
+
+    /**
+     * Process response process.
+     * 
+     * @param rawResponse
+     *            the raw response
+     * @return the object
+     * @throws ServiceException
+     *             the service exception
+     */
+    public abstract Object processResponse(Object rawResponse) throws ServiceException;
 }

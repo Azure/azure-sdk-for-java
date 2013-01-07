@@ -21,17 +21,26 @@ import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
+
 /**
  * Default implementation of EntityOperation<T> to provide
  * default values for common methods.
  * 
  */
 public abstract class EntityOperationBase implements EntityOperation {
+
+    /** The uri builder. */
     private final EntityUriBuilder uriBuilder;
+
+    /** The proxy data. */
     private EntityProxyData proxyData;
 
     /**
+     * Instantiates a new entity operation base.
      * 
+     * @param uri
+     *            the uri
      */
     protected EntityOperationBase(final String uri) {
         this.uriBuilder = new EntityUriBuilder() {
@@ -42,6 +51,12 @@ public abstract class EntityOperationBase implements EntityOperation {
         };
     }
 
+    /**
+     * Instantiates a new entity operation base.
+     * 
+     * @param uriBuilder
+     *            the uri builder
+     */
     protected EntityOperationBase(EntityUriBuilder uriBuilder) {
         this.uriBuilder = uriBuilder;
     }
@@ -55,7 +70,7 @@ public abstract class EntityOperationBase implements EntityOperation {
     }
 
     /**
-     * Get the currently set proxy data
+     * Get the currently set proxy data.
      * 
      * @return the proxy data
      */
@@ -87,14 +102,46 @@ public abstract class EntityOperationBase implements EntityOperation {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#processResponse(java.lang.Object)
+     */
+    @Override
+    public Object processResponse(Object rawResponse) throws ServiceException {
+        return rawResponse;
+    }
+
+    /**
+     * The Interface EntityUriBuilder.
+     */
     public interface EntityUriBuilder {
+
+        /**
+         * Gets the uri.
+         * 
+         * @return the uri
+         */
         String getUri();
     }
 
+    /**
+     * The Class EntityIdUriBuilder.
+     */
     public static class EntityIdUriBuilder implements EntityUriBuilder {
+
+        /** The entity type. */
         private final String entityType;
+
+        /** The entity id. */
         private final String entityId;
 
+        /**
+         * Instantiates a new entity id uri builder.
+         * 
+         * @param entityName
+         *            the entity name
+         * @param entityId
+         *            the entity id
+         */
         public EntityIdUriBuilder(String entityName, String entityId) {
             super();
             this.entityType = entityName;

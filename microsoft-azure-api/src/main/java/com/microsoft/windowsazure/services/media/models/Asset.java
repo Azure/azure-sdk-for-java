@@ -15,7 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -298,11 +301,19 @@ public class Asset {
      * 
      * @param assetId
      *            the asset id
-     * @param contentKeyUri
-     *            the content key uri
+     * @param contentKeyId
+     *            the content key id
      * @return the entity action operation
      */
-    public static EntityLinkOperation linkContentKey(String assetId, URI contentKeyUri) {
+    public static EntityLinkOperation linkContentKey(String assetId, String contentKeyId) {
+        String escapedContentKeyId = null;
+        try {
+            escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new InvalidParameterException("contentKeyId");
+        }
+        URI contentKeyUri = URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
         return new EntityLinkOperation("Assets", assetId, "ContentKeys", contentKeyUri);
     }
 }

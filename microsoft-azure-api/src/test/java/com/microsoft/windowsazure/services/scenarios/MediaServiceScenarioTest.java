@@ -106,7 +106,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        String jobName = "my job createJob";
+        String jobName = "my job createJob" + UUID.randomUUID().toString();
         JobInfo job = wrapper.createJob(jobName, asset, createTasks());
         validator.validateJob(job, jobName, asset, createTasks());
     }
@@ -116,13 +116,13 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
-        String jobName = "my job transformAsset";
+        String jobName = "my job transformAsset" + UUID.randomUUID().toString();
         JobInfo job = wrapper.createJob(jobName, asset, createTasks());
         signalSetupFinished();
 
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
-        validator.validateOutputAssets(outputAssets);
+        validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {

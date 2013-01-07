@@ -28,8 +28,8 @@ public class MediaConfigurationTest {
         // Arrange 
 
         // Act
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("testMediaServiceBaseUri",
-                "testOAuthUri", "testClientId", "testClientSecret", "testScope");
+        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(
+                "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret", "testScope");
 
         // Assert
         assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("media.uri"));
@@ -47,7 +47,7 @@ public class MediaConfigurationTest {
 
         // Act
         Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(preConfiguration,
-                "testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret", "testScope");
+                "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret", "testScope");
 
         // Assert
         assertEquals("preexistingValue", configuration.getProperty("preexistingName"));
@@ -66,8 +66,8 @@ public class MediaConfigurationTest {
 
         // Act 
         Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("testProfile",
-                preConfiguration, "testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret",
-                "testScope");
+                preConfiguration, "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId",
+                "testClientSecret", "testScope");
 
         // Assert
         assertEquals("preexistingValue", configuration.getProperty("preexistingName"));

@@ -118,7 +118,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the priority
      */
-    public Integer getPriority() {
+    public int getPriority() {
         return getContent().getPriority();
     }
 
@@ -127,7 +127,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the progress
      */
-    public Double getProgress() {
+    public double getProgress() {
         return getContent().getProgress();
     }
 
