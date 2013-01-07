@@ -57,7 +57,7 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the content file size
      */
-    public Long getContentFileSize() {
+    public long getContentFileSize() {
         return this.getContent().getContentFileSize();
     }
 
@@ -93,7 +93,7 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the checks if is encrypted
      */
-    public Boolean getIsEncrypted() {
+    public boolean getIsEncrypted() {
         return this.getContent().getIsEncrypted();
     }
 
@@ -120,7 +120,7 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the checks if is primary
      */
-    public Boolean getIsPrimary() {
+    public boolean getIsPrimary() {
         return this.getContent().getIsPrimary();
     }
 

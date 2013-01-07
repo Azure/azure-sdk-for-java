@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -163,5 +164,10 @@ public class DefaultActionOperation implements EntityActionOperation {
     @Override
     public Object getRequestContents() {
         return null;
+    }
+
+    @Override
+    public Object processResponse(Object rawResponse) throws ServiceException {
+        return rawResponse;
     }
 }

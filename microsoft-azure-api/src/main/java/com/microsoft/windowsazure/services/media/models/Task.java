@@ -45,8 +45,6 @@ public class Task {
      *            the media processor id
      * @param taskBody
      *            the task body
-     * @param options
-     *            the options
      * @return the creates the batch operation
      */
     public static CreateBatchOperation create(String mediaProcessorId, String taskBody) {
@@ -102,8 +100,6 @@ public class Task {
          *            the media processor id
          * @param taskBody
          *            the task body
-         * @param options
-         *            the options
          */
         public CreateBatchOperation(String mediaProcessorId, String taskBody) {
             this.verb = "POST";

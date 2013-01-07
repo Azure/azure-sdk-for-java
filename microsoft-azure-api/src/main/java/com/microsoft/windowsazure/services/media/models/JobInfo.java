@@ -89,7 +89,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the priority
      */
-    public Integer getPriority() {
+    public int getPriority() {
         return getContent().getPriority();
     }
 
@@ -98,7 +98,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the running duration
      */
-    public Double getRunningDuration() {
+    public double getRunningDuration() {
         return getContent().getRunningDuration();
     }
 

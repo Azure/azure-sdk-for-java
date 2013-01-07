@@ -301,8 +301,8 @@ public class Asset {
      * 
      * @param assetId
      *            the asset id
-     * @param contentKeyUri
-     *            the content key uri
+     * @param contentKeyId
+     *            the content key id
      * @return the entity action operation
      */
     public static EntityLinkOperation linkContentKey(String assetId, String contentKeyId) {
