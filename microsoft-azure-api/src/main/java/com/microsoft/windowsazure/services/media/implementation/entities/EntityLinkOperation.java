@@ -41,10 +41,10 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public class EntityLinkOperation extends DefaultActionOperation {
 
-    /** The master entity set. */
+    /** The primary entity set. */
     private final String primaryEntitySet;
 
-    /** The master entity id. */
+    /** The primary entity id. */
     private final String primaryEntityId;
 
     /** The secondary entity set. */

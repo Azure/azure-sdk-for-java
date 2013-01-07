@@ -57,7 +57,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " Name", testName, actualJob.getName());
         // comment out due to issue 464
         // assertEquals(message + " Priority", priority, actualJob.getPriority());
-        assertEquals(message + " RunningDuration", runningDuration, actualJob.getRunningDuration());
+        assertEquals(message + " RunningDuration", runningDuration, actualJob.getRunningDuration(), 0.001);
         assertEquals(message + " State", state, actualJob.getState());
         assertEqualsNullEmpty(message + " TemplateId", templateId, actualJob.getTemplateId());
 
@@ -300,7 +300,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         JobInfo currentJobInfo = actualJob;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 20) {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(actualJob.getId()));
             retryCounter++;
