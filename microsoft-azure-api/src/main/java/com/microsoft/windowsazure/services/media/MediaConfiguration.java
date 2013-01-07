@@ -77,8 +77,8 @@ public class MediaConfiguration {
      */
     public static Configuration configureWithOAuthAuthentication(String mediaServiceUri, String oAuthUri,
             String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, Configuration.getInstance(), mediaServiceUri, oAuthUri,
-                clientId, clientSecret, scope);
+        return configureWithOAuthAuthentication(null, Configuration.getInstance(), mediaServiceUri, oAuthUri, clientId,
+                clientSecret, scope);
     }
 
     /**
@@ -108,10 +108,10 @@ public class MediaConfiguration {
      *         <code>MediaService</code> class.
      * 
      */
-    public static Configuration configureWithOAuthAuthentication(Configuration configuration,
-            String mediaServiceUri, String oAuthUri, String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, configuration, mediaServiceBaseUri, oAuthUri, clientId,
-                clientSecret, scope);
+    public static Configuration configureWithOAuthAuthentication(Configuration configuration, String mediaServiceUri,
+            String oAuthUri, String clientId, String clientSecret, String scope) {
+        return configureWithOAuthAuthentication(null, configuration, mediaServiceUri, oAuthUri, clientId, clientSecret,
+                scope);
     }
 
     /**
