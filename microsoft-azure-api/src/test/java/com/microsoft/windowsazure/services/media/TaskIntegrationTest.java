@@ -211,7 +211,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         // Optional fields
         assertEquals(message + " getConfiguration", configuration, actual.getConfiguration());
         assertEquals(message + " getName", name, actual.getName());
-        assertEquals(message + " getPriority", priority, actual.getPriority().intValue());
+        assertEquals(message + " getPriority", priority, actual.getPriority());
 
         // Optional encryption fields
         assertEqualsNullEmpty(message + " getEncryptionKeyId", encryptionKeyId, actual.getEncryptionKeyId());
@@ -239,7 +239,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         assertTrue(message + " outputAssets.get(0).getId != assetInfo.getId",
                 !assetInfo.getId().equals(outputAssets.get(0).getId()));
 
-        assertEquals(message + " getProgress", progress, actual.getProgress().doubleValue(), 0.01);
+        assertEquals(message + " getProgress", progress, actual.getProgress(), 0.01);
         assertEquals(message + " getRunningDuration", runningDuration, actual.getRunningDuration(), 0.01);
         assertDateApproxEquals(message + " getStartTime", startTime, actual.getStartTime());
         assertEquals(message + " getState", state, actual.getState());
