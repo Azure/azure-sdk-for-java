@@ -178,8 +178,8 @@ public class ContentKey {
      *            id of content key to retrieve
      * @return the operation
      */
-    public static EntityGetOperation<ContentKeyInfo> get(String ContentKeyId) {
-        return new DefaultGetOperation<ContentKeyInfo>(ENTITY_SET, ContentKeyId, ContentKeyInfo.class);
+    public static EntityGetOperation<ContentKeyInfo> get(String contentKeyId) {
+        return new DefaultGetOperation<ContentKeyInfo>(ENTITY_SET, contentKeyId, ContentKeyInfo.class);
     }
 
     /**
@@ -223,8 +223,8 @@ public class ContentKey {
      *            id of content key to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String ContentKeyId) {
-        return new DefaultDeleteOperation(ENTITY_SET, ContentKeyId);
+    public static EntityDeleteOperation delete(String contentKeyId) {
+        return new DefaultDeleteOperation(ENTITY_SET, contentKeyId);
     }
 
 }

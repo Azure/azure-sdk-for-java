@@ -55,8 +55,8 @@ public class MediaConfiguration {
      * Creates a media service configuration using the specified media service base URI, OAUTH URI,
      * client ID, and client secret.
      * 
-     * @param mediaServiceBaseUri
-     *            A <code>String</code> object that represents the media service base URI.
+     * @param mediaServiceUri
+     *            A <code>String</code> object that represents the media service URI.
      * 
      * @param oAuthUri
      *            A <code>String</code> object that represents the OAUTH URI.
@@ -75,9 +75,9 @@ public class MediaConfiguration {
      *         <code>MediaService</code> class.
      * 
      */
-    public static Configuration configureWithOAuthAuthentication(String mediaServiceBaseUri, String oAuthUri,
+    public static Configuration configureWithOAuthAuthentication(String mediaServiceUri, String oAuthUri,
             String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, Configuration.getInstance(), mediaServiceBaseUri, oAuthUri,
+        return configureWithOAuthAuthentication(null, Configuration.getInstance(), mediaServiceUri, oAuthUri,
                 clientId, clientSecret, scope);
     }
 
@@ -88,8 +88,8 @@ public class MediaConfiguration {
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
      * 
-     * @param mediaServiceBaseUri
-     *            A <code>String</code> object that represents the base URI of Media service.
+     * @param mediaServiceUri
+     *            A <code>String</code> object that represents the URI of media service.
      * 
      * @param oAuthUri
      *            A <code>String</code> object that represents the URI of OAuth service.
@@ -109,7 +109,7 @@ public class MediaConfiguration {
      * 
      */
     public static Configuration configureWithOAuthAuthentication(Configuration configuration,
-            String mediaServiceBaseUri, String oAuthUri, String clientId, String clientSecret, String scope) {
+            String mediaServiceUri, String oAuthUri, String clientId, String clientSecret, String scope) {
         return configureWithOAuthAuthentication(null, configuration, mediaServiceBaseUri, oAuthUri, clientId,
                 clientSecret, scope);
     }
@@ -124,8 +124,8 @@ public class MediaConfiguration {
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
      * 
-     * @param mediaServiceBaseUri
-     *            A <code>String</code> object that represents the base URI of media service.
+     * @param mediaServiceUri
+     *            A <code>String</code> object that represents the URI of media service.
      * 
      * @param oAuthUri
      *            A <code>String</code> object that represents the URI of OAUTH service.
@@ -145,7 +145,7 @@ public class MediaConfiguration {
      * 
      */
     public static Configuration configureWithOAuthAuthentication(String profile, Configuration configuration,
-            String mediaServiceBaseUri, String oAuthUri, String clientId, String clientSecret, String scope) {
+            String mediaServiceUri, String oAuthUri, String clientId, String clientSecret, String scope) {
 
         if (profile == null) {
             profile = "";
@@ -154,7 +154,7 @@ public class MediaConfiguration {
             profile = profile + ".";
         }
 
-        configuration.setProperty(profile + URI, "https://" + mediaServiceBaseUri);
+        configuration.setProperty(profile + URI, mediaServiceUri);
         configuration.setProperty(profile + OAUTH_URI, oAuthUri);
         configuration.setProperty(profile + OAUTH_CLIENT_ID, clientId);
         configuration.setProperty(profile + OAUTH_CLIENT_SECRET, clientSecret);

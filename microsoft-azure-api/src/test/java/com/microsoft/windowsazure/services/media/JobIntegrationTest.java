@@ -300,7 +300,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         JobInfo currentJobInfo = actualJob;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 10) {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 20) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(actualJob.getId()));
             retryCounter++;
