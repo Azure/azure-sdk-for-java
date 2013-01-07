@@ -41,16 +41,16 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public class EntityLinkOperation extends DefaultActionOperation {
 
-    /** The master entity set. */
+    /** The primary entity set. */
     private final String primaryEntitySet;
 
-    /** The master entity id. */
+    /** The primary entity id. */
     private final String primaryEntityId;
 
-    /** The slave entity set. */
+    /** The secondary entity set. */
     private final String secondaryEntitySet;
 
-    /** The slave entity uri. */
+    /** The secondary entity uri. */
     private final URI secondaryEntityUri;
 
     /** The jaxb context. */
@@ -69,13 +69,13 @@ public class EntityLinkOperation extends DefaultActionOperation {
      * Instantiates a new entity link operation.
      * 
      * @param primaryEntitySet
-     *            the master entity set
+     *            the primary entity set
      * @param primaryEntityId
-     *            the master entity id
+     *            the primary entity id
      * @param secondaryEntitySet
-     *            the slave entity set
+     *            the secondary entity set
      * @param secondaryEntityUri
-     *            the slave entity uri
+     *            the secondary entity uri
      */
     public EntityLinkOperation(String primaryEntitySet, String primaryEntityId, String secondaryEntitySet,
             URI secondaryEntityUri) {
