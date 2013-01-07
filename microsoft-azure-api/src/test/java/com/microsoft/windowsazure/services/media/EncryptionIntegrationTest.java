@@ -63,10 +63,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
 
-        // Media Services requires 256-bit (32-byte) keys
-        // and 128-bit (16-byte) initialization vectors (IV) for AES encryption, but also
-        // that only the first 8 bytes of the IV is is filled.
-        // Create static ones here for testing purposes.
+        // Media Services requires 256-bit (32-byte) keys and
+        // 128-bit (16-byte) initialization vectors (IV) for AES encryption,
+        // and also requires that only the first 8 bytes of the IV is filled.
         Random random = new Random();
         byte[] aesKey = new byte[32];
         random.nextBytes(aesKey);
@@ -75,8 +74,8 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         byte[] iv = new byte[16];
         System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
 
-        InputStream smallWMVInputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
-        InputStream encryptedContent = EncryptionHelper.encryptFile(smallWMVInputStream, aesKey, iv);
+        InputStream mpeg4H264InputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
+        InputStream encryptedContent = EncryptionHelper.encryptFile(mpeg4H264InputStream, aesKey, iv);
         int durationInMinutes = 10;
 
         // Act
