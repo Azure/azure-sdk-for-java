@@ -19,7 +19,7 @@ For documentation please see the [Windows Azure Java Developer Center](http://ww
   * Retrieve information about the state of your Azure Compute instances
 * Table
   * Manage Tables
-  * Work with Table Entities (CRUD)
+  * Table Entity Operations
   * Entity Group Transactions (Batch)
 
 #Getting Started
