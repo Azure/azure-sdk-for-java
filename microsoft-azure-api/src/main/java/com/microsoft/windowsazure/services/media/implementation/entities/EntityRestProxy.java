@@ -99,8 +99,7 @@ public abstract class EntityRestProxy implements EntityContract {
      * @throws ServiceException
      */
     private Builder getResource(EntityOperation operation) throws ServiceException {
-        return getResource(operation.getUri()).type(operation.getContentType()).accept(
-                operation.getAcceptType());
+        return getResource(operation.getUri()).type(operation.getContentType()).accept(operation.getAcceptType());
     }
 
     /* (non-Javadoc)
@@ -110,8 +109,7 @@ public abstract class EntityRestProxy implements EntityContract {
     @Override
     public <T> T create(EntityCreateOperation<T> creator) throws ServiceException {
         creator.setProxyData(createProxyData());
-        Object rawResponse = getResource(creator).post(creator.getResponseClass(),
-                creator.getRequestContents());
+        Object rawResponse = getResource(creator).post(creator.getResponseClass(), creator.getRequestContents());
         Object processedResponse = creator.processResponse(rawResponse);
         return (T) processedResponse;
     }
@@ -119,21 +117,27 @@ public abstract class EntityRestProxy implements EntityContract {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#get(com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T get(EntityGetOperation<T> getter) throws ServiceException {
         getter.setProxyData(createProxyData());
-        return getResource(getter).get(getter.getResponseClass());
+        Object rawResponse = getResource(getter).get(getter.getResponseClass());
+        Object processedResponse = getter.processResponse(rawResponse);
+        return (T) processedResponse;
     }
 
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#list(com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
         lister.setProxyData(createProxyData());
-        return getResource(lister.getUri()).queryParams(lister.getQueryParameters())
-                .type(lister.getContentType()).accept(lister.getAcceptType())
-                .get(lister.getResponseGenericType());
+        Object rawResponse = getResource(lister.getUri()).queryParams(lister.getQueryParameters())
+                .type(lister.getContentType()).accept(lister.getAcceptType()).get(lister.getResponseGenericType());
+        Object processedResponse = lister.processResponse(rawResponse);
+        return (ListResult<T>) processedResponse;
+
     }
 
     /* (non-Javadoc)
@@ -142,10 +146,10 @@ public abstract class EntityRestProxy implements EntityContract {
     @Override
     public void update(EntityUpdateOperation updater) throws ServiceException {
         updater.setProxyData(createProxyData());
-        ClientResponse response = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(
-                ClientResponse.class, updater.getRequestContents());
-
-        PipelineHelpers.ThrowIfNotSuccess(response);
+        Object rawResponse = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(ClientResponse.class,
+                updater.getRequestContents());
+        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
+        updater.processResponse(rawResponse);
     }
 
     /* (non-Javadoc)
@@ -165,8 +169,8 @@ public abstract class EntityRestProxy implements EntityContract {
         entityActionOperation.setProxyData(createProxyData());
 
         Builder webResource = getResource(entityActionOperation.getUri())
-                .queryParams(entityActionOperation.getQueryParameters())
-                .accept(entityActionOperation.getAcceptType()).accept(MediaType.APPLICATION_XML_TYPE)
+                .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
+                .accept(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
         ClientResponse clientResponse = webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
         return entityActionOperation.processResponse(clientResponse);

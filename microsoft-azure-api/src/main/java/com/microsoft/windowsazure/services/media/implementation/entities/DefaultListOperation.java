@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -93,5 +94,13 @@ public class DefaultListOperation<T> extends EntityOperationBase implements Enti
     @Override
     public GenericType<ListResult<T>> getResponseGenericType() {
         return responseType;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#processResponse(java.lang.Object)
+     */
+    @Override
+    public Object processResponse(Object rawResponse) throws ServiceException {
+        return rawResponse;
     }
 }
