@@ -50,10 +50,11 @@ public class AssetFileInfoTest {
     public void testGetSetContentFileSize() {
         // Arrange
         Long expectedContentFileSize = 1234l;
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setContentFileSize(expectedContentFileSize));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setContentFileSize(expectedContentFileSize));
 
         // Act
-        long actualContentFileSize = fileInfo.getContentFileSize().longValue();
+        long actualContentFileSize = fileInfo.getContentFileSize();
 
         // Assert
         assertEquals(expectedContentFileSize.longValue(), actualContentFileSize);
@@ -73,7 +74,8 @@ public class AssetFileInfoTest {
     @Test
     public void testGetSetEncryptionVersion() {
         String expectedEncryptionVersion = "testEncryptionVersion";
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionVersion(expectedEncryptionVersion));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setEncryptionVersion(expectedEncryptionVersion));
 
         String actualEncryptionVersion = fileInfo.getEncryptionVersion();
 
@@ -84,7 +86,8 @@ public class AssetFileInfoTest {
     public void testGetSetEncryptionScheme() {
         // Arrange
         String expectedEncryptionScheme = "testEncryptionScheme";
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionScheme(expectedEncryptionScheme));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setEncryptionScheme(expectedEncryptionScheme));
 
         // Act
         String actualEncryptionScheme = fileInfo.getEncryptionScheme();
@@ -109,7 +112,8 @@ public class AssetFileInfoTest {
     @Test
     public void testGetSetEncryptionKeyId() {
         String expectedEncryptionKeyId = "testEncryptionKeyId";
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setEncryptionKeyId(expectedEncryptionKeyId));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setEncryptionKeyId(expectedEncryptionKeyId));
 
         String actualEncryptionKeyId = fileInfo.getEncryptionKeyId();
 
@@ -119,7 +123,8 @@ public class AssetFileInfoTest {
     @Test
     public void testGetSetInitializationVector() {
         String expectedInitializationVector = "testInitializationVector";
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setInitializationVector(expectedInitializationVector));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setInitializationVector(expectedInitializationVector));
 
         String actualInitializationVector = fileInfo.getInitializationVector();
 
@@ -173,7 +178,8 @@ public class AssetFileInfoTest {
     @Test
     public void testGetSetContentChecksum() {
         String expectedContentChecksum = "testContentChecksum";
-        AssetFileInfo fileInfo = new AssetFileInfo(null, new AssetFileType().setContentChecksum(expectedContentChecksum));
+        AssetFileInfo fileInfo = new AssetFileInfo(null,
+                new AssetFileType().setContentChecksum(expectedContentChecksum));
 
         String actualContentChecksum = fileInfo.getContentChecksum();
 
