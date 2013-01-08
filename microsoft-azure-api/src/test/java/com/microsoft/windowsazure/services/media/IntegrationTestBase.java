@@ -96,7 +96,12 @@ public abstract class IntegrationTestBase {
             List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list());
 
             for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
-                service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                try {
+                    service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         catch (Exception e) {
