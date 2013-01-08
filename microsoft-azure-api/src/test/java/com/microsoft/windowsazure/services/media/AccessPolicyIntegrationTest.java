@@ -82,8 +82,6 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
         verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.READ, policy);
     }
 
-    // TODO: Null name or duration?
-
     @Test
     public void canGetSinglePolicyById() throws Exception {
         String expectedName = testPolicyPrefix + "GetOne";

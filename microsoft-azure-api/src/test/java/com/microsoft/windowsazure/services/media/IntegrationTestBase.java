@@ -81,9 +81,6 @@ public abstract class IntegrationTestBase {
     }
 
     private static void cleanupEnvironment() {
-        // TODO: This should be removed once cascade delete is implemented for Assets.
-        // But for now, trying to delete an asset with fail if there are any 
-        // existing Locators associated with it.
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
