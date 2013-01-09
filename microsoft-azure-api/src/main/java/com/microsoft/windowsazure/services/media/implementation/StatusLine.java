@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -28,8 +29,16 @@ public class StatusLine {
     private String reason;
 
     public static StatusLine create(DataSource dataSource) {
+        InputStream inputStream;
         try {
-            LineInputStream stream = new LineInputStream(dataSource.getInputStream());
+            inputStream = dataSource.getInputStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        LineInputStream stream = new LineInputStream(inputStream);
+        try {
             String line = stream.readLine();
             StringReader lineReader = new StringReader(line);
 
@@ -42,6 +51,14 @@ public class StatusLine {
         }
         catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                stream.close();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

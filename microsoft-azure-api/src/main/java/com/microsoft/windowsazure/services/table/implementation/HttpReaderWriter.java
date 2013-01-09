@@ -38,8 +38,17 @@ public class HttpReaderWriter {
     }
 
     public StatusLine parseStatusLine(DataSource ds) {
+        InputStream inputStream;
         try {
-            LineInputStream stream = new LineInputStream(ds.getInputStream());
+            inputStream = ds.getInputStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        LineInputStream stream = new LineInputStream(inputStream);
+
+        try {
             String line = stream.readLine();
             StringReader lineReader = new StringReader(line);
 
@@ -52,6 +61,14 @@ public class HttpReaderWriter {
         }
         catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                stream.close();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
