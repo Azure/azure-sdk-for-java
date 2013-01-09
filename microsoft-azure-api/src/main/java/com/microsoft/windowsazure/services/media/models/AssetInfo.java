@@ -130,12 +130,11 @@ public class AssetInfo extends ODataEntity<AssetType> {
     }
 
     /**
-     * Get a link to the asset's locators
+     * Get a link to this asset's parents
      * 
      * @return the link
      */
     public LinkInfo<AssetInfo> getParentAssetsLink() {
-        // TODO: NEEDS TESTS once we figure out how to create assets with parents
         return this.<AssetInfo> getRelationLink("ParentAssets");
     }
 }

@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
@@ -108,23 +106,6 @@ public abstract class ODataEntity<T> {
      */
     public <U extends ODataEntity<?>> LinkInfo<U> getRelationLink(String relationName) {
         return this.<U> getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
-    }
-
-    /**
-     * Return the links from this entry
-     * 
-     * @return List of the links.
-     */
-    @SuppressWarnings("rawtypes")
-    public List<LinkInfo> getLinks() {
-        ArrayList<LinkInfo> links = new ArrayList<LinkInfo>();
-        for (Object child : entry.getEntryChildren()) {
-            LinkType link = LinkFromChild(child);
-            if (link != null) {
-                links.add(new LinkInfo(link));
-            }
-        }
-        return links;
     }
 
     @SuppressWarnings("rawtypes")
