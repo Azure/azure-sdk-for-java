@@ -26,62 +26,87 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 public interface EntityContract {
 
     /**
-     * Create a new instance of an entity
+     * Create a new instance of an entity.
      * 
+     * @param <T>
+     *            the generic type
      * @param creator
      *            Object providing the details of the entity to be
      *            created
-     * @return
-     *         The created entity
+     * @return the t
+     * @throws ServiceException
+     *             the service exception
+     *             The created entity
      */
     public abstract <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
 
     /**
-     * Retrieve an existing entity by id
+     * Retrieve an existing entity by id.
      * 
+     * @param <T>
+     *            the generic type
      * @param getter
      *            object providing the details of the entity to be retrieved
      * @return The retrieved entity
      * @throws ServiceException
+     *             the service exception
      */
     public abstract <T> T get(EntityGetOperation<T> getter) throws ServiceException;
 
     /**
-     * Retrieve a list of entities
+     * Retrieve a list of entities.
      * 
+     * @param <T>
+     *            the generic type
      * @param lister
      *            object providing details of entities to list
      * @return The resulting list
      * @throws ServiceException
+     *             the service exception
      */
     public abstract <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
 
     /**
-     * Update an existing entity
+     * Update an existing entity.
      * 
      * @param updater
      *            Object providing details of the update
      * @throws ServiceException
+     *             the service exception
      */
     public abstract void update(EntityUpdateOperation updater) throws ServiceException;
 
     /**
-     * Delete an entity
+     * Delete an entity.
      * 
      * @param deleter
      *            Object providing details of the delete
      * @throws ServiceException
+     *             the service exception
      */
     public abstract void delete(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
-     * Perform an action on an entity
+     * Perform an action on an entity.
      * 
      * @param action
      *            Object providing details of the action
-     * @return
      * @throws ServiceException
+     *             the service exception
      */
-    public abstract Object action(EntityActionOperation action) throws ServiceException;
+    public abstract void action(EntityActionOperation action) throws ServiceException;
+
+    /**
+     * Action.
+     * 
+     * @param <T>
+     *            the generic type
+     * @param entityActionOperation
+     *            the entity action operation
+     * @return the t
+     * @throws ServiceException
+     *             the service exception
+     */
+    public abstract <T> T action(EntityTypeActionOperation<T> entityActionOperation) throws ServiceException;
 
 }

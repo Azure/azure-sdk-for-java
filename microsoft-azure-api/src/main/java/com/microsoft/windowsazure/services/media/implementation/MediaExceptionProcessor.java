@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityC
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
@@ -176,9 +177,25 @@ public class MediaExceptionProcessor implements MediaContract {
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
      */
     @Override
-    public Object action(EntityActionOperation action) throws ServiceException {
+    public void action(EntityActionOperation entityActionOperation) throws ServiceException {
         try {
-            return service.action(action);
+            service.action(entityActionOperation);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation)
+     */
+    @Override
+    public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation) throws ServiceException {
+        try {
+            return service.action(entityTypeActionOperation);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

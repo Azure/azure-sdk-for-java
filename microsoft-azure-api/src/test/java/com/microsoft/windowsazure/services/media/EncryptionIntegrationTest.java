@@ -64,8 +64,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     private String getProtectionKeyId() throws ServiceException {
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
         return protectionKeyId;
     }
 
@@ -106,7 +105,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     private String getProtectionKey(String protectionKeyId) throws ServiceException {
-        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
         return protectionKey;
     }
 

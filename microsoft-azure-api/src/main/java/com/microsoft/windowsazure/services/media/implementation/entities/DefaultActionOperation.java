@@ -39,7 +39,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
     /** The query parameters. */
-    protected final MultivaluedMap<String, String> queryParameters;
+    protected MultivaluedMap<String, String> queryParameters;
 
     /**
      * The default action operation.
@@ -62,10 +62,6 @@ public class DefaultActionOperation implements EntityActionOperation {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
      */
-    @Override
-    public void setProxyData(EntityProxyData proxyData) {
-        this.proxyData = proxyData;
-    }
 
     /**
      * Get the current proxy data
@@ -116,6 +112,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      *            the content type
      * @return the default action operation
      */
+    @Override
     public DefaultActionOperation setContentType(MediaType contentType) {
         this.contentType = contentType;
         return this;
@@ -147,7 +144,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     @Override
     public Object processResponse(ClientResponse clientResponse) {
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        return null;
+        return clientResponse;
     }
 
     /* (non-Javadoc)
@@ -167,7 +164,13 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     @Override
+    public void setProxyData(EntityProxyData proxyData) {
+        this.proxyData = proxyData;
+    }
+
+    @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
         return rawResponse;
     }
+
 }
