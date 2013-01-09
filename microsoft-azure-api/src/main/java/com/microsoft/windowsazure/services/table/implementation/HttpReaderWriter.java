@@ -40,15 +40,20 @@ public class HttpReaderWriter {
     public StatusLine parseStatusLine(DataSource ds) {
         try {
             LineInputStream stream = new LineInputStream(ds.getInputStream());
-            String line = stream.readLine();
-            StringReader lineReader = new StringReader(line);
+            try {
+                String line = stream.readLine();
+                StringReader lineReader = new StringReader(line);
 
-            expect(lineReader, "HTTP/1.1");
-            expect(lineReader, " ");
-            String statusString = extractInput(lineReader, ' ');
-            String reason = extractInput(lineReader, -1);
+                expect(lineReader, "HTTP/1.1");
+                expect(lineReader, " ");
+                String statusString = extractInput(lineReader, ' ');
+                String reason = extractInput(lineReader, -1);
 
-            return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
+                return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
+            }
+            finally {
+                stream.close();
+            }
         }
         catch (IOException e) {
             throw new RuntimeException(e);
