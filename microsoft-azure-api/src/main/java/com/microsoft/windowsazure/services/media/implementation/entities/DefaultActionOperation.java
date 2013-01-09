@@ -27,6 +27,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * Generic implementation of Delete operation usable by most entities.
  */
 public class DefaultActionOperation implements EntityActionOperation {
+
+    /** The proxy data. */
     private EntityProxyData proxyData;
 
     /** The name. */
@@ -39,7 +41,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
     /** The query parameters. */
-    protected final MultivaluedMap<String, String> queryParameters;
+    protected MultivaluedMap<String, String> queryParameters;
 
     /**
      * The default action operation.
@@ -68,7 +70,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /**
-     * Get the current proxy data
+     * Get the current proxy data.
      * 
      * @return the proxy data
      */
@@ -116,6 +118,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      *            the content type
      * @return the default action operation
      */
+    @Override
     public DefaultActionOperation setContentType(MediaType contentType) {
         this.contentType = contentType;
         return this;
@@ -142,15 +145,6 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
-     */
-    @Override
-    public Object processResponse(ClientResponse clientResponse) {
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        return null;
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getVerb()
      */
     @Override
@@ -166,8 +160,13 @@ public class DefaultActionOperation implements EntityActionOperation {
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#processResponse(java.lang.Object)
+     */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
+        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
+
 }
