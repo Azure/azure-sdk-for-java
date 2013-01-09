@@ -41,34 +41,26 @@ public class HttpReaderWriter {
         InputStream inputStream;
         try {
             inputStream = ds.getInputStream();
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        LineInputStream stream = new LineInputStream(inputStream);
+            LineInputStream stream = new LineInputStream(inputStream);
 
-        try {
-            String line = stream.readLine();
-            StringReader lineReader = new StringReader(line);
-
-            expect(lineReader, "HTTP/1.1");
-            expect(lineReader, " ");
-            String statusString = extractInput(lineReader, ' ');
-            String reason = extractInput(lineReader, -1);
-
-            return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        finally {
             try {
+                String line = stream.readLine();
+                StringReader lineReader = new StringReader(line);
+
+                expect(lineReader, "HTTP/1.1");
+                expect(lineReader, " ");
+                String statusString = extractInput(lineReader, ' ');
+                String reason = extractInput(lineReader, -1);
+
+                return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
+            }
+            finally {
                 stream.close();
             }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
