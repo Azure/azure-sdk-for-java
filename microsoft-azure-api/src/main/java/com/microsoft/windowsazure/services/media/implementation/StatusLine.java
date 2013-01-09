@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,15 +30,20 @@ public class StatusLine {
     public static StatusLine create(DataSource dataSource) {
         try {
             LineInputStream stream = new LineInputStream(dataSource.getInputStream());
-            String line = stream.readLine();
-            StringReader lineReader = new StringReader(line);
+            try {
+                String line = stream.readLine();
+                StringReader lineReader = new StringReader(line);
 
-            expect(lineReader, "HTTP/1.1");
-            expect(lineReader, " ");
-            String statusString = extractInput(lineReader, ' ');
-            String reason = extractInput(lineReader, -1);
+                expect(lineReader, "HTTP/1.1");
+                expect(lineReader, " ");
+                String statusString = extractInput(lineReader, ' ');
+                String reason = extractInput(lineReader, -1);
 
-            return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
+                return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
+            }
+            finally {
+                stream.close();
+            }
         }
         catch (IOException e) {
             throw new RuntimeException(e);

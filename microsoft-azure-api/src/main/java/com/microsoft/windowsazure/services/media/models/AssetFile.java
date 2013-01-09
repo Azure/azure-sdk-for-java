@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -207,7 +207,7 @@ public class AssetFile {
      *            Link to request AssetFiles from.
      * @return The list operation.
      */
-    public static DefaultListOperation<AssetFileInfo> list(LinkInfo link) {
+    public static DefaultListOperation<AssetFileInfo> list(LinkInfo<AssetFileInfo> link) {
         return new DefaultListOperation<AssetFileInfo>(link.getHref(), new GenericType<ListResult<AssetFileInfo>>() {
         });
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {
         for (int counter = 0; !wrapper.isJobFinished(job); counter++) {
-            if (counter > 10) {
+            if (counter > 30) {
                 fail("Took took long for the job to finish");
             }
             Thread.sleep(10000);

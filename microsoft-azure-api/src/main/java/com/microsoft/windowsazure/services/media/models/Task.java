@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,13 +74,13 @@ public class Task {
     }
 
     /**
-     * Create an operation that will list the tasks pointed to by the given link
+     * Create an operation that will list the tasks pointed to by the given link.
      * 
      * @param link
      *            link to tasks
      * @return the list operation.
      */
-    public static DefaultListOperation<TaskInfo> list(LinkInfo link) {
+    public static DefaultListOperation<TaskInfo> list(LinkInfo<TaskInfo> link) {
         return new DefaultListOperation<TaskInfo>(link.getHref(), new GenericType<ListResult<TaskInfo>>() {
         });
     }
@@ -228,6 +228,7 @@ public class Task {
             this.taskType.setInitializationVector(initializationVector);
             return this;
         }
+
     }
 
 }

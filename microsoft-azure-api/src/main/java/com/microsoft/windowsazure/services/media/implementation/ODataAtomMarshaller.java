@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class ODataAtomMarshaller {
                 new JAXBElement<EntryType>(new QName(Constants.ATOM_NS, "entry"), EntryType.class, entryType), stream);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private JAXBElement<EntryType> createEntry(Object content) {
         ContentType atomContent = new ContentType();
         EntryType atomEntry = new EntryType();

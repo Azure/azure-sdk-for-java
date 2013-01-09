@@ -1,3 +1,18 @@
+/**
+ * Copyright Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
@@ -80,10 +95,7 @@ public abstract class IntegrationTestBase {
         cleanupEnvironment();
     }
 
-    private static void cleanupEnvironment() {
-        // TODO: This should be removed once cascade delete is implemented for Assets.
-        // But for now, trying to delete an asset with fail if there are any 
-        // existing Locators associated with it.
+    protected static void cleanupEnvironment() {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
@@ -96,7 +108,12 @@ public abstract class IntegrationTestBase {
             List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list());
 
             for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
-                service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                try {
+                    service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         catch (Exception e) {

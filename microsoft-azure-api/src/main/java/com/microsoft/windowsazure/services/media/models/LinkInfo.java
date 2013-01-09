@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 
 /**
  * Provides access to OData links
  * 
  */
-public class LinkInfo {
+public class LinkInfo<T extends ODataEntity<?>> {
     private final LinkType rawLink;
 
     /**

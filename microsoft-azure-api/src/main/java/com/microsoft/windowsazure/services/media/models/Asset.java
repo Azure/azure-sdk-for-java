@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,7 +171,7 @@ public class Asset {
      *            the link
      * @return the get operation
      */
-    public static EntityGetOperation<AssetInfo> get(LinkInfo link) {
+    public static EntityGetOperation<AssetInfo> get(LinkInfo<AssetInfo> link) {
         return new DefaultGetOperation<AssetInfo>(link.getHref(), AssetInfo.class);
     }
 
@@ -204,7 +204,7 @@ public class Asset {
      *            Link to request assets from.
      * @return The list operation.
      */
-    public static DefaultListOperation<AssetInfo> list(LinkInfo link) {
+    public static DefaultListOperation<AssetInfo> list(LinkInfo<AssetInfo> link) {
         return new DefaultListOperation<AssetInfo>(link.getHref(), new GenericType<ListResult<AssetInfo>>() {
         });
     }

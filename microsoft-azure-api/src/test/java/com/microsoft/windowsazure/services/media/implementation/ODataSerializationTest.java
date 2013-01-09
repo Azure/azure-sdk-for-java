@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,6 +74,7 @@ public class ODataSerializationTest {
         Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entries.get(0).getId());
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void canMarshalEntryFromJavaObject() throws Exception {
         AssetType a = new AssetType();

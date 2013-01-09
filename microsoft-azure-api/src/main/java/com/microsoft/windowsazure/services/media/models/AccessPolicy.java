@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ public class AccessPolicy {
      *            the link
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo link) {
+    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo<AccessPolicyInfo> link) {
         return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
     }
 

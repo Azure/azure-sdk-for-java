@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +17,38 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.AccessPolicy;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.AssetState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
+import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
+import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.Locator;
+import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 
 public class AssetIntegrationTest extends IntegrationTestBase {
 
@@ -300,5 +315,44 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         service.action(Asset.linkContentKey(validButNonexistAssetId, "nb:kid:UUID:invalidContentKeyId"));
 
         // Assert
+    }
+
+    @Test
+    public void canGetParentBackFromAsset() throws ServiceException, InterruptedException {
+        // Arrange
+        String originalAssetName = testAssetPrefix + "canGetParentBackFromAsset";
+        AssetInfo originalAsset = service.create(Asset.create().setName(originalAssetName));
+
+        int durationInMinutes = 10;
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix
+                + "uploadAesPortectedAssetSuccess", durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+
+        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), originalAsset.getId(),
+                LocatorType.SAS));
+        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
+
+        InputStream mpeg4H264InputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
+        blobWriter.createBlockBlob("MPEG4-H264.mp4", mpeg4H264InputStream);
+        service.action(AssetFile.createFileInfos(originalAsset.getId()));
+
+        String jobName = testJobPrefix + "createJobSuccess";
+        CreateBatchOperation taskCreator = Task
+                .create("nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5",
+                        "<taskBody>" + "<inputAsset>JobInputAsset(0)</inputAsset>"
+                                + "<outputAsset>JobOutputAsset(0)</outputAsset>" + "</taskBody>")
+                .setConfiguration("H.264 256k DSL CBR").setName("My encoding Task");
+        JobInfo jobInfo = service.create(Job.create().setName(jobName).addInputMediaAsset(originalAsset.getId())
+                .addTaskCreator(taskCreator));
+
+        // Act
+        ListResult<AssetInfo> outputAssets = service.list(Asset.list(jobInfo.getOutputAssetsLink()));
+        assertEquals(1, outputAssets.size());
+        AssetInfo childAsset = outputAssets.get(0);
+
+        LinkInfo parentAssetLink = childAsset.getParentAssetsLink();
+        AssetInfo parentAsset = service.get(Asset.get(parentAssetLink));
+
+        // Assert
+        assertEquals(originalAsset.getId(), parentAsset.getId());
     }
 }

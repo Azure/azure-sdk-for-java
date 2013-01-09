@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobState;
+import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
@@ -40,16 +41,15 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
     private static AssetInfo assetInfo;
 
-    private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) {
+    private void verifyJobInfoEqual(String message, JobInfo expected, JobInfo actual) throws ServiceException {
         verifyJobProperties(message, expected.getName(), expected.getPriority(), expected.getRunningDuration(),
                 expected.getState(), expected.getTemplateId(), expected.getCreated(), expected.getLastModified(),
-                expected.getStartTime(), expected.getEndTime(), actual);
+                expected.getStartTime(), expected.getEndTime(), null, actual);
     }
 
-    @SuppressWarnings("deprecation")
     private void verifyJobProperties(String message, String testName, Integer priority, double runningDuration,
             JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
-            JobInfo actualJob) {
+            Integer expectedTaskCount, JobInfo actualJob) throws ServiceException {
         assertNotNull(message, actualJob);
 
         assertNotNull(message + "Id", actualJob.getId());
@@ -66,8 +66,11 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertDateApproxEquals(message + " StartTime", startTime, actualJob.getStartTime());
         assertDateApproxEquals(message + " EndTime", endTime, actualJob.getEndTime());
 
-        // TODO: Add test for accessing the tasks when fixed:
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/531
+        if (expectedTaskCount != null) {
+            LinkInfo tasksLink = actualJob.getTasksLink();
+            ListResult<TaskInfo> actualTasks = service.list(Task.list(tasksLink));
+            assertEquals(message + " tasks size", expectedTaskCount.intValue(), actualTasks.size());
+        }
     }
 
     private JobInfo createJob(String name) throws ServiceException {
@@ -108,7 +111,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, actualJob);
+                endTime, 1, actualJob);
     }
 
     @Test
@@ -133,7 +136,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, actualJob);
+                endTime, 2, actualJob);
     }
 
     @Test
@@ -155,7 +158,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
-                endTime, actualJob);
+                endTime, 1, actualJob);
     }
 
     @Test
@@ -180,7 +183,12 @@ public class JobIntegrationTest extends IntegrationTestBase {
         verifyListResultContains("listJobs", expectedListJobsResult, actualListJobResult, new ComponentDelegate() {
             @Override
             public void verifyEquals(String message, Object expected, Object actual) {
-                verifyJobInfoEqual(message, (JobInfo) expected, (JobInfo) actual);
+                try {
+                    verifyJobInfoEqual(message, (JobInfo) expected, (JobInfo) actual);
+                }
+                catch (ServiceException e) {
+                    fail(e.getMessage());
+                }
             }
         });
     }
@@ -293,6 +301,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canGetErrorDetailsFromTask() throws Exception {
+        cleanupEnvironment();
         String name = testJobPrefix + "canGetErrorDetailsFromTask";
 
         JobInfo actualJob = service.create(Job.create().setName(name).addInputMediaAsset(assetInfo.getId())

@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,100 +16,50 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.Random;
-import java.util.UUID;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
-public class EncryptionHelper {
-
-    public static byte[] createRandomVector(int numberOfBits) {
-        int numberOfBytes = numberOfBits / 8;
-        byte[] randomVector = new byte[numberOfBytes];
-        Random random = new Random();
-        random.nextBytes(randomVector);
-        return randomVector;
-    }
-
-    public static byte[] EncryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
-
-        X509Certificate x509Certificate = createX509CertificateFromString(protectionKey);
-        return EncryptSymmetricKey(x509Certificate.getPublicKey(), inputData);
-    }
-
-    private static X509Certificate createX509CertificateFromString(String protectionKey) throws CertificateException {
+class EncryptionHelper {
+    public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.decode(protectionKey));
-        X509Certificate x509cert = (X509Certificate) certificateFactory.generateCertificate(byteArrayInputStream);
-        return x509cert;
-
-    }
-
-    public static byte[] EncryptSymmetricKey(Key publicKey, byte[] inputData) throws NoSuchAlgorithmException,
-            NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
-            BadPaddingException {
-        Cipher cipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
+        byte[] protectionKeyBytes = Base64.decode(protectionKey);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(protectionKeyBytes);
+        Certificate certificate = certificateFactory.generateCertificate(byteArrayInputStream);
+        Key publicKey = certificate.getPublicKey();
         SecureRandom secureRandom = new SecureRandom();
         cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
         byte[] cipherText = cipher.doFinal(inputData);
         return cipherText;
     }
 
-    public static String calculateChecksum(UUID uuid, byte[] aesKey) throws NoSuchAlgorithmException,
-            NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-            InvalidKeyException {
+    public static String calculateContentKeyChecksum(String uuid, byte[] aesKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING", "BC");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-        byte[] encryptionResult = cipher.doFinal(uuid.toString().getBytes());
+        byte[] encryptionResult = cipher.doFinal(uuid.getBytes("UTF8"));
         byte[] checksumByteArray = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            checksumByteArray[i] = encryptionResult[i];
-        }
+        System.arraycopy(encryptionResult, 0, checksumByteArray, 0, 8);
         String checksum = Base64.encode(checksumByteArray);
         return checksum;
     }
 
-    public static byte[] EncryptFile(InputStream inputStream, byte[] aesKey, byte[] initializationVector)
-            throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException, IOException {
-        // preparation
-        SecretKeySpec key = new SecretKeySpec(aesKey, "AES");
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
-        Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding", "BC");
-
-        // encryption
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
+    public static InputStream encryptFile(InputStream inputStream, byte[] key, byte[] iv) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
         CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int ch;
-        while ((ch = cipherInputStream.read()) >= 0) {
-            byteArrayOutputStream.write(ch);
-        }
-
-        byte[] cipherText = byteArrayOutputStream.toByteArray();
-        return cipherText;
+        return cipherInputStream;
     }
-
 }

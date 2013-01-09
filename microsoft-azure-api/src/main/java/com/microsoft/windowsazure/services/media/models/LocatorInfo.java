@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,8 +124,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the link
      */
-    public LinkInfo getAccessPolicyLink() {
-        return getRelationLink("AccessPolicy");
+    public LinkInfo<AccessPolicyInfo> getAccessPolicyLink() {
+        return this.<AccessPolicyInfo> getRelationLink("AccessPolicy");
     }
 
     /**
@@ -133,7 +133,7 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the link
      */
-    public LinkInfo getAssetLink() {
-        return getRelationLink("Asset");
+    public LinkInfo<AssetInfo> getAssetLink() {
+        return this.<AssetInfo> getRelationLink("Asset");
     }
 }

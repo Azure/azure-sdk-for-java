@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
-import java.net.URLEncoder;
-
 import javax.xml.bind.JAXBElement;
 
 import org.junit.Test;
@@ -32,7 +30,6 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
  */
 public class TaskEntityTest {
     static final String sampleTaskId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
-    private final String expectedUri = String.format("Tasks('%s')", URLEncoder.encode(sampleTaskId, "UTF-8"));
 
     private TaskType getTaskType(EntryType entryType) {
         for (Object child : entryType.getEntryChildren()) {
@@ -43,6 +40,7 @@ public class TaskEntityTest {
                     ContentType contentType = (ContentType) element.getValue();
                     for (Object grandChild : contentType.getContent()) {
                         if (grandChild instanceof JAXBElement) {
+                            @SuppressWarnings("rawtypes")
                             JAXBElement contentElement = (JAXBElement) grandChild;
                             TaskType taskType = (TaskType) contentElement.getValue();
                             return taskType;

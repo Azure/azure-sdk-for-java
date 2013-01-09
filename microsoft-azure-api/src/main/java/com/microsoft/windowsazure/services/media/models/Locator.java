@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,7 +218,7 @@ public class Locator {
      *            Link to request locators from.
      * @return The list operation.
      */
-    public static DefaultListOperation<LocatorInfo> list(LinkInfo link) {
+    public static DefaultListOperation<LocatorInfo> list(LinkInfo<LocatorInfo> link) {
         return new DefaultListOperation<LocatorInfo>(link.getHref(), new GenericType<ListResult<LocatorInfo>>() {
         });
     }

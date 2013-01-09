@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,8 +81,6 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase {
 
         verifyPolicyProperties("policy", testName, duration, AccessPolicyPermission.READ, policy);
     }
-
-    // TODO: Null name or duration?
 
     @Test
     public void canGetSinglePolicyById() throws Exception {

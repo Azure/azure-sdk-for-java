@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JobInfo.
  */
@@ -134,8 +133,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo getInputAssetsLink() {
-        return getRelationLink("InputMediaAssets");
+    public LinkInfo<AssetInfo> getInputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("InputMediaAssets");
     }
 
     /**
@@ -143,8 +142,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo getOutputAssetsLink() {
-        return getRelationLink("OutputMediaAssets");
+    public LinkInfo<AssetInfo> getOutputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("OutputMediaAssets");
     }
 
     /**
@@ -152,7 +151,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the tasks link
      */
-    public LinkInfo getTasksLink() {
-        return getRelationLink("Tasks");
+    public LinkInfo<TaskInfo> getTasksLink() {
+        return this.<TaskInfo> getRelationLink("Tasks");
     }
 }

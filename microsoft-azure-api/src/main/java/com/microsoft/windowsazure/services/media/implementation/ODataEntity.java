@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
@@ -88,12 +86,12 @@ public abstract class ODataEntity<T> {
      *            rel of link to retrieve
      * @return The link if found, null if not.
      */
-    public LinkInfo getLink(String rel) {
+    public <U extends ODataEntity<?>> LinkInfo<U> getLink(String rel) {
         for (Object child : entry.getEntryChildren()) {
 
             LinkType link = LinkFromChild(child);
             if (link != null && link.getRel().equals(rel)) {
-                return new LinkInfo(link);
+                return new LinkInfo<U>(link);
             }
         }
         return null;
@@ -106,24 +104,8 @@ public abstract class ODataEntity<T> {
      *            name of the OData relationship
      * @return the link if found, null if not.
      */
-    public LinkInfo getRelationLink(String relationName) {
-        return getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
-    }
-
-    /**
-     * Return the links from this entry
-     * 
-     * @return List of the links.
-     */
-    public List<LinkInfo> getLinks() {
-        ArrayList<LinkInfo> links = new ArrayList<LinkInfo>();
-        for (Object child : entry.getEntryChildren()) {
-            LinkType link = LinkFromChild(child);
-            if (link != null) {
-                links.add(new LinkInfo(link));
-            }
-        }
-        return links;
+    public <U extends ODataEntity<?>> LinkInfo<U> getRelationLink(String relationName) {
+        return this.<U> getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
     }
 
     @SuppressWarnings("rawtypes")

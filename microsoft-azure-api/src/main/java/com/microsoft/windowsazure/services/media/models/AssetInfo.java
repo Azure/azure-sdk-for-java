@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,8 +107,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * 
      * @return the link
      */
-    public LinkInfo getAssetFilesLink() {
-        return getRelationLink("Files");
+    public LinkInfo<AssetFileInfo> getAssetFilesLink() {
+        return this.<AssetFileInfo> getRelationLink("Files");
     }
 
     /**
@@ -116,8 +116,8 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * 
      * @return the link
      */
-    public LinkInfo getContentKeysLink() {
-        return getRelationLink("ContentKeys");
+    public LinkInfo<ContentKeyInfo> getContentKeysLink() {
+        return this.<ContentKeyInfo> getRelationLink("ContentKeys");
     }
 
     /**
@@ -125,17 +125,16 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * 
      * @return the link
      */
-    public LinkInfo getLocatorsLink() {
-        return getRelationLink("Locators");
+    public LinkInfo<LocatorInfo> getLocatorsLink() {
+        return this.<LocatorInfo> getRelationLink("Locators");
     }
 
     /**
-     * Get a link to the asset's locators
+     * Get a link to this asset's parents
      * 
      * @return the link
      */
-    public LinkInfo getParentAssetsLink() {
-        // TODO: NEEDS TESTS once we figure out how to create assets with parents
-        return getRelationLink("ParentAssets");
+    public LinkInfo<AssetInfo> getParentAssetsLink() {
+        return this.<AssetInfo> getRelationLink("ParentAssets");
     }
 }

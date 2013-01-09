@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 package com.microsoft.windowsazure.services.media.implementation;
 
 import static org.junit.Assert.*;
-
-import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -94,15 +92,6 @@ public class LinkRetrievalTest {
     @Test
     public void getNullWhenLinkIsntThere() {
         assertNull(info.getLink("noSuchLink"));
-    }
-
-    @Test
-    public void getLinksReturnsTwoExpectedLinksInOrder() {
-        List<LinkInfo> links = info.getLinks();
-
-        assertEquals(2, links.size());
-        assertLinksEqual(link1, links.get(0));
-        assertLinksEqual(link2, links.get(1));
     }
 
     private static void assertLinksEqual(LinkType expected, LinkInfo actual) {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -189,8 +189,6 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         //Assert
         List<TaskInfo> taskInfos = service.list(Task.list(cancellingJobInfo.getTasksLink()));
         for (TaskInfo taskInfo : taskInfos) {
-            // Replace with enums
-            // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/522
             verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId, TaskOption.None, taskBody,
                     configuration, name, 0, new Date(), null, 0.0, 0.0, null, TaskState.Canceled, taskInfo);
         }
@@ -224,9 +222,6 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         assertDateApproxEquals(message + " getEndTime", endTime, actual.getEndTime());
         assertNotNull(message + " getErrorDetails", actual.getErrorDetails());
         assertEquals(message + " getErrorDetails.size", 0, actual.getErrorDetails().size());
-
-        // TODO: Add tests for Historical events when added
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/494
 
         ListResult<AssetInfo> inputAssets = service.list(Asset.list(actual.getInputAssetsLink()));
         ListResult<AssetInfo> outputAssets = service.list(Asset.list(actual.getOutputAssetsLink()));

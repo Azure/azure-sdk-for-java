@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -211,7 +211,7 @@ public class ContentKey {
      *            Link to request content keys from.
      * @return The list operation.
      */
-    public static DefaultListOperation<ContentKeyInfo> list(LinkInfo link) {
+    public static DefaultListOperation<ContentKeyInfo> list(LinkInfo<ContentKeyInfo> link) {
         return new DefaultListOperation<ContentKeyInfo>(link.getHref(), new GenericType<ListResult<ContentKeyInfo>>() {
         });
     }

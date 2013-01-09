@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ public class Exports implements Builder.Exports {
         registry.add(VersionHeadersFilter.class);
 
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+            @SuppressWarnings("rawtypes")
             @Override
             public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 
