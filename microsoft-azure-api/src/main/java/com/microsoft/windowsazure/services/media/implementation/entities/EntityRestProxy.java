@@ -165,7 +165,6 @@ public abstract class EntityRestProxy implements EntityContract {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation) throws ServiceException {
         entityTypeActionOperation.setProxyData(createProxyData());
@@ -174,7 +173,7 @@ public abstract class EntityRestProxy implements EntityContract {
                 .accept(entityTypeActionOperation.getAcceptType()).accept(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityTypeActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
         ClientResponse clientResponse = webResource.method(entityTypeActionOperation.getVerb(), ClientResponse.class);
-        return (T) entityTypeActionOperation.processResponse(clientResponse);
+        return entityTypeActionOperation.processTypeResponse(clientResponse);
     }
 
     /* (non-Javadoc)

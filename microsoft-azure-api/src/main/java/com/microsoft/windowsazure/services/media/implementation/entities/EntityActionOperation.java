@@ -55,6 +55,13 @@ public interface EntityActionOperation extends EntityOperation {
      */
     Object getRequestContents();
 
-    DefaultActionOperation setContentType(MediaType contentType);
+    /**
+     * Sets the content type.
+     * 
+     * @param contentType
+     *            the content type
+     * @return the default action operation
+     */
+    EntityActionOperation setContentType(MediaType contentType);
 
 }
