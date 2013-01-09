@@ -67,7 +67,6 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
-import com.microsoft.windowsazure.services.media.models.TaskOption;
 
 class MediaServiceWrapper {
     private final MediaContract service;
@@ -77,7 +76,6 @@ class MediaServiceWrapper {
     private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
     private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
     private final String MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS = "MP4 to Smooth Streams Task";
-    private final String MEDIA_PROCESSOR_PLAYREADY_PROTECTION = "PlayReady Protection Task";
     private final String MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS = "Smooth Streams to HLS Task";
 
     // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973635.aspx
@@ -118,6 +116,10 @@ class MediaServiceWrapper {
             + "    <taskCode>"
             + "        <type>Microsoft.Web.Media.TransformManager.SmoothToHLS.SmoothToHLSTask, Microsoft.Web.Media.TransformManager.SmoothToHLS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
             + "    </taskCode>" + "</taskDefinition>";
+
+    public static enum EncoderType {
+        WindowsAzureMediaEncoder, Mp4ToSmoothStream, SmoothStreamsToHls, StorageDecryption
+    }
 
     public MediaServiceWrapper(MediaContract service) {
         this.service = service;
@@ -284,55 +286,35 @@ class MediaServiceWrapper {
     }
 
     // Process
-    public Task.CreateBatchOperation createTaskOptionsWindowsAzureMediaEncoder(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
+    public Task.CreateBatchOperation createTaskOptions(String taskName, int inputAssetId, int outputAssetId,
+            EncoderType encoderType) throws ServiceException {
         String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER), taskBody)
-                .setName(taskName).setConfiguration("H.264 256k DSL CBR");
 
-        return taskCreate;
-    }
+        String processor = null;
+        String configuration = null;
+        switch (encoderType) {
+            case Mp4ToSmoothStream:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS);
+                configuration = configMp4ToSmoothStreams;
+                break;
+            case SmoothStreamsToHls:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS);
+                configuration = configSmoothStreamsToAppleHttpLiveStreams;
+                break;
+            case WindowsAzureMediaEncoder:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER);
+                configuration = "H.264 256k DSL CBR";
+                break;
+            case StorageDecryption:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION);
+                configuration = null;
+                break;
+            default:
+                break;
+        }
 
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsPlayReadyProtection(String taskName,
-            String playReadyConfiguration, int inputAssetId, int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION), taskBody).setName(taskName)
-                .setOptions(TaskOption.ProtectedConfiguration).setConfiguration(playReadyConfiguration);
-
-        return taskCreate;
-    }
-
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsMp4ToSmoothStreams(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS), taskBody).setName(taskName)
-                .setConfiguration(configMp4ToSmoothStreams);
-
-        return taskCreate;
-    }
-
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsSmoothStreamsToHls(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS), taskBody).setName(taskName)
-                .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams);
-
-        return taskCreate;
-    }
-
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsDecodeAsset(String taskName, int inputAssetId, int outputAssetId)
-            throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task.create(
-                getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION), taskBody).setName(taskName);
+        Task.CreateBatchOperation taskCreate = Task.create(processor, taskBody).setName(taskName)
+                .setConfiguration(configuration);
 
         return taskCreate;
     }
@@ -373,48 +355,18 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    public List<URL> createOriginUrlsForStreamingContent(AssetInfo asset, int availabilityWindowInMinutes)
-            throws ServiceException, MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true, "",
-                LocatorType.OnDemandOrigin);
-    }
-
-    // Deliver
-    public List<URL> createOriginUrlsForAppleHLSContent(AssetInfo asset, int availabilityWindowInMinutes)
-            throws ServiceException, MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true,
-                "(format=m3u8-aapl)", LocatorType.OnDemandOrigin);
-    }
-
-    // Deliver
     public List<URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes) throws ServiceException,
             MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, false, null,
-                LocatorType.SAS);
-    }
-
-    private List<URL> createOriginUrlsForStreamingContentWorker(AssetInfo asset, int availabilityWindowInMinutes,
-            boolean isSmooth, String suffix, LocatorType locatorType) throws ServiceException, MalformedURLException {
         List<URL> ret = new ArrayList<URL>();
 
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
-        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
+        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), LocatorType.SAS));
 
         List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
-            if (isSmooth) {
-                // Smooth Streaming format ends with ".ism*"
-                int index = fi.getName().lastIndexOf('.');
-                boolean isSmoothSteamFile = fi.getName().regionMatches(true, index + 1, "ism", 0, 3);
-                if (isSmoothSteamFile) {
-                    ret.add(constructUrlFromLocatorAndFileName(readLocator, fi.getName() + "/manifest"));
-                }
-            }
-            else {
-                URL file = constructUrlFromLocatorAndFileName(readLocator, fi.getName());
-                ret.add(file);
-            }
+            URL file = constructUrlFromLocatorAndFileName(readLocator, fi.getName());
+            ret.add(file);
         }
 
         return ret;

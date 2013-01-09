@@ -37,6 +37,7 @@ import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.EncoderType;
 
 public class MediaServiceScenarioTest extends ScenarioTestBase {
     private static final String rootTestAssetPrefix = "testAssetPrefix-";
@@ -151,7 +152,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
                 .createAsset(testAssetPrefix + "transformEncryptedAsset", AssetOption.StorageEncrypted);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
         String jobName = "my job transformEncryptedAsset" + UUID.randomUUID().toString();
-        JobInfo job = wrapper.createJob(jobName, asset, wrapper.createTaskOptionsDecodeAsset("Decode", 0, 0));
+        JobInfo job = wrapper.createJob(jobName, asset,
+                wrapper.createTaskOptions("Decode", 0, 0, EncoderType.StorageDecryption));
         signalSetupFinished();
 
         waitForJobToFinish(job);
@@ -180,8 +182,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     private List<Task.CreateBatchOperation> createTasks() throws ServiceException {
         List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
 
-        tasks.add(wrapper.createTaskOptionsMp4ToSmoothStreams("MP4 to SS", 0, 0));
-        tasks.add(wrapper.createTaskOptionsSmoothStreamsToHls("SS to HLS", 0, 1));
+        tasks.add(wrapper.createTaskOptions("MP4 to SS", 0, 0, EncoderType.Mp4ToSmoothStream));
+        tasks.add(wrapper.createTaskOptions("SS to HLS", 0, 1, EncoderType.SmoothStreamsToHls));
         return tasks;
     }
 
