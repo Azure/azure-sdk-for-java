@@ -67,7 +67,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         assertDateApproxEquals(message + " EndTime", endTime, actualJob.getEndTime());
 
         if (expectedTaskCount != null) {
-            LinkInfo tasksLink = actualJob.getTasksLink();
+            LinkInfo<TaskInfo> tasksLink = actualJob.getTasksLink();
             ListResult<TaskInfo> actualTasks = service.list(Task.list(tasksLink));
             assertEquals(message + " tasks size", expectedTaskCount.intValue(), actualTasks.size());
         }
