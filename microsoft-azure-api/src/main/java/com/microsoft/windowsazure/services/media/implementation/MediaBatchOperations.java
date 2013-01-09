@@ -352,9 +352,7 @@ public class MediaBatchOperations {
             }
             else if (entityBatchOperation instanceof Task.CreateBatchOperation) {
                 try {
-                    TaskInfo taskInfo = oDataAtomUnmarshaller.unmarshalEntry(content, TaskInfo.class);
-                    Task.CreateBatchOperation taskCreateBatchOperation = (Task.CreateBatchOperation) entityBatchOperation;
-                    taskCreateBatchOperation.setTaskInfo(taskInfo);
+                    oDataAtomUnmarshaller.unmarshalEntry(content, TaskInfo.class);
                 }
                 catch (JAXBException e) {
                     throw new ServiceException(e);
