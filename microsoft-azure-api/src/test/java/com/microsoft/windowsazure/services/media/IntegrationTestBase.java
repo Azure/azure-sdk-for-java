@@ -80,7 +80,7 @@ public abstract class IntegrationTestBase {
         cleanupEnvironment();
     }
 
-    private static void cleanupEnvironment() {
+    protected static void cleanupEnvironment() {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
