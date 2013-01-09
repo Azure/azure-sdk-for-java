@@ -52,6 +52,7 @@ public class MediaBatchOperationsTest {
         URI serviceUri = null;
 
         // Act 
+        @SuppressWarnings("unused")
         MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
 
         // Assert
