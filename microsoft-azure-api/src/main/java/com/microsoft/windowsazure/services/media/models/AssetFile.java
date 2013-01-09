@@ -207,7 +207,7 @@ public class AssetFile {
      *            Link to request AssetFiles from.
      * @return The list operation.
      */
-    public static DefaultListOperation<AssetFileInfo> list(LinkInfo link) {
+    public static DefaultListOperation<AssetFileInfo> list(LinkInfo<AssetFileInfo> link) {
         return new DefaultListOperation<AssetFileInfo>(link.getHref(), new GenericType<ListResult<AssetFileInfo>>() {
         });
     }

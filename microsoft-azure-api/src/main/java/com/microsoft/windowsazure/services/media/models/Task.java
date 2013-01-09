@@ -80,7 +80,7 @@ public class Task {
      *            link to tasks
      * @return the list operation.
      */
-    public static DefaultListOperation<TaskInfo> list(LinkInfo link) {
+    public static DefaultListOperation<TaskInfo> list(LinkInfo<TaskInfo> link) {
         return new DefaultListOperation<TaskInfo>(link.getHref(), new GenericType<ListResult<TaskInfo>>() {
         });
     }

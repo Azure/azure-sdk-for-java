@@ -97,7 +97,7 @@ public class AccessPolicy {
      *            the link
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo link) {
+    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo<AccessPolicyInfo> link) {
         return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
     }
 
