@@ -15,17 +15,29 @@
 
 package com.microsoft.windowsazure.services.scenarios;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.DigestInputStream;
+import java.security.Key;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
@@ -38,9 +50,12 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
+import com.microsoft.windowsazure.services.media.models.AssetFile.Updater;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.Job.Creator;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
@@ -50,14 +65,16 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.media.models.TaskOption;
 
 class MediaServiceWrapper {
     private final MediaContract service;
 
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
 
-    //    private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
+    private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
     private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
     private final String MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS = "MP4 to Smooth Streams Task";
     private final String MEDIA_PROCESSOR_PLAYREADY_PROTECTION = "PlayReady Protection Task";
@@ -131,10 +148,33 @@ class MediaServiceWrapper {
 
     // Ingest
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes, Hashtable<String, InputStream> inputFiles)
-            throws ServiceException, IOException, NoSuchAlgorithmException {
+            throws Exception {
+        uploadFilesToAsset(asset, uploadWindowInMinutes, inputFiles, null);
+    }
+
+    public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
+            Hashtable<String, InputStream> inputFiles, byte[] aesKey) throws Exception {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
         LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
+
+        String contentKeyId = null;
+        if (aesKey != null) {
+            String protectionKeyId = (String) service.action(ProtectionKey
+                    .getProtectionKeyId(ContentKeyType.StorageEncryption));
+            String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+            String contentKeyIdUuid = UUID.randomUUID().toString();
+            contentKeyId = "nb:kid:UUID:" + contentKeyIdUuid;
+
+            byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+            String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+            String checksum = EncryptionHelper.calculateContentKeyChecksum(contentKeyIdUuid, aesKey);
+
+            service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                    .setChecksum(checksum).setProtectionKeyId(protectionKeyId));
+            service.action(Asset.linkContentKey(asset.getId(), contentKeyId));
+        }
 
         WritableBlobContainerContract uploader = service.createBlobWriter(locator);
 
@@ -142,9 +182,31 @@ class MediaServiceWrapper {
 
         boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
+
             MessageDigest digest = MessageDigest.getInstance("MD5");
 
             InputStream inputStream = inputFiles.get(fileName);
+
+            String initializationVector = null;
+            if (aesKey != null) {
+                // Media Services requires 128-bit (16-byte) initialization vectors (IV)
+                // for AES encryption, but also that only the first 8 bytes are filled.
+                Random random = new Random();
+                byte[] effectiveIv = new byte[8];
+                random.nextBytes(effectiveIv);
+                byte[] iv = new byte[16];
+                System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
+
+                byte[] sub = new byte[9];
+                // Offset the bytes to ensure that the sign-bit is not set.
+                // Media Services expects unsigned Int64 values.
+                System.arraycopy(iv, 0, sub, 1, 8);
+                BigInteger longIv = new BigInteger(sub);
+                initializationVector = longIv.toString();
+
+                inputStream = EncryptionHelper.encryptFile(inputStream, aesKey, iv);
+            }
+
             InputStream digestStream = new DigestInputStream(inputStream, digest);
             CountingStream countingStream = new CountingStream(digestStream);
 
@@ -153,11 +215,10 @@ class MediaServiceWrapper {
             inputStream.close();
             byte[] md5hash = digest.digest();
             String md5 = Base64.encode(md5hash);
-            System.out.println("md5: " + md5);
 
             AssetFileInfo fi = new AssetFileInfo(null, new AssetFileType().setContentChecksum(md5)
                     .setContentFileSize(new Long(countingStream.getCount())).setIsPrimary(isFirst).setName(fileName)
-                    .setParentAssetId(asset.getAlternateId()));
+                    .setParentAssetId(asset.getAlternateId()).setInitializationVector(initializationVector));
             infoToUpload.put(fileName, fi);
 
             isFirst = false;
@@ -165,11 +226,16 @@ class MediaServiceWrapper {
 
         service.action(AssetFile.createFileInfos(asset.getId()));
         for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getAssetFilesLink()))) {
+            AssetFileInfo fileInfo = infoToUpload.get(assetFile.getName());
+            Updater updateOp = AssetFile.update(assetFile.getId()).setContentChecksum(fileInfo.getContentChecksum())
+                    .setContentFileSize(fileInfo.getContentFileSize()).setIsPrimary(fileInfo.getIsPrimary());
 
-            AssetFileInfo x = infoToUpload.get(assetFile.getName());
-            System.out.println(x);
-            service.update(AssetFile.update(assetFile.getId()).setContentChecksum(x.getContentChecksum())
-                    .setContentFileSize(x.getContentFileSize()).setIsPrimary(x.getIsPrimary()));
+            if (aesKey != null) {
+                updateOp.setIsEncrypted(true).setEncryptionKeyId(contentKeyId).setEncryptionScheme("StorageEncryption")
+                        .setEncryptionVersion("1.0").setInitializationVector(fileInfo.getInitializationVector());
+            }
+
+            service.update(updateOp);
         }
 
         service.list(AssetFile.list(asset.getAssetFilesLink()));
@@ -199,6 +265,13 @@ class MediaServiceWrapper {
     }
 
     // Process
+    public JobInfo createJob(String jobName, AssetInfo inputAsset, Task.CreateBatchOperation task)
+            throws ServiceException {
+        List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
+        tasks.add(task);
+        return createJob(jobName, inputAsset, tasks);
+    }
+
     public JobInfo createJob(String jobName, AssetInfo inputAsset, List<Task.CreateBatchOperation> tasks)
             throws ServiceException {
         Creator jobCreator = Job.create().setName(jobName).addInputMediaAsset(inputAsset.getId()).setPriority(2);
@@ -227,10 +300,7 @@ class MediaServiceWrapper {
         String taskBody = getTaskBody(inputAssetId, outputAssetId);
         Task.CreateBatchOperation taskCreate = Task
                 .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION), taskBody).setName(taskName)
-                // TODO: Re-enable
-                // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/499
-                // .setTaskCreationOptions(TaskCreationOptions.ProtectedConfiguration)
-                .setConfiguration(playReadyConfiguration);
+                .setOptions(TaskOption.ProtectedConfiguration).setConfiguration(playReadyConfiguration);
 
         return taskCreate;
     }
@@ -253,6 +323,16 @@ class MediaServiceWrapper {
         Task.CreateBatchOperation taskCreate = Task
                 .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS), taskBody).setName(taskName)
                 .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams);
+
+        return taskCreate;
+    }
+
+    // Process
+    public Task.CreateBatchOperation createTaskOptionsDecodeAsset(String taskName, int inputAssetId, int outputAssetId)
+            throws ServiceException {
+        String taskBody = getTaskBody(inputAssetId, outputAssetId);
+        Task.CreateBatchOperation taskCreate = Task.create(
+                getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION), taskBody).setName(taskName);
 
         return taskCreate;
     }
@@ -397,4 +477,40 @@ class MediaServiceWrapper {
             }
         }
     }
+
+    private static class EncryptionHelper {
+        public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
+            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            byte[] protectionKeyBytes = Base64.decode(protectionKey);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(protectionKeyBytes);
+            Certificate certificate = certificateFactory.generateCertificate(byteArrayInputStream);
+            Key publicKey = certificate.getPublicKey();
+            SecureRandom secureRandom = new SecureRandom();
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
+            byte[] cipherText = cipher.doFinal(inputData);
+            return cipherText;
+        }
+
+        public static String calculateContentKeyChecksum(String uuid, byte[] aesKey) throws Exception {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] encryptionResult = cipher.doFinal(uuid.getBytes("UTF8"));
+            byte[] checksumByteArray = new byte[8];
+            System.arraycopy(encryptionResult, 0, checksumByteArray, 0, 8);
+            String checksum = Base64.encode(checksumByteArray);
+            return checksum;
+        }
+
+        public static InputStream encryptFile(InputStream inputStream, byte[] key, byte[] iv) throws Exception {
+            Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
+            SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
+            CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
+            return cipherInputStream;
+        }
+    }
+
 }

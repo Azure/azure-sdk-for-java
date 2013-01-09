@@ -130,7 +130,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
         JobInfo currentJobInfo = jobInfo;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 10) {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(jobInfo.getId()));
             retryCounter++;

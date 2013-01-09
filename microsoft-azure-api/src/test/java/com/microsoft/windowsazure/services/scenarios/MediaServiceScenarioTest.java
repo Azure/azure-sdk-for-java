@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.AfterClass;
@@ -89,6 +90,20 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
+    public void uploadEncryptedFiles() throws Exception {
+        signalSetupStarting();
+        // Media Services requires 256-bit (32-byte) keys for AES encryption.
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadEncryptedFiles", AssetOption.StorageEncrypted);
+        signalSetupFinished();
+
+        wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
+        validator.validateAssetFiles(asset, getTestAssetFiles());
+    }
+
+    @Test
     public void downloadFiles() throws Exception {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", AssetOption.None);
@@ -123,6 +138,34 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
         validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+    }
+
+    @Test
+    public void transformEncryptedAsset() throws Exception {
+        signalSetupStarting();
+        // Media Services requires 256-bit (32-byte) keys for AES encryption.
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        AssetInfo asset = wrapper
+                .createAsset(testAssetPrefix + "transformEncryptedAsset", AssetOption.StorageEncrypted);
+        wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
+        String jobName = "my job transformEncryptedAsset" + UUID.randomUUID().toString();
+        JobInfo job = wrapper.createJob(jobName, asset, wrapper.createTaskOptionsDecodeAsset("Decode", 0, 0));
+        signalSetupFinished();
+
+        waitForJobToFinish(job);
+        List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
+        validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+
+        // Verify output asset files.
+        assertEquals("output assets count", 1, outputAssets.size());
+        AssetInfo outputAsset = outputAssets.get(0);
+        validator.validateAssetFiles(outputAsset, getTestAssetFiles());
+
+        // Verify assets were decoded.
+        List<URL> fileUrls = wrapper.createFileURLsFromAsset(outputAsset, 10);
+        validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {
