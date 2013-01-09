@@ -75,6 +75,7 @@ public class ODataAtomUnmarshaller {
      * @throws JAXBException
      * @throws ServiceException
      */
+    @SuppressWarnings("rawtypes")
     public <T extends ODataEntity> ListResult<T> unmarshalFeed(InputStream stream, Class<T> contentType)
             throws JAXBException, ServiceException {
         validateNotNull(stream, "stream");
@@ -105,6 +106,7 @@ public class ODataAtomUnmarshaller {
      * @throws JAXBException
      * @throws ServiceException
      */
+    @SuppressWarnings("rawtypes")
     public <T extends ODataEntity> T unmarshalEntry(InputStream stream, Class<T> contentType) throws JAXBException,
             ServiceException {
         validateNotNull(stream, "stream");
@@ -116,6 +118,7 @@ public class ODataAtomUnmarshaller {
         return contentFromEntry(contentType, marshallingContentType, entry);
     }
 
+    @SuppressWarnings("rawtypes")
     private <T extends ODataEntity> T contentFromEntry(Class<T> contentType, Class<?> marshallingContentType,
             EntryType entry) throws JAXBException, ServiceException {
         unmarshalODataContent(entry, contentType);
@@ -126,6 +129,7 @@ public class ODataAtomUnmarshaller {
 
     private EntryType asEntry(Object o) {
         if (o instanceof JAXBElement) {
+            @SuppressWarnings("rawtypes")
             JAXBElement e = (JAXBElement) o;
             if (e.getDeclaredType() == EntryType.class) {
                 return (EntryType) e.getValue();
@@ -154,6 +158,7 @@ public class ODataAtomUnmarshaller {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private void unmarshalEntryContent(EntryType entry, Class<?> contentType) throws JAXBException {
         Class<?> marshallingContentType = getMarshallingContentType(contentType);
         ContentType contentElement = getFirstOfType(ContentType.class, entry.getEntryChildren());
@@ -170,9 +175,11 @@ public class ODataAtomUnmarshaller {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T getFirstOfType(Class<T> targetType, List<Object> collection) {
         for (Object c : collection) {
             if (c instanceof JAXBElement) {
+                @SuppressWarnings("rawtypes")
                 JAXBElement e = (JAXBElement) c;
                 if (e.getDeclaredType() == targetType) {
                     return (T) e.getValue();
@@ -182,6 +189,7 @@ public class ODataAtomUnmarshaller {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     private <T extends ODataEntity> T constructResultObject(Class<T> contentType, EntryType entry, Object contentObject)
             throws ServiceException {
         Class<?> marshallingType = getMarshallingContentType(contentType);
