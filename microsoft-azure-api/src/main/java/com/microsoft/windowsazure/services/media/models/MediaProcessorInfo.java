@@ -19,7 +19,6 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.MediaProcessorType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Data about a Media Processor entity.
  * 

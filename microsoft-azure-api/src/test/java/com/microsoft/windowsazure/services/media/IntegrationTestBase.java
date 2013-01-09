@@ -80,10 +80,7 @@ public abstract class IntegrationTestBase {
         cleanupEnvironment();
     }
 
-    private static void cleanupEnvironment() {
-        // TODO: This should be removed once cascade delete is implemented for Assets.
-        // But for now, trying to delete an asset with fail if there are any 
-        // existing Locators associated with it.
+    protected static void cleanupEnvironment() {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
@@ -96,7 +93,12 @@ public abstract class IntegrationTestBase {
             List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey.list());
 
             for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
-                service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                try {
+                    service.delete(ContentKey.delete(contentKeyInfo.getId()));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         catch (Exception e) {

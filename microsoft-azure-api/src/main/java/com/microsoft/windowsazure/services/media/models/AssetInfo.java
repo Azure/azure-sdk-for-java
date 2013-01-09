@@ -135,7 +135,6 @@ public class AssetInfo extends ODataEntity<AssetType> {
      * @return the link
      */
     public LinkInfo getParentAssetsLink() {
-        // TODO: NEEDS TESTS once we figure out how to create assets with parents
         return getRelationLink("ParentAssets");
     }
 }
