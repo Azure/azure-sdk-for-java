@@ -27,7 +27,7 @@ import javax.xml.transform.stream.StreamSource;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyIdType;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultTypeActionOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultEntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -66,7 +66,7 @@ public class ProtectionKey {
      * 
      * @param <T>
      */
-    private static class GetProtectionKeyIdActionOperation extends DefaultTypeActionOperation<String> {
+    private static class GetProtectionKeyIdActionOperation extends DefaultEntityTypeActionOperation<String> {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;
@@ -137,7 +137,7 @@ public class ProtectionKey {
     /**
      * The Class GetProtectionKeyActionOperation.
      */
-    private static class GetProtectionKeyActionOperation extends DefaultTypeActionOperation<String> {
+    private static class GetProtectionKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;

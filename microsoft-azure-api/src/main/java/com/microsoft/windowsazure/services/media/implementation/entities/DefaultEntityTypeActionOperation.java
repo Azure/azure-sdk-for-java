@@ -13,7 +13,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * @param <T>
  *            the generic type
  */
-public class DefaultTypeActionOperation<T> implements EntityTypeActionOperation<T> {
+public class DefaultEntityTypeActionOperation<T> implements EntityTypeActionOperation<T> {
 
     /** The name. */
     private String name;
@@ -36,7 +36,7 @@ public class DefaultTypeActionOperation<T> implements EntityTypeActionOperation<
      * @param name
      *            the name
      */
-    public DefaultTypeActionOperation(String name) {
+    public DefaultEntityTypeActionOperation(String name) {
         this();
         this.name = name;
     }
@@ -44,7 +44,7 @@ public class DefaultTypeActionOperation<T> implements EntityTypeActionOperation<
     /**
      * Instantiates a new default type action operation.
      */
-    public DefaultTypeActionOperation() {
+    public DefaultEntityTypeActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
     }
 
@@ -124,7 +124,7 @@ public class DefaultTypeActionOperation<T> implements EntityTypeActionOperation<
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation#addQueryParameter(java.lang.String, java.lang.String)
      */
     @Override
-    public DefaultTypeActionOperation<T> addQueryParameter(String key, String value) {
+    public DefaultEntityTypeActionOperation<T> addQueryParameter(String key, String value) {
         this.queryParameters.add(key, value);
         return this;
     }
