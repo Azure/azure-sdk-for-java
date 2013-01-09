@@ -211,7 +211,7 @@ public class ContentKey {
      *            Link to request content keys from.
      * @return The list operation.
      */
-    public static DefaultListOperation<ContentKeyInfo> list(LinkInfo link) {
+    public static DefaultListOperation<ContentKeyInfo> list(LinkInfo<ContentKeyInfo> link) {
         return new DefaultListOperation<ContentKeyInfo>(link.getHref(), new GenericType<ListResult<ContentKeyInfo>>() {
         });
     }

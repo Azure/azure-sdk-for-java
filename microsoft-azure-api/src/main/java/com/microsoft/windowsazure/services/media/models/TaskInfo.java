@@ -217,8 +217,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the link
      */
-    public LinkInfo getInputAssetsLink() {
-        return getRelationLink("InputMediaAssets");
+    public LinkInfo<AssetInfo> getInputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("InputMediaAssets");
     }
 
     /**
@@ -226,7 +226,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the link
      */
-    public LinkInfo getOutputAssetsLink() {
-        return getRelationLink("OutputMediaAssets");
+    public LinkInfo<AssetInfo> getOutputAssetsLink() {
+        return this.<AssetInfo> getRelationLink("OutputMediaAssets");
     }
 }

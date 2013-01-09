@@ -15,13 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 
 /**
  * Provides access to OData links
  * 
  */
-public class LinkInfo {
+public class LinkInfo<T extends ODataEntity<?>> {
     private final LinkType rawLink;
 
     /**
