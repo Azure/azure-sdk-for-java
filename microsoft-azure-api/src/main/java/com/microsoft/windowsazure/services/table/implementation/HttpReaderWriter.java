@@ -38,12 +38,8 @@ public class HttpReaderWriter {
     }
 
     public StatusLine parseStatusLine(DataSource ds) {
-        InputStream inputStream;
         try {
-            inputStream = ds.getInputStream();
-
-            LineInputStream stream = new LineInputStream(inputStream);
-
+            LineInputStream stream = new LineInputStream(ds.getInputStream());
             try {
                 String line = stream.readLine();
                 StringReader lineReader = new StringReader(line);
