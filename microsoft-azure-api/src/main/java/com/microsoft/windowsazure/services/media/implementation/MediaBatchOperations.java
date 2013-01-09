@@ -49,6 +49,7 @@ import com.microsoft.windowsazure.services.media.implementation.entities.EntityB
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.table.implementation.InputStreamDataSource;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -298,7 +299,6 @@ public class MediaBatchOperations {
      * @throws ServiceException
      *             the service exception
      */
-    @SuppressWarnings("rawtypes")
     public void parseBatchResult(ClientResponse response) throws IOException, ServiceException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         InputStream inputStream = response.getEntityInputStream();
@@ -316,7 +316,6 @@ public class MediaBatchOperations {
                     entityBatchOperations.size()), response);
         }
 
-        ArrayList<Object> result = new ArrayList<Object>();
         for (int i = 0; i < parts.size(); i++) {
             DataSource ds = parts.get(i);
             EntityBatchOperation entityBatchOperation = entityBatchOperations.get(i);
@@ -352,9 +351,10 @@ public class MediaBatchOperations {
                 }
             }
             else if (entityBatchOperation instanceof Task.CreateBatchOperation) {
-                EntryType entryType = null;
                 try {
-                    entryType = oDataAtomUnmarshaller.unmarshalEntry(content);
+                    TaskInfo taskInfo = oDataAtomUnmarshaller.unmarshalEntry(content, TaskInfo.class);
+                    Task.CreateBatchOperation taskCreateBatchOperation = (Task.CreateBatchOperation) entityBatchOperation;
+                    taskCreateBatchOperation.setTaskInfo(taskInfo);
                 }
                 catch (JAXBException e) {
                     throw new ServiceException(e);

@@ -74,6 +74,7 @@ public class ODataSerializationTest {
         Assert.assertEquals("nb:cid:UUID:1f6c7bb4-8013-486e-b4c9-2e4a6842b9a6", entries.get(0).getId());
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void canMarshalEntryFromJavaObject() throws Exception {
         AssetType a = new AssetType();

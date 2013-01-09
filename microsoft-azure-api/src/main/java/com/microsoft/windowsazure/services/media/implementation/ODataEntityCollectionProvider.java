@@ -34,6 +34,7 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
         return ODataEntity.isODataEntityCollectionType(type, genericType);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public ListResult<ODataEntity<?>> readFrom(Class<ListResult<ODataEntity<?>>> type, Type genericType,
             Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders,

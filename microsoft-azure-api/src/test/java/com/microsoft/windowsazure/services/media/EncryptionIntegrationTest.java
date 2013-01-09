@@ -173,9 +173,8 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         // encrypt the file.
         byte[] encryptedContent = EncryptionHelper.EncryptFile(smallWMVInputStream, aesKey, initializationVector);
 
-        // upload the encrypted file to the server.  
-        AssetFileInfo assetFileInfo = uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo,
-                "uploadAesProtectedAssetSuccess", encryptedContent);
+        uploadEncryptedAssetFile(assetInfo, locatorInfo, contentKeyInfo, "uploadAesProtectedAssetSuccess",
+                encryptedContent);
 
         // submit and execute the decoding job. 
         JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo);

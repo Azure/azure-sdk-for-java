@@ -52,6 +52,7 @@ public class Exports implements Builder.Exports {
         registry.add(VersionHeadersFilter.class);
 
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+            @SuppressWarnings("rawtypes")
             @Override
             public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 

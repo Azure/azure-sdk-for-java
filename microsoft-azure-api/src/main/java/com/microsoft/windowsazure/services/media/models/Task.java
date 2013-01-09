@@ -74,7 +74,7 @@ public class Task {
     }
 
     /**
-     * Create an operation that will list the tasks pointed to by the given link
+     * Create an operation that will list the tasks pointed to by the given link.
      * 
      * @param link
      *            link to tasks
@@ -92,6 +92,9 @@ public class Task {
 
         /** The task type. */
         private final TaskType taskType;
+
+        /** The task info. */
+        private TaskInfo taskInfo;
 
         /**
          * Instantiates a new creates the batch operation.
@@ -227,6 +230,27 @@ public class Task {
         public CreateBatchOperation setInitializationVector(String initializationVector) {
             this.taskType.setInitializationVector(initializationVector);
             return this;
+        }
+
+        /**
+         * Sets the task info.
+         * 
+         * @param taskInfo
+         *            the task info
+         * @return the creates the batch operation
+         */
+        public CreateBatchOperation setTaskInfo(TaskInfo taskInfo) {
+            this.taskInfo = taskInfo;
+            return this;
+        }
+
+        /**
+         * Gets the task info.
+         * 
+         * @return the task info
+         */
+        public TaskInfo getTaskInfo() {
+            return taskInfo;
         }
     }
 
