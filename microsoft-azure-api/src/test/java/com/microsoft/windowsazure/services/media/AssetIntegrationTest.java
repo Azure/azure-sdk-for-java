@@ -349,7 +349,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         assertEquals(1, outputAssets.size());
         AssetInfo childAsset = outputAssets.get(0);
 
-        LinkInfo parentAssetLink = childAsset.getParentAssetsLink();
+        LinkInfo<AssetInfo> parentAssetLink = childAsset.getParentAssetsLink();
         AssetInfo parentAsset = service.get(Asset.get(parentAssetLink));
 
         // Assert
