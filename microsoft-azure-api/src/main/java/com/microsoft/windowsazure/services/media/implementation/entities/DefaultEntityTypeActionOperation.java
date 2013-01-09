@@ -1,3 +1,18 @@
+/**
+ * Copyright Microsoft Corporation
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.microsoft.windowsazure.services.media.implementation.entities;
 
 import javax.ws.rs.core.MediaType;
@@ -25,10 +40,10 @@ public class DefaultEntityTypeActionOperation<T> implements EntityTypeActionOper
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
     /** The query parameters. */
-    private MultivaluedMapImpl queryParameters;
+    private final MultivaluedMap<String, String> queryParameters;
 
     /** The proxy data. */
-    private EntityProxyData proxyData;
+    protected EntityProxyData proxyData;
 
     /**
      * Instantiates a new default type action operation.
@@ -138,24 +153,13 @@ public class DefaultEntityTypeActionOperation<T> implements EntityTypeActionOper
         return this;
     }
 
-    /**
-     * Sets the accept type.
-     * 
-     * @param acceptType
-     *            the accept type
-     * @return the entity type action operation
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation#setAcceptType(javax.ws.rs.core.MediaType)
      */
+    @Override
     public EntityTypeActionOperation<T> setAcceptType(MediaType acceptType) {
         this.acceptType = acceptType;
         return this;
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
-     */
-    @Override
-    public Object processResponse(ClientResponse clientResponse) {
-        return null;
     }
 
 }

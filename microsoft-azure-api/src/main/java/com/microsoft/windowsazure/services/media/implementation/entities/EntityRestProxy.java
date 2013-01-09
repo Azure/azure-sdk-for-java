@@ -97,6 +97,7 @@ public abstract class EntityRestProxy implements EntityContract {
      *            the operation
      * @return the resource
      * @throws ServiceException
+     *             the service exception
      */
     private Builder getResource(EntityOperation operation) throws ServiceException {
         return getResource(operation.getUri()).type(operation.getContentType()).accept(operation.getAcceptType());
@@ -176,11 +177,21 @@ public abstract class EntityRestProxy implements EntityContract {
         return (T) entityTypeActionOperation.processResponse(clientResponse);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     */
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
         entityActionOperation.processResponse(getActionClientResponse(entityActionOperation));
     }
 
+    /**
+     * Gets the action client response.
+     * 
+     * @param entityActionOperation
+     *            the entity action operation
+     * @return the action client response
+     */
     private ClientResponse getActionClientResponse(EntityActionOperation entityActionOperation) {
         entityActionOperation.setProxyData(createProxyData());
         Builder webResource = getResource(entityActionOperation.getUri())
