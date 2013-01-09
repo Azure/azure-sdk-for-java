@@ -47,7 +47,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
                 expected.getStartTime(), expected.getEndTime(), null, actual);
     }
 
-    @SuppressWarnings("deprecation")
     private void verifyJobProperties(String message, String testName, Integer priority, double runningDuration,
             JobState state, String templateId, Date created, Date lastModified, Date startTime, Date endTime,
             Integer expectedTaskCount, JobInfo actualJob) throws ServiceException {

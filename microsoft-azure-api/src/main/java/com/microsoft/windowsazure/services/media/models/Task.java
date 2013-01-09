@@ -74,7 +74,7 @@ public class Task {
     }
 
     /**
-     * Create an operation that will list the tasks pointed to by the given link
+     * Create an operation that will list the tasks pointed to by the given link.
      * 
      * @param link
      *            link to tasks
@@ -228,6 +228,7 @@ public class Task {
             this.taskType.setInitializationVector(initializationVector);
             return this;
         }
+
     }
 
 }
