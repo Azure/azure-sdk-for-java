@@ -34,7 +34,7 @@ public interface EntityTypeActionOperation<T> extends EntityOperation {
      *            the client response
      * @return the object
      */
-    void processResponse(ClientResponse clientResponse);
+    Object processResponse(ClientResponse clientResponse);
 
     /**
      * Gets the verb.

@@ -27,6 +27,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * Generic implementation of Delete operation usable by most entities.
  */
 public class DefaultActionOperation implements EntityActionOperation {
+
+    /** The proxy data. */
     private EntityProxyData proxyData;
 
     /** The name. */
@@ -62,9 +64,13 @@ public class DefaultActionOperation implements EntityActionOperation {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
      */
+    @Override
+    public void setProxyData(EntityProxyData proxyData) {
+        this.proxyData = proxyData;
+    }
 
     /**
-     * Get the current proxy data
+     * Get the current proxy data.
      * 
      * @return the proxy data
      */
@@ -139,15 +145,6 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
-     */
-    @Override
-    public Object processResponse(ClientResponse clientResponse) {
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        return clientResponse;
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getVerb()
      */
     @Override
@@ -163,13 +160,12 @@ public class DefaultActionOperation implements EntityActionOperation {
         return null;
     }
 
-    @Override
-    public void setProxyData(EntityProxyData proxyData) {
-        this.proxyData = proxyData;
-    }
-
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#processResponse(java.lang.Object)
+     */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
+        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
 

@@ -18,8 +18,6 @@ package com.microsoft.windowsazure.services.media.implementation.entities;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.sun.jersey.api.client.ClientResponse;
-
 /**
  * Action operation for Entities.
  */
@@ -42,15 +40,6 @@ public interface EntityActionOperation extends EntityOperation {
      * @return the entity action operation
      */
     EntityActionOperation addQueryParameter(String key, String value);
-
-    /**
-     * Process response.
-     * 
-     * @param clientResponse
-     *            the client response
-     * @return the object
-     */
-    Object processResponse(ClientResponse clientResponse);
 
     /**
      * Gets the verb.
