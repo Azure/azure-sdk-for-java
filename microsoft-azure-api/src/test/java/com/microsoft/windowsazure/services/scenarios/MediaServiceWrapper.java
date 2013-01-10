@@ -162,9 +162,8 @@ class MediaServiceWrapper {
 
         String contentKeyId = null;
         if (aesKey != null) {
-            String protectionKeyId = (String) service.action(ProtectionKey
-                    .getProtectionKeyId(ContentKeyType.StorageEncryption));
-            String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+            String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+            String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
 
             String contentKeyIdUuid = UUID.randomUUID().toString();
             contentKeyId = "nb:kid:UUID:" + contentKeyIdUuid;
@@ -355,9 +354,9 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    public List<URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes) throws ServiceException,
-            MalformedURLException {
-        List<URL> ret = new ArrayList<URL>();
+    public Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes)
+            throws ServiceException, MalformedURLException {
+        Hashtable<String, URL> ret = new Hashtable<String, URL>();
 
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
@@ -366,10 +365,49 @@ class MediaServiceWrapper {
         List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
             URL file = constructUrlFromLocatorAndFileName(readLocator, fi.getName());
-            ret.add(file);
+            ret.put(fi.getName(), file);
         }
 
         return ret;
+    }
+
+    // Ingest
+    public Hashtable<String, InputStream> downloadFilesFromAsset(AssetInfo asset, int downloadWindowInMinutes)
+            throws Exception {
+        Hashtable<String, URL> urls = createFileURLsFromAsset(asset, downloadWindowInMinutes);
+        Hashtable<String, InputStream> ret = new Hashtable<String, InputStream>();
+
+        for (String fileName : urls.keySet()) {
+            URL url = urls.get(fileName);
+            InputStream stream = getInputStreamWithRetry(url);
+            ret.put(fileName, stream);
+        }
+
+        return ret;
+    }
+
+    // This method is needed because there can be a delay before a new read locator
+    // is applied for the asset files.
+    private InputStream getInputStreamWithRetry(URL file) throws IOException, InterruptedException {
+        InputStream reader = null;
+        for (int counter = 0; true; counter++) {
+            try {
+                reader = file.openConnection().getInputStream();
+                break;
+            }
+            catch (IOException e) {
+                System.out.println("Got error, wait a bit and try again");
+                if (counter < 6) {
+                    Thread.sleep(10000);
+                }
+                else {
+                    // No more retries.
+                    throw e;
+                }
+            }
+        }
+
+        return reader;
     }
 
     private URL constructUrlFromLocatorAndFileName(LocatorInfo locator, String fileName) throws MalformedURLException {

@@ -139,12 +139,12 @@ class MediaServiceValidation {
         }
     }
 
-    public void validateAssetFileUrls(List<URL> fileUrls, Hashtable<String, InputStream> inputFiles)
+    public void validateAssetFileUrls(Hashtable<String, URL> fileUrls, Hashtable<String, InputStream> inputFiles)
             throws IOException, InterruptedException {
-        assertEquals("fileUrls count", inputFiles.size(), fileUrls.size());
-        for (URL file : fileUrls) {
-            InputStream expected = inputFiles.get(inputFiles.keySet().toArray()[0]);
-            InputStream actual = getInputStreamWithRetry(file);
+        assertEquals("fileUrls count", inputFiles.size(), fileUrls.keySet().size());
+        for (String fileName : fileUrls.keySet()) {
+            InputStream expected = inputFiles.get(fileName);
+            InputStream actual = getInputStreamWithRetry(fileUrls.get(fileName));
             assertStreamsEqual(expected, actual);
         }
     }

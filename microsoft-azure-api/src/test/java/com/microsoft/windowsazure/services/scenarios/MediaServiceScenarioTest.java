@@ -111,7 +111,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        List<URL> fileUrls = wrapper.createFileURLsFromAsset(asset, 10);
+        Hashtable<String, URL> fileUrls = wrapper.createFileURLsFromAsset(asset, 10);
         validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
     }
 
@@ -166,7 +166,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateAssetFiles(outputAsset, getTestAssetFiles());
 
         // Verify assets were decoded.
-        List<URL> fileUrls = wrapper.createFileURLsFromAsset(outputAsset, 10);
+        Hashtable<String, URL> fileUrls = wrapper.createFileURLsFromAsset(outputAsset, 10);
         validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
     }
 
