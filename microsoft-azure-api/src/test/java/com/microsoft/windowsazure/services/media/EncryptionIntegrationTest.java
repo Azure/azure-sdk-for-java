@@ -96,7 +96,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo.getId());
 
         // assert
-        LinkInfo taskLinkInfo = jobInfo.getTasksLink();
+        LinkInfo<TaskInfo> taskLinkInfo = jobInfo.getTasksLink();
         List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
         for (TaskInfo taskInfo : taskInfos) {
             assertEquals(TaskState.Completed, taskInfo.getState());
@@ -139,9 +139,8 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     private String makeContentKeyId(byte[] aesKey) throws ServiceException, Exception {
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.StorageEncryption));
-        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
 
         String contentKeyIdUuid = UUID.randomUUID().toString();
         String contentKeyId = String.format("nb:kid:UUID:%s", contentKeyIdUuid);

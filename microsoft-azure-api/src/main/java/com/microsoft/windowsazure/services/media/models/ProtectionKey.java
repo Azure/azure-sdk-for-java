@@ -27,8 +27,8 @@ import javax.xml.transform.stream.StreamSource;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyIdType;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.DefaultEntityTypeActionOperation;
+import com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
@@ -44,7 +44,7 @@ public class ProtectionKey {
      *            the content key type
      * @return the protection key id
      */
-    public static EntityActionOperation getProtectionKeyId(ContentKeyType contentKeyType) {
+    public static EntityTypeActionOperation<String> getProtectionKeyId(ContentKeyType contentKeyType) {
         return new GetProtectionKeyIdActionOperation("GetProtectionKeyId").addQueryParameter("contentKeyType",
                 String.format("%d", contentKeyType.getCode())).setAcceptType(MediaType.APPLICATION_XML_TYPE);
     }
@@ -56,15 +56,17 @@ public class ProtectionKey {
      *            the protection key id
      * @return the protection key
      */
-    public static EntityActionOperation getProtectionKey(String protectionKeyId) {
+    public static EntityTypeActionOperation<String> getProtectionKey(String protectionKeyId) {
         return new GetProtectionKeyActionOperation("GetProtectionKey").addQueryParameter("ProtectionKeyId",
                 String.format("'%s'", protectionKeyId)).setAcceptType(MediaType.APPLICATION_XML_TYPE);
     }
 
     /**
      * The Class GetProtectionKeyIdActionOperation.
+     * 
+     * @param <T>
      */
-    private static class GetProtectionKeyIdActionOperation extends DefaultActionOperation {
+    private static class GetProtectionKeyIdActionOperation extends DefaultEntityTypeActionOperation<String> {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;
@@ -99,7 +101,7 @@ public class ProtectionKey {
          * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
-        public Object processResponse(ClientResponse clientResponse) {
+        public String processTypeResponse(ClientResponse clientResponse) {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
             ProtectionKeyIdType protectionKeyIdType;
             try {
@@ -129,12 +131,13 @@ public class ProtectionKey {
             return protectionKeyIdTypeJaxbElement.getValue();
 
         }
+
     }
 
     /**
      * The Class GetProtectionKeyActionOperation.
      */
-    private static class GetProtectionKeyActionOperation extends DefaultActionOperation {
+    private static class GetProtectionKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;
@@ -169,7 +172,7 @@ public class ProtectionKey {
          * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
-        public Object processResponse(ClientResponse clientResponse) {
+        public String processTypeResponse(ClientResponse clientResponse) {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
             ProtectionKeyRestType protectionKeyRestType;
             try {

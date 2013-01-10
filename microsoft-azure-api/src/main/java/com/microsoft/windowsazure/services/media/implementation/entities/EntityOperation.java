@@ -27,7 +27,7 @@ public interface EntityOperation {
      * @param proxyData
      * @return
      */
-    void setProxyData(EntityProxyData proxyData);
+    public void setProxyData(EntityProxyData proxyData);
 
     /**
      * Get the URI the creation request should be sent to.

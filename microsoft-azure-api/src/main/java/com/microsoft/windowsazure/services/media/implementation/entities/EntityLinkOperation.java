@@ -31,10 +31,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.MediaUriType;
-import com.sun.jersey.api.client.ClientResponse;
 
 /**
  * Generic implementation of $link operation of two entities.
@@ -127,15 +125,6 @@ public class EntityLinkOperation extends DefaultActionOperation {
     @Override
     public String getVerb() {
         return "POST";
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
-     */
-    @Override
-    public Object processResponse(ClientResponse clientResponse) {
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        return null;
     }
 
     /* (non-Javadoc)
