@@ -23,10 +23,10 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**

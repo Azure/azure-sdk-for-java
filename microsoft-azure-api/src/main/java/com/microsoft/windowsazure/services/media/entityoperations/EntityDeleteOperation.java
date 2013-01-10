@@ -13,21 +13,21 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
-import java.net.URI;
+public interface EntityDeleteOperation {
 
-/**
- * Interface used to communicate details about the proxy to
- * the operations, if they need it.
- * 
- */
-public interface EntityProxyData {
     /**
-     * Gets the absolute URI currently being
-     * used by proxy.
+     * Supplies the current proxy information to the action.
      * 
-     * @return The URI
+     * @param proxyData
      */
-    URI getServiceUri();
+    void setProxyData(EntityProxyData proxyData);
+
+    /**
+     * Get the URI to use to delete an entity
+     * 
+     * @return The uri
+     */
+    String getUri();
 }

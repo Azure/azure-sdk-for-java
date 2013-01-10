@@ -16,7 +16,7 @@
 package com.microsoft.windowsazure.services.media;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityContract;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityContract;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
 /**

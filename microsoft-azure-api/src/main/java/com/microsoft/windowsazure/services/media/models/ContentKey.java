@@ -17,14 +17,14 @@ package com.microsoft.windowsazure.services.media.models;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -103,7 +103,7 @@ public class ContentKey {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() {

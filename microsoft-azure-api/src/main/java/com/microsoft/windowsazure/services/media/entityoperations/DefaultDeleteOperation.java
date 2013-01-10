@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 /**
  * Generic implementation of Delete operation usable by most entities
@@ -31,7 +31,7 @@ public class DefaultDeleteOperation implements EntityDeleteOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
      */
     @Override
     public void setProxyData(EntityProxyData proxyData) {

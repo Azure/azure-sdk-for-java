@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -120,7 +120,7 @@ public class EntityLinkOperation extends DefaultActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#getVerb()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#getVerb()
      */
     @Override
     public String getVerb() {
@@ -128,7 +128,7 @@ public class EntityLinkOperation extends DefaultActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#getRequestContents()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#getRequestContents()
      */
     @Override
     public Object getRequestContents() {
