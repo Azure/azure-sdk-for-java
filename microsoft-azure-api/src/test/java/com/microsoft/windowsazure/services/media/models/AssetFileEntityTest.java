@@ -19,13 +19,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 
 public class AssetFileEntityTest {
     private final String exampleAssetId = "nb:cid:UUID:bfe1c840-36c3-4a78-9b63-38e6eebd94c2";

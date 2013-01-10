@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -97,7 +97,7 @@ public class DefaultListOperation<T> extends EntityOperationBase implements Enti
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#processResponse(java.lang.Object)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase#processResponse(java.lang.Object)
      */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {

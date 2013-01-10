@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 import javax.ws.rs.core.MediaType;
 
@@ -104,7 +104,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#create(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -116,7 +116,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#get(com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#get(com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -128,7 +128,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#list(com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#list(com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -142,7 +142,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#update(com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#update(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
      */
     @Override
     public void update(EntityUpdateOperation updater) throws ServiceException {
@@ -154,7 +154,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#delete(com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#delete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
      */
     @Override
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
@@ -163,7 +163,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation)
      */
     @Override
     public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation) throws ServiceException {
@@ -177,7 +177,7 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation)
      */
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
