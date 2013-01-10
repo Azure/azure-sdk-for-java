@@ -84,7 +84,7 @@ public class LinkRetrievalTest {
 
     @Test
     public void canRetrieveEntireLinkByRel() {
-        LinkInfo link = info.getLink(link2.getRel());
+        LinkInfo<?> link = info.getLink(link2.getRel());
 
         assertLinksEqual(link2, link);
     }
@@ -94,7 +94,7 @@ public class LinkRetrievalTest {
         assertNull(info.getLink("noSuchLink"));
     }
 
-    private static void assertLinksEqual(LinkType expected, LinkInfo actual) {
+    private static void assertLinksEqual(LinkType expected, LinkInfo<?> actual) {
         assertEquals(expected.getHref(), actual.getHref());
     }
 }
