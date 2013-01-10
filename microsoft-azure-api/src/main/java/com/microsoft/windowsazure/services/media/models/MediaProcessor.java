@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media.models;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
 import com.sun.jersey.api.client.GenericType;
 
 /**

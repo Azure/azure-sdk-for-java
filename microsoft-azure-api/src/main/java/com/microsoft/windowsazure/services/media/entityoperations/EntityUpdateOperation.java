@@ -13,12 +13,18 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
-
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 /**
- * Get operation for Entities
+ * 
  * 
  */
-public interface EntityGetOperation<T> extends EntityOperationSingleResult<T> {
+public interface EntityUpdateOperation extends EntityOperation {
+    /**
+     * Get the contents of the merge request that will
+     * be sent to the server.
+     * 
+     * @return The payload object
+     */
+    Object getRequestContents();
 }

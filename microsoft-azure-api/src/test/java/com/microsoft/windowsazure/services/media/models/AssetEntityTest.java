@@ -25,16 +25,16 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.atom.ContentType;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
