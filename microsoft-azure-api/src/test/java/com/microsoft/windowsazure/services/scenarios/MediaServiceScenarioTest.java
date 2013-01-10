@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.scenarios;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -111,8 +110,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        Hashtable<String, URL> fileUrls = wrapper.createFileURLsFromAsset(asset, 10);
-        validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
+        Hashtable<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(asset, 10);
+        validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
 
     @Test
@@ -166,8 +165,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateAssetFiles(outputAsset, getTestAssetFiles());
 
         // Verify assets were decoded.
-        Hashtable<String, URL> fileUrls = wrapper.createFileURLsFromAsset(outputAsset, 10);
-        validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
+        Hashtable<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(outputAsset, 10);
+        validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {

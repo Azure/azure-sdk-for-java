@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,12 +138,12 @@ class MediaServiceValidation {
         }
     }
 
-    public void validateAssetFileUrls(Hashtable<String, URL> fileUrls, Hashtable<String, InputStream> inputFiles)
-            throws IOException, InterruptedException {
-        assertEquals("fileUrls count", inputFiles.size(), fileUrls.keySet().size());
-        for (String fileName : fileUrls.keySet()) {
+    public void validateAssetFiles(Hashtable<String, InputStream> inputFiles,
+            Hashtable<String, InputStream> actualFileStreams) throws IOException, InterruptedException {
+        assertEquals("fileUrls count", inputFiles.size(), actualFileStreams.size());
+        for (String fileName : actualFileStreams.keySet()) {
             InputStream expected = inputFiles.get(fileName);
-            InputStream actual = getInputStreamWithRetry(fileUrls.get(fileName));
+            InputStream actual = actualFileStreams.get(fileName);
             assertStreamsEqual(expected, actual);
         }
     }
@@ -173,30 +172,6 @@ class MediaServiceValidation {
             assertEquals("asset.state", AssetState.Initialized, asset.getState());
             assertEquals("asset.getOptions", AssetOption.None, asset.getOptions());
         }
-    }
-
-    // This method is needed because there can be a delay before a new read locator
-    // is applied for the asset files. 
-    private InputStream getInputStreamWithRetry(URL file) throws InterruptedException, IOException {
-        InputStream reader = null;
-        for (int counter = 0; true; counter++) {
-            try {
-                reader = file.openConnection().getInputStream();
-                break;
-            }
-            catch (IOException e) {
-                System.out.println("Got error, wait a bit and try again");
-                if (counter < 6) {
-                    Thread.sleep(10000);
-                }
-                else {
-                    // No more retries. 
-                    throw e;
-                }
-            }
-        }
-
-        return reader;
     }
 
     public void assertFileInfosEqual(String message, AssetFileInfo fi, AssetFileInfo match) {

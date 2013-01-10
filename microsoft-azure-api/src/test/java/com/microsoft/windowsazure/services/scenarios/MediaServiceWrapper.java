@@ -354,7 +354,7 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    public Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes)
+    private Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes)
             throws ServiceException, MalformedURLException {
         Hashtable<String, URL> ret = new Hashtable<String, URL>();
 
@@ -371,7 +371,7 @@ class MediaServiceWrapper {
         return ret;
     }
 
-    // Ingest
+    // Deliver
     public Hashtable<String, InputStream> downloadFilesFromAsset(AssetInfo asset, int downloadWindowInMinutes)
             throws Exception {
         Hashtable<String, URL> urls = createFileURLsFromAsset(asset, downloadWindowInMinutes);
