@@ -54,6 +54,15 @@ public final class OperationContext {
     private ArrayList<RequestResult> requestResults;
 
     /**
+     * Represents an event that is triggered before sending a request.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see SendingRequestEvent
+     */
+    private StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler = new StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>>();
+
+    /**
      * Represents an event that is triggered when a response is received from the storage service while processing a
      * request.
      * 
@@ -83,7 +92,7 @@ public final class OperationContext {
      * Reserved for internal use.
      */
     // Used internally for download resume.
-    private volatile int currentOperationByteCount;
+    private volatile long currentOperationByteCount;
 
     /**
      * Creates an instance of the <code>OperationContext</code> class.
@@ -103,7 +112,7 @@ public final class OperationContext {
     /**
      * @return the currentOperationByteCount
      */
-    public int getCurrentOperationByteCount() {
+    public long getCurrentOperationByteCount() {
         return this.currentOperationByteCount;
     }
 
@@ -157,6 +166,13 @@ public final class OperationContext {
     }
 
     /**
+     * @return the SendingRequestEvent
+     */
+    public StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getSendingRequestEventHandler() {
+        return this.sendingRequestEventHandler;
+    }
+
+    /**
      * @return the responseReceivedEventHandler
      */
     public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
@@ -187,7 +203,7 @@ public final class OperationContext {
      * @param currentOperationByteCount
      *            the currentOperationByteCount to set
      */
-    public void setCurrentOperationByteCount(final int currentOperationByteCount) {
+    public void setCurrentOperationByteCount(final long currentOperationByteCount) {
         this.currentOperationByteCount = currentOperationByteCount;
     }
 
@@ -216,6 +232,15 @@ public final class OperationContext {
     @SuppressWarnings("unused")
     private void setLogger(final Logger logger) {
         this.logger = logger;
+    }
+
+    /**
+     * @param sendingRequestEventHandler
+     *            the sendingRequestEventHandler to set
+     */
+    public void setSendingRequestEventHandler(
+            final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler) {
+        this.sendingRequestEventHandler = sendingRequestEventHandler;
     }
 
     /**

@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +34,8 @@ import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.AssetState;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
@@ -96,15 +97,30 @@ class MediaServiceValidation {
         assertNotNull("assetFiles", assetFiles);
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());
 
-        // More general verifications:
-        // * Verify that the asset count on the server increments for each asset added.
-        // * Verify that the file count on the server increments for each file added.
-        // * Verify that can query the server for assets matching
-        //   * The created asset ID, and get only that one item
-        //   * The created asset name, get only that one.
-        // * If Encrypted, verify file and content key
-        // * Get the asset encryption info and compare with the file's encryption info
-        // * Compare these properties: IsEncrypted, InitializationVector, EncryptionKeyId, EncryptionScheme, EncryptionVersion
+        ContentKeyInfo contentKey = null;
+        if (asset.getOptions() == AssetOption.StorageEncrypted) {
+            ListResult<ContentKeyInfo> contentKeys = service.list(ContentKey.list(asset.getContentKeysLink()));
+            assertEquals("contentKeys size", 1, contentKeys.size());
+            contentKey = contentKeys.get(0);
+        }
+
+        // Compare encryption info for asset files
+        for (AssetFileInfo assetFile : assetFiles) {
+            if (asset.getOptions() == AssetOption.StorageEncrypted) {
+                assertEquals("assetFile.getIsEncrypted", true, assetFile.getIsEncrypted());
+                assertEquals("assetFile.getEncryptionKeyId", contentKey.getId(), assetFile.getEncryptionKeyId());
+                assertNotNullOrEmpty("assetFile.getEncryptionScheme", assetFile.getEncryptionScheme());
+                assertNotNullOrEmpty("assetFile.getEncryptionVersion", assetFile.getEncryptionVersion());
+                assertNotNullOrEmpty("assetFile.getInitializationVector", assetFile.getInitializationVector());
+            }
+            else {
+                assertEquals("assetFile.getIsEncrypted", false, assetFile.getIsEncrypted());
+                assertNullOrEmpty("assetFile.getEncryptionKeyId", assetFile.getEncryptionKeyId());
+                assertNullOrEmpty("assetFile.getEncryptionScheme", assetFile.getEncryptionScheme());
+                assertNullOrEmpty("assetFile.getEncryptionVersion", assetFile.getEncryptionVersion());
+                assertNullOrEmpty("assetFile.getInitializationVector", assetFile.getInitializationVector());
+            }
+        }
 
         // Compare the asset files with all files
         List<AssetFileInfo> allFiles = service.list(AssetFile.list());
@@ -122,66 +138,40 @@ class MediaServiceValidation {
         }
     }
 
-    public void validateAssetFileUrls(List<URL> fileUrls, Hashtable<String, InputStream> inputFiles)
-            throws IOException, InterruptedException {
-        assertEquals("fileUrls count", inputFiles.size(), fileUrls.size());
-        for (URL file : fileUrls) {
-            InputStream expected = inputFiles.get(inputFiles.keySet().toArray()[0]);
-            InputStream actual = getInputStreamWithRetry(file);
+    public void validateAssetFiles(Hashtable<String, InputStream> inputFiles,
+            Hashtable<String, InputStream> actualFileStreams) throws IOException, InterruptedException {
+        assertEquals("fileUrls count", inputFiles.size(), actualFileStreams.size());
+        for (String fileName : actualFileStreams.keySet()) {
+            InputStream expected = inputFiles.get(fileName);
+            InputStream actual = actualFileStreams.get(fileName);
             assertStreamsEqual(expected, actual);
         }
     }
 
-    public void validateJob(JobInfo job, String name, AssetInfo asset, List<Task.CreateBatchOperation> createTasks) {
+    public void validateJob(JobInfo job, String name, AssetInfo asset, List<Task.CreateBatchOperation> createTasks)
+            throws ServiceException {
         assertDateApproxEquals("getEndTime", new Date(), job.getCreated());
         assertEquals("job.getName", name, job.getName());
 
-        // TODO: Uncomment when fixed:
-        // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/508
-        //        List<String> inputAssets = job.getInputMediaAssets();
-        //        assertNotNull("inputAssets", inputAssets);
-        //        assertEquals("inputAssets.size()", 1, inputAssets.size());
-        //        assertEquals("inputAssets.get(0)", asset.getId(), inputAssets.get(0));
-        //
-        //        List<String> outputAssets = job.getOutputMediaAssets();
-        //        assertNotNull("outputAssets", outputAssets);
-        //        assertEquals("outputAssets.size()", createTasks.size(), outputAssets.size());
+        List<AssetInfo> inputAssets = service.list(Asset.list(job.getInputAssetsLink()));
+        assertNotNull("inputAssets", inputAssets);
+        assertEquals("inputAssets.size()", 1, inputAssets.size());
+        assertEquals("inputAssets.get(0)", asset.getId(), inputAssets.get(0).getId());
+
+        List<AssetInfo> outputAssets = service.list(Asset.list(job.getOutputAssetsLink()));
+        assertNotNull("outputAssets", outputAssets);
+        assertEquals("outputAssets.size()", createTasks.size(), outputAssets.size());
     }
 
     public void validateOutputAssets(List<AssetInfo> outputAssets, Enumeration<String> enumeration) {
         assertNotNull("outputAssets", outputAssets);
         for (AssetInfo asset : outputAssets) {
-
             assertNotNull("asset", asset);
             assertNotNull("asset.getId", asset.getId());
             assertFalse("asset.getId != ''", "".equals(asset.getId()));
             assertEquals("asset.state", AssetState.Initialized, asset.getState());
             assertEquals("asset.getOptions", AssetOption.None, asset.getOptions());
         }
-    }
-
-    // This method is needed because there can be a delay before a new read locator
-    // is applied for the asset files. 
-    private InputStream getInputStreamWithRetry(URL file) throws InterruptedException, IOException {
-        InputStream reader = null;
-        for (int counter = 0; true; counter++) {
-            try {
-                reader = file.openConnection().getInputStream();
-                break;
-            }
-            catch (IOException e) {
-                System.out.println("Got error, wait a bit and try again");
-                if (counter < 6) {
-                    Thread.sleep(10000);
-                }
-                else {
-                    // No more retries. 
-                    throw e;
-                }
-            }
-        }
-
-        return reader;
     }
 
     public void assertFileInfosEqual(String message, AssetFileInfo fi, AssetFileInfo match) {
@@ -239,4 +229,23 @@ class MediaServiceValidation {
             inputStream2.close();
         }
     }
+
+    private void assertNullOrEmpty(String message, String actual) {
+        if (actual == null) {
+            assertNull(message, actual);
+        }
+        else {
+            assertEquals(message, "", actual);
+        }
+    }
+
+    private void assertNotNullOrEmpty(String message, String actual) {
+        if (actual == null) {
+            assertNotNull(message, actual);
+        }
+        else {
+            assertTrue(message + ": expect " + actual + " to be null or empty", actual.length() > 0);
+        }
+    }
+
 }

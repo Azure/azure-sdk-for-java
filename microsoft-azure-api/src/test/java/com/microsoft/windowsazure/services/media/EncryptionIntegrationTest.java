@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -62,6 +64,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     @Test
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
+        if (!EncryptionHelper.canUseStrongCrypto()) {
+            Assert.fail("JVM does not support the required encryption");
+        }
 
         // Media Services requires 256-bit (32-byte) keys and
         // 128-bit (16-byte) initialization vectors (IV) for AES encryption,
@@ -130,7 +135,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
         JobInfo currentJobInfo = jobInfo;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 10) {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(jobInfo.getId()));
             retryCounter++;
