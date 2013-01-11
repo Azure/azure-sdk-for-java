@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
@@ -59,18 +57,6 @@ public class Task {
     public static DefaultListOperation<TaskInfo> list() {
         return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation that will list all the tasks which match the given query parameters.
-     * 
-     * @param queryParameters
-     *            query parameters to pass to the server.
-     * @return the list operation.
-     */
-    public static DefaultListOperation<TaskInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<TaskInfo>(ENTITY_SET, new GenericType<ListResult<TaskInfo>>() {
-        }, queryParameters);
     }
 
     /**

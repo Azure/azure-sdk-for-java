@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
 import com.sun.jersey.api.client.GenericType;
 
@@ -42,16 +40,4 @@ public class MediaProcessor {
                 });
     }
 
-    /**
-     * Create an operation to list all media processors that satisfy the given query parameters
-     * 
-     * @param queryParameters
-     *            query parameters to pass with the request
-     * @return the list operation
-     */
-    public static DefaultListOperation<MediaProcessorInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
-                new GenericType<ListResult<MediaProcessorInfo>>() {
-                }, queryParameters);
-    }
 }

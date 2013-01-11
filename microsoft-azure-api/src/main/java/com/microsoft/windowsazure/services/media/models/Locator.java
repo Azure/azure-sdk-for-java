@@ -16,8 +16,6 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
@@ -197,18 +195,6 @@ public class Locator {
     public static DefaultListOperation<LocatorInfo> list() {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation to list all locators matching the given query parameters.
-     * 
-     * @param queryParameters
-     *            query parameters to send with the request
-     * @return the list operation
-     */
-    public static DefaultListOperation<LocatorInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<LocatorInfo>(ENTITY_SET, new GenericType<ListResult<LocatorInfo>>() {
-        }, queryParameters);
     }
 
     /**
