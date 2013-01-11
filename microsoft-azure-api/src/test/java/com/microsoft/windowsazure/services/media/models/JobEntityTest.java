@@ -20,14 +20,12 @@ import static org.junit.Assert.*;
 import java.net.URI;
 
 import javax.mail.internet.MimeMultipart;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for the methods and factories of the Job entity.
@@ -65,10 +63,6 @@ public class JobEntityTest {
 
     @Test
     public void JobListCanTakeQueryParameters() {
-        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("$top", "10");
-        queryParams.add("$skip", "2");
-
         EntityListOperation<JobInfo> lister = Job.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));

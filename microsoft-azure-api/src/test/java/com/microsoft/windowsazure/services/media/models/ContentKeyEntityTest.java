@@ -19,15 +19,12 @@ import static org.junit.Assert.*;
 
 import java.net.URLEncoder;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for the ContentKey entity
@@ -84,9 +81,6 @@ public class ContentKeyEntityTest {
 
     @Test
     public void listContentKeyCanTakeQueryParameters() {
-        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("$top", "10");
-        queryParams.add("$skip", "2");
 
         EntityListOperation<ContentKeyInfo> lister = ContentKey.list().setTop(10).setSkip(2);
 

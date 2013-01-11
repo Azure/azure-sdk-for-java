@@ -75,8 +75,6 @@ public class AccessPolicyEntityTest {
     @Test
     public void listWithQueryParametersReturnsThem() throws Exception {
         MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("$top", "10");
-        queryParams.add("$skip", "2");
 
         EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list().setTop(10).setSkip(2);
 
