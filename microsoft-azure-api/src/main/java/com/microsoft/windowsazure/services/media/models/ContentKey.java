@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
@@ -190,18 +188,6 @@ public class ContentKey {
     public static DefaultListOperation<ContentKeyInfo> list() {
         return new DefaultListOperation<ContentKeyInfo>(ENTITY_SET, new GenericType<ListResult<ContentKeyInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation that will retrieve all access policies that match the given query parameters.
-     * 
-     * @param queryParameters
-     *            query parameters to add to the request
-     * @return the operation
-     */
-    public static DefaultListOperation<ContentKeyInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<ContentKeyInfo>(ENTITY_SET, new GenericType<ListResult<ContentKeyInfo>>() {
-        }, queryParameters);
     }
 
     /**

@@ -20,8 +20,6 @@ import static org.junit.Assert.*;
 import java.net.URLEncoder;
 import java.util.Date;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
@@ -29,7 +27,6 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOp
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for the Locator entity
@@ -139,11 +136,8 @@ public class LocatorEntityTest {
 
     @Test
     public void listLocatorCanTakeQueryParameters() {
-        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("$top", "10");
-        queryParams.add("$skip", "2");
 
-        EntityListOperation<LocatorInfo> lister = Locator.list(queryParams);
+        EntityListOperation<LocatorInfo> lister = Locator.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

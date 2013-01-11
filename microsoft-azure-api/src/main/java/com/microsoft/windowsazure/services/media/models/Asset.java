@@ -20,8 +20,6 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
@@ -183,18 +181,6 @@ public class Asset {
     public static DefaultListOperation<AssetInfo> list() {
         return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation that will list all the assets which match the given query parameters.
-     * 
-     * @param queryParameters
-     *            query parameters to pass to the server.
-     * @return the list operation.
-     */
-    public static DefaultListOperation<AssetInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
-        }, queryParameters);
     }
 
     /**
