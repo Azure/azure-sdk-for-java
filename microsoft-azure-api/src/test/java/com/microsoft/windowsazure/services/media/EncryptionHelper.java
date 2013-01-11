@@ -37,7 +37,6 @@ class EncryptionHelper {
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
         return true;

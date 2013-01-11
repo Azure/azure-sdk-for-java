@@ -65,7 +65,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
         if (!EncryptionHelper.canUseStrongCrypto()) {
-            Assert.fail("JVM does not appear support the required encryption");
+            Assert.fail("JVM does not support the required encryption");
         }
 
         // Media Services requires 256-bit (32-byte) keys and

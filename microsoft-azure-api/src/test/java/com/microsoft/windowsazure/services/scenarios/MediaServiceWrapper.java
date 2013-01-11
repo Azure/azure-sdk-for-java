@@ -39,6 +39,8 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import junit.framework.Assert;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
@@ -128,7 +130,7 @@ class MediaServiceWrapper {
     // Manage
     public AssetInfo createAsset(String name, AssetOption encryption) throws ServiceException {
         if (encryption == AssetOption.StorageEncrypted && !EncryptionHelper.canUseStrongCrypto()) {
-            return null;
+            Assert.fail("JVM does not support the required encryption");
         }
 
         // Create asset. The SDK's top-level method is the simplest way to do that.
@@ -164,22 +166,7 @@ class MediaServiceWrapper {
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
         LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
 
-        String contentKeyId = null;
-        if (aesKey != null) {
-            String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
-            String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
-
-            String contentKeyIdUuid = UUID.randomUUID().toString();
-            contentKeyId = "nb:kid:UUID:" + contentKeyIdUuid;
-
-            byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
-            String encryptedContentKeyString = Base64.encode(encryptedContentKey);
-            String checksum = EncryptionHelper.calculateContentKeyChecksum(contentKeyIdUuid, aesKey);
-
-            service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
-                    .setChecksum(checksum).setProtectionKeyId(protectionKeyId));
-            service.action(Asset.linkContentKey(asset.getId(), contentKeyId));
-        }
+        String contentKeyId = createAssetContentKey(asset, aesKey);
 
         WritableBlobContainerContract uploader = service.createBlobWriter(locator);
 
@@ -187,34 +174,18 @@ class MediaServiceWrapper {
 
         boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
-
             MessageDigest digest = MessageDigest.getInstance("MD5");
 
             InputStream inputStream = inputFiles.get(fileName);
 
-            String initializationVector = null;
+            byte[] iv = null;
             if (aesKey != null) {
-                // Media Services requires 128-bit (16-byte) initialization vectors (IV)
-                // for AES encryption, but also that only the first 8 bytes are filled.
-                Random random = new Random();
-                byte[] effectiveIv = new byte[8];
-                random.nextBytes(effectiveIv);
-                byte[] iv = new byte[16];
-                System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
-
-                byte[] sub = new byte[9];
-                // Offset the bytes to ensure that the sign-bit is not set.
-                // Media Services expects unsigned Int64 values.
-                System.arraycopy(iv, 0, sub, 1, 8);
-                BigInteger longIv = new BigInteger(sub);
-                initializationVector = longIv.toString();
-
+                iv = createIV();
                 inputStream = EncryptionHelper.encryptFile(inputStream, aesKey, iv);
             }
 
             InputStream digestStream = new DigestInputStream(inputStream, digest);
             CountingStream countingStream = new CountingStream(digestStream);
-
             uploader.createBlockBlob(fileName, countingStream);
 
             inputStream.close();
@@ -222,8 +193,8 @@ class MediaServiceWrapper {
             String md5 = Base64.encode(md5hash);
 
             AssetFileInfo fi = new AssetFileInfo(null, new AssetFileType().setContentChecksum(md5)
-                    .setContentFileSize(new Long(countingStream.getCount())).setIsPrimary(isFirst).setName(fileName)
-                    .setParentAssetId(asset.getAlternateId()).setInitializationVector(initializationVector));
+                    .setContentFileSize(countingStream.getCount()).setIsPrimary(isFirst).setName(fileName)
+                    .setInitializationVector(getIVString(iv)));
             infoToUpload.put(fileName, fi);
 
             isFirst = false;
@@ -249,9 +220,54 @@ class MediaServiceWrapper {
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
     }
 
+    private String getIVString(byte[] iv) {
+        if (iv == null) {
+            return null;
+        }
+
+        // Offset the bytes to ensure that the sign-bit is not set.
+        // Media Services expects unsigned Int64 values.
+        byte[] sub = new byte[9];
+        System.arraycopy(iv, 0, sub, 1, 8);
+        BigInteger longIv = new BigInteger(sub);
+        return longIv.toString();
+    }
+
+    private byte[] createIV() {
+        // Media Services requires 128-bit (16-byte) initialization vectors (IV)
+        // for AES encryption, but also that only the first 8 bytes are filled.
+        Random random = new Random();
+        byte[] effectiveIv = new byte[8];
+        random.nextBytes(effectiveIv);
+        byte[] iv = new byte[16];
+        System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
+        return iv;
+    }
+
+    private String createAssetContentKey(AssetInfo asset, byte[] aesKey) throws Exception {
+        if (aesKey == null) {
+            return null;
+        }
+
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        String contentKeyIdUuid = UUID.randomUUID().toString();
+        String contentKeyId = "nb:kid:UUID:" + contentKeyIdUuid;
+
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateContentKeyChecksum(contentKeyIdUuid, aesKey);
+
+        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                .setChecksum(checksum).setProtectionKeyId(protectionKeyId));
+        service.action(Asset.linkContentKey(asset.getId(), contentKeyId));
+        return contentKeyId;
+    }
+
     private static class CountingStream extends InputStream {
         private final InputStream wrappedStream;
-        private int count;
+        private long count;
 
         public CountingStream(InputStream wrapped) {
             wrappedStream = wrapped;
@@ -264,7 +280,7 @@ class MediaServiceWrapper {
             return wrappedStream.read();
         }
 
-        public int getCount() {
+        public long getCount() {
             return count;
         }
     }
@@ -473,7 +489,6 @@ class MediaServiceWrapper {
                 cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
             }
             catch (Exception e) {
-                e.printStackTrace();
                 return false;
             }
             return true;

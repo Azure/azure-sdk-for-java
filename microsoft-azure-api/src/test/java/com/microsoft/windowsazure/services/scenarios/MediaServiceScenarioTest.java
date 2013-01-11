@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import junit.framework.Assert;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -94,14 +92,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void uploadEncryptedFiles() throws Exception {
         signalSetupStarting();
-        // Media Services requires 256-bit (32-byte) keys for AES encryption.
-        Random random = new Random();
-        byte[] aesKey = new byte[32];
-        random.nextBytes(aesKey);
+        byte[] aesKey = getNewAesKey();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadEncryptedFiles", AssetOption.StorageEncrypted);
-        if (asset == null) {
-            Assert.fail("JVM does not appear support the required encryption");
-        }
 
         signalSetupFinished();
 
@@ -152,15 +144,9 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     @Test
     public void transformEncryptedAsset() throws Exception {
         signalSetupStarting();
-        // Media Services requires 256-bit (32-byte) keys for AES encryption.
-        Random random = new Random();
-        byte[] aesKey = new byte[32];
-        random.nextBytes(aesKey);
+        byte[] aesKey = getNewAesKey();
         AssetInfo asset = wrapper
                 .createAsset(testAssetPrefix + "transformEncryptedAsset", AssetOption.StorageEncrypted);
-        if (asset == null) {
-            Assert.fail("JVM does not appear support the required encryption");
-        }
 
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
         String jobName = "my job transformEncryptedAsset" + UUID.randomUUID().toString();
@@ -180,6 +166,14 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         // Verify assets were decoded.
         Hashtable<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(outputAsset, 10);
         validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
+    }
+
+    private byte[] getNewAesKey() {
+        // Media Services requires 256-bit (32-byte) keys for AES encryption.
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        return aesKey;
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {
