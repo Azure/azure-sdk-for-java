@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import junit.framework.Assert;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -97,6 +99,10 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         byte[] aesKey = new byte[32];
         random.nextBytes(aesKey);
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadEncryptedFiles", AssetOption.StorageEncrypted);
+        if (asset == null) {
+            Assert.fail("JVM does not appear support the required encryption");
+        }
+
         signalSetupFinished();
 
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
@@ -132,11 +138,14 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         String jobName = "my job transformAsset" + UUID.randomUUID().toString();
-        JobInfo job = wrapper.createJob(jobName, asset, createTasks());
+
+        JobInfo job = wrapper.createJob(jobName, asset,
+                wrapper.createTaskOptions("Transform", 0, 0, EncoderType.WindowsAzureMediaEncoder));
         signalSetupFinished();
 
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
+
         validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
     }
 
@@ -149,6 +158,10 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         random.nextBytes(aesKey);
         AssetInfo asset = wrapper
                 .createAsset(testAssetPrefix + "transformEncryptedAsset", AssetOption.StorageEncrypted);
+        if (asset == null) {
+            Assert.fail("JVM does not appear support the required encryption");
+        }
+
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
         String jobName = "my job transformEncryptedAsset" + UUID.randomUUID().toString();
         JobInfo job = wrapper.createJob(jobName, asset,

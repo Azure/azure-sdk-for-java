@@ -127,6 +127,10 @@ class MediaServiceWrapper {
 
     // Manage
     public AssetInfo createAsset(String name, AssetOption encryption) throws ServiceException {
+        if (encryption == AssetOption.StorageEncrypted && !EncryptionHelper.canUseStrongCrypto()) {
+            return null;
+        }
+
         // Create asset. The SDK's top-level method is the simplest way to do that.
         return service.create(Asset.create().setName(name).setAlternateId("altId").setOptions(encryption));
     }
@@ -302,7 +306,9 @@ class MediaServiceWrapper {
                 break;
             case WindowsAzureMediaEncoder:
                 processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER);
-                configuration = "H.264 256k DSL CBR";
+                // Can get the full list of available configurations strings from
+                // http://msdn.microsoft.com/en-us/library/microsoft.expression.encoder.presets_members(v=Expression.30).aspx
+                configuration = "VC-1 256k DSL CBR";
                 break;
             case StorageDecryption:
                 processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION);
@@ -333,6 +339,7 @@ class MediaServiceWrapper {
     // Process
     public boolean isJobFinished(JobInfo initialJobInfo) throws ServiceException {
         JobInfo currentJob = service.get(Job.get(initialJobInfo.getId()));
+        System.out.println(currentJob.getState());
         switch (currentJob.getState()) {
             case Finished:
             case Canceled:
@@ -469,6 +476,19 @@ class MediaServiceWrapper {
     }
 
     private static class EncryptionHelper {
+        public static boolean canUseStrongCrypto() {
+            try {
+                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[32], "AES");
+                cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
         public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
             Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");

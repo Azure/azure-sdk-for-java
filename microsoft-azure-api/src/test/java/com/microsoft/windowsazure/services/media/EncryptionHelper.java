@@ -30,6 +30,19 @@ import javax.crypto.spec.SecretKeySpec;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
 class EncryptionHelper {
+    public static boolean canUseStrongCrypto() {
+        try {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[32], "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
