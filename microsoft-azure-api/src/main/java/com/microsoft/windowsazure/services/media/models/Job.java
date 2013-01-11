@@ -28,18 +28,18 @@ import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityBatchOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.MediaBatchOperations;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityBatchOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
@@ -152,7 +152,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#getRequestContents()
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#getRequestContents()
          */
         @Override
         public Object getRequestContents() throws ServiceException {
@@ -163,7 +163,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase#getResponseClass()
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase#getResponseClass()
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
@@ -172,7 +172,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation#processResponse(java.lang.Object)
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#processResponse(java.lang.Object)
          */
         @Override
         public Object processResponse(Object clientResponse) throws ServiceException {
@@ -282,7 +282,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getContentType()
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase#getContentType()
          */
         @Override
         public MediaType getContentType() {
@@ -293,7 +293,7 @@ public class Job {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase#getUri()
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase#getUri()
          */
         @Override
         public String getUri() {

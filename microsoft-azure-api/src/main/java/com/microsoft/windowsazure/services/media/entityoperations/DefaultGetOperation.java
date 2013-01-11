@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 /**
  * Generic implementation of the get operation usable for most entities

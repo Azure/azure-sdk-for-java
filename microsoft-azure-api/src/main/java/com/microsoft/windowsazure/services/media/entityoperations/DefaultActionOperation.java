@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -62,7 +62,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
      */
     @Override
     public void setProxyData(EntityProxyData proxyData) {
@@ -87,7 +87,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getQueryParameters()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getQueryParameters()
      */
     @Override
     public MultivaluedMap<String, String> getQueryParameters() {
@@ -95,7 +95,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
      */
     @Override
     public DefaultActionOperation addQueryParameter(String key, String value) {
@@ -104,7 +104,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#getContentType()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getContentType()
      */
     @Override
     public MediaType getContentType() {
@@ -125,7 +125,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#getAcceptType()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getAcceptType()
      */
     @Override
     public MediaType getAcceptType() {
@@ -145,7 +145,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getVerb()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getVerb()
      */
     @Override
     public String getVerb() {
@@ -153,7 +153,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation#getRequestContents()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getRequestContents()
      */
     @Override
     public Object getRequestContents() {
@@ -161,7 +161,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#processResponse(java.lang.Object)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#processResponse(java.lang.Object)
      */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {

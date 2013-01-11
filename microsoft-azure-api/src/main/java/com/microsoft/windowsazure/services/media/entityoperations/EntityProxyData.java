@@ -13,14 +13,21 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
-public interface EntityOperationSingleResult<T> extends EntityOperation {
+import java.net.URI;
+
+/**
+ * Interface used to communicate details about the proxy to
+ * the operations, if they need it.
+ * 
+ */
+public interface EntityProxyData {
     /**
-     * Get the Java class object for the type that the response should
-     * be unmarshalled into.
+     * Gets the absolute URI currently being
+     * used by proxy.
      * 
-     * @return Class object for response.
+     * @return The URI
      */
-    public abstract Class<T> getResponseClass();
+    URI getServiceUri();
 }

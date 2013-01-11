@@ -24,11 +24,11 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**

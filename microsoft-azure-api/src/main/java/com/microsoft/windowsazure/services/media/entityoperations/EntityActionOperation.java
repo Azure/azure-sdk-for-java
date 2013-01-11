@@ -13,29 +13,15 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.sun.jersey.api.client.ClientResponse;
-
 /**
- * The Interface EntityTypeActionOperation.
- * 
- * @param <T>
- *            the generic type
+ * Action operation for Entities.
  */
-public interface EntityTypeActionOperation<T> extends EntityOperation {
-
-    /**
-     * Process type response.
-     * 
-     * @param clientResponse
-     *            the client response
-     * @return the t
-     */
-    T processTypeResponse(ClientResponse clientResponse);
+public interface EntityActionOperation extends EntityOperation {
 
     /**
      * Gets the query parameters.
@@ -53,7 +39,7 @@ public interface EntityTypeActionOperation<T> extends EntityOperation {
      *            the value
      * @return the entity action operation
      */
-    EntityTypeActionOperation<T> addQueryParameter(String key, String value);
+    EntityActionOperation addQueryParameter(String key, String value);
 
     /**
      * Gets the verb.
@@ -74,17 +60,8 @@ public interface EntityTypeActionOperation<T> extends EntityOperation {
      * 
      * @param contentType
      *            the content type
-     * @return the entity type action operation
+     * @return the default action operation
      */
-    EntityTypeActionOperation<T> setContentType(MediaType contentType);
-
-    /**
-     * Sets the accept type.
-     * 
-     * @param acceptType
-     *            the accept type
-     * @return the entity type action operation
-     */
-    EntityTypeActionOperation<T> setAcceptType(MediaType acceptType);
+    EntityActionOperation setContentType(MediaType contentType);
 
 }

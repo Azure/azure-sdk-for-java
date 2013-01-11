@@ -19,19 +19,19 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationBase;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityOperationSingleResultBase;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
 import com.sun.jersey.api.client.GenericType;
 
 public class AssetFile {
@@ -240,7 +240,7 @@ public class AssetFile {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData)
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
          */
         @Override
         public void setProxyData(EntityProxyData proxyData) {

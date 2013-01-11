@@ -25,13 +25,13 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -93,7 +93,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#create(com.microsoft.windowsazure.services.media.implementation.entities.EntityCreateOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#create(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
      */
     @Override
     public <T> T create(EntityCreateOperation<T> creator) throws ServiceException {
@@ -109,7 +109,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#get(com.microsoft.windowsazure.services.media.implementation.entities.EntityGetOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#get(com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation)
      */
     @Override
     public <T> T get(EntityGetOperation<T> getter) throws ServiceException {
@@ -125,7 +125,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#list(com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#list(com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation)
      */
     @Override
     public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
@@ -141,7 +141,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#update(com.microsoft.windowsazure.services.media.implementation.entities.EntityUpdateOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#update(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
      */
     @Override
     public void update(EntityUpdateOperation updater) throws ServiceException {
@@ -158,7 +158,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#delete(com.microsoft.windowsazure.services.media.implementation.entities.EntityDeleteOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#delete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
      */
     @Override
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
@@ -174,7 +174,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityActionOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation)
      */
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
@@ -190,7 +190,7 @@ public class MediaExceptionProcessor implements MediaContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.implementation.entities.EntityContract#action(com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation)
      */
     @Override
     public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation) throws ServiceException {

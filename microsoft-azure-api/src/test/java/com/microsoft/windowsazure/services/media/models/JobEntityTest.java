@@ -25,8 +25,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityListOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityProxyData;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**

@@ -30,8 +30,7 @@ public class ProtectionKeyIntegrationTest extends IntegrationTestBase {
         // Arrange 
 
         // Act 
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.CommonEncryption));
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
 
         // Assert
         assertNotNull(protectionKeyId);
@@ -40,11 +39,10 @@ public class ProtectionKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void canGetProtectionKey() throws ServiceException {
         // Arrange
-        String protectionKeyId = (String) service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.CommonEncryption));
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
 
         // Act 
-        String protectionKey = (String) service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
 
         // Assert
         assertNotNull(protectionKey);

@@ -13,21 +13,14 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.implementation.entities;
+package com.microsoft.windowsazure.services.media.entityoperations;
 
-public interface EntityDeleteOperation {
-
+public interface EntityOperationSingleResult<T> extends EntityOperation {
     /**
-     * Supplies the current proxy information to the action.
+     * Get the Java class object for the type that the response should
+     * be unmarshalled into.
      * 
-     * @param proxyData
+     * @return Class object for response.
      */
-    void setProxyData(EntityProxyData proxyData);
-
-    /**
-     * Get the URI to use to delete an entity
-     * 
-     * @return The uri
-     */
-    String getUri();
+    public abstract Class<T> getResponseClass();
 }

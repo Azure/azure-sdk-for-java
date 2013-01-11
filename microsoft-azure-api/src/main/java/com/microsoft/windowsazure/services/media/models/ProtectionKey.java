@@ -25,10 +25,10 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityTypeActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyIdType;
 import com.microsoft.windowsazure.services.media.implementation.content.ProtectionKeyRestType;
-import com.microsoft.windowsazure.services.media.implementation.entities.DefaultEntityTypeActionOperation;
-import com.microsoft.windowsazure.services.media.implementation.entities.EntityTypeActionOperation;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
@@ -98,7 +98,7 @@ public class ProtectionKey {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
+         * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
@@ -169,7 +169,7 @@ public class ProtectionKey {
         }
 
         /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.implementation.entities.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
+         * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
