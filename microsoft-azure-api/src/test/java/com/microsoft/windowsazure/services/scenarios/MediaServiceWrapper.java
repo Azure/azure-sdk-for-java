@@ -297,21 +297,21 @@ class MediaServiceWrapper {
         String configuration = null;
         switch (encoderType) {
             case Mp4ToSmoothStream:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS);
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS, "2.1.0.0");
                 configuration = configMp4ToSmoothStreams;
                 break;
             case SmoothStreamsToHls:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS);
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS, "2.1.0.0");
                 configuration = configSmoothStreamsToAppleHttpLiveStreams;
                 break;
             case WindowsAzureMediaEncoder:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER);
-                // Can get the full list of available configurations strings from
-                // http://msdn.microsoft.com/en-us/library/microsoft.expression.encoder.presets_members(v=Expression.30).aspx
-                configuration = "VC-1 256k DSL CBR";
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.1.1.0");
+                // Full list of configurations strings for version 2.1 is at:
+                // http://msdn.microsoft.com/en-us/library/jj129582.aspx
+                configuration = "VC1 Broadband SD 4x3";
                 break;
             case StorageDecryption:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION);
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION, "1.5.3");
                 configuration = null;
                 break;
             default:
@@ -329,9 +329,10 @@ class MediaServiceWrapper {
                 + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>";
     }
 
-    private String getMediaProcessorIdByName(String processorName) throws ServiceException {
+    private String getMediaProcessorIdByName(String processorName, String version) throws ServiceException {
         EntityListOperation<MediaProcessorInfo> operation = MediaProcessor.list();
-        operation.getQueryParameters().putSingle("$filter", "Name eq '" + processorName + "'");
+        operation.getQueryParameters().putSingle("$filter",
+                "(Name eq '" + processorName + "') and (Version eq '" + version + "')");
         MediaProcessorInfo processor = service.list(operation).get(0);
         return processor.getId();
     }
