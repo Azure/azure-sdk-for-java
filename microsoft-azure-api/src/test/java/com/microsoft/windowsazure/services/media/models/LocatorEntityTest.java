@@ -143,7 +143,7 @@ public class LocatorEntityTest {
         queryParams.add("$top", "10");
         queryParams.add("$skip", "2");
 
-        EntityListOperation<LocatorInfo> lister = Locator.list(queryParams);
+        EntityListOperation<LocatorInfo> lister = Locator.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

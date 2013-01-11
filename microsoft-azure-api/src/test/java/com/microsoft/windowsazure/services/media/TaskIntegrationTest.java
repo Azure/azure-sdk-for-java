@@ -23,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +41,6 @@ import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.TaskOption;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 import com.sun.jersey.core.util.Base64;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class TaskIntegrationTest extends IntegrationTestBase {
     private static AssetInfo assetInfo;
@@ -153,12 +150,10 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         service.create(jobCreator);
 
         // Act
-        MultivaluedMap<String, String> queryParameters = new MultivaluedMapImpl();
-        queryParameters.add("$filter", "startswith(Name, '" + baseName + "') eq true");
-        ListResult<TaskInfo> listTaskResult1 = service.list(Task.list(queryParameters));
-
-        queryParameters.add("$top", "2");
-        ListResult<TaskInfo> listTaskResult2 = service.list(Task.list(queryParameters));
+        ListResult<TaskInfo> listTaskResult1 = service.list(Task.list().set("$filter",
+                "startswith(Name, '" + baseName + "') eq true"));
+        ListResult<TaskInfo> listTaskResult2 = service.list(Task.list()
+                .set("$filter", "startswith(Name, '" + baseName + "') eq true").setTop(2));
 
         // Assert
         assertEquals("listTaskResult1.size", 4, listTaskResult1.size());

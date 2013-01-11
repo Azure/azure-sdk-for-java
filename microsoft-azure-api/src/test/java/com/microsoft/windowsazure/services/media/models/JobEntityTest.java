@@ -69,7 +69,7 @@ public class JobEntityTest {
         queryParams.add("$top", "10");
         queryParams.add("$skip", "2");
 
-        EntityListOperation<JobInfo> lister = Job.list(queryParams);
+        EntityListOperation<JobInfo> lister = Job.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

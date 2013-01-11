@@ -22,8 +22,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
-import com.microsoft.windowsazure.services.media.models.MediaProcessor;
-import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -43,7 +41,7 @@ public class MediaProcessorEntityTest {
         queryParams.add("$top", "10");
         queryParams.add("$skip", "2");
 
-        EntityListOperation<MediaProcessorInfo> lister = MediaProcessor.list(queryParams);
+        EntityListOperation<MediaProcessorInfo> lister = MediaProcessor.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

@@ -78,7 +78,7 @@ public class AccessPolicyEntityTest {
         queryParams.add("$top", "10");
         queryParams.add("$skip", "2");
 
-        EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list(queryParams);
+        EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

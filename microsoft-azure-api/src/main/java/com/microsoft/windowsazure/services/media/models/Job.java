@@ -23,7 +23,6 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -397,18 +396,6 @@ public class Job {
     public static DefaultListOperation<JobInfo> list() {
         return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation that will list all the jobs which match the given query parameters.
-     * 
-     * @param queryParameters
-     *            query parameters to pass to the server.
-     * @return the list operation.
-     */
-    public static DefaultListOperation<JobInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
-        }, queryParameters);
     }
 
     /**

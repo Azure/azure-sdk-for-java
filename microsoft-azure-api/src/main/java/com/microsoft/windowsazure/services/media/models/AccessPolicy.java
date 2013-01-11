@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.EnumSet;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
@@ -109,18 +107,6 @@ public class AccessPolicy {
     public static DefaultListOperation<AccessPolicyInfo> list() {
         return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
         });
-    }
-
-    /**
-     * Create an operation that will retrieve all access policies that match the given query parameters
-     * 
-     * @param queryParameters
-     *            query parameters to add to the request
-     * @return the operation
-     */
-    public static DefaultListOperation<AccessPolicyInfo> list(MultivaluedMap<String, String> queryParameters) {
-        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
-        }, queryParameters);
     }
 
     /**
