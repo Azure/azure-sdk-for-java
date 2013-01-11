@@ -371,8 +371,8 @@ class MediaServiceWrapper {
 
         List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
-            URL file = constructUrlFromLocatorAndFileName(readLocator, fi.getName());
-            ret.put(fi.getName(), file);
+            ret.put(fi.getName(),
+                    new URL(readLocator.getBaseUri() + "/" + fi.getName() + readLocator.getContentAccessToken()));
         }
 
         return ret;
@@ -415,17 +415,6 @@ class MediaServiceWrapper {
         }
 
         return reader;
-    }
-
-    private URL constructUrlFromLocatorAndFileName(LocatorInfo locator, String fileName) throws MalformedURLException {
-        String locatorPath = locator.getPath();
-        int startOfSas = locatorPath.indexOf("?");
-        String blobPath = locatorPath + fileName;
-        if (startOfSas >= 0) {
-            blobPath = locatorPath.substring(0, startOfSas) + "/" + fileName + locatorPath.substring(startOfSas);
-        }
-
-        return new URL(blobPath);
     }
 
     public void removeAllAssetsWithPrefix(String assetPrefix) throws ServiceException {
