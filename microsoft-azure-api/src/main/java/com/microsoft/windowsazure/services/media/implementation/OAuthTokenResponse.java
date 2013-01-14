@@ -20,8 +20,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * A class representing OAuth token response.
  * 
- * @author azurejava@microsoft.com
- * 
  */
 public class OAuthTokenResponse {
 
