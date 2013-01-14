@@ -748,21 +748,21 @@ public class CloudBlobContainerTests extends BlobTestBase {
 
         OperationContext operationContext = new OperationContext();
         BlobRequestOptions options = new BlobRequestOptions();
-        options.setTimeoutIntervalInMs(1000);
+        options.setTimeoutIntervalInMs(2000);
         options.setRetryPolicyFactory(new RetryNoRetry());
+        ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
         try {
-            final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
             blobRef.download(downloadedDataStream, null, options, operationContext);
         }
         catch (Exception e) {
-            Assert.assertEquals(0, operationContext.getCurrentOperationByteCount());
+            Assert.assertEquals(downloadedDataStream.size(), operationContext.getCurrentOperationByteCount());
         }
 
         operationContext = new OperationContext();
         options = new BlobRequestOptions();
         options.setTimeoutIntervalInMs(90000);
 
-        final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
+        downloadedDataStream = new ByteArrayOutputStream();
         blobRef.download(downloadedDataStream, null, options, operationContext);
 
         Assert.assertEquals(blockLength * numberOfBlocks, operationContext.getCurrentOperationByteCount());
