@@ -13,6 +13,10 @@ For documentation please see the [Windows Azure Java Developer Center](http://ww
   * Create/Delete Queues
   * Insert/Peek Queue Messages
   * Advanced Queue Operations
+* Media Services
+  * Upload Media Files to Media Services
+  * Change the encoding on uploaded Media Services
+  * Provide streaming or download access to uploaded Media Files
 * Service Bus
   * Use either the Queue or Topic/Subscription Model
 * Service Runtime
