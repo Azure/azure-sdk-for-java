@@ -16,7 +16,7 @@ For documentation please see the [Windows Azure Java Developer Center](http://ww
 * Media Services
   * Upload Media Files to Media Services
   * Change the encoding on uploaded Media Services
-  * Provide streaming or download access to uploaded Media Files
+  * Provide streaming or download access to uploaded/transformed Media Files
 * Service Bus
   * Use either the Queue or Topic/Subscription Model
 * Service Runtime
