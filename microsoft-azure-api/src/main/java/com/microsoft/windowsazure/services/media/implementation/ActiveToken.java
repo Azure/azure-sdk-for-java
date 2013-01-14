@@ -20,8 +20,6 @@ import java.util.Date;
 /**
  * A class representing active token.
  * 
- * @author azurejava@microsoft.com
- * 
  */
 public class ActiveToken {
 

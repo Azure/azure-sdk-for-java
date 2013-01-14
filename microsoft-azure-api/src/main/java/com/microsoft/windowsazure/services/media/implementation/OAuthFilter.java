@@ -25,8 +25,6 @@ import com.sun.jersey.api.client.ClientResponse;
 /**
  * The Jersey filter for OAuth.
  * 
- * @author azurejava@microsoft.com
- * 
  */
 public class OAuthFilter extends IdempotentClientFilter {
     private final OAuthTokenManager oAuthTokenManager;

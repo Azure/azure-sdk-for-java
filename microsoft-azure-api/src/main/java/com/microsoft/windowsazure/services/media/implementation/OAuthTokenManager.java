@@ -29,8 +29,6 @@ import com.microsoft.windowsazure.services.media.MediaConfiguration;
 /**
  * An OAuth token manager class.
  * 
- * @author azurejava@microsoft.com
- * 
  */
 public class OAuthTokenManager {
     private final DateFactory dateFactory;
