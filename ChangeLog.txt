@@ -1,6 +1,8 @@
 2013.1.18 Version 0.4.0
  * Added support for Java Media Services
  * Updated dependencies to non-beta stable versions
+ * Add a Sending Request Event to OperationContext in Storage Client code
+ * Fix a bug in the STorage client in blob download resume for blobs greater than 2GB
 
 2012.10.29 Version 0.3.3
  * In the blob client, fixed a bug which allows users to call write APIs on a blob snapshot reference
