@@ -93,7 +93,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         uploadEncryptedAssetFile(assetInfo, blobWriter, "MPEG4-H264.mp4", encryptedContent, contentKeyId, iv);
 
         // submit and execute the decoding job.
-        JobInfo jobInfo = decodeAsset("uploadAesProtectedAssetSuccess", assetInfo.getId());
+        JobInfo jobInfo = decodeAsset(testJobPrefix + "uploadAesProtectedAssetSuccess", assetInfo.getId());
 
         // assert
         LinkInfo<TaskInfo> taskLinkInfo = jobInfo.getTasksLink();

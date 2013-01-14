@@ -99,8 +99,8 @@ public abstract class IntegrationTestBase {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
-        removeAllTestContentKeys();
         removeAllTestJobs();
+        removeAllTestContentKeys();
     }
 
     private static void removeAllTestContentKeys() {
