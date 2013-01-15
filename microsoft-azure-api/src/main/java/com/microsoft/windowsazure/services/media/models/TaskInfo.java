@@ -86,6 +86,22 @@ public class TaskInfo extends ODataEntity<TaskType> {
         return null;
     }
 
+    public List<TaskHistoricalEvent> getTaskHistoricalEvents() {
+        List<TaskHistoricalEvent> result = new ArrayList<TaskHistoricalEvent>();
+        List<TaskHistoricalEventType> taskHistoricalEventTypes = getContent().getTaskHistoricalEventTypes();
+        
+        if (taskHistoricalEventTypes != null) {
+            for (TaskHistoricalEventType taskHistoricalEventType : taskHistoricalEventTypes) {
+                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(), taskHistoricalEventType.getMessage(), taskHistoricalEventType.get)
+                result.add(taskHistoricalEvent);
+            }
+        }
+        
+        
+        
+        return null;
+    }
+
     /**
      * Gets the media processor id.
      * 
