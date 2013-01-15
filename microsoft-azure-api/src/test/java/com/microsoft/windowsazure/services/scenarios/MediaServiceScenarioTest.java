@@ -18,10 +18,10 @@ package com.microsoft.windowsazure.services.scenarios;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.AfterClass;
@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.media.models.AssetOption;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
+import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.EncoderType;
 
 public class MediaServiceScenarioTest extends ScenarioTestBase {
     private static final String rootTestAssetPrefix = "testAssetPrefix-";
@@ -89,14 +90,26 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
+    public void uploadEncryptedFiles() throws Exception {
+        signalSetupStarting();
+        byte[] aesKey = getNewAesKey();
+        AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadEncryptedFiles", AssetOption.StorageEncrypted);
+
+        signalSetupFinished();
+
+        wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
+        validator.validateAssetFiles(asset, getTestAssetFiles());
+    }
+
+    @Test
     public void downloadFiles() throws Exception {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "downloadFiles", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        List<URL> fileUrls = wrapper.createFileURLsFromAsset(asset, 10);
-        validator.validateAssetFileUrls(fileUrls, getTestAssetFiles());
+        Hashtable<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(asset, 10);
+        validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
 
     @Test
@@ -117,12 +130,50 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         String jobName = "my job transformAsset" + UUID.randomUUID().toString();
-        JobInfo job = wrapper.createJob(jobName, asset, createTasks());
+
+        JobInfo job = wrapper.createJob(jobName, asset,
+                wrapper.createTaskOptions("Transform", 0, 0, EncoderType.WindowsAzureMediaEncoder));
+        signalSetupFinished();
+
+        waitForJobToFinish(job);
+        List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
+
+        validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+    }
+
+    @Test
+    public void transformEncryptedAsset() throws Exception {
+        signalSetupStarting();
+        byte[] aesKey = getNewAesKey();
+        AssetInfo asset = wrapper
+                .createAsset(testAssetPrefix + "transformEncryptedAsset", AssetOption.StorageEncrypted);
+
+        wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles(), aesKey);
+        String jobName = "my job transformEncryptedAsset" + UUID.randomUUID().toString();
+        JobInfo job = wrapper.createJob(jobName, asset,
+                wrapper.createTaskOptions("Decode", 0, 0, EncoderType.StorageDecryption));
         signalSetupFinished();
 
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
         validator.validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+
+        // Verify output asset files.
+        assertEquals("output assets count", 1, outputAssets.size());
+        AssetInfo outputAsset = outputAssets.get(0);
+        validator.validateAssetFiles(outputAsset, getTestAssetFiles());
+
+        // Verify assets were decoded.
+        Hashtable<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(outputAsset, 10);
+        validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
+    }
+
+    private byte[] getNewAesKey() {
+        // Media Services requires 256-bit (32-byte) keys for AES encryption.
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        return aesKey;
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException, ServiceException {
@@ -137,8 +188,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     private List<Task.CreateBatchOperation> createTasks() throws ServiceException {
         List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
 
-        tasks.add(wrapper.createTaskOptionsMp4ToSmoothStreams("MP4 to SS", 0, 0));
-        tasks.add(wrapper.createTaskOptionsSmoothStreamsToHls("SS to HLS", 0, 1));
+        tasks.add(wrapper.createTaskOptions("MP4 to SS", 0, 0, EncoderType.Mp4ToSmoothStream));
+        tasks.add(wrapper.createTaskOptions("SS to HLS", 0, 1, EncoderType.SmoothStreamsToHls));
         return tasks;
     }
 
