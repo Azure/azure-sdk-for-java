@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,7 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorDetailType implements MediaServiceDTO {
+public class TaskHistoricalEventType implements MediaServiceDTO {
 
     /** The code. */
     @XmlElement(name = "Code", namespace = Constants.ODATA_DATA_NS)
@@ -35,7 +37,14 @@ public class ErrorDetailType implements MediaServiceDTO {
     @XmlElement(name = "Message", namespace = Constants.ODATA_DATA_NS)
     protected String message;
 
+    /** The time stamp. */
+    @XmlElement(name = "TimeStamp", namespace = Constants.ODATA_DATA_NS)
+    protected Date timeStamp;
+
     /**
+     * The
+     * 
+     * /**
      * Gets the code.
      * 
      * @return the code
@@ -51,7 +60,7 @@ public class ErrorDetailType implements MediaServiceDTO {
      *            the id to set
      * @return the error detail type
      */
-    public ErrorDetailType setCode(String code) {
+    public TaskHistoricalEventType setCode(String code) {
         this.code = code;
         return this;
     }
@@ -72,8 +81,29 @@ public class ErrorDetailType implements MediaServiceDTO {
      *            the message to set
      * @return the error detail type
      */
-    public ErrorDetailType setMessage(String message) {
+    public TaskHistoricalEventType setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Gets the time stamp.
+     * 
+     * @return the time stamp
+     */
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    /**
+     * Sets the time stamp.
+     * 
+     * @param timeStamp
+     *            the time stamp
+     * @return the task historical event type
+     */
+    public TaskHistoricalEventType setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
         return this;
     }
 

@@ -22,6 +22,7 @@ import java.util.List;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
+import com.microsoft.windowsazure.services.media.implementation.content.TaskHistoricalEventType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -89,16 +90,15 @@ public class TaskInfo extends ODataEntity<TaskType> {
     public List<TaskHistoricalEvent> getTaskHistoricalEvents() {
         List<TaskHistoricalEvent> result = new ArrayList<TaskHistoricalEvent>();
         List<TaskHistoricalEventType> taskHistoricalEventTypes = getContent().getTaskHistoricalEventTypes();
-        
+
         if (taskHistoricalEventTypes != null) {
             for (TaskHistoricalEventType taskHistoricalEventType : taskHistoricalEventTypes) {
-                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(), taskHistoricalEventType.getMessage(), taskHistoricalEventType.get)
+                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(),
+                        taskHistoricalEventType.getMessage(), taskHistoricalEventType.getTimeStamp());
                 result.add(taskHistoricalEvent);
             }
         }
-        
-        
-        
+
         return null;
     }
 

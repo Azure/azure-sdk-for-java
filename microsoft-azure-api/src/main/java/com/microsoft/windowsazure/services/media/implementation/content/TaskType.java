@@ -44,6 +44,10 @@ public class TaskType implements MediaServiceDTO {
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
     protected List<ErrorDetailType> errorDetails;
 
+    @XmlElementWrapper(name = "TaskHistoricalEventDetails", namespace = Constants.ODATA_DATA_NS)
+    @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
+    protected List<TaskHistoricalEventType> taskHistoricalEventTypes;
+
     @XmlElement(name = "MediaProcessorId", namespace = Constants.ODATA_DATA_NS)
     protected String mediaProcessorId;
 
@@ -267,6 +271,15 @@ public class TaskType implements MediaServiceDTO {
 
     public TaskType setInputMediaAssets(List<String> inputMediaAssets) {
         this.inputMediaAssets = inputMediaAssets;
+        return this;
+    }
+
+    public List<TaskHistoricalEventType> getTaskHistoricalEventTypes() {
+        return taskHistoricalEventTypes;
+    }
+
+    public TaskType setTaskHistoricalEventTypes(List<TaskHistoricalEventType> taskHistoricalEventTypes) {
+        this.taskHistoricalEventTypes = taskHistoricalEventTypes;
         return this;
     }
 }
