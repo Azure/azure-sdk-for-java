@@ -63,6 +63,8 @@ public abstract class IntegrationTestBase {
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
     protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
 
+    protected static final String MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID = "nb:mpid:UUID:70bdc2c3-ebf4-42a9-8542-5afc1e55d217";
+
     protected static final String invalidId = "notAValidId";
 
     @Rule

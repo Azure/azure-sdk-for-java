@@ -46,7 +46,6 @@ public class TaskIntegrationTest extends IntegrationTestBase {
     private static AssetInfo assetInfo;
     private Creator jobCreator;
 
-    private static final String commonMediaProcessorId = "nb:mpid:UUID:2f381738-c504-4e4a-a38e-d199e207fcd5";
     private static final String commonConfiguration = "H.264 256k DSL CBR";
 
     @BeforeClass
@@ -66,7 +65,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Required
-        String mediaProcessorId = commonMediaProcessorId;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String taskBody = constructTaskBody(0);
 
         // Optional parameters
@@ -102,7 +101,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Required
-        String mediaProcessorId = commonMediaProcessorId;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String[] taskBodies = new String[] { constructTaskBody(0), constructTaskBody(1) };
 
         // Optional parameters
@@ -136,7 +135,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
     @Test
     public void canListTasksWithOptions() throws ServiceException {
         // Arrange
-        String mediaProcessorId = commonMediaProcessorId;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String configuration = commonConfiguration;
         String[] taskNameSuffixes = new String[] { "A", "B", "C", "D" };
         String baseName = "My encoding Task " + UUID.randomUUID().toString();
@@ -163,7 +162,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
     @Test
     public void cancelTaskSuccess() throws ServiceException, InterruptedException {
         // Arrange
-        String mediaProcessorId = commonMediaProcessorId;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String taskBody = constructTaskBody(0);
         String configuration = commonConfiguration;
         String name = "My encoding Task " + UUID.randomUUID().toString();
