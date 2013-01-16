@@ -77,50 +77,9 @@ class MediaServiceWrapper {
 
     private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
     private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
-    private final String MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS = "MP4 to Smooth Streams Task";
-    private final String MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS = "Smooth Streams to HLS Task";
-
-    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973635.aspx
-    private final String configMp4ToSmoothStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
-            + "  <name>MP4 to Smooth Streams</name>"
-            + "  <id>5e1e1a1c-bba6-11df-8991-0019d1916af0</id>"
-            + "  <description xml:lang='en'>Converts MP4 files encoded with H.264 (AVC) video and AAC-LC audio codecs to Smooth Streams.</description>"
-            + "  <inputFolder />"
-            + "  <properties namespace='http://schemas.microsoft.com/iis/media/V4/TM/MP4ToSmooth#' prefix='mp4'>"
-            + "    <property name='keepSourceNames' required='false' value='true' helpText='This property tells the MP4 to Smooth task to keep the original file name rather than add the bitrate bitrate information.' />"
-            + "  </properties>"
-            + "  <taskCode>"
-            + "    <type>Microsoft.Web.Media.TransformManager.MP4toSmooth.MP4toSmooth_Task, Microsoft.Web.Media.TransformManager.MP4toSmooth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
-            + "  </taskCode>" + "</taskDefinition>";
-
-    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973636.aspx
-    private final String configSmoothStreamsToAppleHttpLiveStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
-            + "    <name>Smooth Streams to Apple HTTP Live Streams</name>"
-            + "  <id>A72D7A5D-3022-45f2-89B4-1DDC5457C111</id>"
-            + "    <description xml:lang='en'>Converts on-demand Smooth Streams encoded with H.264 (AVC) video and AAC-LC audio codecs to Apple HTTP Live Streams (MPEG-2 TS) and creates an Apple HTTP Live Streaming playlist (.m3u8) file for the converted presentation.</description>"
-            + "    <inputDirectory></inputDirectory>"
-            + "    <outputFolder>TS_Out</outputFolder>"
-            + "    <properties namespace='http://schemas.microsoft.com/iis/media/AppleHTTP#' prefix='hls'>"
-            + "        <property name='maxbitrate' required='true' value='8500000' helpText='The maximum bit rate, in bits per second (bps), to be converted to MPEG-2 TS. On-demand Smooth Streams at or below this value are converted to MPEG-2 TS segments. Smooth Streams above this value are not converted. Most Apple devices can play media encoded at bit rates up to 8,500 Kbps.'/>"
-            + "        <property name='manifest' required='false' value='' helpText='The file name to use for the converted Apple HTTP Live Streaming playlist file (a file with an .m3u8 file name extension). If no value is specified, the following default value is used: &lt;ISM_file_name&gt;-m3u8-aapl.m3u8'/>"
-            + "        <property name='segment' required='false' value='10' helpText='The duration of each MPEG-2 TS segment, in seconds. 10 seconds is the Apple-recommended setting for most Apple mobile digital devices.'/>"
-            + "        <property name='log'  required='false' value='' helpText='The file name to use for a log file (with a .log file name extension) that records the conversion activity. If you specify a log file name, the file is stored in the task output folder.' /> "
-            + "        <property name='encrypt'  required='false' value='false' helpText='Enables encryption of MPEG-2 TS segments by using the Advanced Encryption Standard (AES) with a 128-bit key (AES-128).' />"
-            + "        <property name='pid'  required='false' value='' helpText='The program ID of the MPEG-2 TS presentation. Different encodings of MPEG-2 TS streams in the same presentation use the same program ID so that clients can easily switch between bit rates.' />"
-            + "        <property name='codecs'  required='false' value='false' helpText='Enables codec format identifiers, as defined by RFC 4281, to be included in the Apple HTTP Live Streaming playlist (.m3u8) file.' />"
-            + "        <property name='backwardcompatible'  required='false' value='false' helpText='Enables playback of the MPEG-2 TS presentation on devices that use the Apple iOS 3.0 mobile operating system.' />"
-            + "        <property name='allowcaching'  required='false' value='true' helpText='Enables the MPEG-2 TS segments to be cached on Apple devices for later playback.' />"
-            + "        <property name='passphrase'  required='false' value='' helpText='A passphrase that is used to generate the content key identifier.' />"
-            + "        <property name='key'  required='false' value='' helpText='The hexadecimal representation of the 16-octet content key value that is used for encryption.' />"
-            + "        <property name='keyuri'  required='false' value='' helpText='An alternate URI to be used by clients for downloading the key file. If no value is specified, it is assumed that the Live Smooth Streaming publishing point provides the key file.' />"
-            + "        <property name='overwrite'  required='false' value='true' helpText='Enables existing files in the output folder to be overwritten if converted output files have identical file names.' />"
-            + "    </properties>"
-            + "    <taskCode>"
-            + "        <type>Microsoft.Web.Media.TransformManager.SmoothToHLS.SmoothToHLSTask, Microsoft.Web.Media.TransformManager.SmoothToHLS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
-            + "    </taskCode>" + "</taskDefinition>";
 
     public static enum EncoderType {
-        WindowsAzureMediaEncoder, Mp4ToSmoothStream, SmoothStreamsToHls, StorageDecryption
+        WindowsAzureMediaEncoder, StorageDecryption
     }
 
     public MediaServiceWrapper(MediaContract service) {
@@ -312,14 +271,6 @@ class MediaServiceWrapper {
         String processor = null;
         String configuration = null;
         switch (encoderType) {
-            case Mp4ToSmoothStream:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS, "2.2.0.0");
-                configuration = configMp4ToSmoothStreams;
-                break;
-            case SmoothStreamsToHls:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS, "2.2.0.0");
-                configuration = configSmoothStreamsToAppleHttpLiveStreams;
-                break;
             case WindowsAzureMediaEncoder:
                 processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.2.0.0");
                 // Full list of configurations strings for version 2.1 is at:
