@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,12 @@ public class Configuration {
      * Property name for socket read timeout used by services created with this configuration.
      */
     public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.services.core.Configuration.readTimeout";
+
+    /**
+     * Property name to control if HTTP logging to console is on or off. If property is set, logging is on, regardless
+     * of value.
+     */
+    public static final String PROPERTY_LOG_HTTP_REQUESTS = "com.microsoft.windowsazure.services.core.Configuration.logHttpRequests";
 
     private static Configuration instance;
     Map<String, Object> properties;

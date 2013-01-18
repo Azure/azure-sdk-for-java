@@ -47,7 +47,12 @@
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
+
+    <!-- Removed on 11/02/2012
+         Justification: The rule incorrectly flags all files as violating
+         this rule, regardless of what they end with.
     <module name="NewlineAtEndOfFile"/>
+    -->
 
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
@@ -62,11 +67,15 @@
         <property name="eachLine" value="true"/>
     </module>
 
+    <!-- Removed on 11/02/2012:
+         Justification: Over 5000 hits in generated boilerplate comments.
+         Use Eclipse preference file to auto-remove EOL whitespace in code.
+
     <module name="RegexpSingleline">
-        <!-- \s matches whitespace character, $ matches end of line. -->
         <property name="format" value="\s+$"/>
         <property name="message" value="Line has trailing spaces."/>
     </module>
+    -->
 
     <module name="TreeWalker">
 
@@ -74,10 +83,17 @@
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
+
+        <!-- Removed on 11/02/2012
+             Justification: Many methods that could be documented are
+             intentionally undocumented because they are not part of
+             the public surface SDK area.
+
         <module name="JavadocMethod"/>
         <module name="JavadocType"/>
         <module name="JavadocVariable"/>
         <module name="JavadocStyle"/>
+        -->
 
 
         <!-- Checks for Naming Conventions.                  -->
@@ -118,9 +134,15 @@
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
+
+        <!-- Removed on 11/02/2012:
+             Justification: The project properties automatically breaks
+             lines longer than 120 characters. Any lines that are longer
+             cannot be broken.
         <module name="LineLength">
           <property name="max" value="160" />
         </module>
+        -->
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 
@@ -150,7 +172,12 @@
         <module name="EmptyBlock"/>
         <module name="LeftCurly"/>
         <module name="NeedBraces"/>
+
+        <!-- Removed on 11/02/2012:
+             Justification: The Azure SDK coding guidelines
+             are to have the right curly on a separate line.
         <module name="RightCurly"/>
+        -->
 
 
         <!-- Checks for common coding problems               -->
@@ -159,7 +186,13 @@
         <module name="DoubleCheckedLocking"/>    <!-- MY FAVOURITE -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
+         <!-- Removed on 11/02/2012:
+               Justification: The Azure SDK coding guidelines
+               are that the setter and constructor parameter names match
+               the names of the fields that are being set.
         <module name="HiddenField"/>
+        -->
+
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
@@ -170,7 +203,15 @@
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
+
+        <!-- Removed on 11/02/2012:
+             Justification: None of the SDK classes are intended
+             to be subclassed by end-users, but at the same time we don't
+             want to mark them final and prevent derivation for scenarios
+             like mocking, etc.
         <module name="DesignForExtension"/>
+        -->
+
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
@@ -180,7 +221,13 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
+
+        <!-- Removed on 11/02/2012:
+             Justification: The cost to implement and verify the changes
+             outweighs the benefit here.
         <module name="FinalParameters"/>
+        -->
+
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
