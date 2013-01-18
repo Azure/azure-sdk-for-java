@@ -13,13 +13,17 @@ For documentation please see the [Windows Azure Java Developer Center](http://ww
   * Create/Delete Queues
   * Insert/Peek Queue Messages
   * Advanced Queue Operations
+* Media Services
+  * Upload Media Files to Media Services
+  * Change the encoding on uploaded Media Services
+  * Provide streaming or download access to uploaded/transformed Media Files
 * Service Bus
   * Use either the Queue or Topic/Subscription Model
 * Service Runtime
   * Retrieve information about the state of your Azure Compute instances
 * Table
   * Manage Tables
-  * Work with Table Entities (CRUD)
+  * Table Entity Operations
   * Entity Group Transactions (Batch)
 
 #Getting Started
@@ -41,7 +45,7 @@ within your project you can also have them installed by the Java package manager
     <dependency>
       <groupId>com.microsoft.windowsazure</groupId>
       <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.3.3</version>
+      <version>0.4.0</version>
     </dependency>
 
 ##Minimum Requirements
