@@ -5,3 +5,5 @@ com.microsoft.windowsazure.services.serviceBus.Exports
 com.microsoft.windowsazure.services.serviceBus.implementation.Exports
 com.microsoft.windowsazure.services.core.utils.Exports
 com.microsoft.windowsazure.services.core.utils.pipeline.Exports
+com.microsoft.windowsazure.services.media.Exports
+
