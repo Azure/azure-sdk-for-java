@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -468,7 +468,7 @@ public final class RoleEnvironment {
 
         Calendar expiration = Calendar.getInstance();
         expiration.setTime(expiration_utc);
-        
+
         CurrentState newState = new AcquireCurrentState(clientId, currentGoalState.get().getIncarnation(),
                 currentStatus, expiration);
 
