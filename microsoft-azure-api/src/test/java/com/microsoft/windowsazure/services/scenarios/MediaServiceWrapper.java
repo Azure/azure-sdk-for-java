@@ -15,17 +15,31 @@
 
 package com.microsoft.windowsazure.services.scenarios;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.DigestInputStream;
+import java.security.Key;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import junit.framework.Assert;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
@@ -38,9 +52,12 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
+import com.microsoft.windowsazure.services.media.models.AssetFile.Updater;
 import com.microsoft.windowsazure.services.media.models.AssetFileInfo;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
+import com.microsoft.windowsazure.services.media.models.ContentKey;
+import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.Job.Creator;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
@@ -50,6 +67,7 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 
 class MediaServiceWrapper {
@@ -57,50 +75,12 @@ class MediaServiceWrapper {
 
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
 
-    //    private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
+    private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
     private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
-    private final String MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS = "MP4 to Smooth Streams Task";
-    private final String MEDIA_PROCESSOR_PLAYREADY_PROTECTION = "PlayReady Protection Task";
-    private final String MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS = "Smooth Streams to HLS Task";
 
-    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973635.aspx
-    private final String configMp4ToSmoothStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
-            + "  <name>MP4 to Smooth Streams</name>"
-            + "  <id>5e1e1a1c-bba6-11df-8991-0019d1916af0</id>"
-            + "  <description xml:lang='en'>Converts MP4 files encoded with H.264 (AVC) video and AAC-LC audio codecs to Smooth Streams.</description>"
-            + "  <inputFolder />"
-            + "  <properties namespace='http://schemas.microsoft.com/iis/media/V4/TM/MP4ToSmooth#' prefix='mp4'>"
-            + "    <property name='keepSourceNames' required='false' value='true' helpText='This property tells the MP4 to Smooth task to keep the original file name rather than add the bitrate bitrate information.' />"
-            + "  </properties>"
-            + "  <taskCode>"
-            + "    <type>Microsoft.Web.Media.TransformManager.MP4toSmooth.MP4toSmooth_Task, Microsoft.Web.Media.TransformManager.MP4toSmooth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
-            + "  </taskCode>" + "</taskDefinition>";
-
-    // From http://msdn.microsoft.com/en-us/library/windowsazure/hh973636.aspx
-    private final String configSmoothStreamsToAppleHttpLiveStreams = "<taskDefinition xmlns='http://schemas.microsoft.com/iis/media/v4/TM/TaskDefinition#'>"
-            + "    <name>Smooth Streams to Apple HTTP Live Streams</name>"
-            + "  <id>A72D7A5D-3022-45f2-89B4-1DDC5457C111</id>"
-            + "    <description xml:lang='en'>Converts on-demand Smooth Streams encoded with H.264 (AVC) video and AAC-LC audio codecs to Apple HTTP Live Streams (MPEG-2 TS) and creates an Apple HTTP Live Streaming playlist (.m3u8) file for the converted presentation.</description>"
-            + "    <inputDirectory></inputDirectory>"
-            + "    <outputFolder>TS_Out</outputFolder>"
-            + "    <properties namespace='http://schemas.microsoft.com/iis/media/AppleHTTP#' prefix='hls'>"
-            + "        <property name='maxbitrate' required='true' value='8500000' helpText='The maximum bit rate, in bits per second (bps), to be converted to MPEG-2 TS. On-demand Smooth Streams at or below this value are converted to MPEG-2 TS segments. Smooth Streams above this value are not converted. Most Apple devices can play media encoded at bit rates up to 8,500 Kbps.'/>"
-            + "        <property name='manifest' required='false' value='' helpText='The file name to use for the converted Apple HTTP Live Streaming playlist file (a file with an .m3u8 file name extension). If no value is specified, the following default value is used: &lt;ISM_file_name&gt;-m3u8-aapl.m3u8'/>"
-            + "        <property name='segment' required='false' value='10' helpText='The duration of each MPEG-2 TS segment, in seconds. 10 seconds is the Apple-recommended setting for most Apple mobile digital devices.'/>"
-            + "        <property name='log'  required='false' value='' helpText='The file name to use for a log file (with a .log file name extension) that records the conversion activity. If you specify a log file name, the file is stored in the task output folder.' /> "
-            + "        <property name='encrypt'  required='false' value='false' helpText='Enables encryption of MPEG-2 TS segments by using the Advanced Encryption Standard (AES) with a 128-bit key (AES-128).' />"
-            + "        <property name='pid'  required='false' value='' helpText='The program ID of the MPEG-2 TS presentation. Different encodings of MPEG-2 TS streams in the same presentation use the same program ID so that clients can easily switch between bit rates.' />"
-            + "        <property name='codecs'  required='false' value='false' helpText='Enables codec format identifiers, as defined by RFC 4281, to be included in the Apple HTTP Live Streaming playlist (.m3u8) file.' />"
-            + "        <property name='backwardcompatible'  required='false' value='false' helpText='Enables playback of the MPEG-2 TS presentation on devices that use the Apple iOS 3.0 mobile operating system.' />"
-            + "        <property name='allowcaching'  required='false' value='true' helpText='Enables the MPEG-2 TS segments to be cached on Apple devices for later playback.' />"
-            + "        <property name='passphrase'  required='false' value='' helpText='A passphrase that is used to generate the content key identifier.' />"
-            + "        <property name='key'  required='false' value='' helpText='The hexadecimal representation of the 16-octet content key value that is used for encryption.' />"
-            + "        <property name='keyuri'  required='false' value='' helpText='An alternate URI to be used by clients for downloading the key file. If no value is specified, it is assumed that the Live Smooth Streaming publishing point provides the key file.' />"
-            + "        <property name='overwrite'  required='false' value='true' helpText='Enables existing files in the output folder to be overwritten if converted output files have identical file names.' />"
-            + "    </properties>"
-            + "    <taskCode>"
-            + "        <type>Microsoft.Web.Media.TransformManager.SmoothToHLS.SmoothToHLSTask, Microsoft.Web.Media.TransformManager.SmoothToHLS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</type>"
-            + "    </taskCode>" + "</taskDefinition>";
+    public static enum EncoderType {
+        WindowsAzureMediaEncoder, StorageDecryption
+    }
 
     public MediaServiceWrapper(MediaContract service) {
         this.service = service;
@@ -108,6 +88,10 @@ class MediaServiceWrapper {
 
     // Manage
     public AssetInfo createAsset(String name, AssetOption encryption) throws ServiceException {
+        if (encryption == AssetOption.StorageEncrypted && !EncryptionHelper.canUseStrongCrypto()) {
+            Assert.fail("JVM does not support the required encryption");
+        }
+
         // Create asset. The SDK's top-level method is the simplest way to do that.
         return service.create(Asset.create().setName(name).setAlternateId("altId").setOptions(encryption));
     }
@@ -131,10 +115,17 @@ class MediaServiceWrapper {
 
     // Ingest
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes, Hashtable<String, InputStream> inputFiles)
-            throws ServiceException, IOException, NoSuchAlgorithmException {
+            throws Exception {
+        uploadFilesToAsset(asset, uploadWindowInMinutes, inputFiles, null);
+    }
+
+    public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
+            Hashtable<String, InputStream> inputFiles, byte[] aesKey) throws Exception {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 uploadWindowInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
         LocatorInfo locator = service.create(Locator.create(accessPolicy.getId(), asset.getId(), LocatorType.SAS));
+
+        String contentKeyId = createAssetContentKey(asset, aesKey);
 
         WritableBlobContainerContract uploader = service.createBlobWriter(locator);
 
@@ -145,19 +136,24 @@ class MediaServiceWrapper {
             MessageDigest digest = MessageDigest.getInstance("MD5");
 
             InputStream inputStream = inputFiles.get(fileName);
+
+            byte[] iv = null;
+            if (aesKey != null) {
+                iv = createIV();
+                inputStream = EncryptionHelper.encryptFile(inputStream, aesKey, iv);
+            }
+
             InputStream digestStream = new DigestInputStream(inputStream, digest);
             CountingStream countingStream = new CountingStream(digestStream);
-
             uploader.createBlockBlob(fileName, countingStream);
 
             inputStream.close();
             byte[] md5hash = digest.digest();
             String md5 = Base64.encode(md5hash);
-            System.out.println("md5: " + md5);
 
             AssetFileInfo fi = new AssetFileInfo(null, new AssetFileType().setContentChecksum(md5)
-                    .setContentFileSize(new Long(countingStream.getCount())).setIsPrimary(isFirst).setName(fileName)
-                    .setParentAssetId(asset.getAlternateId()));
+                    .setContentFileSize(countingStream.getCount()).setIsPrimary(isFirst).setName(fileName)
+                    .setInitializationVector(getIVString(iv)));
             infoToUpload.put(fileName, fi);
 
             isFirst = false;
@@ -165,11 +161,16 @@ class MediaServiceWrapper {
 
         service.action(AssetFile.createFileInfos(asset.getId()));
         for (AssetFileInfo assetFile : service.list(AssetFile.list(asset.getAssetFilesLink()))) {
+            AssetFileInfo fileInfo = infoToUpload.get(assetFile.getName());
+            Updater updateOp = AssetFile.update(assetFile.getId()).setContentChecksum(fileInfo.getContentChecksum())
+                    .setContentFileSize(fileInfo.getContentFileSize()).setIsPrimary(fileInfo.getIsPrimary());
 
-            AssetFileInfo x = infoToUpload.get(assetFile.getName());
-            System.out.println(x);
-            service.update(AssetFile.update(assetFile.getId()).setContentChecksum(x.getContentChecksum())
-                    .setContentFileSize(x.getContentFileSize()).setIsPrimary(x.getIsPrimary()));
+            if (aesKey != null) {
+                updateOp.setIsEncrypted(true).setEncryptionKeyId(contentKeyId).setEncryptionScheme("StorageEncryption")
+                        .setEncryptionVersion("1.0").setInitializationVector(fileInfo.getInitializationVector());
+            }
+
+            service.update(updateOp);
         }
 
         service.list(AssetFile.list(asset.getAssetFilesLink()));
@@ -178,9 +179,54 @@ class MediaServiceWrapper {
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
     }
 
+    private String getIVString(byte[] iv) {
+        if (iv == null) {
+            return null;
+        }
+
+        // Offset the bytes to ensure that the sign-bit is not set.
+        // Media Services expects unsigned Int64 values.
+        byte[] sub = new byte[9];
+        System.arraycopy(iv, 0, sub, 1, 8);
+        BigInteger longIv = new BigInteger(sub);
+        return longIv.toString();
+    }
+
+    private byte[] createIV() {
+        // Media Services requires 128-bit (16-byte) initialization vectors (IV)
+        // for AES encryption, but also that only the first 8 bytes are filled.
+        Random random = new Random();
+        byte[] effectiveIv = new byte[8];
+        random.nextBytes(effectiveIv);
+        byte[] iv = new byte[16];
+        System.arraycopy(effectiveIv, 0, iv, 0, effectiveIv.length);
+        return iv;
+    }
+
+    private String createAssetContentKey(AssetInfo asset, byte[] aesKey) throws Exception {
+        if (aesKey == null) {
+            return null;
+        }
+
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        String contentKeyIdUuid = UUID.randomUUID().toString();
+        String contentKeyId = "nb:kid:UUID:" + contentKeyIdUuid;
+
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateContentKeyChecksum(contentKeyIdUuid, aesKey);
+
+        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                .setChecksum(checksum).setProtectionKeyId(protectionKeyId));
+        service.action(Asset.linkContentKey(asset.getId(), contentKeyId));
+        return contentKeyId;
+    }
+
     private static class CountingStream extends InputStream {
         private final InputStream wrappedStream;
-        private int count;
+        private long count;
 
         public CountingStream(InputStream wrapped) {
             wrappedStream = wrapped;
@@ -193,12 +239,19 @@ class MediaServiceWrapper {
             return wrappedStream.read();
         }
 
-        public int getCount() {
+        public long getCount() {
             return count;
         }
     }
 
     // Process
+    public JobInfo createJob(String jobName, AssetInfo inputAsset, Task.CreateBatchOperation task)
+            throws ServiceException {
+        List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
+        tasks.add(task);
+        return createJob(jobName, inputAsset, tasks);
+    }
+
     public JobInfo createJob(String jobName, AssetInfo inputAsset, List<Task.CreateBatchOperation> tasks)
             throws ServiceException {
         Creator jobCreator = Job.create().setName(jobName).addInputMediaAsset(inputAsset.getId()).setPriority(2);
@@ -211,48 +264,29 @@ class MediaServiceWrapper {
     }
 
     // Process
-    public Task.CreateBatchOperation createTaskOptionsWindowsAzureMediaEncoder(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
+    public Task.CreateBatchOperation createTaskOptions(String taskName, int inputAssetId, int outputAssetId,
+            EncoderType encoderType) throws ServiceException {
         String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER), taskBody)
-                .setName(taskName).setConfiguration("H.264 256k DSL CBR");
 
-        return taskCreate;
-    }
+        String processor = null;
+        String configuration = null;
+        switch (encoderType) {
+            case WindowsAzureMediaEncoder:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.2.0.0");
+                // Full list of configurations strings for version 2.1 is at:
+                // http://msdn.microsoft.com/en-us/library/jj129582.aspx
+                configuration = "VC1 Broadband SD 4x3";
+                break;
+            case StorageDecryption:
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION, "1.5.3");
+                configuration = null;
+                break;
+            default:
+                break;
+        }
 
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsPlayReadyProtection(String taskName,
-            String playReadyConfiguration, int inputAssetId, int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_PLAYREADY_PROTECTION), taskBody).setName(taskName)
-                // TODO: Re-enable
-                // https://github.com/WindowsAzure/azure-sdk-for-java-pr/issues/499
-                // .setTaskCreationOptions(TaskCreationOptions.ProtectedConfiguration)
-                .setConfiguration(playReadyConfiguration);
-
-        return taskCreate;
-    }
-
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsMp4ToSmoothStreams(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_MP4_TO_SMOOTH_STREAMS), taskBody).setName(taskName)
-                .setConfiguration(configMp4ToSmoothStreams);
-
-        return taskCreate;
-    }
-
-    // Process
-    public Task.CreateBatchOperation createTaskOptionsSmoothStreamsToHls(String taskName, int inputAssetId,
-            int outputAssetId) throws ServiceException {
-        String taskBody = getTaskBody(inputAssetId, outputAssetId);
-        Task.CreateBatchOperation taskCreate = Task
-                .create(getMediaProcessorIdByName(MEDIA_PROCESSOR_SMOOTH_STREAMS_TO_HLS), taskBody).setName(taskName)
-                .setConfiguration(configSmoothStreamsToAppleHttpLiveStreams);
+        Task.CreateBatchOperation taskCreate = Task.create(processor, taskBody).setName(taskName)
+                .setConfiguration(configuration);
 
         return taskCreate;
     }
@@ -262,9 +296,10 @@ class MediaServiceWrapper {
                 + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>";
     }
 
-    private String getMediaProcessorIdByName(String processorName) throws ServiceException {
+    private String getMediaProcessorIdByName(String processorName, String version) throws ServiceException {
         EntityListOperation<MediaProcessorInfo> operation = MediaProcessor.list();
-        operation.getQueryParameters().putSingle("$filter", "Name eq '" + processorName + "'");
+        operation.getQueryParameters().putSingle("$filter",
+                "(Name eq '" + processorName + "') and (Version eq '" + version + "')");
         MediaProcessorInfo processor = service.list(operation).get(0);
         return processor.getId();
     }
@@ -272,6 +307,7 @@ class MediaServiceWrapper {
     // Process
     public boolean isJobFinished(JobInfo initialJobInfo) throws ServiceException {
         JobInfo currentJob = service.get(Job.get(initialJobInfo.getId()));
+        System.out.println(currentJob.getState());
         switch (currentJob.getState()) {
             case Finished:
             case Canceled:
@@ -293,62 +329,60 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    public List<URL> createOriginUrlsForStreamingContent(AssetInfo asset, int availabilityWindowInMinutes)
+    private Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes)
             throws ServiceException, MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true, "",
-                LocatorType.OnDemandOrigin);
-    }
-
-    // Deliver
-    public List<URL> createOriginUrlsForAppleHLSContent(AssetInfo asset, int availabilityWindowInMinutes)
-            throws ServiceException, MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, true,
-                "(format=m3u8-aapl)", LocatorType.OnDemandOrigin);
-    }
-
-    // Deliver
-    public List<URL> createFileURLsFromAsset(AssetInfo asset, int availabilityWindowInMinutes) throws ServiceException,
-            MalformedURLException {
-        return createOriginUrlsForStreamingContentWorker(asset, availabilityWindowInMinutes, false, null,
-                LocatorType.SAS);
-    }
-
-    private List<URL> createOriginUrlsForStreamingContentWorker(AssetInfo asset, int availabilityWindowInMinutes,
-            boolean isSmooth, String suffix, LocatorType locatorType) throws ServiceException, MalformedURLException {
-        List<URL> ret = new ArrayList<URL>();
+        Hashtable<String, URL> ret = new Hashtable<String, URL>();
 
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(accessPolicyPrefix + "tempAccessPolicy",
                 availabilityWindowInMinutes, EnumSet.of(AccessPolicyPermission.READ)));
-        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), locatorType));
+        LocatorInfo readLocator = service.create(Locator.create(readAP.getId(), asset.getId(), LocatorType.SAS));
 
         List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
         for (AssetFileInfo fi : publishedFiles) {
-            if (isSmooth) {
-                // Smooth Streaming format ends with ".ism*"
-                int index = fi.getName().lastIndexOf('.');
-                boolean isSmoothSteamFile = fi.getName().regionMatches(true, index + 1, "ism", 0, 3);
-                if (isSmoothSteamFile) {
-                    ret.add(constructUrlFromLocatorAndFileName(readLocator, fi.getName() + "/manifest"));
-                }
-            }
-            else {
-                URL file = constructUrlFromLocatorAndFileName(readLocator, fi.getName());
-                ret.add(file);
-            }
+            ret.put(fi.getName(),
+                    new URL(readLocator.getBaseUri() + "/" + fi.getName() + readLocator.getContentAccessToken()));
         }
 
         return ret;
     }
 
-    private URL constructUrlFromLocatorAndFileName(LocatorInfo locator, String fileName) throws MalformedURLException {
-        String locatorPath = locator.getPath();
-        int startOfSas = locatorPath.indexOf("?");
-        String blobPath = locatorPath + fileName;
-        if (startOfSas >= 0) {
-            blobPath = locatorPath.substring(0, startOfSas) + "/" + fileName + locatorPath.substring(startOfSas);
+    // Deliver
+    public Hashtable<String, InputStream> downloadFilesFromAsset(AssetInfo asset, int downloadWindowInMinutes)
+            throws Exception {
+        Hashtable<String, URL> urls = createFileURLsFromAsset(asset, downloadWindowInMinutes);
+        Hashtable<String, InputStream> ret = new Hashtable<String, InputStream>();
+
+        for (String fileName : urls.keySet()) {
+            URL url = urls.get(fileName);
+            InputStream stream = getInputStreamWithRetry(url);
+            ret.put(fileName, stream);
         }
 
-        return new URL(blobPath);
+        return ret;
+    }
+
+    // This method is needed because there can be a delay before a new read locator
+    // is applied for the asset files.
+    private InputStream getInputStreamWithRetry(URL file) throws IOException, InterruptedException {
+        InputStream reader = null;
+        for (int counter = 0; true; counter++) {
+            try {
+                reader = file.openConnection().getInputStream();
+                break;
+            }
+            catch (IOException e) {
+                System.out.println("Got error, wait a bit and try again");
+                if (counter < 6) {
+                    Thread.sleep(10000);
+                }
+                else {
+                    // No more retries.
+                    throw e;
+                }
+            }
+        }
+
+        return reader;
     }
 
     public void removeAllAssetsWithPrefix(String assetPrefix) throws ServiceException {
@@ -397,4 +431,52 @@ class MediaServiceWrapper {
             }
         }
     }
+
+    private static class EncryptionHelper {
+        public static boolean canUseStrongCrypto() {
+            try {
+                Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[32], "AES");
+                cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            }
+            catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+
+        public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
+            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            byte[] protectionKeyBytes = Base64.decode(protectionKey);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(protectionKeyBytes);
+            Certificate certificate = certificateFactory.generateCertificate(byteArrayInputStream);
+            Key publicKey = certificate.getPublicKey();
+            SecureRandom secureRandom = new SecureRandom();
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
+            byte[] cipherText = cipher.doFinal(inputData);
+            return cipherText;
+        }
+
+        public static String calculateContentKeyChecksum(String uuid, byte[] aesKey) throws Exception {
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] encryptionResult = cipher.doFinal(uuid.getBytes("UTF8"));
+            byte[] checksumByteArray = new byte[8];
+            System.arraycopy(encryptionResult, 0, checksumByteArray, 0, 8);
+            String checksum = Base64.encode(checksumByteArray);
+            return checksum;
+        }
+
+        public static InputStream encryptFile(InputStream inputStream, byte[] key, byte[] iv) throws Exception {
+            Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
+            SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
+            CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
+            return cipherInputStream;
+        }
+    }
+
 }

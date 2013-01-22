@@ -20,15 +20,12 @@ import static org.junit.Assert.*;
 import java.net.URLEncoder;
 import java.util.EnumSet;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * Tests for access policy entity
@@ -74,8 +71,6 @@ public class AccessPolicyEntityTest {
 
     @Test
     public void listWithQueryParametersReturnsThem() throws Exception {
-        MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-
         EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
