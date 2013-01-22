@@ -188,8 +188,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     private List<Task.CreateBatchOperation> createTasks() throws ServiceException {
         List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
 
-        tasks.add(wrapper.createTaskOptions("MP4 to SS", 0, 0, EncoderType.Mp4ToSmoothStream));
-        tasks.add(wrapper.createTaskOptions("SS to HLS", 0, 1, EncoderType.SmoothStreamsToHls));
+        tasks.add(wrapper.createTaskOptions("Decryptor", 0, 0, EncoderType.StorageDecryption));
+        tasks.add(wrapper.createTaskOptions("Processor", 0, 1, EncoderType.WindowsAzureMediaEncoder));
         return tasks;
     }
 
