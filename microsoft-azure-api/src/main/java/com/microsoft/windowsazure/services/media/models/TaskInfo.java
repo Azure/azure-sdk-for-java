@@ -99,7 +99,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
             }
         }
 
-        return null;
+        return result;
     }
 
     /**

@@ -44,7 +44,7 @@ public class TaskType implements MediaServiceDTO {
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
     protected List<ErrorDetailType> errorDetails;
 
-    @XmlElementWrapper(name = "TaskHistoricalEventDetails", namespace = Constants.ODATA_DATA_NS)
+    @XmlElementWrapper(name = "HistoricalEvents", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
     protected List<TaskHistoricalEventType> taskHistoricalEventTypes;
 
