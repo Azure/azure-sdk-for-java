@@ -48,6 +48,8 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.config.ClientConfig;
 
 public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String testTablesPrefix = "sdktest";
@@ -74,13 +76,14 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Setup container names array (list of container names used by
         // integration tests)
         testTables = new String[10];
+        int uniqueId = (new java.util.Random()).nextInt(100000);
         for (int i = 0; i < testTables.length; i++) {
-            testTables[i] = String.format("%s%d", testTablesPrefix, i + 1);
+            testTables[i] = String.format("%s%d%d", testTablesPrefix, uniqueId, i + 1);
         }
 
         creatableTables = new String[10];
         for (int i = 0; i < creatableTables.length; i++) {
-            creatableTables[i] = String.format("%s%d", createableTablesPrefix, i + 1);
+            creatableTables[i] = String.format("%s%d%d", createableTablesPrefix, uniqueId, i + 1);
         }
 
         TEST_TABLE_1 = testTables[0];
@@ -1201,16 +1204,24 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         TableContract service = TableService.create("testprefix", config);
 
-        try {
-            service.queryTables();
-            fail("Exception should have been thrown");
+        // Use reflection to pull the state out of the service.
+        Client channel = (Client) readField(service, "service", "channel");
+        Integer connTimeout = (Integer) channel.getProperties().get(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+        Integer readTimeout = (Integer) channel.getProperties().get(ClientConfig.PROPERTY_READ_TIMEOUT);
+
+        assertEquals(3, connTimeout.intValue());
+        assertEquals(7, readTimeout.intValue());
+    }
+
+    private Object readField(Object target, String... fieldNames) throws NoSuchFieldException, IllegalAccessException {
+        if (fieldNames.length == 0) {
+            return target;
         }
-        catch (ServiceTimeoutException ex) {
-            // No need to assert, test is if correct assertion type is thrown.
-        }
-        catch (Exception ex) {
-            fail("unexpected exception was thrown");
-        }
+
+        java.lang.reflect.Field field = target.getClass().getDeclaredField(fieldNames[0]);
+        field.setAccessible(true);
+        Object value = field.get(target);
+        return readField(value, java.util.Arrays.copyOfRange(fieldNames, 1, fieldNames.length));
     }
 
     @Test
