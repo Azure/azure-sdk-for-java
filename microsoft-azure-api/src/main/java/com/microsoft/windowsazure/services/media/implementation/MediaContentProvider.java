@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
@@ -56,8 +55,7 @@ public class MediaContentProvider<T extends MediaServiceDTO> extends AbstractMes
 
     @Override
     public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException,
-            WebApplicationException {
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -68,8 +66,7 @@ public class MediaContentProvider<T extends MediaServiceDTO> extends AbstractMes
 
     @Override
     public void writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-            MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException,
-            WebApplicationException {
+            MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
         try {
             marshaller.marshalEntry(t, entityStream);
         }

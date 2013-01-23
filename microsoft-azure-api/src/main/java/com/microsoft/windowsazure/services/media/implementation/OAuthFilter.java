@@ -41,7 +41,7 @@ public class OAuthFilter extends IdempotentClientFilter {
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
      */@Override
-    public ClientResponse doHandle(ClientRequest clientRequest) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest clientRequest) {
         String accessToken;
         try {
             accessToken = oAuthTokenManager.getAccessToken();

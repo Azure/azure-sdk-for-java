@@ -37,6 +37,9 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public class ProtectionKey {
 
+    private ProtectionKey() {
+    }
+
     /**
      * Gets the protection key id.
      * 
