@@ -27,14 +27,14 @@ public interface EntityOperation {
      * @param proxyData
      * @return
      */
-    public void setProxyData(EntityProxyData proxyData);
+    void setProxyData(EntityProxyData proxyData);
 
     /**
      * Get the URI the creation request should be sent to.
      * 
      * @return The uri
      */
-    public abstract String getUri();
+    String getUri();
 
     /**
      * Get the MIME type for the content that's being sent to the server.
@@ -42,12 +42,12 @@ public interface EntityOperation {
      * @return The MIME type
      * @throws ServiceException
      */
-    public abstract MediaType getContentType();
+    MediaType getContentType();
 
     /**
      * Get the MIME type that we're expecting the server to send back.
      */
-    public abstract MediaType getAcceptType();
+    MediaType getAcceptType();
 
     /**
      * Process response process.
@@ -58,5 +58,5 @@ public interface EntityOperation {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract Object processResponse(Object rawResponse) throws ServiceException;
+    Object processResponse(Object rawResponse) throws ServiceException;
 }

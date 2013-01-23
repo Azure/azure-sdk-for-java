@@ -34,7 +34,7 @@ public class RedirectFilter extends IdempotentClientFilter {
      * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest request) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Request should not be null");
         }
