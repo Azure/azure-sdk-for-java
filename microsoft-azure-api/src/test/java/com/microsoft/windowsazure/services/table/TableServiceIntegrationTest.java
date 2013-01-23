@@ -1201,14 +1201,13 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
     }
 
     private Object readField(Object target, String... fieldNames) throws NoSuchFieldException, IllegalAccessException {
-        if (fieldNames.length == 0) {
-            return target;
+        Object value = target;
+        for (String fieldName : fieldNames) {
+            java.lang.reflect.Field field = value.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            value = field.get(value);
         }
-
-        java.lang.reflect.Field field = target.getClass().getDeclaredField(fieldNames[0]);
-        field.setAccessible(true);
-        Object value = field.get(target);
-        return readField(value, java.util.Arrays.copyOfRange(fieldNames, 1, fieldNames.length));
+        return value;
     }
 
     @Test
