@@ -103,8 +103,6 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
 
-        deleteAllTables(service, testTables);
-        deleteAllTables(service, creatableTables);
         createTables(service, testTablesPrefix, testTables);
     }
 
@@ -134,17 +132,6 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         for (String item : list) {
             if (containers.contains(item)) {
                 service.deleteTable(item);
-            }
-        }
-    }
-
-    private static void deleteAllTables(TableContract service, String[] list) throws Exception {
-        for (String item : list) {
-            try {
-                service.deleteTable(item);
-            }
-            catch (ServiceException e) {
-                // Ignore
             }
         }
     }
