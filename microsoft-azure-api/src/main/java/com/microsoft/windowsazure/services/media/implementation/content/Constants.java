@@ -23,7 +23,11 @@ import javax.xml.namespace.QName;
  * media services entities.
  */
 
-public class Constants {
+public final class Constants {
+
+    private Constants() {
+    }
+
     /**
      * XML Namespace for Atom syndication format, as defined by IETF RFC 4287
      */

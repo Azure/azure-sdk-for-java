@@ -30,14 +30,14 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public class ODataDateAdapter extends XmlAdapter<String, Date> {
 
-    private final static Pattern hasTimezoneRegex;
-    private final static TimeZone utc;
+    private static final Pattern HAS_TIMEZONE_REGEX;
+    private static final TimeZone UTC;
 
     static {
-        hasTimezoneRegex = Pattern.compile("^.*(\\+|-)\\d\\d:\\d\\d$");
+        HAS_TIMEZONE_REGEX = Pattern.compile("^.*(\\+|-)\\d\\d:\\d\\d$");
 
-        utc = TimeZone.getDefault();
-        utc.setRawOffset(0);
+        UTC = TimeZone.getDefault();
+        UTC.setRawOffset(0);
     }
 
     @Override
@@ -53,11 +53,11 @@ public class ODataDateAdapter extends XmlAdapter<String, Date> {
     public String marshal(Date date) throws Exception {
         Calendar dateToMarshal = Calendar.getInstance();
         dateToMarshal.setTime(date);
-        dateToMarshal.setTimeZone(utc);
+        dateToMarshal.setTimeZone(UTC);
         return DatatypeConverter.printDateTime(dateToMarshal);
     }
 
     private boolean hasTimezone(String dateString) {
-        return dateString.endsWith("Z") || hasTimezoneRegex.matcher(dateString).matches();
+        return dateString.endsWith("Z") || HAS_TIMEZONE_REGEX.matcher(dateString).matches();
     }
 }

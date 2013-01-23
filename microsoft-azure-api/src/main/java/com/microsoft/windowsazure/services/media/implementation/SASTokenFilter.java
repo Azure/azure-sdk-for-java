@@ -15,12 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.net.URISyntaxException;
-
 import javax.ws.rs.core.UriBuilder;
 
 import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -37,7 +34,6 @@ public class SASTokenFilter extends IdempotentClientFilter {
      * 
      * @param sasUrl
      *            URL containing authentication information
-     * @throws URISyntaxException
      */
     public SASTokenFilter(String sasToken) {
         this.sasToken = sasToken;
@@ -47,7 +43,7 @@ public class SASTokenFilter extends IdempotentClientFilter {
      * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest cr) {
         UriBuilder newUri = UriBuilder.fromUri(cr.getURI());
         String currentQuery = cr.getURI().getRawQuery();
         if (currentQuery == null) {

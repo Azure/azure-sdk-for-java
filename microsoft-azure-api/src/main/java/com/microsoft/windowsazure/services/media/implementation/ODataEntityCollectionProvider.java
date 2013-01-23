@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
@@ -50,7 +49,7 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
     @Override
     public ListResult<ODataEntity<?>> readFrom(Class<ListResult<ODataEntity<?>>> type, Type genericType,
             Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
-            InputStream entityStream) throws IOException, WebApplicationException {
+            InputStream entityStream) throws IOException {
 
         String responseType = mediaType.getParameters().get("type");
         try {
@@ -89,7 +88,7 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
     @Override
     public void writeTo(ListResult<ODataEntity<?>> t, Class<?> type, Type genericType, Annotation[] annotations,
             MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-            throws IOException, WebApplicationException {
+            throws IOException {
 
         throw new UnsupportedOperationException();
     }
