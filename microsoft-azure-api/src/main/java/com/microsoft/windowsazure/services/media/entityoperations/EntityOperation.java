@@ -25,7 +25,6 @@ public interface EntityOperation {
      * Supplies the current proxy information to the action.
      * 
      * @param proxyData
-     * @return
      */
     public void setProxyData(EntityProxyData proxyData);
 
