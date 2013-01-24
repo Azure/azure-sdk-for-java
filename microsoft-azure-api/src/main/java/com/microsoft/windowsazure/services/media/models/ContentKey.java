@@ -172,7 +172,7 @@ public class ContentKey {
     /**
      * Create an operation that will retrieve the given content key.
      * 
-     * @param ContentKeyId
+     * @param contentKeyId
      *            id of content key to retrieve
      * @return the operation
      */
@@ -205,7 +205,7 @@ public class ContentKey {
     /**
      * Create an operation to delete the given content key.
      * 
-     * @param ContentKeyId
+     * @param contentKeyId
      *            id of content key to delete
      * @return the delete operation
      */

@@ -131,7 +131,7 @@ public final class BlobContainerProperties {
     /**
      * Sets the lease status on the container. Reserved for internal use.
      * 
-     * @param LeaseState
+     * @param leaseState
      *            The lease state to set, as a <code>LeaseState</code> object.
      */
     public void setLeaseState(final LeaseState leaseState) {
@@ -141,7 +141,7 @@ public final class BlobContainerProperties {
     /**
      * Sets the lease duration on the container. Reserved for internal use.
      * 
-     * @param LeaseDuration
+     * @param leaseDuration
      *            The lease duration to set, as a <code>LeaseDuration</code> object.
      */
     public void setLeaseDuration(final LeaseDuration leaseDuration) {

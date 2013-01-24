@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 
@@ -33,7 +32,7 @@ public class VersionHeadersFilter extends IdempotentClientFilter {
      * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse doHandle(ClientRequest cr) {
         MultivaluedMap<String, Object> headers = cr.getHeaders();
         headers.add("DataServiceVersion", "3.0");
         headers.add("MaxDataServiceVersion", "3.0");

@@ -41,7 +41,7 @@ import com.sun.jersey.api.representation.Form;
 public class OAuthRestProxy implements OAuthContract {
     Client channel;
 
-    private final String _grantType = "client_credentials";
+    private final String grantType = "client_credentials";
 
     static Log log = LogFactory.getLog(OAuthContract.class);
 
@@ -76,7 +76,7 @@ public class OAuthRestProxy implements OAuthContract {
         ClientResponse clientResponse;
         String responseJson;
 
-        requestForm.add("grant_type", _grantType);
+        requestForm.add("grant_type", grantType);
         requestForm.add("client_id", clientId);
         requestForm.add("client_secret", clientSecret);
         requestForm.add("scope", scope);
