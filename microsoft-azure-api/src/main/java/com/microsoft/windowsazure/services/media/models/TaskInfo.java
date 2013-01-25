@@ -87,14 +87,23 @@ public class TaskInfo extends ODataEntity<TaskType> {
         return null;
     }
 
-    public List<TaskHistoricalEvent> getTaskHistoricalEvents() {
+    /**
+     * Gets the task historical events.
+     * 
+     * @return the task historical events
+     */
+    public List<TaskHistoricalEvent> getHistoricalEvents() {
         List<TaskHistoricalEvent> result = new ArrayList<TaskHistoricalEvent>();
-        List<TaskHistoricalEventType> taskHistoricalEventTypes = getContent().getTaskHistoricalEventTypes();
+        List<TaskHistoricalEventType> historicalEventTypes = getContent().getHistoricalEventTypes();
 
-        if (taskHistoricalEventTypes != null) {
-            for (TaskHistoricalEventType taskHistoricalEventType : taskHistoricalEventTypes) {
+        if (historicalEventTypes != null) {
+            for (TaskHistoricalEventType taskHistoricalEventType : historicalEventTypes) {
+                String message = taskHistoricalEventType.getMessage();
+                if ((message != null) && (message.isEmpty())) {
+                    message = null;
+                }
                 TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(),
-                        taskHistoricalEventType.getMessage(), taskHistoricalEventType.getTimeStamp());
+                        message, taskHistoricalEventType.getTimeStamp());
                 result.add(taskHistoricalEvent);
             }
         }
@@ -229,7 +238,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Gets link to the task's input assets
+     * Gets link to the task's input assets.
      * 
      * @return the link
      */
@@ -238,7 +247,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Gets link to the task's output assets
+     * Gets link to the task's output assets.
      * 
      * @return the link
      */

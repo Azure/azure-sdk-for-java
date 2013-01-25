@@ -363,11 +363,14 @@ public class JobIntegrationTest extends IntegrationTestBase {
         }
         ListResult<TaskInfo> tasks = service.list(Task.list(actualJobInfo.getTasksLink()));
         TaskInfo taskInfo = tasks.get(0);
-        List<TaskHistoricalEvent> taskHistoricalEvents = taskInfo.getTaskHistoricalEvents();
+        List<TaskHistoricalEvent> historicalEvents = taskInfo.getHistoricalEvents();
+        TaskHistoricalEvent historicalEvent = historicalEvents.get(0);
 
         // Assert 
-        assertEquals(5, taskHistoricalEvents.size());
-
+        assertEquals(5, historicalEvents.size());
+        assertNotNull(historicalEvent.getCode());
+        assertNotNull(historicalEvent.getTimeStamp());
+        assertNull(historicalEvent.getMessage());
     }
 
 }

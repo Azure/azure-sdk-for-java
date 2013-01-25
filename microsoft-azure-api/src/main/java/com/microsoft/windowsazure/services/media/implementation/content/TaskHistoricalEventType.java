@@ -42,9 +42,6 @@ public class TaskHistoricalEventType implements MediaServiceDTO {
     protected Date timeStamp;
 
     /**
-     * The
-     * 
-     * /**
      * Gets the code.
      * 
      * @return the code
