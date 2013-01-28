@@ -487,7 +487,9 @@ public class CloudQueueTests extends QueueTestBase {
 
         int count = 0;
         for (CloudQueueMessage m : queue.peekMessages(32)) {
-            count++;
+            if (m != null) {
+                count++;
+            }
         }
 
         Assert.assertTrue(count == 2);
@@ -498,7 +500,9 @@ public class CloudQueueTests extends QueueTestBase {
 
         count = 0;
         for (CloudQueueMessage m : queue.peekMessages(32)) {
-            count++;
+            if (m != null) {
+                count++;
+            }
         }
 
         Assert.assertTrue(count == 0);

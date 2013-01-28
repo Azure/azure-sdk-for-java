@@ -202,6 +202,8 @@ public class TableQuery<T extends TableEntity> {
         for (byte b : value) {
             formatter.format("%02x", b);
         }
+        formatter.flush();
+        formatter.close();
 
         return generateFilterCondition(propertyName, operation, sb.toString(), EdmType.BINARY);
     }
@@ -232,6 +234,8 @@ public class TableQuery<T extends TableEntity> {
         for (byte b : value) {
             formatter.format("%02x", b);
         }
+        formatter.flush();
+        formatter.close();
 
         return generateFilterCondition(propertyName, operation, sb.toString(), EdmType.BINARY);
     }
