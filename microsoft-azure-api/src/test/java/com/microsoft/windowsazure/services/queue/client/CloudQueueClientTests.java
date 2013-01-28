@@ -67,7 +67,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
         int initialCount = 0;
 
         for (CloudQueue queue : qClient.listQueues()) {
-            initialCount++;
+            if (queue != null) {
+                initialCount++;
+            }
         }
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
@@ -82,7 +84,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            count++;
+            if (queue != null) {
+                count++;
+            }
         }
 
         Assert.assertEquals(count, initialCount + 25);
@@ -99,7 +103,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         count = 0;
         for (CloudQueue queue : qClient.listQueues(perfix, QueueListingDetails.METADATA, null, null)) {
-            count++;
+            if (queue != null) {
+                count++;
+            }
             Assert.assertTrue(queue.getMetadata().size() == 1
                     && queue.getMetadata().get("tags").equals(queue.getName()));
         }
@@ -111,7 +117,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesAndListQueuesSegmentedLargeNumber() throws URISyntaxException, StorageException {
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            count++;
+            if (queue != null) {
+                count++;
+            }
         }
 
         int totalLimit = 5005;
@@ -130,7 +138,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
             count = 0;
             for (CloudQueue queue : qClient.listQueues()) {
-                count++;
+                if (queue != null) {
+                    count++;
+                }
             }
         }
 
@@ -181,17 +191,23 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesEqual() throws URISyntaxException, StorageException {
         int count1 = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            count1++;
+            if (queue != null) {
+                count1++;
+            }
         }
 
         int count2 = 0;
         for (CloudQueue queue : qClient.listQueues("")) {
-            count2++;
+            if (queue != null) {
+                count2++;
+            }
         }
 
         int count3 = 0;
         for (CloudQueue queue : qClient.listQueues(null)) {
-            count3++;
+            if (queue != null) {
+                count3++;
+            }
         }
 
         Assert.assertEquals(count1, count2);
