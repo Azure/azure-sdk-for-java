@@ -176,12 +176,13 @@ public class TableTestBase {
             Assert.assertEquals(this.getPartitionKey(), other.getPartitionKey());
             Assert.assertEquals(this.getRowKey(), other.getRowKey());
 
-            Assert.assertEquals(this.getDateTime(), other.getDateTime());
+            assertDateApproxEquals(this.getDateTime(), other.getDateTime(), 100);
+
             Assert.assertEquals(this.getGuid(), other.getGuid());
             Assert.assertEquals(this.getString(), other.getString());
 
-            Assert.assertEquals(this.getDouble(), other.getDouble());
-            Assert.assertEquals(this.getDoublePrimitive(), other.getDoublePrimitive());
+            Assert.assertEquals(this.getDouble(), other.getDouble(), 1.0e-10);
+            Assert.assertEquals(this.getDoublePrimitive(), other.getDoublePrimitive(), 1.0e-10);
             Assert.assertEquals(this.getInt32(), other.getInt32());
             Assert.assertEquals(this.getIntegerPrimitive(), other.getIntegerPrimitive());
             Assert.assertEquals(this.getBool(), other.getBool());
@@ -190,6 +191,18 @@ public class TableTestBase {
             Assert.assertEquals(this.getIntegerPrimitive(), other.getIntegerPrimitive());
             Assert.assertTrue(Arrays.equals(this.getBinary(), other.getBinary()));
             Assert.assertTrue(Arrays.equals(this.getBinaryPrimitive(), other.getBinaryPrimitive()));
+        }
+
+        protected void assertDateApproxEquals(Date expected, Date actual, int deltaInMs) {
+            if (expected == null || actual == null) {
+                Assert.assertEquals(expected, actual);
+            }
+            else {
+                long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+                if (diffInMilliseconds > deltaInMs) {
+                    Assert.assertEquals(expected, actual);
+                }
+            }
         }
 
         /**
