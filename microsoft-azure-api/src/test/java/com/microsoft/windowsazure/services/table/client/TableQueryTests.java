@@ -334,7 +334,7 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void testQueryOnSupportedTypes() throws StorageException {
+    public void testQueryOnSupportedTypes() throws StorageException, InterruptedException {
         // Setup
         TableBatchOperation batch = new TableBatchOperation();
         String pk = UUID.randomUUID().toString();
@@ -359,13 +359,8 @@ public class TableQueryTests extends TableTestBase {
             ent.setGuid(UUID.randomUUID());
             ent.setString(String.format("%04d", j));
 
-            try {
-                // Add delay to make times unique
-                Thread.sleep(100);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            // Add delay to make times unique
+            Thread.sleep(100);
             batch.insert(ent);
             if (j == 50) {
                 middleRef = ent;
