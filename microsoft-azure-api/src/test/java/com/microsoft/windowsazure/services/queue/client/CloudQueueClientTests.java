@@ -67,9 +67,8 @@ public final class CloudQueueClientTests extends QueueTestBase {
         int initialCount = 0;
 
         for (CloudQueue queue : qClient.listQueues()) {
-            if (queue != null) {
-                initialCount++;
-            }
+            Assert.assertNotNull(queue);
+            initialCount++;
         }
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
@@ -84,9 +83,8 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            if (queue != null) {
-                count++;
-            }
+            Assert.assertNotNull(queue);
+            count++;
         }
 
         Assert.assertEquals(count, initialCount + 25);
@@ -103,9 +101,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         count = 0;
         for (CloudQueue queue : qClient.listQueues(perfix, QueueListingDetails.METADATA, null, null)) {
-            if (queue != null) {
-                count++;
-            }
+            count++;
             Assert.assertTrue(queue.getMetadata().size() == 1
                     && queue.getMetadata().get("tags").equals(queue.getName()));
         }
@@ -117,9 +113,8 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesAndListQueuesSegmentedLargeNumber() throws URISyntaxException, StorageException {
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            if (queue != null) {
-                count++;
-            }
+            Assert.assertNotNull(queue);
+            count++;
         }
 
         int totalLimit = 5005;
@@ -138,9 +133,8 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
             count = 0;
             for (CloudQueue queue : qClient.listQueues()) {
-                if (queue != null) {
-                    count++;
-                }
+                Assert.assertNotNull(queue);
+                count++;
             }
         }
 
@@ -191,23 +185,20 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesEqual() throws URISyntaxException, StorageException {
         int count1 = 0;
         for (CloudQueue queue : qClient.listQueues()) {
-            if (queue != null) {
-                count1++;
-            }
+            Assert.assertNotNull(queue);
+            count1++;
         }
 
         int count2 = 0;
         for (CloudQueue queue : qClient.listQueues("")) {
-            if (queue != null) {
-                count2++;
-            }
+            Assert.assertNotNull(queue);
+            count2++;
         }
 
         int count3 = 0;
         for (CloudQueue queue : qClient.listQueues(null)) {
-            if (queue != null) {
-                count3++;
-            }
+            Assert.assertNotNull(queue);
+            count3++;
         }
 
         Assert.assertEquals(count1, count2);
