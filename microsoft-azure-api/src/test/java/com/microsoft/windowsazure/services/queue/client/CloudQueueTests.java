@@ -676,7 +676,7 @@ public class CloudQueueTests extends QueueTestBase {
 
     @Test
     public void testAddMessageWithVisibilityTimeout() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+            UnsupportedEncodingException, InterruptedException {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -685,12 +685,7 @@ public class CloudQueueTests extends QueueTestBase {
         Date d1 = m1.getExpirationTime();
         queue.deleteMessage(m1);
 
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(2000);
 
         queue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
         CloudQueueMessage m2 = queue.retrieveMessage();
@@ -819,7 +814,8 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testRetrieveMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testRetrieveMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException,
+            InterruptedException {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -834,12 +830,7 @@ public class CloudQueueTests extends QueueTestBase {
 
         newQueue.deleteMessage(message1);
 
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(2000);
 
         newQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
         CloudQueueMessage message2 = newQueue.retrieveMessage();
@@ -917,7 +908,8 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testDequeueCountIncreases() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testDequeueCountIncreases() throws URISyntaxException, StorageException, UnsupportedEncodingException,
+            InterruptedException {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -926,13 +918,7 @@ public class CloudQueueTests extends QueueTestBase {
         Assert.assertTrue(message1.getDequeueCount() == 1);
 
         for (int i = 2; i < 5; i++) {
-            try {
-                Thread.sleep(2000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            Thread.sleep(2000);
             CloudQueueMessage message2 = newQueue.retrieveMessage(1, null, null);
             Assert.assertTrue(message2.getDequeueCount() == i);
         }
@@ -1146,7 +1132,8 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testUpdateMessageFullPass() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testUpdateMessageFullPass() throws URISyntaxException, StorageException, UnsupportedEncodingException,
+            InterruptedException {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -1161,12 +1148,7 @@ public class CloudQueueTests extends QueueTestBase {
         Assert.assertTrue(popreceipt2 != popreceipt1);
         Assert.assertTrue(NextVisibleTim1.before(NextVisibleTim2));
 
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(2000);
 
         String newMesage = message.getMessageContentAsString() + "updated";
         message.setMessageContent(newMesage);
