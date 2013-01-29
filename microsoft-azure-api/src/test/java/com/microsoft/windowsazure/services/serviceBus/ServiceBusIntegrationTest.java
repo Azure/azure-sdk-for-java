@@ -128,7 +128,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String queuePath = "testGetNonExistQueueFail";
 
         // Act
-        GetQueueResult getQueueResult = service.getQueue(queuePath);
+        service.getQueue(queuePath);
 
         // Assert 
     }

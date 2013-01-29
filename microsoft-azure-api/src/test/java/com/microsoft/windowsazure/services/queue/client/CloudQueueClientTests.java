@@ -67,6 +67,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         int initialCount = 0;
 
         for (CloudQueue queue : qClient.listQueues()) {
+            Assert.assertNotNull(queue);
             initialCount++;
         }
 
@@ -82,6 +83,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
+            Assert.assertNotNull(queue);
             count++;
         }
 
@@ -111,6 +113,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesAndListQueuesSegmentedLargeNumber() throws URISyntaxException, StorageException {
         int count = 0;
         for (CloudQueue queue : qClient.listQueues()) {
+            Assert.assertNotNull(queue);
             count++;
         }
 
@@ -130,6 +133,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
             count = 0;
             for (CloudQueue queue : qClient.listQueues()) {
+                Assert.assertNotNull(queue);
                 count++;
             }
         }
@@ -181,16 +185,19 @@ public final class CloudQueueClientTests extends QueueTestBase {
     public void testListQueuesEqual() throws URISyntaxException, StorageException {
         int count1 = 0;
         for (CloudQueue queue : qClient.listQueues()) {
+            Assert.assertNotNull(queue);
             count1++;
         }
 
         int count2 = 0;
         for (CloudQueue queue : qClient.listQueues("")) {
+            Assert.assertNotNull(queue);
             count2++;
         }
 
         int count3 = 0;
         for (CloudQueue queue : qClient.listQueues(null)) {
+            Assert.assertNotNull(queue);
             count3++;
         }
 
