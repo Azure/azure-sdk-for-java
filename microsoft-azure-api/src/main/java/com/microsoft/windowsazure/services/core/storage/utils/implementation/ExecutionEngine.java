@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.services.core.storage.RetryNoRetry;
 import com.microsoft.windowsazure.services.core.storage.RetryPolicy;
 import com.microsoft.windowsazure.services.core.storage.RetryPolicyFactory;
 import com.microsoft.windowsazure.services.core.storage.RetryResult;
+import com.microsoft.windowsazure.services.core.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.table.client.TableServiceException;
@@ -223,6 +224,11 @@ public final class ExecutionEngine {
         opContext.setCurrentRequestObject(request);
         currResult.setStartDate(new Date());
         opContext.getRequestResults().add(currResult);
+
+        if (opContext.getSendingRequestEventHandler().hasListeners()) {
+            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+        }
+
         try {
             return request.getInputStream();
         }
@@ -294,6 +300,10 @@ public final class ExecutionEngine {
         currResult.setStartDate(new Date());
         opContext.getRequestResults().add(currResult);
         opContext.setCurrentRequestObject(request);
+
+        if (opContext.getSendingRequestEventHandler().hasListeners()) {
+            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+        }
 
         // Send the request
         currResult.setStatusCode(request.getResponseCode());
