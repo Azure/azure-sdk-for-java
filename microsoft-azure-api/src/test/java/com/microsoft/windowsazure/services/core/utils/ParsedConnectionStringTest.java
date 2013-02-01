@@ -110,10 +110,10 @@ public class ParsedConnectionStringTest {
         new OneField("nosuchfield=nothing");
     }
 
+    @Test
     public void shouldNotThrowIfValueMissing() throws Exception {
-        exception.expect(ConnectionStringSyntaxException.class);
         ThreeFields cs = new ThreeFields("  FieldOne=  hello; FieldTwo  =;FieldThree=19 ");
-        assertNull(cs.getFieldTwo());
+        assertEquals("", cs.getFieldTwo());
     }
 
     @Test
