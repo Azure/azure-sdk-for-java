@@ -43,7 +43,8 @@ public class WrapTokenManagerTest {
 
         dateFactory = mock(DateFactory.class);
         contract = mock(WrapContract.class);
-        client = new WrapTokenManager(contract, dateFactory, "testurl", "testname", "testpassword");
+        ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(null, null, "testurl", "testName","testpassword");
+        client = new WrapTokenManager(contract, dateFactory, settings);
 
         when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
             @Override

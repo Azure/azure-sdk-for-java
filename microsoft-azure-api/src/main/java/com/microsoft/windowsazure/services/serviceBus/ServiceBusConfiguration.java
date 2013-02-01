@@ -22,6 +22,13 @@ import com.microsoft.windowsazure.services.core.Configuration;
  */
 public class ServiceBusConfiguration {
 
+
+    /**
+     * Defines the configuration connection string constant.
+     *
+     */
+    public final static String CONNECTION_STRING = "serviceBus.connectionstring";
+
     /**
      * Defines the configuration URI constant.
      * 

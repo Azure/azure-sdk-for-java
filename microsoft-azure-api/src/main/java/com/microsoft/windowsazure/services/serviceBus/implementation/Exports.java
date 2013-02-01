@@ -15,6 +15,11 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
+
+import java.util.Map;
+
+import static com.microsoft.windowsazure.services.core.utils.ExportUtils.getPropertyIfExists;
 
 public class Exports implements Builder.Exports {
 
@@ -22,6 +27,18 @@ public class Exports implements Builder.Exports {
         registry.add(WrapContract.class, WrapRestProxy.class);
         registry.add(WrapTokenManager.class);
         registry.add(WrapFilter.class);
-    }
 
+        registry.add(new Builder.Factory<ServiceBusConnectionSettings>() {
+
+            @Override
+            public ServiceBusConnectionSettings create(String profile, Builder builder, Map<String, Object> properties) {
+                return new ServiceBusConnectionSettings(
+                        (String)getPropertyIfExists(profile, properties, ServiceBusConfiguration.CONNECTION_STRING),
+                        (String)getPropertyIfExists(profile, properties, ServiceBusConfiguration.URI),
+                        (String)getPropertyIfExists(profile, properties, ServiceBusConfiguration.WRAP_URI),
+                        (String)getPropertyIfExists(profile, properties, ServiceBusConfiguration.WRAP_NAME),
+                        (String)getPropertyIfExists(profile, properties, ServiceBusConfiguration.WRAP_PASSWORD));
+            }
+        });
+    }
 }
