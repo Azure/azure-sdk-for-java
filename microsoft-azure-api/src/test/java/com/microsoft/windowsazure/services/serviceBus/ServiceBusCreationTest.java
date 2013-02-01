@@ -39,6 +39,14 @@ public class ServiceBusCreationTest {
         return config;
     }
 
+    private Configuration newConfigurationWithProfile() {
+        Configuration config = newConfiguration();
+        ServiceBusConfiguration.configureWithWrapAuthentication("other", config,
+                "my-other-namespace", "my-other-identity",
+                "my-shared-secret", ".servicebus.windows.net", "-sb.accesscontrol.windows.net/WRAPv0.9");
+        return config;
+    }
+
     @Test
     public void theServiceClassMayBeCreatedDirectlyWithConfig() throws Exception {
         Configuration config = newConfiguration();
@@ -63,5 +71,14 @@ public class ServiceBusCreationTest {
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
         assertNotNull(service);
+    }
+
+    @Test
+    public void theServiceClassCanBeCreatedThroughAProfile() throws Exception {
+        Configuration config = newConfigurationWithProfile();
+        ServiceBusContract service = config.create("other", ServiceBusContract.class);
+
+        assertNotNull(service);
+        assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
 }

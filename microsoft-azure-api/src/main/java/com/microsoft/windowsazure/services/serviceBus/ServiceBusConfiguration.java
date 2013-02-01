@@ -27,7 +27,7 @@ public class ServiceBusConfiguration {
      * Defines the configuration connection string constant.
      *
      */
-    public final static String CONNECTION_STRING = "serviceBus.connectionstring";
+    public final static String CONNECTION_STRING = "serviceBus.connection.string";
 
     /**
      * Defines the configuration URI constant.

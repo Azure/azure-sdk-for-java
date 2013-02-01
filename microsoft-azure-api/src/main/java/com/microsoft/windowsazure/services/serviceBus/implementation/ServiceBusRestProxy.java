@@ -73,7 +73,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     ServiceFilter[] filters;
 
     @Inject
-    public ServiceBusRestProxy(Client channel, @Named("serviceBus") WrapFilter authFilter,
+    public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
             ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
 
         this.channel = channel;
