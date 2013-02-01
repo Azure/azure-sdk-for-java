@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
@@ -211,6 +212,42 @@ public class ContentKey {
      */
     public static EntityDeleteOperation delete(String contentKeyId) {
         return new DefaultDeleteOperation(ENTITY_SET, contentKeyId);
+    }
+
+    /**
+     * Rebind content key with specified content key and X509 Certificate.
+     * 
+     * @param contentKeyId
+     *            the content key id
+     * @param x509Certificate
+     *            the x509 certificate
+     * @return the entity action operation
+     */
+    public static RebindContentKeyActionOperation rebind(String contentKeyId, String x509Certificate) {
+        return new RebindContentKeyActionOperation(contentKeyId, x509Certificate);
+    }
+
+    /**
+     * Rebind content key with specified content key Id.
+     * 
+     * @param contentKeyId
+     *            the content key id
+     * @return the entity action operation
+     */
+    public static RebindContentKeyActionOperation rebind(String contentKeyId) {
+        return rebind(contentKeyId, "");
+    }
+
+    private static class RebindContentKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
+
+        private final String contentKeyId;
+        private final String x509Certificate;
+
+        public RebindContentKeyActionOperation(String contentKeyId, String x509Certificate) {
+            this.contentKeyId = contentKeyId;
+            this.x509Certificate = x509Certificate;
+        }
+
     }
 
 }

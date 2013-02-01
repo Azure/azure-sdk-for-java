@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
+import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.ProtectionKeyType;
 
 public class ContentKeyIntegrationTest extends IntegrationTestBase {
@@ -34,6 +35,15 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
     private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
+
+    private ContentKeyInfo createTestContentKey(String contentKeyNameSuffix) throws ServiceException {
+        String testContentKeyId = createRandomContentKeyId();
+        String testContentKeyName = testContentKeyPrefix + contentKeyNameSuffix;
+
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
+                testEncryptedContentKey).setName(testContentKeyName));
+        return contentKeyInfo;
+    }
 
     private String createRandomContentKeyId() {
         UUID uuid = UUID.randomUUID();
@@ -64,7 +74,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     public void canCreateContentKey() throws Exception {
         // Arrange
         String testCanCreateContentKeyId = createRandomContentKeyId();
-        String testCanCreateContentKeyName = "testCanCreateContentKey";
+        String testCanCreateContentKeyName = testContentKeyPrefix + "testCanCreateContentKey";
 
         // Act
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testCanCreateContentKeyId, testContentKeyType,
@@ -176,4 +186,35 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         service.delete(ContentKey.delete(validButNonexistContentKeyId));
     }
 
+    @Test
+    public void rebindContentKeyNoX509CertificateSuccess() throws ServiceException {
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyNoX509Success");
+
+        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId()));
+
+        assertEquals(contentKeyInfo.getEncryptedContentKey(), rebindedContentKey);
+    }
+
+    @Test
+    public void rebindContentKeyWithX509CertficateSuccess() throws ServiceException {
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyWithX509Certificate");
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
+        String x509Certificate = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(), x509Certificate));
+        assertEquals(contentKeyInfo.getEncryptedContentKey(), rebindedContentKey);
+    }
+
+    @Test
+    public void rebindContentKeyWithIncorrectContentKeyIdFailed() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        service.action(ContentKey.rebind("invalidContentKeyId"));
+    }
+
+    @Test
+    public void rebindContentKeyWithIncorrectX509CertificateFailed() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyWithIncorrectX509CertficateFailed");
+
+        service.action(ContentKey.rebind(contentKeyInfo.getId(), "InvalidX509Certificate"));
+    }
 }
