@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.core.utils;
 
+import com.microsoft.windowsazure.services.core.utils.pipeline.ConnectionStringField;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -76,7 +77,8 @@ public class ParsedConnectionStringTest {
             return fieldThree;
         }
 
-        protected void setFieldThree(String fieldThree) {
+        @ConnectionStringField(name = "fieldthree")
+        protected void setNumericField(String fieldThree) {
             this.fieldThree = Integer.parseInt(fieldThree);
         }
     }
@@ -106,5 +108,20 @@ public class ParsedConnectionStringTest {
     public void shouldThrowForFieldThatDoesntExist() throws Exception {
         exception.expect(ConnectionStringSyntaxException.class);
         new OneField("nosuchfield=nothing");
+    }
+
+    public void shouldNotThrowIfValueMissing() throws Exception {
+        exception.expect(ConnectionStringSyntaxException.class);
+        ThreeFields cs = new ThreeFields("  FieldOne=  hello; FieldTwo  =;FieldThree=19 ");
+        assertNull(cs.getFieldTwo());
+    }
+
+    @Test
+    public void shouldIgnoreEmptyPairsAndExtraSemicolons() throws Exception {
+        ThreeFields cs = new ThreeFields("FieldOne=hello;;  ; 'FieldTwo'=world;FieldThree='27';");
+
+        assertEquals("hello", cs.getFieldOne());
+        assertEquals("world", cs.getFieldTwo());
+        assertEquals(27, cs.getFieldThree());
     }
 }
