@@ -53,7 +53,7 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * Sets the endpoint value
      * @param endpoint
      */
-    protected void setEndpoint(String endpoint) {
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -69,7 +69,7 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * Sets the StsEndpoint value
      * @param stsEndpoint
      */
-    protected void setStsEndpoint(String stsEndpoint) {
+    public void setStsEndpoint(String stsEndpoint) {
         this.stsEndpoint = stsEndpoint;
     }
 
@@ -85,7 +85,7 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * Set the shared secret issuer
      * @param sharedSecretIssuer
      */
-    protected void setSharedSecretIssuer(String sharedSecretIssuer) {
+    public void setSharedSecretIssuer(String sharedSecretIssuer) {
         this.sharedSecretIssuer = sharedSecretIssuer;
     }
 
@@ -101,7 +101,7 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * Set the shared secret value
      * @param sharedSecretValue
      */
-    protected void setSharedSecretValue(String sharedSecretValue) {
+    public void setSharedSecretValue(String sharedSecretValue) {
         this.sharedSecretValue = sharedSecretValue;
     }
 }

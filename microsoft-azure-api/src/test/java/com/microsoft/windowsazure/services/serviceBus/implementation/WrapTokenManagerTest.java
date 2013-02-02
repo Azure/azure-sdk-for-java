@@ -38,7 +38,7 @@ public class WrapTokenManagerTest {
     private Calendar calendar;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
         dateFactory = mock(DateFactory.class);

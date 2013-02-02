@@ -34,8 +34,10 @@ public class ServiceBusConnectionSettings {
     private String wrapName;
     private String wrapPassword;
 
-    public ServiceBusConnectionSettings(String connectionString, String uri, String wrapUri, String wrapName, String wrapPassword) {
-        if (!parseConnectionString(connectionString)) {
+    public ServiceBusConnectionSettings(String connectionString, String uri, String wrapUri, String wrapName, String wrapPassword) throws ConnectionStringSyntaxException, URISyntaxException {
+        if (connectionString != null) {
+            parseConnectionString(connectionString);
+        } else {
             this.uri = uri;
             this.wrapUri = wrapUri;
             this.wrapName = wrapName;
@@ -59,19 +61,13 @@ public class ServiceBusConnectionSettings {
         return wrapPassword;
     }
 
-    private boolean parseConnectionString(String connectionString) {
-        try {
-            ServiceBusConnectionString cs = new ServiceBusConnectionString(connectionString);
-            setUri(cs);
-            setWrapUri(cs);
-            wrapName = cs.getSharedSecretIssuer();
-            wrapPassword = cs.getSharedSecretValue();
-            return true;
-        } catch (ConnectionStringSyntaxException e) {
-            return false;
-        } catch (URISyntaxException e) {
-            return false;
-        }
+    private boolean parseConnectionString(String connectionString) throws URISyntaxException, ConnectionStringSyntaxException {
+        ServiceBusConnectionString cs = new ServiceBusConnectionString(connectionString);
+        setUri(cs);
+        setWrapUri(cs);
+        wrapName = cs.getSharedSecretIssuer();
+        wrapPassword = cs.getSharedSecretValue();
+        return true;
     }
 
     private void setUri(ServiceBusConnectionString connectionString) {
@@ -81,8 +77,8 @@ public class ServiceBusConnectionSettings {
     private void setWrapUri(ServiceBusConnectionString connectionString) throws URISyntaxException {
         if (connectionString.getStsEndpoint() == null || connectionString.getStsEndpoint().isEmpty()) {
             URI hostUri = new URI(uri);
-            String namespace = hostUri.getHost().split(".")[0];
-            wrapUri = "https://" + namespace + "-sb.accesscontrol.windows.net:443/WRAPv0.9";
+            String namespace = hostUri.getHost().split("\\.")[0];
+            wrapUri = "https://" + namespace + "-sb.accesscontrol.windows.net/WRAPv0.9";
         } else {
             wrapUri = connectionString.getStsEndpoint();
         }

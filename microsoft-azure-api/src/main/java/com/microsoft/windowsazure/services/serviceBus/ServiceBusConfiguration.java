@@ -136,12 +136,29 @@ public class ServiceBusConfiguration {
             profile = profile + ".";
         }
 
+        configuration.setProperty(profile + CONNECTION_STRING, null);
+
         configuration.setProperty(profile + URI, "https://" + namespace + serviceBusRootUri);
 
         configuration.setProperty(profile + WRAP_URI, "https://" + namespace + wrapRootUri);
 
         configuration.setProperty(profile + WRAP_NAME, authenticationName);
         configuration.setProperty(profile + WRAP_PASSWORD, authenticationPassword);
+
+        return configuration;
+    }
+
+    public static Configuration configureWithWrapAuthentication(String profile, Configuration configuration,
+        String connectionString) {
+
+        if (profile == null) {
+            profile = "";
+        }
+        else if (profile.length() != 0 && !profile.endsWith(".")) {
+            profile = profile + ".";
+        }
+
+        configuration.setProperty(profile + CONNECTION_STRING, connectionString);
 
         return configuration;
     }
