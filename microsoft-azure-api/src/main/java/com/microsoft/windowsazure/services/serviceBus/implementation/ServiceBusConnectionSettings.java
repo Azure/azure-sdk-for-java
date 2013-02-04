@@ -71,7 +71,7 @@ class ServiceBusConnectionSettings {
     }
 
     private void setUri(ServiceBusConnectionString connectionString) {
-        uri = connectionString.getEndpoint().replace("sb://", "https://");
+        uri = connectionString.getEndpoint().replaceFirst("^sb://", "https://");
     }
 
     private void setWrapUri(ServiceBusConnectionString connectionString) throws URISyntaxException {
