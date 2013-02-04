@@ -45,6 +45,11 @@ public class ServiceBusConnectionSettingsTest {
                 ns, issuer, secret);
     }
 
+    private String getConnectionString(String ns, String stsEndpoint, String issuer, String secret) {
+        return String.format(
+                "Endpoint=sb://%1$s.servicebus.windows.net/;StsEndpoint=https://%1$s%4$s;SharedSecretIssuer=%2$s;SharedSecretValue=%3$s",
+                ns, issuer, secret, stsEndpoint);
+    }
     @Test
     public void settingsAreUsedFromConnectionStringInConfig() throws Exception {
         Configuration config = Configuration.load();
@@ -91,5 +96,17 @@ public class ServiceBusConnectionSettingsTest {
         assertEquals("https://myNamespaceCS-sb.accesscontrol.windows.net/WRAPv0.9", settings.getWrapUri());
         assertEquals("ownerCS", settings.getWrapName());
         assertEquals("secretCS", settings.getWrapPassword());
+    }
+
+    @Test
+    public void canSetStSEndPointInConnectionString() throws Exception {
+        ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
+                getConnectionString("myNs", "-some.accesscontrol.net", "owner", "secret"),
+                null, null, null, null);
+
+        assertEquals("https://myNs.servicebus.windows.net/", settings.getUri());
+        assertEquals("https://myNs-some.accesscontrol.net", settings.getWrapUri());
+        assertEquals("owner", settings.getWrapName());
+        assertEquals("secret", settings.getWrapPassword());
     }
 }

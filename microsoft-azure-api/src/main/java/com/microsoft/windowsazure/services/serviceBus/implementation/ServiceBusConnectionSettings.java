@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
  * The connection string is looked for first, falling back
  * to separate config values if not found.
  */
-public class ServiceBusConnectionSettings {
+class ServiceBusConnectionSettings {
     private String uri;
     private String wrapUri;
     private String wrapName;
