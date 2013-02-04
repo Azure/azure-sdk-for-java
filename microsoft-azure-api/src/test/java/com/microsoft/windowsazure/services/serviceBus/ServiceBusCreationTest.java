@@ -47,6 +47,14 @@ public class ServiceBusCreationTest {
         return config;
     }
 
+    private Configuration newConfigurationWithConnectionString() {
+        Configuration config = newConfiguration();
+        ServiceBusConfiguration.configureWithConnectionString(null, config,
+                "Endpoint=https://my-other-namespace.servicebus.windows.net/;" +
+                "SharedSecretIssuer=owner;" +
+                "SharedSecretValue=my-shared-secret");
+        return config;
+    }
     @Test
     public void theServiceClassMayBeCreatedDirectlyWithConfig() throws Exception {
         Configuration config = newConfiguration();
@@ -80,5 +88,13 @@ public class ServiceBusCreationTest {
 
         assertNotNull(service);
         assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
+    }
+
+    @Test
+    public void theServiceClassCanBeCreatedThroughConnectionString() throws Exception {
+        Configuration config = newConfigurationWithConnectionString();
+
+        ServiceBusContract service = config.create(ServiceBusContract.class);
+        assertNotNull(service);
     }
 }
