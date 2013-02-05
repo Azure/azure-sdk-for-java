@@ -64,7 +64,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
@@ -90,7 +103,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
@@ -119,7 +145,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
