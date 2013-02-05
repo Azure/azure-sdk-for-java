@@ -32,7 +32,7 @@ public class WrapTokenManagerIntegrationTest {
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
         overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
-        WrapTokenManager client = config.create("serviceBus", WrapTokenManager.class);
+        WrapTokenManager client = config.create(WrapTokenManager.class);
 
         // Act
         URI serviceBusURI = new URI((String) config.getProperty(ServiceBusConfiguration.URI));
