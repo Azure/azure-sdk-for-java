@@ -23,10 +23,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class OAuthTokenResponse {
 
-    private String _accessToken;
-    private String _scope;
-    private String _tokenType;
-    private long _expiresIn;
+    private String accessToken;
+    private String scope;
+    private String tokenType;
+    private long expiresIn;
 
     /**
      * Sets the token type.
@@ -35,41 +35,41 @@ public class OAuthTokenResponse {
      */
     @JsonProperty("token_type")
     public void setTokenType(String tokenType) {
-        _tokenType = tokenType;
+        this.tokenType = tokenType;
     }
 
     @JsonProperty("token_type")
     public String getTokenType() {
-        return _tokenType;
+        return tokenType;
     }
 
     @JsonProperty("expires_in")
     public long getExpiresIn() {
-        return _expiresIn;
+        return expiresIn;
     }
 
     @JsonProperty("expires_in")
     public void setExpiresIn(long expiresIn) {
-        _expiresIn = expiresIn;
+        this.expiresIn = expiresIn;
     }
 
     @JsonProperty("access_token")
     public String getAccessToken() {
-        return _accessToken;
+        return accessToken;
     }
 
     @JsonProperty("access_token")
     public void setAccessToken(String accessToken) {
-        _accessToken = accessToken;
+        this.accessToken = accessToken;
     }
 
     @JsonProperty("scope")
     public String getScope() {
-        return _scope;
+        return scope;
     }
 
     @JsonProperty("scope")
     public void setScope(String scope) {
-        _scope = scope;
+        this.scope = scope;
     }
 }

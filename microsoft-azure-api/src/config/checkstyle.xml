@@ -195,7 +195,11 @@
 
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
+        <module name="MagicNumber">
+            <!-- Updated on 01/23/2013: -->
+            <!-- Added ignore list, to keep enums from triggering violations -->
+            <property name="ignoreNumbers" value="0, 1, 2, 3, 4, 5, 6, 7, 8"/>
+        </module>
         <module name="MissingSwitchDefault"/>
         <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>

@@ -40,13 +40,13 @@ public class WrapTokenManager {
     private final Map<String, ActiveToken> activeTokens;
 
     @Inject
-    public WrapTokenManager(WrapContract contract, DateFactory dateFactory, @Named("wrap.uri") String uri,
-            @Named("wrap.name") String name, @Named("wrap.password") String password) {
+    public WrapTokenManager(WrapContract contract, DateFactory dateFactory,
+        ServiceBusConnectionSettings connectionSettings) {
         this.contract = contract;
         this.dateFactory = dateFactory;
-        this.uri = uri;
-        this.name = name;
-        this.password = password;
+        this.uri = connectionSettings.getWrapUri();
+        this.name = connectionSettings.getWrapName();
+        this.password = connectionSettings.getWrapPassword();
         activeTokens = new ConcurrentHashMap<String, ActiveToken>();
     }
 

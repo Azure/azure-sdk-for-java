@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,14 +13,21 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.media.entityoperations;
+package com.microsoft.windowsazure.services.core.utils.pipeline;
 
-public interface EntityOperationSingleResult<T> extends EntityOperation {
-    /**
-     * Get the Java class object for the type that the response should
-     * be unmarshalled into.
-     * 
-     * @return Class object for response.
-     */
-    Class<T> getResponseClass();
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+
+/**
+ * Annotation used to mark method setters to be used
+ * when the field name in the connection string isn't
+ * a valid Java method name.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ConnectionStringField {
+    public String name();
 }

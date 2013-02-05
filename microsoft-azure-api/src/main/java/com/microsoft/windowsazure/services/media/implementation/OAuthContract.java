@@ -38,7 +38,7 @@ public interface OAuthContract {
      * @return OAuthTokenResponse
      * @throws ServiceException
      */
-    public OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId, String clientSecret, String scope)
+    OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId, String clientSecret, String scope)
             throws ServiceException;
 
 }
