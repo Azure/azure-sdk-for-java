@@ -1595,7 +1595,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = "some content2";
         service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
         String leaseId = service.acquireLease(TEST_CONTAINER_FOR_BLOBS, "test6").getLeaseId();
-        service.breakLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
+        service.breakLease(TEST_CONTAINER_FOR_BLOBS, "test6");
         service.releaseLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
 
         // Assert

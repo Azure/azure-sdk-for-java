@@ -888,9 +888,9 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId) throws ServiceException {
+    public void breakLease(String container, String blob) throws ServiceException {
         try {
-            service.breakLease(container, blob, leaseId);
+            service.breakLease(container, blob);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -901,10 +901,10 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
+    public void breakLease(String container, String blob, BlobServiceOptions options)
             throws ServiceException {
         try {
-            service.breakLease(container, blob, leaseId, options);
+            service.breakLease(container, blob, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

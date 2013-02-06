@@ -1441,16 +1441,15 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * A lease that has been broken but has not yet expired can also be released, in which case another client may
      * immediately acquire a new lease on the blob.
      * 
+     *
      * @param container
      *            A {@link String} containing the name of the blob's container.
      * @param blob
      *            A {@link String} containing the name of the blob to break a lease on.
-     * @param leaseId
-     *            A {@link String} containing an optional lease ID.
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void breakLease(String container, String blob, String leaseId) throws ServiceException;
+    void breakLease(String container, String blob) throws ServiceException;
 
     /**
      * Breaks an active lease on a blob, using the specified options.
@@ -1466,16 +1465,15 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * A lease that has been broken but has not yet expired can also be released, in which case another client may
      * immediately acquire a new lease on the blob.
      * 
+     *
      * @param container
      *            A {@link String} containing the name of the blob's container.
      * @param blob
      *            A {@link String} containing the name of the blob to break a lease on.
-     * @param leaseId
-     *            A {@link String} containing an optional lease ID.
      * @param options
-     *            A {@link BlobServiceOptions} instance containing options for the request.
+     *            A {@link com.microsoft.windowsazure.services.blob.models.BlobServiceOptions} instance containing options for the request.
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
      */
-    void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException;
+    void breakLease(String container, String blob, BlobServiceOptions options) throws ServiceException;
 }

@@ -801,14 +801,14 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId) throws ServiceException {
-        breakLease(container, blob, leaseId, new BlobServiceOptions());
+    public void breakLease(String container, String blob) throws ServiceException {
+        breakLease(container, blob, new BlobServiceOptions());
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
-            throws ServiceException {
-        putLeaseImpl("break", container, blob, leaseId, options, null/* accessCondition */);
+    public void breakLease(String container, String blob, BlobServiceOptions options)
+    throws ServiceException {
+        putLeaseImpl("break", container, blob, null, options, null/* accessCondition */);
     }
 
     private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId,
@@ -817,7 +817,9 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
+        if (leaseId != null) {
+            builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
+        }
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
         builder = addOptionalAccessConditionHeader(builder, accessCondition);
 
