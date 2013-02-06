@@ -19,11 +19,13 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
@@ -43,6 +45,31 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
                 testEncryptedContentKey).setName(testContentKeyName));
         return contentKeyInfo;
+    }
+
+    private ContentKeyInfo createValidTestContentKey(String contentKeyNameSuffix) throws Exception {
+
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+
+        String testContnetKeyName = testContentKeyPrefix + contentKeyNameSuffix;
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        String testContentKeyIdUuid = UUID.randomUUID().toString();
+        String testContentKeyId = String.format("nb:kid:UUID:%s", testContentKeyIdUuid);
+
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateContentKeyChecksum(testContentKeyIdUuid, aesKey);
+
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(testContentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                .setChecksum(checksum).setProtectionKeyId(protectionKeyId).setName(testContnetKeyName));
+
+        return contentKeyInfo;
+
     }
 
     private String createRandomContentKeyId() {
@@ -187,17 +214,28 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void rebindContentKeyNoX509CertificateSuccess() throws ServiceException {
-        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyNoX509Success");
+    public void rebindContentKeyNoX509CertificateSuccess() throws Exception {
 
-        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId()));
+        ContentKeyInfo contentKeyInfo = createValidTestContentKey("rebindContentKeyNoX509Success");
 
-        assertEquals(contentKeyInfo.getEncryptedContentKey(), rebindedContentKey);
+        String contentKey = service.action(ContentKey.rebind(contentKeyInfo.getId()));
+        assertNotNull(contentKey);
+
     }
 
     @Test
-    public void rebindContentKeyWithX509CertficateSuccess() throws ServiceException {
-        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyWithX509Certificate");
+    public void rebindInvalidContentKeyNoX509CertificateFail() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(400));
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindInvalidContentKeyNoX509Fail");
+
+        service.action(ContentKey.rebind(contentKeyInfo.getId()));
+
+    }
+
+    @Test
+    public void rebindContentKeyWithX509CertficateSuccess() throws Exception {
+        ContentKeyInfo contentKeyInfo = createValidTestContentKey("rebindContentKeyWithX509Success");
         String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
         String x509Certificate = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
         String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(), x509Certificate));

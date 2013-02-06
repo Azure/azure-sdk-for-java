@@ -15,6 +15,12 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.InvalidParameterException;
+
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
@@ -23,7 +29,9 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOp
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -223,7 +231,7 @@ public class ContentKey {
      *            the x509 certificate
      * @return the entity action operation
      */
-    public static RebindContentKeyActionOperation rebind(String contentKeyId, String x509Certificate) {
+    public static EntityTypeActionOperation<String> rebind(String contentKeyId, String x509Certificate) {
         return new RebindContentKeyActionOperation(contentKeyId, x509Certificate);
     }
 
@@ -234,20 +242,39 @@ public class ContentKey {
      *            the content key id
      * @return the entity action operation
      */
-    public static RebindContentKeyActionOperation rebind(String contentKeyId) {
+    public static EntityTypeActionOperation<String> rebind(String contentKeyId) {
         return rebind(contentKeyId, "");
     }
 
     private static class RebindContentKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
 
-        private final String contentKeyId;
-        private final String x509Certificate;
-
         public RebindContentKeyActionOperation(String contentKeyId, String x509Certificate) {
-            this.contentKeyId = contentKeyId;
-            this.x509Certificate = x509Certificate;
+            super("RebindContentKey");
+
+            String escapedContentKeyId;
+            try {
+                escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException("UTF-8 encoding is not supported.");
+            }
+            this.addQueryParameter("x509Certificate", "'" + x509Certificate + "'");
+            this.addQueryParameter("contentkeyid", "'" + escapedContentKeyId + "'");
+
+        }
+
+        @Override
+        public String processTypeResponse(ClientResponse clientResponse) {
+            PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+            String contentKeyValue;
+            contentKeyValue = parseResponse(clientResponse);
+            return contentKeyValue;
+        }
+
+        private String parseResponse(ClientResponse clientResponse) {
+            InputStream inputStream = clientResponse.getEntityInputStream();
+            return inputStream.toString();
         }
 
     }
-
 }

@@ -89,7 +89,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         WritableBlobContainerContract blobWriter = getBlobWriter(assetInfo.getId(), durationInMinutes);
 
         // gets the public key for storage encryption.
-        String contentKeyId = makeContentKeyId(aesKey);
+        String contentKeyId = createContentKey(aesKey);
 
         // link the content key with the asset.
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
@@ -143,7 +143,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return currentJobInfo;
     }
 
-    private String makeContentKeyId(byte[] aesKey) throws ServiceException, Exception {
+    private String createContentKey(byte[] aesKey) throws ServiceException, Exception {
         String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
         String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
 
