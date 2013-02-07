@@ -22,6 +22,7 @@ import javax.inject.Named;
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
 import com.sun.jersey.api.client.Client;
 
@@ -30,11 +31,12 @@ public class BlobRestProxy extends BlobOperationRestProxy implements BlobContrac
 
     @Inject
     public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.URI) String url, SharedKeyFilter filter) {
+            @Named(BlobConfiguration.URI) String url, SharedKeyFilter filter, UserAgentFilter userAgentFilter) {
         super(channel, accountName, url);
 
         this.filter = filter;
         channel.addFilter(filter);
+        channel.addFilter(userAgentFilter);
     }
 
     public BlobRestProxy(Client client, ServiceFilter[] filters, String accountName, String url,

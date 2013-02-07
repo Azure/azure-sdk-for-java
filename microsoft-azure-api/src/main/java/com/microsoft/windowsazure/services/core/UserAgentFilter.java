@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.services.core;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLClassLoader;
 import java.util.Properties;
 
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -24,16 +23,25 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
+/**
+ * The Class UserAgentFilter.
+ */
 public class UserAgentFilter extends ClientFilter {
 
+    /** The azure sdk product token. */
     private final String azureSDKProductToken;
 
+    /**
+     * Instantiates a new user agent filter.
+     */
     public UserAgentFilter() {
         String version = getVersionFromResources();
         azureSDKProductToken = "Azure SDK for Java/" + version;
-
     }
 
+    /* (non-Javadoc)
+     * @see com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api.client.ClientRequest)
+     */
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
         String userAgent;
@@ -52,13 +60,17 @@ public class UserAgentFilter extends ClientFilter {
         return this.getNext().handle(cr);
     }
 
+    /**
+     * Gets the version of the SDK from resources.
+     * 
+     * @return the version from resources
+     */
     private String getVersionFromResources() {
         String version;
         Properties properties = new Properties();
-        URLClassLoader classLoader = (URLClassLoader) getClass().getClassLoader();
         try {
-            InputStream inputStream = classLoader
-                    .getResourceAsStream("META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api/pom.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(
+                    "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api/pom.properties");
             properties.load(inputStream);
         }
         catch (IOException e) {

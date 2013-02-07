@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
@@ -74,7 +75,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Inject
     public ServiceBusRestProxy(Client channel, @Named("serviceBus") WrapFilter authFilter,
-            @Named("serviceBus.uri") String uri, BrokerPropertiesMapper mapper) {
+            @Named("serviceBus.uri") String uri, BrokerPropertiesMapper mapper, UserAgentFilter userAgentFilter) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
@@ -82,6 +83,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);
+        channel.addFilter(userAgentFilter);
     }
 
     public ServiceBusRestProxy(Client channel, ServiceFilter[] filters, String uri, BrokerPropertiesMapper mapper) {
