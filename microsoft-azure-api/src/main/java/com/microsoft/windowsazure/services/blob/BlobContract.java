@@ -21,6 +21,7 @@ import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.BreakLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
@@ -1442,14 +1443,17 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * immediately acquire a new lease on the blob.
      * 
      *
+     *
      * @param container
      *            A {@link String} containing the name of the blob's container.
      * @param blob
      *            A {@link String} containing the name of the blob to break a lease on.
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
+     *
+     * @return result containing time remaining before a new lease can be acquired
      */
-    void breakLease(String container, String blob) throws ServiceException;
+    BreakLeaseResult breakLease(String container, String blob) throws ServiceException;
 
     /**
      * Breaks an active lease on a blob, using the specified options.
@@ -1466,6 +1470,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * immediately acquire a new lease on the blob.
      * 
      *
+     *
      * @param container
      *            A {@link String} containing the name of the blob's container.
      * @param blob
@@ -1474,6 +1479,7 @@ public interface BlobContract extends FilterableService<BlobContract> {
      *            A {@link com.microsoft.windowsazure.services.blob.models.BlobServiceOptions} instance containing options for the request.
      * @throws ServiceException
      *             if an error occurs accessing the storage service.
+     * @return result containing time remaining before a new lease can be acquired
      */
-    void breakLease(String container, String blob, BlobServiceOptions options) throws ServiceException;
+    BreakLeaseResult breakLease(String container, String blob, BlobServiceOptions options) throws ServiceException;
 }
