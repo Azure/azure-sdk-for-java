@@ -1441,6 +1441,71 @@ public interface BlobContract extends FilterableService<BlobContract> {
      * <p>
      * A lease that has been broken but has not yet expired can also be released, in which case another client may
      * immediately acquire a new lease on the blob.
+     *
+     * @deprecated Server ignores the leaseId parameter, replaced by {@link #breakLease(String, String)} without
+     *   the useless parameter.
+     *
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to break a lease on.
+     *
+     * @param leaseId lease id to break. Ignored.
+     *
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     *
+     * @return result containing time remaining before a new lease can be acquired
+     */
+    @Deprecated()
+    void breakLease(String container, String blob, String leaseId) throws ServiceException;
+
+    /**
+     * Breaks an active lease on a blob, using the specified options.
+     * <p>
+     * This method breaks the lease on the blob specified by the <em>blob</em> and <em>container</em> parameters. The
+     * <em>leaseId</em> parameter is not used by the server. Use the {@link BlobServiceOptions options} parameter to
+     * specify the server timeout for the operation.
+     * <p>
+     * Once a lease is broken, it cannot be renewed. Any authorized request can break the lease; the request is not
+     * required to specify a matching lease ID. When a lease is broken, the remaining time on the lease is allowed to
+     * elapse, during which time no lease operation may be performed on the blob.
+     * <p>
+     * A lease that has been broken but has not yet expired can also be released, in which case another client may
+     * immediately acquire a new lease on the blob.
+     *
+     * @deprecated Server ignores the leaseId parameter, replaced by
+     *   {@link #breakLease(String, String, com.microsoft.windowsazure.services.blob.models.BlobServiceOptions)}
+     *   without the useless parameter.
+     *
+     *
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to break a lease on.
+     * @param options
+     *            A {@link com.microsoft.windowsazure.services.blob.models.BlobServiceOptions} instance containing options for the request.
+     * @param leaseId lease id to break. Ignored.
+     *
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     * @return result containing time remaining before a new lease can be acquired
+     */
+    @Deprecated()
+    void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException;
+
+    /**
+     * Breaks an active lease on a blob.
+     * <p>
+     * This method breaks the lease on the blob specified by the <em>blob</em> and <em>container</em> parameters. The
+     * <em>leaseId</em> parameter is not used by the server.
+     * <p>
+     * Once a lease is broken, it cannot be renewed. Any authorized request can break the lease; the request is not
+     * required to specify a matching lease ID. When a lease is broken, the remaining time on the lease is allowed to
+     * elapse, during which time no lease operation may be performed on the blob.
+     * <p>
+     * A lease that has been broken but has not yet expired can also be released, in which case another client may
+     * immediately acquire a new lease on the blob.
      * 
      *
      *

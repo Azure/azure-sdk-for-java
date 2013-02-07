@@ -889,6 +889,18 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
+    @Deprecated
+    public void breakLease(String container, String blob, String leaseId) throws ServiceException {
+        breakLease(container, blob);
+    }
+
+    @Override
+    @Deprecated
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+        breakLease(container, blob, options);
+    }
+
+    @Override
     public BreakLeaseResult breakLease(String container, String blob) throws ServiceException {
         try {
             return service.breakLease(container, blob);
