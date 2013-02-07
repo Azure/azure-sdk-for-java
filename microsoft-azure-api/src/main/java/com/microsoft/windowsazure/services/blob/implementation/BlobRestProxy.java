@@ -27,23 +27,24 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnection
 import com.sun.jersey.api.client.Client;
 
 public class BlobRestProxy extends BlobOperationRestProxy implements BlobContract {
-    private final SharedKeyFilter filter;
+    private final SharedKeyFilter sharedKeyFilter;
 
     @Inject
     public BlobRestProxy(HttpURLConnectionClient channel, @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.URI) String url, SharedKeyFilter filter, UserAgentFilter userAgentFilter) {
+            @Named(BlobConfiguration.URI) String url, SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter) {
         super(channel, accountName, url);
 
-        this.filter = filter;
-        channel.addFilter(filter);
+        this.sharedKeyFilter = sharedKeyFilter;
+
+        channel.addFilter(sharedKeyFilter);
         channel.addFilter(userAgentFilter);
     }
 
     public BlobRestProxy(Client client, ServiceFilter[] filters, String accountName, String url,
-            SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
+            SharedKeyFilter sharedKeyFilter, RFC1123DateConverter dateMapper) {
         super(client, filters, accountName, url, dateMapper);
 
-        this.filter = filter;
+        this.sharedKeyFilter = sharedKeyFilter;
     }
 
     @Override
@@ -51,6 +52,7 @@ public class BlobRestProxy extends BlobOperationRestProxy implements BlobContrac
         ServiceFilter[] currentFilters = getFilters();
         ServiceFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
         newFilters[currentFilters.length] = filter;
-        return new BlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.filter, getDateMapper());
+        return new BlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.sharedKeyFilter,
+                getDateMapper());
     }
 }

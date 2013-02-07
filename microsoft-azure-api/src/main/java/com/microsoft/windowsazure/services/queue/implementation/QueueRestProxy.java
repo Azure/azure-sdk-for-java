@@ -56,19 +56,19 @@ public class QueueRestProxy implements QueueContract {
     private final String url;
     private final RFC1123DateConverter dateMapper;
     private final ServiceFilter[] filters;
-    private final SharedKeyFilter filter;
+    private final SharedKeyFilter sharedKeyFilter;
 
     @Inject
     public QueueRestProxy(HttpURLConnectionClient channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(QueueConfiguration.URI) String url, SharedKeyFilter filter, UserAgentFilter userAgentFilter) {
+            @Named(QueueConfiguration.URI) String url, SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter) {
 
         this.channel = channel;
         this.accountName = accountName;
         this.url = url;
-        this.filter = filter;
+        this.sharedKeyFilter = sharedKeyFilter;
         this.dateMapper = new RFC1123DateConverter();
         this.filters = new ServiceFilter[0];
-        channel.addFilter(filter);
+        channel.addFilter(sharedKeyFilter);
         channel.addFilter(userAgentFilter);
     }
 
@@ -79,7 +79,7 @@ public class QueueRestProxy implements QueueContract {
         this.filters = filters;
         this.accountName = accountName;
         this.url = url;
-        this.filter = filter;
+        this.sharedKeyFilter = filter;
         this.dateMapper = dateMapper;
     }
 
@@ -87,7 +87,7 @@ public class QueueRestProxy implements QueueContract {
     public QueueContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.filter, this.dateMapper);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter, this.dateMapper);
     }
 
     private void ThrowIfError(ClientResponse r) {
