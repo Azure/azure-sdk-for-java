@@ -74,12 +74,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     ServiceFilter[] filters;
 
     @Inject
-    public ServiceBusRestProxy(Client channel, @Named("serviceBus") WrapFilter authFilter,
-            @Named("serviceBus.uri") String uri, BrokerPropertiesMapper mapper, UserAgentFilter userAgentFilter) {
+    public ServiceBusRestProxy(Client channel, WrapFilter authFilter, UserAgentFilter userAgentFilter
+            ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
-        this.uri = uri;
+        this.uri = connectionSettings.getUri();
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);

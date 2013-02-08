@@ -64,10 +64,7 @@ public abstract class IntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         Configuration config = Configuration.load();
-        overrideWithEnv(config, ServiceBusConfiguration.URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
         return config;
     }
 

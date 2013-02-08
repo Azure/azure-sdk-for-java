@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.BreakLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
@@ -801,33 +802,56 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     }
 
     @Override
+    @Deprecated
     public void breakLease(String container, String blob, String leaseId) throws ServiceException {
-        breakLease(container, blob, leaseId, new BlobServiceOptions());
+        breakLease(container, blob);
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
-            throws ServiceException {
-        putLeaseImpl("break", container, blob, leaseId, options, null/* accessCondition */);
+    @Deprecated
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+        breakLease(container, blob, options);
+    }
+
+    @Override
+    public BreakLeaseResult breakLease(String container, String blob) throws ServiceException {
+        return breakLease(container, blob, new BlobServiceOptions());
+    }
+
+    @Override
+    public BreakLeaseResult breakLease(String container, String blob, BlobServiceOptions options)
+    throws ServiceException {
+        ClientResponse response = doLeaseOperation("break", container, blob,  null, options, null);
+
+        BreakLeaseResult result = new BreakLeaseResult();
+        result.setRemainingLeaseTimeInSeconds(Integer.parseInt(response.getHeaders().getFirst("x-ms-lease-time")));
+        return result;
     }
 
     private AcquireLeaseResult putLeaseImpl(String leaseAction, String container, String blob, String leaseId,
             BlobServiceOptions options, AccessCondition accessCondition) throws ServiceException {
+        ClientResponse response = doLeaseOperation(leaseAction, container, blob, leaseId, options, accessCondition);
+
+        AcquireLeaseResult result = new AcquireLeaseResult();
+        result.setLeaseId(response.getHeaders().getFirst("x-ms-lease-id"));
+        return result;
+    }
+
+    private ClientResponse doLeaseOperation(String leaseAction, String container, String blob, String leaseId, BlobServiceOptions options, AccessCondition accessCondition) {
         String path = createPathFromContainer(container);
         WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "lease");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
-        builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
+        if (leaseId != null) {
+            builder = addOptionalHeader(builder, "x-ms-lease-id", leaseId);
+        }
         builder = addOptionalHeader(builder, "x-ms-lease-action", leaseAction);
         builder = addOptionalAccessConditionHeader(builder, accessCondition);
 
         // Note: Add content type here to enable proper HMAC signing
         ClientResponse response = builder.put(ClientResponse.class, "");
         ThrowIfError(response);
-
-        AcquireLeaseResult result = new AcquireLeaseResult();
-        result.setLeaseId(response.getHeaders().getFirst("x-ms-lease-id"));
-        return result;
+        return response;
     }
 
     @Override

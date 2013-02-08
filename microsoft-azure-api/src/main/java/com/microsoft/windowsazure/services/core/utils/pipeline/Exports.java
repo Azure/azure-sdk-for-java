@@ -23,6 +23,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+import static com.microsoft.windowsazure.services.core.utils.ExportUtils.getPropertyIfExists;
+
 public class Exports implements Builder.Exports {
 
     @Override
@@ -70,26 +72,5 @@ public class Exports implements Builder.Exports {
                 return client;
             }
         });
-    }
-
-    private static String normalizeProfile(String profile) {
-        if (profile == null || profile.equals("")) {
-            return "";
-        }
-
-        if (profile.endsWith(".")) {
-            return profile;
-        }
-
-        return profile + ".";
-    }
-
-    private static Object getPropertyIfExists(String profile, Map<String, Object> properties, String propertyName) {
-        String fullPropertyName = normalizeProfile(profile) + propertyName;
-
-        if (properties.containsKey(fullPropertyName)) {
-            return properties.get(fullPropertyName);
-        }
-        return null;
     }
 }
