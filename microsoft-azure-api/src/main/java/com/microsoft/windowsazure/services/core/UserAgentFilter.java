@@ -29,35 +29,55 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 public class UserAgentFilter extends ClientFilter {
 
     /** The azure sdk product token. */
-    private final String azureSDKProductToken;
+    private static String azureSDKProductToken;
 
     /**
      * Instantiates a new user agent filter.
      */
     public UserAgentFilter() {
-        String version = getVersionFromResources();
-        azureSDKProductToken = "Azure SDK for Java/" + version;
+        if ((azureSDKProductToken == null) || azureSDKProductToken.isEmpty()) {
+            azureSDKProductToken = createAzureSDKProductToken();
+        }
+
     }
 
     /* (non-Javadoc)
      * @see com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
         String userAgent;
-        String currentUserAgent = (String) cr.getHeaders().getFirst("User-Agent");
 
-        if (currentUserAgent != null) {
+        if (clientRequest.getHeaders().containsKey("User-Agent")) {
+            String currentUserAgent = (String) clientRequest.getHeaders().getFirst("User-Agent");
             userAgent = azureSDKProductToken + " " + currentUserAgent;
+            clientRequest.getHeaders().remove("User-Agent");
         }
         else {
             userAgent = azureSDKProductToken;
         }
 
-        cr.getHeaders().remove("User-Agent");
-        cr.getHeaders().add("User-Agent", userAgent);
+        clientRequest.getHeaders().add("User-Agent", userAgent);
 
-        return this.getNext().handle(cr);
+        return this.getNext().handle(clientRequest);
+    }
+
+    /**
+     * Creates the azure sdk product token.
+     * 
+     * @return the string
+     */
+    private String createAzureSDKProductToken() {
+        String version = getVersionFromResources();
+        String productToken;
+        if ((version != null) && (!version.isEmpty())) {
+            productToken = "Azure-SDK-For-Java/" + version;
+        }
+        else {
+            productToken = "Azure-SDK-For-Java";
+        }
+
+        return productToken;
     }
 
     /**
@@ -72,11 +92,13 @@ public class UserAgentFilter extends ClientFilter {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(
                     "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api/pom.properties");
             properties.load(inputStream);
+            version = properties.getProperty("version");
+            inputStream.close();
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            version = "";
         }
-        version = properties.getProperty("version");
+
         return version;
     }
 }
