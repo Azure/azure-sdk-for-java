@@ -20,6 +20,7 @@ import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConver
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter;
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 
 public class Exports implements Builder.Exports {
     @Override
@@ -30,5 +31,6 @@ public class Exports implements Builder.Exports {
         registry.add(SharedKeyLiteFilter.class);
         registry.add(SharedKeyFilter.class);
         registry.add(ISO8601DateConverter.class);
+        registry.add(UserAgentFilter.class);
     }
 }
