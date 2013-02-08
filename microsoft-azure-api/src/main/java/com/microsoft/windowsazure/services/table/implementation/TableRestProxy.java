@@ -43,6 +43,7 @@ import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConver
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
@@ -107,8 +108,9 @@ public class TableRestProxy implements TableContract {
 
     @Inject
     public TableRestProxy(HttpURLConnectionClient channel, @Named(TableConfiguration.URI) String url,
-            SharedKeyFilter filter, DateFactory dateFactory, ISO8601DateConverter iso8601DateConverter,
-            AtomReaderWriter atomReaderWriter, MimeReaderWriter mimeReaderWriter, HttpReaderWriter httpReaderWriter) {
+            SharedKeyFilter filter, UserAgentFilter userAgentFilter, DateFactory dateFactory,
+            ISO8601DateConverter iso8601DateConverter, AtomReaderWriter atomReaderWriter,
+            MimeReaderWriter mimeReaderWriter, HttpReaderWriter httpReaderWriter) {
 
         this.channel = channel;
         this.url = url;
@@ -121,6 +123,7 @@ public class TableRestProxy implements TableContract {
         this.mimeReaderWriter = mimeReaderWriter;
         this.httpReaderWriter = httpReaderWriter;
         channel.addFilter(filter);
+        channel.addFilter(userAgentFilter);
     }
 
     public TableRestProxy(HttpURLConnectionClient channel, ServiceFilter[] filters, String url, SharedKeyFilter filter,
