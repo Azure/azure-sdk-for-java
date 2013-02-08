@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -226,7 +227,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void rebindInvalidContentKeyNoX509CertificateFail() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(400));
+        expectedException.expect(new ServiceExceptionMatcher(500));
         ContentKeyInfo contentKeyInfo = createTestContentKey("rebindInvalidContentKeyNoX509Fail");
 
         service.action(ContentKey.rebind(contentKeyInfo.getId()));
@@ -236,8 +237,9 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void rebindContentKeyWithX509CertficateSuccess() throws Exception {
         ContentKeyInfo contentKeyInfo = createValidTestContentKey("rebindContentKeyWithX509Success");
-        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
-        String x509Certificate = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String x509Certificate = URLEncoder.encode(service.action(ProtectionKey.getProtectionKey(protectionKeyId)),
+                "UTF-8");
         String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(), x509Certificate));
         assertEquals(contentKeyInfo.getEncryptedContentKey(), rebindedContentKey);
     }

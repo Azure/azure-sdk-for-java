@@ -259,7 +259,7 @@ public class ContentKey {
                 throw new InvalidParameterException("UTF-8 encoding is not supported.");
             }
             this.addQueryParameter("x509Certificate", "'" + x509Certificate + "'");
-            this.addQueryParameter("contentkeyid", "'" + escapedContentKeyId + "'");
+            this.addQueryParameter("id", "'" + escapedContentKeyId + "'");
 
         }
 
