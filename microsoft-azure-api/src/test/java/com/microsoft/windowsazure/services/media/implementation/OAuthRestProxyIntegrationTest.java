@@ -20,6 +20,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;
@@ -28,7 +29,7 @@ public class OAuthRestProxyIntegrationTest extends IntegrationTestBase {
     @Test
     public void serviceCanBeCalledToCreateAccessToken() throws Exception {
         // Arrange
-        OAuthContract oAuthContract = new OAuthRestProxy(config.create(Client.class));
+        OAuthContract oAuthContract = new OAuthRestProxy(config.create(Client.class), new UserAgentFilter());
 
         // Act
         URI oAuthUri = new URI((String) config.getProperty(MediaConfiguration.OAUTH_URI));
