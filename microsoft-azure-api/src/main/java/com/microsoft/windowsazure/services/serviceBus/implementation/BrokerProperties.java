@@ -19,7 +19,7 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 //
 // members of this class defined per specification at
@@ -27,7 +27,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 //
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonWriteNullProperties(false)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class BrokerProperties {
 
     @JsonProperty("CorrelationId")
