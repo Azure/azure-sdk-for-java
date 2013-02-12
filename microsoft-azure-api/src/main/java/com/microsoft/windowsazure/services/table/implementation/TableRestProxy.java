@@ -257,6 +257,8 @@ public class TableRestProxy implements TableContract {
                 for (byte b : byteArray) {
                     formatter.format("%02x", b);
                 }
+                formatter.flush();
+                formatter.close();
                 sb.append("'");
             }
             else if (value.getClass() == Byte[].class) {
@@ -266,6 +268,8 @@ public class TableRestProxy implements TableContract {
                 for (Byte b : byteArray) {
                     formatter.format("%02x", b);
                 }
+                formatter.flush();
+                formatter.close();
                 sb.append("'");
             }
             else {
