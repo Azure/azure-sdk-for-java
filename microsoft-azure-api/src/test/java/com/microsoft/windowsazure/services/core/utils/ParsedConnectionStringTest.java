@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,12 +15,13 @@
 
 package com.microsoft.windowsazure.services.core.utils;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.ConnectionStringField;
+import static org.junit.Assert.*;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
+import com.microsoft.windowsazure.services.core.utils.pipeline.ConnectionStringField;
 
 public class ParsedConnectionStringTest {
 
@@ -35,6 +36,7 @@ public class ParsedConnectionStringTest {
             return aField;
         }
 
+        @SuppressWarnings("unused")
         protected void setAField(String aField) {
             this.aField = aField;
         }
@@ -52,7 +54,6 @@ public class ParsedConnectionStringTest {
         private String fieldTwo;
         private int fieldThree;
 
-
         public ThreeFields(String connectionString) throws ConnectionStringSyntaxException {
             super(connectionString);
         }
@@ -61,6 +62,7 @@ public class ParsedConnectionStringTest {
             return fieldOne;
         }
 
+        @SuppressWarnings("unused")
         protected void setFieldOne(String fieldOne) {
             this.fieldOne = fieldOne;
         }
@@ -69,6 +71,7 @@ public class ParsedConnectionStringTest {
             return fieldTwo;
         }
 
+        @SuppressWarnings("unused")
         protected void setFieldTwo(String fieldTwo) {
             this.fieldTwo = fieldTwo;
         }

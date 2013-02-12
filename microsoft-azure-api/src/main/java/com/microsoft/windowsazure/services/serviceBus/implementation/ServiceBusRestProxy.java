@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
@@ -73,8 +72,8 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     ServiceFilter[] filters;
 
     @Inject
-    public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
-            ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
+    public ServiceBusRestProxy(Client channel, WrapFilter authFilter, ServiceBusConnectionSettings connectionSettings,
+            BrokerPropertiesMapper mapper) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
