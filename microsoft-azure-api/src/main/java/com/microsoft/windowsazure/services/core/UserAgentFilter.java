@@ -86,17 +86,18 @@ public class UserAgentFilter extends ClientFilter {
      * @return the version from resources
      */
     private String getVersionFromResources() {
-        String version;
+        String version = "unknown";
         Properties properties = new Properties();
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(
                     "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api/pom.properties");
-            properties.load(inputStream);
-            version = properties.getProperty("version");
-            inputStream.close();
+            if (inputStream != null) {
+                properties.load(inputStream);
+                version = properties.getProperty("version");
+                inputStream.close();
+            }
         }
         catch (IOException e) {
-            version = "";
         }
 
         return version;
