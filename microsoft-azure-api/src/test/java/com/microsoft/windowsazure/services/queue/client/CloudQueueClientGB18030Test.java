@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,17 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 public class CloudQueueClientGB18030Test extends QueueTestBase {
 
-    public static final String GB18030CharSet = "啊齄丂狛狜隣郎隣兀﨩ˊ▇█〞〡￤℡㈱‐ー﹡﹢﹫、〓ⅰⅹ⒈€㈠㈩ⅠⅫ！￣ぁんァヶΑ︴АЯаяāɡㄅㄩ─╋︵﹄︻︱︳︴ⅰⅹɑɡ〇〾⿻⺁䜣€㐀㒣㕴㕵㙉㙊䵯䵰䶴䶵";
+    // GB18030CharSet is "啊齄丂狛狜隣郎隣兀﨩ˊ▇█〞〡￤℡㈱‐ー﹡﹢﹫、〓ⅰⅹ⒈€㈠㈩ⅠⅫ！￣ぁんァヶΑ︴АЯаяāɡㄅㄩ─╋︵﹄︻︱︳︴ⅰⅹɑɡ〇〾⿻⺁䜣€㐀㒣㕴㕵㙉㙊䵯䵰䶴䶵".
+    public static final String GB18030CharSet = new String(new char[] { 0x554A, 0x9F44, 0x4E02, 0x72DB, 0x72DC, 0xF9F1,
+            0xF92C, 0xF9F1, 0xFA0C, 0xFA29, 0x02CA, 0x2587, 0x2588, 0x301E, 0x3021, 0xFFE4, 0x2121, 0x3231, 0x2010,
+            0x30FC, 0xFE61, 0xFE62, 0xFE6B, 0x3001, 0x3013, 0x2170, 0x2179, 0x2488, 0x20AC, 0x3220, 0x3229, 0x2160,
+            0x216B, 0xFF01, 0xFFE3, 0x3041, 0x3093, 0x30A1, 0x30F6, 0x0391, 0xFE34, 0x0410, 0x042F, 0x0430, 0x044F,
+            0x0101, 0x0261, 0x3105, 0x3129, 0x2500, 0x254B, 0xFE35, 0xFE44, 0xFE3B, 0xFE31, 0xFE33, 0xFE34, 0x2170,
+            0x2179, 0x0251, 0xE7C7, 0x0261, 0x3007, 0x303E, 0x2FFB, 0x2E81, 0xE843, 0x4723, 0xE864, 0x20AC, 0x3400,
+            0x34A3, 0x3574, 0x3575, 0x3649, 0x364A, 0x4D6F, 0x4D70, 0x4DB4, 0x4DB5 });
 
     @Test
     public void GB18030TestForSingleMessage() throws URISyntaxException, StorageException {
-
         String messageContent = GB18030CharSet;
         CloudQueueMessage cqm = new CloudQueueMessage(messageContent);
         queue.addMessage(cqm);
