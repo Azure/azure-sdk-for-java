@@ -223,10 +223,11 @@ public final class ExecutionEngine {
         final RequestResult currResult = new RequestResult();
         opContext.setCurrentRequestObject(request);
         currResult.setStartDate(new Date());
-        opContext.getRequestResults().add(currResult);
+        opContext.appendRequestResult(currResult);
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
-            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+            opContext.getSendingRequestEventHandler()
+                    .fireEvent(new SendingRequestEvent(opContext, request, currResult));
         }
 
         try {
@@ -278,7 +279,8 @@ public final class ExecutionEngine {
         currResult.setContentMD5(BaseResponse.getContentMD5(request));
 
         if (opContext.getResponseReceivedEventHandler().hasListeners()) {
-            opContext.getResponseReceivedEventHandler().fireEvent(new ResponseReceivedEvent(opContext, request));
+            opContext.getResponseReceivedEventHandler().fireEvent(
+                    new ResponseReceivedEvent(opContext, request, currResult));
         }
     }
 
@@ -296,13 +298,16 @@ public final class ExecutionEngine {
      */
     public static RequestResult processRequest(final HttpURLConnection request, final OperationContext opContext)
             throws IOException {
+
         final RequestResult currResult = new RequestResult();
         currResult.setStartDate(new Date());
-        opContext.getRequestResults().add(currResult);
+        opContext.appendRequestResult(currResult);
+
         opContext.setCurrentRequestObject(request);
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
-            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+            opContext.getSendingRequestEventHandler()
+                    .fireEvent(new SendingRequestEvent(opContext, request, currResult));
         }
 
         // Send the request
@@ -316,7 +321,8 @@ public final class ExecutionEngine {
         currResult.setContentMD5(BaseResponse.getContentMD5(request));
 
         if (opContext.getResponseReceivedEventHandler().hasListeners()) {
-            opContext.getResponseReceivedEventHandler().fireEvent(new ResponseReceivedEvent(opContext, request));
+            opContext.getResponseReceivedEventHandler().fireEvent(
+                    new ResponseReceivedEvent(opContext, request, currResult));
         }
 
         return currResult;
@@ -332,8 +338,9 @@ public final class ExecutionEngine {
      */
     private static void setLastException(final OperationContext opContext, final Exception exceptionToSet) {
         if (opContext.getLastResult() == null) {
-            opContext.getRequestResults().add(new RequestResult());
+            opContext.appendRequestResult(new RequestResult());
         }
+
         opContext.getLastResult().setException(exceptionToSet);
     }
 

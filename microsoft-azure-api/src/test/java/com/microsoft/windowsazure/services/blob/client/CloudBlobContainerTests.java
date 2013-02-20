@@ -688,6 +688,7 @@ public class CloudBlobContainerTests extends BlobTestBase {
 
             @Override
             public void eventOccurred(SendingRequestEvent eventArg) {
+                Assert.assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
                 callList.add(true);
             }
         });

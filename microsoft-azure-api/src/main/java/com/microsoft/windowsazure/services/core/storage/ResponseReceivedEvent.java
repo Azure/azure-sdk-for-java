@@ -23,13 +23,18 @@ public final class ResponseReceivedEvent {
      * Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as a
      * connection object.
      */
-    private Object connectionObject;
+    private final Object connectionObject;
 
     /**
      * Represents a context for the current operation. This object is used to track requests to the storage service, and
      * to provide additional runtime information about the operation.
      */
-    private OperationContext opContext;
+    private final OperationContext opContext;
+
+    /**
+     * A {@link RequestResult} object that represents the last request result.
+     */
+    private final RequestResult requestResult;
 
     /**
      * Creates an instance of the <code>ResponseReceivedEvent</code> class.
@@ -41,10 +46,14 @@ public final class ResponseReceivedEvent {
      * @param connectionObject
      *            Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as
      *            a connection object.
+     * @param requestResult
+     *            A {@link RequestResult} object that represents the current request result.
      */
-    public ResponseReceivedEvent(final OperationContext opContext, final Object connectionObject) {
+    public ResponseReceivedEvent(final OperationContext opContext, final Object connectionObject,
+            final RequestResult requestResult) {
         this.opContext = opContext;
         this.connectionObject = connectionObject;
+        this.requestResult = requestResult;
     }
 
     /**
@@ -59,5 +68,12 @@ public final class ResponseReceivedEvent {
      */
     public OperationContext getOpContext() {
         return this.opContext;
+    }
+
+    /**
+     * @return A {@link RequestResult} object that represents the current request result.
+     */
+    public RequestResult getRequestResult() {
+        return requestResult;
     }
 }
