@@ -800,7 +800,7 @@ public final class CloudTableClient extends ServiceClient {
 
         this.getCredentials().signRequestLite(queryRequest, -1L, opContext);
 
-        taskReference.setResult(ExecutionEngine.processRequest(queryRequest, opContext));
+        ExecutionEngine.processRequest(queryRequest, opContext, taskReference);
 
         if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
             throw TableServiceException.generateTableServiceException(true, taskReference.getResult(), null,

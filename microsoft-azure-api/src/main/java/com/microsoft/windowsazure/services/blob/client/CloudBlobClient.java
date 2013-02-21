@@ -388,7 +388,7 @@ public final class CloudBlobClient extends ServiceClient {
 
         this.getCredentials().signRequest(listContainerRequest, -1L);
 
-        taskReference.setResult(ExecutionEngine.processRequest(listContainerRequest, opContext));
+        ExecutionEngine.processRequest(listContainerRequest, opContext, taskReference);
 
         if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
             taskReference.setNonExceptionedRetryableFailure(true);

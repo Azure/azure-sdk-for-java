@@ -224,7 +224,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -298,7 +298,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 // Validate response code here
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
@@ -390,7 +390,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -460,7 +460,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     container.updatePropertiesFromResponse(request);
@@ -533,7 +533,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -610,7 +610,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -689,7 +689,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     container.updatePropertiesFromResponse(request);
@@ -1108,7 +1108,7 @@ public final class CloudBlobContainer {
 
         this.blobServiceClient.getCredentials().signRequest(listBlobsRequest, -1L);
 
-        taskReference.setResult(ExecutionEngine.processRequest(listBlobsRequest, opContext));
+        ExecutionEngine.processRequest(listBlobsRequest, opContext, taskReference);
 
         if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
             taskReference.setNonExceptionedRetryableFailure(true);
@@ -1533,7 +1533,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1613,7 +1613,7 @@ public final class CloudBlobContainer {
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1633,7 +1633,7 @@ public final class CloudBlobContainer {
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
      * @param proposedLeaseId
@@ -1657,7 +1657,7 @@ public final class CloudBlobContainer {
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
      * @param proposedLeaseId
@@ -1666,12 +1666,12 @@ public final class CloudBlobContainer {
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the container.
-     *            
+     * 
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     *            
+     * 
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -1710,7 +1710,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1731,7 +1731,8 @@ public final class CloudBlobContainer {
      * Renews an existing lease with the specified access conditions.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the container. The lease ID is
+     *            An {@link AccessCondition} object that represents the access conditions for the container. The lease
+     *            ID is
      *            required to be set with an access condition.
      * 
      * @throws StorageException
@@ -1748,12 +1749,12 @@ public final class CloudBlobContainer {
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
      *            required to be set with an access condition.
-     *            
+     * 
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     *            
+     * 
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -1792,7 +1793,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1824,17 +1825,18 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Releases the lease on the container using the specified access conditions, request options, and operation context.
+     * Releases the lease on the container using the specified access conditions, request options, and operation
+     * context.
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
      *            required to be set with an access condition.
-     *            
+     * 
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     *            
+     * 
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -1873,7 +1875,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1890,7 +1892,7 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease 
+     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease
      * period has expired.
      * 
      * @param breakPeriodInSeconds
@@ -1908,7 +1910,7 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Breaks the existing lease, using the specified request options and operation context, and ensures that 
+     * Breaks the existing lease, using the specified request options and operation context, and ensures that
      * another client cannot acquire a new lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
@@ -1919,7 +1921,7 @@ public final class CloudBlobContainer {
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
@@ -1958,7 +1960,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2006,12 +2008,12 @@ public final class CloudBlobContainer {
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob. The lease ID is
      *            required to be set with an access condition.
-     *            
+     * 
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     *            
+     * 
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -2050,7 +2052,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);

@@ -144,7 +144,7 @@ public abstract class ServiceClient {
                         .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
 
                 client.getCredentials().signRequest(request, -1);
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -330,7 +330,7 @@ public abstract class ServiceClient {
                 Utility.writeToOutputStream(dataInputStream, request.getOutputStream(), descriptor.getLength(),
                         false /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);

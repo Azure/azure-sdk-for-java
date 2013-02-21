@@ -74,6 +74,6 @@ public final class ResponseReceivedEvent {
      * @return A {@link RequestResult} object that represents the current request result.
      */
     public RequestResult getRequestResult() {
-        return requestResult;
+        return this.requestResult;
     }
 }

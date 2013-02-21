@@ -204,7 +204,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 Utility.writeToOutputStream(blockListInputStream, request.getOutputStream(), descriptor.getLength(),
                         false, false, null, opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -293,7 +293,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -624,7 +624,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length,
                         true /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);

@@ -399,10 +399,9 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                 MimeHelper.writeBatchToStream(request.getOutputStream(), tableName, batch, batchID, changeSet,
                         opContext);
 
-                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext);
+                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this);
                 ArrayList<MimePart> responseParts = null;
                 try {
-                    this.setResult(opContext.getLastResult());
                     final String contentType = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
 
                     final String[] headerVals = contentType.split("multipart/mixed; boundary=");

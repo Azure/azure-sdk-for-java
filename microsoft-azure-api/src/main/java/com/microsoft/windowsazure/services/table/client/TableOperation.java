@@ -262,7 +262,7 @@ public class TableOperation {
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
                         || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
@@ -333,7 +333,7 @@ public class TableOperation {
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), isTableEntry, request.getOutputStream(),
                         opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
                 if (operation.opType == TableOperationType.INSERT) {
                     if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                         throw TableServiceException.generateTableServiceException(false, this.getResult(), operation,
@@ -419,7 +419,7 @@ public class TableOperation {
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
                         || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
@@ -485,7 +485,7 @@ public class TableOperation {
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this);
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
                         || this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
