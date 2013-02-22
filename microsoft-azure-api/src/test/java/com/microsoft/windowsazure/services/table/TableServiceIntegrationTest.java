@@ -409,6 +409,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
                 .setProperty("test5", EdmType.STRING, "\ub2e2")
                 .setProperty("test6", EdmType.STRING, " \ub2e2")
                 .setProperty("test7", EdmType.STRING, "ok \ub2e2")
+                .setProperty("test8", EdmType.STRING, "\uD840");
                 ;
 
         service.insertEntity(TEST_TABLE_2, insertedEntity);
@@ -427,25 +428,27 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("&#x11;", actualTest2);
 
         assertNotNull(result.getEntity().getProperty("test3"));
-        String actualTest3 = (String) result.getEntity().getProperty("test3").getValue();
+        String actualTest3 = (String) result.getEntity().getPropertyValue("test3");
         assertEquals("%", actualTest3);
 
         assertNotNull(result.getEntity().getProperty("test4"));
-        String actualTest4 = (String) result.getEntity().getProperty("test4").getValue();
+        String actualTest4 = (String) result.getEntity().getPropertyValue("test4");
         assertEquals("\uaaaa", actualTest4);
 
         assertNotNull(result.getEntity().getProperty("test5"));
-        String actualTest5 = (String) result.getEntity().getProperty("test5").getValue();
+        String actualTest5 = (String) result.getEntity().getPropertyValue("test5");
         assertEquals("\ub2e2", actualTest5);
 
         assertNotNull(result.getEntity().getProperty("test6"));
-        String actualTest6 = (String) result.getEntity().getProperty("test6").getValue();
+        String actualTest6 = (String) result.getEntity().getPropertyValue("test6");
         assertEquals(" \ub2e2", actualTest6);
 
         assertNotNull(result.getEntity().getProperty("test7"));
-        String actualTest7 = (String) result.getEntity().getProperty("test7").getValue();
+        String actualTest7 = (String) result.getEntity().getPropertyValue("test7");
         assertEquals("ok \ub2e2", actualTest7);
 
+        String actualTest8 = (String)entity.getPropertyValue("test8");
+        assertEquals("&#xd840;", actualTest8);
     }
 
 
