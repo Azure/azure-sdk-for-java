@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -84,8 +84,7 @@ public class AtomReaderWriter {
 
                     if (value != null) {
                         writer.writeCharacters(value);
-                    }
-                    else {
+                    } else {
                         writer.writeAttribute("m:null", "true");
                     }
 
@@ -108,8 +107,7 @@ public class AtomReaderWriter {
                 // Process "entry" elements only
                 if (isStartElement(xmlr, "entry")) {
                     result.add(parseTableEntry(xmlr));
-                }
-                else {
+                } else {
                     nextSignificant(xmlr);
                 }
             }
@@ -118,8 +116,7 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        }
-        catch (XMLStreamException e) {
+        } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -133,8 +130,7 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        }
-        catch (XMLStreamException e) {
+        } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -151,8 +147,7 @@ public class AtomReaderWriter {
                 // Process "entry" elements only
                 if (isStartElement(xmlr, "entry")) {
                     result.add(parseEntityEntry(xmlr));
-                }
-                else {
+                } else {
                     nextSignificant(xmlr);
                 }
             }
@@ -161,8 +156,7 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        }
-        catch (XMLStreamException e) {
+        } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -176,8 +170,7 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        }
-        catch (XMLStreamException e) {
+        } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -227,8 +220,7 @@ public class AtomReaderWriter {
             writer.close();
 
             return new ByteArrayInputStream(stream.toByteArray());
-        }
-        catch (XMLStreamException e) {
+        } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -243,8 +235,7 @@ public class AtomReaderWriter {
                 Map<String, Property> properties = parseEntryProperties(xmlr);
 
                 result.setName((String) properties.get("TableName").getValue());
-            }
-            else {
+            } else {
                 nextSignificant(xmlr);
             }
         }
@@ -263,8 +254,7 @@ public class AtomReaderWriter {
         while (!isEndElement(xmlr, "entry")) {
             if (isStartElement(xmlr, "properties")) {
                 result.setProperties(parseEntryProperties(xmlr));
-            }
-            else {
+            } else {
                 nextSignificant(xmlr);
             }
         }
@@ -336,17 +326,21 @@ public class AtomReaderWriter {
     private String encodeNumericCharacterReference(String value) {
         if (value == null) {
             return null;
-        }
-        else {
+        } else {
             char[] charArray = value.toCharArray();
             StringBuffer stringBuffer = new StringBuffer();
             for (int index = 0; index < charArray.length; index++) {
-                if (charArray[index] < 0x20 || charArray[index] > 0x7f)
+                if (isIllegalChar(charArray[index]))
                     stringBuffer.append("&#x").append(Integer.toHexString(charArray[index])).append(";");
                 else
                     stringBuffer.append(charArray[index]);
             }
             return stringBuffer.toString();
         }
+    }
+
+    private boolean isIllegalChar(char c) {
+        return !(c == 9 || c == 0xA || c == 0xD || (c >= 0x20 && c < 0xD800) ||
+                (c >= 0xE000 && c < 0xFFFE) || (c >= 0x10000 && c < 0x110000));
     }
 }
