@@ -1127,6 +1127,8 @@ public class CloudQueueTests extends QueueTestBase {
     @Test
     public void testUpdateMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
 
+        queue.clear();
+
         String messageContent = "messagetest";
         CloudQueueMessage message1 = new CloudQueueMessage(messageContent);
         queue.addMessage(message1);

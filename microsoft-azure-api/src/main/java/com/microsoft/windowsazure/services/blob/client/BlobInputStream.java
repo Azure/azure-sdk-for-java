@@ -83,6 +83,11 @@ public final class BlobInputStream extends InputStream {
     private boolean validateBlobMd5;
 
     /**
+     * Holds the Blob MD5.
+     */
+    private final String retrievedContentMD5Value;
+
+    /**
      * Holds the reference to the current buffered data.
      */
     private ByteArrayInputStream currentBuffer;
@@ -161,11 +166,11 @@ public final class BlobInputStream extends InputStream {
 
         final HttpURLConnection attributesRequest = this.opContext.getCurrentRequestObject();
 
-        final String retrievedContentMD5Value = attributesRequest.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+        this.retrievedContentMD5Value = attributesRequest.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
 
         // Will validate it if it was returned
         this.validateBlobMd5 = !options.getDisableContentMD5Validation()
-                && !Utility.isNullOrEmpty(retrievedContentMD5Value);
+                && !Utility.isNullOrEmpty(this.retrievedContentMD5Value);
 
         // Validates the first option, and sets future requests to use if match
         // request option.
@@ -395,8 +400,17 @@ public final class BlobInputStream extends InputStream {
     @DoesServiceRequest
     public int read() throws IOException {
         final byte[] tBuff = new byte[1];
-        this.read(tBuff, 0, 1);
-        return tBuff[0];
+        final int numberOfBytesRead = this.read(tBuff, 0, 1);
+
+        if (numberOfBytesRead > 0) {
+            return tBuff[0] & 0xFF;
+        }
+        else if (numberOfBytesRead == 0) {
+            throw new IOException("Unexpected error. Stream returned unexpected number of bytes.");
+        }
+        else {
+            return -1;
+        }
     }
 
     /**
@@ -519,13 +533,13 @@ public final class BlobInputStream extends InputStream {
                 if (this.currentAbsoluteReadPosition == this.streamLength) {
                     // Reached end of stream, validate md5.
                     final String calculatedMd5 = Base64.encode(this.md5Digest.digest());
-                    if (!calculatedMd5.equals(this.parentBlobRef.getProperties().getContentMD5())) {
+                    if (!calculatedMd5.equals(this.retrievedContentMD5Value)) {
                         this.lastError = Utility
                                 .initIOException(new StorageException(
                                         StorageErrorCodeStrings.INVALID_MD5,
                                         String.format(
                                                 "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-                                                this.parentBlobRef.getProperties().getContentMD5(), calculatedMd5),
+                                                this.retrievedContentMD5Value, calculatedMd5),
                                         Constants.HeaderConstants.HTTP_UNUSED_306, null, null));
                         this.streamFaulted = true;
                         throw this.lastError;

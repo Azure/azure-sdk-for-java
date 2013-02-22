@@ -720,6 +720,43 @@ public class CloudBlobContainerTests extends BlobTestBase {
     }
 
     @Test
+    public void testBlobInputStream() throws URISyntaxException, StorageException, IOException {
+        final int blobLength = 16 * 1024;
+        final Random randGenerator = new Random();
+        String blobName = "testblob" + Integer.toString(randGenerator.nextInt(50000));
+        blobName = blobName.replace('-', '_');
+
+        final CloudBlobContainer containerRef = bClient.getContainerReference(BlobTestBase.testSuiteContainerName);
+
+        final CloudBlockBlob blobRef = containerRef.getBlockBlobReference(blobName);
+
+        final byte[] buff = new byte[blobLength];
+        randGenerator.nextBytes(buff);
+        buff[0] = -1;
+        buff[1] = -128;
+        final ByteArrayInputStream sourceStream = new ByteArrayInputStream(buff);
+
+        final BlobRequestOptions options = new BlobRequestOptions();
+        final OperationContext operationContext = new OperationContext();
+        options.setStoreBlobContentMD5(true);
+        options.setTimeoutIntervalInMs(90000);
+        options.setRetryPolicyFactory(new RetryNoRetry());
+        blobRef.uploadFullBlob(sourceStream, blobLength, null, options, operationContext);
+
+        BlobInputStream blobStream = blobRef.openInputStream();
+
+        for (int i = 0; i < blobLength; i++) {
+            int data = blobStream.read();
+            Assert.assertTrue(data >= 0);
+            Assert.assertEquals(buff[i], (byte) data);
+        }
+
+        Assert.assertEquals(-1, blobStream.read());
+
+        blobRef.delete();
+    }
+
+    @Test
     public void testCurrentOperationByteCount() throws URISyntaxException, StorageException, IOException {
         final int blockLength = 4 * 1024 * 1024;
         final Random randGenerator = new Random();
@@ -750,24 +787,24 @@ public class CloudBlobContainerTests extends BlobTestBase {
         BlobRequestOptions options = new BlobRequestOptions();
         options.setTimeoutIntervalInMs(1000);
         options.setRetryPolicyFactory(new RetryNoRetry());
+
+        ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
         try {
-            final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
             blobRef.download(downloadedDataStream, null, options, operationContext);
         }
         catch (Exception e) {
-            Assert.assertEquals(0, operationContext.getCurrentOperationByteCount());
+            Assert.assertEquals(downloadedDataStream.size(), operationContext.getCurrentOperationByteCount());
         }
 
         operationContext = new OperationContext();
         options = new BlobRequestOptions();
         options.setTimeoutIntervalInMs(90000);
 
-        final ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();
+        downloadedDataStream = new ByteArrayOutputStream();
         blobRef.download(downloadedDataStream, null, options, operationContext);
 
         Assert.assertEquals(blockLength * numberOfBlocks, operationContext.getCurrentOperationByteCount());
 
         blobRef.delete();
     }
-
 }

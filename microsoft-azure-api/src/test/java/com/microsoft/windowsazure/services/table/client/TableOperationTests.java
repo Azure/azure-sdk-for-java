@@ -145,6 +145,7 @@ public class TableOperationTests extends TableTestBase {
         TableResult insertResult = tClient.execute(testSuiteTableName, TableOperation.insertOrMerge(baseEntity));
 
         Assert.assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
         tClient.execute(testSuiteTableName, TableOperation.insertOrMerge(secondEntity));
@@ -206,6 +207,7 @@ public class TableOperationTests extends TableTestBase {
         TableResult insertResult = tClient.execute(testSuiteTableName, TableOperation.insertOrReplace(baseEntity));
 
         Assert.assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
         tClient.execute(testSuiteTableName, TableOperation.insertOrReplace(secondEntity));
@@ -259,7 +261,10 @@ public class TableOperationTests extends TableTestBase {
         secondEntity.setRowKey(baseEntity.getRowKey());
         secondEntity.setEtag(baseEntity.getEtag());
 
-        tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity));
+        TableResult mergeResult = tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity));
+
+        Assert.assertEquals(mergeResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertNotNull(mergeResult.getEtag());
 
         TableResult res2 = tClient.execute(testSuiteTableName, TableOperation.retrieve(secondEntity.getPartitionKey(),
                 secondEntity.getRowKey(), DynamicTableEntity.class));
@@ -456,7 +461,10 @@ public class TableOperationTests extends TableTestBase {
         // Remove property and update
         retrievedEntity.getProperties().remove("D");
 
-        tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity));
+        TableResult replaceResult = tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity));
+
+        Assert.assertEquals(replaceResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertNotNull(replaceResult.getEtag());
 
         // Retrieve Entity
         queryResult = tClient

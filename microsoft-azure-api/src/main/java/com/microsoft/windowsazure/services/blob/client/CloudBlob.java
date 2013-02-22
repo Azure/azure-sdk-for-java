@@ -221,7 +221,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
      * @param proposedLeaseId
@@ -245,7 +245,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @param leaseTimeInSeconds
      *            Specifies the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, the value must be greater than 
+     *            If null, an infinite lease will be acquired. If not null, the value must be greater than
      *            zero.
      * 
      * @param proposedLeaseId
@@ -254,12 +254,12 @@ public abstract class CloudBlob implements ListBlobItem {
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
-     *            
+     * 
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
-     *            
+     * 
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
      *            is used to track requests to the storage service, and to provide additional runtime information about
@@ -342,7 +342,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease period 
+     * Breaks the lease and ensures that another client cannot acquire a new lease until the current lease period
      * has expired.
      * 
      * @param breakPeriodInSeconds
@@ -360,7 +360,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Breaks the existing lease, using the specified request options and operation context, and ensures that another 
+     * Breaks the existing lease, using the specified request options and operation context, and ensures that another
      * client cannot acquire a new lease until the current lease period has expired.
      * 
      * @param breakPeriodInSeconds
@@ -371,7 +371,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context
@@ -1328,14 +1328,16 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                // Do not update blob length in downloadRangeInternal API. 
-                final long orignalBlobLength = blob.properties.getLength();
+                // Do not update blob length and Content-MD5 in downloadRangeInternal API. 
+                final long originalBlobLength = blob.properties.getLength();
+                final String originalContentMD5 = blob.properties.getContentMD5();
                 final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
                         blob.snapshotID, opContext);
                 blob.properties = retrievedAttributes.getProperties();
                 blob.metadata = retrievedAttributes.getMetadata();
                 blob.copyState = retrievedAttributes.getCopyState();
-                blob.properties.setLength(orignalBlobLength);
+                blob.properties.setContentMD5(originalContentMD5);
+                blob.properties.setLength(originalBlobLength);
 
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
@@ -2053,7 +2055,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            required to be set with an access condition.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client 
+     *            <code>null</code> will use the default request options from the associated service client
      *            ({@link CloudBlobClient}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context for the current operation. The context

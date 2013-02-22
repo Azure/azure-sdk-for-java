@@ -1,3 +1,9 @@
+2013.01.28 Version 0.4.1
+ * Fixed the return value of BlobInputStream.read
+ * Fixed CloudPageBlob.downloadPageRanges to retrieve the blob length
+ * Fixed MD5 validation in BlobInputStream
+ * Return ETag in TableResult not only for Insert but also for other operations
+
 2012.10.29 Version 0.3.3
  * In the blob client, fixed a bug which allows users to call write APIs on a blob snapshot reference
  * Updated the URL parse method in storage client libraries, to allow users to pass a URL ending with "/"
