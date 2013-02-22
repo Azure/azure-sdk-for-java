@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -202,6 +202,8 @@ public class TableQuery<T extends TableEntity> {
         for (byte b : value) {
             formatter.format("%02x", b);
         }
+        formatter.flush();
+        formatter.close();
 
         return generateFilterCondition(propertyName, operation, sb.toString(), EdmType.BINARY);
     }
@@ -232,6 +234,8 @@ public class TableQuery<T extends TableEntity> {
         for (byte b : value) {
             formatter.format("%02x", b);
         }
+        formatter.flush();
+        formatter.close();
 
         return generateFilterCondition(propertyName, operation, sb.toString(), EdmType.BINARY);
     }

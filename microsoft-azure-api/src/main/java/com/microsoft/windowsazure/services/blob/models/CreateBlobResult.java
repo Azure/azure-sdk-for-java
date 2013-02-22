@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 /**
  * A wrapper class for the response returned from a Blob Service REST API Create Blob operation. This is returned by
  * calls to implementations of {@link BlobContract#createPageBlob(String, String, long, CreateBlobOptions)} and
- * {@link BlobContract#createBlockBlob(String, String, long, CreateBlobOptions)}.
+ * {@link BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)}.
  * <p>
  * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179451.aspx">Put Blob</a> documentation on
  * MSDN for details of the underlying Blob Service REST API operation.

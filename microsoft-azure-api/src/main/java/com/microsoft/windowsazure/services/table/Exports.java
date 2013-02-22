@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.table;
 
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.table.implementation.AtomReaderWriter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultEdmValueConterter;
 import com.microsoft.windowsazure.services.table.implementation.DefaultXMLStreamFactory;
@@ -39,5 +40,6 @@ public class Exports implements Builder.Exports {
         registry.add(MimeReaderWriter.class);
         registry.add(HttpReaderWriter.class);
         registry.add(EdmValueConverter.class, DefaultEdmValueConterter.class);
+        registry.add(UserAgentFilter.class);
     }
 }

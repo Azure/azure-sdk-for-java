@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -785,7 +785,7 @@ public class CloudBlobContainerTests extends BlobTestBase {
 
         OperationContext operationContext = new OperationContext();
         BlobRequestOptions options = new BlobRequestOptions();
-        options.setTimeoutIntervalInMs(1000);
+        options.setTimeoutIntervalInMs(2000);
         options.setRetryPolicyFactory(new RetryNoRetry());
 
         ByteArrayOutputStream downloadedDataStream = new ByteArrayOutputStream();

@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,8 +55,6 @@ public class SharedKeyFilter extends com.microsoft.windowsazure.services.blob.im
         if (log.isDebugEnabled()) {
             log.debug(String.format("String to sign: \"%s\"", stringToSign));
         }
-        //TODO: Remove or comment the following line
-        //System.out.println(String.format("String to sign: \"%s\"", stringToSign));
 
         String signature = this.getSigner().sign(stringToSign);
         cr.getHeaders().putSingle("Authorization", "SharedKey " + this.getAccountName() + ":" + signature);

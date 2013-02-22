@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,10 +149,6 @@ public class SharedAccessSignatureHelper {
     /**
      * Get the complete query builder for creating the Shared Access Signature query.
      * 
-     * @param policy
-     *            The shared access policy to hash.
-     * @param groupPolicyIdentifier
-     *            An optional identifier for the policy.
      * @param signature
      *            The signature to use.
      * @return The finished query builder
@@ -285,7 +281,7 @@ public class SharedAccessSignatureHelper {
      * 
      * @param policy
      *            The shared access policy to hash.
-     * @param groupPolicyIdentifier
+     * @param accessPolicyIdentifier
      *            An optional identifier for the policy.
      * @param resourceName
      *            the resource name.
@@ -356,7 +352,7 @@ public class SharedAccessSignatureHelper {
      * 
      * @param policy
      *            The shared access policy to hash.
-     * @param groupPolicyIdentifier
+     * @param accessPolicyIdentifier
      *            An optional identifier for the policy.
      * @param resourceName
      *            the resource name.

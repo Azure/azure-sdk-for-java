@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class ServiceExceptionFactory {
         Throwable cause = exception.getCause();
 
         for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
-            Class scanClass = scan.getClass();
+            Class<?> scanClass = scan.getClass();
             if (ServiceException.class.isAssignableFrom(scanClass)) {
                 return populate(exception, serviceName, (ServiceException) scan);
             }

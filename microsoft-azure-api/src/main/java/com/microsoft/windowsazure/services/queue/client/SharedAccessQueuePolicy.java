@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public final class SharedAccessQueuePolicy {
      *            A {@link SharedAccessQueuePermissions} object that represents the shared access permissions.
      * 
      * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
-     *         described at {@link SharedAccessQueuePermissions#permissionsFromString}.
+     *         described at {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
      */
     public static String permissionsToString(final EnumSet<SharedAccessQueuePermissions> permissions) {
         if (permissions == null) {

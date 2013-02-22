@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,7 +131,7 @@ public final class BlobContainerProperties {
     /**
      * Sets the lease status on the container. Reserved for internal use.
      * 
-     * @param LeaseState
+     * @param leaseState
      *            The lease state to set, as a <code>LeaseState</code> object.
      */
     public void setLeaseState(final LeaseState leaseState) {
@@ -141,7 +141,7 @@ public final class BlobContainerProperties {
     /**
      * Sets the lease duration on the container. Reserved for internal use.
      * 
-     * @param LeaseDuration
+     * @param leaseDuration
      *            The lease duration to set, as a <code>LeaseDuration</code> object.
      */
     public void setLeaseDuration(final LeaseDuration leaseDuration) {

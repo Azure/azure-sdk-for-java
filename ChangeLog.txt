@@ -1,8 +1,14 @@
-2013.01.28 Version 0.4.1
+2013.02.22 Version 0.4.1
  * Fixed the return value of BlobInputStream.read
  * Fixed CloudPageBlob.downloadPageRanges to retrieve the blob length
  * Fixed MD5 validation in BlobInputStream
  * Return ETag in TableResult not only for Insert but also for other operations
+
+2013.01.18 Version 0.4.0
+ * Added support for Windows Azure Media Services
+ * Updated dependencies to non-beta stable versions
+ * Add a Sending Request Event to OperationContext in Storage Client code
+ * Fix a bug in the STorage client in blob download resume for blobs greater than 2GB
 
 2012.10.29 Version 0.3.3
  * In the blob client, fixed a bug which allows users to call write APIs on a blob snapshot reference

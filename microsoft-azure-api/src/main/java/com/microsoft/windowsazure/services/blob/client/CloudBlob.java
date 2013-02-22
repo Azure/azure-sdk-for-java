@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1247,7 +1247,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            the number of bytes to read
      * @param buffer
      *            the byte buffer to write to.
-     * @param bufferOffet
+     * @param bufferOffset
      *            the offset in the byte buffer to begin writing.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
@@ -1470,10 +1470,6 @@ public abstract class CloudBlob implements ListBlobItem {
      *            signature.
      * @param groupPolicyIdentifier
      *            A <code>String</code> that represents the container-level access policy.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
      * 
      * @return A <code>String</code> that represents the shared access signature.
      * 

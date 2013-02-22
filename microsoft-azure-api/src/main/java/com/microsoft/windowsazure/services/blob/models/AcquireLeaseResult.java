@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Lease Blob operation. This is returned by
- * calls to implementations of {@link BlobContract#breakLease(String, String, String, BlobServiceOptions)},
- * {@link BlobContract#releaseLease(String, String, String, BlobServiceOptions)} and
- * {@link BlobContract#renewLease(String, String, String, BlobServiceOptions)}.
+ * calls to implementations of {@link BlobContract#acquireLease(String, String)},
+ * {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)},
+ * {@link BlobContract#renewLease(String, String, String, BlobServiceOptions)}, and
+ * {@link BlobContract#renewLease(String, String, String)}.
  * <p>
  * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx">Lease Blob</a> documentation on
  * MSDN for details of the underlying Blob Service REST API operation.

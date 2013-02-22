@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.blob.models.AcquireLeaseOptions;
 import com.microsoft.windowsazure.services.blob.models.AcquireLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.BreakLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobOptions;
@@ -888,9 +889,21 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
+    @Deprecated
     public void breakLease(String container, String blob, String leaseId) throws ServiceException {
+        breakLease(container, blob);
+    }
+
+    @Override
+    @Deprecated
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+        breakLease(container, blob, options);
+    }
+
+    @Override
+    public BreakLeaseResult breakLease(String container, String blob) throws ServiceException {
         try {
-            service.breakLease(container, blob, leaseId);
+            return service.breakLease(container, blob);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -901,10 +914,10 @@ public class BlobExceptionProcessor implements BlobContract {
     }
 
     @Override
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
+    public BreakLeaseResult breakLease(String container, String blob, BlobServiceOptions options)
             throws ServiceException {
         try {
-            service.breakLease(container, blob, leaseId, options);
+            return service.breakLease(container, blob, options);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

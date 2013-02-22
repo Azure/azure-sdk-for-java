@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -334,7 +334,7 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void testQueryOnSupportedTypes() throws StorageException {
+    public void testQueryOnSupportedTypes() throws StorageException, InterruptedException {
         // Setup
         TableBatchOperation batch = new TableBatchOperation();
         String pk = UUID.randomUUID().toString();
@@ -359,14 +359,8 @@ public class TableQueryTests extends TableTestBase {
             ent.setGuid(UUID.randomUUID());
             ent.setString(String.format("%04d", j));
 
-            try {
-                // Add delay to make times unique
-                Thread.sleep(100);
-            }
-            catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            // Add delay to make times unique
+            Thread.sleep(100);
             batch.insert(ent);
             if (j == 50) {
                 middleRef = ent;

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Microsoft Corporation
+ * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -64,10 +64,7 @@ public abstract class IntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         Configuration config = Configuration.load();
-        overrideWithEnv(config, ServiceBusConfiguration.URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
         return config;
     }
 
