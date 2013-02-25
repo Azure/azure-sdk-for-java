@@ -220,7 +220,7 @@ public final class CloudQueue {
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(messageBytes);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -286,7 +286,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -351,7 +351,7 @@ public final class CloudQueue {
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED
                         && this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
@@ -424,7 +424,7 @@ public final class CloudQueue {
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
                     return true;
@@ -509,7 +509,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -580,7 +580,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_NO_CONTENT) {
                     return true;
@@ -667,7 +667,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -733,7 +733,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -806,7 +806,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     return Boolean.valueOf(true);
@@ -1021,7 +1021,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1155,7 +1155,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1293,7 +1293,7 @@ public final class CloudQueue {
                     client.getCredentials().signRequest(request, 0L);
                 }
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1366,7 +1366,7 @@ public final class CloudQueue {
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1445,7 +1445,7 @@ public final class CloudQueue {
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1515,7 +1515,7 @@ public final class CloudQueue {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);

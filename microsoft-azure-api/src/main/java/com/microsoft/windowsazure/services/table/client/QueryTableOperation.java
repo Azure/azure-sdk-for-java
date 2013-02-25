@@ -189,7 +189,7 @@ public class QueryTableOperation extends TableOperation {
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     // Parse response for updates

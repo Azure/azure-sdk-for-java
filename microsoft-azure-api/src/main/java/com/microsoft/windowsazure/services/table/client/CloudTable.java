@@ -493,7 +493,7 @@ public final class CloudTable {
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_NO_CONTENT) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -564,7 +564,7 @@ public final class CloudTable {
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);

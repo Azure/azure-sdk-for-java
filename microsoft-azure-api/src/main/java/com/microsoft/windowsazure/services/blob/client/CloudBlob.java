@@ -298,7 +298,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -410,7 +410,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -544,7 +544,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
                 client.getCredentials().signRequest(request, 0);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -623,7 +623,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -698,7 +698,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -787,7 +787,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -878,7 +878,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     return true;
@@ -961,7 +961,7 @@ public abstract class CloudBlob implements ListBlobItem {
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
 
                 client.getCredentials().signRequest(request, -1L);
-                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this);
+                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this.getResult());
 
                 final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
                 final Boolean validateMD5 = !blobOptions.getDisableContentMD5Validation()
@@ -1140,7 +1140,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1297,7 +1297,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                final InputStream sourceStream = ExecutionEngine.getInputStream(request, opContext, this);
+                final InputStream sourceStream = ExecutionEngine.getInputStream(request, opContext, this.getResult());
 
                 int totalRead = 0;
                 int nextRead = buffer.length - bufferOffset;
@@ -1431,7 +1431,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
@@ -1918,7 +1918,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1998,7 +1998,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2087,7 +2087,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2214,7 +2214,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
                     final StorageException potentialConflictException = StorageException.translateException(request,
@@ -2364,7 +2364,7 @@ public abstract class CloudBlob implements ListBlobItem {
                             HttpURLConnection.HTTP_FORBIDDEN, null, null);
                 }
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2438,7 +2438,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2512,7 +2512,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);

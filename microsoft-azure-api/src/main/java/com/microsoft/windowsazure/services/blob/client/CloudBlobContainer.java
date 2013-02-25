@@ -224,7 +224,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -298,7 +298,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 // Validate response code here
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_CREATED) {
@@ -390,7 +390,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -460,7 +460,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
                     container.updatePropertiesFromResponse(request);
@@ -533,7 +533,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -610,7 +610,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -689,7 +689,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     container.updatePropertiesFromResponse(request);
@@ -1108,7 +1108,7 @@ public final class CloudBlobContainer {
 
         this.blobServiceClient.getCredentials().signRequest(listBlobsRequest, -1L);
 
-        ExecutionEngine.processRequest(listBlobsRequest, opContext, taskReference);
+        ExecutionEngine.processRequest(listBlobsRequest, opContext, taskReference.getResult());
 
         if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
             taskReference.setNonExceptionedRetryableFailure(true);
@@ -1533,7 +1533,7 @@ public final class CloudBlobContainer {
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1613,7 +1613,7 @@ public final class CloudBlobContainer {
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1710,7 +1710,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1732,8 +1732,7 @@ public final class CloudBlobContainer {
      * 
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the container. The lease
-     *            ID is
-     *            required to be set with an access condition.
+     *            ID is required to be set with an access condition.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -1793,7 +1792,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1875,7 +1874,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -1960,7 +1959,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -2052,7 +2051,7 @@ public final class CloudBlobContainer {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);

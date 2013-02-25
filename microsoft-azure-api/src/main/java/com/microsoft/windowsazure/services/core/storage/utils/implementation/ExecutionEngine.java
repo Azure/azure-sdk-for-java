@@ -106,7 +106,7 @@ public final class ExecutionEngine {
         while (true) {
             try {
                 // reset result flags
-                task.initialize();
+                task.initialize(opContext);
 
                 final RESULT_TYPE result = task.execute(client, parentObject, opContext);
 
@@ -214,19 +214,17 @@ public final class ExecutionEngine {
      *            the request to process
      * @param opContext
      *            an object used to track the execution of the operation
-     * @param operation
-     *            the operation in which to set the current RequestResult object
+     * @param currResult
+     *            A {@link RequestResult} object that represents the current request result.
      * @return the input stream from the request
      * @throws IOException
      *             if there is an error making the connection
      */
     public static InputStream getInputStream(final HttpURLConnection request, final OperationContext opContext,
-            final StorageOperation<?, ?, ?> operation) throws IOException {
-        final RequestResult currResult = new RequestResult();
+            final RequestResult currResult) throws IOException {
+
         opContext.setCurrentRequestObject(request);
         currResult.setStartDate(new Date());
-        opContext.appendRequestResult(currResult);
-        operation.setResult(currResult);
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
             opContext.getSendingRequestEventHandler()
@@ -295,19 +293,16 @@ public final class ExecutionEngine {
      *            the request to process
      * @param opContext
      *            an object used to track the execution of the operation
-     * @param operation
-     *            the operation in which to set the current RequestResult object
+     * @param currResult
+     *            A {@link RequestResult} object that represents the current request result.
      * @throws IOException
      *             if there is an error making the connection
      */
     public static void processRequest(final HttpURLConnection request, final OperationContext opContext,
-            final StorageOperation<?, ?, ?> operation) throws IOException {
+            final RequestResult currResult) throws IOException {
 
-        final RequestResult currResult = new RequestResult();
-        currResult.setStartDate(new Date());
-        opContext.appendRequestResult(currResult);
         opContext.setCurrentRequestObject(request);
-        operation.setResult(currResult);
+        currResult.setStartDate(new Date());
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
             opContext.getSendingRequestEventHandler()

@@ -399,7 +399,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
                 MimeHelper.writeBatchToStream(request.getOutputStream(), tableName, batch, batchID, changeSet,
                         opContext);
 
-                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this);
+                final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this.getResult());
                 ArrayList<MimePart> responseParts = null;
                 try {
                     final String contentType = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);

@@ -272,7 +272,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -352,7 +352,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -482,7 +482,7 @@ public final class CloudPageBlob extends CloudBlob {
                     client.getCredentials().signRequest(request, 0L);
                 }
 
-                ExecutionEngine.processRequest(request, opContext, this);
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);

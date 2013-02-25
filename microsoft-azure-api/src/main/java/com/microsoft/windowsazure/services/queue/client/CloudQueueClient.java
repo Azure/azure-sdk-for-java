@@ -227,7 +227,7 @@ public final class CloudQueueClient extends ServiceClient {
 
         this.getCredentials().signRequest(listQueueRequest, -1L);
 
-        ExecutionEngine.processRequest(listQueueRequest, opContext, taskReference);
+        ExecutionEngine.processRequest(listQueueRequest, opContext, taskReference.getResult());
 
         if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
             taskReference.setNonExceptionedRetryableFailure(true);
