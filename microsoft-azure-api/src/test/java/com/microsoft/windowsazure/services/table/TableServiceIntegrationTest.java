@@ -409,7 +409,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
                 .setProperty("test5", EdmType.STRING, "\ub2e2")
                 .setProperty("test6", EdmType.STRING, " \ub2e2")
                 .setProperty("test7", EdmType.STRING, "ok \ub2e2")
-                .setProperty("test8", EdmType.STRING, "\uD840");
+                .setProperty("test8", EdmType.STRING, "\uD840\uDC00")
                 ;
 
         service.insertEntity(TEST_TABLE_2, insertedEntity);
@@ -448,7 +448,7 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         assertEquals("ok \ub2e2", actualTest7);
 
         String actualTest8 = (String)entity.getPropertyValue("test8");
-        assertEquals("&#xd840;", actualTest8);
+        assertEquals("\uD840\uDC00", actualTest8);
     }
 
 
