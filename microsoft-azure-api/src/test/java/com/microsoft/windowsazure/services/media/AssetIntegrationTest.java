@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 
@@ -291,9 +292,12 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         String originalTestName = testAssetPrefix + "linkAssetContentKeySuccess";
         AssetInfo assetInfo = service.create(Asset.create().setName(originalTestName)
                 .setOptions(AssetOption.StorageEncrypted));
+
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
-        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey));
+        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey)
+                .setProtectionKeyId(protectionKeyId));
 
         // Act
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
