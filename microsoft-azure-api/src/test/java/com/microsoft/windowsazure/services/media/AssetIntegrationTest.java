@@ -288,7 +288,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
         // Arrange
-        String originalTestName = testAssetPrefix + "linkAssetContentKeyInvalidIdFailed";
+        String originalTestName = testAssetPrefix + "linkAssetContentKeySuccess";
         AssetInfo assetInfo = service.create(Asset.create().setName(originalTestName)
                 .setOptions(AssetOption.StorageEncrypted));
         String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
