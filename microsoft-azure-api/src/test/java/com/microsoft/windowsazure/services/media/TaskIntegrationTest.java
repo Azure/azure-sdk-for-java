@@ -71,7 +71,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         // Optional parameters
         String configuration = new String(Base64.encode(commonConfiguration), "UTF8");
         String name = "My encoding Task " + UUID.randomUUID().toString();
-        int priority = 0;
+        int jobPriority = 3;
         TaskOption options = TaskOption.ProtectedConfiguration;
         // Use a fake id, to simulate real use.
         String encryptionKeyId = "nb:kid:UUID:" + UUID.randomUUID().toString();
@@ -81,7 +81,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         String initializationVector = new String(Base64.encode(new byte[16]), "UTF8");
 
         CreateBatchOperation taskCreator = Task.create(mediaProcessorId, taskBody).setConfiguration(configuration)
-                .setName(name).setPriority(priority).setOptions(options).setEncryptionKeyId(encryptionKeyId)
+                .setName(name).setPriority(jobPriority).setOptions(options).setEncryptionKeyId(encryptionKeyId)
                 .setEncryptionScheme(encryptionScheme).setEncryptionVersion(encryptionVersion)
                 .setInitializationVector(initializationVector);
         jobCreator.addTaskCreator(taskCreator);
@@ -92,8 +92,9 @@ public class TaskIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals("taskInfos count", 1, taskInfos.size());
-        verifyTaskPropertiesJustStarted("taskInfo", mediaProcessorId, options, taskBody, configuration, name, priority,
-                encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector, taskInfos.get(0));
+        verifyTaskPropertiesJustStarted("taskInfo", mediaProcessorId, options, taskBody, configuration, name,
+                jobPriority, encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector,
+                taskInfos.get(0));
     }
 
     @Test
@@ -108,7 +109,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         String configuration = commonConfiguration;
         String baseName = "My encoding Task " + UUID.randomUUID().toString();
         String[] suffixes = new String[] { " 1", " 2" };
-        int priority = 0;
+        int jobPriority = 3;
         TaskOption options = TaskOption.None;
 
         List<CreateBatchOperation> taskCreators = new ArrayList<CreateBatchOperation>();
@@ -128,7 +129,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         assertEquals("taskInfos count", taskCreators.size(), taskInfos.size());
         for (int i = 0; i < taskCreators.size(); i++) {
             verifyTaskPropertiesJustStartedNoEncryption("taskInfo", mediaProcessorId, options, taskBodies[i],
-                    configuration, baseName + suffixes[i], priority, taskInfos.get(i));
+                    configuration, baseName + suffixes[i], jobPriority, taskInfos.get(i));
         }
     }
 
@@ -184,7 +185,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         List<TaskInfo> taskInfos = service.list(Task.list(cancellingJobInfo.getTasksLink()));
         for (TaskInfo taskInfo : taskInfos) {
             verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId, TaskOption.None, taskBody,
-                    configuration, name, 0, new Date(), null, 0.0, 0.0, null, TaskState.Canceled, taskInfo);
+                    configuration, name, 3, new Date(), null, 0.0, 0.0, null, TaskState.Canceled, taskInfo);
         }
     }
 
