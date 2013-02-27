@@ -28,7 +28,7 @@ public class ServiceExceptionFactory {
         Throwable cause = exception.getCause();
 
         for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
-            Class scanClass = scan.getClass();
+            Class<?> scanClass = scan.getClass();
             if (ServiceException.class.isAssignableFrom(scanClass)) {
                 return populate(exception, serviceName, (ServiceException) scan);
             }

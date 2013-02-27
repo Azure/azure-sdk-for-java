@@ -532,7 +532,6 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     public CreateBlobResult createBlockBlob(String container, String blob, InputStream contentStream,
             CreateBlobOptions options) throws ServiceException {
         String path = createPathFromContainer(container);
-        System.out.println(path);
         WebResource webResource = getResource(options).path(path).path(blob);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
