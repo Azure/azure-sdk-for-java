@@ -116,7 +116,6 @@ public abstract class StorageOperation<C, P, R> {
 
         this.setException(null);
         this.setNonExceptionedRetryableFailure(false);
-
     }
 
     /**
