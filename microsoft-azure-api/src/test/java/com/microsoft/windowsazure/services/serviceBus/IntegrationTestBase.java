@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -54,11 +55,29 @@ public abstract class IntegrationTestBase {
         for (TopicInfo topic : iterateTopics(service)) {
             String topicName = topic.getPath();
             if (topicName.startsWith("Test") || topicName.startsWith("test")) {
-                service.deleteQueue(topicName);
+                service.deleteTopic(topicName);
             }
         }
         if (!testAlphaExists) {
             service.createQueue(new QueueInfo("TestAlpha"));
+        }
+    }
+
+    @AfterClass
+    public static void cleanUpTestArtifacts() throws Exception {
+        Configuration config = createConfiguration();
+        ServiceBusContract service = ServiceBusService.create(config);
+        for (QueueInfo queue : iterateQueues(service)) {
+            String queueName = queue.getPath();
+            if (queueName.startsWith("Test") || queueName.startsWith("test")) {
+                service.deleteQueue(queueName);
+            }
+        }
+        for (TopicInfo topic : iterateTopics(service)) {
+            String topicName = topic.getPath();
+            if (topicName.startsWith("Test") || topicName.startsWith("test")) {
+                service.deleteTopic(topicName);
+            }
         }
     }
 
