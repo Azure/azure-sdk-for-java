@@ -171,7 +171,7 @@
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization</excludePackageNames>
           <bottom><![CDATA[<code>/**
-<br/>* Copyright 2011 Microsoft Corporation
+<br/>* Copyright Microsoft Corporation
 <br/>*
 <br/>* Licensed under the Apache License, Version 2.0 (the "License");
 <br/>* you may not use this file except in compliance with the License.
