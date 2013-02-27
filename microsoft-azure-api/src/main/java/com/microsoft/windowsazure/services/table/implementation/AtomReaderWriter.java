@@ -340,7 +340,6 @@ public class AtomReaderWriter {
     }
 
     private boolean isIllegalChar(char c) {
-        return !(c == 9 || c == 0xA || c == 0xD || (c >= 0x20 && c < 0xD800) ||
-                (c >= 0xE000 && c < 0xFFFE) || (c >= 0x10000 && c < 0x110000));
+        return !(c == 9 || c == 0xA || c == 0xD || (c >= 0x20 && c < 0xFFFE));
     }
 }
