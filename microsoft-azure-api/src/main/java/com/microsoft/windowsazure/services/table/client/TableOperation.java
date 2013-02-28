@@ -686,7 +686,8 @@ public class TableOperation {
             resObj = new TableResult(httpStatusCode);
             resObj.setResult(this.getEntity());
 
-            if (this.opType != TableOperationType.DELETE) {
+            if (this.opType != TableOperationType.DELETE && etagFromHeader != null) {
+                resObj.setEtag(etagFromHeader);
                 this.getEntity().setEtag(etagFromHeader);
             }
         }

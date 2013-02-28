@@ -1326,14 +1326,16 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
 
-                // Do not update blob length in downloadRangeInternal API. 
-                final long orignalBlobLength = blob.properties.getLength();
+                // Do not update blob length and Content-MD5 in downloadRangeInternal API. 
+                final long originalBlobLength = blob.properties.getLength();
+                final String originalContentMD5 = blob.properties.getContentMD5();
                 final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request, blob.getUri(),
                         blob.snapshotID, opContext);
                 blob.properties = retrievedAttributes.getProperties();
                 blob.metadata = retrievedAttributes.getMetadata();
                 blob.copyState = retrievedAttributes.getCopyState();
-                blob.properties.setLength(orignalBlobLength);
+                blob.properties.setContentMD5(originalContentMD5);
+                blob.properties.setLength(originalBlobLength);
 
                 final String contentLength = request.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
