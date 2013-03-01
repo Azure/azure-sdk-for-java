@@ -301,7 +301,6 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canGetErrorDetailsFromTask() throws Exception {
-        cleanupEnvironment();
         String name = testJobPrefix + "canGetErrorDetailsFromTask";
 
         JobInfo actualJob = service.create(Job.create().setName(name).addInputMediaAsset(assetInfo.getId())
