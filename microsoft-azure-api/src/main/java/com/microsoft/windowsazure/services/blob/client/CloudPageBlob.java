@@ -360,6 +360,8 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
+
                 final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
                 return response.getPageRanges();
             }
@@ -490,7 +492,6 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(request);
-                blob.updateLengthFromResponse(request);
                 return null;
             }
         };
