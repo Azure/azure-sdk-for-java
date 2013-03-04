@@ -36,7 +36,7 @@ public class ResourceLocationManager {
 
     public URI getRedirectedURI(URI originalURI) {
         UriBuilder uriBuilder = UriBuilder.fromUri(baseURI).path(originalURI.getPath());
-        String queryString = originalURI.getQuery();
+        String queryString = originalURI.getRawQuery();
 
         if (queryString != null && !queryString.isEmpty()) {
             uriBuilder.replaceQuery(queryString);
