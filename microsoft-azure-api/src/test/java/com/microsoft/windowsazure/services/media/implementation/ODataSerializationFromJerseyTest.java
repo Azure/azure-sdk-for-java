@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
@@ -72,7 +73,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
     }
 
     private OAuthContract createOAuthContract() {
-        return new OAuthRestProxy(Client.create());
+        return new OAuthRestProxy(Client.create(), new UserAgentFilter());
     }
 
     private OAuthTokenManager createTokenManager() throws URISyntaxException {
