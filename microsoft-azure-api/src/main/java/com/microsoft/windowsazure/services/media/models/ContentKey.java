@@ -20,6 +20,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityTypeActionOperation;
@@ -31,6 +37,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOpera
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+import com.microsoft.windowsazure.services.media.implementation.content.RebindContentKeyType;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
@@ -247,6 +254,9 @@ public class ContentKey {
     }
 
     private static class RebindContentKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
+        private final JAXBContext jaxbContext;
+
+        private final Unmarshaller unmarshaller;
 
         public RebindContentKeyActionOperation(String contentKeyId, String x509Certificate) {
             super("RebindContentKey");
@@ -261,19 +271,39 @@ public class ContentKey {
             this.addQueryParameter("x509Certificate", "'" + x509Certificate + "'");
             this.addQueryParameter("id", "'" + escapedContentKeyId + "'");
 
+            try {
+                jaxbContext = JAXBContext.newInstance(RebindContentKeyType.class);
+            }
+            catch (JAXBException e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                unmarshaller = jaxbContext.createUnmarshaller();
+            }
+            catch (JAXBException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-            String contentKeyValue;
-            contentKeyValue = parseResponse(clientResponse);
-            return contentKeyValue;
+            RebindContentKeyType rebindContentKeyType = parseResponse(clientResponse);
+            return rebindContentKeyType.getContentKey();
         }
 
-        private String parseResponse(ClientResponse clientResponse) {
+        private RebindContentKeyType parseResponse(ClientResponse clientResponse) {
             InputStream inputStream = clientResponse.getEntityInputStream();
-            return inputStream.toString();
+            JAXBElement<RebindContentKeyType> rebindContentKeyTypeJaxbElement;
+            try {
+                rebindContentKeyTypeJaxbElement = unmarshaller.unmarshal(new StreamSource(inputStream),
+                        RebindContentKeyType.class);
+            }
+            catch (JAXBException e) {
+                throw new RuntimeException(e);
+            }
+            return rebindContentKeyTypeJaxbElement.getValue();
         }
 
     }

@@ -105,11 +105,20 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AssetFileType}
+     * Create an instance of {@link AssetFileType}.
      * 
      * @return a new AssetFileType instance.
      */
     public AssetFileType createAssetFileType() {
         return new AssetFileType();
+    }
+
+    /**
+     * Creates a new Object object.
+     * 
+     * @return the rebind content key type
+     */
+    public RebindContentKeyType createRebindContentKeyType() {
+        return new RebindContentKeyType();
     }
 }

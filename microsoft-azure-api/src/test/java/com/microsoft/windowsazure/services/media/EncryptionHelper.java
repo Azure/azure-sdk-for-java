@@ -16,11 +16,13 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -73,5 +75,17 @@ class EncryptionHelper {
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
         CipherInputStream cipherInputStream = new CipherInputStream(inputStream, cipher);
         return cipherInputStream;
+    }
+
+    public static byte[] decryptSymmetricKey(String rebindedContentKey, X509Certificate x509Certificate) {
+        return null;
+    }
+
+    public static X509Certificate loadX509Certificate(String certificateFileName) throws Exception {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        FileInputStream certificateInputStream = new FileInputStream(certificateFileName);
+        X509Certificate x509Certificate = (X509Certificate) certificateFactory
+                .generateCertificate(certificateInputStream);
+        return x509Certificate;
     }
 }
