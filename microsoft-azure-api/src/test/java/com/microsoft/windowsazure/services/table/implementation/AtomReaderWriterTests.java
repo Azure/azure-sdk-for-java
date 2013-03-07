@@ -32,7 +32,7 @@ public class AtomReaderWriterTests extends IntegrationTestBase {
     public void parseTableEntriesWorks() throws Exception {
         // Arrange
         AtomReaderWriter atom = new AtomReaderWriter(new DefaultXMLStreamFactory(), new DefaultDateFactory(),
-                new ISO8601DateConverter(), new DefaultEdmValueConterter(new ISO8601DateConverter()));
+                new ISO8601DateConverter(), new DefaultEdmValueConverter(new ISO8601DateConverter()));
         String feed = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\r\n"
                 + "<feed xml:base=\"http://rpaquaytest.table.core.windows.net/\" xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\">\r\n"
                 + "  <title type=\"text\">Tables</title>\r\n"
