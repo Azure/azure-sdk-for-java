@@ -28,7 +28,7 @@ public class BrokerPropertiesMapper {
     public BrokerProperties fromString(String value) throws IllegalArgumentException {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(value.getBytes(), BrokerProperties.class);
+            return mapper.readValue(value.getBytes("UTF-8"), BrokerProperties.class);
         }
         catch (JsonParseException e) {
             throw new IllegalArgumentException(e);
