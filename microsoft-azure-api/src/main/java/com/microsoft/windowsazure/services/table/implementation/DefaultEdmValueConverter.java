@@ -25,12 +25,12 @@ import com.microsoft.windowsazure.services.table.EdmValueConverter;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.sun.jersey.core.util.Base64;
 
-public class DefaultEdmValueConterter implements EdmValueConverter {
+public class DefaultEdmValueConverter implements EdmValueConverter {
 
     private final ISO8601DateConverter iso8601DateConverter;
 
     @Inject
-    public DefaultEdmValueConterter(ISO8601DateConverter iso8601DateConverter) {
+    public DefaultEdmValueConverter(ISO8601DateConverter iso8601DateConverter) {
         this.iso8601DateConverter = iso8601DateConverter;
     }
 
