@@ -42,6 +42,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.blob.models.AccessCondition;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
+import com.microsoft.windowsazure.services.blob.models.BreakLeaseResult;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL;
 import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
 import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
@@ -325,7 +326,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
 
         // Assert
         for (Container container : listContainerResult.getContainers()) {
-            assertTrue(!container.getName().equals(container));
+            assertTrue(!container.getName().equals(containerName));
         }
     }
 
@@ -1263,7 +1264,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         Date lastModifiedBase = (Date) props.getProperties().getLastModified().clone();
 
         // +1 second
-        Date lastModifiedNext = new Date(lastModifiedBase.getTime() + 1 * 1000);
+        Date lastModifiedNext = new Date(lastModifiedBase.getTime() + 1000);
 
         while (true) {
             HashMap<String, String> metadata = new HashMap<String, String>();
@@ -1492,7 +1493,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         ListBlobsResult listBlobsResult = service.listBlobs(TEST_CONTAINER_FOR_BLOBS);
         List<BlobEntry> blobEntry = listBlobsResult.getBlobs();
         for (BlobEntry blobEntryItem : blobEntry) {
-            assertTrue(blobEntryItem.getSnapshot() != snapshot);
+            assertTrue(blobEntryItem.getSnapshot() == null || !blobEntryItem.getSnapshot().equals(snapshot));
         }
         assertTrue(true);
     }
@@ -1595,11 +1596,13 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         String content = "some content2";
         service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "test6", new ByteArrayInputStream(content.getBytes("UTF-8")));
         String leaseId = service.acquireLease(TEST_CONTAINER_FOR_BLOBS, "test6").getLeaseId();
-        service.breakLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
+        BreakLeaseResult breakResult = service.breakLease(TEST_CONTAINER_FOR_BLOBS, "test6");
         service.releaseLease(TEST_CONTAINER_FOR_BLOBS, "test6", leaseId);
 
         // Assert
         assertNotNull(leaseId);
+        assertNotNull(breakResult);
+        assertTrue(breakResult.getRemainingLeaseTimeInSeconds() > 0);
     }
 
     class RetryPolicyObserver implements ServiceFilter {

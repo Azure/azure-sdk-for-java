@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientConfigSettings;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
@@ -58,13 +59,16 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      *            the redirect filter
      * @param versionHeadersFilter
      *            the version headers filter
+     * @param userAgentFilter
+     *            the user agent filter
      * @param clientConfigSettings
      *            Currently configured HTTP client settings
      * 
      */
     @Inject
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
-            VersionHeadersFilter versionHeadersFilter, ClientConfigSettings clientConfigSettings) {
+            VersionHeadersFilter versionHeadersFilter, UserAgentFilter userAgentFilter,
+            ClientConfigSettings clientConfigSettings) {
         super(channel, new ServiceFilter[0]);
 
         this.clientConfigSettings = clientConfigSettings;
@@ -72,6 +76,7 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
         channel.addFilter(versionHeadersFilter);
+        channel.addFilter(userAgentFilter);
     }
 
     /**
