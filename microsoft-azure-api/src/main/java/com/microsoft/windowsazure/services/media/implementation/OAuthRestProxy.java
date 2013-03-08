@@ -28,6 +28,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -46,8 +47,9 @@ public class OAuthRestProxy implements OAuthContract {
     static Log log = LogFactory.getLog(OAuthContract.class);
 
     @Inject
-    public OAuthRestProxy(Client channel) {
+    public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter) {
         this.channel = channel;
+        channel.addFilter(userAgentFilter);
     }
 
     /**
