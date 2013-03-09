@@ -1,4 +1,7 @@
 2013.02.22 Version 0.4.1
+ * BlobOutputStream now commits block list using LATEST instead of UNCOMMITTED
+ * Added RequestResult to StorageEvents
+ * Fixed race condition when accessing OperationContext RequestResults
  * Fixed the return value of BlobInputStream.read
  * Fixed CloudPageBlob.downloadPageRanges to retrieve the blob length
  * Fixed MD5 validation in BlobInputStream
