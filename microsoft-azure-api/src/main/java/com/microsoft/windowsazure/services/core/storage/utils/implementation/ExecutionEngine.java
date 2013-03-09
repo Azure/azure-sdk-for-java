@@ -106,7 +106,7 @@ public final class ExecutionEngine {
         while (true) {
             try {
                 // reset result flags
-                task.initialize();
+                task.initialize(opContext);
 
                 final RESULT_TYPE result = task.execute(client, parentObject, opContext);
 
@@ -119,7 +119,7 @@ public final class ExecutionEngine {
                 else {
                     // The task may have already parsed an exception.
                     translatedException = task.materializeException(getLastRequestObject(opContext), opContext);
-                    setLastException(opContext, translatedException);
+                    task.getResult().setException(translatedException);
 
                     // throw on non retryable status codes: 501, 505, blob type
                     // mismatch
@@ -134,45 +134,45 @@ public final class ExecutionEngine {
                 // Retryable
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
             }
             catch (final SocketTimeoutException e) {
                 // Retryable
                 translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
                         "The operation did not complete in the specified time.", -1, null, e);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
             }
             catch (final IOException e) {
                 // Retryable
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
             }
             catch (final XMLStreamException e) {
                 // Non Retryable, just throw
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
                 throw translatedException;
             }
             catch (final InvalidKeyException e) {
                 // Non Retryable, just throw
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
                 throw translatedException;
             }
             catch (final URISyntaxException e) {
                 // Non Retryable, just throw
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
                 throw translatedException;
             }
             catch (final TableServiceException e) {
                 task.getResult().setStatusCode(e.getHttpStatusCode());
                 task.getResult().setStatusMessage(e.getMessage());
-                setLastException(opContext, e);
+                task.getResult().setException(e);
                 if (!e.isRetryable()) {
                     throw e;
                 }
@@ -183,20 +183,20 @@ public final class ExecutionEngine {
             catch (final StorageException e) {
                 // Non Retryable, just throw
                 // do not translate StorageException
-                setLastException(opContext, e);
+                task.getResult().setException(e);
                 throw e;
             }
             catch (final Exception e) {
                 // Non Retryable, just throw
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
-                setLastException(opContext, translatedException);
+                task.getResult().setException(translatedException);
                 throw translatedException;
             }
 
             // Evaluate Retry Policy
-            retryRes = policy.shouldRetry(currentRetryCount, task.getResult().getStatusCode(), opContext
-                    .getLastResult().getException(), opContext);
+            retryRes = policy.shouldRetry(currentRetryCount, task.getResult().getStatusCode(), task.getResult()
+                    .getException(), opContext);
             if (!retryRes.isShouldRetry()) {
                 throw translatedException;
             }
@@ -214,19 +214,21 @@ public final class ExecutionEngine {
      *            the request to process
      * @param opContext
      *            an object used to track the execution of the operation
+     * @param currResult
+     *            A {@link RequestResult} object that represents the current request result.
      * @return the input stream from the request
      * @throws IOException
      *             if there is an error making the connection
      */
-    public static InputStream getInputStream(final HttpURLConnection request, final OperationContext opContext)
-            throws IOException {
-        final RequestResult currResult = new RequestResult();
+    public static InputStream getInputStream(final HttpURLConnection request, final OperationContext opContext,
+            final RequestResult currResult) throws IOException {
+
         opContext.setCurrentRequestObject(request);
         currResult.setStartDate(new Date());
-        opContext.getRequestResults().add(currResult);
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
-            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+            opContext.getSendingRequestEventHandler()
+                    .fireEvent(new SendingRequestEvent(opContext, request, currResult));
         }
 
         try {
@@ -278,7 +280,8 @@ public final class ExecutionEngine {
         currResult.setContentMD5(BaseResponse.getContentMD5(request));
 
         if (opContext.getResponseReceivedEventHandler().hasListeners()) {
-            opContext.getResponseReceivedEventHandler().fireEvent(new ResponseReceivedEvent(opContext, request));
+            opContext.getResponseReceivedEventHandler().fireEvent(
+                    new ResponseReceivedEvent(opContext, request, currResult));
         }
     }
 
@@ -290,19 +293,20 @@ public final class ExecutionEngine {
      *            the request to process
      * @param opContext
      *            an object used to track the execution of the operation
-     * @return a RequestResult object representing the status code/ message of the current request
+     * @param currResult
+     *            A {@link RequestResult} object that represents the current request result.
      * @throws IOException
      *             if there is an error making the connection
      */
-    public static RequestResult processRequest(final HttpURLConnection request, final OperationContext opContext)
-            throws IOException {
-        final RequestResult currResult = new RequestResult();
-        currResult.setStartDate(new Date());
-        opContext.getRequestResults().add(currResult);
+    public static void processRequest(final HttpURLConnection request, final OperationContext opContext,
+            final RequestResult currResult) throws IOException {
+
         opContext.setCurrentRequestObject(request);
+        currResult.setStartDate(new Date());
 
         if (opContext.getSendingRequestEventHandler().hasListeners()) {
-            opContext.getSendingRequestEventHandler().fireEvent(new SendingRequestEvent(opContext, request));
+            opContext.getSendingRequestEventHandler()
+                    .fireEvent(new SendingRequestEvent(opContext, request, currResult));
         }
 
         // Send the request
@@ -316,25 +320,9 @@ public final class ExecutionEngine {
         currResult.setContentMD5(BaseResponse.getContentMD5(request));
 
         if (opContext.getResponseReceivedEventHandler().hasListeners()) {
-            opContext.getResponseReceivedEventHandler().fireEvent(new ResponseReceivedEvent(opContext, request));
+            opContext.getResponseReceivedEventHandler().fireEvent(
+                    new ResponseReceivedEvent(opContext, request, currResult));
         }
-
-        return currResult;
-    }
-
-    /**
-     * Sets the exception on the last request result in a safe way, if there is no last result one is added.
-     * 
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @param exceptionToSet
-     *            the exception to set on the result.
-     */
-    private static void setLastException(final OperationContext opContext, final Exception exceptionToSet) {
-        if (opContext.getLastResult() == null) {
-            opContext.getRequestResults().add(new RequestResult());
-        }
-        opContext.getLastResult().setException(exceptionToSet);
     }
 
     /**

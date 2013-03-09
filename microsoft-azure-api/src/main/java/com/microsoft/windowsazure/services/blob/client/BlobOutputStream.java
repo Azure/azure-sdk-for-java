@@ -356,7 +356,7 @@ public final class BlobOutputStream extends OutputStream {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
             final String blockID = Base64.encode(Utility.getBytesFromLong(this.blockIdSequenceNumber++));
-            this.blockList.add(new BlockEntry(blockID, BlockSearchMode.UNCOMMITTED));
+            this.blockList.add(new BlockEntry(blockID, BlockSearchMode.LATEST));
 
             worker = new Callable<Void>() {
                 @Override
