@@ -6,7 +6,7 @@
  * Fixed Storage Table encoding issue for special characters
  * BlobOutputStream now commits block list using LATEST instead of UNCOMMITTED
  * Added RequestResult to StorageEvents
- * Fixed racing condition when accessing OperationContext RequestResults
+ * Fixed issue when accessing OperationContext RequestResults
  * Fixed the return value of BlobInputStream.read
  * Fixed CloudPageBlob.downloadPageRanges to retrieve the blob length
  * Fixed MD5 validation in BlobInputStream
