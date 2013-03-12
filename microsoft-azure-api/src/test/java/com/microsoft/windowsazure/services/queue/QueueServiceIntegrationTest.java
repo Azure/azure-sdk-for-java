@@ -2,15 +2,15 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.queue;
 
@@ -25,7 +25,9 @@ import java.util.TimeZone;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
@@ -57,6 +59,9 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String CREATABLE_QUEUE_3;
     private static String[] creatableQueues;
     private static String[] testQueues;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -316,6 +321,17 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void createNullMessageException() throws Exception {
+        // Arrange 
+        Configuration config = createConfiguration();
+        QueueContract service = QueueService.create(config);
+
+        // Act
+        expectedException.expect(NullPointerException.class);
+        service.createMessage(TEST_QUEUE_FOR_MESSAGES, null);
+    }
+
+    @Test
     public void listMessagesWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
@@ -506,6 +522,23 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(result2);
         assertEquals(3, result2.getQueueMessages().size());
+    }
+
+    @Test
+    public void updateNullMessageException() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        QueueContract service = QueueService.create(config);
+        String messageId = "messageId";
+
+        String popReceipt = "popReceipt";
+        String messageText = null;
+        int visibilityTimeoutInSeconds = 10;
+
+        // Act
+        expectedException.expect(NullPointerException.class);
+        service.updateMessage(TEST_QUEUE_FOR_MESSAGES_8, messageId, popReceipt, messageText, visibilityTimeoutInSeconds);
+
     }
 
     @Test
