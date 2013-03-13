@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.security.Security;
+import java.security.cert.X509Certificate;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -59,7 +61,14 @@ import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
-    private final String strorageDecryptionProcessor = "Storage Decryption";
+    private final String storageDecryptionProcessor = "Storage Decryption";
+
+    private void assertByteArrayEquals(byte[] source, byte[] target) {
+        assertEquals(source.length, target.length);
+        for (int i = 0; i < source.length; i++) {
+            assertEquals(source[i], target[i]);
+        }
+    }
 
     @Test
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
@@ -124,9 +133,22 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         assertStreamsEqual(expected, actual);
     }
 
+    @Test
+    public void encryptedContentCanBeDecrypted() throws Exception {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        Random random = new Random();
+        byte[] aesKey = new byte[32];
+        random.nextBytes(aesKey);
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
+        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedContentKey, x509Certificate);
+
+        assertByteArrayEquals(aesKey, decryptedAesKey);
+    }
+
     private JobInfo decodeAsset(String name, String inputAssetId) throws ServiceException, InterruptedException {
         MediaProcessorInfo mediaProcessorInfo = service.list(
-                MediaProcessor.list().set("$filter", "Name eq '" + strorageDecryptionProcessor + "'")).get(0);
+                MediaProcessor.list().set("$filter", "Name eq '" + storageDecryptionProcessor + "'")).get(0);
 
         String taskBody = "<taskBody>"
                 + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset assetCreationOptions=\"0\" assetName=\"Output\">JobOutputAsset(0)</outputAsset></taskBody>";

@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URLEncoder;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -268,12 +270,13 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void rebindContentKeyWithX509CertficateSuccess() throws Exception {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         byte[] aesKey = createRandomAesKey();
         ContentKeyInfo contentKeyInfo = createValidTestContentKeyWithAesKey("rebindContentKeyWithX509Success", aesKey);
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("cert.pem");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
 
-        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(), x509Certificate
-                .getPublicKey().toString()));
+        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(),
+                URLEncoder.encode(Base64.encode(x509Certificate.getEncoded()), "UTF-8")));
         byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(rebindedContentKey, x509Certificate);
         assertByteArrayEquals(aesKey, decryptedAesKey);
     }

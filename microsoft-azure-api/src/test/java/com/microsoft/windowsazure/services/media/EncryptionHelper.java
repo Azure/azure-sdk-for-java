@@ -19,7 +19,9 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.Key;
+import java.security.Provider;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -45,11 +47,20 @@ class EncryptionHelper {
     }
 
     public static byte[] encryptSymmetricKey(String protectionKey, byte[] inputData) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
-        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         byte[] protectionKeyBytes = Base64.decode(protectionKey);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(protectionKeyBytes);
+        return encryptSymmetricKey(protectionKeyBytes, inputData);
+    }
+
+    public static byte[] encryptSymmetricKey(byte[] protectionKey, byte[] inputData) throws Exception {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(protectionKey);
         Certificate certificate = certificateFactory.generateCertificate(byteArrayInputStream);
+        return encryptSymmetricKey(certificate, inputData);
+    }
+
+    public static byte[] encryptSymmetricKey(Certificate certificate, byte[] inputData) throws Exception {
+        // Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+        Cipher cipher = Cipher.getInstance("RSA/None/OAEPPadding", "BC");
         Key publicKey = certificate.getPublicKey();
         SecureRandom secureRandom = new SecureRandom();
         cipher.init(Cipher.ENCRYPT_MODE, publicKey, secureRandom);
@@ -77,8 +88,24 @@ class EncryptionHelper {
         return cipherInputStream;
     }
 
-    public static byte[] decryptSymmetricKey(String rebindedContentKey, X509Certificate x509Certificate) {
-        return null;
+    public static byte[] decryptSymmetricKey(String rebindedContentKey, X509Certificate x509Certificate)
+            throws Exception {
+        for (Provider provider : Security.getProviders()) {
+            System.out.println(provider.getName());
+            for (String key : provider.stringPropertyNames())
+                System.out.println("\t" + key + "\t" + provider.getProperty(key));
+        }
+
+        byte[] rebindedContentKeyByteArray = Base64.decode(rebindedContentKey);
+        return decryptSymmetricKey(rebindedContentKeyByteArray, x509Certificate);
+    }
+
+    public static byte[] decryptSymmetricKey(byte[] rebindedContentKey, X509Certificate x509Certificate)
+            throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA/None/OAEPPadding", "BC");
+        cipher.init(Cipher.DECRYPT_MODE, x509Certificate);
+        byte[] decrypted = cipher.doFinal(rebindedContentKey);
+        return decrypted;
     }
 
     public static X509Certificate loadX509Certificate(String certificateFileName) throws Exception {
