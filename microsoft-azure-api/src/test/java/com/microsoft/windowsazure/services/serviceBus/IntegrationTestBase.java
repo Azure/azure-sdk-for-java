@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -54,7 +55,7 @@ public abstract class IntegrationTestBase {
         for (TopicInfo topic : iterateTopics(service)) {
             String topicName = topic.getPath();
             if (topicName.startsWith("Test") || topicName.startsWith("test")) {
-                service.deleteQueue(topicName);
+                service.deleteTopic(topicName);
             }
         }
         if (!testAlphaExists) {
@@ -62,12 +63,27 @@ public abstract class IntegrationTestBase {
         }
     }
 
+    @AfterClass
+    public static void cleanUpTestArtifacts() throws Exception {
+        Configuration config = createConfiguration();
+        ServiceBusContract service = ServiceBusService.create(config);
+        for (QueueInfo queue : iterateQueues(service)) {
+            String queueName = queue.getPath();
+            if (queueName.startsWith("Test") || queueName.startsWith("test")) {
+                service.deleteQueue(queueName);
+            }
+        }
+        for (TopicInfo topic : iterateTopics(service)) {
+            String topicName = topic.getPath();
+            if (topicName.startsWith("Test") || topicName.startsWith("test")) {
+                service.deleteTopic(topicName);
+            }
+        }
+    }
+
     protected static Configuration createConfiguration() throws Exception {
         Configuration config = Configuration.load();
-        overrideWithEnv(config, ServiceBusConfiguration.URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_URI);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_NAME);
-        overrideWithEnv(config, ServiceBusConfiguration.WRAP_PASSWORD);
+        overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
         return config;
     }
 

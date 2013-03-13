@@ -22,6 +22,13 @@ import com.microsoft.windowsazure.services.core.Configuration;
  */
 public class ServiceBusConfiguration {
 
+
+    /**
+     * Defines the configuration connection string constant.
+     *
+     */
+    public final static String CONNECTION_STRING = "serviceBus.connection.string";
+
     /**
      * Defines the configuration URI constant.
      * 
@@ -57,7 +64,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
@@ -83,7 +103,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
@@ -112,7 +145,20 @@ public class ServiceBusConfiguration {
      * 
      * @param authenticationPassword
      *            A <code>String</code> object that represents the authentication password.
-     * 
+     *
+     * @param serviceBusRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to connect to the Service Bus service.
+     *
+     *            To access the default public Azure service, pass ".servicebus.windows.net"
+     *
+     * @param wrapRootUri
+     *            A <code>String</code> object containing the base URI that is added to your
+     *            Service Bus namespace to form the URI to get an access token for the Service
+     *            Bus service.
+     *
+     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     *
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ServiceBusService</code> class.
@@ -129,12 +175,42 @@ public class ServiceBusConfiguration {
             profile = profile + ".";
         }
 
+        configuration.setProperty(profile + CONNECTION_STRING, null);
+
         configuration.setProperty(profile + URI, "https://" + namespace + serviceBusRootUri);
 
         configuration.setProperty(profile + WRAP_URI, "https://" + namespace + wrapRootUri);
 
         configuration.setProperty(profile + WRAP_NAME, authenticationName);
         configuration.setProperty(profile + WRAP_PASSWORD, authenticationPassword);
+
+        return configuration;
+    }
+
+    /**
+     * Creates a service bus configuration using the specified connection string.
+     * @param profile
+     *          A <code>String</code> object that represents the profile.
+     * @param configuration
+     *          A previously instantiated <code>Configuration</cone> object.
+     * @param connectionString
+     *          A <code>String</code> object the contains the connection string for the
+     *          service bus connection information.
+     * @return
+     *         A <code>Configuration</code> object that can be used when creating an instance of the
+     *         <code>ServiceBusService</code> class.
+     */
+    public static Configuration configureWithConnectionString(String profile, Configuration configuration,
+        String connectionString) {
+
+        if (profile == null) {
+            profile = "";
+        }
+        else if (profile.length() != 0 && !profile.endsWith(".")) {
+            profile = profile + ".";
+        }
+
+        configuration.setProperty(profile + CONNECTION_STRING, connectionString);
 
         return configuration;
     }

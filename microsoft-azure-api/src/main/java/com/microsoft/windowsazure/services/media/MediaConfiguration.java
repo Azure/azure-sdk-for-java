@@ -22,6 +22,9 @@ import com.microsoft.windowsazure.services.core.Configuration;
  */
 public class MediaConfiguration {
 
+    private MediaConfiguration() {
+    }
+
     /**
      * Defines the media service configuration URI constant.
      * 
