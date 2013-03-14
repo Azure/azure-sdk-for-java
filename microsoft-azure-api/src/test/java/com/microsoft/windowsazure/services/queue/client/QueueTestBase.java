@@ -41,13 +41,6 @@ public class QueueTestBase {
 
     @BeforeClass
     public static void setup() throws URISyntaxException, StorageException, InvalidKeyException {
-
-        // UNCOMMENT TO USE FIDDLER
-        System.setProperty("http.proxyHost", "localhost");
-        System.setProperty("http.proxyPort", "8888");
-        System.setProperty("https.proxyHost", "localhost");
-        System.setProperty("https.proxyPort", "8888");
-
         if (USE_DEV_FABRIC) {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
         }

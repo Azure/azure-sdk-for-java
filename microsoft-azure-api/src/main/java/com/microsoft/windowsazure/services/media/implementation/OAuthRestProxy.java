@@ -28,6 +28,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -41,13 +42,14 @@ import com.sun.jersey.api.representation.Form;
 public class OAuthRestProxy implements OAuthContract {
     Client channel;
 
-    private final String _grantType = "client_credentials";
+    private final String grantType = "client_credentials";
 
     static Log log = LogFactory.getLog(OAuthContract.class);
 
     @Inject
-    public OAuthRestProxy(Client channel) {
+    public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter) {
         this.channel = channel;
+        channel.addFilter(userAgentFilter);
     }
 
     /**
@@ -76,7 +78,7 @@ public class OAuthRestProxy implements OAuthContract {
         ClientResponse clientResponse;
         String responseJson;
 
-        requestForm.add("grant_type", _grantType);
+        requestForm.add("grant_type", grantType);
         requestForm.add("client_id", clientId);
         requestForm.add("client_secret", clientSecret);
         requestForm.add("scope", scope);

@@ -61,6 +61,10 @@ import com.sun.jersey.core.util.ReaderWriter;
  */
 public class MediaBatchOperations {
 
+    private static final int BUFFER_SIZE = 1024;
+
+    private static final int HTTP_ERROR = 400;
+
     /** The operations. */
     private final List<EntityBatchOperation> entityBatchOperations;
 
@@ -138,7 +142,7 @@ public class MediaBatchOperations {
      */
     private int addJobPart(List<DataSource> bodyPartContents, URI jobURI, int contentId) throws JAXBException {
         int jobContentId = contentId;
-        ValidateJobOperation();
+        validateJobOperation();
 
         for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
             DataSource bodyPartContent = null;
@@ -157,7 +161,7 @@ public class MediaBatchOperations {
         return jobContentId;
     }
 
-    private void ValidateJobOperation() {
+    private void validateJobOperation() {
         int jobCount = 0;
         for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
             if (entityBatchOperation instanceof Job.CreateBatchOperation) {
@@ -324,7 +328,7 @@ public class MediaBatchOperations {
             InternetHeaders headers = parseHeaders(ds);
             InputStream content = parseEntity(ds);
 
-            if (status.getStatus() >= 400) {
+            if (status.getStatus() >= HTTP_ERROR) {
 
                 InBoundHeaders inBoundHeaders = new InBoundHeaders();
                 @SuppressWarnings("unchecked")
@@ -520,11 +524,12 @@ public class MediaBatchOperations {
      */
     private void appendEntity(OutputStream outputStream, ByteArrayInputStream byteArrayInputStream) {
         try {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BUFFER_SIZE];
             while (true) {
                 int bytesRead = byteArrayInputStream.read(buffer);
-                if (bytesRead <= 0)
+                if (bytesRead <= 0) {
                     break;
+                }
                 outputStream.write(buffer, 0, bytesRead);
             }
         }

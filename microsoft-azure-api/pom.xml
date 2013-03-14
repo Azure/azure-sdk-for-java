@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -171,7 +171,7 @@
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization</excludePackageNames>
           <bottom><![CDATA[<code>/**
-<br/>* Copyright 2011 Microsoft Corporation
+<br/>* Copyright Microsoft Corporation
 <br/>*
 <br/>* Licensed under the Apache License, Version 2.0 (the "License");
 <br/>* you may not use this file except in compliance with the License.

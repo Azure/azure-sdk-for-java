@@ -48,6 +48,8 @@ import com.microsoft.windowsazure.services.table.models.QueryTablesOptions;
 import com.microsoft.windowsazure.services.table.models.QueryTablesResult;
 import com.microsoft.windowsazure.services.table.models.ServiceProperties;
 import com.microsoft.windowsazure.services.table.models.TableEntry;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.config.ClientConfig;
 
 public class TableServiceIntegrationTest extends IntegrationTestBase {
     private static final String testTablesPrefix = "sdktest";
@@ -74,13 +76,14 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         // Setup container names array (list of container names used by
         // integration tests)
         testTables = new String[10];
+        int uniqueId = (new java.util.Random()).nextInt(100000);
         for (int i = 0; i < testTables.length; i++) {
-            testTables[i] = String.format("%s%d", testTablesPrefix, i + 1);
+            testTables[i] = String.format("%s%d%d", testTablesPrefix, uniqueId, i + 1);
         }
 
         creatableTables = new String[10];
         for (int i = 0; i < creatableTables.length; i++) {
-            creatableTables[i] = String.format("%s%d", createableTablesPrefix, i + 1);
+            creatableTables[i] = String.format("%s%d%d", createableTablesPrefix, uniqueId, i + 1);
         }
 
         TEST_TABLE_1 = testTables[0];
@@ -100,8 +103,6 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         Configuration config = createConfiguration();
         TableContract service = TableService.create(config);
 
-        deleteAllTables(service, testTables);
-        deleteAllTables(service, creatableTables);
         createTables(service, testTablesPrefix, testTables);
     }
 
@@ -131,17 +132,6 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
         for (String item : list) {
             if (containers.contains(item)) {
                 service.deleteTable(item);
-            }
-        }
-    }
-
-    private static void deleteAllTables(TableContract service, String[] list) throws Exception {
-        for (String item : list) {
-            try {
-                service.deleteTable(item);
-            }
-            catch (ServiceException e) {
-                // Ignore
             }
         }
     }
@@ -387,21 +377,80 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(result.getEntity().getProperty("test4"));
         String actualTest4 = (String) result.getEntity().getProperty("test4").getValue();
-        assertEquals("&#xaaaa;", actualTest4);
+        assertEquals("\uaaaa", actualTest4);
 
         assertNotNull(result.getEntity().getProperty("test5"));
         String actualTest5 = (String) result.getEntity().getProperty("test5").getValue();
-        assertEquals("&#xb2e2;", actualTest5);
+        assertEquals("\ub2e2", actualTest5);
 
         assertNotNull(result.getEntity().getProperty("test6"));
         String actualTest6 = (String) result.getEntity().getProperty("test6").getValue();
-        assertEquals(" &#xb2e2;", actualTest6);
+        assertEquals(" \ub2e2", actualTest6);
 
         assertNotNull(result.getEntity().getProperty("test7"));
         String actualTest7 = (String) result.getEntity().getProperty("test7").getValue();
-        assertEquals("ok &#xb2e2;", actualTest7);
+        assertEquals("ok \ub2e2", actualTest7);
 
     }
+
+    @Test
+    public void insertEntityEscapeCharactersRoundTripsFromService() throws Exception {
+        // Arrange
+        Configuration config = createConfiguration();
+        TableContract service = TableService.create(config);
+
+        String partition = "001";
+        String row = "insertEntityEscapeCharactersRoundTripsFromService";
+        Entity insertedEntity = new Entity().setPartitionKey(partition).setRowKey(row)
+                .setProperty("test", EdmType.STRING, "\u0005")
+                .setProperty("test2", EdmType.STRING, "\u0011")
+                .setProperty("test3", EdmType.STRING, "\u0025")
+                .setProperty("test4", EdmType.STRING, "\uaaaa")
+                .setProperty("test5", EdmType.STRING, "\ub2e2")
+                .setProperty("test6", EdmType.STRING, " \ub2e2")
+                .setProperty("test7", EdmType.STRING, "ok \ub2e2")
+                .setProperty("test8", EdmType.STRING, "\uD840\uDC00")
+                ;
+
+        service.insertEntity(TEST_TABLE_2, insertedEntity);
+
+        GetEntityResult result = service.getEntity(TEST_TABLE_2, "001", "insertEntityEscapeCharactersRoundTripsFromService");
+        assertNotNull(result);
+
+        Entity entity = result.getEntity();
+
+        assertNotNull(entity.getProperty("test"));
+        String actualTest1 = (String) entity.getPropertyValue("test");
+        assertEquals("&#x5;", actualTest1);
+
+        assertNotNull(result.getEntity().getProperty("test2"));
+        String actualTest2 = (String) result.getEntity().getPropertyValue("test2");
+        assertEquals("&#x11;", actualTest2);
+
+        assertNotNull(result.getEntity().getProperty("test3"));
+        String actualTest3 = (String) result.getEntity().getPropertyValue("test3");
+        assertEquals("%", actualTest3);
+
+        assertNotNull(result.getEntity().getProperty("test4"));
+        String actualTest4 = (String) result.getEntity().getPropertyValue("test4");
+        assertEquals("\uaaaa", actualTest4);
+
+        assertNotNull(result.getEntity().getProperty("test5"));
+        String actualTest5 = (String) result.getEntity().getPropertyValue("test5");
+        assertEquals("\ub2e2", actualTest5);
+
+        assertNotNull(result.getEntity().getProperty("test6"));
+        String actualTest6 = (String) result.getEntity().getPropertyValue("test6");
+        assertEquals(" \ub2e2", actualTest6);
+
+        assertNotNull(result.getEntity().getProperty("test7"));
+        String actualTest7 = (String) result.getEntity().getPropertyValue("test7");
+        assertEquals("ok \ub2e2", actualTest7);
+
+        String actualTest8 = (String)entity.getPropertyValue("test8");
+        assertEquals("\uD840\uDC00", actualTest8);
+    }
+
 
     @Test
     public void updateEntityWorks() throws Exception {
@@ -1201,16 +1250,23 @@ public class TableServiceIntegrationTest extends IntegrationTestBase {
 
         TableContract service = TableService.create("testprefix", config);
 
-        try {
-            service.queryTables();
-            fail("Exception should have been thrown");
+        // Use reflection to pull the state out of the service.
+        Client channel = (Client) readField(service, "service", "channel");
+        Integer connTimeout = (Integer) channel.getProperties().get(ClientConfig.PROPERTY_CONNECT_TIMEOUT);
+        Integer readTimeout = (Integer) channel.getProperties().get(ClientConfig.PROPERTY_READ_TIMEOUT);
+
+        assertEquals(3, connTimeout.intValue());
+        assertEquals(7, readTimeout.intValue());
+    }
+
+    private Object readField(Object target, String... fieldNames) throws NoSuchFieldException, IllegalAccessException {
+        Object value = target;
+        for (String fieldName : fieldNames) {
+            java.lang.reflect.Field field = value.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            value = field.get(value);
         }
-        catch (ServiceTimeoutException ex) {
-            // No need to assert, test is if correct assertion type is thrown.
-        }
-        catch (Exception ex) {
-            fail("unexpected exception was thrown");
-        }
+        return value;
     }
 
     @Test

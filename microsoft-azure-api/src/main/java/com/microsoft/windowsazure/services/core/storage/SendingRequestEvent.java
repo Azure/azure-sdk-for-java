@@ -32,6 +32,11 @@ public final class SendingRequestEvent {
     private final OperationContext opContext;
 
     /**
+     * A {@link RequestResult} object that represents the last request result.
+     */
+    private final RequestResult requestResult;
+
+    /**
      * Creates an instance of the <code>SendingRequestEvent</code> class.
      * 
      * @param opContext
@@ -41,10 +46,14 @@ public final class SendingRequestEvent {
      * @param connectionObject
      *            Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as
      *            a connection object.
+     * @param requestResult
+     *            A {@link RequestResult} object that represents the current request result.
      */
-    public SendingRequestEvent(final OperationContext opContext, final Object connectionObject) {
+    public SendingRequestEvent(final OperationContext opContext, final Object connectionObject,
+            final RequestResult requestResult) {
         this.opContext = opContext;
         this.connectionObject = connectionObject;
+        this.requestResult = requestResult;
     }
 
     /**
@@ -59,5 +68,12 @@ public final class SendingRequestEvent {
      */
     public OperationContext getOpContext() {
         return this.opContext;
+    }
+
+    /**
+     * @return A {@link RequestResult} object that represents the current request result.
+     */
+    public RequestResult getRequestResult() {
+        return this.requestResult;
     }
 }
