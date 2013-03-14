@@ -144,7 +144,7 @@ public abstract class ServiceClient {
                         .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
 
                 client.getCredentials().signRequest(request, -1);
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -242,13 +242,13 @@ public abstract class ServiceClient {
     /**
      * Sets the timeout to use when making requests to the storage service.
      * <p>
-     * The server timeout interval begins at the time that the complete request has been received by the service, and the
-     * server begins processing the response. If the timeout interval elapses before the response is returned to the
+     * The server timeout interval begins at the time that the complete request has been received by the service, and
+     * the server begins processing the response. If the timeout interval elapses before the response is returned to the
      * client, the operation times out. The timeout interval resets with each retry, if the request is retried.
      * 
-     * The default timeout interval for a request made via the service client is 90 seconds. You can change this value on
-     * the service client by setting this property, so that all subsequent requests made via the service client will use
-     * the new timeout interval. You can also change this value for an individual request, by setting the
+     * The default timeout interval for a request made via the service client is 90 seconds. You can change this value
+     * on the service client by setting this property, so that all subsequent requests made via the service client will
+     * use the new timeout interval. You can also change this value for an individual request, by setting the
      * {@link RequestOptions#timeoutIntervalInMs} property.
      * 
      * If you are downloading a large blob, you should increase the value of the timeout beyond the default value.
@@ -330,7 +330,7 @@ public abstract class ServiceClient {
                 Utility.writeToOutputStream(dataInputStream, request.getOutputStream(), descriptor.getLength(),
                         false /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);

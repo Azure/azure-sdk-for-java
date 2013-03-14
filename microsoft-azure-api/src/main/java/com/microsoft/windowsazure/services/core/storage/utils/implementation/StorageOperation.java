@@ -109,8 +109,11 @@ public abstract class StorageOperation<C, P, R> {
     /**
      * Resets the operation status flags between operations.
      */
-    protected final void initialize() {
-        this.setResult(new RequestResult());
+    protected final void initialize(OperationContext opContext) {
+        RequestResult currResult = new RequestResult();
+        this.setResult(currResult);
+        opContext.appendRequestResult(currResult);
+
         this.setException(null);
         this.setNonExceptionedRetryableFailure(false);
     }
