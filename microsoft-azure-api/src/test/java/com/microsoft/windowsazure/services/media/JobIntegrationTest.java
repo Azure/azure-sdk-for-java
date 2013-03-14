@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
+import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
 
 public class JobIntegrationTest extends IntegrationTestBase {
@@ -341,6 +342,34 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         assertEquals(1, outputs.size());
         assertTrue(outputs.get(0).getName().contains(name));
+    }
+
+    @Test
+    public void canGetTaskHistoricalEventsFromTask() throws Exception {
+        // Arrange 
+        String jobName = testJobPrefix + "canGetTaskHistoricalEventsFromTask";
+        int priority = 3;
+        int retryCounter = 0;
+
+        // Act
+        JobInfo actualJobInfo = service.create(Job.create().setName(jobName).setPriority(priority)
+                .addInputMediaAsset(assetInfo.getId()).addTaskCreator(getTaskCreator(0)));
+
+        while (actualJobInfo.getState().getCode() < 3 && retryCounter < 30) {
+            Thread.sleep(10000);
+            actualJobInfo = service.get(Job.get(actualJobInfo.getId()));
+            retryCounter++;
+        }
+        ListResult<TaskInfo> tasks = service.list(Task.list(actualJobInfo.getTasksLink()));
+        TaskInfo taskInfo = tasks.get(0);
+        List<TaskHistoricalEvent> historicalEvents = taskInfo.getHistoricalEvents();
+        TaskHistoricalEvent historicalEvent = historicalEvents.get(0);
+
+        // Assert 
+        assertTrue(historicalEvents.size() >= 5);
+        assertNotNull(historicalEvent.getCode());
+        assertNotNull(historicalEvent.getTimeStamp());
+        assertNull(historicalEvent.getMessage());
     }
 
 }
