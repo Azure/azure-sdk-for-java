@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.serviceBus.implementation;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -26,7 +28,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class BrokerPropertiesMapper {
 
     public BrokerProperties fromString(String value) throws IllegalArgumentException {
+
         ObjectMapper mapper = new ObjectMapper();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        mapper.setDateFormat(simpleDateFormat);
         try {
             return mapper.readValue(value.getBytes("UTF-8"), BrokerProperties.class);
         }
