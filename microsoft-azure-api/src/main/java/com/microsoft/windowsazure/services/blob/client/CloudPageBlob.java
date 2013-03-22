@@ -272,7 +272,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 client.getCredentials().signRequest(request, 0L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -352,7 +352,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 client.getCredentials().signRequest(request, -1L);
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -360,6 +360,8 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(request);
+                blob.updateLengthFromResponse(request);
+
                 final GetPageRangesResponse response = new GetPageRangesResponse(request.getInputStream());
                 return response.getPageRanges();
             }
@@ -482,7 +484,7 @@ public final class CloudPageBlob extends CloudBlob {
                     client.getCredentials().signRequest(request, 0L);
                 }
 
-                this.setResult(ExecutionEngine.processRequest(request, opContext));
+                ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
                     this.setNonExceptionedRetryableFailure(true);
@@ -490,7 +492,6 @@ public final class CloudPageBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(request);
-                blob.updateLengthFromResponse(request);
                 return null;
             }
         };
