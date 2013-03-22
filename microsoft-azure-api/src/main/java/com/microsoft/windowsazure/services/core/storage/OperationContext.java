@@ -51,7 +51,7 @@ public final class OperationContext {
      * Represents request results, in the form of an <code>ArrayList</code> object that contains the
      * {@link RequestResult} objects, for each physical request that is made.
      */
-    private ArrayList<RequestResult> requestResults;
+    private final ArrayList<RequestResult> requestResults;
 
     /**
      * Represents an event that is triggered before sending a request.
@@ -135,7 +135,7 @@ public final class OperationContext {
      * 
      * @return A {@link RequestResult} object that represents the last request result.
      */
-    public RequestResult getLastResult() {
+    public synchronized RequestResult getLastResult() {
         if (this.requestResults == null || this.requestResults.size() == 0) {
             return null;
         }
@@ -163,6 +163,16 @@ public final class OperationContext {
      */
     public ArrayList<RequestResult> getRequestResults() {
         return this.requestResults;
+    }
+
+    /**
+     * Reserved for internal use. appends a {@link RequestResult} object to the internal collection in a synchronized
+     * manner.
+     * 
+     * @param requestResult
+     */
+    public synchronized void appendRequestResult(RequestResult requestResult) {
+        this.requestResults.add(requestResult);
     }
 
     /**
