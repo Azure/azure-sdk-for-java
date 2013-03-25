@@ -2,15 +2,15 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CustomPropertiesMapper {
@@ -53,14 +54,14 @@ public class CustomPropertiesMapper {
             return value.toString();
         }
         else if (Calendar.class.isAssignableFrom(type)) {
-            DateFormat format = new SimpleDateFormat(RFC_1123);
+            DateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             Calendar calendar = (Calendar) value;
             format.setTimeZone(calendar.getTimeZone());
             String formatted = format.format(calendar.getTime());
             return "\"" + formatted + "\"";
         }
         else if (Date.class.isAssignableFrom(type)) {
-            DateFormat format = new SimpleDateFormat(RFC_1123);
+            DateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             String formatted = format.format((Date) value);
             return "\"" + formatted + "\"";
@@ -78,7 +79,7 @@ public class CustomPropertiesMapper {
         if (value.startsWith("\"") && value.endsWith("\"")) {
             String text = value.substring(1, value.length() - 1);
             if (isRFC1123(text)) {
-                SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
+                SimpleDateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
                 return format.parse(text);
             }
 
@@ -103,7 +104,7 @@ public class CustomPropertiesMapper {
             return false;
         }
         try {
-            SimpleDateFormat format = new SimpleDateFormat(RFC_1123);
+            SimpleDateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             format.parse(text);
             return true;
         }
