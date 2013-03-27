@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.EnumSet;
@@ -28,8 +32,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.crypto.Cipher;
+
 import junit.framework.Assert;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -68,6 +75,11 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < source.length; i++) {
             assertEquals(source[i], target[i]);
         }
+    }
+
+    @BeforeClass
+    public static void Setup() {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 
     @Test
@@ -135,15 +147,60 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void encryptedContentCanBeDecrypted() throws Exception {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-        Random random = new Random();
         byte[] aesKey = new byte[32];
-        random.nextBytes(aesKey);
+        for (int i = 0; i < 32; i++) {
+            aesKey[i] = 1;
+        }
+
         X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
-        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
-        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedContentKey, x509Certificate);
+        Key publicKey = x509Certificate.getPublicKey();
+        byte[] encryptedAesKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
+        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, x509Certificate);
 
         assertByteArrayEquals(aesKey, decryptedAesKey);
+    }
+
+    @Test
+    public void testEncryptionDecryptionFunction() throws Exception {
+        // Arrange 
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        byte[] input = "abc".getBytes();
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
+        SecureRandom random = new SecureRandom();
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+        generator.initialize(386, random);
+        KeyPair pair = generator.generateKeyPair();
+        Key pubKey = pair.getPublic();
+        Key privKey = pair.getPrivate();
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
+        byte[] cipherText = cipher.doFinal(input);
+        cipher.init(Cipher.DECRYPT_MODE, privKey);
+
+        //Act
+        byte[] plainText = cipher.doFinal(cipherText);
+
+        // Assert
+        assertByteArrayEquals(input, plainText);
+    }
+
+    @Test
+    public void testGeneratedCertificateSuccess() throws Exception {
+        // Arrange
+        SecureRandom random = new SecureRandom();
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+        generator.initialize(386, random);
+        KeyPair keyPair = generator.generateKeyPair();
+        String ownerName = "Microsoft";
+        int days = 365;
+        String algorithm = "RSA";
+        X509Certificate x509Certificate = EncryptionHelper.createCertificate(ownerName, keyPair, days, algorithm);
+
+        // Act
+        String certificateString = Base64.encode(x509Certificate.getEncoded());
+
+        // Assert 
+        assertNotNull(certificateString);
+
     }
 
     private JobInfo decodeAsset(String name, String inputAssetId) throws ServiceException, InterruptedException {
