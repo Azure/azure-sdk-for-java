@@ -1,8 +1,8 @@
 2013.04.01 Version 0.4.2
- * Fixed a bunch of encoding issues to make sure the SDK works well with unicode
- * Storage queue now throws an exception instead of submitting the message if the message is null
- * Fixed a service bus receiving message issue if the locale is not US or UTC
- * Filled the gap in Java doc for package level description
+ * Fixed encoding issues to make sure the SDK works well with Unicode
+ * Storage Queue now throws an exception instead of submitting the message if the message is null
+ * Fixed a Service Bus receiving message issue if the locale is neither US nor UTC
+ * Filled the gaps in Javadoc for package level description
 
 2013.03.12 Version 0.4.1
  * Added "Azure-SDK-For-Java/<version>" To User-Agent HTTP header
