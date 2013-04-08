@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URL;
 import java.net.URLEncoder;
 import java.security.PrivateKey;
 import java.security.Security;
@@ -274,8 +275,10 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         byte[] aesKey = createRandomAesKey();
         ContentKeyInfo contentKeyInfo = createValidTestContentKeyWithAesKey("rebindContentKeyWithX509Success", aesKey);
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
-        PrivateKey privateKey = EncryptionHelper.getPrivateKey("c:\\users\\gongchen\\cert\\server.der");
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
 
         String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(),
                 URLEncoder.encode(Base64.encode(x509Certificate.getEncoded()), "UTF-8")));

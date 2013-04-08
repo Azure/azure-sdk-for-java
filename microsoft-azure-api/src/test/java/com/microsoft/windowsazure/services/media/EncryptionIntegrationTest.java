@@ -152,9 +152,10 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         for (int i = 0; i < 32; i++) {
             aesKey[i] = 1;
         }
-
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
-        PrivateKey privateKey = EncryptionHelper.getPrivateKey("c:\\users\\gongchen\\cert\\server.der");
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
         byte[] encryptedAesKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
         byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, privateKey);
 
@@ -167,8 +168,10 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         byte[] input = "abc".getBytes();
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
         SecureRandom random = new SecureRandom();
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
-        PrivateKey privateKey = EncryptionHelper.getPrivateKey("c:\\users\\gongchen\\cert\\server.der");
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
         Key pubKey = x509Certificate.getPublicKey();
         cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
         byte[] cipherText = cipher.doFinal(input);
@@ -202,26 +205,6 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertByteArrayEquals(input, plainText);
-    }
-
-    @Test
-    public void testGeneratedCertificateSuccess() throws Exception {
-        // Arrange
-        SecureRandom random = new SecureRandom();
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
-        generator.initialize(256, random);
-        KeyPair keyPair = generator.generateKeyPair();
-        String ownerName = "EMAILADDRESS=gongchen@microsoft,CN=Albert Cheng,OU=Windows Azure,O=\"Microsoft\",L=Redmond,ST=WA,C=US";
-        int days = 365;
-        String algorithm = "RSA";
-        X509Certificate x509Certificate = EncryptionHelper.createCertificate(ownerName, keyPair, days, algorithm);
-
-        // Act
-        String certificateString = Base64.encode(x509Certificate.getEncoded());
-
-        // Assert 
-        assertNotNull(certificateString);
-
     }
 
     private JobInfo decodeAsset(String name, String inputAssetId) throws ServiceException, InterruptedException {
