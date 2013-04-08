@@ -16,10 +16,13 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -28,6 +31,7 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 
 import javax.crypto.Cipher;
@@ -103,8 +107,7 @@ class EncryptionHelper {
         return cipherInputStream;
     }
 
-    public static byte[] decryptSymmetricKey(String rebindedContentKey, X509Certificate x509Certificate)
-            throws Exception {
+    public static byte[] decryptSymmetricKey(String rebindedContentKey, PrivateKey privateKey) throws Exception {
         for (Provider provider : Security.getProviders()) {
             System.out.println(provider.getName());
             for (String key : provider.stringPropertyNames())
@@ -112,13 +115,12 @@ class EncryptionHelper {
         }
 
         byte[] rebindedContentKeyByteArray = Base64.decode(rebindedContentKey);
-        return decryptSymmetricKey(rebindedContentKeyByteArray, x509Certificate);
+        return decryptSymmetricKey(rebindedContentKeyByteArray, privateKey);
     }
 
-    public static byte[] decryptSymmetricKey(byte[] rebindedContentKey, X509Certificate x509Certificate)
-            throws Exception {
+    public static byte[] decryptSymmetricKey(byte[] rebindedContentKey, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
-        cipher.init(Cipher.DECRYPT_MODE, x509Certificate);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] decrypted = cipher.doFinal(rebindedContentKey);
         return decrypted;
     }
@@ -131,15 +133,18 @@ class EncryptionHelper {
         return x509Certificate;
     }
 
-    public static X509Certificate createCertificate(String ownerName, KeyPair keyPair, int days, String algorithm)
+    @SuppressWarnings("restriction")
+    public static X509Certificate createCertificate(String dn, KeyPair keyPair, int days, String algorithm)
             throws Exception {
+
+        sun.security.x509.X500Name owner = new sun.security.x509.X500Name(dn);
+
         PrivateKey privkey = keyPair.getPrivate();
         X509CertInfo info = new X509CertInfo();
         Date from = new Date();
         Date to = new Date(from.getTime() + days * 86400000l);
         CertificateValidity interval = new CertificateValidity(from, to);
         BigInteger sn = new BigInteger(64, new SecureRandom());
-        sun.security.x509.X500Name owner = new sun.security.x509.X500Name(ownerName);
 
         info.set(X509CertInfo.VALIDITY, interval);
         info.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(sn));
@@ -160,5 +165,19 @@ class EncryptionHelper {
         cert = new X509CertImpl(info);
         cert.sign(privkey, algorithm);
         return cert;
+    }
+
+    public static PrivateKey getPrivateKey(String filename) throws Exception {
+
+        File f = new File(filename);
+        FileInputStream fis = new FileInputStream(f);
+        DataInputStream dis = new DataInputStream(fis);
+        byte[] keyBytes = new byte[(int) f.length()];
+        dis.readFully(keyBytes);
+        dis.close();
+
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return kf.generatePrivate(spec);
     }
 }

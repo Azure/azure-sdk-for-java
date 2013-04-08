@@ -24,6 +24,7 @@ import java.net.URL;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.X509Certificate;
@@ -153,11 +154,31 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         }
 
         X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
-        Key publicKey = x509Certificate.getPublicKey();
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey("c:\\users\\gongchen\\cert\\server.der");
         byte[] encryptedAesKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
-        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, x509Certificate);
+        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, privateKey);
 
         assertByteArrayEquals(aesKey, decryptedAesKey);
+    }
+
+    @Test
+    public void testEncryptedContentCanBeDecrypted() throws Exception {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        byte[] input = "abc".getBytes();
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
+        SecureRandom random = new SecureRandom();
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate("c:\\users\\gongchen\\cert\\server.crt");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey("c:\\users\\gongchen\\cert\\server.der");
+        Key pubKey = x509Certificate.getPublicKey();
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
+        byte[] cipherText = cipher.doFinal(input);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+        //Act
+        byte[] plainText = cipher.doFinal(cipherText);
+
+        // Assert
+        assertByteArrayEquals(input, plainText);
     }
 
     @Test
@@ -188,9 +209,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         // Arrange
         SecureRandom random = new SecureRandom();
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
-        generator.initialize(386, random);
+        generator.initialize(256, random);
         KeyPair keyPair = generator.generateKeyPair();
-        String ownerName = "Microsoft";
+        String ownerName = "EMAILADDRESS=gongchen@microsoft,CN=Albert Cheng,OU=Windows Azure,O=\"Microsoft\",L=Redmond,ST=WA,C=US";
         int days = 365;
         String algorithm = "RSA";
         X509Certificate x509Certificate = EncryptionHelper.createCertificate(ownerName, keyPair, days, algorithm);
