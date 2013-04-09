@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.blob.implementation;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -808,7 +809,8 @@ public abstract class BlobOperationRestProxy implements BlobContract {
 
     @Override
     @Deprecated
-    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options) throws ServiceException {
+    public void breakLease(String container, String blob, String leaseId, BlobServiceOptions options)
+            throws ServiceException {
         breakLease(container, blob, options);
     }
 
@@ -819,8 +821,8 @@ public abstract class BlobOperationRestProxy implements BlobContract {
 
     @Override
     public BreakLeaseResult breakLease(String container, String blob, BlobServiceOptions options)
-    throws ServiceException {
-        ClientResponse response = doLeaseOperation("break", container, blob,  null, options, null);
+            throws ServiceException {
+        ClientResponse response = doLeaseOperation("break", container, blob, null, options, null);
 
         BreakLeaseResult result = new BreakLeaseResult();
         result.setRemainingLeaseTimeInSeconds(Integer.parseInt(response.getHeaders().getFirst("x-ms-lease-time")));
@@ -836,7 +838,8 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         return result;
     }
 
-    private ClientResponse doLeaseOperation(String leaseAction, String container, String blob, String leaseId, BlobServiceOptions options, AccessCondition accessCondition) {
+    private ClientResponse doLeaseOperation(String leaseAction, String container, String blob, String leaseId,
+            BlobServiceOptions options, AccessCondition accessCondition) {
         String path = createPathFromContainer(container);
         WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "lease");
 
@@ -941,7 +944,12 @@ public abstract class BlobOperationRestProxy implements BlobContract {
             CreateBlobBlockOptions options) throws ServiceException {
         String path = createPathFromContainer(container);
         WebResource webResource = getResource(options).path(path).path(blob).queryParam("comp", "block");
-        webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId)));
+        try {
+            webResource = addOptionalQueryParam(webResource, "blockid", new String(Base64.encode(blockId), "UTF-8"));
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
         builder = addOptionalHeader(builder, "x-ms-lease-id", options.getLeaseId());

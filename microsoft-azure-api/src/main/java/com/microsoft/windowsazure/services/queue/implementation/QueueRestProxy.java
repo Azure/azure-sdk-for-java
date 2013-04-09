@@ -87,7 +87,8 @@ public class QueueRestProxy implements QueueContract {
     public QueueContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter, this.dateMapper);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
+                this.dateMapper);
     }
 
     private void ThrowIfError(ClientResponse r) {
@@ -261,7 +262,10 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException {
         if (queue == null)
-            throw new NullPointerException();
+            throw new NullPointerException("queue");
+        if (messageText == null) {
+            throw new NullPointerException("messageText");
+        }
 
         WebResource webResource = getResource(options).path(queue).path("messages");
         webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
@@ -286,9 +290,11 @@ public class QueueRestProxy implements QueueContract {
     public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
             int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
         if (queue == null)
-            throw new NullPointerException();
+            throw new NullPointerException("queue");
         if (messageId == null)
-            throw new NullPointerException();
+            throw new NullPointerException("messageId");
+        if (messageText == null)
+            throw new NullPointerException("messageText");
 
         WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
         webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);

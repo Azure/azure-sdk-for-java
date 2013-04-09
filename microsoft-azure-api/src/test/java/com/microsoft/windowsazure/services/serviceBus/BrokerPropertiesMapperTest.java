@@ -2,15 +2,15 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
@@ -18,14 +18,40 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerProperties;
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPropertiesMapper;
 
 public class BrokerPropertiesMapperTest {
+
+    private final String testBrokerPropertiesString = "{" + "\"CorrelationId\": \"corid\","
+            + "\"SessionId\": \"sesid\"," + "\"DeliveryCount\": 5,"
+            + "\"LockedUntilUtc\": \" Fri, 14 Oct 2011 12:34:56 GMT\"," + "\"LockToken\": \"loctok\","
+            + "\"MessageId\": \"mesid\"," + "\"Label\": \"lab\"," + "\"ReplyTo\": \"repto\","
+            + "\"SequenceNumber\": 7," + "\"TimeToLive\": 8.123," + "\"To\": \"to\","
+            + "\"ScheduledEnqueueTimeUtc\": \" Sun, 06 Nov 1994 08:49:37 GMT\","
+            + "\"ReplyToSessionId\": \"reptosesid\"," + "\"MessageLocation\": \"mesloc\","
+            + "\"LockLocation\": \"locloc\"" + "}";
+
+    private static Date schedTimeUtc, lockedUntilUtc;
+
+    @BeforeClass
+    public static void setup() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.set(1994, 10, 6, 8, 49, 37);
+        schedTimeUtc = calendar.getTime();
+
+        Calendar calendar2 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar2.set(2011, 9, 14, 12, 34, 56);
+        lockedUntilUtc = calendar2.getTime();
+
+    }
+
     @Test
     public void jsonStringMapsToBrokerPropertiesObject() {
         // Arrange 
@@ -61,33 +87,8 @@ public class BrokerPropertiesMapperTest {
         // Arrange 
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar.set(1994, 10, 6, 8, 49, 37);
-        Date schedTimeUtc = calendar.getTime();
-
-        Calendar calendar2 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar2.set(2011, 9, 14, 12, 34, 56);
-        Date lockedUntilUtc = calendar2.getTime();
-
         // Act
-        BrokerProperties properties = mapper.fromString(
-                "{" +
-                        "\"CorrelationId\": \"corid\"," +
-                        "\"SessionId\": \"sesid\"," +
-                        "\"DeliveryCount\": 5," +
-                        "\"LockedUntilUtc\": \" Fri, 14 Oct 2011 12:34:56 GMT\"," +
-                        "\"LockToken\": \"loctok\"," +
-                        "\"MessageId\": \"mesid\"," +
-                        "\"Label\": \"lab\"," +
-                        "\"ReplyTo\": \"repto\"," +
-                        "\"SequenceNumber\": 7," +
-                        "\"TimeToLive\": 8.123," +
-                        "\"To\": \"to\"," +
-                        "\"ScheduledEnqueueTimeUtc\": \" Sun, 06 Nov 1994 08:49:37 GMT\"," +
-                        "\"ReplyToSessionId\": \"reptosesid\"," +
-                        "\"MessageLocation\": \"mesloc\"," +
-                        "\"LockLocation\": \"locloc\"" +
-                        "}");
+        BrokerProperties properties = mapper.fromString(testBrokerPropertiesString);
 
         // Assert
         assertNotNull(properties);
@@ -123,5 +124,54 @@ public class BrokerPropertiesMapperTest {
         // Assert
         assertNull(properties.getLockedUntilUtc());
         assertNull(properties.getScheduledEnqueueTimeUtc());
+    }
+
+    @Test
+    public void deserializeDateInKrKrLocaleCorrectly() {
+        // Arrange 
+        BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.KOREA);
+
+        // Act 
+        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        Locale.setDefault(defaultLocale);
+
+        // Assert
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        assertTrue(Math.abs(lockedUntilDelta) < 2000);
+    }
+
+    @Test
+    public void deserializeDateInEnUsLocaleCorrectly() {
+        // Arrange 
+        BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
+
+        // Act 
+        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        Locale.setDefault(defaultLocale);
+
+        // Assert
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        assertTrue(Math.abs(lockedUntilDelta) < 2000);
+
+    }
+
+    @Test
+    public void deserializeDateInZhCnLocaleCorrectly() {
+        // Arrange 
+        BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.CHINA);
+
+        // Act 
+        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        Locale.setDefault(defaultLocale);
+
+        // Assert
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        assertTrue(Math.abs(lockedUntilDelta) < 2000);
     }
 }
