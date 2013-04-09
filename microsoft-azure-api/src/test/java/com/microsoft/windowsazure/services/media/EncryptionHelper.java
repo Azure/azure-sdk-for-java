@@ -62,7 +62,6 @@ class EncryptionHelper {
     }
 
     public static byte[] encryptSymmetricKey(Certificate certificate, byte[] inputData) throws Exception {
-        // Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         Cipher cipher = Cipher.getInstance("RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
         Key publicKey = certificate.getPublicKey();
         SecureRandom secureRandom = new SecureRandom();
