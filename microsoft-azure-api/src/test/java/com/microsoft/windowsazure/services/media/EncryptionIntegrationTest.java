@@ -163,7 +163,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void testEncryptedContentCanBeDecrypted() throws Exception {
+    public void testEncryptedContentCanBeDecryptedUsingPreGeneratedKeyPair() throws Exception {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         byte[] input = "abc".getBytes();
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
@@ -185,7 +185,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void testEncryptionDecryptionFunction() throws Exception {
+    public void testEncryptionDecryptionFunctionUsingGeneratedKeyPair() throws Exception {
         // Arrange 
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         byte[] input = "abc".getBytes();

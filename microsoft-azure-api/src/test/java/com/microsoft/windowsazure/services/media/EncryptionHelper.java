@@ -23,9 +23,7 @@ import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.SecureRandom;
-import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -93,25 +91,35 @@ class EncryptionHelper {
         return cipherInputStream;
     }
 
-    public static byte[] decryptSymmetricKey(String rebindedContentKey, PrivateKey privateKey) throws Exception {
-        for (Provider provider : Security.getProviders()) {
-            System.out.println(provider.getName());
-            for (String key : provider.stringPropertyNames())
-                System.out.println("\t" + key + "\t" + provider.getProperty(key));
-        }
-
-        byte[] rebindedContentKeyByteArray = Base64.decode(rebindedContentKey);
-        return decryptSymmetricKey(rebindedContentKeyByteArray, privateKey);
+    public static byte[] decryptSymmetricKey(String encryptedContent, PrivateKey privateKey) throws Exception {
+        byte[] encryptedContentByteArray = Base64.decode(encryptedContent);
+        return decryptSymmetricKey(encryptedContentByteArray, privateKey);
     }
 
-    public static byte[] decryptSymmetricKey(byte[] rebindedContentKey, PrivateKey privateKey) throws Exception {
+    public static byte[] decryptSymmetricKey(byte[] encryptedContent, PrivateKey privateKey) throws Exception {
+        if (encryptedContent == null) {
+            throw new IllegalArgumentException("The encrypted content cannot be null.");
+        }
+
+        if (encryptedContent.length == 0) {
+            throw new IllegalArgumentException("The encrypted content cannot be empty.");
+        }
+
+        if (privateKey == null) {
+            throw new IllegalArgumentException("The private key cannot be null.");
+        }
+
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decrypted = cipher.doFinal(rebindedContentKey);
+        byte[] decrypted = cipher.doFinal(encryptedContent);
         return decrypted;
     }
 
     public static X509Certificate loadX509Certificate(String certificateFileName) throws Exception {
+        if ((certificateFileName == null) || certificateFileName.isEmpty()) {
+            throw new IllegalArgumentException("certificate file name cannot be null or empty.");
+        }
+
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         FileInputStream certificateInputStream = new FileInputStream(certificateFileName);
         X509Certificate x509Certificate = (X509Certificate) certificateFactory
@@ -119,17 +127,20 @@ class EncryptionHelper {
         return x509Certificate;
     }
 
-    public static PrivateKey getPrivateKey(String filename) throws Exception {
+    public static PrivateKey getPrivateKey(String certificateFileName) throws Exception {
+        if ((certificateFileName == null) || certificateFileName.isEmpty()) {
+            throw new IllegalArgumentException("certificate file name cannot be null or empty.");
+        }
 
-        File f = new File(filename);
-        FileInputStream fis = new FileInputStream(f);
-        DataInputStream dis = new DataInputStream(fis);
-        byte[] keyBytes = new byte[(int) f.length()];
-        dis.readFully(keyBytes);
-        dis.close();
+        File file = new File(certificateFileName);
+        FileInputStream fis = new FileInputStream(file);
+        DataInputStream dataInputStream = new DataInputStream(fis);
+        byte[] keyBytes = new byte[(int) file.length()];
+        dataInputStream.readFully(keyBytes);
+        dataInputStream.close();
 
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        return kf.generatePrivate(spec);
+        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
     }
 }

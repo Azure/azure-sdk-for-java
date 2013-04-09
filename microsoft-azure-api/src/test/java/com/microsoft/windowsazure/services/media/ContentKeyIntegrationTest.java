@@ -263,7 +263,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void rebindInvalidContentKeyNoX509CertificateFail() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(500));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         ContentKeyInfo contentKeyInfo = createTestContentKey("rebindInvalidContentKeyNoX509Fail");
 
         service.action(ContentKey.rebind(contentKeyInfo.getId()));
