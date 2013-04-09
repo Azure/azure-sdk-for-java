@@ -21,13 +21,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+import java.security.Security;
+import java.security.cert.X509Certificate;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.crypto.Cipher;
+
 import junit.framework.Assert;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -59,7 +69,19 @@ import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 
 public class EncryptionIntegrationTest extends IntegrationTestBase {
-    private final String strorageDecryptionProcessor = "Storage Decryption";
+    private final String storageDecryptionProcessor = "Storage Decryption";
+
+    private void assertByteArrayEquals(byte[] source, byte[] target) {
+        assertEquals(source.length, target.length);
+        for (int i = 0; i < source.length; i++) {
+            assertEquals(source[i], target[i]);
+        }
+    }
+
+    @BeforeClass
+    public static void Setup() {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    }
 
     @Test
     public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
@@ -89,7 +111,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         WritableBlobContainerContract blobWriter = getBlobWriter(assetInfo.getId(), durationInMinutes);
 
         // gets the public key for storage encryption.
-        String contentKeyId = makeContentKeyId(aesKey);
+        String contentKeyId = createContentKey(aesKey);
 
         // link the content key with the asset.
         service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
@@ -124,9 +146,68 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         assertStreamsEqual(expected, actual);
     }
 
+    @Test
+    public void encryptedContentCanBeDecrypted() throws Exception {
+        byte[] aesKey = new byte[32];
+        for (int i = 0; i < 32; i++) {
+            aesKey[i] = 1;
+        }
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
+        byte[] encryptedAesKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
+        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, privateKey);
+
+        assertByteArrayEquals(aesKey, decryptedAesKey);
+    }
+
+    @Test
+    public void testEncryptedContentCanBeDecryptedUsingPreGeneratedKeyPair() throws Exception {
+        byte[] input = "abc".getBytes();
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
+        SecureRandom random = new SecureRandom();
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
+        Key pubKey = x509Certificate.getPublicKey();
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
+        byte[] cipherText = cipher.doFinal(input);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+        //Act
+        byte[] plainText = cipher.doFinal(cipherText);
+
+        // Assert
+        assertByteArrayEquals(input, plainText);
+    }
+
+    @Test
+    public void testEncryptionDecryptionFunctionUsingGeneratedKeyPair() throws Exception {
+        // Arrange 
+        byte[] input = "abc".getBytes();
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
+        SecureRandom random = new SecureRandom();
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+        generator.initialize(386, random);
+        KeyPair pair = generator.generateKeyPair();
+        Key pubKey = pair.getPublic();
+        Key privKey = pair.getPrivate();
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
+        byte[] cipherText = cipher.doFinal(input);
+        cipher.init(Cipher.DECRYPT_MODE, privKey);
+
+        //Act
+        byte[] plainText = cipher.doFinal(cipherText);
+
+        // Assert
+        assertByteArrayEquals(input, plainText);
+    }
+
     private JobInfo decodeAsset(String name, String inputAssetId) throws ServiceException, InterruptedException {
         MediaProcessorInfo mediaProcessorInfo = service.list(
-                MediaProcessor.list().set("$filter", "Name eq '" + strorageDecryptionProcessor + "'")).get(0);
+                MediaProcessor.list().set("$filter", "Name eq '" + storageDecryptionProcessor + "'")).get(0);
 
         String taskBody = "<taskBody>"
                 + "<inputAsset>JobInputAsset(0)</inputAsset><outputAsset assetCreationOptions=\"0\" assetName=\"Output\">JobOutputAsset(0)</outputAsset></taskBody>";
@@ -143,7 +224,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         return currentJobInfo;
     }
 
-    private String makeContentKeyId(byte[] aesKey) throws ServiceException, Exception {
+    private String createContentKey(byte[] aesKey) throws ServiceException, Exception {
         String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
         String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
 
