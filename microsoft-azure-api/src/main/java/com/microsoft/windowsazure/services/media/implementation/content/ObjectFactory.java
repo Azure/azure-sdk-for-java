@@ -114,9 +114,9 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates a new Object object.
+     * Creates an instance of (@link RebindContentKeyType).
      * 
-     * @return the rebind content key type
+     * @return the rebind content key type instance.
      */
     public RebindContentKeyType createRebindContentKeyType() {
         return new RebindContentKeyType();

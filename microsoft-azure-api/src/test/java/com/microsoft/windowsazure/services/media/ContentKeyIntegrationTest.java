@@ -24,7 +24,6 @@ import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -80,14 +79,17 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     }
 
     private ContentKeyInfo createValidTestContentKey(String contentKeyNameSuffix) throws Exception {
-        byte[] aesKey = createRandomAesKey();
+        byte[] aesKey = createTestAesKey();
         return createValidTestContentKeyWithAesKey(contentKeyNameSuffix, aesKey);
     }
 
-    private byte[] createRandomAesKey() {
-        Random random = new Random();
+    private byte[] createTestAesKey() {
         byte[] aesKey = new byte[32];
-        random.nextBytes(aesKey);
+        int i;
+        for (i = 0; i < 32; i++) {
+            aesKey[i] = 1;
+        }
+
         return aesKey;
     }
 
@@ -273,7 +275,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
     @Test
     public void rebindContentKeyWithX509CertficateSuccess() throws Exception {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-        byte[] aesKey = createRandomAesKey();
+        byte[] aesKey = createTestAesKey();
         ContentKeyInfo contentKeyInfo = createValidTestContentKeyWithAesKey("rebindContentKeyWithX509Success", aesKey);
         URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
         X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
