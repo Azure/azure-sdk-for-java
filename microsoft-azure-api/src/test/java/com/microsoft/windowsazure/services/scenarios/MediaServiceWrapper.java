@@ -278,7 +278,7 @@ class MediaServiceWrapper {
                 configuration = "VC1 Broadband SD 4x3";
                 break;
             case StorageDecryption:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION, "1.5.3.0");
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION, "1.6");
                 configuration = null;
                 break;
             default:
