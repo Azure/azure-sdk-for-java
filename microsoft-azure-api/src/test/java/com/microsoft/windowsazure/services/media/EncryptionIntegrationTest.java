@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -147,15 +148,16 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void encryptedContentCanBeDecrypted() throws Exception {
+    public void testEncryptedContentCanBeDecrypted() throws Exception {
         byte[] aesKey = new byte[32];
         for (int i = 0; i < 32; i++) {
             aesKey[i] = 1;
         }
         URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(URLDecoder.decode(
+                serverCertificateUri.getFile(), "UTF-8"));
         URL serverPrivateKey = getClass().getResource("/certificate/server.der");
-        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(URLDecoder.decode(serverPrivateKey.getFile(), "UTF-8"));
         byte[] encryptedAesKey = EncryptionHelper.encryptSymmetricKey(x509Certificate, aesKey);
         byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(encryptedAesKey, privateKey);
 
@@ -168,9 +170,10 @@ public class EncryptionIntegrationTest extends IntegrationTestBase {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
         SecureRandom random = new SecureRandom();
         URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
-        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(serverCertificateUri.getFile());
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(URLDecoder.decode(
+                serverCertificateUri.getFile(), "UTF-8"));
         URL serverPrivateKey = getClass().getResource("/certificate/server.der");
-        PrivateKey privateKey = EncryptionHelper.getPrivateKey(serverPrivateKey.getFile());
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(URLDecoder.decode(serverPrivateKey.getFile(), "UTF-8"));
         Key pubKey = x509Certificate.getPublicKey();
         cipher.init(Cipher.ENCRYPT_MODE, pubKey, random);
         byte[] cipherText = cipher.doFinal(input);
