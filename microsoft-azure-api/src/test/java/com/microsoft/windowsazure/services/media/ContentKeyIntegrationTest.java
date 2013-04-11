@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -116,6 +117,11 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " ProtectionKeyId", protectionKeyId, actual.getProtectionKeyId());
         assertEquals(message + " ProtectionKeyType", protectionKeyType, actual.getProtectionKeyType());
         assertEquals(message + " Checksum", checksum, actual.getChecksum());
+    }
+
+    @BeforeClass
+    public static void Setup() {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 
     @Test
