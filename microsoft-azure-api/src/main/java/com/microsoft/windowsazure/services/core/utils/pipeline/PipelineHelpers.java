@@ -27,17 +27,29 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 public class PipelineHelpers {
+
+    private static String createErrorMessage(ClientResponse clientResponse) {
+        clientResponse.bufferEntity();
+        String errorMessage = clientResponse.toString();
+        if (clientResponse.hasEntity()) {
+            errorMessage = errorMessage + " " + clientResponse.getEntity(String.class);
+        }
+        return errorMessage;
+    }
+
     public static void ThrowIfNotSuccess(ClientResponse clientResponse) {
         int statusCode = clientResponse.getStatus();
 
         if ((statusCode < 200) || (statusCode >= 300)) {
-            throw new UniformInterfaceException(clientResponse);
+            String errorMessage = createErrorMessage(clientResponse);
+            throw new UniformInterfaceException(errorMessage, clientResponse);
         }
     }
 
     public static void ThrowIfError(ClientResponse clientResponse) {
         if (clientResponse.getStatus() >= 400) {
-            throw new UniformInterfaceException(clientResponse);
+            String errorMessage = createErrorMessage(clientResponse);
+            throw new UniformInterfaceException(errorMessage, clientResponse);
         }
     }
 
