@@ -22,6 +22,7 @@ import java.util.List;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
+import com.microsoft.windowsazure.services.media.implementation.content.TaskHistoricalEventType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -84,6 +85,30 @@ public class TaskInfo extends ODataEntity<TaskType> {
             return result;
         }
         return null;
+    }
+
+    /**
+     * Gets the task historical events.
+     * 
+     * @return the task historical events
+     */
+    public List<TaskHistoricalEvent> getHistoricalEvents() {
+        List<TaskHistoricalEvent> result = new ArrayList<TaskHistoricalEvent>();
+        List<TaskHistoricalEventType> historicalEventTypes = getContent().getHistoricalEventTypes();
+
+        if (historicalEventTypes != null) {
+            for (TaskHistoricalEventType taskHistoricalEventType : historicalEventTypes) {
+                String message = taskHistoricalEventType.getMessage();
+                if ((message != null) && (message.isEmpty())) {
+                    message = null;
+                }
+                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(),
+                        message, taskHistoricalEventType.getTimeStamp());
+                result.add(taskHistoricalEvent);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -213,7 +238,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Gets link to the task's input assets
+     * Gets link to the task's input assets.
      * 
      * @return the link
      */
@@ -222,7 +247,7 @@ public class TaskInfo extends ODataEntity<TaskType> {
     }
 
     /**
-     * Gets link to the task's output assets
+     * Gets link to the task's output assets.
      * 
      * @return the link
      */

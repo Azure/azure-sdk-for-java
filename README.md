@@ -45,7 +45,7 @@ within your project you can also have them installed by the Java package manager
     <dependency>
       <groupId>com.microsoft.windowsazure</groupId>
       <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.4.0</version>
+      <version>0.4.2</version>
     </dependency>
 
 ##Minimum Requirements

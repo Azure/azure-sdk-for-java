@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.serviceBus.models;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +71,12 @@ public class BrokeredMessage {
      */
     public BrokeredMessage(String body) {
         this(new BrokerProperties());
-        this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes());
+        try {
+            this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes("UTF-8"));
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

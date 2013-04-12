@@ -73,6 +73,6 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         assertEquals("listMediaProcessors size", 1, listMediaProcessorsResult.size());
         MediaProcessorInfo mediaProcessorInfo = listMediaProcessorsResult.get(0);
         verifyMediaProcessorInfo("mediaProcessorInfo", "nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10",
-                "Storage Decryption", "Storage Decryption", "", "Microsoft", "1.5.3.0", mediaProcessorInfo);
+                "Storage Decryption", "Storage Decryption", "", "Microsoft", "1.6", mediaProcessorInfo);
     }
 }
