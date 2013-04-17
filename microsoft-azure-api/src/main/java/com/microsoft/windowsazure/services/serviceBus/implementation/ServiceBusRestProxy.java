@@ -288,6 +288,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
+    @Override
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+        return getResource().path(queueInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(QueueInfo.class, queueInfo);
+    }
+
     private WebResource listOptions(AbstractListOptions<?> options, WebResource path) {
         if (options.getTop() != null) {
             path = path.queryParam("$top", options.getTop().toString());

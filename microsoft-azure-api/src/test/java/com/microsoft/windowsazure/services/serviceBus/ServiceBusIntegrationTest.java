@@ -109,6 +109,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void updateQueueWorks() throws Exception {
+        // Arrange 
+        QueueInfo queue = new QueueInfo("TestUpdateQueueWorks").setMaxSizeInMegabytes(1024L);
+        QueueInfo originalQueue = service.createQueue(queue).getValue();
+        Long expectedMaxSizeInMegaBytes = 512L;
+
+        // Act 
+        QueueInfo updatedQueue = service.updateQueue(originalQueue.setMaxSizeInMegabytes(512L));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegaBytes, updatedQueue.getMaxSizeInMegabytes());
+    }
+
+    @Test
     public void getQueueWorks() throws Exception {
         // Arrange 
         String queuePath = "TestGetQueueWorks";

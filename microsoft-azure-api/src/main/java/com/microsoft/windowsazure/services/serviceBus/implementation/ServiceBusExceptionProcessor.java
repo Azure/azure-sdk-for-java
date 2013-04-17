@@ -239,6 +239,19 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+        try {
+            return next.updateQueue(queueInfo);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
     public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         try {
             return next.createTopic(topic);
