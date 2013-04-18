@@ -183,6 +183,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throw new RuntimeException("Unknown ReceiveMode");
         }
 
+        //No Messages Available scenario
+        //Q is empty or contains only LOCKED Messages during period specified by timeout
+        if (clientResult.getStatus() == 204) {
+            return null;
+        }
+
         BrokerProperties brokerProperties;
         if (clientResult.getHeaders().containsKey("BrokerProperties")) {
             brokerProperties = mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties"));
