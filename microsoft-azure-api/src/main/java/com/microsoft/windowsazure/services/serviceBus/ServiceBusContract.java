@@ -388,8 +388,38 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      */
     ListSubscriptionsResult listSubscriptions(String topicPath) throws ServiceException;
 
+    /**
+     * Returns a list of subscriptions.
+     * 
+     * @param topicPath
+     *            A <code>String</code> object that represents the name of the topic for the subscriptions to retrieve.
+     * 
+     * @param options
+     *            A <code>ListSubscriptionsOptions</code> object that represents the options to list subscriptions.
+     * 
+     * @return A <code>ListSubscriptionsResult</code> object that represents the result.
+     * 
+     * @exception ServiceException
+     *                If a service exception is encountered.
+     */
     ListSubscriptionsResult listSubscriptions(String topicPath, ListSubscriptionsOptions options)
             throws ServiceException;
+
+    /**
+     * Updates a subscription.
+     * 
+     * @param topicName
+     *            A <code>String</code> option which represents the name of the topic.
+     * 
+     * @param subscriptionInfo
+     *            A <code>SubscriptionInfo</code> option which represents the information of the subscription.
+     * 
+     * @return A <code>SubscriptionInfo</code> object that represents the result.
+     * 
+     * @exception ServiceException
+     *                If a service exception is encountered.
+     */
+    SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo) throws ServiceException;
 
     /**
      * Creates a rule.
@@ -459,6 +489,22 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      */
     ListRulesResult listRules(String topicPath, String subscriptionName) throws ServiceException;
 
+    /**
+     * Returns a list of rules.
+     * 
+     * @param topicPath
+     *            A <code>String</code> object that represents the name of the topic for the subscription.
+     * @param subscriptionName
+     *            A <code>String</code> object that represents the name of the subscription whose rules are being
+     *            retrieved.
+     * @param options
+     *            A <code>ListRulesOptions</code> object that represents the options to retrieve rules.
+     * 
+     * @return A <code>ListRulesResult</code> object that represents the result.
+     * 
+     * @exception ServiceException
+     *                If a service exception is encountered.
+     */
     ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options)
             throws ServiceException;
 }

@@ -363,6 +363,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
+    public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
+            throws ServiceException {
+        return getResource().path(topicName).path("subscriptions").path(subscriptionInfo.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*")
+                .put(SubscriptionInfo.class, subscriptionInfo);
+    }
+
+    @Override
     public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) {
         return new CreateRuleResult(getResource().path(topicPath).path("subscriptions").path(subscriptionName)
                 .path("rules").path(rule.getName()).type("application/atom+xml;type=entry;charset=utf-8")
