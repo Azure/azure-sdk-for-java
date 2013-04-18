@@ -42,7 +42,6 @@ import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * Defines the service bus contract.
@@ -454,12 +453,12 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @param topicPath
      *            the topic path
      * @param subscriptionName
-     *            the subscription name
+     *            the name of the subscription
      * @param options
      *            the options
      * @return the list rules result
      * @throws ServiceException
-     *             the service exception
+     *             If a service exception is encountered.
      */
     ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options)
             throws ServiceException;
