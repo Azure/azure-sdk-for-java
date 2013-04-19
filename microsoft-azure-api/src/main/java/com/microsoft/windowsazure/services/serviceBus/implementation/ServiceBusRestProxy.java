@@ -333,6 +333,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
+        return getResource().path(topicInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(TopicInfo.class, topicInfo);
+    }
+
+    @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
         return new CreateSubscriptionResult(getResource().path(topicPath).path("subscriptions")
                 .path(subscription.getName()).type("application/atom+xml;type=entry;charset=utf-8")

@@ -304,6 +304,19 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
+        try {
+            return next.updateTopic(topicInfo);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription)
             throws ServiceException {
         try {

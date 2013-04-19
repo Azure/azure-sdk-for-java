@@ -308,6 +308,22 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void topicCanBeUpdated() throws ServiceException {
+        // Arrange
+        String topicName = "testTopicCanBeUpdated";
+        Long expectedMaxSizeInMegabytes = 2048L;
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(
+                new TopicInfo().setPath(topicName).setMaxSizeInMegabytes(1024L)).getValue();
+        TopicInfo updatedTopicInfo = service.updateTopic(createdTopicInfo
+                .setMaxSizeInMegabytes(expectedMaxSizeInMegabytes));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegabytes, updatedTopicInfo.getMaxSizeInMegabytes());
+    }
+
+    @Test
     public void filterCanSeeAndChangeRequestOrResponse() throws ServiceException {
         // Arrange
         final List<Request> requests = new ArrayList<Request>();
