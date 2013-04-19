@@ -436,6 +436,23 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void subscriptionCanBeUpdated() throws Exception {
+        // Arrange 
+        String topicName = "testSubscriptionCanBeUpdated";
+        service.createTopic(new TopicInfo(topicName));
+        SubscriptionInfo originalSubscription = service.createSubscription(topicName, new SubscriptionInfo("sub"))
+                .getValue();
+        Integer expectedMaxDeliveryCount = 1024;
+
+        // Act
+        SubscriptionInfo updatedSubscription = service.updateSubscription(topicName,
+                originalSubscription.setMaxDeliveryCount(expectedMaxDeliveryCount));
+
+        // Assert
+        assertEquals(expectedMaxDeliveryCount, updatedSubscription.getMaxDeliveryCount());
+    }
+
+    @Test
     public void rulesCanBeCreatedOnSubscriptions() throws Exception {
         // Arrange
         String topicName = "TestrulesCanBeCreatedOnSubscriptions";
