@@ -109,6 +109,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void updateQueueWorks() throws Exception {
+        // Arrange 
+        QueueInfo queue = new QueueInfo("TestUpdateQueueWorks").setMaxSizeInMegabytes(1024L);
+        QueueInfo originalQueue = service.createQueue(queue).getValue();
+        Long expectedMaxSizeInMegaBytes = 512L;
+
+        // Act 
+        QueueInfo updatedQueue = service.updateQueue(originalQueue.setMaxSizeInMegabytes(512L));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegaBytes, updatedQueue.getMaxSizeInMegabytes());
+    }
+
+    @Test
     public void getQueueWorks() throws Exception {
         // Arrange 
         String queuePath = "TestGetQueueWorks";
@@ -294,6 +308,22 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void topicCanBeUpdated() throws ServiceException {
+        // Arrange
+        String topicName = "testTopicCanBeUpdated";
+        Long expectedMaxSizeInMegabytes = 2048L;
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(
+                new TopicInfo().setPath(topicName).setMaxSizeInMegabytes(1024L)).getValue();
+        TopicInfo updatedTopicInfo = service.updateTopic(createdTopicInfo
+                .setMaxSizeInMegabytes(expectedMaxSizeInMegabytes));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegabytes, updatedTopicInfo.getMaxSizeInMegabytes());
+    }
+
+    @Test
     public void filterCanSeeAndChangeRequestOrResponse() throws ServiceException {
         // Arrange
         final List<Request> requests = new ArrayList<Request>();
@@ -403,6 +433,23 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
         assertEquals("text/html", message.getContentType());
+    }
+
+    @Test
+    public void subscriptionCanBeUpdated() throws Exception {
+        // Arrange 
+        String topicName = "testSubscriptionCanBeUpdated";
+        service.createTopic(new TopicInfo(topicName));
+        SubscriptionInfo originalSubscription = service.createSubscription(topicName, new SubscriptionInfo("sub"))
+                .getValue();
+        Integer expectedMaxDeliveryCount = 1024;
+
+        // Act
+        SubscriptionInfo updatedSubscription = service.updateSubscription(topicName,
+                originalSubscription.setMaxDeliveryCount(expectedMaxDeliveryCount));
+
+        // Assert
+        assertEquals(expectedMaxDeliveryCount, updatedSubscription.getMaxDeliveryCount());
     }
 
     @Test
