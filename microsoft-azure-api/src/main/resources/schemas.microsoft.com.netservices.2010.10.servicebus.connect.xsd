@@ -2,8 +2,8 @@
 <xs:schema 
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" 
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
-	elementFormDefault="unqualified" 
-  attributeFormDefault="unqualified"
+	elementFormDefault="qualified" 
+  attributeFormDefault="qualified"
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"	
 	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
