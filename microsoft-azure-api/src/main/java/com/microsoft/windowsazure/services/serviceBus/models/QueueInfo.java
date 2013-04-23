@@ -2,29 +2,31 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRule;
 import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
+import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescription;
 
 /**
@@ -196,16 +198,15 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return this;
     }
 
-    public Duration getAutoDeleteOnIdle() 
-    {
+    public Duration getAutoDeleteOnIdle() {
         return getModel().getAutoDeleteOnIdle();
     }
-    
+
     public QueueInfo setAutoDeleteOnIdle(Duration duration) {
         getModel().setAutoDeleteOnIdle(duration);
         return this;
     }
-    
+
     /**
      * Indicates whether dead lettering is in effect upon message expiration.
      * 
@@ -314,130 +315,107 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     public Long getMessageCount() {
         return getModel().getMessageCount();
     }
-    
-    public MessageCountDetails getMessageCountDetails()
-    {
-        return getModel().getMessageCountDetails();
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
     }
 
-    public AuthorizationRules getAuthorization()
-    {
-        return getModel().getAuthorization();
+    public AuthorizationRules getAuthorizationRules() {
+        return getModel().getAuthorizationRules();
     }
-    
-    public QueueInfo setAuthorization(AuthorizationRules authorizationRules)
-    {
-        getModel().setAuthorization(authorizationRules);
-        return this; 
+
+    public QueueInfo setAuthorization(AuthorizationRules authorizationRules) {
+        getModel().setAuthorizationRules(authorizationRules);
+        return this;
     }
-    
-    public Boolean getIsAnonymousAccessible()
-    {
-        return getModel().getIsAnonymousAccessible();
+
+    public Boolean getIsAnonymousAccessible() {
+        return getModel().isIsAnonymousAccessible();
     }
-    
-    public QueueInfo setIsAnonymouseAccessible(Boolean isAnonymousAccessible)
-    {
+
+    public QueueInfo setIsAnonymouseAccessible(Boolean isAnonymousAccessible) {
         getModel().setIsAnonymousAccessible(isAnonymousAccessible);
         return this;
     }
-    
-    public Boolean getSupportOrdering()
-    {
-        return getModel().getSupportOrdering();
+
+    public Boolean getSupportOrdering() {
+        return getModel().isSupportOrdering();
     }
-    
-    public QueueInfo setSupportOrdering(Boolean supportOrdering) 
-    {
+
+    public QueueInfo setSupportOrdering(Boolean supportOrdering) {
         getModel().setSupportOrdering(supportOrdering);
-        return this; 
+        return this;
     }
-    
-    public EntityStatus getEntityStatus()
-    {
-        return getModel().getEntityStatus();
+
+    public EntityStatus getStatus() {
+        return getModel().getStatus();
     }
-    
-    public QueueInfo setEntityStatus(EntityStatus entityStatus)
-    {
-        getModel().setEntityStatus(entityStatus);
-        return this; 
+
+    public QueueInfo setStatus(EntityStatus entityStatus) {
+        getModel().setStatus(entityStatus);
+        return this;
     }
-    
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() 
-    {
+
+    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
     }
-    
-    public QueueInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus)
-    {
+
+    public QueueInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
-        return this; 
+        return this;
     }
-    
-    public String getForwardTo()
-    {
+
+    public String getForwardTo() {
         return getModel().getForwardTo();
     }
-    
-    public QueueInfo setForwardTo(String forwardTo)
-    {
+
+    public QueueInfo setForwardTo(String forwardTo) {
         getModel().setForwardTo(forwardTo);
         return this;
     }
-    
-    public Date getCreatedAt()
-    {
+
+    public Calendar getCreatedAt() {
         return getModel().getCreatedAt();
     }
-    
-    public QueueInfo setCreatedAt(Date createdAt)
-    {
+
+    public QueueInfo setCreatedAt(Calendar createdAt) {
         getModel().setCreatedAt(createdAt);
         return this;
     }
-    
-    public Date getUpdatedAt() 
-    {
+
+    public Calendar getUpdatedAt() {
         return getModel().getUpdatedAt();
     }
-    
-    public QueueInfo setUpdatedAt(Date updatedAt)
-    {
+
+    public QueueInfo setUpdatedAt(Calendar updatedAt) {
         getModel().setUpdatedAt(updatedAt);
         return this;
     }
-    
-    public Date getAccessedAt() 
-    {
+
+    public Calendar getAccessedAt() {
         return getModel().getAccessedAt();
     }
-    
-    public QueueInfo setAccessedAt(Date accessedAt) 
-    {
+
+    public QueueInfo setAccessedAt(Calendar accessedAt) {
         getModel().setAccessedAt(accessedAt);
         return this;
     }
-    
-    public Date PartitioningPolicy getPartitioningPolicy()
-    {
+
+    public PartitioningPolicy getPartitioningPolicy() {
         return getModel().getPartitioningPolicy();
     }
-    
-    public QueueInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy)
-    {
+
+    public QueueInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy) {
         getModel().setPartitioningPolicy(partitioningPolicy);
         return this;
     }
-    
-    public String setUserMetadata()
-    {
+
+    public String setUserMetadata() {
         return getModel().getUserMetadata();
     }
-    
-    public QueueInfo setUserMetadata(String userMetadata)
-    {
+
+    public QueueInfo setUserMetadata(String userMetadata) {
         getModel().setUserMetadata(userMetadata);
-        return this; 
+        return this;
     }
 }
