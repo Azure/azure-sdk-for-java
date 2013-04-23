@@ -307,6 +307,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().getSizeInBytes();
     }
 
+    public QueueInfo setSizeInBytes(Long sizeInBytes) {
+        getModel().setSizeInBytes(sizeInBytes);
+        return this;
+    }
+
     /**
      * Returns the number of messages in the queue.
      * 
@@ -320,7 +325,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().getCountDetails();
     }
 
-    public AuthorizationRules getAuthorizationRules() {
+    public AuthorizationRules getAuthorization() {
         return getModel().getAuthorizationRules();
     }
 
@@ -329,7 +334,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return this;
     }
 
-    public Boolean getIsAnonymousAccessible() {
+    public Boolean isAnonymousAccessible() {
         return getModel().isIsAnonymousAccessible();
     }
 
@@ -418,4 +423,5 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         getModel().setUserMetadata(userMetadata);
         return this;
     }
+
 }
