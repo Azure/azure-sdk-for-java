@@ -53,7 +53,7 @@ public class StatusLine {
 
     private static void expect(Reader reader, String string) {
         try {
-            byte[] byteArray = string.getBytes();
+            byte[] byteArray = string.getBytes("UTF-8");
             int ch;
             for (int i = 0; i < string.length(); i++) {
                 ch = reader.read();
