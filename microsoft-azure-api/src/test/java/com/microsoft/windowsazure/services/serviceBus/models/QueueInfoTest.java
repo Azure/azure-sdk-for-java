@@ -291,14 +291,14 @@ public class QueueInfoTest {
     @Test
     public void testGetSetUserMetadata() {
         // Arrange
-        Calendar expectedAccessedAt = Calendar.getInstance();
+        String expectedUserMetadata = "expectedUserMetaData";
         QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Calendar actualAccessedAt = queueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+        String actualUserMetadata = queueInfo.setUserMetadata(expectedUserMetadata).getUserMetadata();
 
         // Assert
-        assertEquals(expectedAccessedAt, actualAccessedAt);
+        assertEquals(expectedUserMetadata, actualUserMetadata);
     }
 
     @Test
