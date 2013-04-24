@@ -321,6 +321,16 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().getMessageCount();
     }
 
+    public QueueInfo setMessageCount(Long messageCount) {
+        getModel().setMessageCount(messageCount);
+        return this;
+    }
+
+    public QueueInfo setCountDetails(MessageCountDetails countDetails) {
+        getModel().setCountDetails(countDetails);
+        return this;
+    }
+
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }
@@ -338,12 +348,12 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().isIsAnonymousAccessible();
     }
 
-    public QueueInfo setIsAnonymouseAccessible(Boolean isAnonymousAccessible) {
+    public QueueInfo setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         getModel().setIsAnonymousAccessible(isAnonymousAccessible);
         return this;
     }
 
-    public Boolean getSupportOrdering() {
+    public Boolean isSupportOrdering() {
         return getModel().isSupportOrdering();
     }
 
@@ -423,5 +433,4 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         getModel().setUserMetadata(userMetadata);
         return this;
     }
-
 }

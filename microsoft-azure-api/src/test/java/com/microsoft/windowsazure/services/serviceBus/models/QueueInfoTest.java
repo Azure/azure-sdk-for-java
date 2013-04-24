@@ -16,19 +16,37 @@ package com.microsoft.windowsazure.services.serviceBus.models;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
+import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 
 public class QueueInfoTest {
+
+    private Duration createDuration(int milliSeconds) {
+        DatatypeFactory datatypeFactory;
+        try {
+            datatypeFactory = DatatypeFactory.newInstance();
+        }
+        catch (DatatypeConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        return datatypeFactory.newDuration(milliSeconds);
+    }
 
     @Test
     public void testGetSetLockDuration() {
         // Arrange
-        Duration expectedLockDuration = Duration.create();
+        Duration expectedLockDuration = createDuration(100);
         QueueInfo QueueInfo = new QueueInfo();
 
         // Act 
@@ -85,7 +103,7 @@ public class QueueInfoTest {
     @Test
     public void testGetSetDefaultMessageTimeToLive() {
         // Arrange
-        Duration expectedDefaultMessageTimeToLive = Duration.create();
+        Duration expectedDefaultMessageTimeToLive = createDuration(100);
         QueueInfo QueueInfo = new QueueInfo();
 
         // Act 
@@ -113,7 +131,7 @@ public class QueueInfoTest {
     @Test
     public void testGetSetDuplicateDetectionHistoryTimeWindow() {
         // Arrange
-        Duration expectedDefaultMessageTimeToLive = Duration.create();
+        Duration expectedDefaultMessageTimeToLive = createDuration(100);
         QueueInfo QueueInfo = new QueueInfo();
 
         // Act 
@@ -171,7 +189,7 @@ public class QueueInfoTest {
         QueueInfo QueueInfo = new QueueInfo();
 
         // Act 
-        Long actualMessageCount = QueueInfo.setSizeInBytes(expectedMessageCount).getMessageCount();
+        Long actualMessageCount = QueueInfo.setMessageCount(expectedMessageCount).getMessageCount();
 
         // Assert
         assertEquals(expectedMessageCount, actualMessageCount);
@@ -184,7 +202,7 @@ public class QueueInfoTest {
         QueueInfo QueueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualIsAnonymousAccessible = QueueInfo.setEnableBatchedOperations(expectedIsAnonymousAccessible)
+        Boolean actualIsAnonymousAccessible = QueueInfo.setIsAnonymousAccessible(expectedIsAnonymousAccessible)
                 .isAnonymousAccessible();
 
         // Assert
@@ -233,47 +251,122 @@ public class QueueInfoTest {
 
     @Test
     public void testGetSetCreatedAt() {
+        // Arrange
+        Calendar expectedCreatedAt = Calendar.getInstance();
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Calendar actualCreatedAt = QueueInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
+
+        // Assert
+        assertEquals(expectedCreatedAt, actualCreatedAt);
     }
 
     @Test
     public void testGetSetUpdatedAt() {
+        // Arrange
+        Calendar expectedUpdatedAt = Calendar.getInstance();
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Calendar actualUpdatedAt = QueueInfo.setUpdatedAt(expectedUpdatedAt).getUpdatedAt();
+
+        // Assert
+        assertEquals(expectedUpdatedAt, actualUpdatedAt);
     }
 
     @Test
     public void testGetSetAccessedAt() {
+        // Arrange
+        Calendar expectedAccessedAt = Calendar.getInstance();
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Calendar actualAccessedAt = QueueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+
+        // Assert
+        assertEquals(expectedAccessedAt, actualAccessedAt);
     }
 
     @Test
     public void testGetSetUserMetadata() {
+        // Arrange
+        Calendar expectedAccessedAt = Calendar.getInstance();
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Calendar actualAccessedAt = QueueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+
+        // Assert
+        assertEquals(expectedAccessedAt, actualAccessedAt);
     }
 
     @Test
     public void testGetSetSupportOrdering() {
+        // Arrange
+        Boolean expectedIsSupportOrdering = true;
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Boolean actualIsSupportOrdering = QueueInfo.setSupportOrdering(expectedIsSupportOrdering).isSupportOrdering();
+
+        // Assert
+        assertEquals(expectedIsSupportOrdering, actualIsSupportOrdering);
     }
 
     @Test
     public void testGetSetCountDetails() {
+        // Arrange
+        MessageCountDetails expectedCountDetails = new MessageCountDetails();
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        MessageCountDetails actualCountDetails = QueueInfo.setCountDetails(expectedCountDetails).getCountDetails();
+
+        // Assert
+        assertEquals(expectedCountDetails, actualCountDetails);
     }
 
     @Test
     public void testGetSetAutoDeleteOnIdle() {
+        // Arrange
+        Duration expectedIsAutoDeleteOnIdle = createDuration(100);
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        Duration actualIsAutoDeleteOnIdle = QueueInfo.setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
+                .getAutoDeleteOnIdle();
+
+        // Assert
+        assertEquals(expectedIsAutoDeleteOnIdle, actualIsAutoDeleteOnIdle);
     }
 
     @Test
     public void testGetSetPartioningPolicy() {
+        // Arrange
+        PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        PartitioningPolicy actualPartitioningPolicy = QueueInfo.setPartitioningPolicy(expectedPartitioningPolicy)
+                .getPartitioningPolicy();
+
+        // Assert
+        assertEquals(expectedPartitioningPolicy, actualPartitioningPolicy);
     }
 
     @Test
     public void testGetSetEntityAvailabilityStatus() {
+        // Arrange
+        EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
+        QueueInfo QueueInfo = new QueueInfo();
 
+        // Act 
+        EntityAvailabilityStatus actualEntityAvailabilityStatus = QueueInfo.setEntityAvailabilityStatus(
+                expectedEntityAvailabilityStatus).getEntityAvailabilityStatus();
+
+        // Assert
+        assertEquals(expectedEntityAvailabilityStatus, actualEntityAvailabilityStatus);
     }
 
 }
