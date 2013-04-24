@@ -80,7 +80,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            A <code>String</code> that represents the name of the queue.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setPath(String value) {
         getEntry().setTitle(value);
@@ -102,7 +102,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            The duration, in seconds, of the lock.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setLockDuration(Duration value) {
         getModel().setLockDuration(value);
@@ -124,7 +124,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            The maximum size, in megabytes, of the queue.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setMaxSizeInMegabytes(Long value) {
         getModel().setMaxSizeInMegabytes(value);
@@ -146,7 +146,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setRequiresDuplicateDetection(Boolean value) {
         getModel().setRequiresDuplicateDetection(value);
@@ -168,7 +168,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            <code>true</code> if the queue is session aware; otherwise, <code>false</code>.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setRequiresSession(Boolean value) {
         getModel().setRequiresSession(value);
@@ -191,19 +191,31 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            A <code>Duration</code> object that represents the default message TTL.
      * 
-     * @return A <code>Queue</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
      */
     public QueueInfo setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
 
+    /**
+     * Gets the time span before auto deletion starts.
+     * 
+     * @return A <code>Duration</code> object that represents the time span before auto deletion.
+     */
     public Duration getAutoDeleteOnIdle() {
         return getModel().getAutoDeleteOnIdle();
     }
 
-    public QueueInfo setAutoDeleteOnIdle(Duration duration) {
-        getModel().setAutoDeleteOnIdle(duration);
+    /**
+     * Sets the time span before auto deletion starts.
+     * 
+     * @param autoDeleteOnIdle
+     *            A <code>Duration</code> object that represents the time span before auto deletion starts.
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     */
+    public QueueInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+        getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -307,6 +319,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().getSizeInBytes();
     }
 
+    /**
+     * Sets the size in bytes.
+     * 
+     * @param sizeInBytes
+     *            the size in bytes
+     * @return the queue info
+     */
     public QueueInfo setSizeInBytes(Long sizeInBytes) {
         getModel().setSizeInBytes(sizeInBytes);
         return this;
@@ -321,114 +340,265 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return getModel().getMessageCount();
     }
 
+    /**
+     * Sets the message count.
+     * 
+     * @param messageCount
+     *            the message count
+     * @return the queue info
+     */
     public QueueInfo setMessageCount(Long messageCount) {
         getModel().setMessageCount(messageCount);
         return this;
     }
 
+    /**
+     * Sets the count details.
+     * 
+     * @param countDetails
+     *            the count details
+     * @return the queue info
+     */
     public QueueInfo setCountDetails(MessageCountDetails countDetails) {
         getModel().setCountDetails(countDetails);
         return this;
     }
 
+    /**
+     * Gets the count details.
+     * 
+     * @return the count details
+     */
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }
 
+    /**
+     * Gets the authorization.
+     * 
+     * @return the authorization
+     */
     public AuthorizationRules getAuthorization() {
         return getModel().getAuthorizationRules();
     }
 
+    /**
+     * Sets the authorization.
+     * 
+     * @param authorizationRules
+     *            the authorization rules
+     * @return the queue info
+     */
     public QueueInfo setAuthorization(AuthorizationRules authorizationRules) {
         getModel().setAuthorizationRules(authorizationRules);
         return this;
     }
 
+    /**
+     * Checks if is anonymous accessible.
+     * 
+     * @return the boolean
+     */
     public Boolean isAnonymousAccessible() {
         return getModel().isIsAnonymousAccessible();
     }
 
+    /**
+     * Sets the is anonymous accessible.
+     * 
+     * @param isAnonymousAccessible
+     *            the is anonymous accessible
+     * @return the queue info
+     */
     public QueueInfo setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
         getModel().setIsAnonymousAccessible(isAnonymousAccessible);
         return this;
     }
 
+    /**
+     * Checks if is support ordering.
+     * 
+     * @return the boolean
+     */
     public Boolean isSupportOrdering() {
         return getModel().isSupportOrdering();
     }
 
+    /**
+     * Sets the support ordering.
+     * 
+     * @param supportOrdering
+     *            the support ordering
+     * @return the queue info
+     */
     public QueueInfo setSupportOrdering(Boolean supportOrdering) {
         getModel().setSupportOrdering(supportOrdering);
         return this;
     }
 
+    /**
+     * Gets the status.
+     * 
+     * @return the status
+     */
     public EntityStatus getStatus() {
         return getModel().getStatus();
     }
 
+    /**
+     * Sets the status.
+     * 
+     * @param entityStatus
+     *            the entity status
+     * @return the queue info
+     */
     public QueueInfo setStatus(EntityStatus entityStatus) {
         getModel().setStatus(entityStatus);
         return this;
     }
 
+    /**
+     * Gets the entity availability status.
+     * 
+     * @return the entity availability status
+     */
     public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
     }
 
+    /**
+     * Sets the entity availability status.
+     * 
+     * @param entityAvailabilityStatus
+     *            the entity availability status
+     * @return the queue info
+     */
     public QueueInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
         return this;
     }
 
+    /**
+     * Gets the forward to.
+     * 
+     * @return the forward to
+     */
     public String getForwardTo() {
         return getModel().getForwardTo();
     }
 
+    /**
+     * Sets the forward to.
+     * 
+     * @param forwardTo
+     *            the forward to
+     * @return the queue info
+     */
     public QueueInfo setForwardTo(String forwardTo) {
         getModel().setForwardTo(forwardTo);
         return this;
     }
 
+    /**
+     * Gets the created at.
+     * 
+     * @return the created at
+     */
     public Calendar getCreatedAt() {
         return getModel().getCreatedAt();
     }
 
+    /**
+     * Sets the created at.
+     * 
+     * @param createdAt
+     *            the created at
+     * @return the queue info
+     */
     public QueueInfo setCreatedAt(Calendar createdAt) {
         getModel().setCreatedAt(createdAt);
         return this;
     }
 
+    /**
+     * Gets the updated at.
+     * 
+     * @return the updated at
+     */
     public Calendar getUpdatedAt() {
         return getModel().getUpdatedAt();
     }
 
+    /**
+     * Sets the updated at.
+     * 
+     * @param updatedAt
+     *            the updated at
+     * @return the queue info
+     */
     public QueueInfo setUpdatedAt(Calendar updatedAt) {
         getModel().setUpdatedAt(updatedAt);
         return this;
     }
 
+    /**
+     * Gets the accessed at.
+     * 
+     * @return the accessed at
+     */
     public Calendar getAccessedAt() {
         return getModel().getAccessedAt();
     }
 
+    /**
+     * Sets the accessed at.
+     * 
+     * @param accessedAt
+     *            the accessed at
+     * @return the queue info
+     */
     public QueueInfo setAccessedAt(Calendar accessedAt) {
         getModel().setAccessedAt(accessedAt);
         return this;
     }
 
+    /**
+     * Gets the partitioning policy.
+     * 
+     * @return the partitioning policy
+     */
     public PartitioningPolicy getPartitioningPolicy() {
         return getModel().getPartitioningPolicy();
     }
 
+    /**
+     * Sets the partitioning policy.
+     * 
+     * @param partitioningPolicy
+     *            the partitioning policy
+     * @return the queue info
+     */
     public QueueInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy) {
         getModel().setPartitioningPolicy(partitioningPolicy);
         return this;
     }
 
+    /**
+     * Sets the user metadata.
+     * 
+     * @return the string
+     */
     public String setUserMetadata() {
         return getModel().getUserMetadata();
     }
 
+    /**
+     * Sets the user metadata.
+     * 
+     * @param userMetadata
+     *            the user metadata
+     * @return the queue info
+     */
     public QueueInfo setUserMetadata(String userMetadata) {
         getModel().setUserMetadata(userMetadata);
         return this;

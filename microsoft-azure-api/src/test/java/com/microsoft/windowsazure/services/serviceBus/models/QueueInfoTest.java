@@ -47,10 +47,10 @@ public class QueueInfoTest {
     public void testGetSetLockDuration() {
         // Arrange
         Duration expectedLockDuration = createDuration(100);
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Duration actualLockDuration = QueueInfo.setLockDuration(expectedLockDuration).getLockDuration();
+        Duration actualLockDuration = queueInfo.setLockDuration(expectedLockDuration).getLockDuration();
 
         // Assert
         assertEquals(expectedLockDuration, actualLockDuration);
@@ -61,10 +61,10 @@ public class QueueInfoTest {
     public void testGetSetMaxSizeInMegabytes() {
         // Arrange
         Long expectedMaxSizeInMegabytes = 1024L;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Long actualMaxSizeInMegabytes = QueueInfo.setMaxSizeInMegabytes(expectedMaxSizeInMegabytes)
+        Long actualMaxSizeInMegabytes = queueInfo.setMaxSizeInMegabytes(expectedMaxSizeInMegabytes)
                 .getMaxSizeInMegabytes();
 
         // Assert
@@ -76,10 +76,10 @@ public class QueueInfoTest {
     public void testGetSetRequiresDuplicateDetection() {
         // Arrange
         Boolean expectedRequiresDuplicateDetection = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualRequiresDuplicateDetection = QueueInfo.setRequiresDuplicateDetection(
+        Boolean actualRequiresDuplicateDetection = queueInfo.setRequiresDuplicateDetection(
                 expectedRequiresDuplicateDetection).isRequiresDuplicateDetection();
 
         // Assert
@@ -91,10 +91,10 @@ public class QueueInfoTest {
     public void testGetSetRequiresSession() {
         // Arrange
         Boolean expectedRequiresSession = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualRequiresSession = QueueInfo.setRequiresSession(expectedRequiresSession).isRequiresSession();
+        Boolean actualRequiresSession = queueInfo.setRequiresSession(expectedRequiresSession).isRequiresSession();
 
         // Assert
         assertEquals(expectedRequiresSession, actualRequiresSession);
@@ -104,10 +104,10 @@ public class QueueInfoTest {
     public void testGetSetDefaultMessageTimeToLive() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Duration actualDefaultMessageTimeToLive = QueueInfo.setDefaultMessageTimeToLive(
+        Duration actualDefaultMessageTimeToLive = queueInfo.setDefaultMessageTimeToLive(
                 expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
 
         // Assert
@@ -118,10 +118,10 @@ public class QueueInfoTest {
     public void testGetSetDeadLetteringOnMessageExpiration() {
         // Arrange
         Boolean expectedDeadLetteringOnMessageExpiration = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualDeadLetteringOnMessageExpiration = QueueInfo.setDeadLetteringOnMessageExpiration(
+        Boolean actualDeadLetteringOnMessageExpiration = queueInfo.setDeadLetteringOnMessageExpiration(
                 expectedDeadLetteringOnMessageExpiration).isDeadLetteringOnMessageExpiration();
 
         // Assert
@@ -132,10 +132,10 @@ public class QueueInfoTest {
     public void testGetSetDuplicateDetectionHistoryTimeWindow() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Duration actualDefaultMessageTimeToLive = QueueInfo.setDefaultMessageTimeToLive(
+        Duration actualDefaultMessageTimeToLive = queueInfo.setDefaultMessageTimeToLive(
                 expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
 
         // Assert
@@ -146,10 +146,10 @@ public class QueueInfoTest {
     public void testGetSetMaxDeliveryCount() {
         // Arrange
         Integer expectedMaxDeliveryCount = 1024;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Integer actualMaxDeliveryCount = QueueInfo.setMaxDeliveryCount(expectedMaxDeliveryCount).getMaxDeliveryCount();
+        Integer actualMaxDeliveryCount = queueInfo.setMaxDeliveryCount(expectedMaxDeliveryCount).getMaxDeliveryCount();
 
         // Assert
         assertEquals(expectedMaxDeliveryCount, actualMaxDeliveryCount);
@@ -159,10 +159,10 @@ public class QueueInfoTest {
     public void testGetSetEnableBatchedOperations() {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualEnableBatchedOperations = QueueInfo.setEnableBatchedOperations(expectedEnableBatchedOperations)
+        Boolean actualEnableBatchedOperations = queueInfo.setEnableBatchedOperations(expectedEnableBatchedOperations)
                 .isEnableBatchedOperations();
 
         // Assert
@@ -173,10 +173,10 @@ public class QueueInfoTest {
     public void testGetSetSizeInBytes() {
         // Arrange
         Long expectedSizeInBytes = 1024L;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Long actualSizeInBytes = QueueInfo.setSizeInBytes(expectedSizeInBytes).getSizeInBytes();
+        Long actualSizeInBytes = queueInfo.setSizeInBytes(expectedSizeInBytes).getSizeInBytes();
 
         // Assert
         assertEquals(expectedSizeInBytes, actualSizeInBytes);
@@ -186,10 +186,10 @@ public class QueueInfoTest {
     public void testGetSetMessageCount() {
         // Arrange
         Long expectedMessageCount = 1024L;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Long actualMessageCount = QueueInfo.setMessageCount(expectedMessageCount).getMessageCount();
+        Long actualMessageCount = queueInfo.setMessageCount(expectedMessageCount).getMessageCount();
 
         // Assert
         assertEquals(expectedMessageCount, actualMessageCount);
@@ -199,10 +199,10 @@ public class QueueInfoTest {
     public void testGetSetIsAnonymousAccessible() {
         // Arrange
         Boolean expectedIsAnonymousAccessible = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualIsAnonymousAccessible = QueueInfo.setIsAnonymousAccessible(expectedIsAnonymousAccessible)
+        Boolean actualIsAnonymousAccessible = queueInfo.setIsAnonymousAccessible(expectedIsAnonymousAccessible)
                 .isAnonymousAccessible();
 
         // Assert
@@ -213,10 +213,10 @@ public class QueueInfoTest {
     public void testGetSetAuthorization() {
         // Arrange
         AuthorizationRules expectedAuthorizationRules = new AuthorizationRules();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        AuthorizationRules actualAuthorizationRules = QueueInfo.setAuthorization(expectedAuthorizationRules)
+        AuthorizationRules actualAuthorizationRules = queueInfo.setAuthorization(expectedAuthorizationRules)
                 .getAuthorization();
 
         // Assert
@@ -227,10 +227,10 @@ public class QueueInfoTest {
     public void testGetSetStatus() {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        EntityStatus actualEntityStatus = QueueInfo.setStatus(expectedEntityStatus).getStatus();
+        EntityStatus actualEntityStatus = queueInfo.setStatus(expectedEntityStatus).getStatus();
 
         // Assert
         assertEquals(expectedEntityStatus, actualEntityStatus);
@@ -240,10 +240,10 @@ public class QueueInfoTest {
     public void testGetSetForwardTo() {
         // Arrange
         String expectedForwardTo = "forwardTo";
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        String actualForwardTo = QueueInfo.setForwardTo(expectedForwardTo).getForwardTo();
+        String actualForwardTo = queueInfo.setForwardTo(expectedForwardTo).getForwardTo();
 
         // Assert
         assertEquals(expectedForwardTo, actualForwardTo);
@@ -253,10 +253,10 @@ public class QueueInfoTest {
     public void testGetSetCreatedAt() {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Calendar actualCreatedAt = QueueInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
+        Calendar actualCreatedAt = queueInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
 
         // Assert
         assertEquals(expectedCreatedAt, actualCreatedAt);
@@ -266,10 +266,10 @@ public class QueueInfoTest {
     public void testGetSetUpdatedAt() {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Calendar actualUpdatedAt = QueueInfo.setUpdatedAt(expectedUpdatedAt).getUpdatedAt();
+        Calendar actualUpdatedAt = queueInfo.setUpdatedAt(expectedUpdatedAt).getUpdatedAt();
 
         // Assert
         assertEquals(expectedUpdatedAt, actualUpdatedAt);
@@ -279,10 +279,10 @@ public class QueueInfoTest {
     public void testGetSetAccessedAt() {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Calendar actualAccessedAt = QueueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+        Calendar actualAccessedAt = queueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
 
         // Assert
         assertEquals(expectedAccessedAt, actualAccessedAt);
@@ -292,10 +292,10 @@ public class QueueInfoTest {
     public void testGetSetUserMetadata() {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Calendar actualAccessedAt = QueueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+        Calendar actualAccessedAt = queueInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
 
         // Assert
         assertEquals(expectedAccessedAt, actualAccessedAt);
@@ -305,10 +305,10 @@ public class QueueInfoTest {
     public void testGetSetSupportOrdering() {
         // Arrange
         Boolean expectedIsSupportOrdering = true;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Boolean actualIsSupportOrdering = QueueInfo.setSupportOrdering(expectedIsSupportOrdering).isSupportOrdering();
+        Boolean actualIsSupportOrdering = queueInfo.setSupportOrdering(expectedIsSupportOrdering).isSupportOrdering();
 
         // Assert
         assertEquals(expectedIsSupportOrdering, actualIsSupportOrdering);
@@ -318,10 +318,10 @@ public class QueueInfoTest {
     public void testGetSetCountDetails() {
         // Arrange
         MessageCountDetails expectedCountDetails = new MessageCountDetails();
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        MessageCountDetails actualCountDetails = QueueInfo.setCountDetails(expectedCountDetails).getCountDetails();
+        MessageCountDetails actualCountDetails = queueInfo.setCountDetails(expectedCountDetails).getCountDetails();
 
         // Assert
         assertEquals(expectedCountDetails, actualCountDetails);
@@ -331,10 +331,10 @@ public class QueueInfoTest {
     public void testGetSetAutoDeleteOnIdle() {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        Duration actualIsAutoDeleteOnIdle = QueueInfo.setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
+        Duration actualIsAutoDeleteOnIdle = queueInfo.setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
                 .getAutoDeleteOnIdle();
 
         // Assert
@@ -345,10 +345,10 @@ public class QueueInfoTest {
     public void testGetSetPartioningPolicy() {
         // Arrange
         PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        PartitioningPolicy actualPartitioningPolicy = QueueInfo.setPartitioningPolicy(expectedPartitioningPolicy)
+        PartitioningPolicy actualPartitioningPolicy = queueInfo.setPartitioningPolicy(expectedPartitioningPolicy)
                 .getPartitioningPolicy();
 
         // Assert
@@ -359,10 +359,10 @@ public class QueueInfoTest {
     public void testGetSetEntityAvailabilityStatus() {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
-        QueueInfo QueueInfo = new QueueInfo();
+        QueueInfo queueInfo = new QueueInfo();
 
         // Act 
-        EntityAvailabilityStatus actualEntityAvailabilityStatus = QueueInfo.setEntityAvailabilityStatus(
+        EntityAvailabilityStatus actualEntityAvailabilityStatus = queueInfo.setEntityAvailabilityStatus(
                 expectedEntityAvailabilityStatus).getEntityAvailabilityStatus();
 
         // Assert
