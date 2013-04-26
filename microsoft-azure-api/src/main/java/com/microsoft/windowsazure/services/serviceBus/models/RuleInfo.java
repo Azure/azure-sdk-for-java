@@ -135,12 +135,26 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return this;
     }
 
+    /**
+     * With correlation id filter.
+     * 
+     * @param correlationId
+     *            the correlation id
+     * @return the rule info
+     */
     public RuleInfo withCorrelationIdFilter(String correlationId) {
         CorrelationFilter filter = new CorrelationFilter();
         filter.setCorrelationId(correlationId);
         return setFilter(filter);
     }
 
+    /**
+     * With sql expression filter.
+     * 
+     * @param sqlExpression
+     *            the sql expression
+     * @return the rule info
+     */
     public RuleInfo withSqlExpressionFilter(String sqlExpression) {
         SqlFilter filter = new SqlFilter();
         filter.setSqlExpression(sqlExpression);
@@ -148,6 +162,11 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return setFilter(filter);
     }
 
+    /**
+     * With true filter.
+     * 
+     * @return the rule info
+     */
     public RuleInfo withTrueFilter() {
         TrueFilter filter = new TrueFilter();
         filter.setCompatibilityLevel(20);
@@ -155,6 +174,11 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return setFilter(filter);
     }
 
+    /**
+     * With false filter.
+     * 
+     * @return the rule info
+     */
     public RuleInfo withFalseFilter() {
         FalseFilter filter = new FalseFilter();
         filter.setCompatibilityLevel(20);
@@ -162,11 +186,23 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return setFilter(filter);
     }
 
+    /**
+     * With empty rule action.
+     * 
+     * @return the rule info
+     */
     public RuleInfo withEmptyRuleAction() {
         EmptyRuleAction action = new EmptyRuleAction();
         return setAction(action);
     }
 
+    /**
+     * With sql rule action.
+     * 
+     * @param sqlExpression
+     *            the sql expression
+     * @return the rule info
+     */
     public RuleInfo withSqlRuleAction(String sqlExpression) {
         SqlRuleAction action = new SqlRuleAction();
         action.setSqlExpression(sqlExpression);
@@ -174,20 +210,44 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         return setAction(action);
     }
 
+    /**
+     * Sets the tag.
+     * 
+     * @param tag
+     *            the tag
+     * @return the rule info
+     */
     public RuleInfo setTag(String tag) {
         getModel().setTag(tag);
         return this;
     }
 
+    /**
+     * Gets the tag.
+     * 
+     * @return the tag
+     */
     public String getTag() {
         return getModel().getTag();
     }
 
+    /**
+     * Sets the created at.
+     * 
+     * @param createdAt
+     *            the created at
+     * @return the rule info
+     */
     public RuleInfo setCreatedAt(Calendar createdAt) {
         getModel().setCreatedAt(createdAt);
         return this;
     }
 
+    /**
+     * Gets the created at.
+     * 
+     * @return the created at
+     */
     public Calendar getCreatedAt() {
         return getModel().getCreatedAt();
     }

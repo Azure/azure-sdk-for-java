@@ -272,88 +272,203 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         return this;
     }
 
+    /**
+     * Sets the message count.
+     * 
+     * @param messageCount
+     *            the message count
+     * @return the subscription info
+     */
     public SubscriptionInfo setMessageCount(Long messageCount) {
         getModel().setMessageCount(messageCount);
         return this;
     }
 
+    /**
+     * Sets the status.
+     * 
+     * @param entityStatus
+     *            the entity status
+     * @return the subscription info
+     */
     public SubscriptionInfo setStatus(EntityStatus entityStatus) {
         getModel().setStatus(entityStatus);
         return this;
     }
 
+    /**
+     * Gets the status.
+     * 
+     * @return the status
+     */
     public EntityStatus getStatus() {
         return getModel().getStatus();
     }
 
+    /**
+     * Sets the forward to.
+     * 
+     * @param forwardTo
+     *            the forward to
+     * @return the subscription info
+     */
     public SubscriptionInfo setForwardTo(String forwardTo) {
         getModel().setForwardTo(forwardTo);
         return this;
     }
 
+    /**
+     * Gets the forward to.
+     * 
+     * @return the forward to
+     */
     public String getForwardTo() {
         return getModel().getForwardTo();
     }
 
+    /**
+     * Sets the created at.
+     * 
+     * @param createdAt
+     *            the created at
+     * @return the subscription info
+     */
     public SubscriptionInfo setCreatedAt(Calendar createdAt) {
         getModel().setCreatedAt(createdAt);
         return this;
     }
 
+    /**
+     * Gets the created at.
+     * 
+     * @return the created at
+     */
     public Calendar getCreatedAt() {
         return getModel().getCreatedAt();
     }
 
+    /**
+     * Sets the updated at.
+     * 
+     * @param updatedAt
+     *            the updated at
+     * @return the subscription info
+     */
     public SubscriptionInfo setUpdatedAt(Calendar updatedAt) {
         getModel().setUpdatedAt(updatedAt);
         return this;
     }
 
+    /**
+     * Gets the updated at.
+     * 
+     * @return the updated at
+     */
     public Calendar getUpdatedAt() {
         return getModel().getUpdatedAt();
     }
 
+    /**
+     * Sets the accessed at.
+     * 
+     * @param accessedAt
+     *            the accessed at
+     * @return the subscription info
+     */
     public SubscriptionInfo setAccessedAt(Calendar accessedAt) {
         getModel().setAccessedAt(accessedAt);
         return this;
     }
 
+    /**
+     * Gets the accessed at.
+     * 
+     * @return the accessed at
+     */
     public Calendar getAccessedAt() {
         return getModel().getAccessedAt();
     }
 
+    /**
+     * Sets the user metadata.
+     * 
+     * @param userMetadata
+     *            the user metadata
+     * @return the subscription info
+     */
     public SubscriptionInfo setUserMetadata(String userMetadata) {
         getModel().setUserMetadata(userMetadata);
         return this;
     }
 
+    /**
+     * Gets the user metadata.
+     * 
+     * @return the user metadata
+     */
     public String getUserMetadata() {
         return getModel().getUserMetadata();
     }
 
+    /**
+     * Sets the count details.
+     * 
+     * @param countDetails
+     *            the count details
+     * @return the subscription info
+     */
     public SubscriptionInfo setCountDetails(MessageCountDetails countDetails) {
         getModel().setCountDetails(countDetails);
         return this;
     }
 
+    /**
+     * Gets the count details.
+     * 
+     * @return the count details
+     */
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }
 
+    /**
+     * Sets the auto delete on idle.
+     * 
+     * @param autoDeleteOnIdle
+     *            the auto delete on idle
+     * @return the subscription info
+     */
     public SubscriptionInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
         getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
+    /**
+     * Gets the auto delete on idle.
+     * 
+     * @return the auto delete on idle
+     */
     public Duration getAutoDeleteOnIdle() {
         return getModel().getAutoDeleteOnIdle();
     }
 
+    /**
+     * Sets the entity availability status.
+     * 
+     * @param entityAvailabilityStatus
+     *            the entity availability status
+     * @return the subscription info
+     */
     public SubscriptionInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
         return this;
     }
 
+    /**
+     * Gets the entity availability status.
+     * 
+     * @return the entity availability status
+     */
     public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
     }
