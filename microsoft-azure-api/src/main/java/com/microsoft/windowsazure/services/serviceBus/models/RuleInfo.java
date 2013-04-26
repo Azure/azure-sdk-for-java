@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
+import java.util.Calendar;
+
 import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
@@ -170,5 +172,23 @@ public class RuleInfo extends EntryModel<RuleDescription> {
         action.setSqlExpression(sqlExpression);
         action.setCompatibilityLevel(20);
         return setAction(action);
+    }
+
+    public RuleInfo setTag(String tag) {
+        getModel().setTag(tag);
+        return this;
+    }
+
+    public String getTag() {
+        return getModel().getTag();
+    }
+
+    public RuleInfo setCreatedAt(Calendar createdAt) {
+        getModel().setCreatedAt(createdAt);
+        return this;
+    }
+
+    public Calendar getCreatedAt() {
+        return getModel().getCreatedAt();
     }
 }
