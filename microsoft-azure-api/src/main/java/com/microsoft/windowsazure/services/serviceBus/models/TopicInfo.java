@@ -14,13 +14,19 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
+import java.util.Calendar;
+
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
+import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
 /**
@@ -200,8 +206,143 @@ public class TopicInfo extends EntryModel<TopicDescription> {
         return getModel().getSizeInBytes();
     }
 
+    public TopicInfo setSizeInBytes(Long sizeInBytes) {
+        getModel().setSizeInBytes(sizeInBytes);
+        return this;
+    }
+
     public TopicInfo setAuthorization(AuthorizationRules authorizationRules) {
         getModel().setAuthorizationRules(authorizationRules);
         return this;
+    }
+
+    public AuthorizationRules getAuthorization() {
+        return getModel().getAuthorizationRules();
+    }
+
+    public TopicInfo setFilteringMessageBeforePublishing(Boolean filteringMessageBeforePublishing) {
+        getModel().setFilteringMessagesBeforePublishing(filteringMessageBeforePublishing);
+        return this;
+    }
+
+    public Boolean isFilteringMessageBeforePublishing() {
+        return getModel().isFilteringMessagesBeforePublishing();
+    }
+
+    public TopicInfo setAnonymousAccessible(Boolean anonymousAccessible) {
+        getModel().setIsAnonymousAcessible(anonymousAccessible);
+        return this;
+    }
+
+    public Boolean isAnonymousAccessible() {
+        return getModel().isIsAnonymousAcessible();
+    }
+
+    public TopicInfo setStatus(EntityStatus status) {
+        getModel().setStatus(status);
+        return this;
+    }
+
+    public EntityStatus getStatus() {
+        return getModel().getStatus();
+    }
+
+    public TopicInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    public String getForwardTo() {
+        return getModel().getForwardTo();
+    }
+
+    public TopicInfo setCreatedAt(Calendar createdAt) {
+        getModel().setCreatedAt(createdAt);
+        return this;
+    }
+
+    public Calendar getCreatedAt() {
+        return getModel().getCreatedAt();
+    }
+
+    public TopicInfo setUpdatedAt(Calendar updatedAt) {
+        getModel().setUpdatedAt(updatedAt);
+        return this;
+    }
+
+    public Calendar getUpdatedAt() {
+        return getModel().getCreatedAt();
+    }
+
+    public TopicInfo setAccessedAt(Calendar accessedAt) {
+        getModel().setAccessedAt(accessedAt);
+        return this;
+    }
+
+    public Calendar getAccessedAt() {
+        return getModel().getAccessedAt();
+    }
+
+    public TopicInfo setUserMetadata(String userMetadata) {
+        getModel().setUserMetadata(userMetadata);
+        return this;
+    }
+
+    public String getUserMetadata() {
+        return getModel().getUserMetadata();
+    }
+
+    public TopicInfo setSupportOrdering(Boolean supportOrdering) {
+        getModel().setSupportOrdering(supportOrdering);
+        return this;
+    }
+
+    public Boolean isSupportOrdering() {
+        return getModel().isSupportOrdering();
+    }
+
+    public TopicInfo setSubscriptionCount(Integer subscriptionCount) {
+        getModel().setSubscriptionCount(subscriptionCount);
+        return this;
+    }
+
+    public Integer getSubscriptionCount() {
+        return getModel().getSubscriptionCount();
+    }
+
+    public TopicInfo setCountDetails(MessageCountDetails countDetails) {
+        getModel().setCountDetail(countDetails);
+        return this;
+    }
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetail();
+    }
+
+    public TopicInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+        getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
+        return this;
+    }
+
+    public Duration getAutoDeleteOnIdle() {
+        return getModel().getAutoDeleteOnIdle();
+    }
+
+    public TopicInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy) {
+        getModel().setPartitioningPolicy(partitioningPolicy);
+        return this;
+    }
+
+    public PartitioningPolicy getPartitioningPolicy() {
+        return getModel().getPartitioningPolicy();
+    }
+
+    public TopicInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+        getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
+        return this;
+    }
+
+    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+        return getModel().getEntityAvailabilityStatus();
     }
 }
