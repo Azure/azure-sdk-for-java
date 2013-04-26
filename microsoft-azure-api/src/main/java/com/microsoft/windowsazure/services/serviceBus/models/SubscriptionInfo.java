@@ -2,24 +2,29 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
+
+import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
@@ -266,4 +271,91 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         getModel().setEnableBatchedOperations(value);
         return this;
     }
+
+    public SubscriptionInfo setMessageCount(Long messageCount) {
+        getModel().setMessageCount(messageCount);
+        return this;
+    }
+
+    public SubscriptionInfo setStatus(EntityStatus entityStatus) {
+        getModel().setStatus(entityStatus);
+        return this;
+    }
+
+    public EntityStatus getStatus() {
+        return getModel().getStatus();
+    }
+
+    public SubscriptionInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    public String getForwardTo() {
+        return getModel().getForwardTo();
+    }
+
+    public SubscriptionInfo setCreatedAt(Calendar createdAt) {
+        getModel().setCreatedAt(createdAt);
+        return this;
+    }
+
+    public Calendar getCreatedAt() {
+        return getModel().getCreatedAt();
+    }
+
+    public SubscriptionInfo setUpdatedAt(Calendar updatedAt) {
+        getModel().setUpdatedAt(updatedAt);
+        return this;
+    }
+
+    public Calendar getUpdatedAt() {
+        return getModel().getUpdatedAt();
+    }
+
+    public SubscriptionInfo setAccessedAt(Calendar accessedAt) {
+        getModel().setAccessedAt(accessedAt);
+        return this;
+    }
+
+    public Calendar getAccessedAt() {
+        return getModel().getAccessedAt();
+    }
+
+    public SubscriptionInfo setUserMetadata(String userMetadata) {
+        getModel().setUserMetadata(userMetadata);
+        return this;
+    }
+
+    public String getUserMetadata() {
+        return getModel().getUserMetadata();
+    }
+
+    public SubscriptionInfo setCountDetails(MessageCountDetails countDetails) {
+        getModel().setCountDetails(countDetails);
+        return this;
+    }
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
+    }
+
+    public SubscriptionInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+        getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
+        return this;
+    }
+
+    public Duration getAutoDeleteOnIdle() {
+        return getModel().getAutoDeleteOnIdle();
+    }
+
+    public SubscriptionInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+        getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
+        return this;
+    }
+
+    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+        return getModel().getEntityAvailabilityStatus();
+    }
+
 }

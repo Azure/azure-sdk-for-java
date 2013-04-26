@@ -24,11 +24,10 @@ import javax.xml.datatype.Duration;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
-import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
+import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 
 public class SubscriptionInfoTest {
 
@@ -54,36 +53,6 @@ public class SubscriptionInfoTest {
 
         // Assert
         assertEquals(expectedLockDuration, actualLockDuration);
-
-    }
-
-    @Test
-    public void testGetSetMaxSizeInMegabytes() {
-        // Arrange
-        Long expectedMaxSizeInMegabytes = 1024L;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Long actualMaxSizeInMegabytes = SubscriptionInfo.setMaxSizeInMegabytes(expectedMaxSizeInMegabytes)
-                .getMaxSizeInMegabytes();
-
-        // Assert
-        assertEquals(expectedMaxSizeInMegabytes, actualMaxSizeInMegabytes);
-
-    }
-
-    @Test
-    public void testGetSetRequiresDuplicateDetection() {
-        // Arrange
-        Boolean expectedRequiresDuplicateDetection = true;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Boolean actualRequiresDuplicateDetection = SubscriptionInfo.setRequiresDuplicateDetection(
-                expectedRequiresDuplicateDetection).isRequiresDuplicateDetection();
-
-        // Assert
-        assertEquals(expectedRequiresDuplicateDetection, actualRequiresDuplicateDetection);
 
     }
 
@@ -130,17 +99,45 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetDuplicateDetectionHistoryTimeWindow() {
+    public void testGetSetDeadLetteringOnFilterEvaluationExceptions() {
         // Arrange
-        Duration expectedDefaultMessageTimeToLive = createDuration(100);
+        Boolean expectedDeadLetteringOnFilterEvaluationExceptions = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
         // Act 
-        Duration actualDefaultMessageTimeToLive = SubscriptionInfo.setDefaultMessageTimeToLive(
-                expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
+        Boolean actualDeadLetteringOnFilterEvaluationExceptions = SubscriptionInfo
+                .setDeadLetteringOnFilterEvaluationExceptions(expectedDeadLetteringOnFilterEvaluationExceptions)
+                .isDeadLetteringOnFilterEvaluationExceptions();
 
         // Assert
-        assertEquals(expectedDefaultMessageTimeToLive, actualDefaultMessageTimeToLive);
+        assertEquals(expectedDeadLetteringOnFilterEvaluationExceptions, actualDeadLetteringOnFilterEvaluationExceptions);
+    }
+
+    @Test
+    public void testGetSetDefaultRuleDescription() {
+        // Arrange
+        RuleDescription expectedDefaultRuleDescription = new RuleDescription();
+        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
+
+        // Act 
+        RuleDescription actualDefaultRuleDescription = SubscriptionInfo.setDefaultRuleDescription(
+                expectedDefaultRuleDescription).getDefaultRuleDescription();
+
+        // Assert
+        assertEquals(expectedDefaultRuleDescription, actualDefaultRuleDescription);
+    }
+
+    @Test
+    public void testGetSetMessageCount() {
+        // Arrange
+        Long expectedMessageCount = 1024L;
+        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
+
+        // Act 
+        Long actualMessageCount = SubscriptionInfo.setMessageCount(expectedMessageCount).getMessageCount();
+
+        // Assert
+        assertEquals(expectedMessageCount, actualMessageCount);
     }
 
     @Test
@@ -169,60 +166,6 @@ public class SubscriptionInfoTest {
 
         // Assert
         assertEquals(expectedEnableBatchedOperations, actualEnableBatchedOperations);
-    }
-
-    @Test
-    public void testGetSetSizeInBytes() {
-        // Arrange
-        Long expectedSizeInBytes = 1024L;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Long actualSizeInBytes = SubscriptionInfo.setSizeInBytes(expectedSizeInBytes).getSizeInBytes();
-
-        // Assert
-        assertEquals(expectedSizeInBytes, actualSizeInBytes);
-    }
-
-    @Test
-    public void testGetSetMessageCount() {
-        // Arrange
-        Long expectedMessageCount = 1024L;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Long actualMessageCount = SubscriptionInfo.setMessageCount(expectedMessageCount).getMessageCount();
-
-        // Assert
-        assertEquals(expectedMessageCount, actualMessageCount);
-    }
-
-    @Test
-    public void testGetSetIsAnonymousAccessible() {
-        // Arrange
-        Boolean expectedIsAnonymousAccessible = true;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Boolean actualIsAnonymousAccessible = SubscriptionInfo.setIsAnonymousAccessible(expectedIsAnonymousAccessible)
-                .isAnonymousAccessible();
-
-        // Assert
-        assertEquals(expectedIsAnonymousAccessible, actualIsAnonymousAccessible);
-    }
-
-    @Test
-    public void testGetSetAuthorization() {
-        // Arrange
-        AuthorizationRules expectedAuthorizationRules = new AuthorizationRules();
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        AuthorizationRules actualAuthorizationRules = SubscriptionInfo.setAuthorization(expectedAuthorizationRules)
-                .getAuthorization();
-
-        // Assert
-        assertEquals(expectedAuthorizationRules, actualAuthorizationRules);
     }
 
     @Test
@@ -304,20 +247,6 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetSupportOrdering() {
-        // Arrange
-        Boolean expectedIsSupportOrdering = true;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        Boolean actualIsSupportOrdering = SubscriptionInfo.setSupportOrdering(expectedIsSupportOrdering)
-                .isSupportOrdering();
-
-        // Assert
-        assertEquals(expectedIsSupportOrdering, actualIsSupportOrdering);
-    }
-
-    @Test
     public void testGetSetCountDetails() {
         // Arrange
         MessageCountDetails expectedCountDetails = new MessageCountDetails();
@@ -343,20 +272,6 @@ public class SubscriptionInfoTest {
 
         // Assert
         assertEquals(expectedIsAutoDeleteOnIdle, actualIsAutoDeleteOnIdle);
-    }
-
-    @Test
-    public void testGetSetPartioningPolicy() {
-        // Arrange
-        PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        PartitioningPolicy actualPartitioningPolicy = SubscriptionInfo
-                .setPartitioningPolicy(expectedPartitioningPolicy).getPartitioningPolicy();
-
-        // Assert
-        assertEquals(expectedPartitioningPolicy, actualPartitioningPolicy);
     }
 
     @Test
