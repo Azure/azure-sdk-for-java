@@ -54,6 +54,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.RenewLockResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -427,6 +428,25 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     @Override
     public ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException {
         return listRules(topicName, subscriptionName, ListRulesOptions.DEFAULT);
+    }
+
+    @Override
+    public RenewLockResult renewLock(String entityName, String messageId, String lockToken) throws ServiceException {
+        ClientResponse clientResponse = getResource().path(entityName).path("messages").path(messageId).path(lockToken)
+                .post(ClientResponse.class);
+        RenewLockResult renewLockResult = new RenewLockResult(null);
+        return renewLockResult;
+    }
+
+    @Override
+    public RenewLockResult renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+        return renewLock(queueName, messageId, lockToken);
+    }
+
+    @Override
+    public RenewLockResult renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
+            throws ServiceException {
+        return renewLock(subscriptionName, messageId, lockToken);
     }
 
 }

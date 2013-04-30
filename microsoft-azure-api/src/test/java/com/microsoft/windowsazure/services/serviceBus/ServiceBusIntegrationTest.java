@@ -187,6 +187,27 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void renewLockMessageWorks() throws Exception {
+        // Arrange
+        String queueName = "TestRenewLockMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+
+        // Act
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+
+        BrokeredMessage renewedMessage = service.renewLock(queueName, message.getMessageId(), message.getLockToken())
+                .getValue();
+
+        // Assert
+        byte[] data = new byte[100];
+        int size = message.getBody().read(data);
+        assertEquals(11, size);
+        assertEquals("Hello Again", new String(data, 0, size));
+        assertTrue(message.getLockedUntilUtc() != renewedMessage.getLockedUntilUtc());
+    }
+
+    @Test
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";

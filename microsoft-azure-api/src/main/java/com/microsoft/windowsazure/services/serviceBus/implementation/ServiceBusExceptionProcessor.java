@@ -46,6 +46,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.RenewLockResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -529,4 +530,43 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
+    public RenewLockResult renewLock(String path, String messageId, String lockToken) throws ServiceException {
+        try {
+            return next.renewLock(path, messageId, lockToken);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public RenewLockResult renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+        try {
+            return next.renewQueueLock(queueName, messageId, lockToken);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public RenewLockResult renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
+            throws ServiceException {
+        try {
+            return next.renewSubscriptionLock(subscriptionName, messageId, lockToken);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
 }
