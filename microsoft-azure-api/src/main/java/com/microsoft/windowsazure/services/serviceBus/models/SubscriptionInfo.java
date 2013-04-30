@@ -2,24 +2,29 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
+
+import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
@@ -29,7 +34,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Subscriptio
 public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
 
     /**
-     * Creates an instance of the <code>Subscription</code> class.
+     * Creates an instance of the <code>SubscriptionInfo</code> class.
      */
     public SubscriptionInfo() {
         super(new Entry(), new SubscriptionDescription());
@@ -39,7 +44,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
     }
 
     /**
-     * Creates an instance of the <code>Subscription</code> class using the specified entry.
+     * Creates an instance of the <code>SubscriptionInfo</code> class using the specified entry.
      * 
      * @param entry
      *            An <code>Entry</code> object.
@@ -49,7 +54,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
     }
 
     /**
-     * Creates an instance of the <code>Subscription</code> class using the specified name.
+     * Creates an instance of the <code>SubscriptionInfo</code> class using the specified name.
      * 
      * @param name
      *            A <code>String</code> object that represents the name of the subscription.
@@ -74,7 +79,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            A <code>String</code> that represents the name of the subscription.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setName(String value) {
         getEntry().setTitle(value);
@@ -96,7 +101,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            The duration, in seconds, of the lock.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setLockDuration(Duration value) {
         getModel().setLockDuration(value);
@@ -118,7 +123,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            <code>true</code> if the subscription is session aware; otherwise, <code>false</code>.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setRequiresSession(Boolean value) {
         getModel().setRequiresSession(value);
@@ -141,7 +146,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            A <code>Duration</code> object that represents the default message TTL.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setDefaultMessageTimeToLive(Duration value) {
         getModel().setDefaultMessageTimeToLive(value);
@@ -163,7 +168,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            <code>true</code> if dead lettering is in effect; otherwise, <code>false</code>.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setDeadLetteringOnMessageExpiration(Boolean value) {
         getModel().setDeadLetteringOnMessageExpiration(value);
@@ -185,7 +190,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            <code>true</code> if dead lettering is in effect; otherwise, <code>false</code>.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setDeadLetteringOnFilterEvaluationExceptions(Boolean value) {
         getModel().setDeadLetteringOnFilterEvaluationExceptions(value);
@@ -207,7 +212,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            A <code>RuleDescription</code> object that represents the default rule description.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setDefaultRuleDescription(RuleDescription value) {
         getModel().setDefaultRuleDescription(value);
@@ -217,7 +222,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
     /**
      * Returns the number of messages in the subscription.
      * 
-     * @return The number of messages in the subscription.
+     * @return A <code>Long</code> object represents the count of the message.
      */
     public Long getMessageCount() {
         return getModel().getMessageCount();
@@ -226,7 +231,7 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
     /**
      * Returns the maximum delivery count for the subscription.
      * 
-     * @return The maximum delivery count.
+     * @return A <code>Integer</code> represents the maximum delivery count.
      */
     public Integer getMaxDeliveryCount() {
         return getModel().getMaxDeliveryCount();
@@ -236,9 +241,9 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * Sets the maximum delivery count for the subscription.
      * 
      * @param value
-     *            The maximum delivery count for the subscription.
+     *            A <code>value</code> represents the maximum delivery count for the subscription.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setMaxDeliveryCount(Integer value) {
         getModel().setMaxDeliveryCount(value);
@@ -260,10 +265,212 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      * @param value
      *            <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
      * 
-     * @return A <code>Subscription</code> object that represents the updated subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
      */
     public SubscriptionInfo setEnableBatchedOperations(Boolean value) {
         getModel().setEnableBatchedOperations(value);
         return this;
     }
+
+    /**
+     * Sets the message count.
+     * 
+     * @param messageCount
+     *            A <code>Long</code> object represents the message count.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setMessageCount(Long messageCount) {
+        getModel().setMessageCount(messageCount);
+        return this;
+    }
+
+    /**
+     * Sets the status.
+     * 
+     * @param entityStatus
+     *            A <code>EntityStatus</code> object represents the status of the entity.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setStatus(EntityStatus entityStatus) {
+        getModel().setStatus(entityStatus);
+        return this;
+    }
+
+    /**
+     * Gets the status.
+     * 
+     * @return A <code>EntityStatus</code> object represents the status of the entity.
+     */
+    public EntityStatus getStatus() {
+        return getModel().getStatus();
+    }
+
+    /**
+     * Sets the forward to.
+     * 
+     * @param forwardTo
+     *            the forward to
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    /**
+     * Gets the forward to.
+     * 
+     * @return the forward to
+     */
+    public String getForwardTo() {
+        return getModel().getForwardTo();
+    }
+
+    /**
+     * Sets the created at.
+     * 
+     * @param createdAt
+     *            the created at
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setCreatedAt(Calendar createdAt) {
+        getModel().setCreatedAt(createdAt);
+        return this;
+    }
+
+    /**
+     * Gets the created at.
+     * 
+     * @return the created at
+     */
+    public Calendar getCreatedAt() {
+        return getModel().getCreatedAt();
+    }
+
+    /**
+     * Sets the updated at.
+     * 
+     * @param updatedAt
+     *            the updated at
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setUpdatedAt(Calendar updatedAt) {
+        getModel().setUpdatedAt(updatedAt);
+        return this;
+    }
+
+    /**
+     * Gets the updated at.
+     * 
+     * @return the updated at
+     */
+    public Calendar getUpdatedAt() {
+        return getModel().getUpdatedAt();
+    }
+
+    /**
+     * Sets the accessed at.
+     * 
+     * @param accessedAt
+     *            the accessed at
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setAccessedAt(Calendar accessedAt) {
+        getModel().setAccessedAt(accessedAt);
+        return this;
+    }
+
+    /**
+     * Gets the accessed at.
+     * 
+     * @return the accessed at
+     */
+    public Calendar getAccessedAt() {
+        return getModel().getAccessedAt();
+    }
+
+    /**
+     * Sets the user metadata.
+     * 
+     * @param userMetadata
+     *            the user metadata
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setUserMetadata(String userMetadata) {
+        getModel().setUserMetadata(userMetadata);
+        return this;
+    }
+
+    /**
+     * Gets the user metadata.
+     * 
+     * @return the user metadata
+     */
+    public String getUserMetadata() {
+        return getModel().getUserMetadata();
+    }
+
+    /**
+     * Sets the count details.
+     * 
+     * @param countDetails
+     *            A <code>MessageCountDetails</code> represents the details of message count.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setCountDetails(MessageCountDetails countDetails) {
+        getModel().setCountDetails(countDetails);
+        return this;
+    }
+
+    /**
+     * Gets the count details.
+     * 
+     * @return A <code>MessageCountDetails</code> represents the details of message count.
+     */
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
+    }
+
+    /**
+     * Sets the auto delete on idle.
+     * 
+     * @param autoDeleteOnIdle
+     *            A <code>Duration</code> object represents the auto delete on idle.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+        getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
+        return this;
+    }
+
+    /**
+     * Gets the auto delete on idle.
+     * 
+     * @return A <code>Duration</code> object represents the auto delete on idle.
+     */
+    public Duration getAutoDeleteOnIdle() {
+        return getModel().getAutoDeleteOnIdle();
+    }
+
+    /**
+     * Sets the entity availability status.
+     * 
+     * @param entityAvailabilityStatus
+     *            An <code>EntityAvailabilityStatus</code> instance representing the entity availiability status.
+     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
+     */
+    public SubscriptionInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+        getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
+        return this;
+    }
+
+    /**
+     * Gets the entity availability status.
+     * 
+     * @return An <code>EntityAvailabilityStatus</code> instance representing the entity availiability status.
+     */
+    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+        return getModel().getEntityAvailabilityStatus();
+    }
+
 }
