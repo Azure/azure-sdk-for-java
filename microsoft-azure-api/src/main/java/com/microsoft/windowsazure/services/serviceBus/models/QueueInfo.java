@@ -481,7 +481,7 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the forward to.
      * 
-     * @return the forward to
+     * @return A <code>String</code> object represents which queue the messages will be forwarded to.
      */
     public String getForwardTo() {
         return getModel().getForwardTo();
