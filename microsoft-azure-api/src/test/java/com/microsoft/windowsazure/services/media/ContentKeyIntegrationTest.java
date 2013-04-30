@@ -42,7 +42,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
     private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
-    private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
+    private final String testEncryptedContentKey = "bFE4M/kZrKi00AoLOVpbQ4R9xja5P/pfBv9SC9I1Gw8yx+OIWdazGNpT7MgpeOLSebkxO5iDAIUKX5Es6oRUiH6pTNAMEtiHFBrKywODKnTQ09pCAMmdIA4q1gLeEUpsXPY/YXaLsTrBGbmRtlUYyaZEjestsngV8JpkJemCGjmMF0bHCoQRKt0LCVl/cqyWawzBuyaJniUCDdU8jem7sjrw8BbgCDmTAUmaj9TYxEP98d3wEJcL4pzDzOloYWXqzNB9assXgcQ0eouT7onSHa1d76X2E5q16AIIoOndLyIuAxlwFqpzF6LFy3X9mNGEY1iLXeFA89DE0PPx8EHtyg==";
 
     private void assertByteArrayEquals(byte[] source, byte[] target) {
         assertEquals(source.length, target.length);
