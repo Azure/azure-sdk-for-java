@@ -293,6 +293,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
+    @Override
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+        return getResource().path(queueInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(QueueInfo.class, queueInfo);
+    }
+
     private WebResource listOptions(AbstractListOptions<?> options, WebResource path) {
         if (options.getTop() != null) {
             path = path.queryParam("$top", options.getTop().toString());
@@ -332,6 +338,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
+        return getResource().path(topicInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(TopicInfo.class, topicInfo);
+    }
+
+    @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
         return new CreateSubscriptionResult(getResource().path(topicPath).path("subscriptions")
                 .path(subscription.getName()).type("application/atom+xml;type=entry;charset=utf-8")
@@ -359,6 +371,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ListSubscriptionsResult result = new ListSubscriptionsResult();
         result.setItems(list);
         return result;
+    }
+
+    @Override
+    public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
+            throws ServiceException {
+        return getResource().path(topicName).path("subscriptions").path(subscriptionInfo.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*")
+                .put(SubscriptionInfo.class, subscriptionInfo);
     }
 
     @Override

@@ -239,6 +239,19 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+        try {
+            return next.updateQueue(queueInfo);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
     public CreateTopicResult createTopic(TopicInfo topic) throws ServiceException {
         try {
             return next.createTopic(topic);
@@ -281,6 +294,19 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     public ListTopicsResult listTopics() throws ServiceException {
         try {
             return next.listTopics();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
+        try {
+            return next.updateTopic(topicInfo);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -334,6 +360,20 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     public ListSubscriptionsResult listSubscriptions(String topicPath) throws ServiceException {
         try {
             return next.listSubscriptions(topicPath);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
+            throws ServiceException {
+        try {
+            return next.updateSubscription(topicName, subscriptionInfo);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
