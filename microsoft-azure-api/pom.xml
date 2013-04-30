@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.0</version>
+  <version>0.4.2</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -104,6 +104,12 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk16</artifactId>
+      <version>1.46</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -169,9 +175,9 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8</version>
         <configuration>
-          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization</excludePackageNames>
+          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
           <bottom><![CDATA[<code>/**
-<br/>* Copyright 2011 Microsoft Corporation
+<br/>* Copyright Microsoft Corporation
 <br/>*
 <br/>* Licensed under the Apache License, Version 2.0 (the "License");
 <br/>* you may not use this file except in compliance with the License.

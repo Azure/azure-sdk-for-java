@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
@@ -29,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
@@ -74,15 +74,16 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     ServiceFilter[] filters;
 
     @Inject
-    public ServiceBusRestProxy(Client channel, @Named("serviceBus") WrapFilter authFilter,
-            @Named("serviceBus.uri") String uri, BrokerPropertiesMapper mapper) {
+    public ServiceBusRestProxy(Client channel, WrapFilter authFilter, UserAgentFilter userAgentFilter,
+            ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
-        this.uri = uri;
+        this.uri = connectionSettings.getUri();
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);
+        channel.addFilter(userAgentFilter);
     }
 
     public ServiceBusRestProxy(Client channel, ServiceFilter[] filters, String uri, BrokerPropertiesMapper mapper) {
@@ -181,6 +182,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         }
         else {
             throw new RuntimeException("Unknown ReceiveMode");
+        }
+
+        if (clientResult.getStatus() == 204) {
+            return null;
         }
 
         BrokerProperties brokerProperties;

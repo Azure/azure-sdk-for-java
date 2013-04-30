@@ -24,6 +24,7 @@ import javax.activation.DataSource;
 import com.sun.mail.util.LineInputStream;
 
 public class StatusLine {
+    private static final int DELIMITER = -1;
     private int status;
     private String reason;
 
@@ -37,7 +38,7 @@ public class StatusLine {
                 expect(lineReader, "HTTP/1.1");
                 expect(lineReader, " ");
                 String statusString = extractInput(lineReader, ' ');
-                String reason = extractInput(lineReader, -1);
+                String reason = extractInput(lineReader, DELIMITER);
 
                 return new StatusLine().setStatus(Integer.parseInt(statusString)).setReason(reason);
             }
@@ -52,7 +53,7 @@ public class StatusLine {
 
     private static void expect(Reader reader, String string) {
         try {
-            byte[] byteArray = string.getBytes();
+            byte[] byteArray = string.getBytes("UTF-8");
             int ch;
             for (int i = 0; i < string.length(); i++) {
                 ch = reader.read();
@@ -72,8 +73,9 @@ public class StatusLine {
             StringBuilder sb = new StringBuilder();
             while (true) {
                 int ch = reader.read();
-                if (ch == -1 || ch == delimiter)
+                if (ch == DELIMITER || ch == delimiter) {
                     break;
+                }
 
                 sb.append((char) ch);
             }

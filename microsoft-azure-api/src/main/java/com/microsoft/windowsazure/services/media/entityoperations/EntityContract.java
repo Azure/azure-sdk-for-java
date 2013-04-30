@@ -38,7 +38,7 @@ public interface EntityContract {
      *             the service exception
      *             The created entity
      */
-    public abstract <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
+    <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
 
     /**
      * Retrieve an existing entity by id.
@@ -51,7 +51,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract <T> T get(EntityGetOperation<T> getter) throws ServiceException;
+    <T> T get(EntityGetOperation<T> getter) throws ServiceException;
 
     /**
      * Retrieve a list of entities.
@@ -64,7 +64,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
+    <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
 
     /**
      * Update an existing entity.
@@ -74,7 +74,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract void update(EntityUpdateOperation updater) throws ServiceException;
+    void update(EntityUpdateOperation updater) throws ServiceException;
 
     /**
      * Delete an entity.
@@ -84,7 +84,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract void delete(EntityDeleteOperation deleter) throws ServiceException;
+    void delete(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
      * Perform an action on an entity.
@@ -94,7 +94,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract void action(EntityActionOperation action) throws ServiceException;
+    void action(EntityActionOperation action) throws ServiceException;
 
     /**
      * Action.
@@ -107,6 +107,6 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    public abstract <T> T action(EntityTypeActionOperation<T> entityActionOperation) throws ServiceException;
+    <T> T action(EntityTypeActionOperation<T> entityActionOperation) throws ServiceException;
 
 }

@@ -89,7 +89,7 @@ public abstract class ODataEntity<T> {
     public <U extends ODataEntity<?>> LinkInfo<U> getLink(String rel) {
         for (Object child : entry.getEntryChildren()) {
 
-            LinkType link = LinkFromChild(child);
+            LinkType link = linkFromChild(child);
             if (link != null && link.getRel().equals(rel)) {
                 return new LinkInfo<U>(link);
             }
@@ -109,14 +109,14 @@ public abstract class ODataEntity<T> {
     }
 
     @SuppressWarnings("rawtypes")
-    private static LinkType LinkFromChild(Object child) {
+    private static LinkType linkFromChild(Object child) {
         if (child instanceof JAXBElement) {
-            return LinkFromElement((JAXBElement) child);
+            return linkFromElement((JAXBElement) child);
         }
         return null;
     }
 
-    private static LinkType LinkFromElement(@SuppressWarnings("rawtypes") JAXBElement element) {
+    private static LinkType linkFromElement(@SuppressWarnings("rawtypes") JAXBElement element) {
         if (element.getDeclaredType() == LinkType.class) {
             return (LinkType) element.getValue();
         }

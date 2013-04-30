@@ -334,7 +334,7 @@ public final class BlobProperties {
     /**
      * Sets the lease state for the blob. Reserved for internal use.
      * 
-     * @param LeaseState
+     * @param leaseState
      *            The lease state to set, represented by a <code>LeaseState</code> object.
      */
     public void setLeaseState(final LeaseState leaseState) {
@@ -344,7 +344,7 @@ public final class BlobProperties {
     /**
      * Sets the lease duration for the blob. Reserved for internal use.
      * 
-     * @param LeaseDuration
+     * @param leaseDuration
      *            The lease duration value to set, represented by a <code>LeaseDuration</code> object.
      */
     public void setLeaseDuration(final LeaseDuration leaseDuration) {
