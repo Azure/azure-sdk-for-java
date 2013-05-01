@@ -394,14 +394,11 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param topicName
      *            A <code>String</code> option which represents the name of the topic.
-     * 
      * @param subscriptionInfo
      *            A <code>SubscriptionInfo</code> option which represents the information of the subscription.
-     * 
      * @return A <code>SubscriptionInfo</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo) throws ServiceException;
 
@@ -476,10 +473,41 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            retrieved.
      * @param options
      *            A <code>ListRulesOptions</code> object that represents the options to retrieve rules.
-     * 
+     * @return the list rules result
      * @throws ServiceException
      *             If a service exception is encountered.
      */
     ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options)
+            throws ServiceException;
+
+    /**
+     * Renew queue lock.
+     * 
+     * @param queueName
+     *            A <code>String</code> object that represents the name of the queue.
+     * @param messageId
+     *            A <code>String</code> object that represents the ID of the message.
+     * @param lockToken
+     *            A <code>String</code> object that represents the token of the lock.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException;
+
+    /**
+     * Renew subscription lock.
+     * 
+     * @param topicName
+     *            A <code>String</code> object that represents the name of the topic.
+     * @param queueName
+     *            A <code>String</code> object that represents the name of the queue.
+     * @param messageId
+     *            A <code>String</code> object that represents the ID of the message.
+     * @param lockToken
+     *            A <code>String</code> object that represents the token of the lock.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
             throws ServiceException;
 }
