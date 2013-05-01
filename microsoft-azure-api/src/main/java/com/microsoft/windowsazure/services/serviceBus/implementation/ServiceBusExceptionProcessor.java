@@ -46,7 +46,6 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.RenewLockResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -531,9 +530,9 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
-    public RenewLockResult renewLock(String path, String messageId, String lockToken) throws ServiceException {
+    public void renewLock(String path, String messageId, String lockToken) throws ServiceException {
         try {
-            return next.renewLock(path, messageId, lockToken);
+            next.renewLock(path, messageId, lockToken);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -544,9 +543,9 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
-    public RenewLockResult renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+    public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
         try {
-            return next.renewQueueLock(queueName, messageId, lockToken);
+            next.renewQueueLock(queueName, messageId, lockToken);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -557,10 +556,10 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     }
 
     @Override
-    public RenewLockResult renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
+    public void renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
             throws ServiceException {
         try {
-            return next.renewSubscriptionLock(subscriptionName, messageId, lockToken);
+            next.renewSubscriptionLock(subscriptionName, messageId, lockToken);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

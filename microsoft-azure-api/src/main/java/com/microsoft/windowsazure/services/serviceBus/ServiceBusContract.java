@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptio
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.RenewLockResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -484,10 +483,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
     ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options)
             throws ServiceException;
 
-    RenewLockResult renewLock(String path, String messageId, String lockToken) throws ServiceException;
+    void renewLock(String path, String messageId, String lockToken) throws ServiceException;
 
-    RenewLockResult renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException;
+    void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException;
 
-    RenewLockResult renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
-            throws ServiceException;
+    void renewSubscriptionLock(String subscriptionName, String messageId, String lockToken) throws ServiceException;
 }
