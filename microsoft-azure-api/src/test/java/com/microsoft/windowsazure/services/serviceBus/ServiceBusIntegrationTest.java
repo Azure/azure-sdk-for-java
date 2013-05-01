@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsRe
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -187,6 +188,54 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void renewSubscriptionMessageLockWorks() throws Exception {
+        // Arrange
+        String topicName = "TestRenewSubscriptionLockMessageWorks";
+        String subscriptionName = "renewSubscriptionMessageLockWorks";
+        service.createTopic(new TopicInfo(topicName));
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, subscriptionName, PEEK_LOCK_5_SECONDS)
+                .getValue();
+        service.renewSubscriptionLock(topicName, subscriptionName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void renewQueueMessageLockWorks() throws Exception {
+        // Arrange
+        String queueName = "TestRenewSubscriptionLockMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.renewQueueLock(queueName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void receiveMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestReceiveMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(queueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
@@ -201,6 +250,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals(11, size);
         assertEquals("Hello Again", new String(data, 0, size));
+    }
+
+    @Test
+    public void peekLockMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestPeekLockMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult result = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getValue());
     }
 
     @Test
@@ -266,8 +329,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(lockToken);
         assertNotNull(lockedUntil);
-        assertNull(receivedMessage.getLockToken());
-        assertNull(receivedMessage.getLockedUntilUtc());
+        assertNull(receivedMessage);
+    }
+
+    @Test
+    public void emptyQueueReturnsNullMessage() throws Exception {
+        // Arrange 
+        String queueName = "testEmptyQueueReturnsNullMessage";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        BrokeredMessage brokeredMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+
+        // Assert 
+        assertNull(brokeredMessage);
     }
 
     @Test

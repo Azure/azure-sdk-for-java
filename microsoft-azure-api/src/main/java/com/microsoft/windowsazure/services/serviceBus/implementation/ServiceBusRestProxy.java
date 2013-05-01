@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
@@ -181,6 +182,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         }
         else {
             throw new RuntimeException("Unknown ReceiveMode");
+        }
+
+        if (clientResult.getStatus() == 204) {
+            return null;
         }
 
         BrokerProperties brokerProperties;
@@ -428,6 +433,21 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     @Override
     public ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException {
         return listRules(topicName, subscriptionName, ListRulesOptions.DEFAULT);
+    }
+
+    @Override
+    public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+        ClientResponse clientResponse = getResource().path(queueName).path("messages").path(messageId).path(lockToken)
+                .post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
+    @Override
+    public void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
+            throws ServiceException {
+        ClientResponse clientResponse = getResource().path(topicName).path("Subscriptions").path(subscriptionName)
+                .path("messages").path(messageId).path(lockToken).post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
 }

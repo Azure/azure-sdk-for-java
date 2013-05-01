@@ -529,4 +529,31 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         }
     }
 
+    @Override
+    public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+        try {
+            next.renewQueueLock(queueName, messageId, lockToken);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
+            throws ServiceException {
+        try {
+            next.renewSubscriptionLock(topicName, subscriptionName, messageId, lockToken);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
 }
