@@ -42,7 +42,6 @@ import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * Defines the service bus contract.
