@@ -188,15 +188,33 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void renewLockMessageWorks() throws Exception {
+    public void renewSubscriptionMessageLockWorks() throws Exception {
         // Arrange
-        String queueName = "TestRenewLockMessageWorks";
+        String topicName = "TestRenewSubscriptionLockMessageWorks";
+        String subscriptionName = "renewSubscriptionMessageLockWorks";
+        service.createTopic(new TopicInfo(topicName));
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, subscriptionName, PEEK_LOCK_5_SECONDS)
+                .getValue();
+        service.renewSubscriptionLock(topicName, subscriptionName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void renewQueueMessageLockWorks() throws Exception {
+        // Arrange
+        String queueName = "TestRenewSubscriptionLockMessageWorks";
         service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
 
         // Act 
         BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
-        service.renewLock(queueName, message.getMessageId(), message.getLockToken());
+        service.renewQueueLock(queueName, message.getMessageId(), message.getLockToken());
 
         // Assert
         assertNotNull(message);

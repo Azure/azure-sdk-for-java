@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
@@ -435,20 +436,18 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public void renewLock(String entityName, String messageId, String lockToken) throws ServiceException {
-        ClientResponse clientResponse = getResource().path(entityName).path("messages").path(messageId).path(lockToken)
-                .post(ClientResponse.class, "");
-    }
-
-    @Override
     public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
-        renewLock(queueName, messageId, lockToken);
+        ClientResponse clientResponse = getResource().path(queueName).path("messages").path(messageId).path(lockToken)
+                .post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
     @Override
-    public void renewSubscriptionLock(String subscriptionName, String messageId, String lockToken)
+    public void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
             throws ServiceException {
-        renewLock(subscriptionName, messageId, lockToken);
+        ClientResponse clientResponse = getResource().path(topicName).path("Subscriptions").path(subscriptionName)
+                .path("messages").path(messageId).path(lockToken).post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
 }
