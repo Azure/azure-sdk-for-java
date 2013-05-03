@@ -362,7 +362,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @return A <code>Calendar</code> object which represents when the topic was updated.
      */
     public Calendar getUpdatedAt() {
-        return getModel().getCreatedAt();
+        return getModel().getUpdatedAt();
     }
 
     /**
