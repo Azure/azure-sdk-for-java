@@ -25,7 +25,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescription;
 
@@ -353,27 +352,6 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     }
 
     /**
-     * Sets the count details.
-     * 
-     * @param countDetails
-     *            A <code>MessageCountDetails</code> object that contains the details of the message count.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
-     */
-    public QueueInfo setCountDetails(MessageCountDetails countDetails) {
-        getModel().setCountDetails(countDetails);
-        return this;
-    }
-
-    /**
-     * Gets the count details.
-     * 
-     * @return A <code>MessageCountDetails</code> object that contains the details of the message count.
-     */
-    public MessageCountDetails getCountDetails() {
-        return getModel().getCountDetails();
-    }
-
-    /**
      * Gets the authorization.
      * 
      * @return A <code>AuthorizationRules</code> instance which contains the rules of the authorization.
@@ -475,27 +453,6 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      */
     public QueueInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
-        return this;
-    }
-
-    /**
-     * Gets the forward to.
-     * 
-     * @return A <code>String</code> object represents which queue the messages will be forwarded to.
-     */
-    public String getForwardTo() {
-        return getModel().getForwardTo();
-    }
-
-    /**
-     * Sets the forward to.
-     * 
-     * @param forwardTo
-     *            A <code>String</code> object represents which queue the messages will be forwarded to.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
-     */
-    public QueueInfo setForwardTo(String forwardTo) {
-        getModel().setForwardTo(forwardTo);
         return this;
     }
 

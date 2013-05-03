@@ -25,7 +25,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
@@ -303,27 +302,6 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     }
 
     /**
-     * Sets the forward to.
-     * 
-     * @param forwardTo
-     *            the forward to
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
-     */
-    public TopicInfo setForwardTo(String forwardTo) {
-        getModel().setForwardTo(forwardTo);
-        return this;
-    }
-
-    /**
-     * Gets the forward to.
-     * 
-     * @return A <code>String</code> object which represents the forward to.
-     */
-    public String getForwardTo() {
-        return getModel().getForwardTo();
-    }
-
-    /**
      * Sets the created at.
      * 
      * @param createdAt
@@ -362,7 +340,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @return A <code>Calendar</code> object which represents when the topic was updated.
      */
     public Calendar getUpdatedAt() {
-        return getModel().getCreatedAt();
+        return getModel().getUpdatedAt();
     }
 
     /**
@@ -447,27 +425,6 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      */
     public Integer getSubscriptionCount() {
         return getModel().getSubscriptionCount();
-    }
-
-    /**
-     * Sets the count details.
-     * 
-     * @param countDetails
-     *            A <code>MessageCountDetails</code> object which represents the count details.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
-     */
-    public TopicInfo setCountDetails(MessageCountDetails countDetails) {
-        getModel().setCountDetail(countDetails);
-        return this;
-    }
-
-    /**
-     * Gets the count details.
-     * 
-     * @return A <code>MessageCountDetails</code> which represents the count details.
-     */
-    public MessageCountDetails getCountDetails() {
-        return getModel().getCountDetail();
     }
 
     /**
