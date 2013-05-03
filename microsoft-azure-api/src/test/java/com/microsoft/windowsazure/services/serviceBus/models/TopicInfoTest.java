@@ -27,7 +27,6 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 
 public class TopicInfoTest {
@@ -185,19 +184,6 @@ public class TopicInfoTest {
     }
 
     @Test
-    public void testGetSetForwardTo() {
-        // Arrange
-        String expectedForwardTo = "forwardTo";
-        TopicInfo topicInfo = new TopicInfo();
-
-        // Act 
-        String actualForwardTo = topicInfo.setForwardTo(expectedForwardTo).getForwardTo();
-
-        // Assert
-        assertEquals(expectedForwardTo, actualForwardTo);
-    }
-
-    @Test
     public void testGetSetCreatedAt() {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
@@ -274,19 +260,6 @@ public class TopicInfoTest {
 
         // Assert
         assertEquals(expectedSubscriptionCount, actualSubscriptionCount);
-    }
-
-    @Test
-    public void testGetSetCountDetails() {
-        // Arrange
-        MessageCountDetails expectedCountDetails = new MessageCountDetails();
-        TopicInfo topicInfo = new TopicInfo();
-
-        // Act 
-        MessageCountDetails actualCountDetails = topicInfo.setCountDetails(expectedCountDetails).getCountDetails();
-
-        // Assert
-        assertEquals(expectedCountDetails, actualCountDetails);
     }
 
     @Test
