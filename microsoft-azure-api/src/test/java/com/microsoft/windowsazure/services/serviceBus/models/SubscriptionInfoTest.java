@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 
 public class SubscriptionInfoTest {
@@ -182,19 +181,6 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetForwardTo() {
-        // Arrange
-        String expectedForwardTo = "forwardTo";
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        String actualForwardTo = SubscriptionInfo.setForwardTo(expectedForwardTo).getForwardTo();
-
-        // Assert
-        assertEquals(expectedForwardTo, actualForwardTo);
-    }
-
-    @Test
     public void testGetSetCreatedAt() {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
@@ -244,20 +230,6 @@ public class SubscriptionInfoTest {
 
         // Assert
         assertEquals(expectedUserMetadata, actualUserMetadata);
-    }
-
-    @Test
-    public void testGetSetCountDetails() {
-        // Arrange
-        MessageCountDetails expectedCountDetails = new MessageCountDetails();
-        SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
-
-        // Act 
-        MessageCountDetails actualCountDetails = SubscriptionInfo.setCountDetails(expectedCountDetails)
-                .getCountDetails();
-
-        // Assert
-        assertEquals(expectedCountDetails, actualCountDetails);
     }
 
     @Test

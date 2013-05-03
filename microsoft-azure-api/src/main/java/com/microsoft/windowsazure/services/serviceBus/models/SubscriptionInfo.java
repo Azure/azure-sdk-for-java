@@ -24,7 +24,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
@@ -306,27 +305,6 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
     }
 
     /**
-     * Sets the forward to.
-     * 
-     * @param forwardTo
-     *            the forward to
-     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
-     */
-    public SubscriptionInfo setForwardTo(String forwardTo) {
-        getModel().setForwardTo(forwardTo);
-        return this;
-    }
-
-    /**
-     * Gets the forward to.
-     * 
-     * @return the forward to
-     */
-    public String getForwardTo() {
-        return getModel().getForwardTo();
-    }
-
-    /**
      * Sets the created at.
      * 
      * @param createdAt
@@ -408,27 +386,6 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      */
     public String getUserMetadata() {
         return getModel().getUserMetadata();
-    }
-
-    /**
-     * Sets the count details.
-     * 
-     * @param countDetails
-     *            A <code>MessageCountDetails</code> represents the details of message count.
-     * @return A <code>SubscriptionInfo</code> object that represents the updated subscription.
-     */
-    public SubscriptionInfo setCountDetails(MessageCountDetails countDetails) {
-        getModel().setCountDetails(countDetails);
-        return this;
-    }
-
-    /**
-     * Gets the count details.
-     * 
-     * @return A <code>MessageCountDetails</code> represents the details of message count.
-     */
-    public MessageCountDetails getCountDetails() {
-        return getModel().getCountDetails();
     }
 
     /**

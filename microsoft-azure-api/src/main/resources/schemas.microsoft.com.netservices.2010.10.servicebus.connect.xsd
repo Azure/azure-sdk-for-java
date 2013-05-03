@@ -122,13 +122,6 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -158,13 +151,6 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SupportOrdering" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name ="CountDetails" type="tns:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -267,13 +253,6 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -296,13 +275,6 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="UserMetadata" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name ="CountDetails" type="tns:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -397,15 +369,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TrueFilter" nillable="true" type="tns:TrueFilter" />
-  <xs:complexType name="MessageCountDetails">
-    <xs:sequence>
-      <xs:element name="ActiveMessageCount" minOccurs="0"  type="xs:long" />
-      <xs:element name="DeadLetterMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name ="ScheduledMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name="TransferMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name="TransferDeadLetterMessageCount" minOccurs="0" type="xs:long" />
-    </xs:sequence>
-  </xs:complexType>
   <xs:simpleType name="AccessRights">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Manage" />
@@ -557,13 +520,6 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -600,13 +556,6 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SubscriptionCount" type="xs:int">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="CountDetail" type="tns:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
