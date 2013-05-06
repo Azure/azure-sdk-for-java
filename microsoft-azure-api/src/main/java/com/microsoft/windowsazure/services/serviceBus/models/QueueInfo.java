@@ -19,7 +19,6 @@ import java.util.Calendar;
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
@@ -348,27 +347,6 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      */
     public QueueInfo setMessageCount(Long messageCount) {
         getModel().setMessageCount(messageCount);
-        return this;
-    }
-
-    /**
-     * Gets the authorization.
-     * 
-     * @return A <code>AuthorizationRules</code> instance which contains the rules of the authorization.
-     */
-    public AuthorizationRules getAuthorization() {
-        return getModel().getAuthorizationRules();
-    }
-
-    /**
-     * Sets the authorization.
-     * 
-     * @param authorizationRules
-     *            the authorization rules
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
-     */
-    public QueueInfo setAuthorization(AuthorizationRules authorizationRules) {
-        getModel().setAuthorizationRules(authorizationRules);
         return this;
     }
 
