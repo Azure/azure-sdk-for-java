@@ -19,7 +19,6 @@ import java.util.Calendar;
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.Duration;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Content;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
@@ -215,27 +214,6 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     public TopicInfo setSizeInBytes(Long sizeInBytes) {
         getModel().setSizeInBytes(sizeInBytes);
         return this;
-    }
-
-    /**
-     * Sets the authorization.
-     * 
-     * @param authorizationRules
-     *            A <code>AuthorizationRules</code>
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
-     */
-    public TopicInfo setAuthorization(AuthorizationRules authorizationRules) {
-        getModel().setAuthorizationRules(authorizationRules);
-        return this;
-    }
-
-    /**
-     * Gets the authorization.
-     * 
-     * @return A <code>AuthorizationRules</code> object that contains the authorization rules.
-     */
-    public AuthorizationRules getAuthorization() {
-        return getModel().getAuthorizationRules();
     }
 
     /**
