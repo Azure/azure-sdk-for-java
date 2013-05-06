@@ -108,13 +108,6 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name ="AuthorizationRules" type="tns:AuthorizationRules">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>      
       <xs:element minOccurs="0" name="Status" type="tns:EntityStatus">
         <xs:annotation>
           <xs:appinfo>
@@ -376,22 +369,6 @@
       <xs:enumeration value="Listen" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="AuthorizationRule">
-    <xs:sequence>
-      <xs:element name="IssuerName" minOccurs="0" type="xs:string" />
-      <xs:element name="ClaimType" minOccurs="0" type="xs:string" />
-      <xs:element name="ClaimValue" minOccurs="0" type="xs:string" />
-      <xs:element name="Rights" minOccurs="0" maxOccurs="unbounded" type="tns:AccessRights" />
-      <xs:element name="CreatedTime" minOccurs="0" type="xs:dateTime" />
-      <xs:element name="ModifiedTime" minOccurs="0" type="xs:dateTime" />
-      <xs:element name="Revision" minOccurs="0" type="xs:dateTime" />
-      </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="AuthorizationRules">
-    <xs:sequence>
-      <xs:element name="AuthorizationRule" minOccurs="0" maxOccurs="unbounded" type="tns:AuthorizationRule" />
-     </xs:sequence>
-  </xs:complexType>
   <xs:simpleType name="EntityStatus">
     <xs:restriction base="xs:string">
       <xs:enumeration value ="Active" />
@@ -500,13 +477,6 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="IsAnonymousAcessible" type="xs:boolean">
-        <xs:annotation>
-          <xs:appinfo>
-            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="AuthorizationRules" type="tns:AuthorizationRules">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />

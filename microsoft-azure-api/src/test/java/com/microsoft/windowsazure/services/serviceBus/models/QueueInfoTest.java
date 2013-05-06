@@ -24,7 +24,6 @@ import javax.xml.datatype.Duration;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.AuthorizationRules;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
@@ -206,20 +205,6 @@ public class QueueInfoTest {
 
         // Assert
         assertEquals(expectedIsAnonymousAccessible, actualIsAnonymousAccessible);
-    }
-
-    @Test
-    public void testGetSetAuthorization() {
-        // Arrange
-        AuthorizationRules expectedAuthorizationRules = new AuthorizationRules();
-        QueueInfo queueInfo = new QueueInfo();
-
-        // Act 
-        AuthorizationRules actualAuthorizationRules = queueInfo.setAuthorization(expectedAuthorizationRules)
-                .getAuthorization();
-
-        // Assert
-        assertEquals(expectedAuthorizationRules, actualAuthorizationRules);
     }
 
     @Test
