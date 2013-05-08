@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
@@ -168,6 +169,40 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage("TestAlpha", message);
 
         // Assert
+    }
+
+    @Test
+    public void getQueueMessageCountDetails() throws Exception {
+        // Arrange
+        String queueName = "testGetQueueMessageCountDetails";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello World"));
+        Long expectedActiveMessageCount = 1L;
+
+        // Act
+        QueueInfo queueInfo = service.getQueue(queueName).getValue();
+        MessageCountDetails countDetails = queueInfo.getCountDetails();
+
+        // Assert
+        assertEquals(true, queueInfo.isSupportOrdering());
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+
+    }
+
+    @Test
+    public void getTopicMessageCountDetails() throws Exception {
+        // Arrange 
+
+        // Act 
+
+        // Assert 
+
+    }
+
+    @Test
+    public void getSubscriptionMessageCountDetails() throws Exception {
+
     }
 
     @Test

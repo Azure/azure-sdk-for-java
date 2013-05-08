@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
@@ -428,6 +429,10 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      */
     public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
+    }
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
     }
 
 }

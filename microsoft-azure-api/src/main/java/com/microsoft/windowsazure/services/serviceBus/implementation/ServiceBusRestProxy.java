@@ -110,7 +110,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     private WebResource getResource() {
-        WebResource resource = getChannel().resource(uri);
+        WebResource resource = getChannel().resource(uri).queryParam("api-version", "2012-08");
         for (ServiceFilter filter : filters) {
             resource.addFilter(new ClientFilterAdapter(filter));
         }

@@ -150,6 +150,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>
@@ -274,6 +281,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>
@@ -362,6 +376,16 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TrueFilter" nillable="true" type="tns:TrueFilter" />
+  <xs:complexType name ="MessageCountDetails">
+    <xs:sequence>
+      <xs:element name="ActiveMessageCount" minOccurs="0"  type="xs:long" />
+      <xs:element name="DeadLetterMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name ="ScheduledMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="TransferMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="TransferDeadLetterMessageCount" minOccurs="0" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MessageCountDetails" nillable="true" type="tns:MessageCountDetails" />
   <xs:simpleType name="AccessRights">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Manage" />
@@ -532,6 +556,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>     
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>

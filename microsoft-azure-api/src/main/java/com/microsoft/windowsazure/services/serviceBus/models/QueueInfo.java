@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescription;
 
@@ -537,5 +538,9 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     public QueueInfo setUserMetadata(String userMetadata) {
         getModel().setUserMetadata(userMetadata);
         return this;
+    }
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
     }
 }

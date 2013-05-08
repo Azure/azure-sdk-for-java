@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
@@ -403,6 +404,10 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      */
     public Integer getSubscriptionCount() {
         return getModel().getSubscriptionCount();
+    }
+
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
     }
 
     /**
