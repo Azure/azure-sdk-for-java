@@ -45,9 +45,8 @@ public class BlobTestBase {
         }
         else {
             String cloudAccount = CLOUD_ACCOUNT_HTTP;
-            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", "jaidb3");
-            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]",
-                    "+qjm/8MjakncuZwpjNfYtaKDHrJH3zkQAKDywuTNh9hdb3ETcQ4wweVdX3nzFsXsWkI5la8EZg04PIbPkWrWBQ==");
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("blob.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("blob.accountKey"));
 
             httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
