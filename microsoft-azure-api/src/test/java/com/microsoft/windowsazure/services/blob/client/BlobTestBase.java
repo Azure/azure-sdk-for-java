@@ -30,7 +30,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  */
 public class BlobTestBase {
     public static boolean USE_DEV_FABRIC = false;
-    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
+    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=http;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
     public static final String CLOUD_ACCOUNT_HTTPS = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
 
     protected static CloudStorageAccount httpAcc;
@@ -45,8 +45,9 @@ public class BlobTestBase {
         }
         else {
             String cloudAccount = CLOUD_ACCOUNT_HTTP;
-            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("blob.accountName"));
-            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("blob.accountKey"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", "jaidb3");
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]",
+                    "+qjm/8MjakncuZwpjNfYtaKDHrJH3zkQAKDywuTNh9hdb3ETcQ4wweVdX3nzFsXsWkI5la8EZg04PIbPkWrWBQ==");
 
             httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
