@@ -393,6 +393,7 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
 
                 final HttpURLConnection request = TableRequest.batch(client.getTransformedEndPoint(opContext),
                         options.getTimeoutIntervalInMs(), batchID, null, options, opContext);
+                this.setConnection(request);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
 
@@ -401,21 +402,17 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
 
                 final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this.getResult());
                 ArrayList<MimePart> responseParts = null;
-                try {
-                    final String contentType = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
 
-                    final String[] headerVals = contentType.split("multipart/mixed; boundary=");
-                    if (headerVals == null || headerVals.length != 2) {
-                        throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                "An incorrect Content-type was returned from the server.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                    }
+                final String contentType = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
 
-                    responseParts = MimeHelper.readBatchResponseStream(streamRef, headerVals[1], opContext);
+                final String[] headerVals = contentType.split("multipart/mixed; boundary=");
+                if (headerVals == null || headerVals.length != 2) {
+                    throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
+                            "An incorrect Content-type was returned from the server.",
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
                 }
-                finally {
-                    streamRef.close();
-                }
+
+                responseParts = MimeHelper.readBatchResponseStream(streamRef, headerVals[1], opContext);
 
                 ExecutionEngine.getResponseCode(this.getResult(), request, opContext);
 

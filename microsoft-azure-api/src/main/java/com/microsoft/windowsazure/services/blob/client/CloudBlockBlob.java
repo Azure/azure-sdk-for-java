@@ -184,6 +184,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putBlockList(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.properties, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
+
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
                 // Potential optimization, we can write this stream outside of
@@ -290,6 +292,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 final HttpURLConnection request = BlobRequest.getBlockList(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, blockListingFilter, accessCondition,
                         blobOptions, opContext);
+                this.setConnection(request);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -615,6 +618,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putBlock(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blockId, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 if (blobOptions.getUseTransactionalContentMD5()) {
                     request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);

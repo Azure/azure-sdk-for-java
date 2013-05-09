@@ -267,6 +267,7 @@ public final class CloudPageBlob extends CloudBlob {
                 final HttpURLConnection request = BlobRequest.put(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, BlobType.PAGE_BLOB, length,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
@@ -349,6 +350,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.getPageRanges(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 client.getCredentials().signRequest(request, -1L);
 
@@ -471,6 +473,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putPage(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), pageProperties, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
                     if (blobOptions.getUseTransactionalContentMD5()) {

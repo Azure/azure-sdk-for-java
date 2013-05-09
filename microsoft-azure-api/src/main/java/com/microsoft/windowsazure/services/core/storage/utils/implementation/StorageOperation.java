@@ -39,7 +39,7 @@ public abstract class StorageOperation<C, P, R> {
     private StorageException exceptionReference;
 
     /**
-     * A flag to indicate a failure which did not result in an exceptin, i.e a 400 class status code.
+     * A flag to indicate a failure which did not result in an exception, i.e a 400 class status code.
      */
     private boolean nonExceptionedRetryableFailure;
 
@@ -52,6 +52,11 @@ public abstract class StorageOperation<C, P, R> {
      * Holds the result for the operation.
      */
     private RequestResult result;
+
+    /**
+     * Holds the url connection for the operation.
+     */
+    private HttpURLConnection connection;
 
     /**
      * Default Ctor.
@@ -107,6 +112,13 @@ public abstract class StorageOperation<C, P, R> {
     }
 
     /**
+     * @return the URL connection
+     */
+    public final HttpURLConnection getConnection() {
+        return this.connection;
+    }
+
+    /**
      * Resets the operation status flags between operations.
      */
     protected final void initialize(OperationContext opContext) {
@@ -126,7 +138,7 @@ public abstract class StorageOperation<C, P, R> {
     }
 
     /**
-     * Returns either the held exception from the operation if it is set, othwerwise the translated exception.
+     * Returns either the held exception from the operation if it is set, otherwise the translated exception.
      * 
      * @param request
      *            the reference to the HttpURLConnection for the operation.
@@ -173,5 +185,13 @@ public abstract class StorageOperation<C, P, R> {
      */
     public final void setResult(final RequestResult result) {
         this.result = result;
+    }
+
+    /**
+     * @param connection
+     *            the connection to set
+     */
+    public final void setConnection(final HttpURLConnection connection) {
+        this.connection = connection;
     }
 }

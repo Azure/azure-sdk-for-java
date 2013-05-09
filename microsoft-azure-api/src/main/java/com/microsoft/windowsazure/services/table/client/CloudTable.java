@@ -483,6 +483,7 @@ public final class CloudTable {
 
                 final HttpURLConnection request = TableRequest.setAcl(table.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 final StringWriter outBuffer = new StringWriter();
 
@@ -561,6 +562,7 @@ public final class CloudTable {
 
                 final HttpURLConnection request = TableRequest.getAcl(table.uri, tableName, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 client.getCredentials().signRequestLite(request, -1L, opContext);
 

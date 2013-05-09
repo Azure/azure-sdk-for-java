@@ -385,6 +385,7 @@ public final class CloudBlobClient extends ServiceClient {
 
         final HttpURLConnection listContainerRequest = ContainerRequest.list(this.getEndpoint(),
                 options.getTimeoutIntervalInMs(), listingContext, detailsIncluded, opContext);
+        taskReference.setConnection(listContainerRequest);
 
         this.getCredentials().signRequest(listContainerRequest, -1L);
 
