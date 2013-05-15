@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
@@ -107,6 +108,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(saved);
         assertNotSame(queue, saved);
+        assertEquals(false, saved.isDeadLetteringOnMessageExpiration());
+        assertEquals(false, saved.isAnonymousAccessible());
+        assertNotNull(saved.getAutoDeleteOnIdle());
+        assertEquals(true, saved.isSupportOrdering());
         assertEquals("TestCreateQueueWorks", saved.getPath());
     }
 
@@ -418,6 +423,25 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void topicCreatedContainsMetadata() throws ServiceException {
+        // Arrange
+        String topicName = "TestTopicCreatedContainsMetadata";
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+
+        // Assert
+        assertNotNull(createdTopicInfo);
+        assertNotNull(createdTopicInfo.getAutoDeleteOnIdle());
+        assertEquals(false, createdTopicInfo.isRequiresDuplicateDetection());
+        assertEquals(false, createdTopicInfo.isFilteringMessageBeforePublishing());
+        assertEquals(EntityStatus.ACTIVE, createdTopicInfo.getStatus());
+        assertEquals(true, createdTopicInfo.isSupportOrdering());
+        assertEquals(false, createdTopicInfo.isAnonymousAccessible());
+
+    }
+
+    @Test
     public void topicCanBeUpdated() throws ServiceException {
         // Arrange
         String topicName = "testTopicCanBeUpdated";
@@ -472,6 +496,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(created);
         assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
     }
 
     @Test
