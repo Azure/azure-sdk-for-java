@@ -245,7 +245,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @return A <code>TopicInfo</code> object that represents the updated topic.
      */
     public TopicInfo setAnonymousAccessible(Boolean anonymousAccessible) {
-        getModel().setIsAnonymousAcessible(anonymousAccessible);
+        getModel().setIsAnonymousAccessible(anonymousAccessible);
         return this;
     }
 
@@ -255,7 +255,7 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @return <code>true</code> if is anonymous accessible, otherwise <code>false</code>.
      */
     public Boolean isAnonymousAccessible() {
-        return getModel().isIsAnonymousAcessible();
+        return getModel().isIsAnonymousAccessible();
     }
 
     /**
