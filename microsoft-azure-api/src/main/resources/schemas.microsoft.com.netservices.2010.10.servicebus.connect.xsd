@@ -476,7 +476,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="IsAnonymousAcessible" type="xs:boolean">
+      <xs:element minOccurs="0" name="IsAnonymousAccessible" type="xs:boolean">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
