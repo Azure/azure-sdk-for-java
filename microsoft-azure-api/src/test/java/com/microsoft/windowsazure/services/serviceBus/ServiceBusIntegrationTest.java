@@ -241,6 +241,62 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void receiveQueueForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(sourceQueueName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(sourceQueueName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToTopicMessageSuccess() throws Exception {
+
+    }
+
+    @Test
+    public void receiveQueueForwardToTopicMessageWorks() throws Exception {
+
+    }
+
+    @Test
+    public void receiveForwardedTopicMessageFails() throws Exception {
+
+    }
+
+    @Test
+    public void receiveForwardedSubscriptionMessageFails() throws Exception {
+
+    }
+
+    @Test
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";

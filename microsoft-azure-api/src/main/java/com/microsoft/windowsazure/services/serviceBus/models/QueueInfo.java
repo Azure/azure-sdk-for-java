@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
+import java.net.URI;
 import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
@@ -31,6 +32,8 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescri
  * Represents a queue.
  */
 public class QueueInfo extends EntryModel<QueueDescription> {
+
+    private URI uri;
 
     /**
      * Creates an instance of the <code>QueueInfo</code> class.
@@ -537,5 +540,23 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     public QueueInfo setUserMetadata(String userMetadata) {
         getModel().setUserMetadata(userMetadata);
         return this;
+    }
+
+    public QueueInfo setUri(URI uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    public URI getUri() {
+        return uri;
+    }
+
+    public QueueInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    public String getForwardTo() {
+        return getModel().getForwardTo();
     }
 }
