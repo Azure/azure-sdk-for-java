@@ -430,4 +430,13 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         return getModel().getEntityAvailabilityStatus();
     }
 
+    public SubscriptionInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    public String getForwardTo() {
+        return getModel().getForwardTo();
+    }
+
 }

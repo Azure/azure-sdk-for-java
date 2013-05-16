@@ -262,19 +262,22 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Test
     public void receiveSubscriptionForwardToQueueMessageSuccess() throws Exception {
         // Arrange
-        String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
-        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
-        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(sourceQueueName)).getValue();
-        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()));
+        String sourceTopicName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String sourceSubscriptionName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveSubForwardToQueueMessageSuccessDestination";
+        TopicInfo sourceTopicInfo = service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationQueueInfo.getUri().toString()));
 
         // Act
-        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
         ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
                 RECEIVE_AND_DELETE_5_SECONDS);
 
         // Assert
         assertNotNull(receiveQueueMessageResult);
-        assertNull(receiveQueueMessageResult.getValue());
+        assertNotNull(receiveQueueMessageResult.getValue());
     }
 
     @Test

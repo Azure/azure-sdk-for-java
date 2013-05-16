@@ -350,9 +350,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
-        return new CreateSubscriptionResult(getResource().path(topicPath).path("subscriptions")
-                .path(subscription.getName()).type("application/atom+xml;type=entry;charset=utf-8")
-                .put(SubscriptionInfo.class, subscription));
+        Builder webResourceBuilder = getResource().path(topicPath).path("subscriptions").path(subscription.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8");
+        if ((subscription.getForwardTo() != null) && (!subscription.getForwardTo().isEmpty())) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscription.getForwardTo());
+
+        }
+        return new CreateSubscriptionResult(webResourceBuilder.put(SubscriptionInfo.class, subscription));
     }
 
     @Override
