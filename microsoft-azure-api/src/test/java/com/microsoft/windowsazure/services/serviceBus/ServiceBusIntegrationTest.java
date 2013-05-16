@@ -244,9 +244,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void receiveQueueForwardToQueueMessageSuccess() throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
-        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
-        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(sourceQueueName)).getValue();
-        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()));
+        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessDestination";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        QueueInfo sourceQueueInfo = service.createQueue(
+                new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString())).getValue();
 
         // Act
         service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
@@ -255,7 +256,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(receiveQueueMessageResult);
-        assertNull(receiveQueueMessageResult.getValue());
+        assertNotNull(receiveQueueMessageResult.getValue());
     }
 
     @Test

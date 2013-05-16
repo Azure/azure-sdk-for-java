@@ -337,7 +337,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="RuleDescription" nillable="true" type="tns:RuleDescription" />
+  <xs:element name="RuleDescription" type="tns:RuleDescription" />
   <xs:complexType name="Filter">
     <xs:sequence />
   </xs:complexType>

@@ -543,12 +543,17 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     }
 
     public QueueInfo setUri(URI uri) {
-        this.uri = uri;
+        getEntry().setId(uri.toString());
         return this;
     }
 
     public URI getUri() {
-        return uri;
+        return URI.create(removeQueryString(getEntry().getId()));
+    }
+
+    private String removeQueryString(String uri) {
+        String[] result = uri.split("\\?");
+        return result[0];
     }
 
     public QueueInfo setForwardTo(String forwardTo) {

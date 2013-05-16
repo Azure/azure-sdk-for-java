@@ -268,11 +268,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
-        ClientResponse clientResponse = getResource().path(entry.getPath())
-                .type("application/atom+xml;type=entry;charset=utf-8").put(ClientResponse.class, entry);
-        QueueInfo queueInfo = new QueueInfo();
-        CreateQueueResult createQueueResult = new CreateQueueResult(queueInfo);
-        return createQueueResult;
+        Builder webResourceBuilder = getResource().path(entry.getPath()).type(
+                "application/atom+xml;type=entry;charset=utf-8");
+        if ((entry.getForwardTo() != null) && !entry.getForwardTo().isEmpty()) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", entry.getForwardTo());
+        }
+        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class, entry));
     }
 
     @Override
