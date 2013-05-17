@@ -24,8 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -64,8 +62,7 @@ public class OAuthTokenManagerTest {
         });
     }
 
-    private void doIncrementingTokens() throws ServiceException, URISyntaxException, JsonParseException,
-            JsonMappingException, IOException {
+    private void doIncrementingTokens() throws ServiceException, URISyntaxException, IOException {
         doAnswer(new Answer<OAuthTokenResponse>() {
             int count = 0;
 
@@ -82,8 +79,7 @@ public class OAuthTokenManagerTest {
     }
 
     @Test
-    public void clientUsesContractToGetToken() throws ServiceException, URISyntaxException, JsonParseException,
-            JsonMappingException, IOException {
+    public void clientUsesContractToGetToken() throws ServiceException, URISyntaxException, IOException {
         // Arrange
         doIncrementingTokens();
 
@@ -97,7 +93,7 @@ public class OAuthTokenManagerTest {
 
     @Test
     public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid() throws ServiceException, URISyntaxException,
-            JsonParseException, JsonMappingException, IOException {
+            IOException {
         // Arrange
         doIncrementingTokens();
 
@@ -117,7 +113,7 @@ public class OAuthTokenManagerTest {
 
     @Test
     public void clientWillBeCalledWhenTokenIsHalfwayToExpiring() throws ServiceException, URISyntaxException,
-            JsonParseException, JsonMappingException, IOException {
+            IOException {
         // Arrange
         doIncrementingTokens();
 
