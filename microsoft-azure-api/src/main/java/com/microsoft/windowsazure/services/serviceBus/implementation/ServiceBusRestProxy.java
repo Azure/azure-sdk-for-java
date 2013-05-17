@@ -183,6 +183,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throw new RuntimeException("Unknown ReceiveMode");
         }
 
+        if (clientResult.getStatus() == 204) {
+            return null;
+        }
+
         BrokerProperties brokerProperties;
         if (clientResult.getHeaders().containsKey("BrokerProperties")) {
             brokerProperties = mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties"));
