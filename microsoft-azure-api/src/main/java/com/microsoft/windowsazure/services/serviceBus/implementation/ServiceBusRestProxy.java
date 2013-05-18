@@ -267,13 +267,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
-        Builder webResourceBuilder = getResource().path(entry.getPath()).type(
+    public CreateQueueResult createQueue(QueueInfo queueInfo) throws ServiceException {
+        Builder webResourceBuilder = getResource().path(queueInfo.getPath()).type(
                 "application/atom+xml;type=entry;charset=utf-8");
-        if ((entry.getForwardTo() != null) && !entry.getForwardTo().isEmpty()) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", entry.getForwardTo());
+        if ((queueInfo.getForwardTo() != null) && !queueInfo.getForwardTo().isEmpty()) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", queueInfo.getForwardTo());
         }
-        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class, entry));
+        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class, queueInfo));
     }
 
     @Override
@@ -353,14 +353,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
-        Builder webResourceBuilder = getResource().path(topicPath).path("subscriptions").path(subscription.getName())
-                .type("application/atom+xml;type=entry;charset=utf-8");
-        if ((subscription.getForwardTo() != null) && (!subscription.getForwardTo().isEmpty())) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscription.getForwardTo());
+    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscriptionInfo) {
+        Builder webResourceBuilder = getResource().path(topicPath).path("subscriptions")
+                .path(subscriptionInfo.getName()).type("application/atom+xml;type=entry;charset=utf-8");
+        if ((subscriptionInfo.getForwardTo() != null) && (!subscriptionInfo.getForwardTo().isEmpty())) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscriptionInfo.getForwardTo());
 
         }
-        return new CreateSubscriptionResult(webResourceBuilder.put(SubscriptionInfo.class, subscription));
+        return new CreateSubscriptionResult(webResourceBuilder.put(SubscriptionInfo.class, subscriptionInfo));
     }
 
     @Override

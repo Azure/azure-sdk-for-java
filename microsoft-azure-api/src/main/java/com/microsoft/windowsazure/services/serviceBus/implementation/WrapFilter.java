@@ -32,10 +32,23 @@ public class WrapFilter extends ClientFilter {
 
     @Override
     public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+        String accessToken = getWrapToken(cr.getURI());
+        cr.getHeaders().add("Authorization", accessToken);
 
-        String accessToken;
+        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst("ServiceBusSupplementaryAuthorization");
+        if ((secondaryAuthorizationUri != null) && (!secondaryAuthorizationUri.isEmpty())) {
+            String secondaryAccessToken = getWrapToken(URI.create(secondaryAuthorizationUri));
+            cr.getHeaders().remove("ServiceBusSupplementaryAuthorization");
+            cr.getHeaders().add("ServiceBusSupplementaryAuthorization", secondaryAccessToken);
+        }
+
+        return this.getNext().handle(cr);
+    }
+
+    private String getWrapToken(URI uri) {
+        String result;
         try {
-            accessToken = tokenManager.getAccessToken(cr.getURI());
+            result = tokenManager.getAccessToken(uri);
         }
         catch (ServiceException e) {
             // must wrap exception because of base class signature
@@ -46,27 +59,6 @@ public class WrapFilter extends ClientFilter {
             throw new ClientHandlerException(e);
         }
 
-        cr.getHeaders().add("Authorization", "WRAP access_token=\"" + accessToken + "\"");
-
-        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst("ServiceBusSupplementaryAuthorization");
-        if ((secondaryAuthorizationUri != null) && (!secondaryAuthorizationUri.isEmpty())) {
-            String secondaryAccessToken;
-            try {
-                secondaryAccessToken = tokenManager.getAccessToken(URI.create(secondaryAuthorizationUri));
-            }
-            catch (ServiceException e) {
-                // must wrap exception because of base class signature
-                throw new ClientHandlerException(e);
-            }
-            catch (URISyntaxException e) {
-                // must wrap exception because of base class signature
-                throw new ClientHandlerException(e);
-            }
-            cr.getHeaders().remove("ServiceBusSupplementaryAuthorization");
-            cr.getHeaders().add("ServiceBusSupplementaryAuthorization",
-                    "WRAP access_token=\"" + secondaryAccessToken + "\"");
-        }
-
-        return this.getNext().handle(cr);
+        return "WRAP access_token=\"" + result + "\"";
     }
 }

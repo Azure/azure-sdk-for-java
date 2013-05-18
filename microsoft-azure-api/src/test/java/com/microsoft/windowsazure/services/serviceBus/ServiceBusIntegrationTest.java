@@ -247,8 +247,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
         String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessDestination";
         QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
-        QueueInfo sourceQueueInfo = service.createQueue(
-                new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString())).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()))
+                .getValue();
 
         // Act
         service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
@@ -286,7 +286,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String sourceTopicName = "TestReceiveSubForwardToQueueMessageSuccessSource";
         String sourceSubscriptionName = "TestReceiveSubForwardToQueueMessageSuccessSource";
         String destinationQueueName = "TestReceiveSubForwardToQueueMessageSuccessDestination";
-        TopicInfo sourceTopicInfo = service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
         QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
         service.createSubscription(sourceTopicName,
                 new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationQueueInfo.getUri().toString()));
@@ -307,7 +307,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String sourceTopicName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
         String sourceSubscriptionName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
         String destinationQueueName = "TestUpdatedReceiveSubForwardToQMessageSuccessDest";
-        TopicInfo sourceTopicInfo = service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
         QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
         SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
                 new SubscriptionInfo(sourceSubscriptionName)).getValue();
@@ -330,8 +330,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String destinationTopicName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
         String destinationSubscriptionName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
         TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
-        QueueInfo sourceQueueInfo = service.createQueue(
-                new QueueInfo(sourceQueueName).setForwardTo(destinationTopicInfo.getUri().toString())).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationTopicInfo.getUri().toString()))
+                .getValue();
 
         // Act
         service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
@@ -371,10 +371,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
         String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
         String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
-        TopicInfo sourceTopicInfo = service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
         TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
-        SubscriptionInfo destinationSubscriptionInfo = service.createSubscription(destinationTopicName,
-                new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
         service.createSubscription(sourceTopicName,
                 new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationTopicInfo.getUri().toString()));
 
@@ -395,10 +394,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
         String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
         String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
-        TopicInfo sourceTopicInfo = service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
         TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
-        SubscriptionInfo destinationSubscriptionInfo = service.createSubscription(destinationTopicName,
-                new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
         SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
                 new SubscriptionInfo(sourceSubscriptionName)).getValue();
         service.updateSubscription(sourceTopicName,
