@@ -267,9 +267,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public CreateQueueResult createQueue(QueueInfo entry) throws ServiceException {
-        return new CreateQueueResult(getResource().path(entry.getPath())
-                .type("application/atom+xml;type=entry;charset=utf-8").put(QueueInfo.class, entry));
+    public CreateQueueResult createQueue(QueueInfo queueInfo) throws ServiceException {
+        Builder webResourceBuilder = getResource().path(queueInfo.getPath()).type(
+                "application/atom+xml;type=entry;charset=utf-8");
+        if ((queueInfo.getForwardTo() != null) && !queueInfo.getForwardTo().isEmpty()) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", queueInfo.getForwardTo());
+        }
+        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class, queueInfo));
     }
 
     @Override
@@ -296,8 +300,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
-        return getResource().path(queueInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
-                .header("If-Match", "*").put(QueueInfo.class, queueInfo);
+        Builder webResourceBuilder = getResource().path(queueInfo.getPath())
+                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*");
+        if ((queueInfo.getForwardTo() != null) && !queueInfo.getForwardTo().isEmpty()) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", queueInfo.getForwardTo());
+        }
+        return webResourceBuilder.put(QueueInfo.class, queueInfo);
     }
 
     private WebResource listOptions(AbstractListOptions<?> options, WebResource path) {
@@ -345,10 +353,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
-        return new CreateSubscriptionResult(getResource().path(topicPath).path("subscriptions")
-                .path(subscription.getName()).type("application/atom+xml;type=entry;charset=utf-8")
-                .put(SubscriptionInfo.class, subscription));
+    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscriptionInfo) {
+        Builder webResourceBuilder = getResource().path(topicPath).path("subscriptions")
+                .path(subscriptionInfo.getName()).type("application/atom+xml;type=entry;charset=utf-8");
+        if ((subscriptionInfo.getForwardTo() != null) && (!subscriptionInfo.getForwardTo().isEmpty())) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscriptionInfo.getForwardTo());
+
+        }
+        return new CreateSubscriptionResult(webResourceBuilder.put(SubscriptionInfo.class, subscriptionInfo));
     }
 
     @Override
@@ -377,9 +389,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     @Override
     public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
             throws ServiceException {
-        return getResource().path(topicName).path("subscriptions").path(subscriptionInfo.getName())
-                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*")
-                .put(SubscriptionInfo.class, subscriptionInfo);
+        Builder webResourceBuilder = getResource().path(topicName).path("subscriptions")
+                .path(subscriptionInfo.getName()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*");
+        if ((subscriptionInfo.getForwardTo() != null) && !subscriptionInfo.getForwardTo().isEmpty()) {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscriptionInfo.getForwardTo());
+        }
+        return webResourceBuilder.put(SubscriptionInfo.class, subscriptionInfo);
     }
 
     @Override
