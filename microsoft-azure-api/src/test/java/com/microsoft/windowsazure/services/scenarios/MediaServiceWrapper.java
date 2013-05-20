@@ -272,7 +272,7 @@ class MediaServiceWrapper {
         String configuration = null;
         switch (encoderType) {
             case WindowsAzureMediaEncoder:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.2.0.0");
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.3");
                 // Full list of configurations strings for version 2.1 is at:
                 // http://msdn.microsoft.com/en-us/library/jj129582.aspx
                 configuration = "VC1 Broadband SD 4x3";
