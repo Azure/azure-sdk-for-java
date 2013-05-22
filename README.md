@@ -20,15 +20,19 @@ This project provides a client library in Java that makes it easy to consume Win
     * Queues
         * Create/Read/Update/Delete queues
         * Send/Receive/Unlock/Delete messages
+        * Renew message lock
     * Topics
         * Create/Read/Update/Delete topics
         * Create/Read/Update/Delete subscriptions
         * Create/Read/Update/Delete rules
         * Send/Receive/Unlock/Delete messages
+        * Renew message lock
 * Media Services
-    * Upload Media Files to Media Services
-    * Change the encoding on uploaded Media Services
-    * Provide streaming or download access to uploaded/transformed Media Files
+    * Create/Read/Update/Delete access policies
+    * Create/Read/Update/Delete asset files
+    * Create/Read/Update/Delete assets
+    * Create/Read/Update/Delete/Rebind content keys
+    * Create/Read/Update/Cancel/Delete jobs
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
   
