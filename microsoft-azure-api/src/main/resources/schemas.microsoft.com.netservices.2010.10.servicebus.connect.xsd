@@ -406,9 +406,15 @@
       <xs:enumeration value="MessagePartitioning" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name ="KeyValueOfStringAnyType">
+    <xs:sequence>
+      <xs:element name ="Key" type="xs:string" />
+      <xs:element name ="Value" type="xs:anyType" />
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="FilterProperties">
     <xs:sequence>
-      <xs:element minOccurs="0" name="NameValuePair" type="xs:string" />
+      <xs:element minOccurs="0" name="KeyValueOfstringanyType" type="tns:KeyValueOfStringAnyType" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="CorrelationFilter">
