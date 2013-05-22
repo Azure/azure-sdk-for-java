@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsRe
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -173,6 +174,21 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void receiveMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestReceiveMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(queueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
@@ -187,6 +203,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals(11, size);
         assertEquals("Hello Again", new String(data, 0, size));
+    }
+
+    @Test
+    public void peekLockMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestPeekLockMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult result = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getValue());
     }
 
     @Test
@@ -252,8 +282,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(lockToken);
         assertNotNull(lockedUntil);
-        assertNull(receivedMessage.getLockToken());
-        assertNull(receivedMessage.getLockedUntilUtc());
+        assertNull(receivedMessage);
+    }
+
+    @Test
+    public void emptyQueueReturnsNullMessage() throws Exception {
+        // Arrange 
+        String queueName = "testEmptyQueueReturnsNullMessage";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        BrokeredMessage brokeredMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+
+        // Assert 
+        assertNull(brokeredMessage);
     }
 
     @Test
