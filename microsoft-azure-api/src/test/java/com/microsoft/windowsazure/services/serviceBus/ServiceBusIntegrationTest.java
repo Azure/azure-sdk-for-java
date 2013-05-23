@@ -413,7 +413,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listTopicsAccessedInLastFiveMinutes() throws ServiceException {
+    public void listTopicsAccessedSinceASpecificTime() throws ServiceException {
+        removeTopics();
         String topicName = "testListTopicAccessedInLastFiveMinutes";
 
         // Act 
@@ -427,7 +428,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listTopicsCreatedInLastFiveMinutes() throws ServiceException {
+    public void listTopicsCreatedSinceASpecificTime() throws ServiceException {
+        removeTopics();
         String topicName = "testListTopicCreatedInLastFiveMinutes";
 
         // Act 
@@ -442,15 +444,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void listTopicsUnderSpecificPathWithAtLeastOneMessage() throws ServiceException {
-        String topicName = "testListTopicsUnderSpecificPathWithAtLeastOneMessage";
+        removeTopics();
+        String topicName = "testListTopics/UnderSpecificPathWithAtLeastOneMessage";
+        String secondTopicName = "testListTopics/UnderNoMessage";
 
         // Act 
         TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        TopicInfo secondTopicInfo = service.createTopic(new TopicInfo().setPath(secondTopicName)).getValue();
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello!"));
         ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
-                .setFilter("startwith(path, 'foo/bar') eq true and messageCount Gt 0"));
+                .setFilter("startwith(path, 'testListTopics/Under') eq true and messageCount Gt 0"));
 
         // Assert
         assertNotNull(topicInfo);
+        assertNotNull(secondTopicInfo);
         assertEquals(1, listTopicResult.getItems().size());
     }
 
