@@ -37,6 +37,9 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Correlation
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.FilterProperties;
+import com.microsoft.windowsazure.services.serviceBus.implementation.KeyValueOfStringAnyType;
+import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
@@ -629,6 +632,36 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Act
         SubscriptionInfo created = service.createSubscription(topicName, new SubscriptionInfo("MySubscription"))
                 .getValue();
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
+    }
+
+    @Test
+    public void createSubscriptionWithCorrelationFilter() throws Exception {
+        // Arrange
+        String topicName = "createSubscriptionWithCorrelationFilter";
+        service.createTopic(new TopicInfo(topicName));
+        CorrelationFilter correlationFilter = new CorrelationFilter();
+        FilterProperties filterProperties = new FilterProperties();
+        KeyValueOfStringAnyType keyValueOfStringAnyType = new KeyValueOfStringAnyType();
+        keyValueOfStringAnyType.setKey("AKey");
+        keyValueOfStringAnyType.setValue(new String("A Value"));
+        filterProperties.getKeyValueOfstringanyTypes().add(keyValueOfStringAnyType);
+        correlationFilter.setProperties(filterProperties);
+        RuleDescription ruleDescription = new RuleDescription();
+        ruleDescription.setFilter(correlationFilter);
+
+        // Act
+        SubscriptionInfo created = service.createSubscription(topicName,
+                new SubscriptionInfo("MySubscription").setDefaultRuleDescription(ruleDescription)).getValue();
 
         // Assert
         assertNotNull(created);

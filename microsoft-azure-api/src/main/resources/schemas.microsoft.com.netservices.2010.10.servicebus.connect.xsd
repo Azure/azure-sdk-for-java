@@ -414,7 +414,7 @@
   </xs:complexType>
   <xs:complexType name="FilterProperties">
     <xs:sequence>
-      <xs:element minOccurs="0" name="KeyValueOfstringanyType" type="tns:KeyValueOfStringAnyType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringanyType" type="tns:KeyValueOfStringAnyType" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="CorrelationFilter">
