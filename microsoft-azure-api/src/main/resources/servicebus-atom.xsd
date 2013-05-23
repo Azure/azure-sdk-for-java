@@ -12,7 +12,6 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="title" type="xs:string" />
-
 				<xs:element ref="tns:entry" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
@@ -20,7 +19,8 @@
 	<xs:element name="entry">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="title" type="xs:string" />
+        <xs:element name="id" type="xs:string" />
+        <xs:element name="title" type="xs:string" />
 				<xs:element name="content" type="tns:content" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>

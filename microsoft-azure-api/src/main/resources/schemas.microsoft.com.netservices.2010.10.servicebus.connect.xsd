@@ -115,6 +115,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -246,6 +253,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -330,7 +344,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="RuleDescription" nillable="true" type="tns:RuleDescription" />
+  <xs:element name="RuleDescription" type="tns:RuleDescription" />
   <xs:complexType name="Filter">
     <xs:sequence />
   </xs:complexType>
@@ -476,7 +490,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="IsAnonymousAcessible" type="xs:boolean">
+      <xs:element minOccurs="0" name="IsAnonymousAccessible" type="xs:boolean">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />

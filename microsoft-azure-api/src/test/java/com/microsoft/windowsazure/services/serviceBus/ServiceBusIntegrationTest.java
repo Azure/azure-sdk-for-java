@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
@@ -49,6 +50,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -107,6 +109,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(saved);
         assertNotSame(queue, saved);
+        assertEquals(false, saved.isDeadLetteringOnMessageExpiration());
+        assertEquals(false, saved.isAnonymousAccessible());
+        assertNotNull(saved.getAutoDeleteOnIdle());
+        assertEquals(true, saved.isSupportOrdering());
         assertEquals("TestCreateQueueWorks", saved.getPath());
     }
 
@@ -234,6 +240,177 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(receiveQueueMessageResult);
         assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveQueueForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessDestination";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()))
+                .getValue();
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedQueueForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessDestination";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        QueueInfo sourceQueueInfo = new QueueInfo(sourceQueueName);
+        service.createQueue(sourceQueueInfo).getValue();
+        service.updateQueue(sourceQueueInfo.setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String sourceSubscriptionName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveSubForwardToQueueMessageSuccessDestination";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedSubscriptionForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
+        String sourceSubscriptionName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
+        String destinationQueueName = "TestUpdatedReceiveSubForwardToQMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName)).getValue();
+        service.updateSubscription(sourceTopicName,
+                sourceSubscriptionInfo.setForwardTo(destinationQueueInfo.getUri().toString()));
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveQueueForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToTopicMessageSuccessSource";
+        String destinationTopicName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
+        String destinationSubscriptionName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationTopicInfo.getUri().toString()))
+                .getValue();
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedQueueForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessSource";
+        String destinationTopicName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessDestination";
+        String destinationSubscriptionName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessDestination";
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        QueueInfo sourceQueueInfo = new QueueInfo(sourceQueueName);
+        service.createQueue(sourceQueueInfo).getValue();
+        service.updateQueue(sourceQueueInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedSubscriptionForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName)).getValue();
+        service.updateSubscription(sourceTopicName,
+                sourceSubscriptionInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
     }
 
     @Test
@@ -462,6 +639,25 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void topicCreatedContainsMetadata() throws ServiceException {
+        // Arrange
+        String topicName = "TestTopicCreatedContainsMetadata";
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+
+        // Assert
+        assertNotNull(createdTopicInfo);
+        assertNotNull(createdTopicInfo.getAutoDeleteOnIdle());
+        assertEquals(false, createdTopicInfo.isRequiresDuplicateDetection());
+        assertEquals(false, createdTopicInfo.isFilteringMessageBeforePublishing());
+        assertEquals(EntityStatus.ACTIVE, createdTopicInfo.getStatus());
+        assertEquals(true, createdTopicInfo.isSupportOrdering());
+        assertEquals(false, createdTopicInfo.isAnonymousAccessible());
+
+    }
+
+    @Test
     public void topicCanBeUpdated() throws ServiceException {
         // Arrange
         String topicName = "testTopicCanBeUpdated";
@@ -516,6 +712,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(created);
         assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
     }
 
     @Test
