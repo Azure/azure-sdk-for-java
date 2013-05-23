@@ -568,7 +568,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Act 
         TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
         ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
-                .setFilter("startswith(path, \"testPathA\\/testPathB\") eq true"));
+                .setFilter("startswith(path, 'testPathA/testPathB') eq true"));
 
         // Assert
         assertNotNull(topicInfo);
@@ -629,8 +629,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
         TopicInfo secondTopicInfo = service.createTopic(new TopicInfo().setPath(secondTopicName)).getValue();
         service.sendTopicMessage(topicName, new BrokeredMessage("Hello!"));
-        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
-                .setFilter("startwith(path, 'testListTopics/Under') eq true and messageCount Gt 0"));
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions().setFilter("MessageCount gt 0"));
 
         // Assert
         assertNotNull(topicInfo);
