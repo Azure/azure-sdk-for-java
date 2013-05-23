@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
@@ -380,6 +381,77 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(listed2);
 
         assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
+    }
+
+    @Test
+    public void listTopicsUnderASpecificPath() throws ServiceException {
+        // Arrange 
+        String topicName = "testPathA/testPathB/listTopicUnderASpecificPath";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("startswith(path, \"testPathA\\/testPathB\") eq true"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsUpdatedInLastFiveMinutes() throws ServiceException {
+        String topicName = "testListTopicUpdatedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("ModifiedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsAccessedInLastFiveMinutes() throws ServiceException {
+        String topicName = "testListTopicAccessedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("AccessedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsCreatedInLastFiveMinutes() throws ServiceException {
+        String topicName = "testListTopicCreatedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("CreatedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsUnderSpecificPathWithAtLeastOneMessage() throws ServiceException {
+        String topicName = "testListTopicsUnderSpecificPathWithAtLeastOneMessage";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("startwith(path, 'foo/bar') eq true and messageCount Gt 0"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
     }
 
     @Test
