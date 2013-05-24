@@ -620,24 +620,6 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listTopicsUnderSpecificPathWithAtLeastOneMessage() throws ServiceException {
-        removeTopics();
-        String topicName = "testListTopics/UnderSpecificPathWithAtLeastOneMessage";
-        String secondTopicName = "testListTopics/UnderNoMessage";
-
-        // Act 
-        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
-        TopicInfo secondTopicInfo = service.createTopic(new TopicInfo().setPath(secondTopicName)).getValue();
-        service.sendTopicMessage(topicName, new BrokeredMessage("Hello!"));
-        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions().setFilter("MessageCount gt 0"));
-
-        // Assert
-        assertNotNull(topicInfo);
-        assertNotNull(secondTopicInfo);
-        assertEquals(1, listTopicResult.getItems().size());
-    }
-
-    @Test
     public void topicCreatedContainsMetadata() throws ServiceException {
         // Arrange
         String topicName = "TestTopicCreatedContainsMetadata";
