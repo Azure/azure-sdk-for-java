@@ -601,7 +601,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertNotNull(topicInfo);
-        assertEquals(1, listTopicResult.getItems().size());
+        assertEquals(0, listTopicResult.getItems().size());
     }
 
     @Test
