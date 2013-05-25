@@ -2,6 +2,7 @@
 <xs:schema 
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" 
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+	xmlns:tnsn="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
 	elementFormDefault="qualified" 
   attributeFormDefault="qualified"
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
@@ -22,6 +23,7 @@
   </xs:annotation>
 	
   <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
@@ -150,7 +152,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -281,7 +283,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -376,16 +378,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TrueFilter" nillable="true" type="tns:TrueFilter" />
-  <xs:complexType name ="MessageCountDetails">
-    <xs:sequence>
-      <xs:element name="ActiveMessageCount" minOccurs="0"  type="xs:long" />
-      <xs:element name="DeadLetterMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name ="ScheduledMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name="TransferMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name="TransferDeadLetterMessageCount" minOccurs="0" type="xs:long" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="MessageCountDetails" nillable="true" type="tns:MessageCountDetails" />
   <xs:simpleType name="AccessRights">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Manage" />
@@ -556,7 +548,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name ="CountDetails" type ="tns:MessageCountDetails">
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
