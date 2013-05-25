@@ -5,7 +5,7 @@
     xmlns:tnsn="http://schemas.microsoft.com/netservices/2011/06/servicebus"
 	elementFormDefault="qualified" 
   attributeFormDefault="qualified"
-	targetNamespace="http://schemas.microsoft.com/netservices/2011/06/servicebus/connect" 
+	targetNamespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"	
 	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
   version="0.2"
