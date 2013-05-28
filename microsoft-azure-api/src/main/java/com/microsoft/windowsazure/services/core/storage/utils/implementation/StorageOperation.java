@@ -15,10 +15,13 @@
 package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.net.HttpURLConnection;
+import java.security.InvalidKeyException;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.RequestOptions;
 import com.microsoft.windowsazure.services.core.storage.RequestResult;
+import com.microsoft.windowsazure.services.core.storage.ServiceClient;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
@@ -153,6 +156,26 @@ public abstract class StorageOperation<C, P, R> {
         }
 
         return StorageException.translateException(request, null, opContext);
+    }
+
+    public final void signRequest(ServiceClient client, HttpURLConnection request, long contentLength,
+            OperationContext context) throws InvalidKeyException, StorageException {
+        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
+            client.getCredentials().signBlobAndQueueRequest(request, contentLength, context);
+        }
+        else {
+            client.getCredentials().signBlobAndQueueRequestLite(request, contentLength, context);
+        }
+    }
+
+    public final void signTableRequest(ServiceClient client, HttpURLConnection request, long contentLength,
+            OperationContext context) throws InvalidKeyException, StorageException {
+        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
+            client.getCredentials().signTableRequest(request, contentLength, context);
+        }
+        else {
+            client.getCredentials().signTableRequestLite(request, contentLength, context);
+        }
     }
 
     /**

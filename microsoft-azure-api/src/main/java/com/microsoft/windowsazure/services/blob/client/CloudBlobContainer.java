@@ -223,7 +223,8 @@ public final class CloudBlobContainer {
                 this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -298,7 +299,8 @@ public final class CloudBlobContainer {
                 this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -391,7 +393,7 @@ public final class CloudBlobContainer {
                         .getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -462,7 +464,7 @@ public final class CloudBlobContainer {
                         .getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -536,7 +538,7 @@ public final class CloudBlobContainer {
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -614,7 +616,7 @@ public final class CloudBlobContainer {
                         .getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -694,7 +696,7 @@ public final class CloudBlobContainer {
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1114,7 +1116,7 @@ public final class CloudBlobContainer {
                 options.getTimeoutIntervalInMs(), listingContext, options, opContext);
         taskReference.setConnection(listBlobsRequest);
 
-        this.blobServiceClient.getCredentials().signRequest(listBlobsRequest, -1L);
+        taskReference.signRequest(this.blobServiceClient, listBlobsRequest, -1L, null);
 
         ExecutionEngine.processRequest(listBlobsRequest, opContext, taskReference.getResult());
 
@@ -1540,7 +1542,8 @@ public final class CloudBlobContainer {
                 this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1619,7 +1622,9 @@ public final class CloudBlobContainer {
                 ContainerRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
 
                 final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
-                client.getCredentials().signRequest(request, aclBytes.length);
+
+                this.signRequest(client, request, aclBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
@@ -1719,7 +1724,7 @@ public final class CloudBlobContainer {
                         accessCondition, blobOptions, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1802,7 +1807,7 @@ public final class CloudBlobContainer {
                         opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1885,7 +1890,7 @@ public final class CloudBlobContainer {
                         opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1971,7 +1976,7 @@ public final class CloudBlobContainer {
                         accessCondition, blobOptions, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2064,7 +2069,7 @@ public final class CloudBlobContainer {
                         blobOptions, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 

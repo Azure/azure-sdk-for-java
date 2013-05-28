@@ -261,7 +261,7 @@ public class TableOperation {
                                 .getEtag(), options.getTimeoutIntervalInMs(), null, options, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -330,7 +330,7 @@ public class TableOperation {
                         operation.opType.getUpdateType(), options.getTimeoutIntervalInMs(), null, options, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), isTableEntry, request.getOutputStream(),
                         opContext);
@@ -412,7 +412,7 @@ public class TableOperation {
                         options.getTimeoutIntervalInMs(), null, options, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);
@@ -479,7 +479,7 @@ public class TableOperation {
                         options.getTimeoutIntervalInMs(), null, options, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);

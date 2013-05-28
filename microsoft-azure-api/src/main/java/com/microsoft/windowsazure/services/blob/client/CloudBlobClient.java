@@ -387,7 +387,7 @@ public final class CloudBlobClient extends ServiceClient {
                 options.getTimeoutIntervalInMs(), listingContext, detailsIncluded, opContext);
         taskReference.setConnection(listContainerRequest);
 
-        this.getCredentials().signRequest(listContainerRequest, -1L);
+        taskReference.signRequest(this, listContainerRequest, -1L, null);
 
         ExecutionEngine.processRequest(listContainerRequest, opContext, taskReference.getResult());
 

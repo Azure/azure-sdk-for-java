@@ -217,7 +217,8 @@ public final class CloudQueue {
 
                 final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                client.getCredentials().signRequest(request, messageBytes.length);
+                this.signRequest(client, request, messageBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(messageBytes);
 
@@ -286,7 +287,7 @@ public final class CloudQueue {
                         this.getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -352,7 +353,8 @@ public final class CloudQueue {
                 this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -426,7 +428,8 @@ public final class CloudQueue {
                 this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -512,7 +515,7 @@ public final class CloudQueue {
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -584,7 +587,7 @@ public final class CloudQueue {
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -672,7 +675,7 @@ public final class CloudQueue {
                         opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -739,7 +742,7 @@ public final class CloudQueue {
                         opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -813,7 +816,7 @@ public final class CloudQueue {
                         opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1029,7 +1032,7 @@ public final class CloudQueue {
                         this.getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1164,7 +1167,7 @@ public final class CloudQueue {
                         numberOfMessages, visibilityTimeoutInSeconds, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1296,13 +1299,15 @@ public final class CloudQueue {
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
                     final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                    client.getCredentials().signRequest(request, messageBytes.length);
+                    this.signRequest(client, request, messageBytes.length, null);
+
                     final OutputStream outStreamRef = request.getOutputStream();
                     outStreamRef.write(messageBytes);
                 }
                 else {
                     request.setFixedLengthStreamingMode(0);
-                    client.getCredentials().signRequest(request, 0L);
+
+                    this.signRequest(client, request, 0L, null);
                 }
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
@@ -1377,7 +1382,7 @@ public final class CloudQueue {
                 this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1455,7 +1460,9 @@ public final class CloudQueue {
                 QueueRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
 
                 final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
-                client.getCredentials().signRequest(request, aclBytes.length);
+
+                this.signRequest(client, request, aclBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
@@ -1528,7 +1535,7 @@ public final class CloudQueue {
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 

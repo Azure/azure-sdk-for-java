@@ -271,7 +271,7 @@ public final class CloudPageBlob extends CloudBlob {
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -352,7 +352,7 @@ public final class CloudPageBlob extends CloudBlob {
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -480,11 +480,12 @@ public final class CloudPageBlob extends CloudBlob {
                         request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                     }
 
-                    client.getCredentials().signRequest(request, length);
+                    this.signRequest(client, request, length, null);
+
                     request.getOutputStream().write(data);
                 }
                 else {
-                    client.getCredentials().signRequest(request, 0L);
+                    this.signRequest(client, request, 0L, null);
                 }
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());

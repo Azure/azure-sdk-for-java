@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
@@ -53,6 +54,7 @@ public class QueueTestBase {
         }
 
         qClient = httpAcc.createCloudQueueClient();
+        qClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         testSuiteQueueName = generateRandomQueueName();
         queue = qClient.getQueueReference(testSuiteQueueName);
         queue.create();

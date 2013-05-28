@@ -188,7 +188,7 @@ public class QueryTableOperation extends TableOperation {
                         options, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 

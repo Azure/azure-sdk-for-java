@@ -178,7 +178,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            the length of the content written to the output stream. If unknown, specify -1.
      */
     @Override
-    public void signRequest(final java.net.HttpURLConnection connection, final long contentLength) {
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection connection, final long contentLength) {
         // No op
     }
 
@@ -196,7 +196,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            object, that represents the current operation
      */
     @Override
-    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength,
             final OperationContext opContext) {
         // No op
     }
@@ -209,7 +209,7 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            the request, as an <code>HttpURLConnection</code> object, to sign
      */
     @Override
-    public void signRequestLite(final java.net.HttpURLConnection connection, final long contentLength) {
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection connection, final long contentLength) {
         // No op
     }
 
@@ -225,7 +225,69 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      *            object, that represents the current operation
      */
     @Override
-    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key authentication scheme. This is not a valid
+     * operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * 
+     * @param connection
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param contentLength
+     *            the length of the content written to the output stream. If unknown, specify -1.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection connection, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials and operation context under the Shared Key authentication scheme.
+     * This is not a valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs
+     * a no-op.
+     * 
+     * @param request
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param contentLength
+     *            the length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            object, that represents the current operation
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
+     * valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * 
+     * @param connection
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection connection, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
+     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
+     * no-op.
+     * 
+     * @param request
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param opContext
+     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            object, that represents the current operation
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength,
             final OperationContext opContext) {
         // No op
     }

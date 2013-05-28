@@ -490,7 +490,9 @@ public final class CloudTable {
                 TableRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
 
                 final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
-                client.getCredentials().signRequestLite(request, aclBytes.length, opContext);
+
+                this.signTableRequest(client, request, aclBytes.length, opContext);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
@@ -564,7 +566,7 @@ public final class CloudTable {
                         .getTimeoutIntervalInMs(), opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 

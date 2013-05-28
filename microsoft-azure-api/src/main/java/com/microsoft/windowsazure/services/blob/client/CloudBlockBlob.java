@@ -202,7 +202,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
-                client.getCredentials().signRequest(request, descriptor.getLength());
+                this.signRequest(client, request, descriptor.getLength(), null);
+
                 Utility.writeToOutputStream(blockListInputStream, request.getOutputStream(), descriptor.getLength(),
                         false, false, null, opContext);
 
@@ -294,7 +295,7 @@ public final class CloudBlockBlob extends CloudBlob {
                         blobOptions, opContext);
                 this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -624,7 +625,8 @@ public final class CloudBlockBlob extends CloudBlob {
                     request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                 }
 
-                client.getCredentials().signRequest(request, length);
+                this.signRequest(client, request, length, null);
+
                 Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length,
                         true /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 

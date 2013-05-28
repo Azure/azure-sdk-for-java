@@ -257,7 +257,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     @Override
     public void signRequest(final java.net.HttpURLConnection request, final long contentLength)
             throws InvalidKeyException, StorageException {
-        this.signRequest(request, contentLength, null);
+        this.signBlobAndQueueRequest(request, contentLength, null);
     }
 
     /**
@@ -300,7 +300,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     @Override
     public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength)
             throws InvalidKeyException, StorageException {
-        this.signRequestLite(request, contentLength, null);
+        this.signTableRequestLite(request, contentLength, null);
     }
 
     /**
@@ -322,6 +322,178 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      */
     @Override
     public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws StorageException, InvalidKeyException {
+        opContext = opContext == null ? new OperationContext() : opContext;
+        BaseRequest.signRequestForTableSharedKeyLite(request, this.credentials, contentLength, opContext);
+    }
+
+    /**
+     * Signs a request under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength)
+            throws InvalidKeyException, StorageException {
+        this.signBlobAndQueueRequest(request, contentLength, null);
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws InvalidKeyException, StorageException {
+        opContext = opContext == null ? new OperationContext() : opContext;
+        BaseRequest.signRequestForBlobAndQueue(request, this.credentials, contentLength, opContext);
+    }
+
+    /**
+     * Signs a request using the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If an unspecified storage exception occurs.
+     */
+    @Override
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength)
+            throws InvalidKeyException, StorageException {
+        this.signBlobAndQueueRequestLite(request, contentLength, null);
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws StorageException, InvalidKeyException {
+        opContext = opContext == null ? new OperationContext() : opContext;
+        BaseRequest.signRequestForBlobAndQueueSharedKeyLite(request, this.credentials, contentLength, opContext);
+    }
+
+    /**
+     * Signs a request under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength)
+            throws InvalidKeyException, StorageException {
+        this.signTableRequest(request, contentLength, null);
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength,
+            OperationContext opContext) throws InvalidKeyException, StorageException {
+        opContext = opContext == null ? new OperationContext() : opContext;
+        BaseRequest.signRequestForTableSharedKey(request, this.credentials, contentLength, opContext);
+    }
+
+    /**
+     * Signs a request using the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If an unspecified storage exception occurs.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength)
+            throws InvalidKeyException, StorageException {
+        this.signTableRequestLite(request, contentLength, null);
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength,
             OperationContext opContext) throws StorageException, InvalidKeyException {
         opContext = opContext == null ? new OperationContext() : opContext;
         BaseRequest.signRequestForTableSharedKeyLite(request, this.credentials, contentLength, opContext);

@@ -96,8 +96,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
 
     /**
      * Computes a signature for the specified string using the HMAC-SHA256 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so
-     * the method merely returns <code>null</code>.
+     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
+     * so the method merely returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
@@ -130,8 +130,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
 
     /**
      * Computes a signature for the specified string using the HMAC-SHA512 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so
-     * the method merely returns <code>null</code>.
+     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
+     * so the method merely returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
@@ -191,7 +191,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            The length of the content written to the output stream. If unknown, specify -1.
      */
     @Override
-    public void signRequest(final java.net.HttpURLConnection request, final long contentLength) {
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength) {
         // No op
     }
 
@@ -210,7 +210,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            the operation.
      */
     @Override
-    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength,
             final OperationContext opContext) {
         // No op
     }
@@ -225,7 +225,7 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            The length of the content written to the output stream. If unknown, specify -1.
      */
     @Override
-    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength) {
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength) {
         // No op
     }
 
@@ -244,7 +244,75 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *            the operation.
      */
     @Override
-    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request under the Shared Key authentication scheme. This is not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key authentication scheme. This is not a
+     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
+     * no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request under the Shared Key Lite authentication scheme. This is not a valid operation for objects of
+     * type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme. This is
+     * not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength,
             final OperationContext opContext) {
         // No op
     }

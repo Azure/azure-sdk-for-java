@@ -26,6 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
@@ -595,6 +596,7 @@ public class TableTestBase {
         tClient = httpAcc.createCloudTableClient();
         qClient = httpAcc.createCloudQueueClient();
         testSuiteTableName = generateRandomTableName();
+        tClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         CloudTable table = tClient.getTableReference(testSuiteTableName);
         table.create();
     }

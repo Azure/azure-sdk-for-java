@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
@@ -52,6 +53,7 @@ public class BlobTestBase {
         }
 
         bClient = httpAcc.createCloudBlobClient();
+        bClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         testSuiteContainerName = generateRandomContainerName();
         CloudBlobContainer container = bClient.getContainerReference(testSuiteContainerName);
         container.create();

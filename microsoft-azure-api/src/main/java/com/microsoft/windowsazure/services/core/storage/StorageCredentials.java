@@ -39,8 +39,8 @@ public abstract class StorageCredentials {
      *            Either include an account name with an account key (specifying values for
      *            {@link CloudStorageAccount#ACCOUNT_NAME_NAME} and {@link CloudStorageAccount#ACCOUNT_KEY_NAME} ), or a
      *            shared access signature (specifying a value for
-     *            {@link CloudStorageAccount#SHARED_ACCESS_SIGNATURE_NAME} ). If you use an account name and account key,
-     *            do not include a shared access signature, and vice versa.
+     *            {@link CloudStorageAccount#SHARED_ACCESS_SIGNATURE_NAME} ). If you use an account name and account
+     *            key, do not include a shared access signature, and vice versa.
      * 
      * @return A {@link StorageCredentials} object representing the storage credentials determined from the name/value
      *         pairs.
@@ -81,8 +81,8 @@ public abstract class StorageCredentials {
      * @param connectionString
      *            A <code>String</code> that contains the key/value pairs that represent the storage credentials.
      *            <p>
-     *            The format for the connection string is in the pattern "<i>keyname=value</i>". Multiple key/value pairs
-     *            can be separated by a semi-colon, for example, "<i>keyname1=value1;keyname2=value2</i>".
+     *            The format for the connection string is in the pattern "<i>keyname=value</i>". Multiple key/value
+     *            pairs can be separated by a semi-colon, for example, "<i>keyname1=value1;keyname2=value2</i>".
      * 
      * @return A {@link StorageCredentials} object representing the storage credentials determined from the connection
      *         string.
@@ -214,6 +214,9 @@ public abstract class StorageCredentials {
     /**
      * Signs a request under the Shared Key authentication scheme.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * 
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength
@@ -225,8 +228,93 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If a storage service error occurred.
      */
+    @Deprecated
     public abstract void signRequest(HttpURLConnection request, long contentLength) throws InvalidKeyException,
             StorageException;
+
+    /**
+     * Signs a request using the specified operation context under the Shared Key authentication scheme.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Deprecated
+    public abstract void signRequest(HttpURLConnection request, long contentLength, OperationContext opContext)
+            throws InvalidKeyException, StorageException;
+
+    /**
+     * Signs a table request under the Shared Key Lite authentication scheme.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If an unspecified storage exception occurs.
+     */
+    @Deprecated
+    public abstract void signRequestLite(HttpURLConnection request, long contentLength) throws StorageException,
+            InvalidKeyException;
+
+    /**
+     * Signs a table request using the specified operation context under the Shared Key Lite authentication scheme.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Deprecated
+    public abstract void signRequestLite(HttpURLConnection request, long contentLength, OperationContext opContext)
+            throws StorageException, InvalidKeyException;
+
+    /**
+     * Signs a request under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public abstract void signBlobAndQueueRequest(HttpURLConnection request, long contentLength)
+            throws InvalidKeyException, StorageException;
 
     /**
      * Signs a request using the specified operation context under the Shared Key authentication scheme.
@@ -245,8 +333,8 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public abstract void signRequest(HttpURLConnection request, long contentLength, OperationContext opContext)
-            throws InvalidKeyException, StorageException;
+    public abstract void signBlobAndQueueRequest(HttpURLConnection request, long contentLength,
+            OperationContext opContext) throws InvalidKeyException, StorageException;
 
     /**
      * Signs a request under the Shared Key Lite authentication scheme.
@@ -261,8 +349,8 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If an unspecified storage exception occurs.
      */
-    public abstract void signRequestLite(HttpURLConnection request, long contentLength) throws StorageException,
-            InvalidKeyException;
+    public abstract void signBlobAndQueueRequestLite(HttpURLConnection request, long contentLength)
+            throws StorageException, InvalidKeyException;
 
     /**
      * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
@@ -281,7 +369,81 @@ public abstract class StorageCredentials {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public abstract void signRequestLite(HttpURLConnection request, long contentLength, OperationContext opContext)
+    public abstract void signBlobAndQueueRequestLite(HttpURLConnection request, long contentLength,
+            OperationContext opContext) throws StorageException, InvalidKeyException;
+
+    /**
+     * Signs a table request under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public abstract void signTableRequest(HttpURLConnection request, long contentLength) throws InvalidKeyException,
+            StorageException;
+
+    /**
+     * Signs a table request using the specified operation context under the Shared Key authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public abstract void signTableRequest(HttpURLConnection request, long contentLength, OperationContext opContext)
+            throws InvalidKeyException, StorageException;
+
+    /**
+     * Signs a table request under the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If an unspecified storage exception occurs.
+     */
+    public abstract void signTableRequestLite(HttpURLConnection request, long contentLength) throws StorageException,
+            InvalidKeyException;
+
+    /**
+     * Signs a table request using the specified operation context under the Shared Key Lite authentication scheme.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @throws InvalidKeyException
+     *             If the given key is invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+
+    public abstract void signTableRequestLite(HttpURLConnection request, long contentLength, OperationContext opContext)
             throws StorageException, InvalidKeyException;
 
     /**
@@ -330,4 +492,5 @@ public abstract class StorageCredentials {
      */
     public abstract URI transformUri(URI resourceUri, OperationContext opContext) throws URISyntaxException,
             StorageException;
+
 }
