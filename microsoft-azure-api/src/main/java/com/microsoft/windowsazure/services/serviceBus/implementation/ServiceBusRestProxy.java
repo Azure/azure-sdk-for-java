@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
@@ -109,7 +110,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     private WebResource getResource() {
-        WebResource resource = getChannel().resource(uri);
+        WebResource resource = getChannel().resource(uri).queryParam("api-version", "2012-08");
         for (ServiceFilter filter : filters) {
             resource.addFilter(new ClientFilterAdapter(filter));
         }
@@ -181,6 +182,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         }
         else {
             throw new RuntimeException("Unknown ReceiveMode");
+        }
+
+        if (clientResult.getStatus() == 204) {
+            return null;
         }
 
         BrokerProperties brokerProperties;
@@ -289,6 +294,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         return result;
     }
 
+    @Override
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+        return getResource().path(queueInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(QueueInfo.class, queueInfo);
+    }
+
     private WebResource listOptions(AbstractListOptions<?> options, WebResource path) {
         if (options.getTop() != null) {
             path = path.queryParam("$top", options.getTop().toString());
@@ -328,6 +339,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
+        return getResource().path(topicInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*").put(TopicInfo.class, topicInfo);
+    }
+
+    @Override
     public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription) {
         return new CreateSubscriptionResult(getResource().path(topicPath).path("subscriptions")
                 .path(subscription.getName()).type("application/atom+xml;type=entry;charset=utf-8")
@@ -355,6 +372,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ListSubscriptionsResult result = new ListSubscriptionsResult();
         result.setItems(list);
         return result;
+    }
+
+    @Override
+    public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
+            throws ServiceException {
+        return getResource().path(topicName).path("subscriptions").path(subscriptionInfo.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*")
+                .put(SubscriptionInfo.class, subscriptionInfo);
     }
 
     @Override
@@ -408,6 +433,21 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     @Override
     public ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException {
         return listRules(topicName, subscriptionName, ListRulesOptions.DEFAULT);
+    }
+
+    @Override
+    public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
+        ClientResponse clientResponse = getResource().path(queueName).path("messages").path(messageId).path(lockToken)
+                .post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+    }
+
+    @Override
+    public void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
+            throws ServiceException {
+        ClientResponse clientResponse = getResource().path(topicName).path("Subscriptions").path(subscriptionName)
+                .path("messages").path(messageId).path(lockToken).post(ClientResponse.class, "");
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
 }

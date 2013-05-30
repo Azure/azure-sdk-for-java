@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
@@ -47,6 +48,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsRe
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -105,7 +107,25 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(saved);
         assertNotSame(queue, saved);
+        assertEquals(false, saved.isDeadLetteringOnMessageExpiration());
+        assertEquals(false, saved.isAnonymousAccessible());
+        assertNotNull(saved.getAutoDeleteOnIdle());
+        assertEquals(true, saved.isSupportOrdering());
         assertEquals("TestCreateQueueWorks", saved.getPath());
+    }
+
+    @Test
+    public void updateQueueWorks() throws Exception {
+        // Arrange 
+        QueueInfo queue = new QueueInfo("TestUpdateQueueWorks").setMaxSizeInMegabytes(1024L);
+        QueueInfo originalQueue = service.createQueue(queue).getValue();
+        Long expectedMaxSizeInMegaBytes = 512L;
+
+        // Act 
+        QueueInfo updatedQueue = service.updateQueue(originalQueue.setMaxSizeInMegabytes(512L));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegaBytes, updatedQueue.getMaxSizeInMegabytes());
     }
 
     @Test
@@ -173,6 +193,54 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void renewSubscriptionMessageLockWorks() throws Exception {
+        // Arrange
+        String topicName = "TestRenewSubscriptionLockMessageWorks";
+        String subscriptionName = "renewSubscriptionMessageLockWorks";
+        service.createTopic(new TopicInfo(topicName));
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, subscriptionName, PEEK_LOCK_5_SECONDS)
+                .getValue();
+        service.renewSubscriptionLock(topicName, subscriptionName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void renewQueueMessageLockWorks() throws Exception {
+        // Arrange
+        String queueName = "TestRenewSubscriptionLockMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.renewQueueLock(queueName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void receiveMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestReceiveMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(queueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
     public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
@@ -187,6 +255,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals(11, size);
         assertEquals("Hello Again", new String(data, 0, size));
+    }
+
+    @Test
+    public void peekLockMessageEmptyQueueWorks() throws Exception {
+        // Arrange
+        String queueName = "TestPeekLockMessageEmptyQueueWorks";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        ReceiveQueueMessageResult result = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getValue());
     }
 
     @Test
@@ -252,8 +334,20 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(lockToken);
         assertNotNull(lockedUntil);
-        assertNull(receivedMessage.getLockToken());
-        assertNull(receivedMessage.getLockedUntilUtc());
+        assertNull(receivedMessage);
+    }
+
+    @Test
+    public void emptyQueueReturnsNullMessage() throws Exception {
+        // Arrange 
+        String queueName = "testEmptyQueueReturnsNullMessage";
+        service.createQueue(new QueueInfo(queueName));
+
+        // Act
+        BrokeredMessage brokeredMessage = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+
+        // Assert 
+        assertNull(brokeredMessage);
     }
 
     @Test
@@ -291,6 +385,41 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(listed2);
 
         assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
+    }
+
+    @Test
+    public void topicCreatedContainsMetadata() throws ServiceException {
+        // Arrange
+        String topicName = "TestTopicCreatedContainsMetadata";
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+
+        // Assert
+        assertNotNull(createdTopicInfo);
+        assertNotNull(createdTopicInfo.getAutoDeleteOnIdle());
+        assertEquals(false, createdTopicInfo.isRequiresDuplicateDetection());
+        assertEquals(false, createdTopicInfo.isFilteringMessageBeforePublishing());
+        assertEquals(EntityStatus.ACTIVE, createdTopicInfo.getStatus());
+        assertEquals(true, createdTopicInfo.isSupportOrdering());
+        assertEquals(false, createdTopicInfo.isAnonymousAccessible());
+
+    }
+
+    @Test
+    public void topicCanBeUpdated() throws ServiceException {
+        // Arrange
+        String topicName = "testTopicCanBeUpdated";
+        Long expectedMaxSizeInMegabytes = 2048L;
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(
+                new TopicInfo().setPath(topicName).setMaxSizeInMegabytes(1024L)).getValue();
+        TopicInfo updatedTopicInfo = service.updateTopic(createdTopicInfo
+                .setMaxSizeInMegabytes(expectedMaxSizeInMegabytes));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegabytes, updatedTopicInfo.getMaxSizeInMegabytes());
     }
 
     @Test
@@ -332,6 +461,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(created);
         assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
     }
 
     @Test
@@ -403,6 +538,23 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
         assertEquals("text/html", message.getContentType());
+    }
+
+    @Test
+    public void subscriptionCanBeUpdated() throws Exception {
+        // Arrange 
+        String topicName = "testSubscriptionCanBeUpdated";
+        service.createTopic(new TopicInfo(topicName));
+        SubscriptionInfo originalSubscription = service.createSubscription(topicName, new SubscriptionInfo("sub"))
+                .getValue();
+        Integer expectedMaxDeliveryCount = 1024;
+
+        // Act
+        SubscriptionInfo updatedSubscription = service.updateSubscription(topicName,
+                originalSubscription.setMaxDeliveryCount(expectedMaxDeliveryCount));
+
+        // Assert
+        assertEquals(expectedMaxDeliveryCount, updatedSubscription.getMaxDeliveryCount());
     }
 
     @Test

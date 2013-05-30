@@ -17,13 +17,21 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.PrivateKey;
+import java.security.Security;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
@@ -34,7 +42,58 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
 
     private final String validButNonexistContentKeyId = "nb:kid:UUID:80dfe751-e5a1-4b29-a992-4a75276473af";
     private final ContentKeyType testContentKeyType = ContentKeyType.CommonEncryption;
-    private final String testEncryptedContentKey = "ThisIsEncryptedContentKey";
+    private final String testEncryptedContentKey = "bFE4M/kZrKi00AoLOVpbQ4R9xja5P/pfBv9SC9I1Gw8yx+OIWdazGNpT7MgpeOLSebkxO5iDAIUKX5Es6oRUiH6pTNAMEtiHFBrKywODKnTQ09pCAMmdIA4q1gLeEUpsXPY/YXaLsTrBGbmRtlUYyaZEjestsngV8JpkJemCGjmMF0bHCoQRKt0LCVl/cqyWawzBuyaJniUCDdU8jem7sjrw8BbgCDmTAUmaj9TYxEP98d3wEJcL4pzDzOloYWXqzNB9assXgcQ0eouT7onSHa1d76X2E5q16AIIoOndLyIuAxlwFqpzF6LFy3X9mNGEY1iLXeFA89DE0PPx8EHtyg==";
+
+    private void assertByteArrayEquals(byte[] source, byte[] target) {
+        assertEquals(source.length, target.length);
+        for (int i = 0; i < source.length; i++) {
+            assertEquals(source[i], target[i]);
+        }
+    }
+
+    private ContentKeyInfo createTestContentKey(String contentKeyNameSuffix) throws ServiceException {
+        String testContentKeyId = createRandomContentKeyId();
+        String testContentKeyName = testContentKeyPrefix + contentKeyNameSuffix;
+
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(testContentKeyId, testContentKeyType,
+                testEncryptedContentKey).setName(testContentKeyName));
+        return contentKeyInfo;
+    }
+
+    private ContentKeyInfo createValidTestContentKeyWithAesKey(String contentKeyNameSuffix, byte[] aesKey)
+            throws Exception {
+        String testContnetKeyName = testContentKeyPrefix + contentKeyNameSuffix;
+        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+
+        String testContentKeyIdUuid = UUID.randomUUID().toString();
+        String testContentKeyId = String.format("nb:kid:UUID:%s", testContentKeyIdUuid);
+
+        byte[] encryptedContentKey = EncryptionHelper.encryptSymmetricKey(protectionKey, aesKey);
+        String encryptedContentKeyString = Base64.encode(encryptedContentKey);
+        String checksum = EncryptionHelper.calculateContentKeyChecksum(testContentKeyIdUuid, aesKey);
+
+        ContentKeyInfo contentKeyInfo = service.create(ContentKey
+                .create(testContentKeyId, ContentKeyType.StorageEncryption, encryptedContentKeyString)
+                .setChecksum(checksum).setProtectionKeyId(protectionKeyId).setName(testContnetKeyName));
+
+        return contentKeyInfo;
+    }
+
+    private ContentKeyInfo createValidTestContentKey(String contentKeyNameSuffix) throws Exception {
+        byte[] aesKey = createTestAesKey();
+        return createValidTestContentKeyWithAesKey(contentKeyNameSuffix, aesKey);
+    }
+
+    private byte[] createTestAesKey() {
+        byte[] aesKey = new byte[32];
+        int i;
+        for (i = 0; i < 32; i++) {
+            aesKey[i] = 1;
+        }
+
+        return aesKey;
+    }
 
     private String createRandomContentKeyId() {
         UUID uuid = UUID.randomUUID();
@@ -61,11 +120,16 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " Checksum", checksum, actual.getChecksum());
     }
 
+    @BeforeClass
+    public static void Setup() {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    }
+
     @Test
     public void canCreateContentKey() throws Exception {
         // Arrange
         String testCanCreateContentKeyId = createRandomContentKeyId();
-        String testCanCreateContentKeyName = "testCanCreateContentKey";
+        String testCanCreateContentKeyName = testContentKeyPrefix + "testCanCreateContentKey";
         String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(testContentKeyType));
 
         // Act
@@ -195,4 +259,54 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         service.delete(ContentKey.delete(validButNonexistContentKeyId));
     }
 
+    @Test
+    public void rebindContentKeyNoX509CertificateSuccess() throws Exception {
+
+        ContentKeyInfo contentKeyInfo = createValidTestContentKey("rebindContentKeyNoX509Success");
+
+        String contentKey = service.action(ContentKey.rebind(contentKeyInfo.getId()));
+        assertNotNull(contentKey);
+
+    }
+
+    @Test
+    public void rebindInvalidContentKeyNoX509CertificateFail() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(400));
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindInvalidContentKeyNoX509Fail");
+
+        service.action(ContentKey.rebind(contentKeyInfo.getId()));
+
+    }
+
+    @Test
+    public void rebindContentKeyWithX509CertficateSuccess() throws Exception {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        byte[] aesKey = createTestAesKey();
+        ContentKeyInfo contentKeyInfo = createValidTestContentKeyWithAesKey("rebindContentKeyWithX509Success", aesKey);
+        URL serverCertificateUri = getClass().getResource("/certificate/server.crt");
+        X509Certificate x509Certificate = EncryptionHelper.loadX509Certificate(URLDecoder.decode(
+                serverCertificateUri.getFile(), "UTF-8"));
+        URL serverPrivateKey = getClass().getResource("/certificate/server.der");
+        PrivateKey privateKey = EncryptionHelper.getPrivateKey(URLDecoder.decode(serverPrivateKey.getFile(), "UTF-8"));
+
+        String rebindedContentKey = service.action(ContentKey.rebind(contentKeyInfo.getId(),
+                URLEncoder.encode(Base64.encode(x509Certificate.getEncoded()), "UTF-8")));
+        byte[] decryptedAesKey = EncryptionHelper.decryptSymmetricKey(rebindedContentKey, privateKey);
+        assertByteArrayEquals(aesKey, decryptedAesKey);
+    }
+
+    @Test
+    public void rebindContentKeyWithIncorrectContentKeyIdFailed() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        service.action(ContentKey.rebind("invalidContentKeyId"));
+    }
+
+    @Test
+    public void rebindContentKeyWithIncorrectX509CertificateFailed() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        ContentKeyInfo contentKeyInfo = createTestContentKey("rebindContentKeyWithIncorrectX509CertficateFailed");
+
+        service.action(ContentKey.rebind(contentKeyInfo.getId(), "InvalidX509Certificate"));
+    }
 }
