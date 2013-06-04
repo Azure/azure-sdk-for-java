@@ -22,8 +22,8 @@
     </xs:appinfo>
   </xs:annotation>
 	
-  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:import namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
+  <xs:import schemaLocation="schemas.microsoft.com.2003.10.Serialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
