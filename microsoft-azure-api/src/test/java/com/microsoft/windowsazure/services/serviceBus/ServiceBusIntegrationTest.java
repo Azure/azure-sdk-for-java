@@ -37,8 +37,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Correlation
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
-import com.microsoft.windowsazure.services.serviceBus.implementation.FilterProperties;
-import com.microsoft.windowsazure.services.serviceBus.implementation.KeyValueOfStringAnyType;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
@@ -707,15 +705,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Test
     public void createSubscriptionWithCorrelationFilter() throws Exception {
         // Arrange
-        String topicName = "createSubscriptionWithCorrelationFilter";
+        String topicName = "testCreateSubscriptionWithCorrelationFilter";
         service.createTopic(new TopicInfo(topicName));
         CorrelationFilter correlationFilter = new CorrelationFilter();
-        FilterProperties filterProperties = new FilterProperties();
-        KeyValueOfStringAnyType keyValueOfStringAnyType = new KeyValueOfStringAnyType();
-        keyValueOfStringAnyType.setKey("AKey");
-        keyValueOfStringAnyType.setValue(new String("A Value"));
-        filterProperties.getKeyValueOfstringanyTypes().add(keyValueOfStringAnyType);
-        correlationFilter.setProperties(filterProperties);
+        correlationFilter.setContentType("sampleCorrelationId");
         RuleDescription ruleDescription = new RuleDescription();
         ruleDescription.setFilter(correlationFilter);
 
