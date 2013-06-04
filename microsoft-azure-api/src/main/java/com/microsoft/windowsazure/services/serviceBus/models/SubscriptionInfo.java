@@ -435,4 +435,25 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         return getModel().getCountDetails();
     }
 
+    /**
+     * Sets the forward to.
+     * 
+     * @param forwardTo
+     *            A <code>String</code> representing the string to forward to.
+     * @return the subscription info
+     */
+    public SubscriptionInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    /**
+     * Gets a <code>String</code> representing the URI of the entity to forward to.
+     * 
+     * @return A <code>String</code> representing the URI of the entity to forward to.
+     */
+    public String getForwardTo() {
+        return getModel().getForwardTo();
+    }
+
 }

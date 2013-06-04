@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
+import java.net.URI;
 import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
@@ -542,5 +543,60 @@ public class QueueInfo extends EntryModel<QueueDescription> {
 
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
+    }
+
+    /**
+     * Sets the URI of the <code>QueueInfo</code> instance.
+     * 
+     * @param uri
+     *            the URI of the <code>QueueInfo</code>
+     * 
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     */
+    public QueueInfo setUri(URI uri) {
+        getEntry().setId(uri.toString());
+        return this;
+    }
+
+    /**
+     * Gets the URI of the <code>QueueInfo</code> instance.
+     * 
+     * @return A <code>URI</code> representing the <code>QueueInfo</code>.
+     */
+    public URI getUri() {
+        return URI.create(removeQueryString(getEntry().getId()));
+    }
+
+    /**
+     * Removes the query string of the URI.
+     * 
+     * @param uri
+     *            A raw string representing the URI of queue.
+     * @return the string
+     */
+    private String removeQueryString(String uri) {
+        String[] result = uri.split("\\?");
+        return result[0];
+    }
+
+    /**
+     * Sets the URI of the entity to forward to.
+     * 
+     * @param forwardTo
+     *            A <code>String</code> instance representing the URI of the entity to forward message to.
+     * @return A <code>QueueInfo</code> instance representing the updated queue information.
+     */
+    public QueueInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    /**
+     * Gets a <code>String</code> instance representing entity to forward to.
+     * 
+     * @return A <code>String</code> instance representing the URI of the instance to forward to.
+     */
+    public String getForwardTo() {
+        return getModel().getForwardTo();
     }
 }

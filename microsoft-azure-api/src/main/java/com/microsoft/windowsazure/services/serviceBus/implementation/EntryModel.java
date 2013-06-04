@@ -18,9 +18,6 @@ public class EntryModel<T> {
     Entry entry;
     T model;
 
-    public EntryModel() {
-    }
-
     public EntryModel(Entry entry, T model) {
         this.entry = entry;
         this.model = model;

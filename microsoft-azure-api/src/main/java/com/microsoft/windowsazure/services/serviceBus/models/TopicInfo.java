@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.models;
 
+import java.net.URI;
 import java.util.Calendar;
 
 import javax.ws.rs.core.MediaType;
@@ -471,5 +472,9 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      */
     public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
+    }
+
+    public URI getUri() {
+        return URI.create(getEntry().getId());
     }
 }
