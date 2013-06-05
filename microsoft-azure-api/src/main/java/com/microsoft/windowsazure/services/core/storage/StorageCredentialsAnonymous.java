@@ -172,6 +172,84 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * Signs a request using the specified credentials under the Shared Key authentication scheme. This is not a valid
      * operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * 
+     * @param connection
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param contentLength
+     *            the length of the content written to the output stream. If unknown, specify -1.
+     */
+    @Override
+    @Deprecated
+    public void signRequest(final java.net.HttpURLConnection connection, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials and operation context under the Shared Key authentication scheme.
+     * This is not a valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs
+     * a no-op.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * 
+     * @param request
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param contentLength
+     *            the length of the content written to the output stream. If unknown, specify -1.
+     * @param opContext
+     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            object, that represents the current operation
+     */
+    @Override
+    @Deprecated
+    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
+     * valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
+     * 
+     * @param connection
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     */
+    @Override
+    @Deprecated
+    public void signRequestLite(final java.net.HttpURLConnection connection, final long contentLength) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
+     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
+     * no-op.
+     * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
+     * 
+     * @param request
+     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     * @param opContext
+     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            object, that represents the current operation
+     */
+    @Override
+    @Deprecated
+    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext) {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified credentials under the Shared Key authentication scheme. This is not a valid
+     * operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * 
      * @param connection
      *            the request, as an <code>HttpURLConnection</code> object, to sign
      * @param contentLength
