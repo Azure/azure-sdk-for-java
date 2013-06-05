@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCoun
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.QueueDescription;
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents a queue.
  */
@@ -541,6 +542,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
         return this;
     }
 
+    /**
+     * Gets the message count details.
+     * 
+     * @return A <code>MessageCountDetails</code> instance that represents the details of the message count.
+     */
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }

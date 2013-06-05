@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCoun
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents a topic.
  */
@@ -407,6 +408,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
         return getModel().getSubscriptionCount();
     }
 
+    /**
+     * Gets the message count details.
+     * 
+     * @return A <code>MessageCountDetails</code> instance representing the details of the message count.
+     */
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }
@@ -474,6 +480,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
         return getModel().getEntityAvailabilityStatus();
     }
 
+    /**
+     * Gets the uri.
+     * 
+     * @return the uri
+     */
     public URI getUri() {
         return URI.create(getEntry().getId());
     }

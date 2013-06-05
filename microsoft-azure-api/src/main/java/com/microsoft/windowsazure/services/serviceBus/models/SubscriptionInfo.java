@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCoun
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents a subscription.
  */
@@ -431,6 +432,11 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
         return getModel().getEntityAvailabilityStatus();
     }
 
+    /**
+     * Gets the message count details.
+     * 
+     * @return A <code>MessageCountDetails</code> instance representing the details of the message count.
+     */
     public MessageCountDetails getCountDetails() {
         return getModel().getCountDetails();
     }
