@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCoun
 import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TopicDescription;
 
-// TODO: Auto-generated Javadoc
 /**
  * Represents a topic.
  */

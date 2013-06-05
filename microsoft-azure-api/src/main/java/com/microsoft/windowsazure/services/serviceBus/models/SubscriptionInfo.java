@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCoun
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
-// TODO: Auto-generated Javadoc
 /**
  * Represents a subscription.
  */
