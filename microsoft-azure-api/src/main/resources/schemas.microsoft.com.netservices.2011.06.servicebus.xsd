@@ -16,7 +16,7 @@
     <xs:sequence>
       <xs:element name="ActiveMessageCount" minOccurs="0"  type="xs:long" />
       <xs:element name="DeadLetterMessageCount" minOccurs="0" type="xs:long" />
-      <xs:element name ="ScheduledMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="ScheduledMessageCount" minOccurs="0" type="xs:long" />
       <xs:element name="TransferMessageCount" minOccurs="0" type="xs:long" />
       <xs:element name="TransferDeadLetterMessageCount" minOccurs="0" type="xs:long" />
     </xs:sequence>

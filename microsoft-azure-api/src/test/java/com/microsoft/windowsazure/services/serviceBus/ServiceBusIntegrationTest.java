@@ -211,8 +211,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "TestGetTopicMessageCountDetails";
         service.createTopic(new TopicInfo(topicName)).getValue();
-        service.sendTopicMessage(topicName, new BrokeredMessage("Hello World!"));
-        Long expectedActiveMessageCount = 1L;
+        Long expectedActiveMessageCount = 0L;
         Long expectedDeadLetterMessageCount = 0L;
         Long expectedScheduledMessageCount = 0L;
         Long expectedTransferMessageCount = 0L;
