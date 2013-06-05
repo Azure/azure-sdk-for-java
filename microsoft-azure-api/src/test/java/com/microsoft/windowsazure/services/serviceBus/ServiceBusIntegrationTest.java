@@ -16,15 +16,11 @@ package com.microsoft.windowsazure.services.serviceBus;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -190,6 +186,10 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.createQueue(new QueueInfo(queueName));
         service.sendQueueMessage(queueName, new BrokeredMessage("Hello World"));
         Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
 
         // Act
         QueueInfo queueInfo = service.getQueue(queueName).getValue();
@@ -199,41 +199,66 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertEquals(true, queueInfo.isSupportOrdering());
         assertNotNull(countDetails);
         assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
 
     }
 
     @Test
     public void getTopicMessageCountDetails() throws Exception {
-        // Arrange 
+        // Arrange
+        String topicName = "TestGetTopicMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello World!"));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
 
-        // Act 
+        // Act
+        TopicInfo topicInfo = service.getTopic(topicName).getValue();
+        MessageCountDetails countDetails = topicInfo.getCountDetails();
 
-        // Assert 
-
-    }
-
-    @Test
-    public void deSerializeMessageCountDetails() throws Exception {
-        // Arrange 
-        // String queueInfoString = "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://gongchen1.servicebus.windows.net/testGetQueueMessageCountDetails?api-version=2012-08</id><title type=\"text\">testGetQueueMessageCountDetails</title><published>2013-05-24T18:15:47Z</published><updated>2013-05-24T18:15:47Z</updated><author><name>gongchen1</name></author><link rel=\"self\" href=\"https://gongchen1.servicebus.windows.net/testGetQueueMessageCountDetails?api-version=2012-08\"/><content type=\"application/xml\"><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT1M</LockDuration><MaxSizeInMegabytes>1024</MaxSizeInMegabytes><RequiresDuplicateDetection>false</RequiresDuplicateDetection><RequiresSession>false</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow><MaxDeliveryCount>10</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><SizeInBytes>155</SizeInBytes><MessageCount>1</MessageCount><IsAnonymousAccessible>false</IsAnonymousAccessible><AuthorizationRules></AuthorizationRules><Status>Active</Status><CreatedAt>2013-05-24T18:15:52.2785247Z</CreatedAt><UpdatedAt>2013-05-24T18:15:52.2785247Z</UpdatedAt><AccessedAt>2013-05-24T18:15:52.8919861Z</AccessedAt><SupportOrdering>true</SupportOrdering><CountDetails xmlns:d2p1=\"http://schemas.microsoft.com/netservices/2011/06/servicebus\"><d2p1:ActiveMessageCount>1</d2p1:ActiveMessageCount><d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount><d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount><d2p1:TransferMessageCount>0</d2p1:TransferMessageCount><d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount></CountDetails><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle></QueueDescription></content></entry>";
-
-        File queueInfoFile = new File("d:\\src\\jaxb\\queueinfo.xml");
-
-        JAXBContext jaxbContext = JAXBContext.newInstance(String.class);
-
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-        String result = (String) jaxbUnmarshaller.unmarshal(queueInfoFile);
-
-        // QueueInfo queueInfo = (QueueInfo) jaxbUnmarshaller.unmarshal(queueInfoFile);
-
-        // Act 
-        assertNotNull(result);
         // Assert
+        assertNotNull(topicInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
     }
 
     @Test
     public void getSubscriptionMessageCountDetails() throws Exception {
+        // Arrange
+        String topicName = "TestGetSubscriptionMessageCountDetails";
+        String subscriptionName = "TestGetSubscriptionMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello world!"));
+        SubscriptionInfo subscriptionInfo = service.getSubscription(topicName, subscriptionName).getValue();
+        MessageCountDetails countDetails = subscriptionInfo.getCountDetails();
+
+        // Assert
+        assertNotNull(subscriptionInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
 
     }
 
