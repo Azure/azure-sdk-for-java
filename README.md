@@ -1,30 +1,41 @@
 #Windows Azure SDK for Java
 
-This SDK allows you to build Windows Azure applications in Java that allow
-you to take advantage of Azure scalable cloud computing resources: table and blob
-storage, messaging through Service Bus.
-
-For documentation please see the [Windows Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/)
+This project provides a client library in Java that makes it easy to consume Windows Azure services. For documentation please see the [Windows Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/).
 
 #Features
-* Blob
-  * Create/Read/Update/Delete Blobs
-* Queue
-  * Create/Delete Queues
-  * Insert/Peek Queue Messages
-  * Advanced Queue Operations
-* Media Services
-  * Upload Media Files to Media Services
-  * Change the encoding on uploaded Media Services
-  * Provide streaming or download access to uploaded/transformed Media Files
+
+* Storage
+    * Blob
+        * Create/Read/Update/Delete containers
+        * Create/Read/Update/Delete blobs
+    * Queue
+        * Create/Delete Queues
+        * Insert/Peek Queue Messages
+        * Advanced Queue Operations
+    * Table
+        * Create/Read/Update/Delete tables
+        * Create/Read/Update/Delete entities
+        * Batch operation
 * Service Bus
-  * Use either the Queue or Topic/Subscription Model
+    * Queues
+        * Create/Read/Update/Delete queues
+        * Send/Receive/Unlock/Delete messages
+        * Renew message lock
+    * Topics
+        * Create/Read/Update/Delete topics
+        * Create/Read/Update/Delete subscriptions
+        * Create/Read/Update/Delete rules
+        * Send/Receive/Unlock/Delete messages
+        * Renew message lock
+* Media Services
+    * Create/Read/Update/Delete access policies
+    * Create/Read/Update/Delete asset files
+    * Create/Read/Update/Delete assets
+    * Create/Read/Update/Delete/Rebind content keys
+    * Create/Read/Update/Cancel/Delete jobs
 * Service Runtime
-  * Retrieve information about the state of your Azure Compute instances
-* Table
-  * Manage Tables
-  * Table Entity Operations
-  * Entity Group Transactions (Batch)
+    * Retrieve information about the state of your Azure Compute instances
+  
 
 #Getting Started
 
@@ -45,7 +56,7 @@ within your project you can also have them installed by the Java package manager
     <dependency>
       <groupId>com.microsoft.windowsazure</groupId>
       <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.4.2</version>
+      <version>0.4.3</version>
     </dependency>
 
 ##Minimum Requirements
