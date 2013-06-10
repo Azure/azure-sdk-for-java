@@ -42,11 +42,13 @@ To get the source code of the SDK via git just type:
 To get the binaries of this library as distributed by Microsoft, ready for use
 within your project you can also have them installed by the Java package manager Maven.
 
-    <dependency>
-      <groupId>com.microsoft.windowsazure</groupId>
-      <artifactId>microsoft-windowsazure-api</artifactId>
-      <version>0.4.2</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>com.microsoft.windowsazure</groupId>
+  <artifactId>microsoft-windowsazure-api</artifactId>
+  <version>0.4.2</version>
+</dependency>
+```
 
 ##Minimum Requirements
 
@@ -61,67 +63,62 @@ account.  To host your Java code in Windows Azure, you additionally need to down
 the full Windows Azure SDK for Java - which includes packaging, emulation, and
 deployment tools.
 
-##Code Samples
+##Code Sample
 
 The following is a quick example on how to set up a Azure blob using the API
 and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://www.windowsazure.com/en-us/develop/java/).
 
+```java
+import java.io.*;
 
-	import com.microsoft.windowsazure.services.core.storage.*;
-	import com.microsoft.windowsazure.services.blob.client.*;
+import com.microsoft.windowsazure.services.core.storage.*;
+import com.microsoft.windowsazure.services.blob.client.*;
 
-	public class BlobSample {
-	    public static final String storageConnectionString = 
-            "DefaultEndpointsProtocol=http;" + 
-            "AccountName=your_account_name;" + 
-            "AccountKey= your_account_name"; 
+public class BlobSample {
+	public static final String storageConnectionString =
+			"DefaultEndpointsProtocol=http;"
+			+ "AccountName=your_account_name;"
+			+ "AccountKey= your_account_name";
 
-    	public static void main(String[] args) 
-    	{
-        	try
-        	{
-            	CloudStorageAccount account;
-            	CloudBlobClient serviceClient;
-            	CloudBlobContainer container;
-            	CloudBlockBlob blob;
-        
-            	account = CloudStorageAccount.parse(storageConnectionString);
-            	serviceClient = account.createCloudBlobClient();
-            	// Container name must be lower case.
-            	container = serviceClient.getContainerReference("blobsample");
-            	container.createIfNotExist();
-        
-            	// Set anonymous access on the container.
-            	BlobContainerPermissions containerPermissions;
-            	containerPermissions = new BlobContainerPermissions();
+	public static void main(String[] args) {
+		try {
+			CloudStorageAccount account;
+			CloudBlobClient serviceClient;
+			CloudBlobContainer container;
+			CloudBlockBlob blob;
 
-            	// Upload an image file.
-            	blob = container.getBlockBlobReference("image1.jpg");
-            	File fileReference = new File ("c:\\myimages\\image1.jpg");
-            	blob.upload(new FileInputStream(fileReference), fileReference.length());
-        	} 
-        	catch (FileNotFoundException fileNotFoundException)
-        	{
-            	System.out.print("FileNotFoundException encountered: ");
-            	System.out.println(fileNotFoundException.getMessage());
-            	System.exit(-1);
-        	}
-        	catch (StorageException storageException)
-        	{
-            	System.out.print("StorageException encountered: ");
-            	System.out.println(storageException.getMessage());
-            	System.exit(-1);
-        	}
-        	catch (Exception e)
-        	{
-            	System.out.print("Exception encountered: ");
-            	System.out.println(e.getMessage());
-            	System.exit(-1);
-        	}
-    
-    	}
+			account = CloudStorageAccount.parse(storageConnectionString);
+			serviceClient = account.createCloudBlobClient();
+			// Container name must be lower case.
+			container = serviceClient.getContainerReference("blobsample");
+			container.createIfNotExist();
+
+			// Set anonymous access on the container.
+			BlobContainerPermissions containerPermissions;
+			containerPermissions = new BlobContainerPermissions();
+			container.uploadPermissions(containerPermissions);
+
+			// Upload an image file.
+			blob = container.getBlockBlobReference("image1.jpg");
+			File fileReference = new File("c:\\myimages\\image1.jpg");
+			blob.upload(new FileInputStream(fileReference), fileReference.length());
+		} catch (FileNotFoundException fileNotFoundException) {
+			System.out.print("FileNotFoundException encountered: ");
+			System.out.println(fileNotFoundException.getMessage());
+			System.exit(-1);
+		} catch (StorageException storageException) {
+			System.out.print("StorageException encountered: ");
+			System.out.println(storageException.getMessage());
+			System.exit(-1);
+		} catch (Exception e) {
+			System.out.print("Exception encountered: ");
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+
 	}
-
+}
+```
 
 #Need Help?
 
