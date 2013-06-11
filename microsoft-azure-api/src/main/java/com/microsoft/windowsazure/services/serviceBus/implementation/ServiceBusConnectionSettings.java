@@ -83,7 +83,7 @@ class ServiceBusConnectionSettings {
             wrapUri = "https://" + namespace + "-sb.accesscontrol.windows.net/WRAPv0.9";
         }
         else {
-            wrapUri = connectionString.getStsEndpoint() + "/WRAPv0.9";
+            wrapUri = connectionString.getStsEndpoint().replaceAll("\\/$", "") + "/WRAPv0.9";
         }
     }
 }
