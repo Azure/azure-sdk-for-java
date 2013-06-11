@@ -706,15 +706,19 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void createSubscriptionWithCorrelationFilter() throws Exception {
         // Arrange
         String topicName = "testCreateSubscriptionWithCorrelationFilter";
+        String expectedCorrelationId = "sampleCorrelationId";
         service.createTopic(new TopicInfo(topicName));
         CorrelationFilter correlationFilter = new CorrelationFilter();
-        correlationFilter.setContentType("sampleCorrelationId");
+        correlationFilter.setCorrelationId(expectedCorrelationId);
         RuleDescription ruleDescription = new RuleDescription();
         ruleDescription.setFilter(correlationFilter);
 
         // Act
         SubscriptionInfo created = service.createSubscription(topicName,
                 new SubscriptionInfo("MySubscription").setDefaultRuleDescription(ruleDescription)).getValue();
+
+        RuleInfo ruleInfo = service.getRule(topicName, "MySubscription", "$Default").getValue();
+        CorrelationFilter correlationFilterResult = (CorrelationFilter) ruleInfo.getFilter();
 
         // Assert
         assertNotNull(created);
@@ -725,6 +729,8 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(created.getUpdatedAt());
         assertNotNull(created.getAccessedAt());
         assertNotNull(created.getAutoDeleteOnIdle());
+        assertNotNull(correlationFilterResult);
+        assertEquals(expectedCorrelationId, correlationFilterResult.getCorrelationId());
     }
 
     @Test
