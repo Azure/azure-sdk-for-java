@@ -707,9 +707,21 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Arrange
         String topicName = "testCreateSubscriptionWithCorrelationFilter";
         String expectedCorrelationId = "sampleCorrelationId";
+        String expectedContentType = "sampleContentType";
+        String expectedLabel = "sampleLabel";
+        String expectedMessageId = "sampleMessageId";
+        String expectedSessionId = "sampleSessionId";
+        String expectedReplyTo = "sampleReplyTo";
+        String expectedTo = "sampleTo";
         service.createTopic(new TopicInfo(topicName));
         CorrelationFilter correlationFilter = new CorrelationFilter();
         correlationFilter.setCorrelationId(expectedCorrelationId);
+        correlationFilter.setContentType(expectedContentType);
+        correlationFilter.setLabel(expectedLabel);
+        correlationFilter.setMessageId(expectedMessageId);
+        correlationFilter.setReplyTo(expectedReplyTo);
+        correlationFilter.setSessionId(expectedSessionId);
+        correlationFilter.setTo(expectedTo);
         RuleDescription ruleDescription = new RuleDescription();
         ruleDescription.setFilter(correlationFilter);
 
@@ -731,6 +743,12 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(created.getAutoDeleteOnIdle());
         assertNotNull(correlationFilterResult);
         assertEquals(expectedCorrelationId, correlationFilterResult.getCorrelationId());
+        assertEquals(expectedContentType, correlationFilterResult.getContentType());
+        assertEquals(expectedLabel, correlationFilterResult.getLabel());
+        assertEquals(expectedMessageId, correlationFilterResult.getMessageId());
+        assertEquals(expectedSessionId, correlationFilterResult.getSessionId());
+        assertEquals(expectedReplyTo, correlationFilterResult.getReplyTo());
+        assertEquals(expectedTo, correlationFilterResult.getTo());
     }
 
     @Test
