@@ -244,6 +244,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     /**
      * Signs a request under the Shared Key authentication scheme.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength
@@ -255,6 +257,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If a storage service error occurred.
      */
     @Override
+    @Deprecated
     public void signRequest(final java.net.HttpURLConnection request, final long contentLength)
             throws InvalidKeyException, StorageException {
         this.signBlobAndQueueRequest(request, contentLength, null);
@@ -263,6 +266,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     /**
      * Signs a request using the specified operation context under the Shared Key authentication scheme.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
+     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength
@@ -278,6 +283,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If a storage service error occurred.
      */
     @Override
+    @Deprecated
     public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
             OperationContext opContext) throws InvalidKeyException, StorageException {
         opContext = opContext == null ? new OperationContext() : opContext;
@@ -287,6 +293,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     /**
      * Signs a request using the Shared Key Lite authentication scheme.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength
@@ -298,6 +306,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If an unspecified storage exception occurs.
      */
     @Override
+    @Deprecated
     public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength)
             throws InvalidKeyException, StorageException {
         this.signTableRequestLite(request, contentLength, null);
@@ -306,6 +315,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     /**
      * Signs a request using the specified operation context under the Shared Key Lite authentication scheme.
      * 
+     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
+     *             depending on the desired shared key authentication scheme.
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength
@@ -321,6 +332,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      *             If a storage service error occurred.
      */
     @Override
+    @Deprecated
     public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
             OperationContext opContext) throws StorageException, InvalidKeyException {
         opContext = opContext == null ? new OperationContext() : opContext;
