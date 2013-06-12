@@ -68,7 +68,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     @Test
     public void listAffinityGroupsSuccess() throws ServiceException {
         // Arrange 
-        String subscriptionId = "12345";
+        String subscriptionId = "279b0675-cf67-467f-98f0-67ae31eb540f";
 
         // Act 
         ListAffinityGroupsResult result = service.listAffinityGroups(subscriptionId);

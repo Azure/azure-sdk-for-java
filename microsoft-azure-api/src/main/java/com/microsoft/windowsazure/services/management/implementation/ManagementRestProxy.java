@@ -17,12 +17,14 @@ package com.microsoft.windowsazure.services.management.implementation;
 import java.util.Arrays;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.management.ManagementConfiguration;
 import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.ListAffinityGroupsResult;
 import com.sun.jersey.api.client.Client;
@@ -32,15 +34,17 @@ import com.sun.jersey.api.client.WebResource;
 public class ManagementRestProxy implements ManagementContract {
 
     private Client channel;
+    private String uri;
     static Log log = LogFactory.getLog(ManagementContract.class);
 
     ServiceFilter[] filters;
 
     @Inject
-    public ManagementRestProxy(Client channel) {
+    public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
+        this.uri = uri;
     }
 
     public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter) {
@@ -57,7 +61,7 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     private WebResource getResource() {
-        WebResource resource = getChannel().resource("uri");
+        WebResource resource = getChannel().resource(this.uri);
         for (ServiceFilter filter : filters) {
             resource.addFilter(new ClientFilterAdapter(filter));
         }
@@ -73,8 +77,8 @@ public class ManagementRestProxy implements ManagementContract {
 
     @Override
     public ListAffinityGroupsResult listAffinityGroups(String subscriptionId) {
-        ClientResponse clientResponse = getResource().path(subscriptionId).header("x-ms-version", "2013-03-01")
-                .get(ClientResponse.class);
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
         String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
         return new ListAffinityGroupsResult(requestId);
 

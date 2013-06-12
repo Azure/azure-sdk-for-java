@@ -14,13 +14,17 @@
  */
 package com.microsoft.windowsazure.services.management;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.management.implementation.ManagementExceptionProcessor;
-import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPropertiesMapper;
+import com.microsoft.windowsazure.services.management.implementation.ManagementRestProxy;
 import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 public class Exports implements Builder.Exports {
     @Override
@@ -28,24 +32,29 @@ public class Exports implements Builder.Exports {
 
         // provide contract implementation
         registry.add(ManagementContract.class, ManagementExceptionProcessor.class);
+        registry.add(ManagementRestProxy.class);
         registry.add(UserAgentFilter.class);
 
-        // alter jersey client config for serviceBus
+        // alter jersey client config for service management
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
             @Override
             public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
 
-                // need to avoid certain element prefixes, which the service does not ignore
-
-                // add body reader/writer for EntryModel<?> descendant classes
-
+                SSLContext sslContext = null;
+                try {
+                    sslContext = SSLContext.getInstance("SSL");
+                }
+                catch (NoSuchAlgorithmException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                sslContext.init(null, myTrustManager, null);
+                instance.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+                        new HTTPSProperties(null, sslContext));
                 return instance;
             }
         });
-
-        // convenience provider to transform BrokerProperty headers to json
-        registry.add(BrokerPropertiesMapper.class);
 
     }
 }
