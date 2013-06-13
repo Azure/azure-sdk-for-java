@@ -89,7 +89,7 @@ public class BlobSample {
 	public static final String storageConnectionString =
 			"DefaultEndpointsProtocol=http;"
 			+ "AccountName=your_account_name;"
-			+ "AccountKey= your_account_name";
+			+ "AccountKey= your_account_key";
 
 	public static void main(String[] args) {
 		try {
