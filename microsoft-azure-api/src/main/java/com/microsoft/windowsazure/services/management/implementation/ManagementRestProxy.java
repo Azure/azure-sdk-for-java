@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.management.ManagementConfiguration;
 import com.microsoft.windowsazure.services.management.ManagementContract;
-import com.microsoft.windowsazure.services.management.models.ListAffinityGroupsResult;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -76,11 +77,11 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public ListAffinityGroupsResult listAffinityGroups(String subscriptionId) {
+    public ListResult<AffinityGroupInfo> listAffinityGroups(String subscriptionId) {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
                 .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
         String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
-        return new ListAffinityGroupsResult(requestId);
+        return new ListResult<AffinityGroupInfo>(null);
 
     }
 

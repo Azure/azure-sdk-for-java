@@ -16,7 +16,8 @@ package com.microsoft.windowsazure.services.management;
 
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.management.models.ListAffinityGroupsResult;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.ListResult;
 
 /**
  * 
@@ -41,7 +42,7 @@ public interface ManagementContract extends FilterableService<ManagementContract
      */
     // void createAffinityGroup(AffinityGroup affinityGroup) throws ServiceException;
 
-    ListAffinityGroupsResult listAffinityGroups(String subscriptionId) throws ServiceException;
+    ListResult<AffinityGroupInfo> listAffinityGroups(String subscriptionId) throws ServiceException;
 
     void listVirtualMachines(String subscriptionId);
 

@@ -23,7 +23,8 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.management.ManagementContract;
-import com.microsoft.windowsazure.services.management.models.ListAffinityGroupsResult;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -52,7 +53,7 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     @Override
-    public ListAffinityGroupsResult listAffinityGroups(String subscriptionId) throws ServiceException {
+    public ListResult<AffinityGroupInfo> listAffinityGroups(String subscriptionId) throws ServiceException {
         try {
             return next.listAffinityGroups(subscriptionId);
         }
