@@ -214,8 +214,8 @@ public abstract class StorageCredentials {
     /**
      * Signs a request under the Shared Key authentication scheme.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
-     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
@@ -235,8 +235,8 @@ public abstract class StorageCredentials {
     /**
      * Signs a request using the specified operation context under the Shared Key authentication scheme.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
-     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
@@ -259,8 +259,8 @@ public abstract class StorageCredentials {
     /**
      * Signs a table request under the Shared Key Lite authentication scheme.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
-     *             depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
+     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
@@ -279,8 +279,9 @@ public abstract class StorageCredentials {
     /**
      * Signs a table request using the specified operation context under the Shared Key Lite authentication scheme.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
-     *             depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
+     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
+     * 
      * @param request
      *            An <code>HttpURLConnection</code> object that represents the request to sign.
      * @param contentLength

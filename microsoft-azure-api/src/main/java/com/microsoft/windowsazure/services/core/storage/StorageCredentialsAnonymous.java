@@ -172,8 +172,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * Signs a request using the specified credentials under the Shared Key authentication scheme. This is not a valid
      * operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
-     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param connection
      *            the request, as an <code>HttpURLConnection</code> object, to sign
@@ -191,8 +191,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * This is not a valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs
      * a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signBlobAndQueueRequest} and
-     *             {@link signBlobAndQueueRequestLite} depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param request
      *            the request, as an <code>HttpURLConnection</code> object, to sign
@@ -213,8 +213,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
      * valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
-     *             depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
+     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param connection
      *            the request, as an <code>HttpURLConnection</code> object, to sign
@@ -230,8 +230,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
      * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
      * no-op.
      * 
-     * @deprecated This method has been deprecated. Please use {@link signTableRequest} and {@link signTableRequestLite}
-     *             depending on the desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
+     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
      * 
      * @param request
      *            the request, as an <code>HttpURLConnection</code> object, to sign
