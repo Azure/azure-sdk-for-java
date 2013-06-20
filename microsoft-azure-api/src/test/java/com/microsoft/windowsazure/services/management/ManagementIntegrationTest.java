@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.core.Builder.Alteration;
 import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.management.models.ListAffinityGroupsResult;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
@@ -71,7 +72,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         String subscriptionId = "279b0675-cf67-467f-98f0-67ae31eb540f";
 
         // Act 
-        ListAffinityGroupsResult result = service.listAffinityGroups(subscriptionId);
+        ListResult<AffinityGroupInfo> result = service.listAffinityGroups(subscriptionId);
 
         // Assert
         assertNotNull(result);
