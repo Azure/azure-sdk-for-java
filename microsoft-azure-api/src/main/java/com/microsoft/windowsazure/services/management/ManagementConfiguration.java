@@ -23,55 +23,50 @@ import com.microsoft.windowsazure.services.core.Configuration;
 public class ManagementConfiguration {
 
     /**
-     * Defines the location of the certificate.
+     * Defines the location of the keystore.
      * 
      */
-    public final static String CERTIFICATE_LOCATION = "certificate.location";
+    public final static String KEYSTORE_PATH = "management.keystore.path";
 
     /**
-     * Defines the configuration URI constant.
+     * Defines the URI of service management.
      * 
      */
     public final static String URI = "management.uri";
 
-    public static final String SUBSCRIPTIONID = "management.subscriptionid";
+    /**
+     * Defines the subscription ID of the service management.
+     */
+    public static final String SUBSCRIPTION_ID = "management.subscription.id";
 
     /**
-     * Creates a service bus configuration using the specified namespace, name, and password.
+     * Creates a service management configuration using the specified uri, keystore path, and subscription id.
      * 
-     * @param namespace
-     *            A <code>String</code> object that represents the namespace.
      * 
-     * @param authenticationName
-     *            A <code>String</code> object that represents the authentication name.
+     * @param uri
+     *            A <code>String</code> object that represents the URI.
      * 
-     * @param authenticationPassword
-     *            A <code>String</code> object that represents the authentication password.
+     * @param subscriptionId
+     *            A <code>String</code> object that represents the subscription ID.
      * 
-     * @param serviceBusRootUri
-     *            A <code>String</code> object containing the base URI that is added to your
-     *            Service Bus namespace to form the URI to connect to the Service Bus service.
-     * 
-     *            To access the default public Azure service, pass ".servicebus.windows.net"
-     * 
-     * @param wrapRootUri
-     *            A <code>String</code> object containing the base URI that is added to your
-     *            Service Bus namespace to form the URI to get an access token for the Service
-     *            Bus service.
-     * 
-     *            To access the default public Azure service, pass "-sb.accesscontrol.windows.net/WRAPv0.9"
+     * @param keystorePath
+     *            A <code>String</code> object that represents the path of the keystore.
      * 
      * @return
      *         A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>ServiceBusService</code> class.
+     *         <code>ManagementService</code> class.
      * 
      */
-    public static Configuration configureWithWrapAuthentication(String uri, String certificateLocation) {
-        return configureWithWrapAuthentication(null, Configuration.getInstance(), uri, certificateLocation);
+    public static Configuration configure(String uri, String subscriptionId) {
+        return configure(null, Configuration.getInstance(), uri, subscriptionId, null);
     }
 
-    public static Configuration configureWithWrapAuthentication(String profile, Configuration configuration,
-            String uri, String certificateLocation) {
+    public static Configuration configure(String uri, String subscriptionId, String keyStorePath) {
+        return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStorePath);
+    }
+
+    public static Configuration configure(String profile, Configuration configuration, String uri,
+            String subscriptionId, String keyStoreLocation) {
 
         if (profile == null) {
             profile = "";
@@ -81,8 +76,8 @@ public class ManagementConfiguration {
         }
 
         configuration.setProperty(profile + URI, "https://" + uri);
-
-        configuration.setProperty(profile + CERTIFICATE_LOCATION, certificateLocation);
+        configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
+        configuration.setProperty(profile + KEYSTORE_PATH, keyStoreLocation);
 
         return configuration;
     }

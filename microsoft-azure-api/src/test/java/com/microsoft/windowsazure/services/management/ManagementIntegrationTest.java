@@ -26,10 +26,7 @@ import com.microsoft.windowsazure.services.core.Builder.Alteration;
 import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
-<<<<<<< HEAD
-=======
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
->>>>>>> 7a2e1d3a323edd74fb2454455bf24af383fffb81
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
@@ -111,11 +108,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act 
-<<<<<<< HEAD
-        ListResult<AffinityGroupInfo> result = service.listAffinityGroups(subscriptionId);
-=======
         ListResult<AffinityGroupInfo> listAffinityGroupsResult = service.listAffinityGroups();
->>>>>>> 7a2e1d3a323edd74fb2454455bf24af383fffb81
 
         // Assert
         assertNotNull(listAffinityGroupsResult);
