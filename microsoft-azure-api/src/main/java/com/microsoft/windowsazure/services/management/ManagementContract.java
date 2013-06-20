@@ -17,7 +17,12 @@ package com.microsoft.windowsazure.services.management;
 import com.microsoft.windowsazure.services.core.FilterableService;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
 
 /**
  * 
@@ -50,5 +55,11 @@ public interface ManagementContract extends FilterableService<ManagementContract
     GetAffinityGroupResult getAffinityGroup(String affinityGroupName);
 
     void deleteAffinityGroup(String affinityGroupName);
+
+    CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
+            String expectedLocation, CreateAffinityGroupOptions createAffinityGroupOptions);
+
+    UpdateAffinityGroupResult updateAffinityGroup(String expectedAffinityGroupLabel,
+            UpdateAffinityGroupOptions updateAffinityGroupOptions);
 
 }

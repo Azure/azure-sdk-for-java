@@ -15,28 +15,15 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-import java.util.UUID;
-
 /**
  * The base result class for all the result of service management operation.
  * 
  */
-public class OperationResult {
+public class CreateAffinityGroupOptions {
 
-    protected final UUID requestId;
-    protected final int statusCode;
-
-    public OperationResult(int statusCode, UUID requestId) {
-        this.statusCode = statusCode;
-        this.requestId = requestId;
-    }
-
-    public int getStatusCode() {
-        return this.statusCode;
-    }
-
-    public UUID getRequestId() {
-        return this.requestId;
+    public CreateAffinityGroupOptions setDescription(String expectedDescription) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

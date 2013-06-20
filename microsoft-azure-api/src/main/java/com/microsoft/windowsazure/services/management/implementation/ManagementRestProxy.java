@@ -28,7 +28,12 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapt
 import com.microsoft.windowsazure.services.management.ManagementConfiguration;
 import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -89,12 +94,6 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public void listVirtualMachines(String subscriptionId) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
             String expectedLocation) {
         // TODO Auto-generated method stub
@@ -111,6 +110,20 @@ public class ManagementRestProxy implements ManagementContract {
     public void deleteAffinityGroup(String affinityGroupName) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
+            String expectedLocation, CreateAffinityGroupOptions createAffinityGroupOptions) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public UpdateAffinityGroupResult updateAffinityGroup(String expectedAffinityGroupLabel,
+            UpdateAffinityGroupOptions updateAffinityGroupOptions) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

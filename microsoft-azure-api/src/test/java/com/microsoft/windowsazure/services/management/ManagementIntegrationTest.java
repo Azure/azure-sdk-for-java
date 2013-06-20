@@ -28,7 +28,12 @@ import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
@@ -57,7 +62,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createAffinityGroupSuccess() {
+    public void createAffinityGroupSuccess() throws Exception {
         // Arrange
         String expectedAffinityGroupName = "testCreateAffinityGroupSuccess";
         String expectedLabel = Base64.encode("testCreateAffinityGroupSuccess".getBytes("UTF-8"));
@@ -76,7 +81,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void createAffinityGroupWithOptionalParametersSuccess() {
+    public void createAffinityGroupWithOptionalParametersSuccess() throws Exception {
         // Arrange 
         String expectedAffinityGroupName = "testCreateAffinityGroupWithOptionalParametersSuccess";
         String expectedLabel = Base64.encode("testCreateAffinityGroupWithOptionalParameterSuccess".getBytes("UTF-8"));
@@ -111,19 +116,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listAffinityGroupsWithOptionsSuccess() throws ServiceException {
-        // Arrange
-        ListAffinityGroupsOptions listAffinityGroupsOptions = new ListAffinityGroupsOptions();
-
-        // Act
-        ListResult<AffinityGroupInfo> listAffinityGroupsResult = service.listAffinityGroups(listAffinityGroupsOptions);
-
-        // Assert
-        assertNotNull(listAffinityGroupsResult);
-    }
-
-    @Test
-    public void deleteAffinityGroupSuccess() throws ServiceException {
+    public void deleteAffinityGroupSuccess() throws ServiceException, Exception {
         // Arrange 
         String affinityGroupName = "testDeleteAffinityGroupSuccess";
         String label = Base64.encode("testDeleteAffinityGroupSuccesslabel".getBytes("UTF-8"));
@@ -138,7 +131,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void updateAffinityGroupSuccess() throws ServiceException {
+    public void updateAffinityGroupSuccess() throws Exception {
         // Arrange 
         String expectedAffinityGroupName = "testUpdateAffinityGroupSuccess";
         String expectedAffinityGroupLabel = Base64.encode("testUpdateAffinityGroupSuccess".getBytes("UTF-8"));
@@ -159,7 +152,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getAffinityGroupPropertiesSuccess() throws ServiceException {
+    public void getAffinityGroupPropertiesSuccess() throws Exception {
         // Arrange
         String expectedAffinityGroupName = "testGetAffinityGroupPropertiesSuccess";
         String expectedAffinityGroupLabel = Base64.encode("testGetAffinityGroupPropertiesSuccess".getBytes("UTF-8"));

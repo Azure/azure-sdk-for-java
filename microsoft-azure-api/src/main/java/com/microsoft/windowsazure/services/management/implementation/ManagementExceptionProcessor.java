@@ -24,9 +24,12 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.UniformInterfaceException;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
+import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
 
 public class ManagementExceptionProcessor implements ManagementContract {
 
@@ -53,22 +56,42 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     @Override
-    public ListResult<AffinityGroupInfo> listAffinityGroups(String subscriptionId) throws ServiceException {
-        try {
-            return next.listAffinityGroups(subscriptionId);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
+    public ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public void listVirtualMachines(String subscriptionId) {
+    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
+            String expectedLocation) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public GetAffinityGroupResult getAffinityGroup(String affinityGroupName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteAffinityGroup(String affinityGroupName) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
+            String expectedLocation, CreateAffinityGroupOptions createAffinityGroupOptions) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public UpdateAffinityGroupResult updateAffinityGroup(String expectedAffinityGroupLabel,
+            UpdateAffinityGroupOptions updateAffinityGroupOptions) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
