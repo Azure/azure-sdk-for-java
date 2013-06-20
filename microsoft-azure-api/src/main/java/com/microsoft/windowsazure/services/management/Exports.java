@@ -53,10 +53,10 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig alter(ClientConfig clientConfig, Builder builder, Map<String, Object> properties) {
 
-                String keyStoreName = "c:\\src\\keystore.jks";
+                String keyStoreName = "d:\\src\\javacert\\azurecertkeystore.jks";
                 // String trustStoreName = "c:\\src\\truststore.jks";
-                String keyStorePass = "newpass";
-                String keyPass = "keypass";
+                String keyStorePass = "azurerocks";
+                String keyPass = "azurecert";
 
                 SSLContext sslContext = null;
 

@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.management.implementation;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,12 +37,14 @@ public class ManagementRestProxy implements ManagementContract {
 
     private Client channel;
     private String uri;
+    private String subscriptionId;
     static Log log = LogFactory.getLog(ManagementContract.class);
 
     ServiceFilter[] filters;
 
     @Inject
-    public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri) {
+    public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri,
+            @Named(ManagementConfiguration.SUBSCRIPTIONID) String subscriptionId) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
@@ -77,16 +80,35 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public ListResult<AffinityGroupInfo> listAffinityGroups(String subscriptionId) {
+    public ListResult<AffinityGroupInfo> listAffinityGroups() {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
                 .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
         String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
+        UUID requestIdUUID = UUID.fromString(requestId);
         return new ListResult<AffinityGroupInfo>(null);
-
     }
 
     @Override
     public void listVirtualMachines(String subscriptionId) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
+            String expectedLocation) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public GetAffinityGroupResult getAffinityGroup(String affinityGroupName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteAffinityGroup(String affinityGroupName) {
         // TODO Auto-generated method stub
 
     }
