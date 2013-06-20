@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.core.Builder.Alteration;
 import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.sun.jersey.api.client.Client;
@@ -44,9 +45,9 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         Registry builder = (Registry) config.getBuilder();
         builder.alter(Client.class, new Alteration<Client>() {
             @Override
-            public Client alter(Client instance, Builder builder, Map<String, Object> properties) {
-                instance.addFilter(new LoggingFilter());
-                return instance;
+            public Client alter(Client client, Builder builder, Map<String, Object> properties) {
+                client.addFilter(new LoggingFilter());
+                return client;
             }
         });
 
@@ -58,24 +59,119 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
     @Test
     public void createAffinityGroupSuccess() {
         // Arrange
-        String subscriptionId = "12345";
+        String expectedAffinityGroupName = "testCreateAffinityGroupSuccess";
+        String expectedLabel = Base64.encode("testCreateAffinityGroupSuccess".getBytes("UTF-8"));
+        String expectedLocation = "US West";
 
         // Act
-        // service.createAffinityGroup(subscriptionId);
+        CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
+                expectedLabel, expectedLocation);
+        AffinityGroupInfo affinityGroupInfo = createAffinityGroupResult.getValue();
 
         // Assert
+        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
+        assertEquals(expectedLabel, affinityGroupInfo.getLabel());
+        assertEquals(expectedLocation, affinityGroupInfo.getLocation());
+
+    }
+
+    @Test
+    public void createAffinityGroupWithOptionalParametersSuccess() {
+        // Arrange 
+        String expectedAffinityGroupName = "testCreateAffinityGroupWithOptionalParametersSuccess";
+        String expectedLabel = Base64.encode("testCreateAffinityGroupWithOptionalParameterSuccess".getBytes("UTF-8"));
+        String expectedLocation = "US West";
+        String expectedDescription = "testCreateAffinityGroupWithOptionalParameterSuccessDescription";
+        CreateAffinityGroupOptions createAffinityGroupOptions = new CreateAffinityGroupOptions()
+                .setDescription(expectedDescription);
+
+        // Act 
+        CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
+                expectedLabel, expectedLocation, createAffinityGroupOptions);
+        AffinityGroupInfo affinityGroupInfo = createAffinityGroupResult.getValue();
+
+        // Assert
+        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
+        assertEquals(expectedLabel, affinityGroupInfo.getLabel());
+        assertEquals(expectedDescription, affinityGroupInfo.getDescription());
+        assertEquals(expectedLocation, affinityGroupInfo.getLocation());
+
     }
 
     @Test
     public void listAffinityGroupsSuccess() throws ServiceException {
-        // Arrange 
-        String subscriptionId = "279b0675-cf67-467f-98f0-67ae31eb540f";
+        // Arrange
 
         // Act 
-        ListResult<AffinityGroupInfo> result = service.listAffinityGroups(subscriptionId);
+        ListResult<AffinityGroupInfo> listAffinityGroupsResult = service.listAffinityGroups();
 
         // Assert
-        assertNotNull(result);
+        assertNotNull(listAffinityGroupsResult);
 
     }
+
+    @Test
+    public void listAffinityGroupsWithOptionsSuccess() throws ServiceException {
+        // Arrange
+        ListAffinityGroupsOptions listAffinityGroupsOptions = new ListAffinityGroupsOptions();
+
+        // Act
+        ListResult<AffinityGroupInfo> listAffinityGroupsResult = service.listAffinityGroups(listAffinityGroupsOptions);
+
+        // Assert
+        assertNotNull(listAffinityGroupsResult);
+    }
+
+    @Test
+    public void deleteAffinityGroupSuccess() throws ServiceException {
+        // Arrange 
+        String affinityGroupName = "testDeleteAffinityGroupSuccess";
+        String label = Base64.encode("testDeleteAffinityGroupSuccesslabel".getBytes("UTF-8"));
+        String location = "West US";
+        service.createAffinityGroup(affinityGroupName, label, location);
+
+        // Act
+        service.deleteAffinityGroup(affinityGroupName);
+
+        // Assert 
+
+    }
+
+    @Test
+    public void updateAffinityGroupSuccess() throws ServiceException {
+        // Arrange 
+        String expectedAffinityGroupName = "testUpdateAffinityGroupSuccess";
+        String expectedAffinityGroupLabel = Base64.encode("testUpdateAffinityGroupSuccess".getBytes("UTF-8"));
+        String expectedLocation = "US West";
+        String expectedDescription = "updateAffinityGroupSuccess";
+        service.createAffinityGroup(expectedAffinityGroupName, expectedAffinityGroupLabel, expectedLocation);
+        UpdateAffinityGroupOptions updateAffinityGroupOptions = new UpdateAffinityGroupOptions()
+                .setDescription(expectedDescription);
+
+        // Act 
+        UpdateAffinityGroupResult updateAffinityGroupResult = service.updateAffinityGroup(expectedAffinityGroupLabel,
+                updateAffinityGroupOptions);
+        AffinityGroupInfo affinityGroupInfo = updateAffinityGroupResult.getValue();
+
+        // Assert 
+        assertEquals(expectedDescription, affinityGroupInfo.getDescription());
+
+    }
+
+    @Test
+    public void getAffinityGroupPropertiesSuccess() throws ServiceException {
+        // Arrange
+        String expectedAffinityGroupName = "testGetAffinityGroupPropertiesSuccess";
+        String expectedAffinityGroupLabel = Base64.encode("testGetAffinityGroupPropertiesSuccess".getBytes("UTF-8"));
+        String expectedLocation = "US West";
+        service.createAffinityGroup(expectedAffinityGroupName, expectedAffinityGroupLabel, expectedLocation);
+
+        // Act 
+        GetAffinityGroupResult getAffinityGroupResult = service.getAffinityGroup(expectedAffinityGroupName);
+        AffinityGroupInfo affinityGroupInfo = getAffinityGroupResult.getValue();
+
+        // Assert
+        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
+    }
+
 }

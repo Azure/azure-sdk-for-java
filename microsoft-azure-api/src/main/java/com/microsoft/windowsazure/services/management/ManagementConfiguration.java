@@ -34,6 +34,8 @@ public class ManagementConfiguration {
      */
     public final static String URI = "management.uri";
 
+    public static final String SUBSCRIPTIONID = "management.subscriptionid";
+
     /**
      * Creates a service bus configuration using the specified namespace, name, and password.
      * 
