@@ -21,22 +21,15 @@ import java.util.UUID;
  * The base result class for all the result of service management operation.
  * 
  */
-public class OperationResult {
+public class GetAffinityGroupResult extends OperationResult {
 
-    protected final UUID requestId;
-    protected final int statusCode;
-
-    public OperationResult(int statusCode, UUID requestId) {
-        this.statusCode = statusCode;
-        this.requestId = requestId;
+    public GetAffinityGroupResult(int statusCode, UUID requestId) {
+        super(statusCode, requestId);
     }
 
-    public int getStatusCode() {
-        return this.statusCode;
-    }
-
-    public UUID getRequestId() {
-        return this.requestId;
+    public AffinityGroupInfo getValue() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
