@@ -64,8 +64,7 @@ public class Exports implements Builder.Exports {
                     sslContext = SSLContext.getInstance("SSL");
                 }
                 catch (NoSuchAlgorithmException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
 
                 KeyManager[] keyManager = createKeyManager(keyStoreName, keyStorePass, keyPass);
@@ -73,11 +72,9 @@ public class Exports implements Builder.Exports {
 
                 try {
                     sslContext.init(keyManager, trustManager, null);
-
                 }
                 catch (KeyManagementException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 clientConfig.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
                         new HTTPSProperties(null, sslContext));
@@ -93,16 +90,15 @@ public class Exports implements Builder.Exports {
         try {
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         }
-        catch (NoSuchAlgorithmException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
+
         try {
             trustManagerFactory.init((KeyStore) null);
         }
-        catch (KeyStoreException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        catch (KeyStoreException e) {
+            throw new RuntimeException(e);
         }
         return trustManagerFactory.getTrustManagers();
 
@@ -120,25 +116,21 @@ public class Exports implements Builder.Exports {
         try {
             keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
         }
-        catch (NoSuchAlgorithmException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
 
         try {
             keyManagerFactory.init(keyStore, keyPass.toCharArray());
         }
-        catch (UnrecoverableKeyException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        catch (UnrecoverableKeyException e) {
+            throw new RuntimeException(e);
         }
-        catch (KeyStoreException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        catch (KeyStoreException e) {
+            throw new RuntimeException(e);
         }
-        catch (NoSuchAlgorithmException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
 
         return keyManagerFactory;
@@ -149,9 +141,8 @@ public class Exports implements Builder.Exports {
         try {
             keyStore = KeyStore.getInstance("JKS");
         }
-        catch (KeyStoreException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
+        catch (KeyStoreException e) {
+            throw new RuntimeException(e);
         }
 
         FileInputStream keyStoreFileInputStream = null;
@@ -159,24 +150,20 @@ public class Exports implements Builder.Exports {
             keyStoreFileInputStream = new FileInputStream(keyStoreFileName);
         }
         catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         try {
             keyStore.load(keyStoreFileInputStream, keyStorePassword.toCharArray());
         }
         catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         catch (CertificateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return keyStore;
