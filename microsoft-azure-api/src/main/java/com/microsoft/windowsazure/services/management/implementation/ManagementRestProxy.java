@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.management.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
+import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.management.ManagementConfiguration;
 import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
@@ -41,24 +43,32 @@ import com.sun.jersey.api.client.WebResource;
 public class ManagementRestProxy implements ManagementContract {
 
     private Client channel;
-    private String uri;
-    private String subscriptionId;
+    private final String uri;
+    private final String subscriptionId;
+    private final String keyStorePath;
     static Log log = LogFactory.getLog(ManagementContract.class);
 
     ServiceFilter[] filters;
 
     @Inject
     public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri,
-            @Named(ManagementConfiguration.SUBSCRIPTIONID) String subscriptionId) {
+            @Named(ManagementConfiguration.SUBSCRIPTION_ID) String subscriptionId,
+            @Named(ManagementConfiguration.KEYSTORE_PATH) String keyStorePath) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
         this.uri = uri;
+        this.subscriptionId = subscriptionId;
+        this.keyStorePath = keyStorePath;
     }
 
-    public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter) {
+    public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter, String uri, String subscriptionId,
+            String keyStorePath) {
         this.channel = channel;
         this.filters = serviceFilter;
+        this.uri = uri;
+        this.subscriptionId = subscriptionId;
+        this.keyStorePath = keyStorePath;
     }
 
     public Client getChannel() {
@@ -77,20 +87,26 @@ public class ManagementRestProxy implements ManagementContract {
         return resource;
     }
 
+    private UUID getRequestId(ClientResponse clientResponse) {
+        String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
+        return UUID.fromString(requestId);
+    }
+
     @Override
     public ManagementContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new ManagementRestProxy(channel, newFilters);
+        return new ManagementRestProxy(channel, newFilters, uri, subscriptionId, keyStorePath);
     }
 
     @Override
     public ListResult<AffinityGroupInfo> listAffinityGroups() {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
                 .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
-        String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
-        UUID requestIdUUID = UUID.fromString(requestId);
-        return new ListResult<AffinityGroupInfo>(null);
+        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        UUID requestId = getRequestId(clientResponse);
+        return new ListResult<AffinityGroupInfo>(clientResponse.getStatus(), requestId,
+                new ArrayList<AffinityGroupInfo>());
     }
 
     @Override

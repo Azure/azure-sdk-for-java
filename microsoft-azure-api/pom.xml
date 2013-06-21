@@ -146,10 +146,34 @@
         <version>0.8.3</version>
         <executions>
           <execution>
+            <id>serviceBus</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>generate</goal>
             </goals>
+            <configuration>
+                <generateDirectory>target/generated-sources/xjc/com/microsoft/windowsazure/services/serviceBus/implementation</generateDirectory>
+                <schemaDirectory>src/main/resources/serviceBus</schemaDirectory>
+                <schemaIncludes> 
+                    <include>servicebus-atom.xsd</include> 
+                </schemaIncludes>
+                <generatePackage>com.microsoft.windowsazure.services.serviceBus.implementation</generatePackage>
+            </configuration>
+          </execution>
+          <execution>
+            <id>management</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+                <generateDirectory>target/generated-sources/xjc/com/microsoft/windowsazure/services/management/implementation</generateDirectory>
+                <schemaDirectory>src/main/resources/management/</schemaDirectory>
+                <schemaIncludes>
+                    <include>schemas.microsoft.com.windowsazure.xsd</include>
+                </schemaIncludes>
+                <generatePackage>com.microsoft.windowsazure.services.management.implementation</generatePackage>
+            </configuration> 
           </execution>
         </executions>
         <configuration>

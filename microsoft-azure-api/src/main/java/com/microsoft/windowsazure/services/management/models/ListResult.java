@@ -31,8 +31,8 @@ public class ListResult<T> extends OperationResult implements List<T> {
 
     private final List<T> contents;
 
-    public ListResult(Collection<T> contentList) {
-        super(3, UUID.randomUUID());
+    public ListResult(int statusCode, UUID requestId, Collection<T> contentList) {
+        super(statusCode, requestId);
         contents = Collections.unmodifiableList(new ArrayList<T>(contentList));
     }
 
