@@ -152,12 +152,14 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-                <generateDirectory>target/generated-sources/xjc/com/microsoft/windowsazure/services/serviceBus/implementation</generateDirectory>
+                <generateDirectory>target/generated-sources/xjc</generateDirectory>
                 <schemaDirectory>src/main/resources/serviceBus</schemaDirectory>
                 <schemaIncludes> 
                     <include>servicebus-atom.xsd</include> 
                 </schemaIncludes>
                 <generatePackage>com.microsoft.windowsazure.services.serviceBus.implementation</generatePackage>
+                <removeOldOutput>false</removeOldOutput>
+                <forceRegenerate>true</forceRegenerate>
             </configuration>
           </execution>
           <execution>
@@ -167,12 +169,14 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-                <generateDirectory>target/generated-sources/xjc/com/microsoft/windowsazure/services/management/implementation</generateDirectory>
+                <generateDirectory>target/generated-sources/xjc</generateDirectory>
                 <schemaDirectory>src/main/resources/management/</schemaDirectory>
                 <schemaIncludes>
                     <include>schemas.microsoft.com.windowsazure.xsd</include>
                 </schemaIncludes>
                 <generatePackage>com.microsoft.windowsazure.services.management.implementation</generatePackage>
+                <removeOldOutput>false</removeOldOutput>
+                <forceRegenerate>true</forceRegenerate>
             </configuration> 
           </execution>
         </executions>
