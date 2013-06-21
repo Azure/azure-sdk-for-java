@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.DeleteAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
@@ -40,7 +41,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-public class ManagementRestProxy<DeleteAffinityGroupResult> implements ManagementContract {
+public class ManagementRestProxy implements ManagementContract {
 
     private Client channel;
     private final String uri;
@@ -157,10 +158,16 @@ public class ManagementRestProxy<DeleteAffinityGroupResult> implements Managemen
     }
 
     @Override
-    public UpdateAffinityGroupResult updateAffinityGroup(String expectedAffinityGroupLabel,
+    public UpdateAffinityGroupResult updateAffinityGroup(String affinityGroupName, String affinityGroupLabel,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) {
-        // TODO Auto-generated method stub
-        return null;
+        UpdateAffinityGroup updateAffinityGroup = new UpdateAffinityGroup();
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .path(affinityGroupName).header("x-ms-version", "2011-02-25")
+                .put(ClientResponse.class, updateAffinityGroup);
+        PipelineHelpers.ThrowIfError(clientResponse);
+        UpdateAffinityGroupResult updateAffinityGroupResult = new UpdateAffinityGroupResult(clientResponse.getStatus(),
+                getRequestId(clientResponse));
+        return updateAffinityGroupResult;
     }
 
 }

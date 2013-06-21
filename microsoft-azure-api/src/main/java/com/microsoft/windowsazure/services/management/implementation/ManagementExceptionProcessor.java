@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
+import com.microsoft.windowsazure.services.management.models.DeleteAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.GetAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
@@ -75,7 +76,8 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     @Override
-    public void deleteAffinityGroup(String affinityGroupName) {
+    public DeleteAffinityGroupResult deleteAffinityGroup(String affinityGroupName) {
+        return null;
         // TODO Auto-generated method stub
 
     }
@@ -88,7 +90,7 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     @Override
-    public UpdateAffinityGroupResult updateAffinityGroup(String expectedAffinityGroupLabel,
+    public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) {
         // TODO Auto-generated method stub
         return null;
