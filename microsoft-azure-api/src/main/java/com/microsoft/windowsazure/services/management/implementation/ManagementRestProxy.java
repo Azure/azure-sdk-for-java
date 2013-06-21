@@ -40,7 +40,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-public class ManagementRestProxy implements ManagementContract {
+public class ManagementRestProxy<DeleteAffinityGroupResult> implements ManagementContract {
 
     private Client channel;
     private final String uri;
@@ -111,29 +111,49 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
-            String expectedLocation) {
-        // TODO Auto-generated method stub
-        return null;
+    public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location) {
+        return createAffinityGroup(affinityGroupName, label, location, null);
+    }
+
+    @Override
+    public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location,
+            CreateAffinityGroupOptions createAffinityGroupOptions) {
+
+        CreateAffinityGroup createAffinityGroup = new CreateAffinityGroup();
+        createAffinityGroup.setName(affinityGroupName);
+        createAffinityGroup.setLabel(label);
+        createAffinityGroup.setLocation(location);
+        if (createAffinityGroupOptions != null) {
+            createAffinityGroup.setDescription(createAffinityGroup.getDescription());
+        }
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .header("x-ms-version", "2013-03-01").put(ClientResponse.class, createAffinityGroup);
+        CreateAffinityGroupResult createAffinityGroupResult = new CreateAffinityGroupResult(clientResponse.getStatus(),
+                getRequestId(clientResponse));
+        return createAffinityGroupResult;
     }
 
     @Override
     public GetAffinityGroupResult getAffinityGroup(String affinityGroupName) {
-        // TODO Auto-generated method stub
-        return null;
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .path(affinityGroupName).header("x-ms-version", "2013-03-01").get(ClientResponse.class);
+        PipelineHelpers.ThrowIfError(clientResponse);
+        GetAffinityGroupResult getAffinityGroupResult = new GetAffinityGroupResult(clientResponse.getStatus(),
+                getRequestId(clientResponse));
+        AffinityGroup affinityGroup = clientResponse.getEntity(AffinityGroup.class);
+        AffinityGroupInfo affinityGroupInfo = AffinityGroupInfoFactory.getItem(affinityGroup);
+        getAffinityGroupResult.setValue(affinityGroupInfo);
+        return getAffinityGroupResult;
     }
 
     @Override
-    public void deleteAffinityGroup(String affinityGroupName) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
-            String expectedLocation, CreateAffinityGroupOptions createAffinityGroupOptions) {
-        // TODO Auto-generated method stub
-        return null;
+    public DeleteAffinityGroupResult deleteAffinityGroup(String affinityGroupName) {
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .path(affinityGroupName).header("x-ms-version", "2013-03-01").delete(ClientResponse.class);
+        PipelineHelpers.ThrowIfError(clientResponse);
+        DeleteAffinityGroupResult deleteAffinityGroupResult = new DeleteAffinityGroupResult(clientResponse.getStatus(),
+                getRequestId(clientResponse));
+        return deleteAffinityGroupResult;
     }
 
     @Override

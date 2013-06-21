@@ -23,13 +23,19 @@ import java.util.UUID;
  */
 public class GetAffinityGroupResult extends OperationResult {
 
+    private AffinityGroupInfo value;
+
     public GetAffinityGroupResult(int statusCode, UUID requestId) {
         super(statusCode, requestId);
     }
 
     public AffinityGroupInfo getValue() {
-        // TODO Auto-generated method stub
-        return null;
+        return value;
+    }
+
+    public GetAffinityGroupResult setValue(AffinityGroupInfo affinityGroupInfo) {
+        this.value = affinityGroupInfo;
+        return this;
     }
 
 }

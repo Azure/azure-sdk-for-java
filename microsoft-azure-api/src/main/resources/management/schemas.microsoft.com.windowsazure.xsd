@@ -1,5 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:azure="http://schemas.microsoft.com/windowsazure/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/windowsazure/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CreateAffinityGroup" nillable="true" type="azure:CreateAffinityGroup" />
+  <xs:complexType name="CreateAffinityGroup">
+    <xs:sequence>
+        <xs:element name="Name" type="xs:string" minOccurs="0" /> 
+        <xs:element name="Label" type="xs:string" minOccurs="0" />
+        <xs:element name="Description" type="xs:string" minOccurs="0" />
+        <xs:element name="Location" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
   <xs:element name="AffinityGroup" nillable="true" type="azure:AffinityGroup" />
   <xs:complexType name="AffinityGroup">
     <xs:sequence>
