@@ -135,9 +135,9 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public GetAffinityGroupResult getAffinityGroup(String affinityGroupName) {
-        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .path(affinityGroupName).header("x-ms-version", "2013-03-01").get(ClientResponse.class);
+    public GetAffinityGroupResult getAffinityGroup(String name) {
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
+                .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
         PipelineHelpers.ThrowIfError(clientResponse);
         GetAffinityGroupResult getAffinityGroupResult = new GetAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
@@ -148,9 +148,9 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public DeleteAffinityGroupResult deleteAffinityGroup(String affinityGroupName) {
-        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .path(affinityGroupName).header("x-ms-version", "2013-03-01").delete(ClientResponse.class);
+    public DeleteAffinityGroupResult deleteAffinityGroup(String name) {
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
+                .header("x-ms-version", "2013-03-01").delete(ClientResponse.class);
         PipelineHelpers.ThrowIfError(clientResponse);
         DeleteAffinityGroupResult deleteAffinityGroupResult = new DeleteAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
@@ -158,16 +158,20 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     @Override
-    public UpdateAffinityGroupResult updateAffinityGroup(String affinityGroupName, String affinityGroupLabel,
+    public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) {
         UpdateAffinityGroup updateAffinityGroup = new UpdateAffinityGroup();
+        updateAffinityGroup.setLabel(label);
+        if (updateAffinityGroupOptions != null)
+        {
+            updateAffinityGroup.setDescription(updateAffinityGroupOptions.getDescription())
+        }
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .path(affinityGroupName).header("x-ms-version", "2011-02-25")
+                .path(name).header("x-ms-version", "2011-02-25")
                 .put(ClientResponse.class, updateAffinityGroup);
         PipelineHelpers.ThrowIfError(clientResponse);
         UpdateAffinityGroupResult updateAffinityGroupResult = new UpdateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
         return updateAffinityGroupResult;
     }
-
 }

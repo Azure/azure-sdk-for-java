@@ -21,9 +21,15 @@ package com.microsoft.windowsazure.services.management.models;
  */
 public class UpdateAffinityGroupOptions {
 
+    private String description;
+
     public UpdateAffinityGroupOptions setDescription(String description) {
-        // TODO Auto-generated method stub
+        this.description = description;
         return this;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
 }

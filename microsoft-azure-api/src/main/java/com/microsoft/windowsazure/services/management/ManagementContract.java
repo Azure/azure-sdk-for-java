@@ -46,21 +46,19 @@ public interface ManagementContract extends FilterableService<ManagementContract
      * @throws ServiceException
      *             If a service exception is encountered.
      */
-    // void createAffinityGroup(AffinityGroup affinityGroup) throws ServiceException;
 
     ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException;
 
-    CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
-            String expectedLocation);
+    CreateAffinityGroupResult createAffinityGroup(String name, String label, String location) throws ServiceException;
 
-    GetAffinityGroupResult getAffinityGroup(String name);
+    GetAffinityGroupResult getAffinityGroup(String name) throws ServiceException;
 
-    DeleteAffinityGroupResult deleteAffinityGroup(String name);
+    DeleteAffinityGroupResult deleteAffinityGroup(String name) throws ServiceException;
 
     CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
-            CreateAffinityGroupOptions createAffinityGroupOptions);
+            CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException;
 
     UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
-            UpdateAffinityGroupOptions updateAffinityGroupOptions);
+            UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException;
 
 }

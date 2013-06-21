@@ -31,6 +31,8 @@ import com.microsoft.windowsazure.services.management.models.GetAffinityGroupRes
 import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.UniformInterfaceException;
 
 public class ManagementExceptionProcessor implements ManagementContract {
 
@@ -58,42 +60,83 @@ public class ManagementExceptionProcessor implements ManagementContract {
 
     @Override
     public ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return next.listAffinityGroups();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
     @Override
-    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
-            String expectedLocation) {
-        // TODO Auto-generated method stub
-        return null;
+    public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location)
+            throws ServiceException {
+        try {
+            return next.createAffinityGroup(name, label, location);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
     @Override
-    public GetAffinityGroupResult getAffinityGroup(String affinityGroupName) {
-        // TODO Auto-generated method stub
-        return null;
+    public GetAffinityGroupResult getAffinityGroup(String name) throws ServiceException {
+        try {
+            return next.getAffinityGroup(name);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
     @Override
-    public DeleteAffinityGroupResult deleteAffinityGroup(String affinityGroupName) {
-        return null;
-        // TODO Auto-generated method stub
-
+    public DeleteAffinityGroupResult deleteAffinityGroup(String name) throws ServiceException {
+        try {
+            return next.deleteAffinityGroup(name);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
     @Override
-    public CreateAffinityGroupResult createAffinityGroup(String expectedAffinityGroupName, String expectedLabel,
-            String expectedLocation, CreateAffinityGroupOptions createAffinityGroupOptions) {
-        // TODO Auto-generated method stub
-        return null;
+    public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
+            CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException {
+        try {
+            return next.createAffinityGroup(name, label, location, createAffinityGroupOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
     @Override
     public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
-            UpdateAffinityGroupOptions updateAffinityGroupOptions) {
-        // TODO Auto-generated method stub
-        return null;
+            UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException {
+        try {
+            return next.updateAffinityGroup(name, label, updateAffinityGroupOptions);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
 }
