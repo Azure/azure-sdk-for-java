@@ -143,7 +143,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
 
         // Act 
         UpdateAffinityGroupResult updateAffinityGroupResult = service.updateAffinityGroup(expectedAffinityGroupLabel,
-                updateAffinityGroupOptions);
+                expectedDescription, updateAffinityGroupOptions);
         AffinityGroupInfo affinityGroupInfo = updateAffinityGroupResult.getValue();
 
         // Assert 

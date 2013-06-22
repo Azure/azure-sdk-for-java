@@ -162,13 +162,11 @@ public class ManagementRestProxy implements ManagementContract {
             UpdateAffinityGroupOptions updateAffinityGroupOptions) {
         UpdateAffinityGroup updateAffinityGroup = new UpdateAffinityGroup();
         updateAffinityGroup.setLabel(label);
-        if (updateAffinityGroupOptions != null)
-        {
-            updateAffinityGroup.setDescription(updateAffinityGroupOptions.getDescription())
+        if (updateAffinityGroupOptions != null) {
+            updateAffinityGroup.setDescription(updateAffinityGroupOptions.getDescription());
         }
-        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .path(name).header("x-ms-version", "2011-02-25")
-                .put(ClientResponse.class, updateAffinityGroup);
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
+                .header("x-ms-version", "2011-02-25").put(ClientResponse.class, updateAffinityGroup);
         PipelineHelpers.ThrowIfError(clientResponse);
         UpdateAffinityGroupResult updateAffinityGroupResult = new UpdateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
