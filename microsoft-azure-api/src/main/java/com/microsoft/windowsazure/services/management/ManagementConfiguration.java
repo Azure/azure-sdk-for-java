@@ -29,6 +29,12 @@ public class ManagementConfiguration {
     public final static String KEYSTORE_PATH = "management.keystore.path";
 
     /**
+     * Defines the password of the keystore.
+     * 
+     */
+    public final static String KEYSTORE_PASSWORD = "management.keystore.password";
+
+    /**
      * Defines the URI of service management.
      * 
      */
@@ -58,15 +64,16 @@ public class ManagementConfiguration {
      * 
      */
     public static Configuration configure(String uri, String subscriptionId) {
-        return configure(null, Configuration.getInstance(), uri, subscriptionId, null);
+        return configure(null, Configuration.getInstance(), uri, subscriptionId, null, null);
     }
 
-    public static Configuration configure(String uri, String subscriptionId, String keyStorePath) {
-        return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStorePath);
+    public static Configuration configure(String uri, String subscriptionId, String keyStorePath,
+            String keyStorePassword) {
+        return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStorePath, keyStorePassword);
     }
 
     public static Configuration configure(String profile, Configuration configuration, String uri,
-            String subscriptionId, String keyStoreLocation) {
+            String subscriptionId, String keyStoreLocation, String keyStorePassword) {
 
         if (profile == null) {
             profile = "";
@@ -78,6 +85,7 @@ public class ManagementConfiguration {
         configuration.setProperty(profile + URI, "https://" + uri);
         configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
         configuration.setProperty(profile + KEYSTORE_PATH, keyStoreLocation);
+        configuration.setProperty(profile + KEYSTORE_PASSWORD, keyStorePassword);
 
         return configuration;
     }
