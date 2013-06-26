@@ -24,6 +24,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.Entry;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModel;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SubscriptionDescription;
 
@@ -428,6 +429,36 @@ public class SubscriptionInfo extends EntryModel<SubscriptionDescription> {
      */
     public EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return getModel().getEntityAvailabilityStatus();
+    }
+
+    /**
+     * Gets the message count details.
+     * 
+     * @return A <code>MessageCountDetails</code> instance representing the details of the message count.
+     */
+    public MessageCountDetails getCountDetails() {
+        return getModel().getCountDetails();
+    }
+
+    /**
+     * Sets the forward to.
+     * 
+     * @param forwardTo
+     *            A <code>String</code> representing the string to forward to.
+     * @return the subscription info
+     */
+    public SubscriptionInfo setForwardTo(String forwardTo) {
+        getModel().setForwardTo(forwardTo);
+        return this;
+    }
+
+    /**
+     * Gets a <code>String</code> representing the URI of the entity to forward to.
+     * 
+     * @return A <code>String</code> representing the URI of the entity to forward to.
+     */
+    public String getForwardTo() {
+        return getModel().getForwardTo();
     }
 
 }

@@ -2,6 +2,7 @@
 <xs:schema 
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" 
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+	xmlns:tnsn="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
 	elementFormDefault="qualified" 
   attributeFormDefault="qualified"
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
@@ -21,7 +22,8 @@
     </xs:appinfo>
   </xs:annotation>
 	
-  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.2003.10.Serialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
@@ -115,6 +117,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -144,6 +153,13 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SupportOrdering" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -246,6 +262,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
         <xs:annotation>
           <xs:appinfo>
@@ -268,6 +291,13 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="UserMetadata" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -330,7 +360,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="RuleDescription" nillable="true" type="tns:RuleDescription" />
+  <xs:element name="RuleDescription" type="tns:RuleDescription" />
   <xs:complexType name="Filter">
     <xs:sequence />
   </xs:complexType>
@@ -397,11 +427,17 @@
       <xs:extension base="tns:Filter">
         <xs:sequence>
           <xs:element minOccurs="0" name="CorrelationId" type="xs:string" />
+          <xs:element minOccurs="0" name="MessageId" type="xs:string" />
+          <xs:element minOccurs="0" name="To" type="xs:string" />
+          <xs:element minOccurs="0" name="ReplyTo" type="xs:string" />
+          <xs:element minOccurs="0" name="Label" type="xs:string" />
+          <xs:element minOccurs="0" name="SessionId" type="xs:string" />
+          <xs:element minOccurs="0" name="ReplyToSessionId" type="xs:string" />
+          <xs:element minOccurs="0" name="ContentType" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="CorrelationFilter" nillable="true" type="tns:CorrelationFilter" />
   <xs:complexType name="RuleAction">
     <xs:sequence />
   </xs:complexType>
@@ -532,6 +568,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>     
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>
