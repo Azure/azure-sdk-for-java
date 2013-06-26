@@ -295,8 +295,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, leaseTimeInSeconds,
                         proposedLeaseId, null, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -407,8 +408,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null,
                         breakPeriodInSeconds, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -540,9 +542,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.copyFrom(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), source.toString(), blob.snapshotID,
                         sourceAccessCondition, destinationAccessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
-                client.getCredentials().signRequest(request, 0);
+
+                this.signRequest(client, request, 0, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -620,8 +624,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 final HttpURLConnection request = BlobRequest.abortCopy(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), copyId, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0);
+                this.signRequest(client, request, 0, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -695,8 +700,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 final HttpURLConnection request = BlobRequest.snapshot(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -784,8 +790,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.delete(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, deleteSnapshotsOption,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -875,8 +882,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.delete(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, deleteSnapshotsOption,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -959,8 +967,10 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 final HttpURLConnection request = BlobRequest.get(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
+
                 final InputStream streamRef = ExecutionEngine.getInputStream(request, opContext, this.getResult());
 
                 final String contentMD5 = request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
@@ -1137,8 +1147,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.getProperties(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions,
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1290,12 +1301,13 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.get(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, blobOffset, length, accessCondition,
                         blobOptions, opContext);
+                this.setConnection(request);
 
                 if (blobOptions.getUseTransactionalContentMD5()) {
                     request.setRequestProperty(Constants.HeaderConstants.RANGE_GET_CONTENT_MD5, "true");
                 }
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 final InputStream sourceStream = ExecutionEngine.getInputStream(request, opContext, this.getResult());
 
@@ -1430,8 +1442,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.getProperties(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions,
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1917,8 +1930,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RELEASE, null, null, null,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1997,8 +2011,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.RENEW, null, null, null,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2086,8 +2101,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.CHANGE, null, proposedLeaseId, null,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2213,8 +2229,9 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.lease(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null, null,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2351,10 +2368,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.put(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, blob.properties.getBlobType(),
                         0, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                client.getCredentials().signRequest(request, length);
+                this.signRequest(client, request, length, null);
 
                 final StreamMd5AndLength descriptor = Utility.writeToOutputStream(sourceStream,
                         request.getOutputStream(), length, true, false, null, opContext);
@@ -2436,9 +2454,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 final HttpURLConnection request = BlobRequest.setMetadata(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2510,9 +2530,11 @@ public abstract class CloudBlob implements ListBlobItem {
                 final HttpURLConnection request = BlobRequest.setProperties(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, null, accessCondition,
                         blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
