@@ -195,13 +195,13 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
     /**
      * Creates a queue.
      * 
-     * @param queue
-     *            A <code>Queue</code> object that represents the queue to create.
+     * @param queueInfo
+     *            A <code>QueueInfo</code> object that represents the queue to create.
      * @return A <code>CreateQueueResult</code> object that represents the result.
      * @throws ServiceException
      *             If a service exception is encountered.
      */
-    CreateQueueResult createQueue(QueueInfo queue) throws ServiceException;
+    CreateQueueResult createQueue(QueueInfo queueInfo) throws ServiceException;
 
     /**
      * Deletes a queue.
