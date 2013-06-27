@@ -26,13 +26,13 @@ public class APICall {
 
     private final SSLContext sslContext;
 
-    public static String SERIVICE_VERSION_HEADER_KEY = "x-ms-version";
+    public static final String SERIVICE_VERSION_HEADER_KEY = "x-ms-version";
 
-    public static String SERIVICE_VERSION_HEADER_VALUE = "2013-03-01";
+    public static final String SERIVICE_VERSION_HEADER_VALUE = "2013-03-01";
 
-    public static String SERVICE_CONTENT_TYPE_HEADER_KEY = "Content-Type";
+    public static final String SERVICE_CONTENT_TYPE_HEADER_KEY = "Content-Type";
 
-    public static String SERVICE_CONTENT_TYPE_HEADER_VALUE = "application/xml";
+    public static final String SERVICE_CONTENT_TYPE_HEADER_VALUE = "application/xml";
 
     public APICall(String subscription, SSLContext context) {
         // make this changeable in whatever way suits you.....
