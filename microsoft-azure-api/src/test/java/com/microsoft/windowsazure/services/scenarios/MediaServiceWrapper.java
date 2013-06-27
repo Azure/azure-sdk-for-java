@@ -272,13 +272,13 @@ class MediaServiceWrapper {
         String configuration = null;
         switch (encoderType) {
             case WindowsAzureMediaEncoder:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER, "2.3");
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER);
                 // Full list of configurations strings for version 2.1 is at:
                 // http://msdn.microsoft.com/en-us/library/jj129582.aspx
                 configuration = "VC1 Broadband SD 4x3";
                 break;
             case StorageDecryption:
-                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION, "1.6");
+                processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_STORAGE_DECRYPTION);
                 configuration = null;
                 break;
             default:
@@ -296,10 +296,9 @@ class MediaServiceWrapper {
                 + "<outputAsset>JobOutputAsset(" + outputAssetId + ")</outputAsset></taskBody>";
     }
 
-    private String getMediaProcessorIdByName(String processorName, String version) throws ServiceException {
+    private String getMediaProcessorIdByName(String processorName) throws ServiceException {
         EntityListOperation<MediaProcessorInfo> operation = MediaProcessor.list();
-        operation.getQueryParameters().putSingle("$filter",
-                "(Name eq '" + processorName + "') and (Version eq '" + version + "')");
+        operation.getQueryParameters().putSingle("$filter", "(Name eq '" + processorName + "')");
         MediaProcessorInfo processor = service.list(operation).get(0);
         return processor.getId();
     }
