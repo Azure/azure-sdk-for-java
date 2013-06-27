@@ -38,13 +38,13 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
     }
 
     private void verifyMediaProcessorInfo(String message, String id, String name, String description, String sku,
-            String vendor, String version, MediaProcessorInfo mediaProcessorInfo) {
+            String vendor, MediaProcessorInfo mediaProcessorInfo) {
         assertEquals(message + " id", id, mediaProcessorInfo.getId());
         assertEquals(message + " name", name, mediaProcessorInfo.getName());
         assertEquals(message + " description", description, mediaProcessorInfo.getDescription());
         assertEquals(message + " sku", sku, mediaProcessorInfo.getSku());
         assertEquals(message + " vendor", vendor, mediaProcessorInfo.getVendor());
-        assertEquals(message + " version", version, mediaProcessorInfo.getVersion());
+        assertTrue(message + "version length > 0", mediaProcessorInfo.getVersion().length() > 0);
     }
 
     @Test
@@ -73,6 +73,6 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         assertEquals("listMediaProcessors size", 1, listMediaProcessorsResult.size());
         MediaProcessorInfo mediaProcessorInfo = listMediaProcessorsResult.get(0);
         verifyMediaProcessorInfo("mediaProcessorInfo", "nb:mpid:UUID:aec03716-7c5e-4f68-b592-f4850eba9f10",
-                "Storage Decryption", "Storage Decryption", "", "Microsoft", "1.6", mediaProcessorInfo);
+                "Storage Decryption", "Storage Decryption", "", "Microsoft", mediaProcessorInfo);
     }
 }
