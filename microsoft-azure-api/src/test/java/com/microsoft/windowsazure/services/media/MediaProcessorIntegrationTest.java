@@ -44,6 +44,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase {
         assertEquals(message + " description", description, mediaProcessorInfo.getDescription());
         assertEquals(message + " sku", sku, mediaProcessorInfo.getSku());
         assertEquals(message + " vendor", vendor, mediaProcessorInfo.getVendor());
+        assertTrue(message + "version length > 0", mediaProcessorInfo.getVersion().length() > 0);
     }
 
     @Test
