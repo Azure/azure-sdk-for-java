@@ -1,3 +1,7 @@
+2013.06.27 Version 0.4.4
+ * Make sure the response stream is drained to prevent socket exhaustion.
+ * Support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes.
+
 2013.03.12 Version 0.4.1
  * Added "Azure-SDK-For-Java/<version>" To User-Agent HTTP header
  * Added connection string support for Service Bus
