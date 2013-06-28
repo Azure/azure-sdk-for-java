@@ -35,7 +35,10 @@ import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
 import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
+import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
@@ -44,10 +47,12 @@ import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
 import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
@@ -106,7 +111,25 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(saved);
         assertNotSame(queue, saved);
+        assertEquals(false, saved.isDeadLetteringOnMessageExpiration());
+        assertEquals(false, saved.isAnonymousAccessible());
+        assertNotNull(saved.getAutoDeleteOnIdle());
+        assertEquals(true, saved.isSupportOrdering());
         assertEquals("TestCreateQueueWorks", saved.getPath());
+    }
+
+    @Test
+    public void updateQueueWorks() throws Exception {
+        // Arrange 
+        QueueInfo queue = new QueueInfo("TestUpdateQueueWorks").setMaxSizeInMegabytes(1024L);
+        QueueInfo originalQueue = service.createQueue(queue).getValue();
+        Long expectedMaxSizeInMegaBytes = 512L;
+
+        // Act 
+        QueueInfo updatedQueue = service.updateQueue(originalQueue.setMaxSizeInMegabytes(512L));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegaBytes, updatedQueue.getMaxSizeInMegabytes());
     }
 
     @Test
@@ -157,6 +180,88 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void getQueueMessageCountDetails() throws Exception {
+        // Arrange
+        String queueName = "testGetQueueMessageCountDetails";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello World"));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        QueueInfo queueInfo = service.getQueue(queueName).getValue();
+        MessageCountDetails countDetails = queueInfo.getCountDetails();
+
+        // Assert
+        assertEquals(true, queueInfo.isSupportOrdering());
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
+    }
+
+    @Test
+    public void getTopicMessageCountDetails() throws Exception {
+        // Arrange
+        String topicName = "TestGetTopicMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        Long expectedActiveMessageCount = 0L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        TopicInfo topicInfo = service.getTopic(topicName).getValue();
+        MessageCountDetails countDetails = topicInfo.getCountDetails();
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
+    }
+
+    @Test
+    public void getSubscriptionMessageCountDetails() throws Exception {
+        // Arrange
+        String topicName = "TestGetSubscriptionMessageCountDetails";
+        String subscriptionName = "TestGetSubscriptionMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello world!"));
+        SubscriptionInfo subscriptionInfo = service.getSubscription(topicName, subscriptionName).getValue();
+        MessageCountDetails countDetails = subscriptionInfo.getCountDetails();
+
+        // Assert
+        assertNotNull(subscriptionInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
+    }
+
+    @Test
     public void receiveMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveMessageWorks";
@@ -174,6 +279,39 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void renewSubscriptionMessageLockWorks() throws Exception {
+        // Arrange
+        String topicName = "TestRenewSubscriptionLockMessageWorks";
+        String subscriptionName = "renewSubscriptionMessageLockWorks";
+        service.createTopic(new TopicInfo(topicName));
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveSubscriptionMessage(topicName, subscriptionName, PEEK_LOCK_5_SECONDS)
+                .getValue();
+        service.renewSubscriptionLock(topicName, subscriptionName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
+    public void renewQueueMessageLockWorks() throws Exception {
+        // Arrange
+        String queueName = "TestRenewSubscriptionLockMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello Again"));
+
+        // Act 
+        BrokeredMessage message = service.receiveQueueMessage(queueName, PEEK_LOCK_5_SECONDS).getValue();
+        service.renewQueueLock(queueName, message.getMessageId(), message.getLockToken());
+
+        // Assert
+        assertNotNull(message);
+    }
+
+    @Test
     public void receiveMessageEmptyQueueWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveMessageEmptyQueueWorks";
@@ -186,6 +324,177 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(receiveQueueMessageResult);
         assertNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveQueueForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessDestination";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationQueueInfo.getUri().toString()))
+                .getValue();
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedQueueForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessDestination";
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        QueueInfo sourceQueueInfo = new QueueInfo(sourceQueueName);
+        service.createQueue(sourceQueueInfo).getValue();
+        service.updateQueue(sourceQueueInfo.setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String sourceSubscriptionName = "TestReceiveSubForwardToQueueMessageSuccessSource";
+        String destinationQueueName = "TestReceiveSubForwardToQueueMessageSuccessDestination";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationQueueInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedSubscriptionForwardToQueueMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
+        String sourceSubscriptionName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
+        String destinationQueueName = "TestUpdatedReceiveSubForwardToQMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        QueueInfo destinationQueueInfo = service.createQueue(new QueueInfo(destinationQueueName)).getValue();
+        SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName)).getValue();
+        service.updateSubscription(sourceTopicName,
+                sourceSubscriptionInfo.setForwardTo(destinationQueueInfo.getUri().toString()));
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveQueueMessageResult receiveQueueMessageResult = service.receiveQueueMessage(destinationQueueName,
+                RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveQueueMessageResult);
+        assertNotNull(receiveQueueMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveQueueForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveQueueForwardToTopicMessageSuccessSource";
+        String destinationTopicName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
+        String destinationSubscriptionName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createQueue(new QueueInfo(sourceQueueName).setForwardTo(destinationTopicInfo.getUri().toString()))
+                .getValue();
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedQueueForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceQueueName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessSource";
+        String destinationTopicName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessDestination";
+        String destinationSubscriptionName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessDestination";
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        QueueInfo sourceQueueInfo = new QueueInfo(sourceQueueName);
+        service.createQueue(sourceQueueInfo).getValue();
+        service.updateQueue(sourceQueueInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendQueueMessage(sourceQueueName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveSubscriptionForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName).setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
+    }
+
+    @Test
+    public void receiveUpdatedSubscriptionForwardToTopicMessageSuccess() throws Exception {
+        // Arrange
+        String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
+        String destinationTopicName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        String destinationSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessDest";
+        service.createTopic(new TopicInfo(sourceTopicName)).getValue();
+        TopicInfo destinationTopicInfo = service.createTopic(new TopicInfo(destinationTopicName)).getValue();
+        service.createSubscription(destinationTopicName, new SubscriptionInfo(destinationSubscriptionName)).getValue();
+        SubscriptionInfo sourceSubscriptionInfo = service.createSubscription(sourceTopicName,
+                new SubscriptionInfo(sourceSubscriptionName)).getValue();
+        service.updateSubscription(sourceTopicName,
+                sourceSubscriptionInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+
+        // Act
+        service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
+        ReceiveSubscriptionMessageResult receiveSubscriptionMessageResult = service.receiveSubscriptionMessage(
+                destinationTopicName, destinationSubscriptionName, RECEIVE_AND_DELETE_5_SECONDS);
+
+        // Assert
+        assertNotNull(receiveSubscriptionMessageResult);
+        assertNotNull(receiveSubscriptionMessageResult.getValue());
     }
 
     @Test
@@ -336,6 +645,100 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void listTopicsUnderASpecificPath() throws ServiceException {
+        // Arrange 
+        String topicName = "testPathA/testPathB/listTopicUnderASpecificPath";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("startswith(path, 'testPathA/testPathB') eq true"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsUpdatedInLastFiveMinutes() throws ServiceException {
+        String topicName = "testListTopicUpdatedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("ModifiedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsAccessedSinceASpecificTime() throws ServiceException {
+        removeTopics();
+        String topicName = "testListTopicAccessedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("AccessedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(0, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void listTopicsCreatedSinceASpecificTime() throws ServiceException {
+        removeTopics();
+        String topicName = "testListTopicCreatedInLastFiveMinutes";
+
+        // Act 
+        TopicInfo topicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+        ListTopicsResult listTopicResult = service.listTopics(new ListTopicsOptions()
+                .setFilter("CreatedAt gt '1/25/2012 3:41:41 PM'"));
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertEquals(1, listTopicResult.getItems().size());
+    }
+
+    @Test
+    public void topicCreatedContainsMetadata() throws ServiceException {
+        // Arrange
+        String topicName = "TestTopicCreatedContainsMetadata";
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(new TopicInfo().setPath(topicName)).getValue();
+
+        // Assert
+        assertNotNull(createdTopicInfo);
+        assertNotNull(createdTopicInfo.getAutoDeleteOnIdle());
+        assertEquals(false, createdTopicInfo.isRequiresDuplicateDetection());
+        assertEquals(false, createdTopicInfo.isFilteringMessageBeforePublishing());
+        assertEquals(EntityStatus.ACTIVE, createdTopicInfo.getStatus());
+        assertEquals(true, createdTopicInfo.isSupportOrdering());
+        assertEquals(false, createdTopicInfo.isAnonymousAccessible());
+
+    }
+
+    @Test
+    public void topicCanBeUpdated() throws ServiceException {
+        // Arrange
+        String topicName = "testTopicCanBeUpdated";
+        Long expectedMaxSizeInMegabytes = 2048L;
+
+        // Act 
+        TopicInfo createdTopicInfo = service.createTopic(
+                new TopicInfo().setPath(topicName).setMaxSizeInMegabytes(1024L)).getValue();
+        TopicInfo updatedTopicInfo = service.updateTopic(createdTopicInfo
+                .setMaxSizeInMegabytes(expectedMaxSizeInMegabytes));
+
+        // Assert
+        assertEquals(expectedMaxSizeInMegabytes, updatedTopicInfo.getMaxSizeInMegabytes());
+    }
+
+    @Test
     public void filterCanSeeAndChangeRequestOrResponse() throws ServiceException {
         // Arrange
         final List<Request> requests = new ArrayList<Request>();
@@ -374,6 +777,61 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertNotNull(created);
         assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
+    }
+
+    @Test
+    public void createSubscriptionWithCorrelationFilter() throws Exception {
+        // Arrange
+        String topicName = "testCreateSubscriptionWithCorrelationFilter";
+        String expectedCorrelationId = "sampleCorrelationId";
+        String expectedContentType = "sampleContentType";
+        String expectedLabel = "sampleLabel";
+        String expectedMessageId = "sampleMessageId";
+        String expectedSessionId = "sampleSessionId";
+        String expectedReplyTo = "sampleReplyTo";
+        String expectedTo = "sampleTo";
+        service.createTopic(new TopicInfo(topicName));
+        CorrelationFilter correlationFilter = new CorrelationFilter();
+        correlationFilter.setCorrelationId(expectedCorrelationId);
+        correlationFilter.setContentType(expectedContentType);
+        correlationFilter.setLabel(expectedLabel);
+        correlationFilter.setMessageId(expectedMessageId);
+        correlationFilter.setReplyTo(expectedReplyTo);
+        correlationFilter.setSessionId(expectedSessionId);
+        correlationFilter.setTo(expectedTo);
+        RuleDescription ruleDescription = new RuleDescription();
+        ruleDescription.setFilter(correlationFilter);
+
+        // Act
+        SubscriptionInfo created = service.createSubscription(topicName,
+                new SubscriptionInfo("MySubscription").setDefaultRuleDescription(ruleDescription)).getValue();
+
+        RuleInfo ruleInfo = service.getRule(topicName, "MySubscription", "$Default").getValue();
+        CorrelationFilter correlationFilterResult = (CorrelationFilter) ruleInfo.getFilter();
+
+        // Assert
+        assertNotNull(created);
+        assertEquals("MySubscription", created.getName());
+        assertEquals(false, created.isRequiresSession());
+        assertEquals(true, created.isDeadLetteringOnFilterEvaluationExceptions());
+        assertNotNull(created.getCreatedAt());
+        assertNotNull(created.getUpdatedAt());
+        assertNotNull(created.getAccessedAt());
+        assertNotNull(created.getAutoDeleteOnIdle());
+        assertNotNull(correlationFilterResult);
+        assertEquals(expectedCorrelationId, correlationFilterResult.getCorrelationId());
+        assertEquals(expectedContentType, correlationFilterResult.getContentType());
+        assertEquals(expectedLabel, correlationFilterResult.getLabel());
+        assertEquals(expectedMessageId, correlationFilterResult.getMessageId());
+        assertEquals(expectedSessionId, correlationFilterResult.getSessionId());
+        assertEquals(expectedReplyTo, correlationFilterResult.getReplyTo());
+        assertEquals(expectedTo, correlationFilterResult.getTo());
     }
 
     @Test
@@ -445,6 +903,23 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         int size = message.getBody().read(data);
         assertEquals("<p>Testing subscription</p>", new String(data, 0, size));
         assertEquals("text/html", message.getContentType());
+    }
+
+    @Test
+    public void subscriptionCanBeUpdated() throws Exception {
+        // Arrange 
+        String topicName = "testSubscriptionCanBeUpdated";
+        service.createTopic(new TopicInfo(topicName));
+        SubscriptionInfo originalSubscription = service.createSubscription(topicName, new SubscriptionInfo("sub"))
+                .getValue();
+        Integer expectedMaxDeliveryCount = 1024;
+
+        // Act
+        SubscriptionInfo updatedSubscription = service.updateSubscription(topicName,
+                originalSubscription.setMaxDeliveryCount(expectedMaxDeliveryCount));
+
+        // Assert
+        assertEquals(expectedMaxDeliveryCount, updatedSubscription.getMaxDeliveryCount());
     }
 
     @Test

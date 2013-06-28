@@ -2,15 +2,15 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
@@ -56,9 +56,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            A <code>String</code> object that represents the name of the queue to which the message will be sent.
      * @param message
      *            A <code>Message</code> object that represents the message to send.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void sendQueueMessage(String queuePath, BrokeredMessage message) throws ServiceException;
 
@@ -67,12 +66,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param queuePath
      *            A <code>String</code> object that represents the name of the queue from which to receive the message.
-     * 
      * @return A <code>ReceiveQueueMessageResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
-     * 
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ReceiveQueueMessageResult receiveQueueMessage(String queuePath) throws ServiceException;
 
@@ -81,14 +77,11 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param queuePath
      *            A <code>String</code> object that represents the name of the queue from which to receive the message.
-     * 
      * @param options
      *            A <code>ReceiveMessageOptions</code> object that represents the receive message options.
-     * 
      * @return A <code>ReceiveQueueMessageResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ReceiveQueueMessageResult receiveQueueMessage(String queuePath, ReceiveMessageOptions options)
             throws ServiceException;
@@ -100,9 +93,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            A <code>String</code> object that represents the name of the topic to which the message will be sent.
      * @param message
      *            A <code>Message</code> object that represents the message to send.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void sendTopicMessage(String topicPath, BrokeredMessage message) throws ServiceException;
 
@@ -114,11 +106,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @param subscriptionName
      *            A <code>String</code> object that represents the name of the subscription from the message will be
      *            received.
-     * 
      * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicPath, String subscriptionName)
             throws ServiceException;
@@ -133,12 +123,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            received.
      * @param options
      *            A <code>ReceiveMessageOptions</code> object that represents the receive message options.
-     * 
      * @return A <code>ReceiveSubscriptionMessageResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
-     * 
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicPath, String subscriptionName,
             ReceiveMessageOptions options) throws ServiceException;
@@ -148,9 +135,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param message
      *            A <code>Message</code> object that represents the message to unlock.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void unlockMessage(BrokeredMessage message) throws ServiceException;
 
@@ -201,33 +187,29 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param message
      *            A <code>Message</code> object that represents the message to delete.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void deleteMessage(BrokeredMessage message) throws ServiceException;
 
     /**
      * Creates a queue.
      * 
-     * @param queue
-     *            A <code>Queue</code> object that represents the queue to create.
-     * 
+     * @param queueInfo
+     *            A <code>QueueInfo</code> object that represents the queue to create.
      * @return A <code>CreateQueueResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
-    CreateQueueResult createQueue(QueueInfo queue) throws ServiceException;
+    CreateQueueResult createQueue(QueueInfo queueInfo) throws ServiceException;
 
     /**
      * Deletes a queue.
      * 
      * @param queuePath
      *            A <code>String</code> object that represents the name of the queue to delete.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void deleteQueue(String queuePath) throws ServiceException;
 
@@ -236,11 +218,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param queuePath
      *            A <code>String</code> object that represents the name of the queue to retrieve.
-     * 
      * @return A <code>GetQueueResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     GetQueueResult getQueue(String queuePath) throws ServiceException;
 
@@ -248,24 +228,43 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * Returns a list of queues.
      * 
      * @return A <code>ListQueuesResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ListQueuesResult listQueues() throws ServiceException;
 
+    /**
+     * Returns a list of queues.
+     * 
+     * @param options
+     *            A <code>ListQueueOptions</code> object that represents the options to list the queue.
+     * @return A <code>ListQueuesResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException;
+
+    /**
+     * Updates the information of a queue.
+     * 
+     * @param queueInfo
+     *            The information of a queue to be updated.
+     * 
+     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * 
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException;
 
     /**
      * Creates a topic.
      * 
      * @param topic
      *            A <code>Topic</code> object that represents the topic to create.
-     * 
      * @return A <code>CreateTopicResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     CreateTopicResult createTopic(TopicInfo topic) throws ServiceException;
 
@@ -274,9 +273,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param topicPath
      *            A <code>String</code> object that represents the name of the queue to delete.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void deleteTopic(String topicPath) throws ServiceException;
 
@@ -285,11 +283,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param topicPath
      *            A <code>String</code> object that represents the name of the topic to retrieve.
-     * 
      * @return A <code>GetTopicResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     GetTopicResult getTopic(String topicPath) throws ServiceException;
 
@@ -297,13 +293,33 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * Returns a list of topics.
      * 
      * @return A <code>ListTopicsResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ListTopicsResult listTopics() throws ServiceException;
 
+    /**
+     * Returns a list of topics.
+     * 
+     * @param options
+     *            A <code>ListTopicsOptions</code> object that represents the options to list the topic.
+     * @return A <code>ListTopicsResult</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException;
+
+    /**
+     * Updates a topic.
+     * 
+     * @param topicInfo
+     *            A <code>TopicInfo</code> object that represents the topic to be updated.
+     * 
+     * @return A <code>TopicInfo</code> object that represents the update topic result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException;
 
     /**
      * Creates a subscription.
@@ -312,11 +328,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            A <code>String</code> object that represents the name of the topic for the subscription.
      * @param subscription
      *            A <code>Subscription</code> object that represents the subscription to create.
-     * 
      * @return A <code>CreateSubscriptionResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscription)
             throws ServiceException;
@@ -326,12 +340,10 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param topicPath
      *            A <code>String</code> object that represents the name of the topic for the subscription.
-     * 
      * @param subscriptionName
      *            A <code>String</code> object that represents the name of the subscription to delete.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void deleteSubscription(String topicPath, String subscriptionName) throws ServiceException;
 
@@ -342,12 +354,10 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            A <code>String</code> object that represents the name of the topic for the subscription.
      * @param subscriptionName
      *            A <code>String</code> object that represents the name of the subscription to retrieve.
-     * 
      * @return A <code>GetSubscriptionResult</code> object that represents the result.
      *         A <code>String</code> object that represents the name of the subscription to retrieve.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) throws ServiceException;
 
@@ -356,16 +366,41 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * 
      * @param topicPath
      *            A <code>String</code> object that represents the name of the topic for the subscriptions to retrieve.
-     * 
      * @return A <code>ListSubscriptionsResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ListSubscriptionsResult listSubscriptions(String topicPath) throws ServiceException;
 
+    /**
+     * Returns a list of subscriptions.
+     * 
+     * @param topicPath
+     *            A <code>String</code> object that represents the name of the topic for the subscriptions to retrieve.
+     * 
+     * @param options
+     *            A <code>ListSubscriptionsOptions</code> object that represents the options to list subscriptions.
+     * 
+     * @return A <code>ListSubscriptionsResult</code> object that represents the result.
+     * 
+     * @throws ServiceException
+     *             the service exception
+     */
     ListSubscriptionsResult listSubscriptions(String topicPath, ListSubscriptionsOptions options)
             throws ServiceException;
+
+    /**
+     * Updates a subscription.
+     * 
+     * @param topicName
+     *            A <code>String</code> option which represents the name of the topic.
+     * @param subscriptionInfo
+     *            A <code>SubscriptionInfo</code> option which represents the information of the subscription.
+     * @return A <code>SubscriptionInfo</code> object that represents the result.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo) throws ServiceException;
 
     /**
      * Creates a rule.
@@ -377,11 +412,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            created.
      * @param rule
      *            A <code>Rule</code> object that represents the rule to create.
-     * 
      * @return A <code>CreateRuleResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) throws ServiceException;
 
@@ -395,9 +428,8 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            deleted.
      * @param ruleName
      *            A <code>String</code> object that represents the name of the rule to delete.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     void deleteRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
 
@@ -411,11 +443,9 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      *            retrieved.
      * @param ruleName
      *            A <code>String</code> object that represents the name of the rule to retrieve.
-     * 
      * @return A <code>GetRuleResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     GetRuleResult getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceException;
 
@@ -427,14 +457,57 @@ public interface ServiceBusContract extends FilterableService<ServiceBusContract
      * @param subscriptionName
      *            A <code>String</code> object that represents the name of the subscription whose rules are being
      *            retrieved.
-     * 
      * @return A <code>ListRulesResult</code> object that represents the result.
-     * 
-     * @exception ServiceException
-     *                If a service exception is encountered.
+     * @throws ServiceException
+     *             If a service exception is encountered.
      */
     ListRulesResult listRules(String topicPath, String subscriptionName) throws ServiceException;
 
+    /**
+     * Returns a list of rules.
+     * 
+     * @param topicPath
+     *            A <code>String</code> object that represents the name of the topic for the subscription.
+     * @param subscriptionName
+     *            A <code>String</code> object that represents the name of the subscription whose rules are being
+     *            retrieved.
+     * @param options
+     *            A <code>ListRulesOptions</code> object that represents the options to retrieve rules.
+     * @return the list rules result
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
     ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options)
+            throws ServiceException;
+
+    /**
+     * Renew queue lock.
+     * 
+     * @param queueName
+     *            A <code>String</code> object that represents the name of the queue.
+     * @param messageId
+     *            A <code>String</code> object that represents the ID of the message.
+     * @param lockToken
+     *            A <code>String</code> object that represents the token of the lock.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException;
+
+    /**
+     * Renew subscription lock.
+     * 
+     * @param topicName
+     *            A <code>String</code> object that represents the name of the topic.
+     * @param queueName
+     *            A <code>String</code> object that represents the name of the queue.
+     * @param messageId
+     *            A <code>String</code> object that represents the ID of the message.
+     * @param lockToken
+     *            A <code>String</code> object that represents the token of the lock.
+     * @throws ServiceException
+     *             If a service exception is encountered.
+     */
+    void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
             throws ServiceException;
 }

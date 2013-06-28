@@ -2,24 +2,28 @@
 <xs:schema 
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" 
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+	xmlns:tnsn="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
 	elementFormDefault="qualified" 
+  attributeFormDefault="qualified"
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"	
 	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-  jaxb:version="1.0"
+  version="0.2"
+  jaxb:version="2.0"
   xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
   jaxb:extensionBindingPrefixes="xjc">
 	 
 	<xs:annotation>
     <xs:appinfo>
       <jaxb:globalBindings>
+        <jaxb:javaType name="java.util.Calendar" xmlType="xs:dateTime" parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime" printMethod="javax.xml.bind.DatatypeConverter.printDateTime" />
         <xjc:simple />
       </jaxb:globalBindings>
     </xs:appinfo>
   </xs:annotation>
 	
-  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.2003.10.Serialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
@@ -99,6 +103,90 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="IsAnonymousAccessible" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Status" type="tns:EntityStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UpdatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccessedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserMetadata" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SupportOrdering" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PartitioningPolicy" type="tns:PartitioningPolicy">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityAvailabilityStatus" type="tns:EntityAvailabilityStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:element name="QueueDescription" type="tns:QueueDescription" />
@@ -167,6 +255,69 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="Status" type="tns:EntityStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ForwardTo" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UpdatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccessedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserMetadata" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityAvailabilityStatus" type="tns:EntityAvailabilityStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>      
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SubscriptionDescription" type="tns:SubscriptionDescription" />
@@ -186,9 +337,30 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="Tag" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Name" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="RuleDescription" nillable="true" type="tns:RuleDescription" />
+  <xs:element name="RuleDescription" type="tns:RuleDescription" />
   <xs:complexType name="Filter">
     <xs:sequence />
   </xs:complexType>
@@ -220,16 +392,52 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TrueFilter" nillable="true" type="tns:TrueFilter" />
+  <xs:simpleType name="AccessRights">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Manage" />
+      <xs:enumeration value="Send" />
+      <xs:enumeration value="Listen" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EntityStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value ="Active" />
+      <xs:enumeration value ="Disabled" />
+      <xs:enumeration value="Restoring" />
+      <xs:enumeration value="SendDisabled" />
+      <xs:enumeration value="ReceiveDisabled" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EntityAvailabilityStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unknown" />
+      <xs:enumeration value="Available" />
+      <xs:enumeration value="Limited" />
+      <xs:enumeration value="Restoring" />
+    </xs:restriction>  
+  </xs:simpleType>
+  <xs:simpleType name="PartitioningPolicy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NoPartitioning" />
+      <xs:enumeration value="MessagePartitioning" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="CorrelationFilter">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:Filter">
         <xs:sequence>
           <xs:element minOccurs="0" name="CorrelationId" type="xs:string" />
+          <xs:element minOccurs="0" name="MessageId" type="xs:string" />
+          <xs:element minOccurs="0" name="To" type="xs:string" />
+          <xs:element minOccurs="0" name="ReplyTo" type="xs:string" />
+          <xs:element minOccurs="0" name="Label" type="xs:string" />
+          <xs:element minOccurs="0" name="SessionId" type="xs:string" />
+          <xs:element minOccurs="0" name="ReplyToSessionId" type="xs:string" />
+          <xs:element minOccurs="0" name="ContentType" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="CorrelationFilter" nillable="true" type="tns:CorrelationFilter" />
   <xs:complexType name="RuleAction">
     <xs:sequence />
   </xs:complexType>
@@ -291,6 +499,97 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SizeInBytes" type="xs:long">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FilteringMessagesBeforePublishing" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IsAnonymousAccessible" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Status" type="tns:EntityStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CreatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UpdatedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AccessedAt" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="UserMetadata" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SupportOrdering" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SubscriptionCount" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>     
+      <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="PartitioningPolicy" type="tns:PartitioningPolicy">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="EntityAvailabilityStatus" type="tns:EntityAvailabilityStatus">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
