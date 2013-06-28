@@ -1,3 +1,7 @@
+2013.06.27 Version 0.4.4
+ * Make sure the response stream is drained to prevent socket exhaustion.
+ * Support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes.
+
 2013.05.27 Version 0.4.3
 * Added support for updating existing Queue/Topic/Subscription for Service Bus
 * Added support for message lock renewal to support long running message processing for Service Bus
