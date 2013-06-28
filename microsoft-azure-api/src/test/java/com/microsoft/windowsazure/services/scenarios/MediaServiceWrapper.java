@@ -432,6 +432,19 @@ class MediaServiceWrapper {
         }
     }
 
+    public void removeAllJobWithPrefix(String testJobPrefix) throws ServiceException {
+        List<JobInfo> jobInfos = service.list(Job.list());
+        for (JobInfo jobInfo : jobInfos) {
+            if (jobInfo.getName().startsWith(testJobPrefix)) {
+                try {
+                    service.delete(Job.delete(jobInfo.getId()));
+                }
+                catch (ServiceException e) {
+                }
+            }
+        }
+    }
+
     private static class EncryptionHelper {
         public static boolean canUseStrongCrypto() {
             try {
