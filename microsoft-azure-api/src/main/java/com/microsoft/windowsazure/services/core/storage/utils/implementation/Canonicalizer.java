@@ -34,10 +34,25 @@ import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. This is a Version 2 Canoncicalization strategy conforming to the PDC 2009-09-19
+ * RESERVED FOR INTERNAL USE. This is a Version 2 Canonicalization strategy conforming to the PDC 2009-09-19
  * specification
  */
 abstract class Canonicalizer {
+
+    /**
+     * The expected length for the canonicalized string when SharedKeyFull is used to sign requests.
+     */
+    private static final int ExpectedBlobQueueCanonicalizedStringLength = 300;
+
+    /**
+     * The expected length for the canonicalized string when SharedKeyLite is used to sign requests.
+     */
+    private static final int ExpectedBlobQueueLiteCanonicalizedStringLength = 250;
+
+    /**
+     * The expected length for the canonicalized string when SharedKeyFull is used to sign table requests.
+     */
+    private static final int ExpectedTableCanonicalizedStringLength = 200;
 
     /**
      * Add x-ms- prefixed headers in a fixed order.
@@ -130,7 +145,8 @@ abstract class Canonicalizer {
 
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
-        final StringBuilder canonicalizedString = new StringBuilder(conn.getRequestMethod());
+        final StringBuilder canonicalizedString = new StringBuilder(ExpectedBlobQueueCanonicalizedStringLength);
+        canonicalizedString.append(conn.getRequestMethod());
 
         // The next elements are
         // If any element is missing it may be empty.
@@ -199,7 +215,9 @@ abstract class Canonicalizer {
             final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
-        final StringBuilder canonicalizedString = new StringBuilder(conn.getRequestMethod());
+        // 
+        final StringBuilder canonicalizedString = new StringBuilder(ExpectedBlobQueueLiteCanonicalizedStringLength);
+        canonicalizedString.append(conn.getRequestMethod());
 
         // The second element should be the MD5 value.
         // This is optional and may be empty.
@@ -220,7 +238,59 @@ abstract class Canonicalizer {
 
         addCanonicalizedHeaders(conn, canonicalizedString);
 
-        appendCanonicalizedElement(canonicalizedString, getCanonicalizedResource(address, accountName));
+        appendCanonicalizedElement(canonicalizedString, getCanonicalizedResourceLite(address, accountName));
+
+        return canonicalizedString.toString();
+    }
+
+    /**
+     * Constructs a canonicalized string that will be used to construct the signature string
+     * for signing a Table service request under the Shared Key authentication scheme.
+     * 
+     * @param address
+     *            the request URI
+     * @param accountName
+     *            the account name associated with the request
+     * @param method
+     *            the verb to be used for the HTTP request.
+     * @param contentType
+     *            the content type of the HTTP request.
+     * @param contentLength
+     *            the length of the content written to the outputstream in bytes, -1 if unknown
+     * @param date
+     *            the date/time specification for the HTTP request
+     * @param conn
+     *            the HttpURLConnection for the operation.
+     * @param opContext
+     *            the OperationContext for the request.
+     * @return A canonicalized string.
+     * @throws StorageException
+     */
+    protected static String canonicalizeTableHttpRequest(final java.net.URL address, final String accountName,
+            final String method, final String contentType, final long contentLength, final String date,
+            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+        // The first element should be the Method of the request.
+        // I.e. GET, POST, PUT, or HEAD.
+        final StringBuilder canonicalizedString = new StringBuilder(ExpectedTableCanonicalizedStringLength);
+        canonicalizedString.append(conn.getRequestMethod());
+
+        // The second element should be the MD5 value.
+        // This is optional and may be empty.
+        final String httpContentMD5Value = Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_MD5);
+        appendCanonicalizedElement(canonicalizedString, httpContentMD5Value);
+
+        // The third element should be the content type.
+        appendCanonicalizedElement(canonicalizedString, contentType);
+
+        // The fourth element should be the request date.
+        // See if there's an storage date header.
+        // If there's one, then don't use the date header.
+
+        final String dateString = Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.DATE);
+        // If x-ms-date header exists, Date should be that value.
+        appendCanonicalizedElement(canonicalizedString, dateString.equals(Constants.EMPTY_STRING) ? date : dateString);
+
+        appendCanonicalizedElement(canonicalizedString, getCanonicalizedResourceLite(address, accountName));
 
         return canonicalizedString.toString();
     }

@@ -94,14 +94,8 @@ public abstract class AccessPolicyResponseBase<T> {
 
                 if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT)) {
                     this.readPolicies(xmlr);
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT
-                        && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT)) {
                     break;
                 }
-            }
-            else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-                break;
             }
         }
 

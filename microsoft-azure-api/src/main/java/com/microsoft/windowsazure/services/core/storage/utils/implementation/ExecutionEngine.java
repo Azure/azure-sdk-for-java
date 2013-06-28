@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.core.storage.RetryResult;
 import com.microsoft.windowsazure.services.core.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
+import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.table.client.TableServiceException;
 
 /**
@@ -113,7 +114,25 @@ public final class ExecutionEngine {
                 opContext.setClientTimeInMs(new Date().getTime() - startTime);
 
                 if (!task.isNonExceptionedRetryableFailure()) {
-                    // Success return result, the rest of the return paths throw.
+                    // Success return result and drain the input stream.
+                    HttpURLConnection request = task.getConnection();
+                    if ((task.getResult().getStatusCode() >= 200) && (task.getResult().getStatusCode() < 300)) {
+                        if (request != null) {
+                            InputStream inStream = request.getInputStream();
+                            try {
+                                Utility.writeToOutputStream(inStream, null, -1, false, false, task.getResult(), null);
+                            }
+                            // At this point, we already have a result / exception to return to the user.
+                            // This is just an optimization to improve socket reuse.
+                            catch (final IOException ex) {
+                            }
+                            catch (StorageException e) {
+                            }
+                            finally {
+                                inStream.close();
+                            }
+                        }
+                    }
                     return result;
                 }
                 else {
