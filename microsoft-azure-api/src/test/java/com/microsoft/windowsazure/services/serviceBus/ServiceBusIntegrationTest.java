@@ -486,6 +486,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
                 new SubscriptionInfo(sourceSubscriptionName)).getValue();
         service.updateSubscription(sourceTopicName,
                 sourceSubscriptionInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+        Thread.sleep(1000);
 
         // Act
         service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
