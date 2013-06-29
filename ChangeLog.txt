@@ -4,8 +4,8 @@
  * Rich Odata entity query support for Service Bus Queue/Topic/Subscription
  * Added support for Service Bus message forwarding
  * Added support for Service Bus message count details
- * Make sure the response stream is drained to prevent socket exhaustion.
- * Support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes.
+ * Make sure the response stream is drained to prevent socket exhaustion in Storage
+ * Support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes in Storage
 
 2013.05.27 Version 0.4.3
 * Added support for updating existing Queue/Topic/Subscription for Service Bus
