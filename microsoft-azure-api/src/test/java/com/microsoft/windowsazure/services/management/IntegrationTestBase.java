@@ -41,7 +41,12 @@ public abstract class IntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         Configuration config = Configuration.load();
+
         overrideWithEnv(config, ManagementConfiguration.URI);
+        overrideWithEnv(config, ManagementConfiguration.SUBSCRIPTION_ID);
+        overrideWithEnv(config, ManagementConfiguration.KEYSTORE_PASSWORD);
+        overrideWithEnv(config, ManagementConfiguration.KEYSTORE_PATH);
+
         return config;
     }
 
