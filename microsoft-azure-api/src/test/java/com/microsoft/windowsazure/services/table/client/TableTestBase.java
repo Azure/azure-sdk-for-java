@@ -177,7 +177,7 @@ public class TableTestBase {
             Assert.assertEquals(this.getPartitionKey(), other.getPartitionKey());
             Assert.assertEquals(this.getRowKey(), other.getRowKey());
 
-            assertDateApproxEquals(this.getDateTime(), other.getDateTime(), 100);
+            Assert.assertEquals(this.getDateTime().toString(), other.getDateTime().toString());
 
             Assert.assertEquals(this.getGuid(), other.getGuid());
             Assert.assertEquals(this.getString(), other.getString());
