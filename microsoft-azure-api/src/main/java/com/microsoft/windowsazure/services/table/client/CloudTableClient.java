@@ -797,8 +797,9 @@ public final class CloudTableClient extends ServiceClient {
         final HttpURLConnection queryRequest = TableRequest.query(this.getTransformedEndPoint(opContext),
                 queryToExecute.getSourceTableName(), null/* identity */, options.getTimeoutIntervalInMs(),
                 queryToExecute.generateQueryBuilder(), continuationToken, options, opContext);
+        taskReference.setConnection(queryRequest);
 
-        this.getCredentials().signRequestLite(queryRequest, -1L, opContext);
+        taskReference.signTableRequest(this, queryRequest, -1L, opContext);
 
         ExecutionEngine.processRequest(queryRequest, opContext, taskReference.getResult());
 
@@ -812,18 +813,13 @@ public final class CloudTableClient extends ServiceClient {
 
         InputStream inStream = queryRequest.getInputStream();
 
-        try {
-            if (resolver == null) {
-                clazzResponse = (ODataPayload<T>) AtomPubParser.parseResponse(inStream, queryToExecute.getClazzType(),
-                        null, opContext);
-            }
-            else {
-                resolvedResponse = (ODataPayload<R>) AtomPubParser.parseResponse(inStream,
-                        queryToExecute.getClazzType(), resolver, opContext);
-            }
+        if (resolver == null) {
+            clazzResponse = (ODataPayload<T>) AtomPubParser.parseResponse(inStream, queryToExecute.getClazzType(),
+                    null, opContext);
         }
-        finally {
-            inStream.close();
+        else {
+            resolvedResponse = (ODataPayload<R>) AtomPubParser.parseResponse(inStream, queryToExecute.getClazzType(),
+                    resolver, opContext);
         }
 
         final ResultContinuation nextToken = TableResponse.getTableContinuationFromResponse(queryRequest);

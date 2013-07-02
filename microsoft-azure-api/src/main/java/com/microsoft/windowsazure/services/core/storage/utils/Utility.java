@@ -1015,7 +1015,10 @@ public final class Utility {
         count = sourceStream.read(retrievedBuff, 0, nextCopy);
 
         while (nextCopy > 0 && count != -1) {
-            outStream.write(retrievedBuff, 0, count);
+            if (outStream != null) {
+                outStream.write(retrievedBuff, 0, count);
+            }
+
             if (calculateMD5) {
                 opContext.getIntermediateMD5().update(retrievedBuff, 0, count);
             }
@@ -1029,7 +1032,9 @@ public final class Utility {
             count = sourceStream.read(retrievedBuff, 0, nextCopy);
         }
 
-        outStream.flush();
+        if (outStream != null) {
+            outStream.flush();
+        }
 
         if (calculateMD5) {
             retVal.setDigest(opContext.getIntermediateMD5());

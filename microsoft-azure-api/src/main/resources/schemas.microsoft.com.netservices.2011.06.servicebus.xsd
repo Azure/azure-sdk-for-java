@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+	elementFormDefault="qualified" 
+    attributeFormDefault="qualified"
+	targetNamespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"	
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    version="0.2"
+    jaxb:version="2.0"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    jaxb:extensionBindingPrefixes="xjc">
+	 
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" />
+  <xs:complexType name ="MessageCountDetails">
+    <xs:sequence>
+      <xs:element name="ActiveMessageCount" minOccurs="0"  type="xs:long" />
+      <xs:element name="DeadLetterMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="ScheduledMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="TransferMessageCount" minOccurs="0" type="xs:long" />
+      <xs:element name="TransferDeadLetterMessageCount" minOccurs="0" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -12,9 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
 package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.net.HttpURLConnection;
@@ -26,15 +23,10 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Table Service
- * under the Shared Key Lite authentication scheme.
+ * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Table
+ * Service under the Shared Key authentication scheme.
  */
-class TableLiteCanonicalizer extends Canonicalizer {
-
-    /**
-     * The expected length for the canonicalized string when SharedKeyLite is used to sign table requests.
-     */
-    private static final int ExpectedTableLiteCanonicalizedStringLength = 150;
+final class TableFullCanonicalizer extends Canonicalizer {
 
     /**
      * Constructs a canonicalized string for signing a request.
@@ -53,19 +45,13 @@ class TableLiteCanonicalizer extends Canonicalizer {
     @Override
     protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength,
             final OperationContext opContext) throws StorageException {
+
         if (contentLength < -1) {
-            throw new InvalidParameterException("ContentLength must be set to -1 or positive Long value");
+            throw new InvalidParameterException("ContentLength must be set to -1 or non-negative Long value");
         }
 
-        final String dateString = Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.DATE);
-        if (Utility.isNullOrEmpty(dateString)) {
-            throw new IllegalArgumentException(
-                    "Canonicalization did not find a non empty x-ms-date header in the request. Please use a request with a valid x-ms-date header in RFC 123 format.");
-        }
-        final StringBuilder canonicalizedString = new StringBuilder(ExpectedTableLiteCanonicalizedStringLength);
-        canonicalizedString.append(dateString);
-        appendCanonicalizedElement(canonicalizedString, getCanonicalizedResourceLite(conn.getURL(), accountName));
-
-        return canonicalizedString.toString();
+        return canonicalizeTableHttpRequest(conn.getURL(), accountName, conn.getRequestMethod(),
+                Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_TYPE), contentLength, null,
+                conn, opContext);
     }
 }
