@@ -12,30 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus.implementation;
+package com.microsoft.windowsazure.services.core.storage;
 
-public class EntryModel<T> {
-    Entry entry;
-    T model;
+/**
+ * Specifies the authentication scheme used to sign HTTP requests.
+ */
+public enum AuthenticationScheme {
+    /**
+     * Signs HTTP requests using the Shared Key Lite authentication scheme.
+     */
+    SHAREDKEYLITE,
 
-    public EntryModel(Entry entry, T model) {
-        this.entry = entry;
-        this.model = model;
-    }
-
-    public Entry getEntry() {
-        return entry;
-    }
-
-    public void setEntry(Entry entry) {
-        this.entry = entry;
-    }
-
-    public T getModel() {
-        return model;
-    }
-
-    public void setModel(T model) {
-        this.model = model;
-    }
+    /**
+     * Signs HTTP requests using the Shared Key authentication scheme.
+     */
+    SHAREDKEYFULL;
 }

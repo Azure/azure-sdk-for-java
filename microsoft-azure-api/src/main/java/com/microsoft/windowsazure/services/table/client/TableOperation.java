@@ -259,8 +259,9 @@ public class TableOperation {
                 final HttpURLConnection request = TableRequest.delete(client.getTransformedEndPoint(opContext),
                         tableName, generateRequestIdentity(isTableEntry, tableIdentity, false), operation.getEntity()
                                 .getEtag(), options.getTimeoutIntervalInMs(), null, options, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -327,8 +328,9 @@ public class TableOperation {
                         tableName, generateRequestIdentity(isTableEntry, tableIdentity, false),
                         operation.opType != TableOperationType.INSERT ? operation.getEntity().getEtag() : null,
                         operation.opType.getUpdateType(), options.getTimeoutIntervalInMs(), null, options, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), isTableEntry, request.getOutputStream(),
                         opContext);
@@ -348,13 +350,8 @@ public class TableOperation {
                     InputStream inStream = request.getInputStream();
                     TableResult res = null;
 
-                    try {
-                        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(inStream);
-                        res = operation.parseResponse(xmlr, this.getResult().getStatusCode(), null, opContext);
-                    }
-                    finally {
-                        inStream.close();
-                    }
+                    final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(inStream);
+                    res = operation.parseResponse(xmlr, this.getResult().getStatusCode(), null, opContext);
 
                     return res;
                 }
@@ -413,8 +410,9 @@ public class TableOperation {
                 final HttpURLConnection request = TableRequest.merge(client.getTransformedEndPoint(opContext),
                         tableName, generateRequestIdentity(false, null, false), operation.getEntity().getEtag(),
                         options.getTimeoutIntervalInMs(), null, options, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);
@@ -479,8 +477,9 @@ public class TableOperation {
                 final HttpURLConnection request = TableRequest.update(client.getTransformedEndPoint(opContext),
                         tableName, generateRequestIdentity(false, null, false), operation.getEntity().getEtag(),
                         options.getTimeoutIntervalInMs(), null, options, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 AtomPubParser.writeSingleEntityToStream(operation.getEntity(), false, request.getOutputStream(),
                         opContext);

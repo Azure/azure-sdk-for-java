@@ -34,6 +34,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
@@ -1358,5 +1359,36 @@ public class CloudQueueTests extends QueueTestBase {
                 new StorageCredentialsSharedAccessSignature(sasString));
         CloudQueue queue2 = new CloudQueue(queueUri, queueClient2);
         queue2.getName();
+    }
+
+    @Test
+    public void testQueueSharedKeyLite() throws URISyntaxException, StorageException {
+        qClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
+        String queueName = UUID.randomUUID().toString().toLowerCase();
+        CloudQueue queue = qClient.getQueueReference(queueName);
+        Assert.assertEquals(queueName, queue.getName());
+
+        OperationContext createQueueContext = new OperationContext();
+        queue.create(null, createQueueContext);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+
+        try {
+            HashMap<String, String> metadata1 = new HashMap<String, String>();
+            metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
+            queue.setMetadata(metadata1);
+            queue.create();
+            Assert.fail();
+        }
+        catch (StorageException e) {
+            Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_CONFLICT);
+
+        }
+
+        queue.downloadAttributes();
+        OperationContext createQueueContext2 = new OperationContext();
+        queue.create(null, createQueueContext2);
+        Assert.assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+
+        queue.delete();
     }
 }
