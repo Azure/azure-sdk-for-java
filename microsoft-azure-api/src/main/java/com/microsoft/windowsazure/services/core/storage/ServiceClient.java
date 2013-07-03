@@ -58,6 +58,11 @@ public abstract class ServiceClient {
     protected int timeoutInMs = Constants.DEFAULT_TIMEOUT_IN_MS;
 
     /**
+     * Holds the AuthenticationScheme associated with this Service Client.
+     */
+    protected AuthenticationScheme authenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
+
+    /**
      * Creates an instance of the <code>ServiceClient</code> class using the specified service endpoint.
      * 
      * @param baseUri
@@ -142,8 +147,10 @@ public abstract class ServiceClient {
 
                 final HttpURLConnection request = BaseRequest.getServiceProperties(client.getEndpoint(), this
                         .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1);
+                this.signRequest(client, request, -1, null);
+
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
@@ -165,6 +172,16 @@ public abstract class ServiceClient {
      */
     public final StorageCredentials getCredentials() {
         return this.credentials;
+    }
+
+    /**
+     * Returns the AuthenticationScheme associated with this service client.
+     * 
+     * @return An {@link AuthenticationScheme} object that represents the authentication scheme associated with this
+     *         client.
+     */
+    public final AuthenticationScheme getAuthenticationScheme() {
+        return this.authenticationScheme;
     }
 
     /**
@@ -227,6 +244,18 @@ public abstract class ServiceClient {
      */
     protected final void setCredentials(final StorageCredentials credentials) {
         this.credentials = credentials;
+    }
+
+    /**
+     * Sets the Authentication Scheme to use with this service client.
+     * 
+     * @param scheme
+     *            An <code>AuthenticationScheme</code> object that represents the authentication scheme being assigned
+     *            for the service
+     *            client.
+     */
+    public final void setAuthenticationScheme(final AuthenticationScheme scheme) {
+        this.authenticationScheme = scheme;
     }
 
     /**
@@ -317,6 +346,7 @@ public abstract class ServiceClient {
 
                 final HttpURLConnection request = BaseRequest.setServiceProperties(client.getEndpoint(), this
                         .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
+                this.setConnection(request);
 
                 final byte[] propertiesBytes = BaseRequest.serializeServicePropertiesToByteArray(properties, opContext);
 
@@ -326,7 +356,8 @@ public abstract class ServiceClient {
                         true /* rewindSourceStream */, true /* calculateMD5 */);
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
-                client.getCredentials().signRequest(request, descriptor.getLength());
+                this.signRequest(client, request, descriptor.getLength(), null);
+
                 Utility.writeToOutputStream(dataInputStream, request.getOutputStream(), descriptor.getLength(),
                         false /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 

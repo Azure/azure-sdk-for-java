@@ -184,6 +184,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putBlockList(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.properties, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
+
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
                 // Potential optimization, we can write this stream outside of
@@ -200,7 +202,8 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
 
-                client.getCredentials().signRequest(request, descriptor.getLength());
+                this.signRequest(client, request, descriptor.getLength(), null);
+
                 Utility.writeToOutputStream(blockListInputStream, request.getOutputStream(), descriptor.getLength(),
                         false, false, null, opContext);
 
@@ -290,8 +293,9 @@ public final class CloudBlockBlob extends CloudBlob {
                 final HttpURLConnection request = BlobRequest.getBlockList(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, blockListingFilter, accessCondition,
                         blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -615,12 +619,14 @@ public final class CloudBlockBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putBlock(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blockId, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 if (blobOptions.getUseTransactionalContentMD5()) {
                     request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                 }
 
-                client.getCredentials().signRequest(request, length);
+                this.signRequest(client, request, length, null);
+
                 Utility.writeToOutputStream(sourceStream, request.getOutputStream(), length,
                         true /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
 

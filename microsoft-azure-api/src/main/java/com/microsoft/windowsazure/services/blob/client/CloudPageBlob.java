@@ -267,10 +267,11 @@ public final class CloudPageBlob extends CloudBlob {
                 final HttpURLConnection request = BlobRequest.put(blob.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), blob.properties, BlobType.PAGE_BLOB, length,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 BlobRequest.addMetadata(request, blob.metadata, opContext);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -349,8 +350,9 @@ public final class CloudPageBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.getPageRanges(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), blob.snapshotID, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -471,17 +473,19 @@ public final class CloudPageBlob extends CloudBlob {
 
                 final HttpURLConnection request = BlobRequest.putPage(blob.getTransformedAddress(opContext),
                         blobOptions.getTimeoutIntervalInMs(), pageProperties, accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
                 if (pageProperties.getPageOperation() == PageOperationType.UPDATE) {
                     if (blobOptions.getUseTransactionalContentMD5()) {
                         request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, md5);
                     }
 
-                    client.getCredentials().signRequest(request, length);
+                    this.signRequest(client, request, length, null);
+
                     request.getOutputStream().write(data);
                 }
                 else {
-                    client.getCredentials().signRequest(request, 0L);
+                    this.signRequest(client, request, 0L, null);
                 }
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
