@@ -21,12 +21,14 @@ This project provides a client library in Java that makes it easy to consume Win
         * Create/Read/Update/Delete queues
         * Send/Receive/Unlock/Delete messages
         * Renew message lock
+        * Message forwarding
     * Topics
         * Create/Read/Update/Delete topics
         * Create/Read/Update/Delete subscriptions
         * Create/Read/Update/Delete rules
         * Send/Receive/Unlock/Delete messages
         * Renew message lock
+        * Message forwarding
 * Media Services
     * Create/Read/Update/Delete access policies
     * Create/Read/Update/Delete asset files
@@ -57,7 +59,7 @@ within your project you can also have them installed by the Java package manager
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.2</version>
+  <version>0.4.4</version>
 </dependency>
 ```
 

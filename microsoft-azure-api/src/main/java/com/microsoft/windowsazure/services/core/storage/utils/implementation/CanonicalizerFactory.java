@@ -45,6 +45,11 @@ final class CanonicalizerFactory {
     /**
      * The Canonicalizer instance for Table
      */
+    private static final TableFullCanonicalizer TABLE_FULL_INSTANCE = new TableFullCanonicalizer();
+
+    /**
+     * The Canonicalizer instance for Table Lite
+     */
     private static final TableLiteCanonicalizer TABLE_LITE_INSTANCE = new TableLiteCanonicalizer();
 
     /**
@@ -81,7 +86,18 @@ final class CanonicalizerFactory {
     }
 
     /**
-     * Gets the Blob queue lite Canonicalizer
+     * Gets the table full Canonicalizer.
+     * 
+     * @param conn
+     *            the HttpURLConnection for the current operation
+     * @return the appropriate Canonicalizer for the operation.
+     */
+    protected static Canonicalizer getTableFullCanonicalizer(final HttpURLConnection conn) {
+        return TABLE_FULL_INSTANCE;
+    }
+
+    /**
+     * Gets the table lite Canonicalizer
      * 
      * @param conn
      *            the HttpURLConnection for the current operation
@@ -93,7 +109,7 @@ final class CanonicalizerFactory {
         }
         else {
             throw new UnsupportedOperationException(
-                    "Versions before 2009-09-19 do not support Shared Key Lite for Blob And Queue.");
+                    "Versions before 2009-09-19 do not support Shared Key Lite for Table.");
         }
     }
 

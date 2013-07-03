@@ -26,6 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
@@ -35,7 +36,7 @@ import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
  */
 public class TableTestBase {
     public static boolean USE_DEV_FABRIC = false;
-    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
+    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=http;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
     public static final String CLOUD_ACCOUNT_HTTPS = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
 
     public static class class1 extends TableServiceEntity {
@@ -176,7 +177,7 @@ public class TableTestBase {
             Assert.assertEquals(this.getPartitionKey(), other.getPartitionKey());
             Assert.assertEquals(this.getRowKey(), other.getRowKey());
 
-            assertDateApproxEquals(this.getDateTime(), other.getDateTime(), 100);
+            Assert.assertEquals(this.getDateTime().toString(), other.getDateTime().toString());
 
             Assert.assertEquals(this.getGuid(), other.getGuid());
             Assert.assertEquals(this.getString(), other.getString());
@@ -595,6 +596,7 @@ public class TableTestBase {
         tClient = httpAcc.createCloudTableClient();
         qClient = httpAcc.createCloudQueueClient();
         testSuiteTableName = generateRandomTableName();
+        tClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         CloudTable table = tClient.getTableReference(testSuiteTableName);
         table.create();
     }

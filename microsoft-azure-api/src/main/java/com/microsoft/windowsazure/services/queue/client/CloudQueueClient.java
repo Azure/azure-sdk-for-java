@@ -224,8 +224,9 @@ public final class CloudQueueClient extends ServiceClient {
 
         final HttpURLConnection listQueueRequest = QueueRequest.list(this.getEndpoint(),
                 options.getTimeoutIntervalInMs(), listingContext, detailsIncluded, opContext);
+        taskReference.setConnection(listQueueRequest);
 
-        this.getCredentials().signRequest(listQueueRequest, -1L);
+        taskReference.signRequest(this, listQueueRequest, -1L, null);
 
         ExecutionEngine.processRequest(listQueueRequest, opContext, taskReference.getResult());
 

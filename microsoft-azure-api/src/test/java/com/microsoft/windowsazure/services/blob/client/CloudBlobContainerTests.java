@@ -36,6 +36,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.RetryNoRetry;
@@ -807,5 +808,47 @@ public class CloudBlobContainerTests extends BlobTestBase {
         Assert.assertEquals(blockLength * numberOfBlocks, operationContext.getCurrentOperationByteCount());
 
         blobRef.delete();
+    }
+
+    @Test
+    public void testContainerSharedKeyLite() throws StorageException, URISyntaxException {
+        bClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
+        String name = generateRandomContainerName();
+        CloudBlobContainer newContainer = bClient.getContainerReference(name);
+        newContainer.create();
+
+        BlobContainerPermissions expectedPermissions;
+        BlobContainerPermissions testPermissions;
+
+        try {
+            // Test new permissions.
+            expectedPermissions = new BlobContainerPermissions();
+            testPermissions = newContainer.downloadPermissions();
+            assertTablePermissionsEqual(expectedPermissions, testPermissions);
+
+            // Test setting empty permissions.
+            newContainer.uploadPermissions(expectedPermissions);
+            testPermissions = newContainer.downloadPermissions();
+            assertTablePermissionsEqual(expectedPermissions, testPermissions);
+
+            // Add a policy, check setting and getting.
+            SharedAccessBlobPolicy policy1 = new SharedAccessBlobPolicy();
+            Calendar now = GregorianCalendar.getInstance();
+            policy1.setSharedAccessStartTime(now.getTime());
+            now.add(Calendar.MINUTE, 10);
+            policy1.setSharedAccessExpiryTime(now.getTime());
+
+            policy1.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.DELETE,
+                    SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE));
+            expectedPermissions.getSharedAccessPolicies().put(UUID.randomUUID().toString(), policy1);
+
+            newContainer.uploadPermissions(expectedPermissions);
+            testPermissions = newContainer.downloadPermissions();
+            assertTablePermissionsEqual(expectedPermissions, testPermissions);
+        }
+        finally {
+            // cleanup
+            newContainer.deleteIfExists();
+        }
     }
 }

@@ -186,8 +186,9 @@ public class QueryTableOperation extends TableOperation {
                         tableName, generateRequestIdentity(isTableEntry, operation.getPartitionKey(), false),
                         options.getTimeoutIntervalInMs(), null/* Query Builder */, null/* Continuation Token */,
                         options, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequestLite(request, -1L, opContext);
+                this.signTableRequest(client, request, -1L, opContext);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -197,13 +198,8 @@ public class QueryTableOperation extends TableOperation {
                     final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(inStream);
                     TableResult res = null;
 
-                    try {
-                        res = AtomPubParser.parseSingleOpResponse(xmlr, this.getResult().getStatusCode(),
-                                operation.getClazzType(), operation.getResolver(), opContext);
-                    }
-                    finally {
-                        inStream.close();
-                    }
+                    res = AtomPubParser.parseSingleOpResponse(xmlr, this.getResult().getStatusCode(),
+                            operation.getClazzType(), operation.getResolver(), opContext);
 
                     return res;
                 }

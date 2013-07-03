@@ -220,9 +220,11 @@ public final class CloudBlobContainer {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = ContainerRequest.create(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -294,9 +296,11 @@ public final class CloudBlobContainer {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = ContainerRequest.create(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -387,8 +391,9 @@ public final class CloudBlobContainer {
 
                 final HttpURLConnection request = ContainerRequest.delete(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -457,8 +462,9 @@ public final class CloudBlobContainer {
 
                 final HttpURLConnection request = ContainerRequest.delete(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -530,8 +536,9 @@ public final class CloudBlobContainer {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = ContainerRequest.getProperties(container.uri, this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -607,8 +614,9 @@ public final class CloudBlobContainer {
 
                 final HttpURLConnection request = ContainerRequest.getAcl(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -686,8 +694,9 @@ public final class CloudBlobContainer {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = ContainerRequest.getProperties(container.uri, this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1105,8 +1114,9 @@ public final class CloudBlobContainer {
 
         final HttpURLConnection listBlobsRequest = BlobRequest.list(this.getTransformedAddress(),
                 options.getTimeoutIntervalInMs(), listingContext, options, opContext);
+        taskReference.setConnection(listBlobsRequest);
 
-        this.blobServiceClient.getCredentials().signRequest(listBlobsRequest, -1L);
+        taskReference.signRequest(this.blobServiceClient, listBlobsRequest, -1L, null);
 
         ExecutionEngine.processRequest(listBlobsRequest, opContext, taskReference.getResult());
 
@@ -1529,9 +1539,11 @@ public final class CloudBlobContainer {
 
                 final HttpURLConnection request = ContainerRequest.setMetadata(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 ContainerRequest.addMetadata(request, container.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1603,13 +1615,16 @@ public final class CloudBlobContainer {
 
                 final HttpURLConnection request = ContainerRequest.setAcl(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), permissions.getPublicAccess(), opContext);
+                this.setConnection(request);
 
                 final StringWriter outBuffer = new StringWriter();
 
                 ContainerRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
 
                 final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
-                client.getCredentials().signRequest(request, aclBytes.length);
+
+                this.signRequest(client, request, aclBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
@@ -1707,8 +1722,9 @@ public final class CloudBlobContainer {
                 final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), LeaseAction.ACQUIRE, leaseTimeInSeconds, proposedLeaseId, null,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1789,8 +1805,9 @@ public final class CloudBlobContainer {
                 final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), LeaseAction.RENEW, null, null, null, accessCondition, blobOptions,
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1871,8 +1888,9 @@ public final class CloudBlobContainer {
                 final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), LeaseAction.RELEASE, null, null, null, accessCondition, blobOptions,
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1956,8 +1974,9 @@ public final class CloudBlobContainer {
                 final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), LeaseAction.BREAK, null, null, breakPeriodInSeconds,
                         accessCondition, blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -2048,8 +2067,9 @@ public final class CloudBlobContainer {
                 final HttpURLConnection request = ContainerRequest.lease(container.uri, this.getRequestOptions()
                         .getTimeoutIntervalInMs(), LeaseAction.CHANGE, null, proposedLeaseId, null, accessCondition,
                         blobOptions, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 

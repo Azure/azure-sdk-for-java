@@ -213,10 +213,12 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.putMessage(queue.getMessageRequestAddress(opContext),
                         this.getRequestOptions().getTimeoutIntervalInMs(), initialVisibilityDelayInSeconds,
                         timeToLiveInSeconds, opContext);
+                this.setConnection(request);
 
                 final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                client.getCredentials().signRequest(request, messageBytes.length);
+                this.signRequest(client, request, messageBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(messageBytes);
 
@@ -283,8 +285,9 @@ public final class CloudQueue {
 
                 final HttpURLConnection request = QueueRequest.clearMessages(queue.getMessageRequestAddress(opContext),
                         this.getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -347,9 +350,11 @@ public final class CloudQueue {
                     throws Exception {
                 final HttpURLConnection request = QueueRequest.create(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -420,9 +425,11 @@ public final class CloudQueue {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = QueueRequest.create(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -506,8 +513,9 @@ public final class CloudQueue {
                     throws Exception {
                 final HttpURLConnection request = QueueRequest.delete(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -577,8 +585,9 @@ public final class CloudQueue {
                     final OperationContext opContext) throws Exception {
                 final HttpURLConnection request = QueueRequest.delete(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -664,8 +673,9 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.deleteMessage(queue.getIndividualMessageAddress(
                         messageId, opContext), this.getRequestOptions().getTimeoutIntervalInMs(), messagePopReceipt,
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -730,8 +740,9 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.downloadAttributes(
                         queue.getTransformedAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -803,8 +814,9 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.downloadAttributes(
                         queue.getTransformedAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
                         opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1018,8 +1030,9 @@ public final class CloudQueue {
 
                 final HttpURLConnection request = QueueRequest.peekMessages(queue.getMessageRequestAddress(opContext),
                         this.getRequestOptions().getTimeoutIntervalInMs(), numberOfMessages, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1152,8 +1165,9 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.retrieveMessages(
                         queue.getMessageRequestAddress(opContext), this.getRequestOptions().getTimeoutIntervalInMs(),
                         numberOfMessages, visibilityTimeoutInSeconds, opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1280,17 +1294,20 @@ public final class CloudQueue {
                 final HttpURLConnection request = QueueRequest.updateMessage(queue.getIndividualMessageAddress(
                         message.getId(), opContext), this.getRequestOptions().getTimeoutIntervalInMs(), message
                         .getPopReceipt(), visibilityTimeoutInSeconds, opContext);
+                this.setConnection(request);
 
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
                     final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
 
-                    client.getCredentials().signRequest(request, messageBytes.length);
+                    this.signRequest(client, request, messageBytes.length, null);
+
                     final OutputStream outStreamRef = request.getOutputStream();
                     outStreamRef.write(messageBytes);
                 }
                 else {
                     request.setFixedLengthStreamingMode(0);
-                    client.getCredentials().signRequest(request, 0L);
+
+                    this.signRequest(client, request, 0L, null);
                 }
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
@@ -1362,9 +1379,10 @@ public final class CloudQueue {
 
                 final HttpURLConnection request = QueueRequest.setMetadata(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 QueueRequest.addMetadata(request, queue.metadata, opContext);
-                client.getCredentials().signRequest(request, 0L);
+                this.signRequest(client, request, 0L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
@@ -1435,13 +1453,16 @@ public final class CloudQueue {
 
                 final HttpURLConnection request = QueueRequest.setAcl(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
                 final StringWriter outBuffer = new StringWriter();
 
                 QueueRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
 
                 final byte[] aclBytes = outBuffer.toString().getBytes("UTF8");
-                client.getCredentials().signRequest(request, aclBytes.length);
+
+                this.signRequest(client, request, aclBytes.length, null);
+
                 final OutputStream outStreamRef = request.getOutputStream();
                 outStreamRef.write(aclBytes);
 
@@ -1512,8 +1533,9 @@ public final class CloudQueue {
 
                 final HttpURLConnection request = QueueRequest.getAcl(queue.getTransformedAddress(opContext), this
                         .getRequestOptions().getTimeoutIntervalInMs(), opContext);
+                this.setConnection(request);
 
-                client.getCredentials().signRequest(request, -1L);
+                this.signRequest(client, request, -1L, null);
 
                 ExecutionEngine.processRequest(request, opContext, this.getResult());
 
