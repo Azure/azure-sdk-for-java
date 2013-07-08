@@ -53,7 +53,7 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.13</version>
+      <version>1.17.1</version>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-json</artifactId>
-      <version>1.13</version>
+      <version>1.17.1</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -110,6 +110,13 @@
       <version>1.46</version>
       <scope>test</scope>
     </dependency>
+    <!-- can replace with apache commons-io or write something from scratch  -->
+    <dependency>
+	<groupId>com.google.guava</groupId>
+	<artifactId>guava-io</artifactId>
+	<version>r03</version>
+</dependency>
+            
   </dependencies>
 
   <build>
