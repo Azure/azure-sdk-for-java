@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.UUID;
 
 /**
  * Wrapper class for all returned lists from Media Services
@@ -31,7 +30,7 @@ public class ListResult<T> extends OperationResult implements List<T> {
 
     private final List<T> contents;
 
-    public ListResult(int statusCode, UUID requestId, Collection<T> contentList) {
+    public ListResult(int statusCode, String requestId, Collection<T> contentList) {
         super(statusCode, requestId);
         contents = Collections.unmodifiableList(new ArrayList<T>(contentList));
     }

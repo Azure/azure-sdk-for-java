@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.SecureRandom;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -29,7 +31,9 @@ public class SSLContextFactory {
         // note: may want to broaden this to SSLv3, SSLv2, SSL, etc...
         SSLContext context = SSLContext.getInstance("TLS");
         // use default TrustManager and SecureRandom
-        context.init(keyManagers, null, null);
+        context.init(keyManagers, null, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+
         return context;
     }
 

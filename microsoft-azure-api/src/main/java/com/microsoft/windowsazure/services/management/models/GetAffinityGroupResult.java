@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-import java.util.UUID;
 
 /**
  * The base result class for all the result of service management operation.
@@ -25,7 +24,7 @@ public class GetAffinityGroupResult extends OperationResult {
 
     private AffinityGroupInfo value;
 
-    public GetAffinityGroupResult(int statusCode, UUID requestId) {
+    public GetAffinityGroupResult(int statusCode, String requestId) {
         super(statusCode, requestId);
     }
 

@@ -27,37 +27,88 @@ import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroup
 
 /**
  * 
- * Defines the service bus contract.
+ * Defines the service management contract.
  * 
  */
 public interface ManagementContract extends FilterableService<ManagementContract> {
 
     /**
-     * Renew subscription lock.
+     * Creates the affinity group.
      * 
-     * @param topicName
-     *            A <code>String</code> object that represents the name of the topic.
-     * @param queueName
-     *            A <code>String</code> object that represents the name of the queue.
-     * @param messageId
-     *            A <code>String</code> object that represents the ID of the message.
-     * @param lockToken
-     *            A <code>String</code> object that represents the token of the lock.
+     * @param name
+     *            the name
+     * @param label
+     *            the label
+     * @param location
+     *            the location
+     * @return the creates the affinity group result
      * @throws ServiceException
-     *             If a service exception is encountered.
+     *             the service exception
      */
-
-    ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException;
-
     CreateAffinityGroupResult createAffinityGroup(String name, String label, String location) throws ServiceException;
 
+    /**
+     * Gets the affinity group.
+     * 
+     * @param name
+     *            the name
+     * @return the affinity group
+     * @throws ServiceException
+     *             the service exception
+     */
     GetAffinityGroupResult getAffinityGroup(String name) throws ServiceException;
 
-    DeleteAffinityGroupResult deleteAffinityGroup(String name) throws ServiceException;
-
+    /**
+     * Creates the affinity group.
+     * 
+     * @param name
+     *            the name
+     * @param label
+     *            the label
+     * @param location
+     *            the location
+     * @param createAffinityGroupOptions
+     *            the create affinity group options
+     * @return the creates the affinity group result
+     * @throws ServiceException
+     *             the service exception
+     */
     CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
             CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException;
 
+    /**
+     * Delete affinity group.
+     * 
+     * @param name
+     *            the name
+     * @return the delete affinity group result
+     * @throws ServiceException
+     *             the service exception
+     */
+    DeleteAffinityGroupResult deleteAffinityGroup(String name) throws ServiceException;
+
+    /**
+     * List affinity groups.
+     * 
+     * @return the list result
+     * @throws ServiceException
+     *             the service exception
+     */
+    ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException;
+
+    /**
+     * Update affinity group.
+     * 
+     * @param name
+     *            the name
+     * @param label
+     *            the label
+     * @param updateAffinityGroupOptions
+     *            the update affinity group options
+     * @return the update affinity group result
+     * @throws ServiceException
+     *             the service exception
+     */
     UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException;
 

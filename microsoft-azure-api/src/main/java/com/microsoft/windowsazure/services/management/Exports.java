@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.management;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.KeyManagementException;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -25,11 +25,10 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Map;
 
-import javax.net.ssl.KeyManager;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.SSLSession;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
@@ -53,60 +52,50 @@ public class Exports implements Builder.Exports {
             @Override
             public ClientConfig alter(ClientConfig clientConfig, Builder builder, Map<String, Object> properties) {
 
-                String keyStoreName = "d:\\src\\javacert\\azurecertkeystore.jks";
+                String keyStoreName = "d:\\src\\javacert\\iiscert\\democert.jks";
                 // String trustStoreName = "c:\\src\\truststore.jks";
-                String keyStorePass = "azurerocks";
-                String keyPass = "azurecert";
+                String keyStorePass = "democert";
+                String keyPass = "democert";
+
+                ConnectionCredential credential = null;
+                try {
+                    credential = new ConnectionCredential(new FileInputStream(keyStoreName), keyStorePass,
+                            KeyStoreType.jks);
+                }
+                catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
 
                 SSLContext sslContext = null;
-
                 try {
-                    sslContext = SSLContext.getInstance("SSL");
+                    sslContext = SSLContextFactory.createSSLContext(credential);
                 }
-                catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
+                catch (GeneralSecurityException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
                 }
 
-                KeyManager[] keyManager = createKeyManager(keyStoreName, keyStorePass, keyPass);
-                TrustManager[] trustManager = createDefaultTrustManager();
-
-                try {
-                    sslContext.init(keyManager, trustManager, null);
-                }
-                catch (KeyManagementException e) {
-                    throw new RuntimeException(e);
-                }
                 clientConfig.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
-                        new HTTPSProperties(null, sslContext));
+                        new HTTPSProperties(new HostnameVerifier() {
+
+                            @Override
+                            public boolean verify(String arg0, SSLSession arg1) {
+                                return true;
+                            }
+                        }, sslContext));
                 return clientConfig;
             }
         });
 
-    }
-
-    private TrustManager[] createDefaultTrustManager() {
-
-        TrustManagerFactory trustManagerFactory = null;
-        try {
-            trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            trustManagerFactory.init((KeyStore) null);
-        }
-        catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
-        return trustManagerFactory.getTrustManagers();
-
-    }
-
-    private KeyManager[] createKeyManager(String keyStoreName, String keyStorePass, String keyPass) {
-        KeyManagerFactory keyManagerFactory = createKeyManagerFactory(keyStoreName, keyStorePass, keyPass);
-        return keyManagerFactory.getKeyManagers();
     }
 
     private KeyManagerFactory createKeyManagerFactory(String keyStoreName, String keyStorePass, String keyPass) {

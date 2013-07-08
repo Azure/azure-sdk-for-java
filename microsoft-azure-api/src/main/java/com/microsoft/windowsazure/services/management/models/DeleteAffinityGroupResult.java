@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-import java.util.UUID;
 
 /**
  * The base result class for all the result of service management operation.
@@ -23,7 +22,7 @@ import java.util.UUID;
  */
 public class DeleteAffinityGroupResult extends OperationResult {
 
-    public DeleteAffinityGroupResult(int statusCode, UUID requestId) {
+    public DeleteAffinityGroupResult(int statusCode, String requestId) {
         super(statusCode, requestId);
     }
 

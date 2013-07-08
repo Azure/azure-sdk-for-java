@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-import java.util.UUID;
 
 /**
  * The base result class for all the result of service management operation.
@@ -23,10 +22,10 @@ import java.util.UUID;
  */
 public class OperationResult {
 
-    protected final UUID requestId;
+    protected final String requestId;
     protected final int statusCode;
 
-    public OperationResult(int statusCode, UUID requestId) {
+    public OperationResult(int statusCode, String requestId) {
         this.statusCode = statusCode;
         this.requestId = requestId;
     }
@@ -35,7 +34,7 @@ public class OperationResult {
         return this.statusCode;
     }
 
-    public UUID getRequestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 

@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.services.management.implementation;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -88,9 +87,8 @@ public class ManagementRestProxy implements ManagementContract {
         return resource;
     }
 
-    private UUID getRequestId(ClientResponse clientResponse) {
-        String requestId = clientResponse.getHeaders().getFirst("x-ms-request-id");
-        return UUID.fromString(requestId);
+    private String getRequestId(ClientResponse clientResponse) {
+        return clientResponse.getHeaders().getFirst("x-ms-request-id");
     }
 
     @Override
@@ -105,7 +103,7 @@ public class ManagementRestProxy implements ManagementContract {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
                 .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        UUID requestId = getRequestId(clientResponse);
+        String requestId = getRequestId(clientResponse);
         AffinityGroups affinityGroups = clientResponse.getEntity(AffinityGroups.class);
         List<AffinityGroupInfo> affinityGroupInfoList = AffinityGroupInfoListFactory.getItem(affinityGroups);
         return new ListResult<AffinityGroupInfo>(clientResponse.getStatus(), requestId, affinityGroupInfoList);
