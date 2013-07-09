@@ -24,7 +24,7 @@ public class AffinityGroupInfoListFactory {
 
     public static List<AffinityGroupInfo> getItem(AffinityGroups affinityGroups) {
         List<AffinityGroupInfo> result = new ArrayList<AffinityGroupInfo>();
-        List<AffinityGroup> affinityGroupList = affinityGroups.getAffinityGroup();
+        List<AffinityGroup> affinityGroupList = affinityGroups.getAffinityGroups();
         for (AffinityGroup affinityGroup : affinityGroupList) {
             AffinityGroupInfo affinityGroupInfo = AffinityGroupInfoFactory.getItem(affinityGroup);
             result.add(affinityGroupInfo);

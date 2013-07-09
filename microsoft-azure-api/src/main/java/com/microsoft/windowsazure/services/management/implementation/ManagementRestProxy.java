@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -126,7 +127,8 @@ public class ManagementRestProxy implements ManagementContract {
             createAffinityGroup.setDescription(createAffinityGroup.getDescription());
         }
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .header("x-ms-version", "2013-03-01").put(ClientResponse.class, createAffinityGroup);
+                .header("x-ms-version", "2013-03-01").type(MediaType.APPLICATION_XML)
+                .put(ClientResponse.class, createAffinityGroup);
         CreateAffinityGroupResult createAffinityGroupResult = new CreateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
         return createAffinityGroupResult;
