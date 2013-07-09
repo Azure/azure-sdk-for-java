@@ -76,7 +76,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         Registry builder = (Registry) config.getBuilder();
         builder.alter(Client.class, new Alteration<Client>() {
             @Override
-            public Client alter(Client instance, Builder builder, Map<String, Object> properties) {
+            public Client alter(String profile, Client instance, Builder builder, Map<String, Object> properties) {
                 instance.addFilter(new LoggingFilter());
                 return instance;
             }

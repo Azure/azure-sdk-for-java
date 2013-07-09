@@ -184,7 +184,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
         List<Alteration<?>> alterationList = alterations.get(service);
         if (alterationList != null) {
             for (Alteration<?> alteration : alterationList) {
-                instance = ((Alteration<T>) alteration).alter(instance, this, properties);
+                instance = ((Alteration<T>) alteration).alter(profile, instance, this, properties);
             }
         }
         return instance;

@@ -50,7 +50,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         Registry builder = (Registry) config.getBuilder();
         builder.alter(Client.class, new Alteration<Client>() {
             @Override
-            public Client alter(Client client, Builder builder, Map<String, Object> properties) {
+            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
                 client.addFilter(new LoggingFilter());
                 return client;
             }

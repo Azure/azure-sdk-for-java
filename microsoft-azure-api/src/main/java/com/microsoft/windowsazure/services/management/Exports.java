@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.management;
 
+import static com.microsoft.windowsazure.services.core.utils.ExportUtils.*;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,13 +52,17 @@ public class Exports implements Builder.Exports {
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
             @Override
-            public ClientConfig alter(ClientConfig clientConfig, Builder builder, Map<String, Object> properties) {
+            public ClientConfig alter(String profile, ClientConfig clientConfig, Builder builder,
+                    Map<String, Object> properties) {
 
-                String keyStoreName = "d:\\src\\javacert\\iiscert\\democert.jks";
+                // String keyStoreName = "d:\\src\\javacert\\iiscert\\democert.jks";
+
+                String keyStoreName = (String) getPropertyIfExists(profile, properties,
+                        ManagementConfiguration.KEYSTORE_PATH);
                 // String trustStoreName = "c:\\src\\truststore.jks";
-                String keyStorePass = "democert";
-                String keyPass = "democert";
-
+                // String keyStorePass = "democert";
+                String keyStorePass = (String) getPropertyIfExists(profile, properties,
+                        ManagementConfiguration.KEYSTORE_PASSWORD);
                 ConnectionCredential credential = null;
                 try {
                     credential = new ConnectionCredential(new FileInputStream(keyStoreName), keyStorePass,
