@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:azure="http://schemas.microsoft.com/windowsazure/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/windowsazure/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:extensionBindingPrefixes="xjc">
+<xs:schema xmlns:azure="http://schemas.microsoft.com/windowsazure" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/windowsazure" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:extensionBindingPrefixes="xjc">
   <xs:annotation> 
     <xs:appinfo>
       <jaxb:globalBindings>
@@ -17,12 +17,14 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:complexType name="UpdateAffinityGroup">
-    <xs:sequence>
+  <xs:element name="UpdateAffinityGroup">
+    <xs:complexType>
+      <xs:sequence>
         <xs:element name="Label" type="xs:string" minOccurs="1" />
         <xs:element name="Description" type="xs:string" minOccurs="0" />
-    </xs:sequence>
-  </xs:complexType>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="AffinityGroup" nillable="true" type="azure:AffinityGroup" />
   <xs:complexType name="AffinityGroup">
     <xs:sequence>

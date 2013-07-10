@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.management.implementation;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -102,7 +103,8 @@ public class ManagementRestProxy implements ManagementContract {
     @Override
     public ListResult<AffinityGroupInfo> listAffinityGroups() {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .header("x-ms-version", "2013-03-01").get(ClientResponse.class);
+                .header("x-ms-version", "2013-03-01").header("x-ms-client-request-id", UUID.randomUUID())
+                .get(ClientResponse.class);
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
         String requestId = getRequestId(clientResponse);
         AffinityGroups affinityGroups = clientResponse.getEntity(AffinityGroups.class);
@@ -127,8 +129,8 @@ public class ManagementRestProxy implements ManagementContract {
             createAffinityGroup.setDescription(createAffinityGroup.getDescription());
         }
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
-                .header("x-ms-version", "2013-03-01").type(MediaType.APPLICATION_XML)
-                .put(ClientResponse.class, createAffinityGroup);
+                .header("x-ms-version", "2013-03-01").header("x-ms-client-request-id", UUID.randomUUID().toString())
+                .type(MediaType.APPLICATION_XML).post(ClientResponse.class, createAffinityGroup);
         CreateAffinityGroupResult createAffinityGroupResult = new CreateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
         return createAffinityGroupResult;

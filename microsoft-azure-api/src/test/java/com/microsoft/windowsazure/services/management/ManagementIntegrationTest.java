@@ -66,7 +66,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Arrange
         String expectedAffinityGroupName = "testCreateAffinityGroupSuccess";
         String expectedLabel = Base64.encode("testCreateAffinityGroupSuccess".getBytes("UTF-8"));
-        String expectedLocation = "US West";
+        String expectedLocation = "West US";
 
         // Act
         CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
@@ -85,7 +85,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Arrange 
         String expectedAffinityGroupName = "testCreateAffinityGroupWithOptionalParametersSuccess";
         String expectedLabel = Base64.encode("testCreateAffinityGroupWithOptionalParameterSuccess".getBytes("UTF-8"));
-        String expectedLocation = "US West";
+        String expectedLocation = "West US";
         String expectedDescription = "testCreateAffinityGroupWithOptionalParameterSuccessDescription";
         CreateAffinityGroupOptions createAffinityGroupOptions = new CreateAffinityGroupOptions()
                 .setDescription(expectedDescription);
@@ -135,15 +135,15 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Arrange 
         String expectedAffinityGroupName = "testUpdateAffinityGroupSuccess";
         String expectedAffinityGroupLabel = Base64.encode("testUpdateAffinityGroupSuccess".getBytes("UTF-8"));
-        String expectedLocation = "US West";
+        String expectedLocation = "West US";
         String expectedDescription = "updateAffinityGroupSuccess";
         service.createAffinityGroup(expectedAffinityGroupName, expectedAffinityGroupLabel, expectedLocation);
         UpdateAffinityGroupOptions updateAffinityGroupOptions = new UpdateAffinityGroupOptions()
                 .setDescription(expectedDescription);
 
         // Act 
-        UpdateAffinityGroupResult updateAffinityGroupResult = service.updateAffinityGroup(expectedAffinityGroupLabel,
-                expectedDescription, updateAffinityGroupOptions);
+        UpdateAffinityGroupResult updateAffinityGroupResult = service.updateAffinityGroup(expectedAffinityGroupName,
+                expectedAffinityGroupLabel, updateAffinityGroupOptions);
         AffinityGroupInfo affinityGroupInfo = updateAffinityGroupResult.getValue();
 
         // Assert 
@@ -156,7 +156,7 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Arrange
         String expectedAffinityGroupName = "testGetAffinityGroupPropertiesSuccess";
         String expectedAffinityGroupLabel = Base64.encode("testGetAffinityGroupPropertiesSuccess".getBytes("UTF-8"));
-        String expectedLocation = "US West";
+        String expectedLocation = "West US";
         service.createAffinityGroup(expectedAffinityGroupName, expectedAffinityGroupLabel, expectedLocation);
 
         // Act 
