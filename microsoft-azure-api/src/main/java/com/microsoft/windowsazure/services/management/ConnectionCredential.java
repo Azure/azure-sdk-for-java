@@ -8,10 +8,11 @@
 package com.microsoft.windowsazure.services.management;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.google.common.io.ByteStreams;
+import com.sun.jersey.core.util.ReaderWriter;
 
 public class ConnectionCredential {
     private final byte[] keyStore;
@@ -33,9 +34,9 @@ public class ConnectionCredential {
      */
     ConnectionCredential(InputStream keys, String keyPass, KeyStoreType type) throws IOException {
         keyPasswd = keyPass;
-        // Apache IOUtils could be used instead of google.common.io,
-        // or do a brute force read into List and then into an array.
-        keyStore = ByteStreams.toByteArray(keys);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ReaderWriter.writeTo(keys, byteArrayOutputStream);
+        keyStore = byteArrayOutputStream.toByteArray();
         keyStoreType = type;
     }
 
