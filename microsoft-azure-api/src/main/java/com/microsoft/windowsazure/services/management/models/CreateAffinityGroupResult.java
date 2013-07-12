@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
+import java.util.Date;
 
 /**
  * The base result class for all the result of service management operation.
@@ -22,15 +23,50 @@ package com.microsoft.windowsazure.services.management.models;
  */
 public class CreateAffinityGroupResult extends OperationResult {
 
+    private String location;
+    private String region;
+    private String server;
+    private Date date;
+
     public CreateAffinityGroupResult(int statusCode, String requestId) {
         super(statusCode, requestId);
-        // TODO Auto-generated constructor stub
+    }
+
+    public CreateAffinityGroupResult setLocation(String location) {
+        this.location = location;
+        return this;
 
     }
 
-    public AffinityGroupInfo getValue() {
-        // TODO Auto-generated method stub
-        return null;
+    public CreateAffinityGroupResult setRegion(String region) {
+        this.region = region;
+        return this;
+    }
+
+    public CreateAffinityGroupResult setServer(String server) {
+        this.server = server;
+        return this;
+    }
+
+    public CreateAffinityGroupResult setDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public String getRegion() {
+        return this.region;
+    }
+
+    public String getServer() {
+        return this.server;
+    }
+
+    public Date getDate() {
+        return this.date;
     }
 
 }

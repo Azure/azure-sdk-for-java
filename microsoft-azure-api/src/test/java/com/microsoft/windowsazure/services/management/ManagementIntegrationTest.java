@@ -16,15 +16,8 @@ package com.microsoft.windowsazure.services.management;
 
 import static org.junit.Assert.*;
 
-import java.util.Map;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.Builder.Alteration;
-import com.microsoft.windowsazure.services.core.Builder.Registry;
-import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
@@ -34,32 +27,8 @@ import com.microsoft.windowsazure.services.management.models.GetAffinityGroupRes
 import com.microsoft.windowsazure.services.management.models.ListResult;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupResult;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class ManagementIntegrationTest extends IntegrationTestBase {
-
-    private ManagementContract service;
-
-    @Before
-    public void createService() throws Exception {
-        // reinitialize configuration from known state
-        Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
-        // applied as default configuration 
-        Configuration.setInstance(config);
-        service = ManagementService.create();
-    }
 
     @Test
     public void createAffinityGroupSuccess() throws Exception {
@@ -71,12 +40,12 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Act
         CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
                 expectedLabel, expectedLocation);
-        AffinityGroupInfo affinityGroupInfo = createAffinityGroupResult.getValue();
 
         // Assert
-        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
-        assertEquals(expectedLabel, affinityGroupInfo.getLabel());
-        assertEquals(expectedLocation, affinityGroupInfo.getLocation());
+        assertNotNull(createAffinityGroupResult.getLocation());
+        assertNotNull(createAffinityGroupResult.getRegion());
+        assertNotNull(createAffinityGroupResult.getServer());
+        assertNotNull(createAffinityGroupResult.getDate());
 
     }
 
@@ -93,13 +62,12 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Act 
         CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
                 expectedLabel, expectedLocation, createAffinityGroupOptions);
-        AffinityGroupInfo affinityGroupInfo = createAffinityGroupResult.getValue();
 
         // Assert
-        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
-        assertEquals(expectedLabel, affinityGroupInfo.getLabel());
-        assertEquals(expectedDescription, affinityGroupInfo.getDescription());
-        assertEquals(expectedLocation, affinityGroupInfo.getLocation());
+        assertNotNull(createAffinityGroupResult.getLocation());
+        assertNotNull(createAffinityGroupResult.getRegion());
+        assertNotNull(createAffinityGroupResult.getServer());
+        assertNotNull(createAffinityGroupResult.getDate());
 
     }
 
@@ -144,10 +112,11 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         // Act 
         UpdateAffinityGroupResult updateAffinityGroupResult = service.updateAffinityGroup(expectedAffinityGroupName,
                 expectedAffinityGroupLabel, updateAffinityGroupOptions);
-        AffinityGroupInfo affinityGroupInfo = updateAffinityGroupResult.getValue();
 
         // Assert 
-        assertEquals(expectedDescription, affinityGroupInfo.getDescription());
+        assertNotNull(updateAffinityGroupResult.getRegion());
+        assertNotNull(updateAffinityGroupResult.getDate());
+        assertNotNull(updateAffinityGroupResult.getRequestId());
 
     }
 

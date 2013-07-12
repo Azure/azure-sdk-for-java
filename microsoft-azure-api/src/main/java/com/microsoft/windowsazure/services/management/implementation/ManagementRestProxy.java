@@ -21,10 +21,12 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
@@ -48,6 +50,7 @@ public class ManagementRestProxy implements ManagementContract {
     private final String uri;
     private final String subscriptionId;
     private final String keyStorePath;
+    private final RFC1123DateConverter rfc1123DateConvert = new RFC1123DateConverter();
     static Log log = LogFactory.getLog(ManagementContract.class);
 
     ServiceFilter[] filters;
@@ -133,6 +136,11 @@ public class ManagementRestProxy implements ManagementContract {
                 .type(MediaType.APPLICATION_XML).post(ClientResponse.class, createAffinityGroup);
         CreateAffinityGroupResult createAffinityGroupResult = new CreateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
+        MultivaluedMap<String, String> headers = clientResponse.getHeaders();
+        createAffinityGroupResult.setLocation(headers.getFirst("Location"));
+        createAffinityGroupResult.setRegion(headers.getFirst("x-ms-servedbyregion"));
+        createAffinityGroupResult.setServer(headers.getFirst("Server"));
+        createAffinityGroupResult.setDate(rfc1123DateConvert.parse((headers.getFirst("Date"))));
         return createAffinityGroupResult;
     }
 
@@ -172,6 +180,9 @@ public class ManagementRestProxy implements ManagementContract {
         PipelineHelpers.ThrowIfError(clientResponse);
         UpdateAffinityGroupResult updateAffinityGroupResult = new UpdateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));
+        MultivaluedMap<String, String> headers = clientResponse.getHeaders();
+        updateAffinityGroupResult.setRegion(headers.getFirst("x-ms-servedbyregion"));
+        updateAffinityGroupResult.setDate(rfc1123DateConvert.parse((headers.getFirst("Date"))));
         return updateAffinityGroupResult;
     }
 }

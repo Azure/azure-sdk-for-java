@@ -14,13 +14,26 @@
  */
 package com.microsoft.windowsazure.services.management;
 
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.Builder.Alteration;
+import com.microsoft.windowsazure.services.core.Builder.Registry;
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.ListResult;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class IntegrationTestBase {
+
+    protected ManagementContract service;
+
     @BeforeClass
     public static void initializeSystem() {
         System.setProperty("http.keepAlive", "false");
@@ -28,15 +41,53 @@ public abstract class IntegrationTestBase {
 
     @Before
     public void initialize() throws Exception {
-        // Configuration config = createConfiguration();
-        // ManagementContract service = ManagementService.create(config);
+        createService();
+        removeEntities();
+    }
+
+    private void createService() throws Exception {
+        // reinitialize configuration from known state
+        Configuration config = createConfiguration();
+
+        // add LoggingFilter to any pipeline that is created
+        Registry builder = (Registry) config.getBuilder();
+        builder.alter(Client.class, new Alteration<Client>() {
+            @Override
+            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
+                client.addFilter(new LoggingFilter());
+                return client;
+            }
+        });
+
+        // applied as default configuration 
+        Configuration.setInstance(config);
+        service = ManagementService.create(config);
+    }
+
+    private void removeEntities() {
+        ListResult<AffinityGroupInfo> listAffinityGroupResult = null;
+        try {
+            listAffinityGroupResult = service.listAffinityGroups();
+        }
+        catch (ServiceException e) {
+        }
+
+        for (AffinityGroupInfo affinityGroupInfo : listAffinityGroupResult) {
+            try {
+                String affinityGroupName = affinityGroupInfo.getName();
+                if ((affinityGroupName != null) && (affinityGroupName.startsWith("test"))) {
+                    service.deleteAffinityGroup(affinityGroupInfo.getName());
+                }
+            }
+            catch (ServiceException e) {
+            }
+        }
 
     }
 
     @AfterClass
     public static void cleanUpTestArtifacts() throws Exception {
         // Configuration config = createConfiguration();
-        // ManagementContract service = ManagementService.create(config);
     }
 
     protected static Configuration createConfiguration() throws Exception {
