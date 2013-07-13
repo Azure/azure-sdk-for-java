@@ -18,7 +18,7 @@ import com.microsoft.windowsazure.services.core.Configuration;
 
 /**
  * 
- * Access service bus functionality.
+ * Access service management functionality.
  * 
  */
 public class ManagementService {
@@ -28,7 +28,7 @@ public class ManagementService {
     }
 
     /**
-     * Creates an instance of the <code>ServiceBusContract</code> API.
+     * Creates an instance of the <code>ManagementContract</code> API.
      * 
      */
     public static ManagementContract create() {
@@ -36,10 +36,10 @@ public class ManagementService {
     }
 
     /**
-     * Creates an instance of the <code>ServiceBusContract</code> API using the specified configuration.
+     * Creates an instance of the <code>ManagementContract</code> API using the specified configuration.
      * 
      * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service bus service.
+     *            A <code>Configuration</code> object that represents the configuration for the service management.
      * 
      */
     public static ManagementContract create(Configuration config) {
@@ -47,7 +47,7 @@ public class ManagementService {
     }
 
     /**
-     * Creates an instance of the <code>ServiceBusContract</code> API.
+     * Creates an instance of the <code>ManagementContract</code> API.
      * 
      */
     public static ManagementContract create(String profile) {
@@ -55,10 +55,10 @@ public class ManagementService {
     }
 
     /**
-     * Creates an instance of the <code>ServiceBusContract</code> API using the specified configuration.
+     * Creates an instance of the <code>ManagementContract</code> API using the specified configuration.
      * 
      * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service bus service.
+     *            A <code>Configuration</code> object that represents the configuration for the service management.
      * 
      */
     public static ManagementContract create(String profile, Configuration config) {

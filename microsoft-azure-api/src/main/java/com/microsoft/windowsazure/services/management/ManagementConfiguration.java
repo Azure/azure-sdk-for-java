@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.management;
 import com.microsoft.windowsazure.services.core.Configuration;
 
 /**
- * Provides functionality to create a service bus configuration.
+ * Provides functionality to create a service management configuration.
  * 
  */
 public class ManagementConfiguration {
@@ -48,30 +48,55 @@ public class ManagementConfiguration {
     /**
      * Creates a service management configuration using the specified uri, keystore path, and subscription id.
      * 
-     * 
      * @param uri
-     *            A <code>String</code> object that represents the URI.
-     * 
+     *            A <code>String</code> object that represents the URI of the service management service.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription ID.
-     * 
-     * @param keystorePath
-     *            A <code>String</code> object that represents the path of the keystore.
-     * 
-     * @return
+     * @return the configuration
      *         A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>ManagementService</code> class.
-     * 
+     *         <code>ManagementContract</code> class.
      */
     public static Configuration configure(String uri, String subscriptionId) {
         return configure(null, Configuration.getInstance(), uri, subscriptionId, null, null);
     }
 
+    /**
+     * Creates a service management configuration with specified values.
+     * 
+     * @param uri
+     *            A <code>String</code> object that represents the URI of the service management service.
+     * @param subscriptionId
+     *            A <code>String</code> object that represents the subscription ID.
+     * @param keyStorePath
+     *            A <code>String</code> object that represents the path of the keystore.
+     * @param keyStorePassword
+     *            A <code>String</code> object that represents the password of the keystore.
+     * @return A <code>Configuration</code> object that can be used when creating an instance of the
+     *         <code>ManagementContract</code> class.
+     */
     public static Configuration configure(String uri, String subscriptionId, String keyStorePath,
             String keyStorePassword) {
         return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStorePath, keyStorePassword);
     }
 
+    /**
+     * Creates a service management configuration with specified values.
+     * 
+     * @param profile
+     *            A <code>String</code> object that represents the profile.
+     * @param configuration
+     *            A previously instantiated <code>Configuration</code> object.
+     * @param uri
+     *            A <code>String</code> object that represents the URI of the service management service.
+     * @param subscriptionId
+     *            A <code>String</code> object that represents the subscription ID.
+     * @param keyStorePath
+     *            A <code>String</code> object that represents the path of the keystore.
+     * @param keyStorePassword
+     *            A <code>String</code> object that represents the password of the keystore.
+     * @return A <code>Configuration</code> object that can be used when creating an instance of the
+     *         <code>ManagementContract</code> class.
+     */
     public static Configuration configure(String profile, Configuration configuration, String uri,
             String subscriptionId, String keyStoreLocation, String keyStorePassword) {
 

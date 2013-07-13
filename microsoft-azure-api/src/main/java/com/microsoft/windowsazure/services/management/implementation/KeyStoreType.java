@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.management;
+package com.microsoft.windowsazure.services.management.implementation;
 
 public enum KeyStoreType {
     jks, pkcs12

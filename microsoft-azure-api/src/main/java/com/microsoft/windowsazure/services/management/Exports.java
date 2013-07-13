@@ -20,26 +20,30 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 
 import com.microsoft.windowsazure.services.core.Builder;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
+import com.microsoft.windowsazure.services.management.implementation.KeyStoreCredential;
+import com.microsoft.windowsazure.services.management.implementation.KeyStoreType;
 import com.microsoft.windowsazure.services.management.implementation.ManagementExceptionProcessor;
 import com.microsoft.windowsazure.services.management.implementation.ManagementRestProxy;
+import com.microsoft.windowsazure.services.management.implementation.SSLContextFactory;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
+/**
+ * The Class Exports.
+ */
 public class Exports implements Builder.Exports {
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.Builder.Exports#register(com.microsoft.windowsazure.services.core.Builder.Registry)
+     */
     @Override
     public void register(Builder.Registry registry) {
 
@@ -55,44 +59,36 @@ public class Exports implements Builder.Exports {
             public ClientConfig alter(String profile, ClientConfig clientConfig, Builder builder,
                     Map<String, Object> properties) {
 
-                // String keyStoreName = "d:\\src\\javacert\\iiscert\\democert.jks";
-
                 String keyStoreName = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PATH);
-                // String trustStoreName = "c:\\src\\truststore.jks";
-                // String keyStorePass = "democert";
                 String keyStorePass = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PASSWORD);
-                ConnectionCredential credential = null;
+
+                KeyStoreCredential keyStoreCredential = null;
                 try {
-                    credential = new ConnectionCredential(new FileInputStream(keyStoreName), keyStorePass,
+                    keyStoreCredential = new KeyStoreCredential(new FileInputStream(keyStoreName), keyStorePass,
                             KeyStoreType.jks);
                 }
-                catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-                catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
                 SSLContext sslContext = null;
                 try {
-                    sslContext = SSLContextFactory.createSSLContext(credential);
+                    sslContext = SSLContextFactory.createSSLContext(keyStoreCredential);
                 }
-                catch (GeneralSecurityException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
                 }
-                catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
                 clientConfig.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
                         new HTTPSProperties(new HostnameVerifier() {
-
                             @Override
                             public boolean verify(String arg0, SSLSession arg1) {
                                 return true;
@@ -101,67 +97,6 @@ public class Exports implements Builder.Exports {
                 return clientConfig;
             }
         });
-
-    }
-
-    private KeyManagerFactory createKeyManagerFactory(String keyStoreName, String keyStorePass, String keyPass) {
-        KeyManagerFactory keyManagerFactory = null;
-        KeyStore keyStore = createKeyStore(keyStoreName, keyStorePass);
-
-        try {
-            keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            keyManagerFactory.init(keyStore, keyPass.toCharArray());
-        }
-        catch (UnrecoverableKeyException e) {
-            throw new RuntimeException(e);
-        }
-        catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-        return keyManagerFactory;
-    }
-
-    private KeyStore createKeyStore(String keyStoreFileName, String keyStorePassword) {
-        KeyStore keyStore = null;
-        try {
-            keyStore = KeyStore.getInstance("JKS");
-        }
-        catch (KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
-
-        FileInputStream keyStoreFileInputStream = null;
-        try {
-            keyStoreFileInputStream = new FileInputStream(keyStoreFileName);
-        }
-        catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            keyStore.load(keyStoreFileInputStream, keyStorePassword.toCharArray());
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        catch (CertificateException e) {
-            throw new RuntimeException(e);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return keyStore;
 
     }
 }

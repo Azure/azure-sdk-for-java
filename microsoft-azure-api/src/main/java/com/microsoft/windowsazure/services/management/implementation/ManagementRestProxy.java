@@ -44,17 +44,44 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+/**
+ * The Class ManagementRestProxy.
+ */
 public class ManagementRestProxy implements ManagementContract {
 
+    /** The channel. */
     private Client channel;
+
+    /** The uri. */
     private final String uri;
+
+    /** The subscription id. */
     private final String subscriptionId;
+
+    /** The key store path. */
     private final String keyStorePath;
+
+    /** The rfc1123 date convert. */
     private final RFC1123DateConverter rfc1123DateConvert = new RFC1123DateConverter();
+
+    /** The log. */
     static Log log = LogFactory.getLog(ManagementContract.class);
 
+    /** The filters. */
     ServiceFilter[] filters;
 
+    /**
+     * Instantiates a new management rest proxy.
+     * 
+     * @param channel
+     *            the channel
+     * @param uri
+     *            the uri
+     * @param subscriptionId
+     *            the subscription id
+     * @param keyStorePath
+     *            the key store path
+     */
     @Inject
     public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri,
             @Named(ManagementConfiguration.SUBSCRIPTION_ID) String subscriptionId,
@@ -67,6 +94,20 @@ public class ManagementRestProxy implements ManagementContract {
         this.keyStorePath = keyStorePath;
     }
 
+    /**
+     * Instantiates a new management rest proxy.
+     * 
+     * @param channel
+     *            the channel
+     * @param serviceFilter
+     *            the service filter
+     * @param uri
+     *            the uri
+     * @param subscriptionId
+     *            the subscription id
+     * @param keyStorePath
+     *            the key store path
+     */
     public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter, String uri, String subscriptionId,
             String keyStorePath) {
         this.channel = channel;
@@ -76,14 +117,30 @@ public class ManagementRestProxy implements ManagementContract {
         this.keyStorePath = keyStorePath;
     }
 
+    /**
+     * Gets the channel.
+     * 
+     * @return the channel
+     */
     public Client getChannel() {
         return channel;
     }
 
+    /**
+     * Sets the channel.
+     * 
+     * @param channel
+     *            the new channel
+     */
     public void setChannel(Client channel) {
         this.channel = channel;
     }
 
+    /**
+     * Gets the resource.
+     * 
+     * @return the resource
+     */
     private WebResource getResource() {
         WebResource resource = getChannel().resource(this.uri);
         for (ServiceFilter filter : filters) {
@@ -92,10 +149,20 @@ public class ManagementRestProxy implements ManagementContract {
         return resource;
     }
 
+    /**
+     * Gets the request id.
+     * 
+     * @param clientResponse
+     *            the client response
+     * @return the request id
+     */
     private String getRequestId(ClientResponse clientResponse) {
         return clientResponse.getHeaders().getFirst("x-ms-request-id");
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
     @Override
     public ManagementContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
@@ -103,6 +170,9 @@ public class ManagementRestProxy implements ManagementContract {
         return new ManagementRestProxy(channel, newFilters, uri, subscriptionId, keyStorePath);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#listAffinityGroups()
+     */
     @Override
     public ListResult<AffinityGroupInfo> listAffinityGroups() {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
@@ -115,11 +185,17 @@ public class ManagementRestProxy implements ManagementContract {
         return new ListResult<AffinityGroupInfo>(clientResponse.getStatus(), requestId, affinityGroupInfoList);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location) {
         return createAffinityGroup(affinityGroupName, label, location, null);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
+     */
     @Override
     public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location,
             CreateAffinityGroupOptions createAffinityGroupOptions) {
@@ -144,6 +220,9 @@ public class ManagementRestProxy implements ManagementContract {
         return createAffinityGroupResult;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#getAffinityGroup(java.lang.String)
+     */
     @Override
     public GetAffinityGroupResult getAffinityGroup(String name) {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
@@ -157,6 +236,9 @@ public class ManagementRestProxy implements ManagementContract {
         return getAffinityGroupResult;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#deleteAffinityGroup(java.lang.String)
+     */
     @Override
     public DeleteAffinityGroupResult deleteAffinityGroup(String name) {
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
@@ -167,6 +249,9 @@ public class ManagementRestProxy implements ManagementContract {
         return deleteAffinityGroupResult;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
+     */
     @Override
     public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) {

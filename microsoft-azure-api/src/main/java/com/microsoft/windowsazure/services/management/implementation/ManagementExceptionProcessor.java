@@ -34,30 +34,61 @@ import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroup
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
+/**
+ * The Class ManagementExceptionProcessor.
+ */
 public class ManagementExceptionProcessor implements ManagementContract {
 
+    /** The next. */
     private final ManagementContract next;
+
+    /** The log. */
     static Log log = LogFactory.getLog(ManagementContract.class);
 
+    /**
+     * Instantiates a new management exception processor.
+     * 
+     * @param next
+     *            the next
+     */
     public ManagementExceptionProcessor(ManagementContract next) {
         this.next = next;
     }
 
+    /**
+     * Instantiates a new management exception processor.
+     * 
+     * @param next
+     *            the next
+     */
     @Inject
     public ManagementExceptionProcessor(ManagementRestProxy next) {
         this.next = next;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
     @Override
     public ManagementContract withFilter(ServiceFilter filter) {
         return new ManagementExceptionProcessor(next.withFilter(filter));
     }
 
+    /**
+     * Process catch.
+     * 
+     * @param e
+     *            the e
+     * @return the service exception
+     */
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("serviceBus", e);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#listAffinityGroups()
+     */
     @Override
     public ListResult<AffinityGroupInfo> listAffinityGroups() throws ServiceException {
         try {
@@ -71,6 +102,9 @@ public class ManagementExceptionProcessor implements ManagementContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location)
             throws ServiceException {
@@ -85,6 +119,9 @@ public class ManagementExceptionProcessor implements ManagementContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#getAffinityGroup(java.lang.String)
+     */
     @Override
     public GetAffinityGroupResult getAffinityGroup(String name) throws ServiceException {
         try {
@@ -98,6 +135,9 @@ public class ManagementExceptionProcessor implements ManagementContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#deleteAffinityGroup(java.lang.String)
+     */
     @Override
     public DeleteAffinityGroupResult deleteAffinityGroup(String name) throws ServiceException {
         try {
@@ -111,6 +151,9 @@ public class ManagementExceptionProcessor implements ManagementContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
+     */
     @Override
     public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
             CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException {
@@ -125,6 +168,9 @@ public class ManagementExceptionProcessor implements ManagementContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
+     */
     @Override
     public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
             UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException {

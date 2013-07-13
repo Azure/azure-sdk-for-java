@@ -17,8 +17,18 @@ package com.microsoft.windowsazure.services.management.implementation;
 
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 
+/**
+ * A factory for creating AffinityGroupInfo objects.
+ */
 public class AffinityGroupInfoFactory {
 
+    /**
+     * Gets the item.
+     * 
+     * @param affinityGroup
+     *            the affinity group
+     * @return the item
+     */
     public static AffinityGroupInfo getItem(AffinityGroup affinityGroup) {
         return new AffinityGroupInfo().setName(affinityGroup.getName()).setLabel(affinityGroup.getLabel())
                 .setLocation(affinityGroup.getLocation()).setDescription(affinityGroup.getDescription());

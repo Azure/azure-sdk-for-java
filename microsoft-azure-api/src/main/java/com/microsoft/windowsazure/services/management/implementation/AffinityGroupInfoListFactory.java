@@ -20,8 +20,18 @@ import java.util.List;
 
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
 
+/**
+ * A factory for creating AffinityGroupInfoList objects.
+ */
 public class AffinityGroupInfoListFactory {
 
+    /**
+     * Gets the item.
+     * 
+     * @param affinityGroups
+     *            the affinity groups
+     * @return the item
+     */
     public static List<AffinityGroupInfo> getItem(AffinityGroups affinityGroups) {
         List<AffinityGroupInfo> result = new ArrayList<AffinityGroupInfo>();
         List<AffinityGroup> affinityGroupList = affinityGroups.getAffinityGroups();
