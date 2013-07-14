@@ -49,6 +49,9 @@ public class ManagementService {
     /**
      * Creates an instance of the <code>ManagementContract</code> API.
      * 
+     * @param profile
+     *            A <code>String</code> object that representing the profile of the service management service.
+     * 
      */
     public static ManagementContract create(String profile) {
         return Configuration.getInstance().create(profile, ManagementContract.class);

@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.core.Configuration;
 public class ManagementConfiguration {
 
     /**
-     * Defines the location of the keystore.
+     * Defines the path of the keystore.
      * 
      */
     public final static String KEYSTORE_PATH = "management.keystore.path";
@@ -41,15 +41,15 @@ public class ManagementConfiguration {
     public final static String URI = "management.uri";
 
     /**
-     * Defines the subscription ID of the service management.
+     * Defines the subscription ID of the Windows Azure account.
      */
     public static final String SUBSCRIPTION_ID = "management.subscription.id";
 
     /**
-     * Creates a service management configuration using the specified uri, keystore path, and subscription id.
+     * Creates a service management configuration using specified URI, and subscription ID.
      * 
      * @param uri
-     *            A <code>String</code> object that represents the URI of the service management service.
+     *            A <code>String</code> object that represents the root URI of the service management service.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription ID.
      * @return the configuration
@@ -61,26 +61,7 @@ public class ManagementConfiguration {
     }
 
     /**
-     * Creates a service management configuration with specified values.
-     * 
-     * @param uri
-     *            A <code>String</code> object that represents the URI of the service management service.
-     * @param subscriptionId
-     *            A <code>String</code> object that represents the subscription ID.
-     * @param keyStorePath
-     *            A <code>String</code> object that represents the path of the keystore.
-     * @param keyStorePassword
-     *            A <code>String</code> object that represents the password of the keystore.
-     * @return A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>ManagementContract</code> class.
-     */
-    public static Configuration configure(String uri, String subscriptionId, String keyStorePath,
-            String keyStorePassword) {
-        return configure(null, Configuration.getInstance(), uri, subscriptionId, keyStorePath, keyStorePassword);
-    }
-
-    /**
-     * Creates a service management configuration with specified values.
+     * Creates a service management configuration with specified parameters.
      * 
      * @param profile
      *            A <code>String</code> object that represents the profile.

@@ -60,6 +60,7 @@ public class Exports implements Builder.Exports {
 
                 String keyStorePath = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PATH);
+
                 String keyStorePass = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PASSWORD);
 
