@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.management.implementation;
+package com.microsoft.windowsazure.services.management.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.implementation.AffinityGroup;
+import com.microsoft.windowsazure.services.management.implementation.AffinityGroups;
 
 /**
  * A factory for creating AffinityGroupInfoList objects.

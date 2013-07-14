@@ -33,6 +33,8 @@ import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.management.ManagementConfiguration;
 import com.microsoft.windowsazure.services.management.ManagementContract;
 import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfoFactory;
+import com.microsoft.windowsazure.services.management.models.AffinityGroupInfoListFactory;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions;
 import com.microsoft.windowsazure.services.management.models.CreateAffinityGroupResult;
 import com.microsoft.windowsazure.services.management.models.DeleteAffinityGroupResult;

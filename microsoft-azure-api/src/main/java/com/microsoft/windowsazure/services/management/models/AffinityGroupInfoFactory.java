@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.management.implementation;
+package com.microsoft.windowsazure.services.management.models;
 
-import com.microsoft.windowsazure.services.management.models.AffinityGroupInfo;
+import com.microsoft.windowsazure.services.management.implementation.AffinityGroup;
 
 /**
  * A factory for creating AffinityGroupInfo objects.

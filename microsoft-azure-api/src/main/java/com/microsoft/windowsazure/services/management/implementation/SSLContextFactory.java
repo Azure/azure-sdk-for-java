@@ -27,16 +27,16 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
 /**
- * A factory for creating SSLContext objects.
+ * A factory for creating SSLContext instance.
  */
 public class SSLContextFactory {
 
     /**
-     * Creates a new SSLContext object.
+     * Creates a SSLContext with specified keystore credential.
      * 
-     * @param cred
-     *            the cred
-     * @return the SSL context
+     * @param keyStoreCredential
+     *            the credential of the keystore.
+     * @return a <code>SSLContext</code> instance.
      * @throws GeneralSecurityException
      *             the general security exception
      * @throws IOException
@@ -44,12 +44,14 @@ public class SSLContextFactory {
      */
     public static SSLContext createSSLContext(KeyStoreCredential keyStoreCredential) throws GeneralSecurityException,
             IOException {
-        return createSSLContext(keyStoreCredential.getKeyStore(), keyStoreCredential.getKeystorePassword(),
-                keyStoreCredential.getKeyStoreType());
+        if (keyStoreCredential == null) {
+            throw new IllegalArgumentException("KeyStoreCredential cannot be null.");
+        }
+        return create(keyStoreCredential.getKeyStore(), keyStoreCredential.getKeystorePassword());
     }
 
     /**
-     * Creates a new SSLContext object.
+     * Creates a SSLContext object with specified keystore stream and password.
      * 
      * @param keyStoreStream
      *            the key store stream
@@ -63,10 +65,10 @@ public class SSLContextFactory {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static SSLContext createSSLContext(InputStream keyStoreStream, String keyStorePassword, KeyStoreType keyStoreType)
+    public static SSLContext create(InputStream keyStoreStream, String keyStorePassword)
             throws GeneralSecurityException, IOException {
 
-        KeyManager[] keyManagers = getKeyManagers(keyStoreStream, keyStorePassword, keyStoreType.name());
+        KeyManager[] keyManagers = getKeyManagers(keyStoreStream, keyStorePassword, "jks");
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(keyManagers, null, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());

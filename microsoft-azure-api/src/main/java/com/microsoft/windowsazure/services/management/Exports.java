@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.services.management;
 
 import static com.microsoft.windowsazure.services.core.utils.ExportUtils.*;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -52,22 +51,21 @@ public class Exports implements Builder.Exports {
         registry.add(ManagementRestProxy.class);
         registry.add(UserAgentFilter.class);
 
-        // alter jersey client config for service management
+        // alter jersey client config for service management. 
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
             @Override
             public ClientConfig alter(String profile, ClientConfig clientConfig, Builder builder,
                     Map<String, Object> properties) {
 
-                String keyStoreName = (String) getPropertyIfExists(profile, properties,
+                String keyStorePath = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PATH);
                 String keyStorePass = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PASSWORD);
 
                 KeyStoreCredential keyStoreCredential = null;
                 try {
-                    keyStoreCredential = new KeyStoreCredential(new FileInputStream(keyStoreName), keyStorePass,
-                            KeyStoreType.jks);
+                    keyStoreCredential = new KeyStoreCredential(keyStorePath, keyStorePass, KeyStoreType.jks);
                 }
                 catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
