@@ -1,3 +1,22 @@
+2013.07.03 Version 0.4.4
+ * Windows Azure China environemnt support
+ * Service Bus metadata support updated to the latest version
+ * Rich Odata entity query support for Service Bus Queue/Topic/Subscription
+ * Added support for Service Bus message forwarding
+ * Added support for Service Bus message count details
+ * Made sure the response stream is drained to prevent socket exhaustion in Storage
+ * Added support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes in Storage
+
+2013.05.27 Version 0.4.3
+* Added support for updating existing Queue/Topic/Subscription for Service Bus
+* Added support for message lock renewal to support long running message processing for Service Bus
+* Added new properties to Queue/Topic/Subscription/Rule for Service Bus
+* Added support for rebinding content key for Media Services
+
+2013.04.16 Version 0.4.2
+* Fixed a bunch of GB18030 encoding issues
+* Fixed a service bus issue when the locale is not UTC
+
 2013.03.12 Version 0.4.1
  * Added "Azure-SDK-For-Java/<version>" To User-Agent HTTP header
  * Added connection string support for Service Bus

@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
@@ -31,7 +32,7 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
  */
 public class QueueTestBase {
     public static boolean USE_DEV_FABRIC = false;
-    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
+    public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=http;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
     public static final String CLOUD_ACCOUNT_HTTPS = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
 
     protected static CloudStorageAccount httpAcc;
@@ -53,6 +54,7 @@ public class QueueTestBase {
         }
 
         qClient = httpAcc.createCloudQueueClient();
+        qClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         testSuiteQueueName = generateRandomQueueName();
         queue = qClient.getQueueReference(testSuiteQueueName);
         queue.create();

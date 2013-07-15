@@ -37,6 +37,7 @@ import com.microsoft.windowsazure.services.serviceBus.implementation.Correlation
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
 import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
@@ -176,6 +177,88 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         service.sendQueueMessage("TestAlpha", message);
 
         // Assert
+    }
+
+    @Test
+    public void getQueueMessageCountDetails() throws Exception {
+        // Arrange
+        String queueName = "testGetQueueMessageCountDetails";
+        service.createQueue(new QueueInfo(queueName));
+        service.sendQueueMessage(queueName, new BrokeredMessage("Hello World"));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        QueueInfo queueInfo = service.getQueue(queueName).getValue();
+        MessageCountDetails countDetails = queueInfo.getCountDetails();
+
+        // Assert
+        assertEquals(true, queueInfo.isSupportOrdering());
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
+    }
+
+    @Test
+    public void getTopicMessageCountDetails() throws Exception {
+        // Arrange
+        String topicName = "TestGetTopicMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        Long expectedActiveMessageCount = 0L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        TopicInfo topicInfo = service.getTopic(topicName).getValue();
+        MessageCountDetails countDetails = topicInfo.getCountDetails();
+
+        // Assert
+        assertNotNull(topicInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
+    }
+
+    @Test
+    public void getSubscriptionMessageCountDetails() throws Exception {
+        // Arrange
+        String topicName = "TestGetSubscriptionMessageCountDetails";
+        String subscriptionName = "TestGetSubscriptionMessageCountDetails";
+        service.createTopic(new TopicInfo(topicName)).getValue();
+        service.createSubscription(topicName, new SubscriptionInfo(subscriptionName));
+        Long expectedActiveMessageCount = 1L;
+        Long expectedDeadLetterMessageCount = 0L;
+        Long expectedScheduledMessageCount = 0L;
+        Long expectedTransferMessageCount = 0L;
+        Long expectedTransferDeadLetterMessageCount = 0L;
+
+        // Act
+        service.sendTopicMessage(topicName, new BrokeredMessage("Hello world!"));
+        SubscriptionInfo subscriptionInfo = service.getSubscription(topicName, subscriptionName).getValue();
+        MessageCountDetails countDetails = subscriptionInfo.getCountDetails();
+
+        // Assert
+        assertNotNull(subscriptionInfo);
+        assertNotNull(countDetails);
+        assertEquals(expectedActiveMessageCount, countDetails.getActiveMessageCount());
+        assertEquals(expectedDeadLetterMessageCount, countDetails.getDeadLetterMessageCount());
+        assertEquals(expectedScheduledMessageCount, countDetails.getScheduledMessageCount());
+        assertEquals(expectedTransferMessageCount, countDetails.getTransferMessageCount());
+        assertEquals(expectedTransferDeadLetterMessageCount, countDetails.getTransferDeadLetterMessageCount());
+
     }
 
     @Test
@@ -403,6 +486,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
                 new SubscriptionInfo(sourceSubscriptionName)).getValue();
         service.updateSubscription(sourceTopicName,
                 sourceSubscriptionInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+        Thread.sleep(1000);
 
         // Act
         service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));
@@ -706,15 +790,31 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     public void createSubscriptionWithCorrelationFilter() throws Exception {
         // Arrange
         String topicName = "testCreateSubscriptionWithCorrelationFilter";
+        String expectedCorrelationId = "sampleCorrelationId";
+        String expectedContentType = "sampleContentType";
+        String expectedLabel = "sampleLabel";
+        String expectedMessageId = "sampleMessageId";
+        String expectedSessionId = "sampleSessionId";
+        String expectedReplyTo = "sampleReplyTo";
+        String expectedTo = "sampleTo";
         service.createTopic(new TopicInfo(topicName));
         CorrelationFilter correlationFilter = new CorrelationFilter();
-        correlationFilter.setContentType("sampleCorrelationId");
+        correlationFilter.setCorrelationId(expectedCorrelationId);
+        correlationFilter.setContentType(expectedContentType);
+        correlationFilter.setLabel(expectedLabel);
+        correlationFilter.setMessageId(expectedMessageId);
+        correlationFilter.setReplyTo(expectedReplyTo);
+        correlationFilter.setSessionId(expectedSessionId);
+        correlationFilter.setTo(expectedTo);
         RuleDescription ruleDescription = new RuleDescription();
         ruleDescription.setFilter(correlationFilter);
 
         // Act
         SubscriptionInfo created = service.createSubscription(topicName,
                 new SubscriptionInfo("MySubscription").setDefaultRuleDescription(ruleDescription)).getValue();
+
+        RuleInfo ruleInfo = service.getRule(topicName, "MySubscription", "$Default").getValue();
+        CorrelationFilter correlationFilterResult = (CorrelationFilter) ruleInfo.getFilter();
 
         // Assert
         assertNotNull(created);
@@ -725,6 +825,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         assertNotNull(created.getUpdatedAt());
         assertNotNull(created.getAccessedAt());
         assertNotNull(created.getAutoDeleteOnIdle());
+        assertNotNull(correlationFilterResult);
+        assertEquals(expectedCorrelationId, correlationFilterResult.getCorrelationId());
+        assertEquals(expectedContentType, correlationFilterResult.getContentType());
+        assertEquals(expectedLabel, correlationFilterResult.getLabel());
+        assertEquals(expectedMessageId, correlationFilterResult.getMessageId());
+        assertEquals(expectedSessionId, correlationFilterResult.getSessionId());
+        assertEquals(expectedReplyTo, correlationFilterResult.getReplyTo());
+        assertEquals(expectedTo, correlationFilterResult.getTo());
     }
 
     @Test
