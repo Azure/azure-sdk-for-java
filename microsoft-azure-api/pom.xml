@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.2</version>
+  <version>0.4.4</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -182,16 +182,18 @@
         </executions>
         <configuration>
           <extension>true</extension>
+          <debug>true</debug>
+          <verbose>true</verbose>
           <plugins>
             <plugin>
               <groupId>org.jvnet.jaxb2_commons</groupId>
               <artifactId>jaxb2-basics</artifactId>
-              <version>0.6.0</version>
+              <version>0.6.4</version>
             </plugin>
             <plugin>
               <groupId>org.jvnet.jaxb2_commons</groupId>
               <artifactId>jaxb2-basics-annotate</artifactId>
-              <version>0.6.0</version>
+              <version>0.6.4</version>
             </plugin>
           </plugins>
 

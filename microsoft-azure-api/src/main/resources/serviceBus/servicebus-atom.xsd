@@ -4,6 +4,9 @@
 	targetNamespace="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
 	<xs:import
+		namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus"
+		schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" />
+	<xs:import
 		namespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
 		schemaLocation="schemas.microsoft.com.netservices.2010.10.servicebus.connect.xsd" />
 	<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"

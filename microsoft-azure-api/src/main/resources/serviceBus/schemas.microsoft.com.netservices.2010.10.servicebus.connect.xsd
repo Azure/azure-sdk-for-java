@@ -2,6 +2,7 @@
 <xs:schema 
 	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" 
 	xmlns:tns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+	xmlns:tnsn="http://schemas.microsoft.com/netservices/2011/06/servicebus" 
 	elementFormDefault="qualified" 
   attributeFormDefault="qualified"
 	targetNamespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
@@ -21,7 +22,8 @@
     </xs:appinfo>
   </xs:annotation>
 	
-  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.2003.10.Serialization.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus" />
   <xs:complexType name="QueueDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="LockDuration" type="ser:duration">
@@ -151,6 +153,13 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="SupportOrdering" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -288,6 +297,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>
@@ -406,17 +422,6 @@
       <xs:enumeration value="MessagePartitioning" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name ="KeyValueOfStringAnyType">
-    <xs:sequence>
-      <xs:element name ="Key" type="xs:string" />
-      <xs:element name ="Value" type="xs:anyType" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="FilterProperties">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringanyType" type="tns:KeyValueOfStringAnyType" />
-    </xs:sequence>
-  </xs:complexType>
   <xs:complexType name="CorrelationFilter">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:Filter">
@@ -429,12 +434,10 @@
           <xs:element minOccurs="0" name="SessionId" type="xs:string" />
           <xs:element minOccurs="0" name="ReplyToSessionId" type="xs:string" />
           <xs:element minOccurs="0" name="ContentType" type="xs:string" />
-          <xs:element minOccurs="0" name="Properties" type="tns:FilterProperties" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="CorrelationFilter" nillable="true" type="tns:CorrelationFilter" />
   <xs:complexType name="RuleAction">
     <xs:sequence />
   </xs:complexType>
@@ -565,6 +568,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name ="CountDetails" type ="tnsn:MessageCountDetails">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>     
       <xs:element minOccurs="0" name="AutoDeleteOnIdle" type="ser:duration">
         <xs:annotation>
           <xs:appinfo>

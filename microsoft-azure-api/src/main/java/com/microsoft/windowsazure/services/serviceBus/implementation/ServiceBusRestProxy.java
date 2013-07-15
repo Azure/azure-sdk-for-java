@@ -315,6 +315,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         if (options.getSkip() != null) {
             path = path.queryParam("$skip", options.getSkip().toString());
         }
+        if (options.getFilter() != null) {
+            path = path.queryParam("$filter", options.getFilter());
+        }
         return path;
     }
 

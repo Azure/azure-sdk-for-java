@@ -33,6 +33,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
@@ -633,6 +634,30 @@ public class TableClientTests extends TableTestBase {
 
                 Assert.assertNotNull("Property O", retrievedEntity.getProperties().get("O"));
                 Assert.assertEquals(secondEntity.getO(), retrievedEntity.getProperties().get("O").getValueAsString());
+            }
+        }
+        finally {
+            // cleanup
+            table.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void tableCreateAndAttemptCreateOnceExistsSharedKeyLite() throws StorageException, URISyntaxException {
+        tClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
+        String tableName = generateRandomTableName();
+        CloudTable table = tClient.getTableReference(tableName);
+        try {
+            table.create();
+            Assert.assertTrue(table.exists());
+
+            // Should fail as it already exists
+            try {
+                table.create();
+                fail();
+            }
+            catch (StorageException ex) {
+                Assert.assertEquals(ex.getErrorCode(), "TableAlreadyExists");
             }
         }
         finally {
