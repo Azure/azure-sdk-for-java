@@ -157,7 +157,6 @@ public class TableRestProxy implements TableContract {
     }
 
     private String encodeODataURIValue(String value) {
-        //TODO: Unclear if OData value in URI's need to be encoded or not
         return value;
     }
 
@@ -757,7 +756,6 @@ public class TableRestProxy implements TableContract {
             headers.addHeader("If-Match", entity.getEtag());
         }
 
-        //TODO: Review code to make sure encoding is correct 
         ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
         httpReaderWriter.appendMethod(httpRequest, verb, path);
         httpReaderWriter.appendHeaders(httpRequest, headers);
@@ -780,7 +778,6 @@ public class TableRestProxy implements TableContract {
         headers.addHeader("Content-ID", Integer.toString(contentId));
         headers.addHeader("If-Match", etag == null ? "*" : etag);
 
-        //TODO: Review code to make sure encoding is correct 
         ByteArrayOutputStream httpRequest = new ByteArrayOutputStream();
         httpReaderWriter.appendMethod(httpRequest, "DELETE", path);
         httpReaderWriter.appendHeaders(httpRequest, headers);
