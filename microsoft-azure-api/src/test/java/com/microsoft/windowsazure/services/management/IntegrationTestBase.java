@@ -97,6 +97,7 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, ManagementConfiguration.SUBSCRIPTION_ID);
         overrideWithEnv(config, ManagementConfiguration.KEYSTORE_PASSWORD);
         overrideWithEnv(config, ManagementConfiguration.KEYSTORE_PATH);
+        overrideWithEnv(config, ManagementConfiguration.KEYSTORE_TYPE);
 
         return config;
     }

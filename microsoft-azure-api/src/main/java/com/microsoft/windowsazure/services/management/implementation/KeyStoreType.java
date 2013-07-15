@@ -15,6 +15,15 @@
 
 package com.microsoft.windowsazure.services.management.implementation;
 
+/**
+ * The Enum representing the type of the KeyStore.
+ */
 public enum KeyStoreType {
-    jks, pkcs12
+
+    /** The jceks. */
+    jceks,
+    /** The jks. */
+    jks,
+    /** The pkcs12. */
+    pkcs12
 }

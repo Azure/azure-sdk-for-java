@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.management.ManagementConfiguration;
@@ -60,9 +61,6 @@ public class ManagementRestProxy implements ManagementContract {
     /** The subscription id. */
     private final String subscriptionId;
 
-    /** The key store path. */
-    private final String keyStorePath;
-
     /** The rfc1123 date convert. */
     private final RFC1123DateConverter rfc1123DateConvert = new RFC1123DateConverter();
 
@@ -81,19 +79,18 @@ public class ManagementRestProxy implements ManagementContract {
      *            the uri
      * @param subscriptionId
      *            the subscription id
-     * @param keyStorePath
-     *            the key store path
+     * @param userAgentFilter
+     *            the user agent filter
      */
     @Inject
     public ManagementRestProxy(Client channel, @Named(ManagementConfiguration.URI) String uri,
-            @Named(ManagementConfiguration.SUBSCRIPTION_ID) String subscriptionId,
-            @Named(ManagementConfiguration.KEYSTORE_PATH) String keyStorePath) {
+            @Named(ManagementConfiguration.SUBSCRIPTION_ID) String subscriptionId, UserAgentFilter userAgentFilter) {
 
         this.channel = channel;
         this.filters = new ServiceFilter[0];
         this.uri = uri;
         this.subscriptionId = subscriptionId;
-        this.keyStorePath = keyStorePath;
+        this.channel.addFilter(userAgentFilter);
     }
 
     /**
@@ -110,13 +107,11 @@ public class ManagementRestProxy implements ManagementContract {
      * @param keyStorePath
      *            the key store path
      */
-    public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter, String uri, String subscriptionId,
-            String keyStorePath) {
+    public ManagementRestProxy(Client channel, ServiceFilter[] serviceFilter, String uri, String subscriptionId) {
         this.channel = channel;
         this.filters = serviceFilter;
         this.uri = uri;
         this.subscriptionId = subscriptionId;
-        this.keyStorePath = keyStorePath;
     }
 
     /**
@@ -169,7 +164,7 @@ public class ManagementRestProxy implements ManagementContract {
     public ManagementContract withFilter(ServiceFilter filter) {
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new ManagementRestProxy(channel, newFilters, uri, subscriptionId, keyStorePath);
+        return new ManagementRestProxy(channel, newFilters, uri, subscriptionId);
     }
 
     /* (non-Javadoc)

@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.management.implementation;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -40,40 +41,50 @@ public class SSLContextFactory {
      * @throws GeneralSecurityException
      *             the general security exception
      * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     *             when an I/O exception has occurred.
      */
     public static SSLContext createSSLContext(KeyStoreCredential keyStoreCredential) throws GeneralSecurityException,
             IOException {
         if (keyStoreCredential == null) {
             throw new IllegalArgumentException("KeyStoreCredential cannot be null.");
         }
-        return create(keyStoreCredential.getKeyStore(), keyStoreCredential.getKeystorePassword());
+        return create(keyStoreCredential.getKeyStorePath(), keyStoreCredential.getKeystorePassword(),
+                keyStoreCredential.getKeyStoreType());
     }
 
     /**
      * Creates a SSLContext object with specified keystore stream and password.
      * 
-     * @param keyStoreStream
-     *            the key store stream
+     * @param keyStorePath
+     *            the path of the keystore.
      * @param keyStorePassword
-     *            the key stream passwd
+     *            the password of the keystore.
      * @param keyStoreType
-     *            the type
-     * @return the SSL context
+     *            the type of the keystore.
+     * @return An <code>SSLContext</code> instance.
      * @throws GeneralSecurityException
      *             the general security exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static SSLContext create(InputStream keyStoreStream, String keyStorePassword)
+    public static SSLContext create(String keyStorePath, String keyStorePassword, KeyStoreType keyStoreType)
             throws GeneralSecurityException, IOException {
 
-        KeyManager[] keyManagers = getKeyManagers(keyStoreStream, keyStorePassword, "jks");
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(keyManagers, null, new SecureRandom());
-        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+        if ((keyStorePath == null) || (keyStorePath.isEmpty())) {
+            throw new IllegalArgumentException("The keystore path cannot be null or empty.");
+        }
 
-        return context;
+        if (keyStoreType == null) {
+            throw new IllegalArgumentException("The type of the keystore cannot be null");
+        }
+
+        InputStream keyStoreInputStream = new FileInputStream(keyStorePath);
+        KeyManager[] keyManagers = getKeyManagers(keyStoreInputStream, keyStorePassword, keyStoreType);
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(keyManagers, null, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+        keyStoreInputStream.close();
+        return sslContext;
     }
 
     /**
@@ -82,7 +93,7 @@ public class SSLContextFactory {
      * @param keyStoreStream
      *            the key store stream
      * @param keyStorePassword
-     *            the key stream passwd
+     *            the key stream password
      * @param type
      *            the type
      * @return the key managers
@@ -91,18 +102,15 @@ public class SSLContextFactory {
      * @throws GeneralSecurityException
      *             the general security exception
      */
-    private static KeyManager[] getKeyManagers(InputStream keyStoreStream, String keyStorePassword, String type)
-            throws IOException, GeneralSecurityException {
+    private static KeyManager[] getKeyManagers(InputStream keyStoreInputStream, String keyStorePassword,
+            KeyStoreType keyStoreType) throws IOException, GeneralSecurityException {
 
-        KeyStore ks = KeyStore.getInstance(type);
-        ks.load(keyStoreStream, keyStorePassword.toCharArray());
-        keyStoreStream.close();
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType.name());
+        keyStore.load(keyStoreInputStream, keyStorePassword.toCharArray());
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, keyStorePassword.toCharArray());
 
-        String alg = KeyManagerFactory.getDefaultAlgorithm();
-        KeyManagerFactory kmFact = KeyManagerFactory.getInstance(alg);
-        kmFact.init(ks, keyStorePassword.toCharArray());
-
-        return kmFact.getKeyManagers();
+        return keyManagerFactory.getKeyManagers();
     }
 
 }

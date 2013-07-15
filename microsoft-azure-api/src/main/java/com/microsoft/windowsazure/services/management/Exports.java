@@ -64,9 +64,12 @@ public class Exports implements Builder.Exports {
                 String keyStorePass = (String) getPropertyIfExists(profile, properties,
                         ManagementConfiguration.KEYSTORE_PASSWORD);
 
+                KeyStoreType keyStoreType = KeyStoreType.valueOf((String) getPropertyIfExists(profile, properties,
+                        ManagementConfiguration.KEYSTORE_TYPE));
+
                 KeyStoreCredential keyStoreCredential = null;
                 try {
-                    keyStoreCredential = new KeyStoreCredential(keyStorePath, keyStorePass, KeyStoreType.jks);
+                    keyStoreCredential = new KeyStoreCredential(keyStorePath, keyStorePass, keyStoreType);
                 }
                 catch (FileNotFoundException e) {
                     throw new RuntimeException(e);

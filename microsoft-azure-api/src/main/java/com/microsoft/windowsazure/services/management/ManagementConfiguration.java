@@ -35,6 +35,11 @@ public class ManagementConfiguration {
     public final static String KEYSTORE_PASSWORD = "management.keystore.password";
 
     /**
+     * Defines the type of the keystore.
+     */
+    public static final String KEYSTORE_TYPE = "management.keystore.type";
+
+    /**
      * Defines the URI of service management.
      * 
      */
@@ -71,8 +76,8 @@ public class ManagementConfiguration {
      *            A <code>String</code> object that represents the URI of the service management service.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription ID.
-     * @param keyStorePath
-     *            A <code>String</code> object that represents the path of the keystore.
+     * @param keyStoreLocation
+     *            the key store location
      * @param keyStorePassword
      *            A <code>String</code> object that represents the password of the keystore.
      * @return A <code>Configuration</code> object that can be used when creating an instance of the

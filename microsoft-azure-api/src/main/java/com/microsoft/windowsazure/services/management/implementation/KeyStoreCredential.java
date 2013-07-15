@@ -15,24 +15,18 @@
 
 package com.microsoft.windowsazure.services.management.implementation;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
-import com.sun.jersey.core.util.ReaderWriter;
 
 /**
  * The Class KeyStoreCredential.
  */
 public class KeyStoreCredential {
 
-    /** The keystore. */
-    private final byte[] keyStore;
-
     /** The password of the keystore. */
     private final String keystorePassword;
+
+    /** The key store path. */
+    private final String keyStorePath;
 
     /** The key store type. */
     private final KeyStoreType keyStoreType;
@@ -40,51 +34,47 @@ public class KeyStoreCredential {
     /**
      * Creates a <code>KeyStoreCredential</code> instance from a keyStore.
      * 
-     * @param keyStore
-     *            - an InputStream probably a FileInputStream from a keyStore, the jks containing
-     *            your management cert
-     * @param keyPass
-     *            - keyStore password, key for store and the internal private key must be
-     *            symmetric
-     * @param type
-     *            the type
+     * @param keyStorePath
+     *            the path of the keystore.
+     * @param keyStorePassword
+     *            the password for the keystore.
+     * @param keyStoreType
+     *            the type of the keyStore.
      * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     *             when a I/O exception has occurred.
      */
-    public KeyStoreCredential(String keyStorePath, String keyPass, KeyStoreType type) throws IOException {
-        keystorePassword = keyPass;
-        InputStream keyStoreInputStream = new FileInputStream(keyStorePath);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ReaderWriter.writeTo(keyStoreInputStream, byteArrayOutputStream);
-        keyStore = byteArrayOutputStream.toByteArray();
-        keyStoreType = type;
+    public KeyStoreCredential(String keyStorePath, String keyStorePassword, KeyStoreType keyStoreType)
+            throws IOException {
+        this.keystorePassword = keyStorePassword;
+        this.keyStorePath = keyStorePath;
+        this.keyStoreType = keyStoreType;
     }
 
     /**
-     * Gets the key store type.
+     * Gets the type of the key store.
      * 
-     * @return the key store type
+     * @return A <code>KeyStoreType</code> representing the type of the key store.
      */
     public KeyStoreType getKeyStoreType() {
         return keyStoreType;
     }
 
     /**
-     * Gets the key store.
-     * 
-     * @return the key store
-     */
-    public InputStream getKeyStore() {
-        return new ByteArrayInputStream(keyStore);
-    }
-
-    /**
      * Gets the keystore password.
      * 
-     * @return the keystore password
+     * @return A <code>String</code> instance representing the password of the keystore.
      */
     public String getKeystorePassword() {
         return keystorePassword;
+    }
+
+    /**
+     * Gets the key store path.
+     * 
+     * @return the key store path
+     */
+    public String getKeyStorePath() {
+        return this.keyStorePath;
     }
 
 }
