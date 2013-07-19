@@ -20,44 +20,101 @@ package com.microsoft.windowsazure.services.management.models;
  * 
  */
 public class AffinityGroupInfo {
+
+    /** The name. */
     private String name;
+
+    /** The label. */
     private String label;
+
+    /** The description. */
     private String description;
+
+    /** The location. */
     private String location;
 
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Sets the name.
+     * 
+     * @param name
+     *            the name
+     * @return the affinity group info
+     */
     public AffinityGroupInfo setName(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Gets the label.
+     * 
+     * @return the label
+     */
     public String getLabel() {
         return this.label;
     }
 
+    /**
+     * Sets the label.
+     * 
+     * @param label
+     *            the label
+     * @return the affinity group info
+     */
     public AffinityGroupInfo setLabel(String label) {
         this.label = label;
         return this;
     }
 
+    /**
+     * Gets the description.
+     * 
+     * @return the description
+     */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Sets the description.
+     * 
+     * @param description
+     *            the description
+     * @return the affinity group info
+     */
     public AffinityGroupInfo setDescription(String description) {
         this.description = description;
         return this;
     }
 
+    /**
+     * Gets the location.
+     * 
+     * @return the location
+     */
     public String getLocation() {
         return this.location;
     }
 
+    /**
+     * Sets the location.
+     * 
+     * @param location
+     *            the location
+     * @return the affinity group info
+     */
     public AffinityGroupInfo setLocation(String location) {
         this.location = location;
         return this;
     }
+
 }

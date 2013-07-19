@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Wrapper class for all returned lists from Media Services
+ * Wrapper class for all returned lists from service management.
  * 
  */
 public class ListResult<T> extends OperationResult implements List<T> {

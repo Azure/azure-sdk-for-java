@@ -23,15 +23,20 @@ import com.microsoft.windowsazure.services.management.implementation.AffinityGro
 public class AffinityGroupInfoFactory {
 
     /**
-     * Gets the item.
+     * Gets an affinity group info instance with specified affinity group.
      * 
      * @param affinityGroup
      *            the affinity group
-     * @return the item
+     * @return A <code>AffinityGroupInfo</code> instance.
      */
     public static AffinityGroupInfo getItem(AffinityGroup affinityGroup) {
-        return new AffinityGroupInfo().setName(affinityGroup.getName()).setLabel(affinityGroup.getLabel())
-                .setLocation(affinityGroup.getLocation()).setDescription(affinityGroup.getDescription());
+        if (affinityGroup == null) {
+            return null;
+        }
+        else {
+            return new AffinityGroupInfo().setName(affinityGroup.getName()).setLabel(affinityGroup.getLabel())
+                    .setLocation(affinityGroup.getLocation()).setDescription(affinityGroup.getDescription());
+        }
     }
 
 }

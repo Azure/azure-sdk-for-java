@@ -16,14 +16,20 @@
 package com.microsoft.windowsazure.services.management.models;
 
 /**
- * The base result class for all the result of service management operation.
+ * The options to create affinity group.
  * 
  */
 public class CreateAffinityGroupOptions {
 
-    public CreateAffinityGroupOptions setDescription(String expectedDescription) {
-        // TODO Auto-generated method stub
-        return null;
+    private String descrption;
+
+    public CreateAffinityGroupOptions setDescription(String description) {
+        this.descrption = description;
+        return this;
+    }
+
+    public String getDescription() {
+        return this.descrption;
     }
 
 }

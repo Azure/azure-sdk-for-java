@@ -41,11 +41,16 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
         CreateAffinityGroupResult createAffinityGroupResult = service.createAffinityGroup(expectedAffinityGroupName,
                 expectedLabel, expectedLocation);
 
+        AffinityGroupInfo affinityGroupInfo = service.getAffinityGroup(expectedAffinityGroupName).getValue();
+
         // Assert
         assertNotNull(createAffinityGroupResult.getLocation());
         assertNotNull(createAffinityGroupResult.getRegion());
         assertNotNull(createAffinityGroupResult.getServer());
         assertNotNull(createAffinityGroupResult.getDate());
+        assertEquals(expectedAffinityGroupName, affinityGroupInfo.getName());
+        assertEquals(expectedLabel, affinityGroupInfo.getLabel());
+        assertEquals(expectedLocation, affinityGroupInfo.getLocation());
 
     }
 
@@ -64,10 +69,12 @@ public class ManagementIntegrationTest extends IntegrationTestBase {
                 expectedLabel, expectedLocation, createAffinityGroupOptions);
 
         // Assert
+        AffinityGroupInfo actualAffinityGroupInfo = service.getAffinityGroup(expectedAffinityGroupName).getValue();
         assertNotNull(createAffinityGroupResult.getLocation());
         assertNotNull(createAffinityGroupResult.getRegion());
         assertNotNull(createAffinityGroupResult.getServer());
         assertNotNull(createAffinityGroupResult.getDate());
+        assertEquals(expectedDescription, actualAffinityGroupInfo.getDescription());
 
     }
 

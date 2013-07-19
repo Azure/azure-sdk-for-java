@@ -202,7 +202,7 @@ public class ManagementRestProxy implements ManagementContract {
         createAffinityGroup.setLabel(label);
         createAffinityGroup.setLocation(location);
         if (createAffinityGroupOptions != null) {
-            createAffinityGroup.setDescription(createAffinityGroup.getDescription());
+            createAffinityGroup.setDescription(createAffinityGroupOptions.getDescription());
         }
         ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
                 .header("x-ms-version", "2013-03-01").header("x-ms-client-request-id", UUID.randomUUID().toString())
