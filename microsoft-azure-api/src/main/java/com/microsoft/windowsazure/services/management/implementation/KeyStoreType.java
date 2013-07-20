@@ -12,18 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.configuration.builder;
 
-import java.util.Map;
+package com.microsoft.windowsazure.services.management.implementation;
 
-import com.microsoft.windowsazure.services.core.Builder;
+/**
+ * The Enum representing the type of the KeyStore.
+ */
+public enum KeyStoreType {
 
-public class AlterClassWithProperties implements Builder.Alteration<ClassWithProperties> {
-    @Override
-    public ClassWithProperties alter(String profile, ClassWithProperties instance, Builder builder,
-            Map<String, Object> properties) {
-        instance.setFoo(instance.getFoo() + " - changed");
-        return instance;
-    }
-
+    /** The jceks. */
+    jceks,
+    /** The jks. */
+    jks,
+    /** The pkcs12. */
+    pkcs12
 }

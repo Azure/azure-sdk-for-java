@@ -12,18 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.configuration.builder;
 
-import java.util.Map;
+package com.microsoft.windowsazure.services.management.models;
 
-import com.microsoft.windowsazure.services.core.Builder;
+/**
+ * The base result class for all the result of service management operation.
+ * 
+ */
+public class UpdateAffinityGroupOptions {
 
-public class AlterClassWithProperties implements Builder.Alteration<ClassWithProperties> {
-    @Override
-    public ClassWithProperties alter(String profile, ClassWithProperties instance, Builder builder,
-            Map<String, Object> properties) {
-        instance.setFoo(instance.getFoo() + " - changed");
-        return instance;
+    private String description;
+
+    public UpdateAffinityGroupOptions setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
 }

@@ -40,7 +40,8 @@ public class Exports implements Builder.Exports {
         registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
             @Override
-            public ClientConfig alter(ClientConfig instance, Builder builder, Map<String, Object> properties) {
+            public ClientConfig alter(String profile, ClientConfig instance, Builder builder,
+                    Map<String, Object> properties) {
 
                 // enable this feature for unattributed json object serialization
                 instance.getProperties().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
