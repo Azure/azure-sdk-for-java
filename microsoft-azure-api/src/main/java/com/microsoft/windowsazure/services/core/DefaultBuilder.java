@@ -181,10 +181,13 @@ public class DefaultBuilder implements Builder, Builder.Registry {
             throw new RuntimeException("Service or property not registered: " + profile + " " + service.getName());
         }
         T instance = factory.create(profile, service, this, properties);
-        List<Alteration<?>> alterationList = alterations.get(service).get(instanceClass);
-        if (alterationList != null) {
-            for (Alteration<?> alteration : alterationList) {
-                instance = ((Alteration<T>) alteration).alter(profile, instance, this, properties);
+        Map<Class<?>, List<Alteration<?>>> alterationMap = alterations.get(service);
+        if (alterationMap != null) {
+            List<Alteration<?>> alterationList = alterationMap.get(instanceClass);
+            if (alterationList != null) {
+                for (Alteration<?> alteration : alterationList) {
+                    instance = ((Alteration<T>) alteration).alter(profile, instance, this, properties);
+                }
             }
         }
         return instance;
