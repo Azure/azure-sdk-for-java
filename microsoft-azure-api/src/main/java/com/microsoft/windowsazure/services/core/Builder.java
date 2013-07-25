@@ -18,10 +18,10 @@ import java.util.Map;
 
 public interface Builder {
 
-    public abstract <T> T build(String profile, Class<T> service, Map<String, Object> properties);
+    public abstract <S, T> T build(String profile, Class<S> service, Class<T> instance, Map<String, Object> properties);
 
     public interface Factory<T> {
-        T create(String profile, Builder builder, Map<String, Object> properties);
+        <S> T create(String profile, Class<S> service, Builder builder, Map<String, Object> properties);
     }
 
     public interface Alteration<T> {
@@ -35,7 +35,7 @@ public interface Builder {
 
         <T> Registry add(Factory<T> factory);
 
-        <T> void alter(Class<T> service, Alteration<T> alteration);
+        <S, T> void alter(Class<S> service, Class<T> instance, Alteration<T> alteration);
     }
 
     public interface Exports {

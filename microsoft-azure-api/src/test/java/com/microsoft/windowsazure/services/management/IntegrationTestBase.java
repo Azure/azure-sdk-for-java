@@ -51,7 +51,7 @@ public abstract class IntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
-        builder.alter(Client.class, new Alteration<Client>() {
+        builder.alter(ManagementContract.class, Client.class, new Alteration<Client>() {
             @Override
             public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
                 client.addFilter(new LoggingFilter());

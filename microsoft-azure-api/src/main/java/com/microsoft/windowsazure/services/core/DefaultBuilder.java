@@ -30,11 +30,11 @@ import javax.inject.Named;
 
 public class DefaultBuilder implements Builder, Builder.Registry {
     Map<Class<?>, Factory<?>> factories;
-    Map<Class<?>, List<Alteration<?>>> alterations;
+    Map<Class<?>, Map<Class<?>, List<Alteration<?>>>> alterations;
 
     public DefaultBuilder() {
         factories = new HashMap<Class<?>, Factory<?>>();
-        alterations = new HashMap<Class<?>, List<Alteration<?>>>();
+        alterations = new HashMap<Class<?>, Map<Class<?>, List<Alteration<?>>>>();
     }
 
     public static DefaultBuilder create() {
@@ -94,7 +94,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
         addFactory(service, new Builder.Factory<T>() {
             @Override
             @SuppressWarnings("unchecked")
-            public T create(String profile, Builder builder, Map<String, Object> properties) {
+            public <S> T create(String profile, Class<S> service, Builder builder, Map<String, Object> properties) {
                 Object[] initializationArguments = new Object[parameterTypes.length];
                 for (int i = 0; i != parameterTypes.length; ++i) {
 
@@ -121,7 +121,7 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 
                     if (!located) {
                         located = true;
-                        initializationArguments[i] = builder.build(fullName, parameterTypes[i], properties);
+                        initializationArguments[i] = builder.build(fullName, service, parameterTypes[i], properties);
                     }
                 }
 
@@ -175,27 +175,33 @@ public class DefaultBuilder implements Builder, Builder.Registry {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T build(String profile, Class<T> service, Map<String, Object> properties) {
-        Factory<T> factory = (Factory<T>) factories.get(service);
+    public <S, T> T build(String profile, Class<S> service, Class<T> instanceClass, Map<String, Object> properties) {
+        Factory<T> factory = (Factory<T>) factories.get(instanceClass);
         if (factory == null) {
             throw new RuntimeException("Service or property not registered: " + profile + " " + service.getName());
         }
-        T instance = factory.create(profile, this, properties);
-        List<Alteration<?>> alterationList = alterations.get(service);
-        if (alterationList != null) {
-            for (Alteration<?> alteration : alterationList) {
-                instance = ((Alteration<T>) alteration).alter(profile, instance, this, properties);
+        T instance = factory.create(profile, service, this, properties);
+        Map<Class<?>, List<Alteration<?>>> alterationMap = alterations.get(service);
+        if (alterationMap != null) {
+            List<Alteration<?>> alterationList = alterationMap.get(instanceClass);
+            if (alterationList != null) {
+                for (Alteration<?> alteration : alterationList) {
+                    instance = ((Alteration<T>) alteration).alter(profile, instance, this, properties);
+                }
             }
         }
         return instance;
     }
 
     @Override
-    public <T> void alter(Class<T> service, Alteration<T> alteration) {
+    public <S, T> void alter(Class<S> service, Class<T> instance, Alteration<T> alteration) {
         if (!this.alterations.containsKey(service)) {
-            this.alterations.put(service, new ArrayList<Alteration<?>>());
+            this.alterations.put(service, new HashMap<Class<?>, List<Alteration<?>>>());
         }
-        this.alterations.get(service).add(alteration);
+        if (!this.alterations.get(service).containsKey(instance)) {
+            this.alterations.get(service).put(instance, new ArrayList<Alteration<?>>());
+        }
+        this.alterations.get(service).get(instance).add(alteration);
     }
 
 }
