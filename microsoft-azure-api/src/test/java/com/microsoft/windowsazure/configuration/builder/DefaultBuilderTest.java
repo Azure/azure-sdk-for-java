@@ -2,15 +2,15 @@
  * Copyright Microsoft Corporation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.microsoft.windowsazure.configuration.builder;
 
@@ -48,8 +48,8 @@ public class DefaultBuilderTest {
         // Act
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("Foo", "world");
-        ClassWithNamedParameter cwnp = builder.build("",
-                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter cwnp = builder.build("", ClassWithNamedParameter.class, ClassWithNamedParameter.class,
+                properties);
 
         // Assert
         Assert.assertEquals("world", cwnp.getHello());
@@ -63,8 +63,8 @@ public class DefaultBuilderTest {
         builder.add(ClassWithNamedParameter.class);
 
         // Act
-        ClassWithNamedParameter cwnp = builder.build("",
-                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter cwnp = builder.build("", ClassWithNamedParameter.class, ClassWithNamedParameter.class,
+                properties);
 
         // Assert
         Assert.assertEquals("world", cwnp.getHello());
@@ -76,7 +76,7 @@ public class DefaultBuilderTest {
         builder.add(ClassWithSingleCtorNoInject.class);
 
         // Act
-        ClassWithSingleCtorNoInject result = builder.build("",
+        ClassWithSingleCtorNoInject result = builder.build("", ClassWithSingleCtorNoInject.class,
                 ClassWithSingleCtorNoInject.class, properties);
 
         // Assert
@@ -91,7 +91,7 @@ public class DefaultBuilderTest {
         builder.add(ClassWithMultipleCtorNoInject.class);
 
         // Act
-        ClassWithMultipleCtorNoInject result = builder.build("",
+        ClassWithMultipleCtorNoInject result = builder.build("", ClassWithMultipleCtorNoInject.class,
                 ClassWithMultipleCtorNoInject.class, properties);
 
         // Assert
@@ -107,7 +107,7 @@ public class DefaultBuilderTest {
         builder.add(ClassWithMultipleCtorMultipleInject.class);
 
         // Act
-        ClassWithMultipleCtorMultipleInject result = builder.build("",
+        ClassWithMultipleCtorMultipleInject result = builder.build("", ClassWithMultipleCtorMultipleInject.class,
                 ClassWithMultipleCtorMultipleInject.class, properties);
 
         // Assert
@@ -119,10 +119,11 @@ public class DefaultBuilderTest {
     public void alterationExecutesWhenInstanceCreated() throws Exception {
         // Arrange
         builder.add(ClassWithProperties.class);
-        builder.alter(ClassWithProperties.class, new AlterClassWithProperties());
+        builder.alter(ClassWithProperties.class, ClassWithProperties.class, new AlterClassWithProperties());
 
         // Act
-        ClassWithProperties result = builder.build("", ClassWithProperties.class, properties);
+        ClassWithProperties result = builder
+                .build("", ClassWithProperties.class, ClassWithProperties.class, properties);
 
         // Assert
         Assert.assertEquals("one - changed", result.getFoo());
@@ -136,7 +137,8 @@ public class DefaultBuilderTest {
         properties.put("testing.Foo", "Profile foo value");
 
         // Act
-        ClassWithNamedParameter result = builder.build("testing", ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result = builder.build("testing", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
 
         // Assert
         Assert.assertEquals("Profile foo value", result.getHello());
@@ -150,9 +152,12 @@ public class DefaultBuilderTest {
         properties.put("testing.Foo", "Profile foo value");
 
         // Act
-        ClassWithNamedParameter result1 = builder.build("", ClassWithNamedParameter.class, properties);
-        ClassWithNamedParameter result2 = builder.build("production", ClassWithNamedParameter.class, properties);
-        ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result1 = builder.build("", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result2 = builder.build("production", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
 
         // Assert
         Assert.assertEquals("fallback", result1.getHello());
@@ -169,9 +174,12 @@ public class DefaultBuilderTest {
         properties.put("testing.custom.Foo", "testing.custom.Foo value");
 
         // Act
-        ClassWithNamedParameter result1 = builder.build("custom", ClassWithNamedParameter.class, properties);
-        ClassWithNamedParameter result2 = builder.build("production.custom", ClassWithNamedParameter.class, properties);
-        ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result1 = builder.build("custom", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result2 = builder.build("production.custom", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
+        ClassWithNamedParameter result3 = builder.build("testing.custom", ClassWithNamedParameter.class,
+                ClassWithNamedParameter.class, properties);
 
         // Assert
         Assert.assertEquals("custom.Foo value", result1.getHello());

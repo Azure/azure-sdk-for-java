@@ -37,7 +37,7 @@ public class Exports implements Builder.Exports {
         registry.add(UserAgentFilter.class);
 
         // alter jersey client config for serviceBus
-        registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+        registry.alter(ServiceBusContract.class, ClientConfig.class, new Builder.Alteration<ClientConfig>() {
 
             @Override
             public ClientConfig alter(String profile, ClientConfig instance, Builder builder,

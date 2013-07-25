@@ -53,7 +53,7 @@ public class Exports implements Builder.Exports {
         registry.add(VersionHeadersFilter.class);
         registry.add(UserAgentFilter.class);
 
-        registry.alter(ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+        registry.alter(MediaContract.class, ClientConfig.class, new Builder.Alteration<ClientConfig>() {
             @SuppressWarnings("rawtypes")
             @Override
             public ClientConfig alter(String profile, ClientConfig instance, Builder builder,
