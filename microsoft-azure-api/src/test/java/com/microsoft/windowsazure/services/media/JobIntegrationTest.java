@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
+import com.microsoft.windowsazure.services.media.models.JobNotificationSubscription;
 import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
@@ -37,6 +38,8 @@ import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
+import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage;
 
 public class JobIntegrationTest extends IntegrationTestBase {
 
@@ -113,6 +116,46 @@ public class JobIntegrationTest extends IntegrationTestBase {
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
                 endTime, 1, actualJob);
+    }
+
+    @Test
+    public void createJobWithNotificationSuccess() throws ServiceException {
+        // Arrange
+        String name = testJobPrefix + "createJobWithNotificationSuccess";
+        String queueName = testQueuePrefix + "createjobwithnotificationsuccess";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
+
+        queueService.createQueue(queueName);
+        List<Queue> queues = queueService.listQueues().getQueues();
+        String id = "";
+        for (Queue queue : queues) {
+            if (queue.getName().equals(queueName)) {
+                id = queue.getUrl();
+            }
+        }
+
+        // Act
+        JobInfo actualJob = service.create(
+                Job.create().setName(name).setPriority(priority).addInputMediaAsset(assetInfo.getId())
+                        .addTaskCreator(getTaskCreator(0))).addJobNotificationSubscription(
+                getJobNotificationSubscription(id, JobState.Canceled));
+
+        // Assert
+        verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,
+                endTime, 1, actualJob);
+        List<QueueMessage> queueMessages = queueService.peekMessages(queueName).getQueueMessages();
+        assertEquals(1, queueMessages.size());
+    }
+
+    private JobNotificationSubscription getJobNotificationSubscription(String id, JobState targetJobState) {
+        return new JobNotificationSubscription(id, targetJobState);
     }
 
     @Test

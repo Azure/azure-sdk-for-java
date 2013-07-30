@@ -16,10 +16,12 @@
 package com.microsoft.windowsazure.services.media.implementation.content;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization
@@ -32,6 +34,11 @@ public class JobType implements MediaServiceDTO {
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
+
+    /** The job notification subscriptions */
+    @XmlElementWrapper(name = "JobNotificationSubscriptions", namespace = Constants.ODATA_DATA_NS)
+    @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
+    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptions;
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
@@ -267,6 +274,10 @@ public class JobType implements MediaServiceDTO {
     public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
         return this;
+    }
+
+    public List<JobNotificationSubscriptionType> getJobNotificationSubscriptions() {
+        return this.jobNotificationSubscriptions;
     }
 
 }

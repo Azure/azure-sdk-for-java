@@ -19,6 +19,7 @@ import java.util.Date;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
+import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
 /**
@@ -153,5 +154,13 @@ public class JobInfo extends ODataEntity<JobType> {
      */
     public LinkInfo<TaskInfo> getTasksLink() {
         return this.<TaskInfo> getRelationLink("Tasks");
+    }
+
+    public JobInfo addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
+        getContent().getJobNotificationSubscriptions().add(
+                new JobNotificationSubscriptionType().setNotificationEndPointId(
+                        jobNotificationSubscription.getNotificationEndPointId()).setTargetJobState(
+                        jobNotificationSubscription.getTargetJobState().getCode()));
+        return this;
     }
 }
