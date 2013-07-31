@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
+import com.microsoft.windowsazure.services.core.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.table.EdmValueConverter;
 import com.microsoft.windowsazure.services.table.models.EdmType;
 import com.sun.jersey.core.util.Base64;
