@@ -30,6 +30,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.ServiceExceptionMatcher;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
 import com.microsoft.windowsazure.services.queue.models.ListMessagesOptions;
@@ -199,7 +201,18 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void deleteQueueWorks() throws Exception {
+        // Arrange 
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
 
+        service.createQueue(CREATABLE_QUEUE_1);
+
+        // Act
+        service.deleteQueue(CREATABLE_QUEUE_1);
+        GetQueueMetadataResult result = service.getQueueMetadata(CREATABLE_QUEUE_1);
+
+        // Assert
+        assertNull(result);
     }
 
     @Test
