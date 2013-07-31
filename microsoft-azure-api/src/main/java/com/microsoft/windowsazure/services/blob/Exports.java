@@ -16,10 +16,10 @@ package com.microsoft.windowsazure.services.blob;
 
 import com.microsoft.windowsazure.services.blob.implementation.BlobExceptionProcessor;
 import com.microsoft.windowsazure.services.blob.implementation.BlobRestProxy;
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilter;
 import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.services.core.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 
 public class Exports implements Builder.Exports {
