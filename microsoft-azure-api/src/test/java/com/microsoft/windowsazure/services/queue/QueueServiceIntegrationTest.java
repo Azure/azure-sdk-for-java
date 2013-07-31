@@ -59,6 +59,8 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String CREATABLE_QUEUE_3;
     private static String[] creatableQueues;
     private static String[] testQueues;
+    private static QueueContract service;
+    private static Configuration config;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -91,16 +93,14 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         CREATABLE_QUEUE_3 = creatableQueues[2];
 
         // Create all test containers and their content
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
+        config = createConfiguration();
+        service = QueueService.create(config);
 
         createQueues(service, testQueuesPrefix, testQueues);
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         deleteQueues(service, testQueuesPrefix, testQueues);
         deleteQueues(service, createableQueuesPrefix, creatableQueues);
@@ -136,8 +136,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void getServicePropertiesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Don't run this test with emulator, as v1.6 doesn't support this method
         if (isRunningWithEmulator(config)) {
@@ -159,8 +157,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void setServicePropertiesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Don't run this test with emulator, as v1.6 doesn't support this method
         if (isRunningWithEmulator(config)) {
@@ -188,8 +184,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createQueueWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createQueue(CREATABLE_QUEUE_1);
@@ -204,10 +198,13 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void deleteQueueWorks() throws Exception {
+
+    }
+
+    @Test
     public void createQueueWithOptionsWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createQueue(CREATABLE_QUEUE_2,
@@ -227,8 +224,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listQueuesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         ListQueuesResult result = service.listQueues();
@@ -245,8 +240,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listQueuesWithOptionsWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         ListQueuesResult result = service.listQueues(new ListQueuesOptions().setMaxResults(3).setPrefix(
@@ -281,8 +274,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void setQueueMetadataWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createQueue(CREATABLE_QUEUE_3);
@@ -308,8 +299,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createMessageWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createMessage(TEST_QUEUE_FOR_MESSAGES, "message1");
@@ -323,8 +312,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void createNullMessageException() throws Exception {
         // Arrange 
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         expectedException.expect(NullPointerException.class);
@@ -334,8 +321,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listMessagesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.set(2010, 01, 01);
@@ -372,8 +357,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void listMessagesWithOptionsWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.set(2010, 01, 01);
@@ -412,8 +395,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void peekMessagesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.set(2010, 01, 01);
@@ -447,8 +428,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void peekMessagesWithOptionsWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.set(2010, 01, 01);
@@ -484,8 +463,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void clearMessagesWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_6, "message1");
@@ -504,8 +481,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteMessageWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
 
         // Act
         service.createMessage(TEST_QUEUE_FOR_MESSAGES_7, "message1");
@@ -527,8 +502,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateNullMessageException() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         String messageId = "messageId";
 
         String popReceipt = "popReceipt";
@@ -544,8 +517,6 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateMessageWorks() throws Exception {
         // Arrange
-        Configuration config = createConfiguration();
-        QueueContract service = QueueService.create(config);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.set(2010, 01, 01);
