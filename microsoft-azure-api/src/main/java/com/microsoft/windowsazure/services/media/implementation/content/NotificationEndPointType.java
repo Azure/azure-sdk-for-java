@@ -38,10 +38,10 @@ public class NotificationEndPointType implements MediaServiceDTO {
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
     private Date created;
 
-    @XmlElement(name = "EndpointType", namespace = Constants.ODATA_DATA_NS)
+    @XmlElement(name = "EndPointType", namespace = Constants.ODATA_DATA_NS)
     private int endpointType;
 
-    @XmlElement(name = "EndpointAddress", namespace = Constants.ODATA_DATA_NS)
+    @XmlElement(name = "EndPointAddress", namespace = Constants.ODATA_DATA_NS)
     private String endpointAddress;
 
     /**

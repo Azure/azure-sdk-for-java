@@ -30,7 +30,7 @@ import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo
 public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     private final String validButNonexistNotificationEndPointId = "notificationEndPointId";
     private final String testNotificationEndPointPrefix = "testNotificationEndPointPrefix";
-    private final String testEndPointAddress = "testEndPointAddress";
+    private final String testEndPointAddress = "testendpointaddress";
 
     private void verifyNotificationEndPointInfosEqual(String message, NotificationEndPointInfo expected,
             NotificationEndPointInfo actual) {
@@ -51,7 +51,6 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     @Test
     public void canCreateNotificationEndPoint() throws Exception {
         String testName = testNotificationEndPointPrefix + "CanCreate";
-        String testEndPointAddress = "testEndPointAddress";
 
         NotificationEndPointInfo actualNotificationEndPoint = service.create(NotificationEndPoint.create(testName,
                 EndPointType.AzureQueue, testEndPointAddress));
@@ -86,21 +85,21 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canGetSinglePolicyByInvalidId() throws Exception {
+    public void canGetSingleNotificationEndPointByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(NotificationEndPoint.get(invalidId));
     }
 
     @Test
-    public void canGetSinglePolicyByNonexistId() throws Exception {
+    public void cannotGetSingleNotificationEndPointByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(NotificationEndPoint.get(validButNonexistNotificationEndPointId));
     }
 
     @Test
-    public void canRetrieveListOfAccessPolicies() throws Exception {
+    public void canRetrieveListOfNotificationEndPoints() throws Exception {
         String[] notificationEndPointNames = new String[] { testNotificationEndPointPrefix + "ListOne",
                 testNotificationEndPointPrefix + "ListTwo" };
 
@@ -172,9 +171,9 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canDeleteNotificationEndPointByNonexistId() throws Exception {
+    public void cannotDeleteNotificationEndPointByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(NotificationEndPoint.delete(validButNonexistNotificationEndPointId));
     }
 
