@@ -16,14 +16,24 @@
 package com.microsoft.windowsazure.services.media.models;
 
 /**
- * The Class TaskHistoricalEvent.
+ * The Class JobNotificationSubscription.
  */
 public class JobNotificationSubscription {
 
+    /** The notification end point id. */
     private final String notificationEndPointId;
 
+    /** The target job state. */
     private final JobState targetJobState;
 
+    /**
+     * Instantiates a new job notification subscription.
+     * 
+     * @param notificationEndPointId
+     *            the notification end point id
+     * @param targetJobState
+     *            the target job state
+     */
     public JobNotificationSubscription(String notificationEndPointId, JobState targetJobState) {
         this.notificationEndPointId = notificationEndPointId;
         this.targetJobState = targetJobState;

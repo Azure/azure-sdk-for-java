@@ -40,11 +40,11 @@ public class NotificationEndPoint {
      * Creates an operation to create a new notification end point.
      * 
      * @param name
-     *            name of the notification end point
-     * @param durationInMinutes
-     *            how long the notification end point will be in force
-     * @param permissions
-     *            permissions allowed by this notification end point
+     *            name of the notification end point.
+     * @param endPointType
+     *            the type of the notification end point.
+     * @param endPointAddress
+     *            the address of the end point.
      * @return The operation
      */
     public static EntityCreateOperation<NotificationEndPointInfo> create(String name, EndPointType endPointType,
@@ -98,7 +98,7 @@ public class NotificationEndPoint {
     }
 
     /**
-     * Create an operation that will retrieve all access policies
+     * Create an operation that will retrieve all notification end points
      * 
      * @return the operation
      */

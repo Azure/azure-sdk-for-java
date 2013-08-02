@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +28,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.EndPointType;
 import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
@@ -34,10 +36,14 @@ import com.microsoft.windowsazure.services.media.models.JobNotificationSubscript
 import com.microsoft.windowsazure.services.media.models.JobState;
 import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.NotificationEndPoint;
+import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage;
 
 public class JobIntegrationTest extends IntegrationTestBase {
@@ -136,12 +142,31 @@ public class JobIntegrationTest extends IntegrationTestBase {
         Date endTime = null;
 
         queueService.createQueue(queueName);
+        String endPointAddress = null;
+        String notificationEndPointName = UUID.randomUUID().toString();
+        ListQueuesResult listQueueResult = queueService.listQueues();
+        List<Queue> queueList = listQueueResult.getQueues();
+        for (Queue queue : queueList) {
+            if (queue.getName().equals(queueName)) {
+                endPointAddress = queue.getUrl();
+            }
+        }
+
+        service.create(NotificationEndPoint.create(notificationEndPointName, EndPointType.AzureQueue, queueName));
+        ListResult<NotificationEndPointInfo> listNotificationEndPointInfos = service.list(NotificationEndPoint.list());
+        String notificationEndPointId = null;
+
+        for (NotificationEndPointInfo notificationEndPointInfo : listNotificationEndPointInfos) {
+            if (notificationEndPointInfo.getName().equals(notificationEndPointName)) {
+                notificationEndPointId = notificationEndPointInfo.getId();
+            }
+        }
 
         // Act
         JobInfo actualJob = service.create(
                 Job.create().setName(name).setPriority(priority).addInputMediaAsset(assetInfo.getId())
                         .addTaskCreator(getTaskCreator(0))).addJobNotificationSubscription(
-                getJobNotificationSubscription(queueName, JobState.Canceled));
+                getJobNotificationSubscription(notificationEndPointId, JobState.Canceled));
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,

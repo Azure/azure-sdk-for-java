@@ -23,28 +23,36 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * This type maps the URI.
+ * The type of notification end point.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "NotificationEndPointType", namespace = Constants.ODATA_DATA_NS)
 public class NotificationEndPointType implements MediaServiceDTO {
+
+    /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     private String id;
 
+    /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
     private String name;
 
+    /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
     private Date created;
 
+    /** The end point type. */
     @XmlElement(name = "EndPointType", namespace = Constants.ODATA_DATA_NS)
-    private int endpointType;
+    private int endPointType;
 
+    /** The end point address. */
     @XmlElement(name = "EndPointAddress", namespace = Constants.ODATA_DATA_NS)
-    private String endpointAddress;
+    private String endPointAddress;
 
     /**
+     * Gets the id.
+     * 
      * @return the id.
      */
     public String getId() {
@@ -52,9 +60,12 @@ public class NotificationEndPointType implements MediaServiceDTO {
     }
 
     /**
+     * Sets the id.
+     * 
      * @param id
      *            id
      *            the id to set
+     * @return the notification end point type
      */
     public NotificationEndPointType setId(String id) {
         this.id = id;
@@ -62,6 +73,8 @@ public class NotificationEndPointType implements MediaServiceDTO {
     }
 
     /**
+     * Gets the name.
+     * 
      * @return the name.
      */
     public String getName() {
@@ -69,39 +82,78 @@ public class NotificationEndPointType implements MediaServiceDTO {
     }
 
     /**
+     * Sets the name.
+     * 
      * @param name
      *            name
      *            the name to set
+     * @return the notification end point type
      */
     public NotificationEndPointType setName(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Gets the created.
+     * 
+     * @return the created
+     */
     public Date getCreated() {
         return this.created;
     }
 
+    /**
+     * Sets the created.
+     * 
+     * @param created
+     *            the created
+     * @return the notification end point type
+     */
     public NotificationEndPointType setCreated(Date created) {
         this.created = created;
         return this;
     }
 
+    /**
+     * Gets the end point type.
+     * 
+     * @return the end point type
+     */
     public int getEndPointType() {
-        return this.endpointType;
+        return this.endPointType;
     }
 
+    /**
+     * Sets the end point type.
+     * 
+     * @param endpointType
+     *            the endpoint type
+     * @return the notification end point type
+     */
     public NotificationEndPointType setEndPointType(int endpointType) {
-        this.endpointType = endpointType;
+        this.endPointType = endpointType;
         return this;
     }
 
+    /**
+     * Gets the end point address.
+     * 
+     * @return the end point address
+     */
     public String getEndPointAddress() {
-        return this.endpointAddress;
+        return this.endPointAddress;
     }
 
+    /**
+     * Sets the end point address.
+     * 
+     * @param endpointAddress
+     *            the endpoint address
+     * @return the notification end point type
+     */
     public NotificationEndPointType setEndPointAddress(String endpointAddress) {
-        this.endpointAddress = endpointAddress;
+        this.endPointAddress = endpointAddress;
         return this;
     }
 

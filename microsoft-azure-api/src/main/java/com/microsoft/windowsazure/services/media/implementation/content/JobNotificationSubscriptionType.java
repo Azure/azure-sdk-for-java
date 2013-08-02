@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 /**
  * This type maps the XML returned in the odata ATOM serialization
- * for ErrorDetail entities.
+ * for job notification subscription.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -36,20 +36,20 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO {
     protected int targetJobState;
 
     /**
-     * Gets the code.
+     * Gets the ID of the notification end point.
      * 
-     * @return the code
+     * @return the ID of the notification end point.
      */
     public String getNotificationEndPointId() {
         return this.notificationEndPointId;
     }
 
     /**
-     * Sets the code.
+     * Sets the ID of the notification end point.
      * 
-     * @param code
-     *            the id to set
-     * @return the error detail type
+     * @param notificationEndPointId
+     *            the ID of the notification end point to set
+     * @return the job notification subscription type
      */
     public JobNotificationSubscriptionType setNotificationEndPointId(String notificationEndPointId) {
         this.notificationEndPointId = notificationEndPointId;
@@ -57,20 +57,20 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO {
     }
 
     /**
-     * Gets the message.
+     * Gets the target job state.
      * 
-     * @return the message
+     * @return an integer representing the target job state.
      */
     public int getTargetJobState() {
         return targetJobState;
     }
 
     /**
-     * Sets the message.
+     * Sets the target job state.
      * 
-     * @param message
-     *            the message to set
-     * @return the error detail type
+     * @param targetJobState
+     *            the target job state
+     * @return the target job state
      */
     public JobNotificationSubscriptionType setTargetJobState(int targetJobState) {
         this.targetJobState = targetJobState;
