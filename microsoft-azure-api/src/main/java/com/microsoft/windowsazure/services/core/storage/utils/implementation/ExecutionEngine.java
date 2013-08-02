@@ -168,11 +168,13 @@ public final class ExecutionEngine {
                 task.getResult().setException(translatedException);
             }
             catch (final XMLStreamException e) {
-                // Non Retryable, just throw
+                // Non Retryable except when the inner exception is actually an IOException
                 translatedException = StorageException
                         .translateException(getLastRequestObject(opContext), e, opContext);
                 task.getResult().setException(translatedException);
-                throw translatedException;
+                if (!(e.getCause() instanceof IOException)) {
+                    throw translatedException;
+                }
             }
             catch (final InvalidKeyException e) {
                 // Non Retryable, just throw

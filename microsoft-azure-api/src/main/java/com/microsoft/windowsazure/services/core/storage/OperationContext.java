@@ -38,9 +38,7 @@ public final class OperationContext {
     /**
      * The UUID representing the client side trace ID.
      */
-    // V2 expose when logging is available.
-    @SuppressWarnings("unused")
-    private final String clientTraceID;
+    private String clientRequestID;
 
     /**
      * The Logger object associated with this operation.
@@ -98,8 +96,15 @@ public final class OperationContext {
      * Creates an instance of the <code>OperationContext</code> class.
      */
     public OperationContext() {
-        this.clientTraceID = UUID.randomUUID().toString();
+        this.clientRequestID = UUID.randomUUID().toString();
         this.requestResults = new ArrayList<RequestResult>();
+    }
+
+    /**
+     * @return the clientRequestID
+     */
+    public String getClientRequestID() {
+        return this.clientRequestID;
     }
 
     /**
@@ -199,6 +204,14 @@ public final class OperationContext {
         this.setIntermediateMD5(null);
         this.operationState = null;
         this.setCurrentRequestObject(null);
+    }
+
+    /**
+     * @param clientRequestID
+     *            the clientRequestID to set
+     */
+    public void setClientRequestID(final String clientRequestID) {
+        this.clientRequestID = clientRequestID;
     }
 
     /**
