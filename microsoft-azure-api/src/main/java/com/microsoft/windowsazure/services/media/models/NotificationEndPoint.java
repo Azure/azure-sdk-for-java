@@ -40,11 +40,11 @@ public class NotificationEndPoint {
      * Creates an operation to create a new notification end point.
      * 
      * @param name
-     *            name of the access policy
+     *            name of the notification end point
      * @param durationInMinutes
-     *            how long the access policy will be in force
+     *            how long the notification end point will be in force
      * @param permissions
-     *            permissions allowed by this access policy
+     *            permissions allowed by this notification end point
      * @return The operation
      */
     public static EntityCreateOperation<NotificationEndPointInfo> create(String name, EndPointType endPointType,
@@ -75,25 +75,26 @@ public class NotificationEndPoint {
     }
 
     /**
-     * Create an operation that will retrieve the given access policy
+     * Create an operation that will retrieve the given notification end point
      * 
-     * @param accessPolicyId
-     *            id of access policy to retrieve
+     * @param notificationEndPointId
+     *            id of notification end point to retrieve
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(String accessPolicyId) {
-        return new DefaultGetOperation<AccessPolicyInfo>(ENTITY_SET, accessPolicyId, AccessPolicyInfo.class);
+    public static EntityGetOperation<NotificationEndPointInfo> get(String notificationEndPointId) {
+        return new DefaultGetOperation<NotificationEndPointInfo>(ENTITY_SET, notificationEndPointId,
+                NotificationEndPointInfo.class);
     }
 
     /**
-     * Create an operation that will retrieve the access policy at the given link
+     * Create an operation that will retrieve the notification end point at the given link
      * 
      * @param link
      *            the link
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo<AccessPolicyInfo> link) {
-        return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
+    public static EntityGetOperation<NotificationEndPointInfo> get(LinkInfo<NotificationEndPointInfo> link) {
+        return new DefaultGetOperation<NotificationEndPointInfo>(link.getHref(), NotificationEndPointInfo.class);
     }
 
     /**
@@ -101,19 +102,20 @@ public class NotificationEndPoint {
      * 
      * @return the operation
      */
-    public static DefaultListOperation<AccessPolicyInfo> list() {
-        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
-        });
+    public static DefaultListOperation<NotificationEndPointInfo> list() {
+        return new DefaultListOperation<NotificationEndPointInfo>(ENTITY_SET,
+                new GenericType<ListResult<NotificationEndPointInfo>>() {
+                });
     }
 
     /**
-     * Create an operation to delete the given access policy
+     * Create an operation to delete the given notification end point
      * 
-     * @param accessPolicyId
-     *            id of access policy to delete
+     * @param notificationEndPointId
+     *            id of notification end point to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String accessPolicyId) {
-        return new DefaultDeleteOperation(ENTITY_SET, accessPolicyId);
+    public static EntityDeleteOperation delete(String notificationEndPointId) {
+        return new DefaultDeleteOperation(ENTITY_SET, notificationEndPointId);
     }
 }

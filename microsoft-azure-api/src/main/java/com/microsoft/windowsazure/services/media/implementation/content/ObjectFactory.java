@@ -121,4 +121,12 @@ public class ObjectFactory {
     public RebindContentKeyType createRebindContentKeyType() {
         return new RebindContentKeyType();
     }
+
+    public JobNotificationSubscriptionType createJobNotificationSubscriptionType() {
+        return new JobNotificationSubscriptionType();
+    }
+
+    public NotificationEndPointType createNotificationEndPointType() {
+        return new NotificationEndPointType();
+    }
 }

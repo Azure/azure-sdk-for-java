@@ -19,8 +19,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
 
 /**
  * This type maps the URI.
@@ -29,19 +29,19 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "NotificationEndPointType", namespace = Constants.ODATA_DATA_NS)
 public class NotificationEndPointType implements MediaServiceDTO {
-    @XmlValue
+    @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     private String id;
 
-    @XmlValue
+    @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
     private String name;
 
-    @XmlValue
+    @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
     private Date created;
 
-    @XmlValue
+    @XmlElement(name = "EndpointType", namespace = Constants.ODATA_DATA_NS)
     private int endpointType;
 
-    @XmlValue
+    @XmlElement(name = "EndpointAddress", namespace = Constants.ODATA_DATA_NS)
     private String endpointAddress;
 
     /**

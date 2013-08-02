@@ -16,17 +16,16 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
-import java.util.EnumSet;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
-import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
+import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 
 /**
- * Type containing data about access policies.
+ * Type containing data about notification end points.
  * 
  */
-public class NotificationEndPointInfo extends ODataEntity<AccessPolicyType> {
+public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointType> {
 
     /**
      * Creates a new {@link NotificationEndPointInfo} wrapping the given ATOM
@@ -37,35 +36,17 @@ public class NotificationEndPointInfo extends ODataEntity<AccessPolicyType> {
      * @param content
      *            Content with the AccessPolicy data
      */
-    public NotificationEndPointInfo(EntryType entry, AccessPolicyType content) {
+    public NotificationEndPointInfo(EntryType entry, NotificationEndPointType content) {
         super(entry, content);
     }
 
     /**
-     * Get the access policy id.
+     * Get the notification end point id.
      * 
      * @return the id.
      */
     public String getId() {
         return getContent().getId();
-    }
-
-    /**
-     * Get the creation date.
-     * 
-     * @return the date.
-     */
-    public Date getCreated() {
-        return getContent().getCreated();
-    }
-
-    /**
-     * Get the last modified date.
-     * 
-     * @return the date.
-     */
-    public Date getLastModified() {
-        return getContent().getLastModified();
     }
 
     /**
@@ -78,20 +59,30 @@ public class NotificationEndPointInfo extends ODataEntity<AccessPolicyType> {
     }
 
     /**
-     * Get the duration.
+     * Get the creation date.
      * 
-     * @return the duration.
+     * @return the date.
      */
-    public double getDurationInMinutes() {
-        return getContent().getDurationInMinutes();
+    public Date getCreated() {
+        return getContent().getCreated();
     }
 
     /**
-     * Get the permissions.
+     * Get the type of the end point.
      * 
-     * @return the permissions.
+     * @return the end point type.
      */
-    public EnumSet<AccessPolicyPermission> getPermissions() {
-        return AccessPolicyPermission.permissionsFromBits(getContent().getPermissions());
+    public EndPointType getEndPointType() {
+        return EndPointType.fromCode(getContent().getEndPointType());
     }
+
+    /**
+     * Gets the end point address.
+     * 
+     * @return the end point address
+     */
+    public String getEndPointAddress() {
+        return getContent().getEndPointAddress();
+    }
+
 }
