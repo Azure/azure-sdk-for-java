@@ -86,9 +86,9 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
 
-        overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY);
-        overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME);
-        overrideWithEnv(config, QueueConfiguration.URI);
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY, "media.queue.account.key");
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME, "media.queue.account.name");
+        overrideWithEnv(config, QueueConfiguration.URI, "media.queue.uri");
 
         service = MediaService.create(config);
         queueService = QueueService.create(config);
@@ -98,6 +98,14 @@ public abstract class IntegrationTestBase {
 
     protected static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
+    }
+
+    protected static void overrideWithEnv(Configuration config, String key, String enviromentKey) {
+        String value = System.getenv(enviromentKey);
         if (value == null)
             return;
 

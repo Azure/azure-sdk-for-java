@@ -42,8 +42,6 @@ import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
-import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
-import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage;
 
 public class JobIntegrationTest extends IntegrationTestBase {
@@ -142,15 +140,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         Date endTime = null;
 
         queueService.createQueue(queueName);
-        String endPointAddress = null;
         String notificationEndPointName = UUID.randomUUID().toString();
-        ListQueuesResult listQueueResult = queueService.listQueues();
-        List<Queue> queueList = listQueueResult.getQueues();
-        for (Queue queue : queueList) {
-            if (queue.getName().equals(queueName)) {
-                endPointAddress = queue.getUrl();
-            }
-        }
 
         service.create(NotificationEndPoint.create(notificationEndPointName, EndPointType.AzureQueue, queueName));
         ListResult<NotificationEndPointInfo> listNotificationEndPointInfos = service.list(NotificationEndPoint.list());
