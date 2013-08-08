@@ -12,18 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.configuration.builder;
 
-import java.util.Map;
+package com.microsoft.windowsazure.services.management.models;
 
-import com.microsoft.windowsazure.services.core.Builder;
+/**
+ * The options to create affinity group.
+ * 
+ */
+public class CreateAffinityGroupOptions {
 
-public class AlterClassWithProperties implements Builder.Alteration<ClassWithProperties> {
-    @Override
-    public ClassWithProperties alter(String profile, ClassWithProperties instance, Builder builder,
-            Map<String, Object> properties) {
-        instance.setFoo(instance.getFoo() + " - changed");
-        return instance;
+    private String descrption;
+
+    public CreateAffinityGroupOptions setDescription(String description) {
+        this.descrption = description;
+        return this;
+    }
+
+    public String getDescription() {
+        return this.descrption;
     }
 
 }

@@ -12,18 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.configuration.builder;
 
-import java.util.Map;
+package com.microsoft.windowsazure.services.management.models;
 
-import com.microsoft.windowsazure.services.core.Builder;
 
-public class AlterClassWithProperties implements Builder.Alteration<ClassWithProperties> {
-    @Override
-    public ClassWithProperties alter(String profile, ClassWithProperties instance, Builder builder,
-            Map<String, Object> properties) {
-        instance.setFoo(instance.getFoo() + " - changed");
-        return instance;
+/**
+ * The base result class for all the result of service management operation.
+ * 
+ */
+public class OperationResult {
+
+    protected final String requestId;
+    protected final int statusCode;
+
+    public OperationResult(int statusCode, String requestId) {
+        this.statusCode = statusCode;
+        this.requestId = requestId;
+    }
+
+    public int getStatusCode() {
+        return this.statusCode;
+    }
+
+    public String getRequestId() {
+        return this.requestId;
     }
 
 }
