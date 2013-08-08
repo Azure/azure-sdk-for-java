@@ -16,6 +16,7 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
+import java.util.List;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -156,6 +157,22 @@ public class JobInfo extends ODataEntity<JobType> {
         return this.<TaskInfo> getRelationLink("Tasks");
     }
 
+    /**
+     * Gets the job notification subscriptions.
+     * 
+     * @return the job notification subscriptions
+     */
+    public List<JobNotificationSubscription> getJobNotificationSubscriptions() {
+        return JobNotificationSubscriptionListFactory.create(getContent().getJobNotificationSubscriptions());
+    }
+
+    /**
+     * Adds the job notification subscription.
+     * 
+     * @param jobNotificationSubscription
+     *            the job notification subscription
+     * @return the job info
+     */
     public JobInfo addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
         getContent().getJobNotificationSubscriptions().add(
                 new JobNotificationSubscriptionType().setNotificationEndPointId(

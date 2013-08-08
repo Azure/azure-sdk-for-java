@@ -20,6 +20,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
 public class JobInfoTest {
@@ -131,4 +132,27 @@ public class JobInfoTest {
         assertEquals(expectedJobState, actualJobState);
     }
 
+    @Test
+    public void testGetSetNotificationEndPoint() {
+        // Arrange 
+        String expectedNotificationEndPointId = "testNotificationEndPointId";
+        JobNotificationSubscription expectedJobNotificationSubscription = new JobNotificationSubscription(
+                expectedNotificationEndPointId, JobState.Canceled);
+        JobNotificationSubscriptionType expectedJobNotificationSubscriptionType = new JobNotificationSubscriptionType();
+        JobType expectedJobType = new JobType();
+        expectedJobType.getJobNotificationSubscriptions().add(
+                expectedJobNotificationSubscriptionType.setNotificationEndPointId(expectedNotificationEndPointId)
+                        .setTargetJobState(JobState.Canceled.getCode()));
+        JobInfo jobInfo = new JobInfo(null, expectedJobType);
+
+        // Act 
+        JobNotificationSubscription actualJobNotificationSubscription = jobInfo.getJobNotificationSubscriptions()
+                .get(0);
+
+        // Assert 
+        assertEquals(expectedJobNotificationSubscription.getNotificationEndPointId(),
+                actualJobNotificationSubscription.getNotificationEndPointId());
+        assertEquals(expectedJobNotificationSubscription.getTargetJobState(),
+                actualJobNotificationSubscription.getTargetJobState());
+    }
 }

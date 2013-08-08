@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+
 /**
  * The Class JobNotificationSubscription.
  */
@@ -29,7 +30,7 @@ public class JobNotificationSubscription {
     /**
      * Instantiates a new job notification subscription.
      * 
-     * @param notificationEndPointId
+     * @param uuid
      *            the notification end point id
      * @param targetJobState
      *            the target job state
@@ -40,7 +41,7 @@ public class JobNotificationSubscription {
     }
 
     /**
-     * Gets the code.
+     * Gets the notification end point.
      * 
      * @return the code
      */

@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JobNotificationSubscriptionType implements MediaServiceDTO {
 
-    /** The message. */
+    /** The ID of the notification end point. */
     @XmlElement(name = "NotificationEndPointId", namespace = Constants.ODATA_DATA_NS)
     protected String notificationEndPointId;
 
-    /** The time stamp. */
+    /** The target state of the job. */
     @XmlElement(name = "TargetJobState", namespace = Constants.ODATA_DATA_NS)
     protected int targetJobState;
 

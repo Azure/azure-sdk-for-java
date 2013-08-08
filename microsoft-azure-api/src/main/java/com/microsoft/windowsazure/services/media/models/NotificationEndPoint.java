@@ -21,7 +21,9 @@ import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOpe
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 import com.sun.jersey.api.client.GenericType;
 
@@ -52,7 +54,7 @@ public class NotificationEndPoint {
         return new Creator(name, endPointType, endPointAddress);
     }
 
-    private static class Creator extends EntityOperationSingleResultBase<NotificationEndPointInfo> implements
+    public static class Creator extends EntityOperationSingleResultBase<NotificationEndPointInfo> implements
             EntityCreateOperation<NotificationEndPointInfo> {
         private final String name;
         private final EndPointType endPointType;
@@ -108,6 +110,10 @@ public class NotificationEndPoint {
                 });
     }
 
+    public static Updater update(String notificationEndPointId) {
+        return new Updater(notificationEndPointId);
+    }
+
     /**
      * Create an operation to delete the given notification end point
      * 
@@ -118,4 +124,46 @@ public class NotificationEndPoint {
     public static EntityDeleteOperation delete(String notificationEndPointId) {
         return new DefaultDeleteOperation(ENTITY_SET, notificationEndPointId);
     }
+
+    /**
+     * The Class Updater.
+     */
+    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+
+        /** The name. */
+        private String name;
+
+        /**
+         * Instantiates a new updater.
+         * 
+         * @param notificationEndPointId
+         *            the asset id
+         */
+        protected Updater(String notificationEndPointId) {
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, notificationEndPointId));
+        }
+
+        /* (non-Javadoc)
+         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation#getRequestContents()
+         */
+        @Override
+        public Object getRequestContents() {
+            NotificationEndPointType notificationEndPointType = new NotificationEndPointType();
+            notificationEndPointType.setName(name);
+            return notificationEndPointType;
+        }
+
+        /**
+         * Sets new name for asset.
+         * 
+         * @param name
+         *            The new name
+         * @return Updater instance
+         */
+        public Updater setName(String name) {
+            this.name = name;
+            return this;
+        }
+    }
+
 }

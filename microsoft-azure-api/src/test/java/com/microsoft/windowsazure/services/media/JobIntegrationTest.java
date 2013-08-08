@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.EndPointType;
 import com.microsoft.windowsazure.services.media.models.ErrorDetail;
 import com.microsoft.windowsazure.services.media.models.Job;
+import com.microsoft.windowsazure.services.media.models.Job.Creator;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.JobNotificationSubscription;
 import com.microsoft.windowsazure.services.media.models.JobState;
@@ -80,8 +81,9 @@ public class JobIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    private JobNotificationSubscription getJobNotificationSubscription(String id, JobState targetJobState) {
-        return new JobNotificationSubscription(id, targetJobState);
+    private JobNotificationSubscription getJobNotificationSubscription(String jobNotificationSubscriptionId,
+            JobState targetJobState) {
+        return new JobNotificationSubscription(jobNotificationSubscriptionId, targetJobState);
     }
 
     private JobInfo createJob(String name) throws ServiceException {
@@ -152,11 +154,14 @@ public class JobIntegrationTest extends IntegrationTestBase {
             }
         }
 
+        JobNotificationSubscription jobNotificationSubcription = getJobNotificationSubscription(notificationEndPointId,
+                JobState.Canceled);
+
+        Creator creator = Job.create().setName(name).setPriority(priority).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(getTaskCreator(0)).addJobNotificationSubscription(jobNotificationSubcription);
+
         // Act
-        JobInfo actualJob = service.create(
-                Job.create().setName(name).setPriority(priority).addInputMediaAsset(assetInfo.getId())
-                        .addTaskCreator(getTaskCreator(0))).addJobNotificationSubscription(
-                getJobNotificationSubscription(notificationEndPointId, JobState.Canceled));
+        JobInfo actualJob = service.create(creator);
 
         // Assert
         verifyJobProperties("actualJob", name, priority, duration, state, templateId, created, lastModified, stateTime,

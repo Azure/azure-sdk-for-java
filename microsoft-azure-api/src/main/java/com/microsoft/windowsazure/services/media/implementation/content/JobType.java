@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,10 +36,10 @@ public class JobType implements MediaServiceDTO {
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
 
-    /** The job notification subscriptions */
+    /** The job notification subscriptions. */
     @XmlElementWrapper(name = "JobNotificationSubscriptions", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
-    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptions;
+    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptions = new ArrayList<JobNotificationSubscriptionType>();
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
@@ -90,6 +91,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param id
      *            the new id
+     * @return the job type
      */
     public JobType setId(String id) {
         this.id = id;
@@ -110,6 +112,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param name
      *            the new name
+     * @return the job type
      */
     public JobType setName(String name) {
         this.name = name;
@@ -130,6 +133,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param created
      *            the new created
+     * @return the job type
      */
     public JobType setCreated(Date created) {
         this.created = created;
@@ -150,6 +154,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param lastModified
      *            the new last modified
+     * @return the job type
      */
     public JobType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
@@ -170,6 +175,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param endTime
      *            the new end time
+     * @return the job type
      */
     public JobType setEndTime(Date endTime) {
         this.endTime = endTime;
@@ -190,6 +196,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param priority
      *            the new priority
+     * @return the job type
      */
     public JobType setPriority(Integer priority) {
         this.priority = priority;
@@ -210,6 +217,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param runningDuration
      *            the new running duration
+     * @return the job type
      */
     public JobType setRunningDuration(Double runningDuration) {
         this.runningDuration = runningDuration;
@@ -230,6 +238,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param startTime
      *            the new start time
+     * @return the job type
      */
     public JobType setStartTime(Date startTime) {
         this.startTime = startTime;
@@ -250,6 +259,7 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param state
      *            the new state
+     * @return the job type
      */
     public JobType setState(Integer state) {
         this.state = state;
@@ -270,12 +280,18 @@ public class JobType implements MediaServiceDTO {
      * 
      * @param templateId
      *            the new template id
+     * @return the job type
      */
     public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
         return this;
     }
 
+    /**
+     * Gets the job notification subscriptions.
+     * 
+     * @return the job notification subscriptions
+     */
     public List<JobNotificationSubscriptionType> getJobNotificationSubscriptions() {
         return this.jobNotificationSubscriptions;
     }
