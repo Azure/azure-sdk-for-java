@@ -369,7 +369,7 @@ public class Job {
                         .getNotificationEndPointId());
                 jobNotificationSubscriptionType.setTargetJobState(jobNotificationSubscription.getTargetJobState()
                         .getCode());
-                jobType.getJobNotificationSubscriptions().add(jobNotificationSubscriptionType);
+                jobType.addJobNotificationSubscriptionType(jobNotificationSubscriptionType);
             }
 
             for (String inputMediaAsset : creator.getInputMediaAssets()) {

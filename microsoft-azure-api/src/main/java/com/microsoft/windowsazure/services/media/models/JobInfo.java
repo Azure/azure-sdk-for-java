@@ -163,7 +163,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * @return the job notification subscriptions
      */
     public List<JobNotificationSubscription> getJobNotificationSubscriptions() {
-        return JobNotificationSubscriptionListFactory.create(getContent().getJobNotificationSubscriptions());
+        return JobNotificationSubscriptionListFactory.create(getContent().getJobNotificationSubscriptionTypes());
     }
 
     /**
@@ -174,7 +174,7 @@ public class JobInfo extends ODataEntity<JobType> {
      * @return the job info
      */
     public JobInfo addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
-        getContent().getJobNotificationSubscriptions().add(
+        getContent().addJobNotificationSubscriptionType(
                 new JobNotificationSubscriptionType().setNotificationEndPointId(
                         jobNotificationSubscription.getNotificationEndPointId()).setTargetJobState(
                         jobNotificationSubscription.getTargetJobState().getCode()));

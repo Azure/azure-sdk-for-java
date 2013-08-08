@@ -39,7 +39,7 @@ public class JobType implements MediaServiceDTO {
     /** The job notification subscriptions. */
     @XmlElementWrapper(name = "JobNotificationSubscriptions", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
-    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptions = new ArrayList<JobNotificationSubscriptionType>();
+    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypes;
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
@@ -292,8 +292,23 @@ public class JobType implements MediaServiceDTO {
      * 
      * @return the job notification subscriptions
      */
-    public List<JobNotificationSubscriptionType> getJobNotificationSubscriptions() {
-        return this.jobNotificationSubscriptions;
+    public List<JobNotificationSubscriptionType> getJobNotificationSubscriptionTypes() {
+        return this.jobNotificationSubscriptionTypes;
+    }
+
+    /**
+     * Adds the job notification subscription type.
+     * 
+     * @param jobNotificationSubscription
+     *            the job notification subscription
+     * @return the job type
+     */
+    public JobType addJobNotificationSubscriptionType(JobNotificationSubscriptionType jobNotificationSubscription) {
+        if (this.jobNotificationSubscriptionTypes == null) {
+            this.jobNotificationSubscriptionTypes = new ArrayList<JobNotificationSubscriptionType>();
+        }
+        this.jobNotificationSubscriptionTypes.add(jobNotificationSubscription);
+        return this;
     }
 
 }
