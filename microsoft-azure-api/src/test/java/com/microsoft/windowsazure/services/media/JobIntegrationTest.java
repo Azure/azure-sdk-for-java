@@ -39,6 +39,7 @@ import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPoint;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo;
+import com.microsoft.windowsazure.services.media.models.TargetJobState;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
@@ -82,7 +83,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
     }
 
     private JobNotificationSubscription getJobNotificationSubscription(String jobNotificationSubscriptionId,
-            JobState targetJobState) {
+            TargetJobState targetJobState) {
         return new JobNotificationSubscription(jobNotificationSubscriptionId, targetJobState);
     }
 
@@ -155,7 +156,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         }
 
         JobNotificationSubscription jobNotificationSubcription = getJobNotificationSubscription(notificationEndPointId,
-                JobState.Canceled);
+                TargetJobState.All);
 
         Creator creator = Job.create().setName(name).setPriority(priority).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)).addJobNotificationSubscription(jobNotificationSubcription);

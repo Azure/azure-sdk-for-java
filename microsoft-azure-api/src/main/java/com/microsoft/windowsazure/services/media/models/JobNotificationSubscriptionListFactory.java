@@ -33,8 +33,8 @@ public class JobNotificationSubscriptionListFactory {
         List<JobNotificationSubscription> jobNotificationSubscriptionList = new ArrayList<JobNotificationSubscription>();
         for (JobNotificationSubscriptionType jobNotificationSubscriptionType : jobNotificationSubscriptionTypeList) {
             jobNotificationSubscriptionList.add(new JobNotificationSubscription(jobNotificationSubscriptionType
-                    .getNotificationEndPointId(),
-                    JobState.fromCode(jobNotificationSubscriptionType.getTargetJobState())));
+                    .getNotificationEndPointId(), TargetJobState.fromCode(jobNotificationSubscriptionType
+                    .getTargetJobState())));
         }
         return jobNotificationSubscriptionList;
 
