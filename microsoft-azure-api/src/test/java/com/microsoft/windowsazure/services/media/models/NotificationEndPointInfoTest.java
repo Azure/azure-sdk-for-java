@@ -20,7 +20,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 
 public class NotificationEndPointInfoTest {
 
@@ -28,10 +28,11 @@ public class NotificationEndPointInfoTest {
     public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setId(expectedId));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+                new NotificationEndPointType().setId(expectedId));
 
         // Act 
-        String actualId = assetInfo.getId();
+        String actualId = notificationEndPointInfo.getId();
 
         // Assert
         assertEquals(expectedId, actualId);
@@ -39,16 +40,17 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetState() {
+    public void testGetSetName() {
         // Arrange
-        AssetState expectedState = AssetState.Published;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setState(expectedState.getCode()));
+        String expectedName = "notificationEndPointName";
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+                new NotificationEndPointType().setName(expectedName));
 
         // Act
-        AssetState actualState = assetInfo.getState();
+        String actualName = notificationEndPointInfo.getName();
 
         // Assert
-        assertEquals(expectedState, actualState);
+        assertEquals(expectedName, actualName);
     }
 
     @Test
@@ -56,10 +58,11 @@ public class NotificationEndPointInfoTest {
         // Arrange
         Date expectedCreated = new Date();
 
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setCreated(expectedCreated));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+                new NotificationEndPointType().setCreated(expectedCreated));
 
         // Act 
-        Date actualCreated = assetInfo.getCreated();
+        Date actualCreated = notificationEndPointInfo.getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -67,56 +70,30 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() throws Exception {
+    public void testGetSetEndPointType() throws Exception {
         // Arrange
-        Date expectedLastModified = new Date();
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setLastModified(expectedLastModified));
+        EndPointType expectedEndPointType = EndPointType.AzureQueue;
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+                new NotificationEndPointType().setEndPointType(expectedEndPointType.getCode()));
 
         // Act
-        Date actualLastModified = assetInfo.getLastModified();
+        EndPointType actualEndPointType = notificationEndPointInfo.getEndPointType();
 
         // Assert
-        assertEquals(expectedLastModified, actualLastModified);
+        assertEquals(expectedEndPointType, actualEndPointType);
     }
 
     @Test
-    public void testGetSetAlternateId() {
+    public void testGetSetEndPointAddress() {
         // Arrange
-        String expectedAlternateId = "testAlternateId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setAlternateId(expectedAlternateId));
+        String expectedEndPointAddress = "testGetSetEndPointAddress";
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+                new NotificationEndPointType().setEndPointAddress(expectedEndPointAddress));
 
         // Act
-        String actualAlternateId = assetInfo.getAlternateId();
+        String actualEndPointAddress = notificationEndPointInfo.getEndPointAddress();
 
         // Assert
-        assertEquals(expectedAlternateId, actualAlternateId);
+        assertEquals(expectedEndPointAddress, actualEndPointAddress);
     }
-
-    @Test
-    public void testGetSetName() {
-        // Arrange
-        String expectedName = "testName";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setName(expectedName));
-
-        // Act
-        String actualName = assetInfo.getName();
-
-        // Assert
-        assertEquals(expectedName, actualName);
-    }
-
-    @Test
-    public void testGetSetOptions() {
-        // Arrange
-
-        AssetOption expectedOptions = AssetOption.None;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setOptions(expectedOptions.getCode()));
-
-        // Act
-        AssetOption actualOptions = assetInfo.getOptions();
-
-        // Assert
-        assertEquals(expectedOptions, actualOptions);
-    }
-
 }
