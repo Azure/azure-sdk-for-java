@@ -103,23 +103,6 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location)
-            throws ServiceException {
-        try {
-            return next.createAffinityGroup(name, label, location);
-        }
-        catch (UniformInterfaceException e) {
-            throw processCatch(new ServiceException(e));
-        }
-        catch (ClientHandlerException e) {
-            throw processCatch(new ServiceException(e));
-        }
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.management.ManagementContract#getAffinityGroup(java.lang.String)
      */
     @Override
@@ -152,13 +135,13 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
      */
     @Override
-    public CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
-            CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException {
+    public CreateAffinityGroupResult createAffinityGroup(CreateAffinityGroupOptions createAffinityGroupOptions)
+            throws ServiceException {
         try {
-            return next.createAffinityGroup(name, label, location, createAffinityGroupOptions);
+            return next.createAffinityGroup(createAffinityGroupOptions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
@@ -169,13 +152,13 @@ public class ManagementExceptionProcessor implements ManagementContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
      */
     @Override
-    public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
-            UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException {
+    public UpdateAffinityGroupResult updateAffinityGroup(UpdateAffinityGroupOptions updateAffinityGroupOptions)
+            throws ServiceException {
         try {
-            return next.updateAffinityGroup(name, label, updateAffinityGroupOptions);
+            return next.updateAffinityGroup(updateAffinityGroupOptions);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

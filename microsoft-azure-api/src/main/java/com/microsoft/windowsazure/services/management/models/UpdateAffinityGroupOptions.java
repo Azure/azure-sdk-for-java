@@ -22,6 +22,13 @@ package com.microsoft.windowsazure.services.management.models;
 public class UpdateAffinityGroupOptions {
 
     private String description;
+    private final String name;
+    private final String label;
+
+    public UpdateAffinityGroupOptions(String name, String label) {
+        this.name = name;
+        this.label = label;
+    }
 
     public UpdateAffinityGroupOptions setDescription(String description) {
         this.description = description;
@@ -30,6 +37,14 @@ public class UpdateAffinityGroupOptions {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 
 }
