@@ -142,7 +142,7 @@ public class JobInfoTest {
         JobType expectedJobType = new JobType();
         expectedJobType.addJobNotificationSubscriptionType(expectedJobNotificationSubscriptionType
                 .setNotificationEndPointId(expectedNotificationEndPointId).setTargetJobState(
-                        JobState.Canceled.getCode()));
+                        TargetJobState.All.getCode()));
         JobInfo jobInfo = new JobInfo(null, expectedJobType);
 
         // Act 
