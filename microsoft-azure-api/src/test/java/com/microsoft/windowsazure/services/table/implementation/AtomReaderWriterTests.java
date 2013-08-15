@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
+import com.microsoft.windowsazure.services.core.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.table.IntegrationTestBase;
 import com.microsoft.windowsazure.services.table.models.TableEntry;

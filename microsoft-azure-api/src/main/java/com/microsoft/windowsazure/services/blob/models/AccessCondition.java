@@ -16,7 +16,7 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
 
 /**
  * Represents a set of access conditions for operations that use storage services.
