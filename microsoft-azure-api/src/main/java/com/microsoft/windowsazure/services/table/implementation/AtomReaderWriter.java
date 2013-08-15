@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +29,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import com.microsoft.windowsazure.services.blob.implementation.ISO8601DateConverter;
+import com.microsoft.windowsazure.services.core.ISO8601DateConverter;
 import com.microsoft.windowsazure.services.core.utils.DateFactory;
 import com.microsoft.windowsazure.services.table.EdmValueConverter;
 import com.microsoft.windowsazure.services.table.models.Entity;
@@ -84,7 +84,8 @@ public class AtomReaderWriter {
 
                     if (value != null) {
                         writer.writeCharacters(value);
-                    } else {
+                    }
+                    else {
                         writer.writeAttribute("m:null", "true");
                     }
 
@@ -107,7 +108,8 @@ public class AtomReaderWriter {
                 // Process "entry" elements only
                 if (isStartElement(xmlr, "entry")) {
                     result.add(parseTableEntry(xmlr));
-                } else {
+                }
+                else {
                     nextSignificant(xmlr);
                 }
             }
@@ -116,7 +118,8 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        } catch (XMLStreamException e) {
+        }
+        catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -130,7 +133,8 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        } catch (XMLStreamException e) {
+        }
+        catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -147,7 +151,8 @@ public class AtomReaderWriter {
                 // Process "entry" elements only
                 if (isStartElement(xmlr, "entry")) {
                     result.add(parseEntityEntry(xmlr));
-                } else {
+                }
+                else {
                     nextSignificant(xmlr);
                 }
             }
@@ -156,7 +161,8 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        } catch (XMLStreamException e) {
+        }
+        catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -170,7 +176,8 @@ public class AtomReaderWriter {
             expect(xmlr, XMLStreamConstants.END_DOCUMENT);
 
             return result;
-        } catch (XMLStreamException e) {
+        }
+        catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -220,7 +227,8 @@ public class AtomReaderWriter {
             writer.close();
 
             return new ByteArrayInputStream(stream.toByteArray());
-        } catch (XMLStreamException e) {
+        }
+        catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
@@ -235,7 +243,8 @@ public class AtomReaderWriter {
                 Map<String, Property> properties = parseEntryProperties(xmlr);
 
                 result.setName((String) properties.get("TableName").getValue());
-            } else {
+            }
+            else {
                 nextSignificant(xmlr);
             }
         }
@@ -254,7 +263,8 @@ public class AtomReaderWriter {
         while (!isEndElement(xmlr, "entry")) {
             if (isStartElement(xmlr, "properties")) {
                 result.setProperties(parseEntryProperties(xmlr));
-            } else {
+            }
+            else {
                 nextSignificant(xmlr);
             }
         }
@@ -326,7 +336,8 @@ public class AtomReaderWriter {
     private String encodeNumericCharacterReference(String value) {
         if (value == null) {
             return null;
-        } else {
+        }
+        else {
             char[] charArray = value.toCharArray();
             StringBuffer stringBuffer = new StringBuffer();
             for (int index = 0; index < charArray.length; index++) {
