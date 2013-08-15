@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.3</version>
+  <version>0.4.4</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -134,7 +134,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <version>3.1</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -146,10 +146,38 @@
         <version>0.8.3</version>
         <executions>
           <execution>
+            <id>serviceBus</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>generate</goal>
             </goals>
+            <configuration>
+                <generateDirectory>target/generated-sources/xjc</generateDirectory>
+                <schemaDirectory>src/main/resources/serviceBus</schemaDirectory>
+                <schemaIncludes> 
+                    <include>servicebus-atom.xsd</include> 
+                </schemaIncludes>
+                <generatePackage>com.microsoft.windowsazure.services.serviceBus.implementation</generatePackage>
+                <removeOldOutput>false</removeOldOutput>
+                <forceRegenerate>true</forceRegenerate>
+            </configuration>
+          </execution>
+          <execution>
+            <id>management</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+                <generateDirectory>target/generated-sources/xjc</generateDirectory>
+                <schemaDirectory>src/main/resources/management/</schemaDirectory>
+                <schemaIncludes>
+                    <include>schemas.microsoft.com.windowsazure.xsd</include>
+                </schemaIncludes>
+                <generatePackage>com.microsoft.windowsazure.services.management.implementation</generatePackage>
+                <removeOldOutput>false</removeOldOutput>
+                <forceRegenerate>true</forceRegenerate>
+            </configuration> 
           </execution>
         </executions>
         <configuration>

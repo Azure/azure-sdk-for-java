@@ -30,6 +30,12 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  * under the Shared Key Lite authentication scheme.
  */
 class TableLiteCanonicalizer extends Canonicalizer {
+
+    /**
+     * The expected length for the canonicalized string when SharedKeyLite is used to sign table requests.
+     */
+    private static final int ExpectedTableLiteCanonicalizedStringLength = 150;
+
     /**
      * Constructs a canonicalized string for signing a request.
      * 
@@ -56,8 +62,8 @@ class TableLiteCanonicalizer extends Canonicalizer {
             throw new IllegalArgumentException(
                     "Canonicalization did not find a non empty x-ms-date header in the request. Please use a request with a valid x-ms-date header in RFC 123 format.");
         }
-
-        final StringBuilder canonicalizedString = new StringBuilder(dateString);
+        final StringBuilder canonicalizedString = new StringBuilder(ExpectedTableLiteCanonicalizedStringLength);
+        canonicalizedString.append(dateString);
         appendCanonicalizedElement(canonicalizedString, getCanonicalizedResourceLite(conn.getURL(), accountName));
 
         return canonicalizedString.toString();

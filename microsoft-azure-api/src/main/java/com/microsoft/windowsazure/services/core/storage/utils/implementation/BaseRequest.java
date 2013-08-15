@@ -498,7 +498,40 @@ public final class BaseRequest {
 
     /**
      * 
-     * Signs the request appropriately to make it an authenticated request for Blob and Queue.
+     * Signs the request appropriately to make it an authenticated request for Table.
+     * 
+     * @param request
+     *            a HttpURLConnection for the operation.
+     * @param credentials
+     *            the credentials to use for signing.
+     * @param contentLength
+     *            the length of the content written to the output stream, -1 if unknown.
+     * @param opContext
+     *            an object used to track the execution of the operation
+     * @throws InvalidKeyException
+     *             if the credentials key is invalid.
+     * @throws StorageException
+     */
+    public static void signRequestForTableSharedKey(final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
+        request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+
+        final Canonicalizer canonicalizer = CanonicalizerFactory.getTableFullCanonicalizer(request);
+
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
+                opContext);
+
+        final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
+
+        // TODO Vnext add logging
+        // System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
+        request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
+                String.format("%s %s:%s", "SharedKey", credentials.getAccountName(), computedBase64Signature));
+    }
+
+    /**
+     * 
+     * Signs the request appropriately to make it an authenticated request for Table.
      * 
      * @param request
      *            a HttpURLConnection for the operation.
