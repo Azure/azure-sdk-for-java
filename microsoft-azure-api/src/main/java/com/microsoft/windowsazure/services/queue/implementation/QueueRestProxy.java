@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;

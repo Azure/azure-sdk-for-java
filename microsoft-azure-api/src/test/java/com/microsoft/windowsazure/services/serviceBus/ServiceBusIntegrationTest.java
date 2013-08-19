@@ -67,6 +67,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
             .setTimeout(5);
     static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
 
+    private String createLongString(int length) {
+        String result = new String();
+        for (int i = 0; i < length; i++) {
+            result = result + "a";
+        }
+        return result;
+    }
+
     @Before
     public void createService() throws Exception {
         // reinitialize configuration from known state
@@ -279,6 +287,26 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void receiveLargeMessageWorks() throws Exception {
+        // Arrange
+        String queueName = "TestReceiveLargeMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        String expectedBody = createLongString(64000);
+        BrokeredMessage expectedMessage = new BrokeredMessage(expectedBody);
+        service.sendQueueMessage(queueName, expectedMessage);
+
+        // Act
+        BrokeredMessage message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        byte[] data = new byte[64000];
+        int size = message.getBody().read(data);
+
+        // Assert
+        assertEquals(expectedBody.length(), size);
+        assertArrayEquals(expectedBody.getBytes(), Arrays.copyOf(data, size));
+
+    }
+
+    @Test
     public void renewSubscriptionMessageLockWorks() throws Exception {
         // Arrange
         String topicName = "TestRenewSubscriptionLockMessageWorks";
@@ -486,6 +514,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
                 new SubscriptionInfo(sourceSubscriptionName)).getValue();
         service.updateSubscription(sourceTopicName,
                 sourceSubscriptionInfo.setForwardTo(destinationTopicInfo.getUri().toString()));
+        Thread.sleep(1000);
 
         // Act
         service.sendTopicMessage(sourceTopicName, new BrokeredMessage("Hello source queue!"));

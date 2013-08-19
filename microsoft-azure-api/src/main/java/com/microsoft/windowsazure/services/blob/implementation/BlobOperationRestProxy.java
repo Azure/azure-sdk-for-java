@@ -67,6 +67,7 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
+import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
