@@ -165,7 +165,7 @@ public class ChannelType implements MediaServiceDTO {
     /**
      * Gets the preview uri.
      * 
-     * @return the preview uri.
+     * @return the preview
      */
     public URI getPreviewUri() {
         return previewUri;

@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityOperatio
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
+import com.microsoft.windowsazure.services.media.implementation.content.ChannelSettingsType;
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.sun.jersey.api.client.GenericType;
 
@@ -92,16 +93,24 @@ public class Channel {
          */
         @Override
         public Object getRequestContents() {
-            ChannelType ChannelType = new ChannelType();
-            ChannelType.setName(name);
-            ChannelType.setAlternateId(alternateId);
-            if (options != null) {
-                ChannelType.setOptions(options.getCode());
-            }
+            ChannelType channelType = new ChannelType();
+            channelType.setName(name);
+            channelType.setDescription(description);
             if (state != null) {
-                ChannelType.setState(state.getCode());
+                channelType.setState(state.getCode());
             }
-            return ChannelType;
+            if (size != null) {
+                channelType.setSize(size.getCode());
+            }
+
+            if (settings != null) {
+                ChannelSettingsType channelSettingsType = new ChannelSettingsType();
+
+                channelType.setSettings(channelSettingsType);
+
+            }
+
+            return channelType;
         }
 
         /**
@@ -113,31 +122,6 @@ public class Channel {
          */
         public Creator setName(String name) {
             this.name = name;
-            return this;
-        }
-
-        /**
-         * Sets the alternate id of the Channel to be created.
-         * 
-         * @param alternateId
-         *            The id
-         * 
-         * @return The creator object (for call chaining)
-         */
-        public Creator setAlternateId(String alternateId) {
-            this.alternateId = alternateId;
-            return this;
-        }
-
-        /**
-         * Sets the options.
-         * 
-         * @param options
-         *            the options
-         * @return the creator
-         */
-        public Creator setOptions(ChannelOption options) {
-            this.options = options;
             return this;
         }
 
@@ -216,9 +200,12 @@ public class Channel {
 
         /** The name. */
         private String name;
-
-        /** The alternate id. */
-        private String alternateId;
+        private String description;
+        private URI ingestUri;
+        private URI previewUri;
+        private ChannelSize size;
+        private ChannelState state;
+        private ChannelSettings settings;
 
         /**
          * Instantiates a new updater.
@@ -243,10 +230,19 @@ public class Channel {
          */
         @Override
         public Object getRequestContents() {
-            ChannelType ChannelType = new ChannelType();
-            ChannelType.setName(name);
-            ChannelType.setAlternateId(alternateId);
-            return ChannelType;
+            ChannelType channelType = new ChannelType();
+            channelType.setName(name);
+            channelType.setDescription(description);
+            channelType.setIngestUri(ingestUri);
+            channelType.setPreviewUri(previewUri);
+            channelType.setSize(size.getCode());
+            channelType.setState(state.getCode());
+            if (settings != null) {
+                ChannelSettingsType channelSettingsType = new ChannelSettingsType();
+                channelType.setSettings(channelSettingsType);
+            }
+
+            return channelType;
         }
 
         /**
@@ -261,28 +257,17 @@ public class Channel {
             return this;
         }
 
-        /**
-         * Sets new alternate id for Channel.
-         * 
-         * @param alternateId
-         *            the new alternate id
-         * @return Updater instance
-         */
-        public Updater setAlternateId(String alternateId) {
-            this.alternateId = alternateId;
-            return this;
-        }
     }
 
     /**
      * Create an operation to delete the given Channel.
      * 
-     * @param ChannelId
+     * @param channelName
      *            id of Channel to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String ChannelId) {
-        return new DefaultDeleteOperation(ENTITY_SET, ChannelId);
+    public static EntityDeleteOperation delete(String channelName) {
+        return new DefaultDeleteOperation(ENTITY_SET, channelName);
     }
 
     /**
@@ -294,7 +279,7 @@ public class Channel {
      *            the content key id
      * @return the entity action operation
      */
-    public static EntityLinkOperation linkContentKey(String ChannelId, String contentKeyId) {
+    public static EntityLinkOperation getIngressMetrics(String ChannelId, String contentKeyId) {
         String escapedContentKeyId = null;
         try {
             escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");

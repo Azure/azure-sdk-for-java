@@ -63,7 +63,7 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
      * @return the state
      */
     public ChannelState getState() {
-        return AssetState.fromCode(getContent().getState());
+        return ChannelState.fromCode(getContent().getState());
     }
 
     /**
@@ -82,24 +82,6 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
      */
     public Date getLastModified() {
         return getContent().getLastModified();
-    }
-
-    /**
-     * Get the alternate id.
-     * 
-     * @return the id
-     */
-    public String getAlternateId() {
-        return getContent().getAlternateId();
-    }
-
-    /**
-     * Get the options.
-     * 
-     * @return the options
-     */
-    public AssetOption getOptions() {
-        return AssetOption.fromCode(getContent().getOptions());
     }
 
     /**
