@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityOperatio
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
-import com.microsoft.windowsazure.services.media.implementation.content.ChannelSettingsType;
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.sun.jersey.api.client.GenericType;
 
@@ -104,10 +103,8 @@ public class Channel {
             }
 
             if (settings != null) {
-                ChannelSettingsType channelSettingsType = new ChannelSettingsType();
-
-                channelType.setSettings(channelSettingsType);
-
+                String channelSettings = "channelSettings";
+                channelType.setSettings(channelSettings);
             }
 
             return channelType;
@@ -238,8 +235,8 @@ public class Channel {
             channelType.setSize(size.getCode());
             channelType.setState(state.getCode());
             if (settings != null) {
-                ChannelSettingsType channelSettingsType = new ChannelSettingsType();
-                channelType.setSettings(channelSettingsType);
+                String channelSettings = "channelSettings";
+                channelType.setSettings(channelSettings);
             }
 
             return channelType;

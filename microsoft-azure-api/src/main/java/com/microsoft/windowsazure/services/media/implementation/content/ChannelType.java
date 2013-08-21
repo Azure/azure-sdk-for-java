@@ -64,7 +64,7 @@ public class ChannelType implements MediaServiceDTO {
 
     /** The settings. */
     @XmlElement(name = "Settings", namespace = Constants.ODATA_DATA_NS)
-    protected ChannelSettingsType settings;
+    protected String settings;
 
     /**
      * Gets the name.
@@ -239,7 +239,7 @@ public class ChannelType implements MediaServiceDTO {
      * 
      * @return the settings
      */
-    public ChannelSettingsType getSettings() {
+    public String getSettings() {
         return this.settings;
     }
 
@@ -250,7 +250,7 @@ public class ChannelType implements MediaServiceDTO {
      *            the settings
      * @return the channel type
      */
-    public ChannelType setSettings(ChannelSettingsType settings) {
+    public ChannelType setSettings(String settings) {
         this.settings = settings;
         return this;
     }
