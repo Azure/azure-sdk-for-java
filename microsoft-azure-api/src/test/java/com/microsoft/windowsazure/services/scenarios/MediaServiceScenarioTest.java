@@ -40,6 +40,7 @@ import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.Encoder
 
 public class MediaServiceScenarioTest extends ScenarioTestBase {
     private static final String rootTestAssetPrefix = "testAssetPrefix-";
+    private static final String testJobPrefix = "testJobPrefix";
     private static String testAssetPrefix;
     private static MediaServiceWrapper wrapper;
     private static MediaServiceValidation validator;
@@ -57,6 +58,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     public static void cleanup() throws ServiceException {
         wrapper.removeAllAssetsWithPrefix(rootTestAssetPrefix);
         wrapper.removeAllAccessPoliciesWithPrefix();
+        wrapper.removeAllJobWithPrefix(testJobPrefix);
     }
 
     @Test
@@ -119,7 +121,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        String jobName = "my job createJob" + UUID.randomUUID().toString();
+        String jobName = testJobPrefix + UUID.randomUUID().toString();
         JobInfo job = wrapper.createJob(jobName, asset, createTasks());
         validator.validateJob(job, jobName, asset, createTasks());
     }
@@ -129,7 +131,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "transformAsset", AssetOption.None);
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
-        String jobName = "my job transformAsset" + UUID.randomUUID().toString();
+        String jobName = testJobPrefix + UUID.randomUUID().toString();
 
         JobInfo job = wrapper.createJob(jobName, asset,
                 wrapper.createTaskOptions("Transform", 0, 0, EncoderType.WindowsAzureMediaEncoder));
