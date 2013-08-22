@@ -1,5 +1,5 @@
 2013.08.26 Version 0.4.5
- * Added support for manage affinity groups
+ * Added support for managing affinity groups
  * Added support for Media Services job notification
 
 2013.07.03 Version 0.4.4

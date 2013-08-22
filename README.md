@@ -36,6 +36,7 @@ This project provides a client library in Java that makes it easy to consume Win
     * Create/Read/Update/Delete/Rebind content keys
     * Create/Read/Update/Cancel/Delete jobs
     * Add/Get job notifications
+    * Create/Read/Update/Delete notification endpoints
 * Service Management
 	* Manage affinity groups
 * Service Runtime
