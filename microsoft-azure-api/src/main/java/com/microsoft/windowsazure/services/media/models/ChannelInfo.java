@@ -84,39 +84,4 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
         return getContent().getLastModified();
     }
 
-    /**
-     * Get a link to the asset's files
-     * 
-     * @return the link
-     */
-    public LinkInfo<AssetFileInfo> getAssetFilesLink() {
-        return this.<AssetFileInfo> getRelationLink("Files");
-    }
-
-    /**
-     * Get a link to the asset's content keys
-     * 
-     * @return the link
-     */
-    public LinkInfo<ContentKeyInfo> getContentKeysLink() {
-        return this.<ContentKeyInfo> getRelationLink("ContentKeys");
-    }
-
-    /**
-     * Get a link to the asset's locators
-     * 
-     * @return the link
-     */
-    public LinkInfo<LocatorInfo> getLocatorsLink() {
-        return this.<LocatorInfo> getRelationLink("Locators");
-    }
-
-    /**
-     * Get a link to this asset's parents
-     * 
-     * @return the link
-     */
-    public LinkInfo<ChannelInfo> getParentAssetsLink() {
-        return this.<ChannelInfo> getRelationLink("ParentAssets");
-    }
 }
