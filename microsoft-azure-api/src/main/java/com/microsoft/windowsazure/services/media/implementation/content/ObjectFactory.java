@@ -121,4 +121,8 @@ public class ObjectFactory {
     public RebindContentKeyType createRebindContentKeyType() {
         return new RebindContentKeyType();
     }
+
+    public ChannelType createChannelType() {
+        return new ChannelType();
+    }
 }

@@ -16,50 +16,54 @@ package com.microsoft.windowsazure.services.media.models;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
+import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 
 public class ChannelInfoTest {
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetName() {
         // Arrange
-        String expectedId = "expectedId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setId(expectedId));
+        String expectedName = "expectedName";
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setName(expectedName));
 
         // Act 
-        String actualId = assetInfo.getId();
+        String actualName = channelInfo.getName();
 
         // Assert
-        assertEquals(expectedId, actualId);
+        assertEquals(expectedName, actualName);
 
     }
 
     @Test
-    public void testGetSetState() {
+    public void testGetSetDescription() {
         // Arrange
-        AssetState expectedState = AssetState.Published;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setState(expectedState.getCode()));
+        String expectedDescription = "expectedDescription";
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setName(expectedDescription));
 
-        // Act
-        AssetState actualState = assetInfo.getState();
+        // Act 
+        String actualDescription = channelInfo.getDescription();
 
         // Assert
-        assertEquals(expectedState, actualState);
+        assertEquals(expectedDescription, actualDescription);
     }
 
     @Test
     public void testGetSetCreated() throws Exception {
         // Arrange
         Date expectedCreated = new Date();
-
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setCreated(expectedCreated));
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setCreated(expectedCreated));
 
         // Act 
-        Date actualCreated = assetInfo.getCreated();
+        Date actualCreated = channelInfo.getCreated();
 
         // Assert
         assertEquals(expectedCreated, actualCreated);
@@ -70,53 +74,82 @@ public class ChannelInfoTest {
     public void testGetSetLastModified() throws Exception {
         // Arrange
         Date expectedLastModified = new Date();
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setLastModified(expectedLastModified));
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setLastModified(expectedLastModified));
 
         // Act
-        Date actualLastModified = assetInfo.getLastModified();
+        Date actualLastModified = channelInfo.getLastModified();
 
         // Assert
         assertEquals(expectedLastModified, actualLastModified);
     }
 
     @Test
-    public void testGetSetAlternateId() {
+    public void testGetSetPreviewUri() {
         // Arrange
-        String expectedAlternateId = "testAlternateId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setAlternateId(expectedAlternateId));
+        URI expectedPreviewUri = URI.create("http://www.contoso.com/preview");
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setPreviewUri(expectedPreviewUri));
 
         // Act
-        String actualAlternateId = assetInfo.getAlternateId();
+        URI actualPreviewUri = channelInfo.getPreviewUri();
 
         // Assert
-        assertEquals(expectedAlternateId, actualAlternateId);
+        assertEquals(expectedPreviewUri, actualPreviewUri);
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetIngestUri() {
         // Arrange
-        String expectedName = "testName";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setName(expectedName));
+        URI expectedIngestUri = URI.create("http://www.contoso.com/ingest");
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setIngestUri(expectedIngestUri));
 
         // Act
-        String actualName = assetInfo.getName();
+        URI actualPreviewUri = channelInfo.getIngestUri();
 
         // Assert
-        assertEquals(expectedName, actualName);
+        assertEquals(expectedIngestUri, actualPreviewUri);
     }
 
     @Test
-    public void testGetSetOptions() {
+    public void testGetSetState() {
         // Arrange
-
-        AssetOption expectedOptions = AssetOption.None;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setOptions(expectedOptions.getCode()));
+        ChannelState expectedState = ChannelState.Stopped;
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setState(expectedState.getCode()));
 
         // Act
-        AssetOption actualOptions = assetInfo.getOptions();
+        ChannelState actualState = channelInfo.getState();
 
         // Assert
-        assertEquals(expectedOptions, actualOptions);
+        assertEquals(expectedState, actualState);
+    }
+
+    @Test
+    public void testGetSetSize() {
+        // Arrange
+        ChannelSize expectedSize = ChannelSize.Medium;
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setSize(expectedSize.getCode()));
+
+        // Act
+        ChannelSize actualSize = channelInfo.getSize();
+
+        // Assert
+        assertEquals(expectedSize, actualSize);
+    }
+
+    @Test
+    public void testGetSetSettings() throws JsonGenerationException, JsonMappingException, IOException {
+        // Arrange
+        ChannelSettings expectedSettings = new ChannelSettings();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String expectedSettingsJson = objectMapper.writeValueAsString(expectedSettings);
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setSettings(expectedSettingsJson));
+
+        // Act
+        ChannelSettings actualSettings = channelInfo.getSettings();
+
+        // Assert
+        assertEquals(expectedSettings, actualSettings);
+
     }
 
 }

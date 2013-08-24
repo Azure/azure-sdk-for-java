@@ -17,41 +17,22 @@ package com.microsoft.windowsazure.services.media;
 
 import static org.junit.Assert.*;
 
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.AccessPolicy;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
-import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
 import com.microsoft.windowsazure.services.media.models.ChannelState;
-import com.microsoft.windowsazure.services.media.models.ContentKey;
-import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
-import com.microsoft.windowsazure.services.media.models.ContentKeyType;
-import com.microsoft.windowsazure.services.media.models.Job;
-import com.microsoft.windowsazure.services.media.models.JobInfo;
-import com.microsoft.windowsazure.services.media.models.LinkInfo;
-import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.Locator;
-import com.microsoft.windowsazure.services.media.models.LocatorInfo;
-import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.microsoft.windowsazure.services.media.models.ProtectionKey;
-import com.microsoft.windowsazure.services.media.models.Task;
-import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 
 public class ChannelIntegrationTest extends IntegrationTestBase {
 
     protected String testChannelPrefix = "testChannelPrefix";
+    protected String invalidChannelName = "invalidChannelName";
 
     private void verifyInfosEqual(String message, ChannelInfo expected, ChannelInfo actual) {
         verifyChannelProperties(message, expected.getName(), expected.getDescription(), expected.getState(), actual);
@@ -89,51 +70,23 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription));
 
         // Assert
-        verifyChannelProperties("actualChannel", testName, altId, encryptionOption, ChannelState, actualChannel);
-    }
-
-    @Test
-    public void createChannelNullNameSuccess() throws Exception {
-        // Arrange
-
-        // Act
-        ChannelInfo actualChannel = null;
-        try {
-            actualChannel = service.create(Channel.create());
-            // Assert
-            verifyChannelProperties("actualChannel", "", "", ChannelOption.None, ChannelState.Initialized,
-                    actualChannel);
-        }
-        finally {
-            // Clean up the anonymous Channel now while we have the id, because we
-            // do not want to delete all anonymous Channels in the bulk-cleanup code.
-            try {
-                if (actualChannel != null) {
-                    service.delete(Channel.delete(actualChannel.getId()));
-                }
-            }
-            catch (ServiceException ex) {
-                ex.printStackTrace();
-            }
-        }
+        verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
     }
 
     @Test
     public void getChannelSuccess() throws Exception {
         // Arrange
         String testName = testChannelPrefix + "GetChannelSuccess";
-        String altId = "altId";
-        ChannelOption encryptionOption = ChannelOption.StorageEncrypted;
-        ChannelState ChannelState = ChannelState.Published;
+        String testDescription = "testDescription";
+        ChannelState channelState = ChannelState.Stopped;
 
-        ChannelInfo ChannelInfo = service.create(Channel.create().setName(testName).setAlternateId(altId)
-                .setOptions(encryptionOption).setState(ChannelState));
-
+        ChannelInfo channelInfo = service.create(Channel.create().setName(testName).setDescription(testDescription)
+                .setState(channelState));
         // Act
-        ChannelInfo actualChannel = service.get(Channel.get(ChannelInfo.getId()));
+        ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getName()));
 
         // Assert
-        verifyInfosEqual("actualChannel", ChannelInfo, actualChannel);
+        verifyInfosEqual("actualChannel", channelInfo, actualChannelInfo);
     }
 
     @Test
@@ -144,25 +97,14 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getChannelNonexistId() throws ServiceException {
-        expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Channel.get(validButNonexistChannelId));
-    }
-
-    @Test
     public void listChannelSuccess() throws ServiceException {
         // Arrange
-        String altId = "altId";
-        ChannelOption encryptionOption = ChannelOption.StorageEncrypted;
-        ChannelState ChannelState = ChannelState.Published;
-
         String[] ChannelNames = new String[] { testChannelPrefix + "ChannelA", testChannelPrefix + "ChannelB" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
+        ChannelState channelState = ChannelState.Stopped;
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedChannels.add(service.create(Channel.create().setName(name).setAlternateId(altId)
-                    .setOptions(encryptionOption).setState(ChannelState)));
+            expectedChannels.add(service.create(Channel.create().setName(name).setState(channelState)));
         }
 
         // Act
@@ -200,33 +142,28 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updateChannelSuccessOriginal";
-        ChannelOption originalEncryptionOption = ChannelOption.StorageEncrypted;
-        ChannelState originalChannelState = ChannelState.Initialized;
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName).setAlternateId("altId")
-                .setOptions(originalEncryptionOption));
+        ChannelState originalChannelState = ChannelState.Stopped;
+        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName));
 
         String updatedTestName = testChannelPrefix + "updateChannelSuccessUpdated";
-        String altId = "otherAltId";
 
         // Act
-        service.update(Channel.update(originalChannel.getId()).setName(updatedTestName).setAlternateId(altId));
-        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
+        service.update(Channel.update(originalChannel.getName()).setName(updatedTestName));
+        ChannelInfo updatedChannel = service.get(Channel.get(updatedTestName));
 
         // Assert
-        verifyChannelProperties("updatedChannel", updatedTestName, altId, originalEncryptionOption,
-                originalChannelState, updatedChannel);
+        verifyChannelProperties("updatedChannel", updatedTestName, "", originalChannelState, updatedChannel);
     }
 
     @Test
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updateChannelNoChangesSuccess";
-        String altId = "altId";
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName).setAlternateId(altId));
+        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName));
 
         // Act
-        service.update(Channel.update(originalChannel.getId()));
-        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
+        service.update(Channel.update(originalChannel.getName()));
+        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getName()));
 
         // Assert
         verifyInfosEqual("updatedChannel", originalChannel, updatedChannel);
@@ -236,19 +173,19 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.update(Channel.update(validButNonexistChannelId));
+        service.update(Channel.update(invalidChannelName));
     }
 
     @Test
     public void deleteChannelSuccess() throws Exception {
         // Arrange
-        String ChannelName = testChannelPrefix + "deleteChannelSuccess";
-        ChannelInfo ChannelInfo = service.create(Channel.create().setName(ChannelName));
+        String channelName = testChannelPrefix + "deleteChannelSuccess";
+        ChannelInfo channelInfo = service.create(Channel.create().setName(channelName));
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
         // Act
-        service.delete(Channel.delete(ChannelInfo.getId()));
+        service.delete(Channel.delete(channelInfo.getName()));
 
         // Assert
         listChannelsResult = service.list(Channel.list());
@@ -256,87 +193,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Channel.get(ChannelInfo.getId()));
+        service.get(Channel.get(channelInfo.getName()));
     }
 
     @Test
     public void deleteChannelFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.delete(Channel.delete(validButNonexistChannelId));
-    }
-
-    @Test
-    public void linkChannelContentKeySuccess() throws ServiceException, URISyntaxException {
-        // Arrange
-        String originalTestName = testChannelPrefix + "linkChannelContentKeySuccess";
-        ChannelInfo ChannelInfo = service.create(Channel.create().setName(originalTestName)
-                .setOptions(ChannelOption.StorageEncrypted));
-
-        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
-        String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
-        String encryptedContentKey = "dummyEncryptedContentKey";
-        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey)
-                .setProtectionKeyId(protectionKeyId));
-
-        // Act
-        service.action(Channel.linkContentKey(ChannelInfo.getId(), contentKeyId));
-
-        // Assert
-
-        List<ContentKeyInfo> contentKeys = service.list(ContentKey.list(ChannelInfo.getContentKeysLink()));
-        assertEquals(1, contentKeys.size());
-        assertEquals(contentKeyId, contentKeys.get(0).getId());
-    }
-
-    @Test
-    public void linkChannelContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
-        // Arrange
-
-        // Act
-        expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(400));
-        service.action(Channel.linkContentKey(validButNonexistChannelId, "nb:kid:UUID:invalidContentKeyId"));
-
-        // Assert
-    }
-
-    @Test
-    public void canGetParentBackFromChannel() throws ServiceException, InterruptedException {
-        // Arrange
-        String originalChannelName = testChannelPrefix + "canGetParentBackFromChannel";
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalChannelName));
-
-        int durationInMinutes = 10;
-        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix
-                + "uploadAesPortectedChannelSuccess", durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
-
-        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), originalChannel.getId(),
-                LocatorType.SAS));
-        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
-
-        InputStream mpeg4H264InputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
-        blobWriter.createBlockBlob("MPEG4-H264.mp4", mpeg4H264InputStream);
-        service.action(ChannelFile.createFileInfos(originalChannel.getId()));
-
-        String jobName = testJobPrefix + "createJobSuccess";
-        CreateBatchOperation taskCreator = Task
-                .create(MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID,
-                        "<taskBody>" + "<inputChannel>JobInputChannel(0)</inputChannel>"
-                                + "<outputChannel>JobOutputChannel(0)</outputChannel>" + "</taskBody>")
-                .setConfiguration("H.264 256k DSL CBR").setName("My encoding Task");
-        JobInfo jobInfo = service.create(Job.create().setName(jobName).addInputMediaChannel(originalChannel.getId())
-                .addTaskCreator(taskCreator));
-
-        // Act
-        ListResult<ChannelInfo> outputChannels = service.list(Channel.list(jobInfo.getOutputChannelsLink()));
-        assertEquals(1, outputChannels.size());
-        ChannelInfo childChannel = outputChannels.get(0);
-
-        LinkInfo<ChannelInfo> parentChannelLink = childChannel.getParentChannelsLink();
-        ChannelInfo parentChannel = service.get(Channel.get(parentChannelLink));
-
-        // Assert
-        assertEquals(originalChannel.getId(), parentChannel.getId());
+        service.delete(Channel.delete(invalidChannelName));
     }
 }

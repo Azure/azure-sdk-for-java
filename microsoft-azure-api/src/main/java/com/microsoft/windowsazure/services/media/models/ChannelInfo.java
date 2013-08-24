@@ -15,7 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
@@ -26,6 +33,10 @@ import com.microsoft.windowsazure.services.media.implementation.content.ChannelT
  * 
  */
 public class ChannelInfo extends ODataEntity<ChannelType> {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final TypeReference<ChannelSettings> typeReference = new TypeReference<ChannelSettings>() {
+    };
 
     /**
      * Instantiates a new channel info.
@@ -84,4 +95,31 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
         return getContent().getLastModified();
     }
 
+    public ChannelSize getSize() {
+        return ChannelSize.fromCode(getContent().getSize());
+    }
+
+    public URI getPreviewUri() {
+        return getContent().getPreviewUri();
+    }
+
+    public URI getIngestUri() {
+        return getContent().getIngestUri();
+    }
+
+    public ChannelSettings getSettings() {
+
+        try {
+            return objectMapper.readValue(getContent().getSettings(), typeReference);
+        }
+        catch (JsonParseException e) {
+            return null;
+        }
+        catch (JsonMappingException e) {
+            return null;
+        }
+        catch (IOException e) {
+            return null;
+        }
+    }
 }
