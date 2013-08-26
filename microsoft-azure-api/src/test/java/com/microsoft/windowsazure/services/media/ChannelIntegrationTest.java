@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
+import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.ChannelState;
 
 public class ChannelIntegrationTest extends IntegrationTestBase {
@@ -79,9 +80,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testName = testChannelPrefix + "GetChannelSuccess";
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
+        ChannelSize channelSize = ChannelSize.Large;
 
         ChannelInfo channelInfo = service.create(Channel.create().setName(testName).setDescription(testDescription)
-                .setState(channelState));
+                .setState(channelState).setSize(channelSize));
         // Act
         ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getName()));
 

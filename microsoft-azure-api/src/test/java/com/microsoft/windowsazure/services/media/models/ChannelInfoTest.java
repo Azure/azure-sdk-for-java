@@ -113,7 +113,7 @@ public class ChannelInfoTest {
     public void testGetSetState() {
         // Arrange
         ChannelState expectedState = ChannelState.Stopped;
-        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setState(expectedState.getCode()));
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setState(expectedState.toString()));
 
         // Act
         ChannelState actualState = channelInfo.getState();
@@ -126,7 +126,7 @@ public class ChannelInfoTest {
     public void testGetSetSize() {
         // Arrange
         ChannelSize expectedSize = ChannelSize.Medium;
-        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setSize(expectedSize.getCode()));
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setSize(expectedSize.toString()));
 
         // Act
         ChannelSize actualSize = channelInfo.getSize();

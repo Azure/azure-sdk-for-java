@@ -56,11 +56,11 @@ public class ChannelType implements MediaServiceDTO {
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected int state;
+    protected String state;
 
     /** The size. */
     @XmlElement(name = "Size", namespace = Constants.ODATA_DATA_NS)
-    protected int size;
+    protected String size;
 
     /** The settings. */
     @XmlElement(name = "Settings", namespace = Constants.ODATA_DATA_NS)
@@ -199,7 +199,7 @@ public class ChannelType implements MediaServiceDTO {
      *            the state
      * @return the channel type
      */
-    public ChannelType setState(int state) {
+    public ChannelType setState(String state) {
         this.state = state;
         return this;
     }
@@ -209,7 +209,7 @@ public class ChannelType implements MediaServiceDTO {
      * 
      * @return the state
      */
-    public int getState() {
+    public String getState() {
         return this.state;
     }
 
@@ -218,7 +218,7 @@ public class ChannelType implements MediaServiceDTO {
      * 
      * @return the name
      */
-    public int getSize() {
+    public String getSize() {
         return this.size;
     }
 
@@ -229,7 +229,7 @@ public class ChannelType implements MediaServiceDTO {
      *            the size
      * @return the channel type
      */
-    public ChannelType setSize(int size) {
+    public ChannelType setSize(String size) {
         this.size = size;
         return this;
     }

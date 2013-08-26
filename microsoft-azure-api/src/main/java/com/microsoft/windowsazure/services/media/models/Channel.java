@@ -99,10 +99,10 @@ public class Channel {
             channelType.setIngestUri(ingestUri);
 
             if (state != null) {
-                channelType.setState(state.getCode());
+                channelType.setState(state.toString());
             }
             if (size != null) {
-                channelType.setSize(size.getCode());
+                channelType.setSize(size.toString());
             }
 
             if (settings != null) {
@@ -134,6 +134,11 @@ public class Channel {
          */
         public Creator setState(ChannelState state) {
             this.state = state;
+            return this;
+        }
+
+        public Creator setSize(ChannelSize size) {
+            this.size = size;
             return this;
         }
 
@@ -240,8 +245,8 @@ public class Channel {
             channelType.setDescription(description);
             channelType.setIngestUri(ingestUri);
             channelType.setPreviewUri(previewUri);
-            channelType.setSize(size.getCode());
-            channelType.setState(state.getCode());
+            channelType.setSize(size.toString());
+            channelType.setState(state.toString());
             if (settings != null) {
                 String channelSettings = null;
                 channelType.setSettings(channelSettings);
