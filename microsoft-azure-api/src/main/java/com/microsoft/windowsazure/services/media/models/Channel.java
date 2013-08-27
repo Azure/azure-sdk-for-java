@@ -68,16 +68,22 @@ public class Channel {
         /** The name. */
         private String name;
 
+        /** The description. */
         private String description;
 
+        /** The preview uri. */
         private URI previewUri;
 
+        /** The ingest uri. */
         private URI ingestUri;
 
+        /** The state. */
         private ChannelState state;
 
+        /** The size. */
         private ChannelSize size;
 
+        /** The settings. */
         private ChannelSettings settings;
 
         /**
@@ -137,11 +143,25 @@ public class Channel {
             return this;
         }
 
+        /**
+         * Sets the size.
+         * 
+         * @param size
+         *            the size
+         * @return the creator
+         */
         public Creator setSize(ChannelSize size) {
             this.size = size;
             return this;
         }
 
+        /**
+         * Sets the description.
+         * 
+         * @param description
+         *            the description
+         * @return the creator
+         */
         public Creator setDescription(String description) {
             this.description = description;
             return this;
@@ -160,7 +180,7 @@ public class Channel {
     }
 
     /**
-     * Get the Channel at the given link
+     * Get the Channel at the given link.
      * 
      * @param link
      *            the link
@@ -210,11 +230,23 @@ public class Channel {
 
         /** The name. */
         private String name;
+
+        /** The description. */
         private String description;
+
+        /** The ingest uri. */
         private URI ingestUri;
+
+        /** The preview uri. */
         private URI previewUri;
+
+        /** The size. */
         private ChannelSize size;
+
+        /** The state. */
         private ChannelState state;
+
+        /** The settings. */
         private ChannelSettings settings;
 
         /**

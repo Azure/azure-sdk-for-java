@@ -32,7 +32,7 @@ import com.microsoft.windowsazure.services.media.models.ChannelState;
 
 public class ChannelIntegrationTest extends IntegrationTestBase {
 
-    protected String testChannelPrefix = "testChannelPrefix";
+    protected String testChannelPrefix = "testchannelprefix";
     protected String invalidChannelName = "invalidChannelName";
 
     private void verifyInfosEqual(String message, ChannelInfo expected, ChannelInfo actual) {
@@ -77,7 +77,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void getChannelSuccess() throws Exception {
         // Arrange
-        String testName = testChannelPrefix + "GetChannelSuccess";
+        String testName = testChannelPrefix + "getchannelsuccess";
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
         ChannelSize channelSize = ChannelSize.Large;

@@ -34,7 +34,10 @@ import com.microsoft.windowsazure.services.media.implementation.content.ChannelT
  */
 public class ChannelInfo extends ODataEntity<ChannelType> {
 
+    /** The object mapper. */
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    /** The type reference. */
     private final TypeReference<ChannelSettings> typeReference = new TypeReference<ChannelSettings>() {
     };
 
@@ -74,7 +77,7 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
      * @return the state
      */
     public ChannelState getState() {
-        return ChannelState.fromCode(getContent().getState());
+        return ChannelState.valueOf(getContent().getState());
     }
 
     /**
@@ -95,18 +98,38 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
         return getContent().getLastModified();
     }
 
+    /**
+     * Gets the size.
+     * 
+     * @return the size
+     */
     public ChannelSize getSize() {
-        return ChannelSize.fromCode(getContent().getSize());
+        return ChannelSize.valueOf(getContent().getSize());
     }
 
+    /**
+     * Gets the preview uri.
+     * 
+     * @return the preview uri
+     */
     public URI getPreviewUri() {
         return getContent().getPreviewUri();
     }
 
+    /**
+     * Gets the ingest uri.
+     * 
+     * @return the ingest uri
+     */
     public URI getIngestUri() {
         return getContent().getIngestUri();
     }
 
+    /**
+     * Gets the settings.
+     * 
+     * @return the settings
+     */
     public ChannelSettings getSettings() {
 
         try {
