@@ -53,6 +53,10 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
         super(entry, content);
     }
 
+    public String getId() {
+        return this.getContent().getId();
+    }
+
     /**
      * Get the channel name.
      * 

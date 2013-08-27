@@ -77,15 +77,17 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void getChannelSuccess() throws Exception {
         // Arrange
-        String testName = testChannelPrefix + "getchannelsuccess";
+        String testName = testChannelPrefix + "getchannel";
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
         ChannelSize channelSize = ChannelSize.Large;
+        Thread.sleep(1000);
 
         ChannelInfo channelInfo = service.create(Channel.create().setName(testName).setDescription(testDescription)
                 .setState(channelState).setSize(channelSize));
+        Thread.sleep(5000);
         // Act
-        ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getName()));
+        ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
 
         // Assert
         verifyInfosEqual("actualChannel", channelInfo, actualChannelInfo);

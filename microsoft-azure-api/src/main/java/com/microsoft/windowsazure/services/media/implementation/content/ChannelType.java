@@ -30,6 +30,10 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ChannelType implements MediaServiceDTO {
 
+    /** The id. */
+    @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
+    private String id;
+
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
     protected String name;
@@ -252,6 +256,27 @@ public class ChannelType implements MediaServiceDTO {
      */
     public ChannelType setSettings(String settings) {
         this.settings = settings;
+        return this;
+    }
+
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Sets the id.
+     * 
+     * @param id
+     *            the id
+     * @return the channel type
+     */
+    public ChannelType setId(String id) {
+        this.id = id;
         return this;
     }
 

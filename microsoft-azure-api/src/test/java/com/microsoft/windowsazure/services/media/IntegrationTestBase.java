@@ -40,6 +40,8 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.Channel;
+import com.microsoft.windowsazure.services.media.models.ChannelInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
@@ -103,6 +105,25 @@ public abstract class IntegrationTestBase {
         removeAllTestAccessPolicies();
         removeAllTestJobs();
         removeAllTestContentKeys();
+        removeAllTestChannels();
+    }
+
+    private static void removeAllTestChannels() {
+        try {
+            List<ChannelInfo> channelInfos = service.list(Channel.list());
+
+            for (ChannelInfo channelInfo : channelInfos) {
+                try {
+                    service.delete(Channel.delete(channelInfo.getId()));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestContentKeys() {
