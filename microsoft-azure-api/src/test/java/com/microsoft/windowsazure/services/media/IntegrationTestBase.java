@@ -124,6 +124,12 @@ public abstract class IntegrationTestBase {
         catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestContentKeys() {

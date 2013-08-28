@@ -277,8 +277,14 @@ public class Channel {
             channelType.setDescription(description);
             channelType.setIngestUri(ingestUri);
             channelType.setPreviewUri(previewUri);
-            channelType.setSize(size.toString());
-            channelType.setState(state.toString());
+            if (size != null) {
+                channelType.setSize(size.toString());
+            }
+
+            if (state != null) {
+                channelType.setState(state.toString());
+            }
+
             if (settings != null) {
                 String channelSettings = null;
                 channelType.setSettings(channelSettings);

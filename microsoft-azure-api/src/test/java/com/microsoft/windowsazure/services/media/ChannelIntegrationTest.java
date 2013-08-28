@@ -62,13 +62,14 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void createChannelOptionsSuccess() throws Exception {
         // Arrange
-        String testName = testChannelPrefix + "createChannelOptionsSuccess";
+        String testName = testChannelPrefix + "createchopt";
         String testDescription = "testDescription";
 
-        ChannelState channelState = ChannelState.Starting;
+        ChannelState channelState = ChannelState.Stopped;
 
         // Act
-        ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription));
+        ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription)
+                .setSize(ChannelSize.Large));
 
         // Assert
         verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
@@ -103,12 +104,21 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void listChannelSuccess() throws ServiceException {
         // Arrange
-        String[] ChannelNames = new String[] { testChannelPrefix + "ChannelA", testChannelPrefix + "ChannelB" };
+        String[] ChannelNames = new String[] { testChannelPrefix + "cha", testChannelPrefix + "chb" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
         ChannelState channelState = ChannelState.Stopped;
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedChannels.add(service.create(Channel.create().setName(name).setState(channelState)));
+            expectedChannels.add(service.create(Channel.create().setName(name).setState(channelState)
+                    .setSize(ChannelSize.Large)));
+        }
+
+        try {
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         // Act
@@ -126,17 +136,23 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canListChannelsWithOptions() throws ServiceException {
-        String[] ChannelNames = new String[] { testChannelPrefix + "ChannelListOptionsA",
-                testChannelPrefix + "ChannelListOptionsB", testChannelPrefix + "ChannelListOptionsC",
-                testChannelPrefix + "ChannelListOptionsD" };
+        String[] ChannelNames = new String[] { testChannelPrefix + "channellista", testChannelPrefix + "channellistb",
+                testChannelPrefix + "channellistc", testChannelPrefix + "channellistad" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedChannels.add(service.create(Channel.create().setName(name)));
+            expectedChannels.add(service.create(Channel.create().setName(name).setSize(ChannelSize.Large)));
         }
 
         Collection<ChannelInfo> listChannelResult = service.list(Channel.list().setTop(2));
 
+        try {
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // Assert
 
         assertEquals(2, listChannelResult.size());
@@ -145,14 +161,15 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateChannelSuccess() throws Exception {
         // Arrange
-        String originalTestName = testChannelPrefix + "updateChannelSuccessOriginal";
+        String originalTestName = testChannelPrefix + "updatecho";
         ChannelState originalChannelState = ChannelState.Stopped;
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName));
+        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
+                .setSize(ChannelSize.Large));
 
-        String updatedTestName = testChannelPrefix + "updateChannelSuccessUpdated";
+        String updatedTestName = testChannelPrefix + "updatech";
 
         // Act
-        service.update(Channel.update(originalChannel.getName()).setName(updatedTestName));
+        service.update(Channel.update(originalChannel.getId()).setName(updatedTestName));
         ChannelInfo updatedChannel = service.get(Channel.get(updatedTestName));
 
         // Assert
@@ -162,12 +179,14 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
-        String originalTestName = testChannelPrefix + "updateChannelNoChangesSuccess";
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName));
+        String originalTestName = testChannelPrefix + "updatechnoch";
+        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
+                .setSize(ChannelSize.Large));
+        Thread.sleep(5000);
 
         // Act
-        service.update(Channel.update(originalChannel.getName()));
-        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getName()));
+        service.update(Channel.update(originalChannel.getId()));
+        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
         verifyInfosEqual("updatedChannel", originalChannel, updatedChannel);
@@ -176,20 +195,21 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void updateChannelFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.update(Channel.update(invalidChannelName));
     }
 
     @Test
     public void deleteChannelSuccess() throws Exception {
         // Arrange
-        String channelName = testChannelPrefix + "deleteChannelSuccess";
-        ChannelInfo channelInfo = service.create(Channel.create().setName(channelName));
+        String channelName = testChannelPrefix + "deletech";
+        ChannelInfo channelInfo = service.create(Channel.create().setName(channelName).setSize(ChannelSize.Large));
+        Thread.sleep(5000);
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
         // Act
-        service.delete(Channel.delete(channelInfo.getName()));
+        service.delete(Channel.delete(channelInfo.getId()));
 
         // Assert
         listChannelsResult = service.list(Channel.list());
@@ -203,7 +223,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteChannelFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
+        expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(Channel.delete(invalidChannelName));
     }
 }
