@@ -219,17 +219,14 @@ public class Channel {
      *            id of the Channel to update
      * @return the update operation
      */
-    public static Updater update(String ChannelId) {
-        return new Updater(ChannelId);
+    public static Updater update(String channelId) {
+        return new Updater(channelId);
     }
 
     /**
      * The Class Updater.
      */
     public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
-
-        /** The name. */
-        private String name;
 
         /** The description. */
         private String description;
@@ -252,11 +249,11 @@ public class Channel {
         /**
          * Instantiates a new updater.
          * 
-         * @param ChannelId
+         * @param channelId
          *            the Channel id
          */
-        protected Updater(String ChannelId) {
-            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, ChannelId));
+        protected Updater(String channelId) {
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, channelId));
         }
 
         /* (non-Javadoc)
@@ -273,7 +270,6 @@ public class Channel {
         @Override
         public Object getRequestContents() {
             ChannelType channelType = new ChannelType();
-            channelType.setName(name);
             channelType.setDescription(description);
             channelType.setIngestUri(ingestUri);
             channelType.setPreviewUri(previewUri);
@@ -293,15 +289,33 @@ public class Channel {
             return channelType;
         }
 
-        /**
-         * Sets new name for Channel.
-         * 
-         * @param name
-         *            The new name
-         * @return Updater instance
-         */
-        public Updater setName(String name) {
-            this.name = name;
+        public Updater setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Updater setIngestUri(URI ingestUri) {
+            this.ingestUri = ingestUri;
+            return this;
+        }
+
+        public Updater setPreviewUri(URI previewUri) {
+            this.previewUri = previewUri;
+            return this;
+        }
+
+        public Updater setSize(ChannelSize size) {
+            this.size = size;
+            return this;
+        }
+
+        public Updater setState(ChannelState state) {
+            this.state = state;
+            return this;
+        }
+
+        public Updater setSettings(ChannelSettings settings) {
+            this.settings = settings;
             return this;
         }
 

@@ -114,7 +114,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -164,15 +164,16 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
                 .setSize(ChannelSize.Large));
 
-        String updatedTestName = testChannelPrefix + "updatech";
+        String updatedDescription = "description";
 
         // Act
-        Thread.sleep(10000);
-        service.update(Channel.update(originalChannel.getId()).setName(updatedTestName));
-        ChannelInfo updatedChannel = service.get(Channel.get(updatedTestName));
+        Thread.sleep(20000);
+        service.update(Channel.update(originalChannel.getId()).setDescription(updatedDescription));
+        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
-        verifyChannelProperties("updatedChannel", updatedTestName, "", originalChannelState, updatedChannel);
+        verifyChannelProperties("updatedChannel", originalTestName, updatedDescription, originalChannelState,
+                updatedChannel);
     }
 
     @Test
@@ -203,13 +204,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         // Arrange
         String channelName = testChannelPrefix + "deletech";
         ChannelInfo channelInfo = service.create(Channel.create().setName(channelName).setSize(ChannelSize.Large));
-        Thread.sleep(10000);
+        Thread.sleep(20000);
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
         // Act
         service.delete(Channel.delete(channelInfo.getId()));
-        Thread.sleep(10000);
+        Thread.sleep(20000);
 
         // Assert
         listChannelsResult = service.list(Channel.list());
@@ -217,7 +218,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Channel.get(channelInfo.getName()));
+        service.get(Channel.get(channelInfo.getId()));
     }
 
     @Test
