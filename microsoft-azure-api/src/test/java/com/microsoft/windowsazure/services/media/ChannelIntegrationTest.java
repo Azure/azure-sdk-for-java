@@ -86,7 +86,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
         ChannelInfo channelInfo = service.create(Channel.create().setName(testName).setDescription(testDescription)
                 .setState(channelState).setSize(channelSize));
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         // Act
         ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
 
@@ -117,7 +117,6 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
             Thread.sleep(10000);
         }
         catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -147,10 +146,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         Collection<ChannelInfo> listChannelResult = service.list(Channel.list().setTop(2));
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         }
         catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // Assert
@@ -169,6 +167,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String updatedTestName = testChannelPrefix + "updatech";
 
         // Act
+        Thread.sleep(10000);
         service.update(Channel.update(originalChannel.getId()).setName(updatedTestName));
         ChannelInfo updatedChannel = service.get(Channel.get(updatedTestName));
 
@@ -182,7 +181,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String originalTestName = testChannelPrefix + "updatechnoch";
         ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
                 .setSize(ChannelSize.Large));
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         // Act
         service.update(Channel.update(originalChannel.getId()));
@@ -204,12 +203,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         // Arrange
         String channelName = testChannelPrefix + "deletech";
         ChannelInfo channelInfo = service.create(Channel.create().setName(channelName).setSize(ChannelSize.Large));
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
         // Act
         service.delete(Channel.delete(channelInfo.getId()));
+        Thread.sleep(10000);
 
         // Assert
         listChannelsResult = service.list(Channel.list());
