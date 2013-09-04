@@ -124,5 +124,21 @@ public class ObjectFactory {
 
     public ChannelType createChannelType() {
         return new ChannelType();
+    /**
+     * Creates an instance of (@link JobNotificationSubscriptionType).
+     * 
+     * @return the job notification subscription type.
+     */
+    public JobNotificationSubscriptionType createJobNotificationSubscriptionType() {
+        return new JobNotificationSubscriptionType();
+    }
+
+    /**
+     * Creates an instance of (@link NotificationEndPointType).
+     * 
+     * @return the notification end point type.
+     */
+    public NotificationEndPointType createNotificationEndPointType() {
+        return new NotificationEndPointType();
     }
 }

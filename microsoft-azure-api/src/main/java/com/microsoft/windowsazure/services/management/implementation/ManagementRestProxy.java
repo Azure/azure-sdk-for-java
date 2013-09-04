@@ -26,7 +26,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
@@ -183,24 +183,15 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
      */
     @Override
-    public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location) {
-        return createAffinityGroup(affinityGroupName, label, location, null);
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#createAffinityGroup(java.lang.String, java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.CreateAffinityGroupOptions)
-     */
-    @Override
-    public CreateAffinityGroupResult createAffinityGroup(String affinityGroupName, String label, String location,
-            CreateAffinityGroupOptions createAffinityGroupOptions) {
+    public CreateAffinityGroupResult createAffinityGroup(CreateAffinityGroupOptions createAffinityGroupOptions) {
 
         CreateAffinityGroup createAffinityGroup = new CreateAffinityGroup();
-        createAffinityGroup.setName(affinityGroupName);
-        createAffinityGroup.setLabel(label);
-        createAffinityGroup.setLocation(location);
+        createAffinityGroup.setName(createAffinityGroupOptions.getName());
+        createAffinityGroup.setLabel(createAffinityGroupOptions.getLabel());
+        createAffinityGroup.setLocation(createAffinityGroupOptions.getLocation());
         if (createAffinityGroupOptions != null) {
             createAffinityGroup.setDescription(createAffinityGroupOptions.getDescription());
         }
@@ -247,18 +238,18 @@ public class ManagementRestProxy implements ManagementContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(java.lang.String, java.lang.String, com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
+     * @see com.microsoft.windowsazure.services.management.ManagementContract#updateAffinityGroup(com.microsoft.windowsazure.services.management.models.UpdateAffinityGroupOptions)
      */
     @Override
-    public UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
-            UpdateAffinityGroupOptions updateAffinityGroupOptions) {
+    public UpdateAffinityGroupResult updateAffinityGroup(UpdateAffinityGroupOptions updateAffinityGroupOptions) {
         UpdateAffinityGroup updateAffinityGroup = new UpdateAffinityGroup();
-        updateAffinityGroup.setLabel(label);
+        updateAffinityGroup.setLabel(updateAffinityGroupOptions.getLabel());
         if (updateAffinityGroupOptions != null) {
             updateAffinityGroup.setDescription(updateAffinityGroupOptions.getDescription());
         }
-        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups").path(name)
-                .header("x-ms-version", "2011-02-25").put(ClientResponse.class, updateAffinityGroup);
+        ClientResponse clientResponse = getResource().path(subscriptionId).path("affinitygroups")
+                .path(updateAffinityGroupOptions.getName()).header("x-ms-version", "2011-02-25")
+                .put(ClientResponse.class, updateAffinityGroup);
         PipelineHelpers.ThrowIfError(clientResponse);
         UpdateAffinityGroupResult updateAffinityGroupResult = new UpdateAffinityGroupResult(clientResponse.getStatus(),
                 getRequestId(clientResponse));

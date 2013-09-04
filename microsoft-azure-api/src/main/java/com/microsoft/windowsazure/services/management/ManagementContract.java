@@ -33,23 +33,6 @@ import com.microsoft.windowsazure.services.management.models.UpdateAffinityGroup
 public interface ManagementContract extends FilterableService<ManagementContract> {
 
     /**
-     * Creates a affinity group.
-     * 
-     * @param name
-     *            The name of the affinity group.
-     * @param label
-     *            The label of the affinity group.
-     * @param location
-     *            The geographic location of the affinity group.
-     * 
-     * @return A <code>CreateAffinityGroupResult</code> instance containing the result of the create affinity group
-     *         request.
-     * @throws ServiceException
-     *             the service exception
-     */
-    CreateAffinityGroupResult createAffinityGroup(String name, String label, String location) throws ServiceException;
-
-    /**
      * Gets the information of an affinity group.
      * 
      * @param name
@@ -63,20 +46,14 @@ public interface ManagementContract extends FilterableService<ManagementContract
     /**
      * Creates an affinity group.
      * 
-     * @param name
-     *            The name of the affinity group.
-     * @param label
-     *            The label of the affinity group.
-     * @param location
-     *            The location of the affinity group.
      * @param createAffinityGroupOptions
      *            The options to create an affinity group.
      * @return A <code>CreateAffinityGroupResult</code> instance which contains the information of the affinity group.
      * @throws ServiceException
      *             the service exception
      */
-    CreateAffinityGroupResult createAffinityGroup(String name, String label, String location,
-            CreateAffinityGroupOptions createAffinityGroupOptions) throws ServiceException;
+    CreateAffinityGroupResult createAffinityGroup(CreateAffinityGroupOptions createAffinityGroupOptions)
+            throws ServiceException;
 
     /**
      * Delete affinity group.
@@ -103,10 +80,6 @@ public interface ManagementContract extends FilterableService<ManagementContract
     /**
      * Update affinity group.
      * 
-     * @param name
-     *            The name of the affinity group.
-     * @param label
-     *            The label of the affinity group.
      * @param updateAffinityGroupOptions
      *            The options to update the affinity group.
      * @return A <code>UpdateAffinityGroupResult</code> class instance which contains the result of update affinity
@@ -115,7 +88,7 @@ public interface ManagementContract extends FilterableService<ManagementContract
      * @throws ServiceException
      *             the service exception
      */
-    UpdateAffinityGroupResult updateAffinityGroup(String name, String label,
-            UpdateAffinityGroupOptions updateAffinityGroupOptions) throws ServiceException;
+    UpdateAffinityGroupResult updateAffinityGroup(UpdateAffinityGroupOptions updateAffinityGroupOptions)
+            throws ServiceException;
 
 }

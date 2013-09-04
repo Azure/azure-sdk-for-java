@@ -38,6 +38,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOp
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.implementation.MediaBatchOperations;
+import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -97,11 +98,14 @@ public class Job {
         /** The media batch operations. */
         private MediaBatchOperations mediaBatchOperations;
 
+        /** The job notification subscriptions. */
+        private final List<JobNotificationSubscription> jobNotificationSubscriptions = new ArrayList<JobNotificationSubscription>();
+
         /**
          * Builds the mime multipart.
          * 
-         * @throws ServiceException
-         *             the service exception
+         * @param serviceUri
+         *            the service uri
          */
         private void buildMimeMultipart(URI serviceUri) {
             mediaBatchOperations = null;
@@ -298,6 +302,28 @@ public class Job {
         public String getUri() {
             return "$batch";
         }
+
+        /**
+         * Adds the job notification subscription.
+         * 
+         * @param jobNotificationSubscription
+         *            the job notification subscription
+         * @return the creator
+         */
+        public Creator addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
+            this.jobNotificationSubscriptions.add(jobNotificationSubscription);
+            this.fresh = true;
+            return this;
+        }
+
+        /**
+         * Gets the job notification subscription.
+         * 
+         * @return the job notification subscription
+         */
+        public List<JobNotificationSubscription> getJobNotificationSubscription() {
+            return this.jobNotificationSubscriptions;
+        }
     }
 
     /**
@@ -325,6 +351,8 @@ public class Job {
         /**
          * Creates the.
          * 
+         * @param serviceUri
+         *            the service uri
          * @param creator
          *            the creator
          * @return the creates the batch operation
@@ -335,6 +363,14 @@ public class Job {
             JobType jobType = new JobType();
             jobType.setName(creator.getName());
             jobType.setPriority(creator.getPriority());
+            for (JobNotificationSubscription jobNotificationSubscription : creator.getJobNotificationSubscription()) {
+                JobNotificationSubscriptionType jobNotificationSubscriptionType = new JobNotificationSubscriptionType();
+                jobNotificationSubscriptionType.setNotificationEndPointId(jobNotificationSubscription
+                        .getNotificationEndPointId());
+                jobNotificationSubscriptionType.setTargetJobState(jobNotificationSubscription.getTargetJobState()
+                        .getCode());
+                jobType.addJobNotificationSubscriptionType(jobNotificationSubscriptionType);
+            }
 
             for (String inputMediaAsset : creator.getInputMediaAssets()) {
                 createBatchOperation.addLink("InputMediaAssets", String.format("%s/Assets('%s')", createBatchOperation

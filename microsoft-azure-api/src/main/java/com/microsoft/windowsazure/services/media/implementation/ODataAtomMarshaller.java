@@ -39,8 +39,10 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
+import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
+import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -135,6 +137,8 @@ public class ODataAtomMarshaller {
         classes.add(ContentKeyRestType.class);
         classes.add(AssetFileType.class);
         classes.add(ChannelType.class);
+        classes.add(NotificationEndPointType.class);
+        classes.add(JobNotificationSubscriptionType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }

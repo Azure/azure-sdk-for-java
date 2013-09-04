@@ -19,7 +19,7 @@ import java.util.Arrays;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.BlobOperationRestProxy;
-import com.microsoft.windowsazure.services.blob.implementation.RFC1123DateConverter;
+import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.sun.jersey.api.client.Client;
 

@@ -59,6 +59,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static String CREATABLE_QUEUE_1;
     private static String CREATABLE_QUEUE_2;
     private static String CREATABLE_QUEUE_3;
+    private static String CREATABLE_QUEUE_4;
     private static String[] creatableQueues;
     private static String[] testQueues;
     private static QueueContract service;
@@ -93,6 +94,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         CREATABLE_QUEUE_1 = creatableQueues[0];
         CREATABLE_QUEUE_2 = creatableQueues[1];
         CREATABLE_QUEUE_3 = creatableQueues[2];
+        CREATABLE_QUEUE_4 = creatableQueues[3];
 
         // Create all test containers and their content
         config = createConfiguration();
@@ -205,11 +207,11 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
 
-        service.createQueue(CREATABLE_QUEUE_1);
+        service.createQueue(CREATABLE_QUEUE_4);
 
         // Act
-        service.deleteQueue(CREATABLE_QUEUE_1);
-        GetQueueMetadataResult result = service.getQueueMetadata(CREATABLE_QUEUE_1);
+        service.deleteQueue(CREATABLE_QUEUE_4);
+        GetQueueMetadataResult result = service.getQueueMetadata(CREATABLE_QUEUE_4);
 
         // Assert
         assertNull(result);
