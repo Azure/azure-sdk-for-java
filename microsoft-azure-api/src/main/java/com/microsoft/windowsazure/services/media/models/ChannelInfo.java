@@ -42,7 +42,7 @@ public class ChannelInfo extends ODataEntity<ChannelType> {
     };
 
     /**
-     * Instantiates a new channel info.
+     * Instantiates a new channel info instance.
      * 
      * @param entry
      *            the entry

@@ -15,9 +15,19 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Class IngestEndpointSettings.
+ */
 public class IngestEndpointSettings {
+
+    /** The security. */
     private SecuritySettings security;
 
+    /**
+     * Gets the security.
+     * 
+     * @return the security
+     */
     public SecuritySettings getSecurity() {
         return this.security;
     }

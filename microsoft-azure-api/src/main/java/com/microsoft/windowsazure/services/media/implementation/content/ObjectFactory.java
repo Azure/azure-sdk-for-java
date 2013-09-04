@@ -122,8 +122,15 @@ public class ObjectFactory {
         return new RebindContentKeyType();
     }
 
+    /**
+     * Creates an instance of (@link ContentType).
+     * 
+     * @return the channel type.
+     */
     public ChannelType createChannelType() {
         return new ChannelType();
+    }
+
     /**
      * Creates an instance of (@link JobNotificationSubscriptionType).
      * 

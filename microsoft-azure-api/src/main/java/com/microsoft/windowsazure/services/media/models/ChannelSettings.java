@@ -15,15 +15,31 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Class ChannelSettings.
+ */
 public class ChannelSettings {
 
+    /** The preview. */
     private PreviewEndPointSettings preview;
+
+    /** The ingest. */
     private IngestEndpointSettings ingest;
 
+    /**
+     * Gets the preview.
+     * 
+     * @return the preview
+     */
     public PreviewEndPointSettings getPreview() {
         return this.preview;
     }
 
+    /**
+     * Gets the ingest.
+     * 
+     * @return the ingest
+     */
     public IngestEndpointSettings getIngest() {
         return this.ingest;
     }

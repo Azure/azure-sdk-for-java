@@ -15,14 +15,31 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+/**
+ * The Class Ipv4.
+ */
 public class Ipv4 {
+
+    /** The name. */
     private String name;
+
+    /** The ip. */
     private String ip;
 
+    /**
+     * Gets the name.
+     * 
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets the ip.
+     * 
+     * @return the ip
+     */
     public String getIp() {
         return this.ip;
     }

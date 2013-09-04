@@ -15,10 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.security.InvalidParameterException;
 
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
@@ -26,7 +23,6 @@ import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOpe
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
-import com.microsoft.windowsazure.services.media.entityoperations.EntityLinkOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
@@ -51,7 +47,7 @@ public class Channel {
     }
 
     /**
-     * Creates the.
+     * Creates a channel creator.
      * 
      * @return the creator
      */
@@ -132,6 +128,42 @@ public class Channel {
         }
 
         /**
+         * Sets the description.
+         * 
+         * @param description
+         *            the description
+         * @return the creator
+         */
+        public Creator setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * Sets the preview uri.
+         * 
+         * @param previewUri
+         *            the preview uri
+         * @return the creator
+         */
+        public Creator setPreviewUri(URI previewUri) {
+            this.previewUri = previewUri;
+            return this;
+        }
+
+        /**
+         * Sets the ingest uri.
+         * 
+         * @param ingestUri
+         *            the ingest uri
+         * @return the creator
+         */
+        public Creator setIngestUri(URI ingestUri) {
+            this.ingestUri = ingestUri;
+            return this;
+        }
+
+        /**
          * Sets the state.
          * 
          * @param state
@@ -156,16 +188,17 @@ public class Channel {
         }
 
         /**
-         * Sets the description.
+         * Sets the settings.
          * 
-         * @param description
-         *            the description
+         * @param settings
+         *            the settings
          * @return the creator
          */
-        public Creator setDescription(String description) {
-            this.description = description;
+        public Creator setSettings(ChannelSettings settings) {
+            this.settings = settings;
             return this;
         }
+
     }
 
     /**
@@ -215,8 +248,8 @@ public class Channel {
     /**
      * Create an operation that will update the given Channel.
      * 
-     * @param ChannelId
-     *            id of the Channel to update
+     * @param channelId
+     *            the channel id
      * @return the update operation
      */
     public static Updater update(String channelId) {
@@ -289,31 +322,73 @@ public class Channel {
             return channelType;
         }
 
+        /**
+         * Sets the description.
+         * 
+         * @param description
+         *            the description
+         * @return the updater
+         */
         public Updater setDescription(String description) {
             this.description = description;
             return this;
         }
 
+        /**
+         * Sets the ingest uri.
+         * 
+         * @param ingestUri
+         *            the ingest uri
+         * @return the updater
+         */
         public Updater setIngestUri(URI ingestUri) {
             this.ingestUri = ingestUri;
             return this;
         }
 
+        /**
+         * Sets the preview uri.
+         * 
+         * @param previewUri
+         *            the preview uri
+         * @return the updater
+         */
         public Updater setPreviewUri(URI previewUri) {
             this.previewUri = previewUri;
             return this;
         }
 
+        /**
+         * Sets the size.
+         * 
+         * @param size
+         *            the size
+         * @return the updater
+         */
         public Updater setSize(ChannelSize size) {
             this.size = size;
             return this;
         }
 
+        /**
+         * Sets the state.
+         * 
+         * @param state
+         *            the state
+         * @return the updater
+         */
         public Updater setState(ChannelState state) {
             this.state = state;
             return this;
         }
 
+        /**
+         * Sets the settings.
+         * 
+         * @param settings
+         *            the settings
+         * @return the updater
+         */
         public Updater setSettings(ChannelSettings settings) {
             this.settings = settings;
             return this;
@@ -332,24 +407,4 @@ public class Channel {
         return new DefaultDeleteOperation(ENTITY_SET, channelName);
     }
 
-    /**
-     * Link content key.
-     * 
-     * @param ChannelId
-     *            the Channel id
-     * @param contentKeyId
-     *            the content key id
-     * @return the entity action operation
-     */
-    public static EntityLinkOperation getIngressMetrics(String ChannelId, String contentKeyId) {
-        String escapedContentKeyId = null;
-        try {
-            escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new InvalidParameterException("contentKeyId");
-        }
-        URI contentKeyUri = URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
-        return new EntityLinkOperation("Channels", ChannelId, "ContentKeys", contentKeyUri);
-    }
 }

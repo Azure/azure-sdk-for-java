@@ -17,14 +17,31 @@ package com.microsoft.windowsazure.services.media.models;
 
 import java.util.Date;
 
+/**
+ * The Class G20Key.
+ */
 public class G20Key {
+
+    /** The expiration. */
     private Date expiration;
+
+    /** The identifier. */
     private String identifier;
 
+    /**
+     * Gets the expiration.
+     * 
+     * @return the expiration
+     */
     public Date getExpiration() {
         return this.expiration;
     }
 
+    /**
+     * Gets the identifier.
+     * 
+     * @return the identifier
+     */
     public String getIdentifier() {
         return this.identifier;
     }

@@ -17,4 +17,15 @@ package com.microsoft.windowsazure.services.media.models;
 
 public class PreviewEndPointSettings {
 
+    /** The security. */
+    private SecuritySettings security;
+
+    /**
+     * Gets the security.
+     * 
+     * @return the security
+     */
+    public SecuritySettings getSecurity() {
+        return this.security;
+    }
 }
