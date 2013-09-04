@@ -51,7 +51,7 @@ public class Asset {
     }
 
     /**
-     * Creates the.
+     * Creates an Asset Creator.
      * 
      * @return the creator
      */
