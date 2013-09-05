@@ -54,7 +54,7 @@ public enum OperationState {
      * 
      * @param operationStateCode
      *            the operation state code
-     * @return the operation
+     * @return the operation state
      */
     public static OperationState fromCode(int operationStateCode) {
         switch (operationStateCode) {

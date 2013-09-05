@@ -79,6 +79,6 @@ public class OperationInfo extends ODataEntity<OperationType> {
      * @return the error message
      */
     public String getErrorMessage() {
-        return this.getErrorMessage();
+        return this.getContent().getErrorMessage();
     }
 }
