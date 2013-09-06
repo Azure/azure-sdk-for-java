@@ -32,7 +32,7 @@ public class TaskHistoricalEvent {
     private final Date timeStamp;
 
     /**
-     * Instantiates a new error detail.
+     * Instantiates a new task historical event.
      * 
      * @param code
      *            the code

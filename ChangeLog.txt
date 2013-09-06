@@ -1,5 +1,9 @@
+2013.08.26 Version 0.4.5
+ * Added support for managing affinity groups
+ * Added support for Media Services job notification
+
 2013.07.03 Version 0.4.4
- * Windows Azure China environemnt support
+ * Windows Azure China environment support
  * Service Bus metadata support updated to the latest version
  * Rich Odata entity query support for Service Bus Queue/Topic/Subscription
  * Added support for Service Bus message forwarding
