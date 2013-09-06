@@ -80,6 +80,7 @@ public class ParsedConnectionStringTest {
             return fieldThree;
         }
 
+        @SuppressWarnings("unused")
         @ConnectionStringField(name = "fieldthree")
         protected void setNumericField(String fieldThree) {
             this.fieldThree = Integer.parseInt(fieldThree);

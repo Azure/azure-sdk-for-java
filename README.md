@@ -35,6 +35,10 @@ This project provides a client library in Java that makes it easy to consume Win
     * Create/Read/Update/Delete assets
     * Create/Read/Update/Delete/Rebind content keys
     * Create/Read/Update/Cancel/Delete jobs
+    * Add/Get job notifications
+    * Create/Read/Update/Delete notification endpoints
+* Service Management
+	* Manage affinity groups
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
   
@@ -59,7 +63,7 @@ within your project you can also have them installed by the Java package manager
 <dependency>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.4</version>
+  <version>0.4.5</version>
 </dependency>
 ```
 
