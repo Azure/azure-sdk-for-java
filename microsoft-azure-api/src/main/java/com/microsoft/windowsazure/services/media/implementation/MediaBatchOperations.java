@@ -277,7 +277,7 @@ public class MediaBatchOperations {
         headers.addHeader("Content-ID", Integer.toString(contentId));
         headers.addHeader("Content-Type", "application/atom+xml;type=entry");
         headers.addHeader("Content-Length", Integer.toString(bytes.length));
-        headers.addHeader("DataServiceVersion", "1.0;NetFx");
+        headers.addHeader("DataServiceVersion", "3.0;NetFx");
         headers.addHeader("MaxDataServiceVersion", "3.0;NetFx");
 
         // adds body

@@ -59,7 +59,7 @@ public class StatusLine {
                 ch = reader.read();
                 if (ch != byteArray[i]) {
                     throw new RuntimeException(String.format("Expected '%s', found '%s' instead", string,
-                            string.substring(0, i) + ch));
+                            string.substring(0, i) + (char) ch));
                 }
             }
         }

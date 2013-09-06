@@ -67,6 +67,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
             .setTimeout(5);
     static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions().setPeekLock().setTimeout(5);
 
+    private String createLongString(int length) {
+        String result = new String();
+        for (int i = 0; i < length; i++) {
+            result = result + "a";
+        }
+        return result;
+    }
+
     @Before
     public void createService() throws Exception {
         // reinitialize configuration from known state
@@ -74,9 +82,9 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
-        builder.alter(Client.class, new Alteration<Client>() {
+        builder.alter(ServiceBusContract.class, Client.class, new Alteration<Client>() {
             @Override
-            public Client alter(Client instance, Builder builder, Map<String, Object> properties) {
+            public Client alter(String profile, Client instance, Builder builder, Map<String, Object> properties) {
                 instance.addFilter(new LoggingFilter());
                 return instance;
             }
@@ -276,6 +284,26 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         // Assert
         assertEquals(11, size);
         assertArrayEquals("Hello World".getBytes(), Arrays.copyOf(data, size));
+    }
+
+    @Test
+    public void receiveLargeMessageWorks() throws Exception {
+        // Arrange
+        String queueName = "TestReceiveLargeMessageWorks";
+        service.createQueue(new QueueInfo(queueName));
+        String expectedBody = createLongString(64000);
+        BrokeredMessage expectedMessage = new BrokeredMessage(expectedBody);
+        service.sendQueueMessage(queueName, expectedMessage);
+
+        // Act
+        BrokeredMessage message = service.receiveQueueMessage(queueName, RECEIVE_AND_DELETE_5_SECONDS).getValue();
+        byte[] data = new byte[64000];
+        int size = message.getBody().read(data);
+
+        // Assert
+        assertEquals(expectedBody.length(), size);
+        assertArrayEquals(expectedBody.getBytes(), Arrays.copyOf(data, size));
+
     }
 
     @Test
