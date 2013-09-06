@@ -123,7 +123,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates an instance of (@link ContentType).
+     * Creates an instance of (@link ChannelType).
      * 
      * @return the channel type.
      */

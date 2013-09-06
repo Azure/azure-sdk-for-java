@@ -279,5 +279,4 @@ public class ChannelType implements MediaServiceDTO {
         this.settings = settings;
         return this;
     }
-
 }
