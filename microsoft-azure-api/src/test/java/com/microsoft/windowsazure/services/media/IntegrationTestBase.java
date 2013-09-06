@@ -49,15 +49,22 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.queue.QueueConfiguration;
+import com.microsoft.windowsazure.services.queue.QueueContract;
+import com.microsoft.windowsazure.services.queue.QueueService;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 
 public abstract class IntegrationTestBase {
     protected static MediaContract service;
+    protected static QueueContract queueService;
     protected static Configuration config;
 
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
     protected static final String testContentKeyPrefix = "testContentKey";
     protected static final String testJobPrefix = "testJobPrefix";
+    protected static final String testQueuePrefix = "testqueueprefix";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -79,13 +86,26 @@ public abstract class IntegrationTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
 
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY, "media.queue.account.key");
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME, "media.queue.account.name");
+        overrideWithEnv(config, QueueConfiguration.URI, "media.queue.uri");
+
         service = MediaService.create(config);
+        queueService = QueueService.create(config);
 
         cleanupEnvironment();
     }
 
     protected static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
+    }
+
+    protected static void overrideWithEnv(Configuration config, String key, String enviromentKey) {
+        String value = System.getenv(enviromentKey);
         if (value == null)
             return;
 
@@ -103,6 +123,24 @@ public abstract class IntegrationTestBase {
         removeAllTestAccessPolicies();
         removeAllTestJobs();
         removeAllTestContentKeys();
+        removeAllTestQueues();
+    }
+
+    private static void removeAllTestQueues() {
+        try {
+            ListQueuesResult listQueueResult = queueService.listQueues();
+            for (Queue queue : listQueueResult.getQueues()) {
+                try {
+                    queueService.deleteQueue(queue.getName());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void removeAllTestContentKeys() {

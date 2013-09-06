@@ -43,6 +43,7 @@ public abstract class AbstractListOptions<T> {
         return filter;
     }
 
+    @SuppressWarnings("unchecked")
     public T setFilter(String filter) {
         this.filter = filter;
         return (T) this;
