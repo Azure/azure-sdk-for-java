@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.core.storage;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -89,7 +90,12 @@ public class StorageException extends Exception {
         int responseCode = 0;
         try {
             responseCode = request.getResponseCode();
-            responseMessage = request.getResponseMessage();
+            if (cause instanceof SocketException) {
+                responseMessage = request.getResponseMessage();
+            }
+            else {
+                responseMessage = cause.getMessage();
+            }
         }
         catch (final IOException e) {
             // ignore errors

@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -34,6 +35,7 @@ import com.microsoft.windowsazure.services.core.storage.RetryPolicy;
 import com.microsoft.windowsazure.services.core.storage.RetryPolicyFactory;
 import com.microsoft.windowsazure.services.core.storage.RetryResult;
 import com.microsoft.windowsazure.services.core.storage.SendingRequestEvent;
+import com.microsoft.windowsazure.services.core.storage.StorageErrorCode;
 import com.microsoft.windowsazure.services.core.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
@@ -169,10 +171,20 @@ public final class ExecutionEngine {
             }
             catch (final XMLStreamException e) {
                 // Non Retryable except when the inner exception is actually an IOException
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
+
+                // Only in the case of xml exceptions that are due to connection issues.
+                if (e.getCause() instanceof SocketException) {
+                    translatedException = new StorageException(StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
+                            "An unknown failure occurred : ".concat(e.getCause().getMessage()),
+                            HttpURLConnection.HTTP_INTERNAL_ERROR, null, e);
+                }
+                else {
+                    translatedException = StorageException.translateException(getLastRequestObject(opContext), e,
+                            opContext);
+                }
+
                 task.getResult().setException(translatedException);
-                if (!(e.getCause() instanceof IOException)) {
+                if (!(e.getCause() instanceof IOException) && !(e.getCause() instanceof SocketException)) {
                     throw translatedException;
                 }
             }
