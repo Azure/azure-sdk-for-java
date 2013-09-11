@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,6 +53,7 @@ public class Exports implements Builder.Exports {
         registry.add(RedirectFilter.class);
         registry.add(VersionHeadersFilter.class);
         registry.add(UserAgentFilter.class);
+        registry.add(ThreadPoolExecutor.class);
 
         registry.alter(MediaContract.class, ClientConfig.class, new Builder.Alteration<ClientConfig>() {
             @SuppressWarnings("rawtypes")

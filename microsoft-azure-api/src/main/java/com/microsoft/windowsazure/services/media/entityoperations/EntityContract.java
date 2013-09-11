@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.concurrent.Future;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
@@ -85,6 +87,8 @@ public interface EntityContract {
      *             the service exception
      */
     void delete(EntityDeleteOperation deleter) throws ServiceException;
+
+    Future<String> deleteAsync(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
      * Perform an action on an entity.

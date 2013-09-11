@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.junit.Test;
 
@@ -219,6 +220,12 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.get(Channel.get(channelInfo.getId()));
+    }
+
+    @Test
+    public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
+        Future<String> future = service.deleteAsync(Channel.delete(invalidChannelName));
+        assertFalse(future.isDone());
     }
 
     @Test

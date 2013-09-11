@@ -15,6 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -32,6 +36,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
  */
 public abstract class EntityRestProxy implements EntityContract {
 
+    private final ThreadPoolExecutor executorService;
     /** The channel. */
     private final Client channel;
     /** The filters. */
@@ -45,9 +50,10 @@ public abstract class EntityRestProxy implements EntityContract {
      * @param filters
      *            the filters
      */
-    public EntityRestProxy(Client channel, ServiceFilter[] filters) {
+    public EntityRestProxy(Client channel, ThreadPoolExecutor executorService, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
+        this.executorService = executorService;
     }
 
     /**
@@ -57,6 +63,10 @@ public abstract class EntityRestProxy implements EntityContract {
      */
     protected Client getChannel() {
         return channel;
+    }
+
+    protected ThreadPoolExecutor getExecutorService() {
+        return executorService;
     }
 
     /**
@@ -160,6 +170,22 @@ public abstract class EntityRestProxy implements EntityContract {
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
         getResource(deleter.getUri()).delete();
+    }
+
+    @Override
+    public Future<String> deleteAsync(EntityDeleteOperation deleter) throws ServiceException {
+        deleter.setProxyData(createProxyData());
+        ClientResponse clientResponse = getResource(deleter.getUri()).delete(ClientResponse.class);
+
+        Future<String> result = executorService.submit(new Callable<String>() {
+            @Override
+            public String call() {
+                return "Hello";
+            }
+        });
+
+        return result;
+
     }
 
     /* (non-Javadoc)

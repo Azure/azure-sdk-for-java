@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.concurrent.Future;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -211,6 +213,19 @@ public class MediaExceptionProcessor implements MediaContract {
     @Override
     public WritableBlobContainerContract createBlobWriter(LocatorInfo locator) {
         return service.createBlobWriter(locator);
+    }
+
+    @Override
+    public Future<String> deleteAsync(EntityDeleteOperation deleter) throws ServiceException {
+        try {
+            return service.deleteAsync(deleter);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
 }
