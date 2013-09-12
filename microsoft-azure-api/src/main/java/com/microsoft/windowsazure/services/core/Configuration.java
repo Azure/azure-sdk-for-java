@@ -91,11 +91,11 @@ public class Configuration {
     }
 
     public <T> T create(Class<T> service) {
-        return builder.build("", service, properties);
+        return builder.build("", service, service, properties);
     }
 
     public <T> T create(String profile, Class<T> service) {
-        return builder.build(profile, service, properties);
+        return builder.build(profile, service, service, properties);
     }
 
     public Builder getBuilder() {
