@@ -23,7 +23,9 @@ import com.microsoft.windowsazure.services.media.implementation.content.Operatio
  * Data about a Media Services operation entity.
  * 
  */
-public class OperationInfo extends ODataEntity<OperationType> {
+public class OperationInfo<T> extends ODataEntity<OperationType> {
+
+    private T entity;
 
     /**
      * Instantiates a new operation info.
@@ -80,5 +82,14 @@ public class OperationInfo extends ODataEntity<OperationType> {
      */
     public String getErrorMessage() {
         return this.getContent().getErrorMessage();
+    }
+
+    public OperationInfo<T> setEntity(T entity) {
+        this.entity = entity;
+        return this;
+    }
+
+    public T getEntity() {
+        return this.entity;
     }
 }

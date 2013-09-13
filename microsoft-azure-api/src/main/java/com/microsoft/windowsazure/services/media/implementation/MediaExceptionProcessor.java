@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActi
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -215,10 +216,38 @@ public class MediaExceptionProcessor implements MediaContract {
         return service.createBlobWriter(locator);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public Future<String> deleteAsync(EntityDeleteOperation deleter) throws ServiceException {
+    public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
         try {
-            return service.deleteAsync(deleter);
+            return service.beginDelete(deleter);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
+        try {
+            return service.beginCreate(creator);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
+        try {
+            return service.beginUpdate(updater);
         }
         catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));

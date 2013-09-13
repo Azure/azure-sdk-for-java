@@ -15,9 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.ws.rs.core.MediaType;
 
@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -36,7 +37,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
  */
 public abstract class EntityRestProxy implements EntityContract {
 
-    private final ThreadPoolExecutor executorService;
+    private final ExecutorService executorService;
     /** The channel. */
     private final Client channel;
     /** The filters. */
@@ -50,10 +51,10 @@ public abstract class EntityRestProxy implements EntityContract {
      * @param filters
      *            the filters
      */
-    public EntityRestProxy(Client channel, ThreadPoolExecutor executorService, ServiceFilter[] filters) {
+    public EntityRestProxy(Client channel, ServiceFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
-        this.executorService = executorService;
+        this.executorService = Executors.newCachedThreadPool();
     }
 
     /**
@@ -65,7 +66,7 @@ public abstract class EntityRestProxy implements EntityContract {
         return channel;
     }
 
-    protected ThreadPoolExecutor getExecutorService() {
+    protected ExecutorService getExecutorService() {
         return executorService;
     }
 
@@ -125,6 +126,20 @@ public abstract class EntityRestProxy implements EntityContract {
         return (T) processedResponse;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
+        creator.setProxyData(createProxyData());
+        ClientResponse clientResponse = getResource(creator).post(ClientResponse.class, creator.getRequestContents());
+        String operationId = clientResponse.getHeaders().getFirst("operation-id");
+        if (operationId == null) {
+            String errorMessage = parseClientResponseForErrorMessage(clientResponse);
+            throw new ServiceException(errorMessage);
+        }
+        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId));
+        return result;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#get(com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation)
      */
@@ -163,6 +178,12 @@ public abstract class EntityRestProxy implements EntityContract {
         updater.processResponse(rawResponse);
     }
 
+    @Override
+    public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
+        return null;
+
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#delete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
      */
@@ -173,19 +194,21 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     @Override
-    public Future<String> deleteAsync(EntityDeleteOperation deleter) throws ServiceException {
+    public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
         ClientResponse clientResponse = getResource(deleter.getUri()).delete(ClientResponse.class);
-
-        Future<String> result = executorService.submit(new Callable<String>() {
-            @Override
-            public String call() {
-                return "Hello";
-            }
-        });
-
+        String operationId = clientResponse.getHeaders().getFirst("operation-id");
+        if (operationId == null) {
+            String errorMessage = parseClientResponseForErrorMessage(clientResponse);
+            throw new ServiceException(errorMessage);
+        }
+        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId));
         return result;
 
+    }
+
+    private String parseClientResponseForErrorMessage(ClientResponse clientResponse) {
+        return "error the delete operation is wrong";
     }
 
     /* (non-Javadoc)

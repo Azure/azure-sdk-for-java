@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Inject;
 
@@ -67,10 +66,10 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      * 
      */
     @Inject
-    public MediaRestProxy(Client channel, ThreadPoolExecutor executorService, OAuthFilter authFilter,
-            RedirectFilter redirectFilter, VersionHeadersFilter versionHeadersFilter, UserAgentFilter userAgentFilter,
+    public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
+            VersionHeadersFilter versionHeadersFilter, UserAgentFilter userAgentFilter,
             ClientConfigSettings clientConfigSettings) {
-        super(channel, executorService, new ServiceFilter[0]);
+        super(channel, new ServiceFilter[0]);
 
         this.clientConfigSettings = clientConfigSettings;
         this.redirectFilter = redirectFilter;
@@ -90,9 +89,8 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      * @param clientConfigSettings
      *            currently configured HTTP client settings
      */
-    private MediaRestProxy(Client channel, ThreadPoolExecutor executorService, ServiceFilter[] filters,
-            ClientConfigSettings clientConfigSettings) {
-        super(channel, executorService, filters);
+    private MediaRestProxy(Client channel, ServiceFilter[] filters, ClientConfigSettings clientConfigSettings) {
+        super(channel, filters);
         this.clientConfigSettings = clientConfigSettings;
     }
 
@@ -104,7 +102,7 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         ServiceFilter[] filters = getFilters();
         ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = filter;
-        return new MediaRestProxy(getChannel(), getExecutorService(), newFilters, clientConfigSettings);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
     }
 
     /* (non-Javadoc)

@@ -148,4 +148,8 @@ public class ObjectFactory {
     public NotificationEndPointType createNotificationEndPointType() {
         return new NotificationEndPointType();
     }
+
+    public OperationType createOperationType() {
+        return new OperationType();
+    }
 }

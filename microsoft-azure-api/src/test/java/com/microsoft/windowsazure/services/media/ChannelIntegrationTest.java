@@ -30,6 +30,8 @@ import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
 import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.ChannelState;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
+import com.microsoft.windowsazure.services.media.models.OperationState;
 
 public class ChannelIntegrationTest extends IntegrationTestBase {
 
@@ -223,8 +225,32 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void deleteChannelAsyncSuccess() throws Exception {
+        String channelName = testChannelPrefix + "deletecha";
+        Future<OperationInfo<ChannelInfo>> createChannelFuture = service.beginCreate(Channel.create()
+                .setName(channelName).setSize(ChannelSize.Large));
+        ChannelInfo channelInfo = createChannelFuture.get().getEntity();
+        List<ChannelInfo> listChannelsResult = service.list(Channel.list());
+        int ChannelCountBaseline = listChannelsResult.size();
+
+        // Act
+        Future<OperationInfo> deleteFuture = service.beginDelete(Channel.delete(channelInfo.getId()));
+        OperationInfo deleteOperationInfo = deleteFuture.get();
+
+        // Assert
+
+        listChannelsResult = service.list(Channel.list());
+        assertEquals("listChannelsResult.size", ChannelCountBaseline - 1, listChannelsResult.size());
+        assertEquals(OperationState.Succeeded, deleteOperationInfo.getState());
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(404));
+        service.get(Channel.get(channelInfo.getId()));
+    }
+
+    @Test
     public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
-        Future<String> future = service.deleteAsync(Channel.delete(invalidChannelName));
+        Future<OperationInfo> future = service.beginDelete(Channel.delete(invalidChannelName));
         assertFalse(future.isDone());
     }
 
