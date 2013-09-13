@@ -90,10 +90,13 @@ public class StorageException extends Exception {
         int responseCode = 0;
         try {
             responseCode = request.getResponseCode();
-            if (cause instanceof SocketException) {
+
+            // When the exception is expected(IfNotExists) or we have already parsed the exception, we pass null as
+            // the cause. In such cases, we should just try to get the message from the request.
+            if (cause == null || cause instanceof SocketException) {
                 responseMessage = request.getResponseMessage();
             }
-            else {
+            else if (cause != null) {
                 responseMessage = cause.getMessage();
             }
         }
