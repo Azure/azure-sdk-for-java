@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -51,6 +52,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -134,7 +136,9 @@ public abstract class IntegrationTestBase {
 
             for (ChannelInfo channelInfo : channelInfos) {
                 try {
-                    service.delete(Channel.delete(channelInfo.getId()));
+                    Future<OperationInfo> operationInfoFuture = service
+                            .beginDelete(Channel.delete(channelInfo.getId()));
+                    OperationInfo operationInfo = operationInfoFuture.get();
                 }
                 catch (Exception e) {
                     e.printStackTrace();

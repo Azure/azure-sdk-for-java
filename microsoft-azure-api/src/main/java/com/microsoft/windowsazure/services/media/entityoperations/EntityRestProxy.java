@@ -136,7 +136,11 @@ public abstract class EntityRestProxy implements EntityContract {
             String errorMessage = parseClientResponseForErrorMessage(clientResponse);
             throw new ServiceException(errorMessage);
         }
-        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId));
+        Object rawResponse = clientResponse.getEntity(creator.getResponseClass());
+        T entity = (T) creator.processResponse(rawResponse);
+
+        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId, entity));
+
         return result;
     }
 
@@ -193,6 +197,7 @@ public abstract class EntityRestProxy implements EntityContract {
         getResource(deleter.getUri()).delete();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
@@ -202,7 +207,7 @@ public abstract class EntityRestProxy implements EntityContract {
             String errorMessage = parseClientResponseForErrorMessage(clientResponse);
             throw new ServiceException(errorMessage);
         }
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId));
+        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, null));
         return result;
 
     }

@@ -229,7 +229,8 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String channelName = testChannelPrefix + "deletecha";
         Future<OperationInfo<ChannelInfo>> createChannelFuture = service.beginCreate(Channel.create()
                 .setName(channelName).setSize(ChannelSize.Large));
-        ChannelInfo channelInfo = createChannelFuture.get().getEntity();
+        OperationInfo<ChannelInfo> operationInfo = createChannelFuture.get();
+        ChannelInfo channelInfo = operationInfo.getEntity();
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
