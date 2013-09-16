@@ -55,7 +55,7 @@ public class OperationInfoTest {
         // Arrange
         OperationState expectedState = OperationState.Failed;
 
-        OperationInfo operationInfo = new OperationInfo(null, new OperationType().setState(expectedState.getCode()));
+        OperationInfo operationInfo = new OperationInfo(null, new OperationType().setState(expectedState.toString()));
 
         // Act 
         OperationState actualState = operationInfo.getState();

@@ -37,7 +37,7 @@ public class OperationType implements MediaServiceDTO {
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected Integer state;
+    protected String state;
 
     /** The error code. */
     @XmlElement(name = "ErrorCode", namespace = Constants.ODATA_DATA_NS)
@@ -94,7 +94,7 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the state
      */
-    public Integer getState() {
+    public String getState() {
         return state;
     }
 
@@ -105,7 +105,7 @@ public class OperationType implements MediaServiceDTO {
      *            the state to set
      * @return the operation type
      */
-    public OperationType setState(Integer state) {
+    public OperationType setState(String state) {
         this.state = state;
         return this;
     }

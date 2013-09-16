@@ -63,7 +63,7 @@ public class OperationInfo<T> extends ODataEntity<OperationType> {
      * @return the state
      */
     public OperationState getState() {
-        return OperationState.fromCode(getContent().getState());
+        return OperationState.valueOf(getContent().getState());
     }
 
     /**
