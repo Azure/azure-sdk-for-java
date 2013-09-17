@@ -184,8 +184,14 @@ public abstract class EntityRestProxy implements EntityContract {
 
     @Override
     public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
-        return null;
+        updater.setProxyData(createProxyData());
+        Object rawResponse = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(ClientResponse.class,
+                updater.getRequestContents());
+        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
+        updater.processResponse(rawResponse);
+        Future<OperationInfo> result = executorService.submit(new OperationThread<T>(this, operationId, entity));
 
+        return result;
     }
 
     /* (non-Javadoc)

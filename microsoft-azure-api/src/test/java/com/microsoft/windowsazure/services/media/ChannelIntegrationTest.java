@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.junit.Test;
@@ -85,11 +86,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
         ChannelSize channelSize = ChannelSize.Large;
-        Thread.sleep(1000);
 
-        ChannelInfo channelInfo = service.create(Channel.create().setName(testName).setDescription(testDescription)
-                .setState(channelState).setSize(channelSize));
-        Thread.sleep(10000);
+        Future<OperationInfo<ChannelInfo>> futureOperationInfo = service.beginCreate(Channel.create().setName(testName)
+                .setDescription(testDescription).setState(channelState).setSize(channelSize));
+        ChannelInfo channelInfo = futureOperationInfo.get().getEntity();
         // Act
         ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
 
@@ -105,22 +105,17 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void listChannelSuccess() throws ServiceException {
+    public void listChannelSuccess() throws ServiceException, InterruptedException, ExecutionException {
         // Arrange
         String[] ChannelNames = new String[] { testChannelPrefix + "cha", testChannelPrefix + "chb" };
+        List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
+
         ChannelState channelState = ChannelState.Stopped;
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedChannels.add(service.create(Channel.create().setName(name).setState(channelState)
+            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setState(channelState)
                     .setSize(ChannelSize.Large)));
-        }
-
-        try {
-            Thread.sleep(20000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         // Act
@@ -137,23 +132,23 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canListChannelsWithOptions() throws ServiceException {
+    public void canListChannelsWithOptions() throws ServiceException, InterruptedException, ExecutionException {
         String[] ChannelNames = new String[] { testChannelPrefix + "channellista", testChannelPrefix + "channellistb",
                 testChannelPrefix + "channellistc", testChannelPrefix + "channellistad" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
+        List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
+
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedChannels.add(service.create(Channel.create().setName(name).setSize(ChannelSize.Large)));
+            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)));
+        }
+
+        for (Future<OperationInfo<ChannelInfo>> futureOperationInfo : expectedFutures) {
+            expectedChannels.add(futureOperationInfo.get().getEntity());
         }
 
         Collection<ChannelInfo> listChannelResult = service.list(Channel.list().setTop(2));
 
-        try {
-            Thread.sleep(20000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         // Assert
 
         assertEquals(2, listChannelResult.size());
@@ -164,14 +159,18 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         // Arrange
         String originalTestName = testChannelPrefix + "updatecho";
         ChannelState originalChannelState = ChannelState.Stopped;
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
-                .setSize(ChannelSize.Large));
+
+        Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
+                .setName(originalTestName).setSize(ChannelSize.Large));
+        ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         String updatedDescription = "description";
 
         // Act
-        Thread.sleep(20000);
-        service.update(Channel.update(originalChannel.getId()).setDescription(updatedDescription));
+        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId())
+                .setDescription(updatedDescription));
+        OperationInfo operationInfo = futureUpdate.get();
+
         ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
@@ -183,12 +182,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updatechnoch";
-        ChannelInfo originalChannel = service.create(Channel.create().setName(originalTestName)
-                .setSize(ChannelSize.Large));
-        Thread.sleep(10000);
+        Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
+                .setName(originalTestName).setSize(ChannelSize.Large));
+        ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         // Act
-        service.update(Channel.update(originalChannel.getId()));
+        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId()));
+        OperationInfo operationInfo = futureUpdate.get();
         ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
@@ -199,21 +199,24 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.update(Channel.update(invalidChannelName));
+        service.beginUpdate(Channel.update(invalidChannelName));
     }
 
     @Test
     public void deleteChannelSuccess() throws Exception {
         // Arrange
         String channelName = testChannelPrefix + "deletech";
-        ChannelInfo channelInfo = service.create(Channel.create().setName(channelName).setSize(ChannelSize.Large));
-        Thread.sleep(20000);
+
+        Future<OperationInfo<ChannelInfo>> futureCreate = service.beginCreate(Channel.create().setName(channelName)
+                .setSize(ChannelSize.Large));
+        ChannelInfo channelInfo = futureCreate.get().getEntity();
+
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
         int ChannelCountBaseline = listChannelsResult.size();
 
         // Act
-        service.delete(Channel.delete(channelInfo.getId()));
-        Thread.sleep(20000);
+        Future<OperationInfo> futureDelete = service.beginDelete(Channel.delete(channelInfo.getId()));
+        OperationInfo deleteOperationInfo = futureDelete.get();
 
         // Assert
         listChannelsResult = service.list(Channel.list());
