@@ -25,6 +25,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.services.media.implementation.content.ErrorType;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.sun.jersey.api.client.Client;
@@ -135,8 +136,8 @@ public abstract class EntityRestProxy implements EntityContract {
         ClientResponse clientResponse = getResource(creator).post(ClientResponse.class, creator.getRequestContents());
         String operationId = clientResponse.getHeaders().getFirst("operation-id");
         if (operationId == null) {
-            String errorMessage = parseClientResponseForErrorMessage(clientResponse);
-            throw new ServiceException(errorMessage);
+            ServiceException serviceException = createServiceException(clientResponse);
+            throw serviceException;
         }
         Object rawResponse = clientResponse.getEntity(creator.getResponseClass());
         T entity = (T) creator.processResponse(rawResponse);
@@ -185,6 +186,7 @@ public abstract class EntityRestProxy implements EntityContract {
         updater.processResponse(rawResponse);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
         updater.setProxyData(createProxyData());
@@ -192,8 +194,8 @@ public abstract class EntityRestProxy implements EntityContract {
                 ClientResponse.class, updater.getRequestContents());
         String operationId = clientResponse.getHeaders().getFirst("operation-id");
         if (operationId == null) {
-            String errorMessage = parseClientResponseForErrorMessage(clientResponse);
-            throw new ServiceException(errorMessage);
+            ServiceException serviceException = createServiceException(clientResponse);
+            throw serviceException;
         }
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
         updater.processResponse(clientResponse);
@@ -212,15 +214,15 @@ public abstract class EntityRestProxy implements EntityContract {
         getResource(deleter.getUri()).delete();
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
         ClientResponse clientResponse = getResource(deleter.getUri()).delete(ClientResponse.class);
         String operationId = clientResponse.getHeaders().getFirst("operation-id");
         if (operationId == null) {
-            String errorMessage = parseClientResponseForErrorMessage(clientResponse);
-            throw new ServiceException(errorMessage);
+            ServiceException serviceException = createServiceException(clientResponse);
+            throw serviceException;
         }
         Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
                 null));
@@ -228,8 +230,12 @@ public abstract class EntityRestProxy implements EntityContract {
 
     }
 
-    private String parseClientResponseForErrorMessage(ClientResponse clientResponse) {
-        return "error the delete operation is wrong";
+    private ServiceException createServiceException(ClientResponse clientResponse) {
+        ErrorType errorType = clientResponse.getEntity(ErrorType.class);
+        ServiceException serviceException = new ServiceException(errorType.getMessage());
+        serviceException.setErrorCode(errorType.getCode());
+        serviceException.setHttpStatusCode(clientResponse.getStatus());
+        return serviceException;
     }
 
     /* (non-Javadoc)
