@@ -192,12 +192,12 @@ public abstract class EntityRestProxy implements EntityContract {
         updater.setProxyData(createProxyData());
         ClientResponse clientResponse = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(
                 ClientResponse.class, updater.getRequestContents());
+        PipelineHelpers.ThrowIfError(clientResponse);
         String operationId = clientResponse.getHeaders().getFirst("operation-id");
         if (operationId == null) {
             ServiceException serviceException = createServiceException(clientResponse);
             throw serviceException;
         }
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
         updater.processResponse(clientResponse);
         Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
                 null));

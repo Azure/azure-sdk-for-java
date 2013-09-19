@@ -233,8 +233,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @SuppressWarnings("rawtypes")
     @Test
     public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
+        expectedException.expect(ServiceException.class);
+        expectedException.expect(new ServiceExceptionMatcher(400));
         Future<OperationInfo> future = service.beginDelete(Channel.delete(invalidChannelName));
-        assertFalse(future.isDone());
     }
 
     @Test
