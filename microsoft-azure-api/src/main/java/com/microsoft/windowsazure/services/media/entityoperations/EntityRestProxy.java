@@ -43,6 +43,8 @@ public abstract class EntityRestProxy implements EntityContract {
     /** The filters. */
     private final ServiceFilter[] filters;
 
+    private final int operationInterval = 1000;
+
     /**
      * Instantiates a new entity rest proxy.
      * 
@@ -139,7 +141,8 @@ public abstract class EntityRestProxy implements EntityContract {
         Object rawResponse = clientResponse.getEntity(creator.getResponseClass());
         T entity = (T) creator.processResponse(rawResponse);
 
-        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId, entity));
+        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId,
+                operationInterval, entity));
 
         return result;
     }
@@ -194,7 +197,8 @@ public abstract class EntityRestProxy implements EntityContract {
         }
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
         updater.processResponse(clientResponse);
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, null));
+        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
+                null));
 
         return result;
     }
@@ -218,7 +222,8 @@ public abstract class EntityRestProxy implements EntityContract {
             String errorMessage = parseClientResponseForErrorMessage(clientResponse);
             throw new ServiceException(errorMessage);
         }
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, null));
+        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
+                null));
         return result;
 
     }

@@ -11,8 +11,9 @@ public class OperationThread<T> implements Callable<OperationInfo<T>> {
     private final EntityRestProxy entityRestProxy;
     private final String operationId;
     private final T entity;
+    private final int operationCallInterval;
 
-    public OperationThread(EntityRestProxy entityRestProxy, String operationId, T entity) {
+    public OperationThread(EntityRestProxy entityRestProxy, String operationId, int operationCallInterval, T entity) {
         if (entityRestProxy == null) {
             throw new IllegalArgumentException("The entity rest proxy cannot be null.");
         }
@@ -20,9 +21,14 @@ public class OperationThread<T> implements Callable<OperationInfo<T>> {
         if ((operationId == null) || (operationId.isEmpty())) {
             throw new IllegalArgumentException("The operation ID cannot be null or empty.");
         }
+
+        if (operationCallInterval < 0) {
+            throw new IllegalArgumentException("The operation call interval must be positive.");
+        }
         this.entityRestProxy = entityRestProxy;
         this.operationId = operationId;
         this.entity = entity;
+        this.operationCallInterval = operationCallInterval;
     }
 
     @SuppressWarnings("unchecked")
@@ -31,6 +37,7 @@ public class OperationThread<T> implements Callable<OperationInfo<T>> {
         OperationInfo<T> operationInfo = this.entityRestProxy.get(Operation.get(operationId));
         while (operationInfo.getState().equals(OperationState.InProgress)) {
             operationInfo = this.entityRestProxy.get(Operation.get(operationId));
+            Thread.sleep(operationCallInterval);
         }
         operationInfo.setEntity(entity);
         return operationInfo;

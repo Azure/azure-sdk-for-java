@@ -154,6 +154,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listChannelResult.size());
     }
 
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void updateChannelSuccess() throws Exception {
         // Arrange
@@ -178,6 +179,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
                 updatedChannel);
     }
 
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
@@ -202,31 +204,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         service.beginUpdate(Channel.update(invalidChannelName));
     }
 
-    @Test
-    public void deleteChannelSuccess() throws Exception {
-        // Arrange
-        String channelName = testChannelPrefix + "deletech";
-
-        Future<OperationInfo<ChannelInfo>> futureCreate = service.beginCreate(Channel.create().setName(channelName)
-                .setSize(ChannelSize.Large));
-        ChannelInfo channelInfo = futureCreate.get().getEntity();
-
-        List<ChannelInfo> listChannelsResult = service.list(Channel.list());
-        int ChannelCountBaseline = listChannelsResult.size();
-
-        // Act
-        Future<OperationInfo> futureDelete = service.beginDelete(Channel.delete(channelInfo.getId()));
-        OperationInfo deleteOperationInfo = futureDelete.get();
-
-        // Assert
-        listChannelsResult = service.list(Channel.list());
-        assertEquals("listChannelsResult.size", ChannelCountBaseline - 1, listChannelsResult.size());
-
-        expectedException.expect(ServiceException.class);
-        expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Channel.get(channelInfo.getId()));
-    }
-
+    @SuppressWarnings("rawtypes")
     @Test
     public void deleteChannelAsyncSuccess() throws Exception {
         String channelName = testChannelPrefix + "deletecha";
@@ -252,6 +230,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         service.get(Channel.get(channelInfo.getId()));
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
         Future<OperationInfo> future = service.beginDelete(Channel.delete(invalidChannelName));

@@ -62,11 +62,16 @@ public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODa
         String responseType = mediaType.getParameters().get("type");
         try {
             if (responseType == null || responseType.equals("feed")) {
-                List<ODataEntity<?>> feedContents = unmarshaller.unmarshalFeed(entityStream, type);
+                List<ODataEntity<?>> feedContents = null;
+                synchronized (unmarshaller) {
+                    feedContents = unmarshaller.unmarshalFeed(entityStream, type);
+                }
                 return feedContents.get(0);
             }
             else if (responseType.equals("entry")) {
-                result = unmarshaller.unmarshalEntry(entityStream, type);
+                synchronized (unmarshaller) {
+                    result = unmarshaller.unmarshalEntry(entityStream, type);
+                }
             }
             else {
                 throw new RuntimeException();
