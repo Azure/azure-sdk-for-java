@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.services.core.storage;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -89,7 +90,15 @@ public class StorageException extends Exception {
         int responseCode = 0;
         try {
             responseCode = request.getResponseCode();
-            responseMessage = request.getResponseMessage();
+
+            // When the exception is expected(IfNotExists) or we have already parsed the exception, we pass null as
+            // the cause. In such cases, we should just try to get the message from the request.
+            if (cause == null || cause instanceof SocketException) {
+                responseMessage = request.getResponseMessage();
+            }
+            else if (cause != null) {
+                responseMessage = cause.getMessage();
+            }
         }
         catch (final IOException e) {
             // ignore errors

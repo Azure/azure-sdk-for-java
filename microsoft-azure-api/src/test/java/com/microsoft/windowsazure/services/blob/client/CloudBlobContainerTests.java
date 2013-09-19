@@ -400,6 +400,32 @@ public class CloudBlobContainerTests extends BlobTestBase {
     }
 
     @Test
+    public void testListBlobs() throws URISyntaxException, StorageException, IOException, InterruptedException {
+        final int length = 128;
+        final Random randGenerator = new Random();
+        final byte[] buff = new byte[length];
+        randGenerator.nextBytes(buff);
+
+        String blobName = "testBlob" + Integer.toString(randGenerator.nextInt(50000));
+        blobName = blobName.replace('-', '_');
+
+        final CloudBlobContainer existingContainer = bClient.getContainerReference(testSuiteContainerName);
+        final CloudBlob blobRef = existingContainer.getBlockBlobReference(blobName);
+        final BlobRequestOptions options = new BlobRequestOptions();
+        OperationContext context = new OperationContext();
+        context.setClientRequestID("My-Helpful-TraceId");
+
+        // Subscribe to sending request event once we move that. Currently, the sendingrequest event is fired 
+        // after the connection is initiated and we don't have access to the request headers at that time.
+
+        blobRef.upload(new ByteArrayInputStream(buff), -1, null, options, context);
+
+        for (ListBlobItem blob : existingContainer.listBlobs()) {
+            Assert.assertEquals(blobRef.getClass(), blob.getClass());
+        }
+    }
+
+    @Test
     public void testBlobLeaseRenew() throws URISyntaxException, StorageException, IOException, InterruptedException {
         final int length = 128;
         final Random randGenerator = new Random();

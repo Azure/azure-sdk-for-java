@@ -273,6 +273,11 @@ public final class Constants {
         public static final String REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "request-id";
 
         /**
+         * The header that indicates the client request ID.
+         */
+        public static final String CLIENT_REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "client-request-id";
+
+        /**
          * The header for the If-Match condition.
          */
         public static final String SOURCE_IF_MATCH_HEADER = PREFIX_FOR_STORAGE_HEADER + "source-if-match";
