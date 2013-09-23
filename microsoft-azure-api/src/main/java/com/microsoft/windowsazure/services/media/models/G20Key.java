@@ -38,11 +38,35 @@ public class G20Key {
     }
 
     /**
+     * Sets the expiration.
+     * 
+     * @param expiration
+     *            the expiration
+     * @return the g20 key
+     */
+    public G20Key setExpiration(Date expiration) {
+        this.expiration = expiration;
+        return this;
+    }
+
+    /**
      * Gets the identifier.
      * 
      * @return the identifier
      */
     public String getIdentifier() {
         return this.identifier;
+    }
+
+    /**
+     * Sets the identifier.
+     * 
+     * @param identifier
+     *            the identifier
+     * @return the g20 key
+     */
+    public G20Key setIdentifier(String identifier) {
+        this.identifier = identifier;
+        return this;
     }
 }

@@ -15,16 +15,34 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Class SecuritySettings.
+ */
 public class SecuritySettings {
-    private List<Ipv4> ipV4WhiteList;
-    private List<G20Key> akamaiG20Authentication;
 
+    /** The ip v4 white list. */
+    private final List<Ipv4> ipV4WhiteList = new ArrayList<Ipv4>();
+
+    /** The akamai g20 authentication. */
+    private final List<G20Key> akamaiG20Authentication = new ArrayList<G20Key>();
+
+    /**
+     * Gets the ip v4 white list.
+     * 
+     * @return the ip v4 white list
+     */
     public List<Ipv4> getIpV4WhiteList() {
         return this.ipV4WhiteList;
     }
 
+    /**
+     * Gets the akamai g20 authentication.
+     * 
+     * @return the akamai g20 authentication
+     */
     public List<G20Key> getAkamaiG20Authentication() {
         return this.akamaiG20Authentication;
     }

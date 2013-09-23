@@ -35,6 +35,11 @@ public class ChannelSettings {
         return this.preview;
     }
 
+    public ChannelSettings setPreview(PreviewEndPointSettings preview) {
+        this.preview = preview;
+        return this;
+    }
+
     /**
      * Gets the ingest.
      * 
@@ -42,6 +47,11 @@ public class ChannelSettings {
      */
     public IngestEndpointSettings getIngest() {
         return this.ingest;
+    }
+
+    public ChannelSettings setIngest(IngestEndpointSettings ingest) {
+        this.ingest = ingest;
+        return this;
     }
 
 }

@@ -31,4 +31,9 @@ public class IngestEndpointSettings {
     public SecuritySettings getSecurity() {
         return this.security;
     }
+
+    public IngestEndpointSettings setSecurity(SecuritySettings security) {
+        this.security = security;
+        return this;
+    }
 }

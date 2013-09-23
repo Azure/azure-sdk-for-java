@@ -29,10 +29,15 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
+import com.microsoft.windowsazure.services.media.models.ChannelSettings;
 import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.ChannelState;
+import com.microsoft.windowsazure.services.media.models.G20Key;
+import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.microsoft.windowsazure.services.media.models.OperationState;
+import com.microsoft.windowsazure.services.media.models.PreviewEndPointSettings;
+import com.microsoft.windowsazure.services.media.models.SecuritySettings;
 
 public class ChannelIntegrationTest extends IntegrationTestBase {
 
@@ -166,10 +171,15 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         String updatedDescription = "description";
+        IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(new SecuritySettings()
+                .getAkamaiG20Authentication().add(new G20Key()));
+        PreviewEndPointSettings preview = new PreviewEndPointSettings();
+
+        ChannelSettings updatedSettings = new ChannelSettings().setIngest(ingest).setPreview(preview);
 
         // Act
-        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId())
-                .setDescription(updatedDescription));
+        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId()).setSettings(
+                updatedSettings));
         OperationInfo operationInfo = futureUpdate.get();
 
         ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
@@ -189,8 +199,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         // Act
-        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId()));
-        OperationInfo operationInfo = futureUpdate.get();
+        service.beginUpdate(Channel.update(originalChannel.getId()));
         ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
