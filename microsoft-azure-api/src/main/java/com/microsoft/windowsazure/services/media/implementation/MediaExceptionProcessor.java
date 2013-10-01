@@ -216,6 +216,9 @@ public class MediaExceptionProcessor implements MediaContract {
         return service.createBlobWriter(locator);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginDelete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
+     */
     @SuppressWarnings("rawtypes")
     @Override
     public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
@@ -230,6 +233,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginCreate(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
+     */
     @Override
     public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
         try {
@@ -243,6 +249,9 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginUpdate(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
+     */
     @SuppressWarnings("rawtypes")
     @Override
     public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {

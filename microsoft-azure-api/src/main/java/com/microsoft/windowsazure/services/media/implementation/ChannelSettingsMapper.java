@@ -18,8 +18,6 @@ package com.microsoft.windowsazure.services.media.implementation;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -28,13 +26,27 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.microsoft.windowsazure.services.media.models.ChannelSettings;
 
+/**
+ * The Class ChannelSettingsMapper.
+ */
 public class ChannelSettingsMapper {
 
-    public ChannelSettings fromString(String value) throws IllegalArgumentException {
+    ObjectMapper mapper;
 
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        mapper.setDateFormat(simpleDateFormat);
+    public ChannelSettingsMapper() {
+        mapper = new ObjectMapper();
+    }
+
+    /**
+     * From string.
+     * 
+     * @param value
+     *            the value
+     * @return the channel settings
+     * @throws IllegalArgumentException
+     *             the illegal argument exception
+     */
+    public ChannelSettings fromString(String value) throws IllegalArgumentException {
         try {
             return mapper.readValue(value.getBytes("UTF-8"), ChannelSettings.class);
         }
@@ -49,8 +61,14 @@ public class ChannelSettingsMapper {
         }
     }
 
+    /**
+     * To string.
+     * 
+     * @param value
+     *            the value
+     * @return the string
+     */
     public String toString(ChannelSettings value) {
-        ObjectMapper mapper = new ObjectMapper();
         Writer writer = new StringWriter();
         try {
             mapper.writeValue(writer, value);

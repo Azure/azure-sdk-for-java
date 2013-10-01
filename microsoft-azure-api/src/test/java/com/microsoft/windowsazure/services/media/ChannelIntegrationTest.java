@@ -18,7 +18,6 @@ package com.microsoft.windowsazure.services.media;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +32,8 @@ import com.microsoft.windowsazure.services.media.models.ChannelInfo;
 import com.microsoft.windowsazure.services.media.models.ChannelSettings;
 import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.ChannelState;
-import com.microsoft.windowsazure.services.media.models.G20Key;
 import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
+import com.microsoft.windowsazure.services.media.models.Ipv4;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.microsoft.windowsazure.services.media.models.OperationState;
 import com.microsoft.windowsazure.services.media.models.PreviewEndPointSettings;
@@ -173,12 +172,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
         String updatedDescription = "description";
         SecuritySettings securitySettings = new SecuritySettings();
-        Calendar expirationDate = Calendar.getInstance();
-        expirationDate.set(3013, 11, 11, 11, 11, 11);
-        securitySettings.getAkamaiG20Authentication()
-                .add(new G20Key().setIdentifier("1").setExpiration(expirationDate));
+        Ipv4 ipv4 = new Ipv4().setName("Allow all").setIp("0.0.0.0/0");
+        securitySettings.getIpV4AllowList().add(ipv4);
         IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(securitySettings);
-        PreviewEndPointSettings preview = new PreviewEndPointSettings();
+        PreviewEndPointSettings preview = null;
 
         ChannelSettings updatedSettings = new ChannelSettings().setIngest(ingest).setPreview(preview);
 

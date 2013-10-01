@@ -38,12 +38,14 @@ import com.sun.jersey.api.client.WebResource.Builder;
  */
 public abstract class EntityRestProxy implements EntityContract {
 
+    /** The executor service. */
     private final ExecutorService executorService;
     /** The channel. */
     private final Client channel;
     /** The filters. */
     private final ServiceFilter[] filters;
 
+    /** The operation interval. */
     private final int operationInterval = 1000;
 
     /**
@@ -69,6 +71,11 @@ public abstract class EntityRestProxy implements EntityContract {
         return channel;
     }
 
+    /**
+     * Gets the executor service.
+     * 
+     * @return the executor service
+     */
     protected ExecutorService getExecutorService() {
         return executorService;
     }
@@ -129,6 +136,9 @@ public abstract class EntityRestProxy implements EntityContract {
         return (T) processedResponse;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginCreate(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
@@ -186,6 +196,9 @@ public abstract class EntityRestProxy implements EntityContract {
         updater.processResponse(rawResponse);
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginUpdate(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
@@ -213,6 +226,9 @@ public abstract class EntityRestProxy implements EntityContract {
         getResource(deleter.getUri()).delete();
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginDelete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
@@ -229,6 +245,13 @@ public abstract class EntityRestProxy implements EntityContract {
 
     }
 
+    /**
+     * Creates the service exception.
+     * 
+     * @param clientResponse
+     *            the client response
+     * @return the service exception
+     */
     private ServiceException createServiceException(ClientResponse clientResponse) {
         ErrorType errorType = clientResponse.getEntity(ErrorType.class);
         ServiceException serviceException = new ServiceException(errorType.getMessage());

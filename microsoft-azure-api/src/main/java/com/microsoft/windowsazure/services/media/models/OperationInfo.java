@@ -22,9 +22,12 @@ import com.microsoft.windowsazure.services.media.implementation.content.Operatio
 /**
  * Data about a Media Services operation entity.
  * 
+ * @param <T>
+ *            the generic type
  */
 public class OperationInfo<T> extends ODataEntity<OperationType> {
 
+    /** The entity. */
     private T entity;
 
     /**
@@ -84,11 +87,23 @@ public class OperationInfo<T> extends ODataEntity<OperationType> {
         return this.getContent().getErrorMessage();
     }
 
+    /**
+     * Sets the entity.
+     * 
+     * @param entity
+     *            the entity
+     * @return the operation info
+     */
     public OperationInfo<T> setEntity(T entity) {
         this.entity = entity;
         return this;
     }
 
+    /**
+     * Gets the entity.
+     * 
+     * @return the entity
+     */
     public T getEntity() {
         return this.entity;
     }

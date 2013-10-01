@@ -35,6 +35,13 @@ public class IngestEndpointSettings {
         return this.security;
     }
 
+    /**
+     * Sets the security.
+     * 
+     * @param security
+     *            the security
+     * @return the ingest endpoint settings
+     */
     @JsonProperty("Security")
     public IngestEndpointSettings setSecurity(SecuritySettings security) {
         this.security = security;

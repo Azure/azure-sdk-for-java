@@ -17,6 +17,9 @@ package com.microsoft.windowsazure.services.media.models;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * The Class PreviewEndPointSettings.
+ */
 public class PreviewEndPointSettings {
 
     /** The security. */
@@ -32,6 +35,13 @@ public class PreviewEndPointSettings {
         return this.security;
     }
 
+    /**
+     * Sets the security.
+     * 
+     * @param security
+     *            the security
+     * @return the preview end point settings
+     */
     @JsonProperty("Security")
     public PreviewEndPointSettings setSecurity(SecuritySettings security) {
         this.security = security;

@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation.content;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class used by JAXB to instantiate the types in this package.
  * 
@@ -149,6 +150,11 @@ public class ObjectFactory {
         return new NotificationEndPointType();
     }
 
+    /**
+     * Creates an instance of (@link OperationType).
+     * 
+     * @return the operation type
+     */
     public OperationType createOperationType() {
         return new OperationType();
     }
