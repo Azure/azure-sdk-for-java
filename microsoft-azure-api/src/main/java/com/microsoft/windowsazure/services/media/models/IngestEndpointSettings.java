@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * The Class IngestEndpointSettings.
  */
@@ -28,10 +30,12 @@ public class IngestEndpointSettings {
      * 
      * @return the security
      */
+    @JsonProperty("Security")
     public SecuritySettings getSecurity() {
         return this.security;
     }
 
+    @JsonProperty("Security")
     public IngestEndpointSettings setSecurity(SecuritySettings security) {
         this.security = security;
         return this;

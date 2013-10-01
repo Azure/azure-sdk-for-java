@@ -18,6 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -161,7 +162,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
     @SuppressWarnings({ "rawtypes", "unused" })
     @Test
-    public void updateChannelSuccess() throws Exception {
+    public void updateChannelAsyncSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updatecho";
         ChannelState originalChannelState = ChannelState.Stopped;
@@ -171,8 +172,12 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         String updatedDescription = "description";
-        IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(new SecuritySettings()
-                .getAkamaiG20Authentication().add(new G20Key()));
+        SecuritySettings securitySettings = new SecuritySettings();
+        Calendar expirationDate = Calendar.getInstance();
+        expirationDate.set(3013, 11, 11, 11, 11, 11);
+        securitySettings.getAkamaiG20Authentication()
+                .add(new G20Key().setIdentifier("1").setExpiration(expirationDate));
+        IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(securitySettings);
         PreviewEndPointSettings preview = new PreviewEndPointSettings();
 
         ChannelSettings updatedSettings = new ChannelSettings().setIngest(ingest).setPreview(preview);
