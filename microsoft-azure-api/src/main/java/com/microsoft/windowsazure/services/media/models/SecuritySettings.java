@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -26,10 +25,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class SecuritySettings {
 
     /** The ip v4 white list. */
-    private final List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
+    private List<Ipv4> ipV4AllowList = null;
 
     /** The akamai g20 authentication. */
-    private final List<G20Key> akamaiG20Authentication = new ArrayList<G20Key>();
+    private List<G20Key> akamaiG20Authentication = null;
 
     /**
      * Gets the ip v4 white list.
@@ -42,6 +41,19 @@ public class SecuritySettings {
     }
 
     /**
+     * Sets the ip v4 allow list.
+     * 
+     * @param ipV4AllowList
+     *            the ip v4 allow list
+     * @return the security settings
+     */
+    @JsonProperty("IPv4AllowList")
+    public SecuritySettings setIpV4AllowList(List<Ipv4> ipV4AllowList) {
+        this.ipV4AllowList = ipV4AllowList;
+        return this;
+    }
+
+    /**
      * Gets the akamai g20 authentication.
      * 
      * @return the akamai g20 authentication
@@ -49,5 +61,17 @@ public class SecuritySettings {
     @JsonProperty("AkamaiG20Authentication")
     public List<G20Key> getAkamaiG20Authentication() {
         return this.akamaiG20Authentication;
+    }
+
+    /**
+     * Sets the akamai g20 authentication.
+     * 
+     * @param akamaiG20Authentication
+     *            the akamai g20 authentication
+     * @return the security settings
+     */
+    public SecuritySettings setAkamaiG20Authentication(List<G20Key> akamaiG20Authentication) {
+        this.akamaiG20Authentication = akamaiG20Authentication;
+        return this;
     }
 }

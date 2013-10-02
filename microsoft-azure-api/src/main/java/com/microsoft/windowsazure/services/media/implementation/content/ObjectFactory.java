@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media.implementation.content;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class used by JAXB to instantiate the types in this package.
  * 

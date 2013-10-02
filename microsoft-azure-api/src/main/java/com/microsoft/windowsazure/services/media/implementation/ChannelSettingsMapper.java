@@ -23,6 +23,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 import com.microsoft.windowsazure.services.media.models.ChannelSettings;
 
@@ -31,10 +32,15 @@ import com.microsoft.windowsazure.services.media.models.ChannelSettings;
  */
 public class ChannelSettingsMapper {
 
+    /** The mapper. */
     ObjectMapper mapper;
 
+    /**
+     * Instantiates a new channel settings mapper.
+     */
     public ChannelSettingsMapper() {
         mapper = new ObjectMapper();
+        mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     /**

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -160,6 +161,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
+    @Ignore("Due to issue 746")
     @Test
     public void updateChannelAsyncSuccess() throws Exception {
         // Arrange
@@ -173,7 +175,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String updatedDescription = "description";
         SecuritySettings securitySettings = new SecuritySettings();
         Ipv4 ipv4 = new Ipv4().setName("Allow all").setIp("0.0.0.0/0");
-        securitySettings.getIpV4AllowList().add(ipv4);
+        List<Ipv4> ipV4List = new ArrayList<Ipv4>();
+        ipV4List.add(ipv4);
+        securitySettings.setIpV4AllowList(ipV4List);
         IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(securitySettings);
         PreviewEndPointSettings preview = null;
 
@@ -191,7 +195,6 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
                 updatedChannel);
     }
 
-    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
@@ -201,7 +204,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         // Act
-        service.beginUpdate(Channel.update(originalChannel.getId()));
+        service.update(Channel.update(originalChannel.getId()));
         ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
 
         // Assert
