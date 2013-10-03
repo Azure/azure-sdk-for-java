@@ -15,7 +15,11 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.util.Date;
+import java.util.Calendar;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.ser.std.CalendarSerializer;
 
 /**
  * The Class G20Key.
@@ -23,7 +27,7 @@ import java.util.Date;
 public class G20Key {
 
     /** The expiration. */
-    private Date expiration;
+    private Calendar expiration;
 
     /** The identifier. */
     private String identifier;
@@ -33,8 +37,24 @@ public class G20Key {
      * 
      * @return the expiration
      */
-    public Date getExpiration() {
+    @JsonProperty("Expiration")
+    @JsonSerialize(using = CalendarSerializer.class)
+    public Calendar getExpiration() {
         return this.expiration;
+    }
+
+    /**
+     * Sets the expiration.
+     * 
+     * @param expiration
+     *            the expiration
+     * @return the g20 key
+     */
+    @JsonProperty("Expiration")
+    @JsonSerialize(using = CalendarSerializer.class)
+    public G20Key setExpiration(Calendar expiration) {
+        this.expiration = expiration;
+        return this;
     }
 
     /**
@@ -42,7 +62,21 @@ public class G20Key {
      * 
      * @return the identifier
      */
+    @JsonProperty("Identifier")
     public String getIdentifier() {
         return this.identifier;
+    }
+
+    /**
+     * Sets the identifier.
+     * 
+     * @param identifier
+     *            the identifier
+     * @return the g20 key
+     */
+    @JsonProperty("Identifier")
+    public G20Key setIdentifier(String identifier) {
+        this.identifier = identifier;
+        return this;
     }
 }

@@ -167,4 +167,5 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
         clientConfigSettings.applyConfig(client);
         return client;
     }
+
 }

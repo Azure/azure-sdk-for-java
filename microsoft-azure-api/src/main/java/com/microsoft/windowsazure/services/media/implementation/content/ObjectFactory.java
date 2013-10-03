@@ -148,4 +148,13 @@ public class ObjectFactory {
     public NotificationEndPointType createNotificationEndPointType() {
         return new NotificationEndPointType();
     }
+
+    /**
+     * Creates an instance of (@link OperationType).
+     * 
+     * @return the operation type
+     */
+    public OperationType createOperationType() {
+        return new OperationType();
+    }
 }

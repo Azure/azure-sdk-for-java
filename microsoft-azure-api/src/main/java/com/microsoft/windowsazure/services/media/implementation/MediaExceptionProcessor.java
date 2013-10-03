@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.concurrent.Future;
+
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -34,6 +36,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActi
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -211,6 +214,56 @@ public class MediaExceptionProcessor implements MediaContract {
     @Override
     public WritableBlobContainerContract createBlobWriter(LocatorInfo locator) {
         return service.createBlobWriter(locator);
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginDelete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
+        try {
+            return service.beginDelete(deleter);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginCreate(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
+     */
+    @Override
+    public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
+        try {
+            return service.beginCreate(creator);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginUpdate(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
+        try {
+            return service.beginUpdate(updater);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
     }
 
 }

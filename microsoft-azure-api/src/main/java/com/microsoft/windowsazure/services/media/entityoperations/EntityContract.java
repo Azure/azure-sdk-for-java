@@ -15,8 +15,11 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.concurrent.Future;
+
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
+import com.microsoft.windowsazure.services.media.models.OperationInfo;
 
 /**
  * Contract for interacting with the back end service
@@ -39,6 +42,8 @@ public interface EntityContract {
      *             The created entity
      */
     <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
+
+    <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException;
 
     /**
      * Retrieve an existing entity by id.
@@ -76,6 +81,9 @@ public interface EntityContract {
      */
     void update(EntityUpdateOperation updater) throws ServiceException;
 
+    @SuppressWarnings("rawtypes")
+    Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException;
+
     /**
      * Delete an entity.
      * 
@@ -85,6 +93,9 @@ public interface EntityContract {
      *             the service exception
      */
     void delete(EntityDeleteOperation deleter) throws ServiceException;
+
+    @SuppressWarnings("rawtypes")
+    Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
      * Perform an action on an entity.

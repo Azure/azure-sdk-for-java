@@ -15,9 +15,14 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * The Class ChannelSettings.
  */
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ChannelSettings {
 
     /** The preview. */
@@ -31,8 +36,15 @@ public class ChannelSettings {
      * 
      * @return the preview
      */
+    @JsonProperty("Preview")
     public PreviewEndPointSettings getPreview() {
         return this.preview;
+    }
+
+    @JsonProperty("Preview")
+    public ChannelSettings setPreview(PreviewEndPointSettings preview) {
+        this.preview = preview;
+        return this;
     }
 
     /**
@@ -40,8 +52,15 @@ public class ChannelSettings {
      * 
      * @return the ingest
      */
+    @JsonProperty("Ingest")
     public IngestEndpointSettings getIngest() {
         return this.ingest;
+    }
+
+    @JsonProperty("Ingest")
+    public ChannelSettings setIngest(IngestEndpointSettings ingest) {
+        this.ingest = ingest;
+        return this;
     }
 
 }

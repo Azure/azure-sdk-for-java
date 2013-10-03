@@ -33,4 +33,5 @@ public interface MediaContract extends FilterableService<MediaContract>, EntityC
      * @return the implementation of <code>WritableBlobContainerContract</code>
      */
     WritableBlobContainerContract createBlobWriter(LocatorInfo locator);
+
 }

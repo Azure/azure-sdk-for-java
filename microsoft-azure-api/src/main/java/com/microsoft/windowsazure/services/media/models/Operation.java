@@ -43,6 +43,7 @@ public class Operation {
      *            id of asset to retrieve
      * @return the get operation
      */
+    @SuppressWarnings("rawtypes")
     public static EntityGetOperation<OperationInfo> get(String operationId) {
         return new DefaultGetOperation<OperationInfo>(ENTITY_SET, operationId, OperationInfo.class);
     }
@@ -52,6 +53,7 @@ public class Operation {
      * 
      * @return The list operation
      */
+    @SuppressWarnings("rawtypes")
     public static DefaultListOperation<OperationInfo> list() {
         return new DefaultListOperation<OperationInfo>(ENTITY_SET, new GenericType<ListResult<OperationInfo>>() {
         });
