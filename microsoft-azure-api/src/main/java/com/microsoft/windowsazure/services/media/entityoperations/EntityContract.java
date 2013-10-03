@@ -107,6 +107,8 @@ public interface EntityContract {
      */
     void action(EntityActionOperation action) throws ServiceException;
 
+    Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException;
+
     /**
      * Action.
      * 

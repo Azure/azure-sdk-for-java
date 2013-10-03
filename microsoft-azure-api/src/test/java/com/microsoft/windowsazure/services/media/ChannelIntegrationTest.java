@@ -86,6 +86,28 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void channelCanBeStartedAndStopped() throws Exception {
+        // Arrange 
+        String testName = testChannelPrefix + "channelstartstop";
+        String testDescription = "testDescription";
+
+        ChannelState channelState = ChannelState.Stopped;
+
+        // Act
+        Future<OperationInfo<ChannelInfo>> actualChannel = service.beginCreate(Channel.create().setName(testName)
+                .setDescription(testDescription).setSize(ChannelSize.Large));
+
+        ChannelInfo channelInfo = actualChannel.get().getEntity();
+        Future<OperationInfo> startFuture = service.beginAction(Channel.start(channelInfo.getId()));
+        OperationInfo operationInfo = startFuture.get();
+
+        Future<OperationInfo> stopFuture = service.beginAction(Channel.stop(channelInfo.getId()));
+
+        // Assert
+
+    }
+
+    @Test
     public void getChannelSuccess() throws Exception {
         // Arrange
         String testName = testChannelPrefix + "getchannel";

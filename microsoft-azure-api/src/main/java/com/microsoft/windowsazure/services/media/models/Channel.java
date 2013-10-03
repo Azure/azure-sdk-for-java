@@ -412,4 +412,14 @@ public class Channel {
         return new DefaultDeleteOperation(ENTITY_SET, channelName);
     }
 
+    public static Object start(String id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static Object stop(String id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
