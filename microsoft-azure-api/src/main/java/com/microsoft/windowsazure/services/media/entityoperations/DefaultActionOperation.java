@@ -79,7 +79,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation#getUri()
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getUri()
      */
     @Override
     public String getUri() {

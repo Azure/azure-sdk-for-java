@@ -85,13 +85,12 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
     }
 
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void channelCanBeStartedAndStopped() throws Exception {
         // Arrange 
-        String testName = testChannelPrefix + "channelstartstop";
+        String testName = testChannelPrefix + "channelsas";
         String testDescription = "testDescription";
-
-        ChannelState channelState = ChannelState.Stopped;
 
         // Act
         Future<OperationInfo<ChannelInfo>> actualChannel = service.beginCreate(Channel.create().setName(testName)
@@ -99,9 +98,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
 
         ChannelInfo channelInfo = actualChannel.get().getEntity();
         Future<OperationInfo> startFuture = service.beginAction(Channel.start(channelInfo.getId()));
-        OperationInfo operationInfo = startFuture.get();
+        OperationInfo startOperationInfo = startFuture.get();
 
         Future<OperationInfo> stopFuture = service.beginAction(Channel.stop(channelInfo.getId()));
+        OperationInfo stopOperationInfo = stopFuture.get();
 
         // Assert
 

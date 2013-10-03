@@ -283,6 +283,20 @@ public abstract class EntityRestProxy implements EntityContract {
         entityActionOperation.processResponse(getActionClientResponse(entityActionOperation));
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException {
+        ClientResponse clientResponse = getActionClientResponse(action);
+        String operationId = clientResponse.getHeaders().getFirst("operation-id");
+        if (operationId == null) {
+            ServiceException serviceException = createServiceException(clientResponse);
+            throw serviceException;
+        }
+        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
+                null));
+        return result;
+    }
+
     /**
      * Gets the action client response.
      * 
