@@ -31,6 +31,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     /** The proxy data. */
     private EntityProxyData proxyData;
 
+    private final EntityOperationBase.EntityUriBuilder uriBuilder;
+
     /** The content type. */
     private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
 
@@ -41,13 +43,13 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     protected MultivaluedMap<String, String> queryParameters;
 
     /** The entity name. */
-    private String entityName;
+    private final String entityName;
 
     /** The entity id. */
-    private String entityId;
+    private final String entityId;
 
     /** The action name. */
-    private String actionName;
+    private final String actionName;
 
     /**
      * The default action operation.
@@ -60,17 +62,11 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      *            the action name
      */
     public DefaultEntityActionOperation(String entityName, String entityId, String actionName) {
-        this();
+        this.queryParameters = new MultivaluedMapImpl();
         this.entityName = entityName;
         this.entityId = entityId;
         this.actionName = actionName;
-    }
-
-    /**
-     * Instantiates a new default action operation.
-     */
-    public DefaultEntityActionOperation() {
-        this.queryParameters = new MultivaluedMapImpl();
+        this.uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityName, entityId).setActionName(actionName);
     }
 
     /* (non-Javadoc)
@@ -122,7 +118,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public String getUri() {
-        return String.format("%s(%s)/%s", this.entityName, this.entityId, this.actionName);
+        return uriBuilder.getUri();
     }
 
     /* (non-Javadoc)
@@ -188,7 +184,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public String getVerb() {
-        return "GET";
+        return "POST";
     }
 
     /* (non-Javadoc)
@@ -196,7 +192,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public Object getRequestContents() {
-        return null;
+        return "";
     }
 
     /* (non-Javadoc)

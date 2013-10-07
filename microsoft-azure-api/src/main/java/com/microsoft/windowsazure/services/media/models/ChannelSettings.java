@@ -41,6 +41,13 @@ public class ChannelSettings {
         return this.preview;
     }
 
+    /**
+     * Sets the preview.
+     * 
+     * @param preview
+     *            the preview
+     * @return the channel settings
+     */
     @JsonProperty("Preview")
     public ChannelSettings setPreview(PreviewEndPointSettings preview) {
         this.preview = preview;
@@ -57,6 +64,13 @@ public class ChannelSettings {
         return this.ingest;
     }
 
+    /**
+     * Sets the ingest.
+     * 
+     * @param ingest
+     *            the ingest
+     * @return the channel settings
+     */
     @JsonProperty("Ingest")
     public ChannelSettings setIngest(IngestEndpointSettings ingest) {
         this.ingest = ingest;

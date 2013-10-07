@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 
+// TODO: Auto-generated Javadoc
 /**
  * Default implementation of EntityOperation<T> to provide
  * default values for common methods.
@@ -134,6 +135,9 @@ public abstract class EntityOperationBase implements EntityOperation {
         /** The entity id. */
         private final String entityId;
 
+        /** The action name. */
+        private String actionName;
+
         /**
          * Instantiates a new entity id uri builder.
          * 
@@ -148,6 +152,18 @@ public abstract class EntityOperationBase implements EntityOperation {
             this.entityId = entityId;
         }
 
+        /**
+         * Sets the action name.
+         * 
+         * @param actionName
+         *            the action name
+         * @return the entity id uri builder
+         */
+        public EntityIdUriBuilder setActionName(String actionName) {
+            this.actionName = actionName;
+            return this;
+        }
+
         /* (non-Javadoc)
          * @see com.microsoft.windowsazure.services.media.entities.EntityOperationBase.EntityUriBuilder#getUri()
          */
@@ -160,7 +176,14 @@ public abstract class EntityOperationBase implements EntityOperation {
             catch (UnsupportedEncodingException e) {
                 throw new InvalidParameterException(entityId);
             }
-            return String.format("%s('%s')", entityType, escapedEntityId);
+            String result = null;
+            if ((this.actionName == null) || this.actionName.isEmpty()) {
+                result = String.format("%s('%s')", entityType, escapedEntityId);
+            }
+            else {
+                result = String.format("%s('%s')/%s", entityType, escapedEntityId, this.actionName);
+            }
+            return result;
         }
     }
 }

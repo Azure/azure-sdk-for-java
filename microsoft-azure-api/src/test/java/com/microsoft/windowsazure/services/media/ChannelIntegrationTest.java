@@ -69,6 +69,21 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    private ChannelSettings createChannelSettings() {
+        ChannelSettings settings = new ChannelSettings();
+        IngestEndpointSettings ingestEndPointSettings = new IngestEndpointSettings();
+        SecuritySettings securitySettings = new SecuritySettings();
+        List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
+        Ipv4 ipv4 = new Ipv4();
+        ipv4.setName("Allow all");
+        ipv4.setIp("0.0.0.0/0");
+        ipV4AllowList.add(ipv4);
+        securitySettings.setIpV4AllowList(ipV4AllowList);
+        ingestEndPointSettings.setSecurity(securitySettings);
+        settings.setIngest(ingestEndPointSettings);
+        return settings;
+    }
+
     @Test
     public void createChannelOptionsSuccess() throws Exception {
         // Arrange
@@ -91,10 +106,11 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         // Arrange 
         String testName = testChannelPrefix + "channelsas";
         String testDescription = "testDescription";
+        ChannelSettings channelSettings = createChannelSettings();
 
         // Act
         Future<OperationInfo<ChannelInfo>> actualChannel = service.beginCreate(Channel.create().setName(testName)
-                .setDescription(testDescription).setSize(ChannelSize.Large));
+                .setDescription(testDescription).setSize(ChannelSize.Large).setSettings(channelSettings));
 
         ChannelInfo channelInfo = actualChannel.get().getEntity();
         Future<OperationInfo> startFuture = service.beginAction(Channel.start(channelInfo.getId()));
@@ -114,9 +130,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
         ChannelSize channelSize = ChannelSize.Large;
+        ChannelSettings settings = createChannelSettings();
 
         Future<OperationInfo<ChannelInfo>> futureOperationInfo = service.beginCreate(Channel.create().setName(testName)
-                .setDescription(testDescription).setState(channelState).setSize(channelSize));
+                .setDescription(testDescription).setState(channelState).setSize(channelSize).setSettings(settings));
         ChannelInfo channelInfo = futureOperationInfo.get().getEntity();
         // Act
         ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
