@@ -43,6 +43,7 @@ import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
+import com.microsoft.windowsazure.services.media.models.ChannelState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
@@ -130,19 +131,39 @@ public abstract class IntegrationTestBase {
         removeAllTestChannels();
     }
 
+    @SuppressWarnings({ "rawtypes", "unused" })
     private static void removeAllTestChannels() {
         try {
             List<ChannelInfo> channelInfos = service.list(Channel.list());
+
+            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
+            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
+
+            for (ChannelInfo channelInfo : channelInfos) {
+                if (channelInfo.getState() == ChannelState.Running) {
+                    Future<OperationInfo> operationInfoFuture = service.beginAction(Channel.stop(channelInfo.getId()));
+                    stoppingFutures.add(operationInfoFuture);
+                }
+            }
+
+            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
+                OperationInfo operationInfo = stoppingFuture.get();
+            }
 
             for (ChannelInfo channelInfo : channelInfos) {
                 try {
                     Future<OperationInfo> operationInfoFuture = service
                             .beginDelete(Channel.delete(channelInfo.getId()));
-                    OperationInfo operationInfo = operationInfoFuture.get();
+                    deletingFutures.add(operationInfoFuture);
+
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            for (Future<OperationInfo> deletingFuture : deletingFutures) {
+                OperationInfo operationInfo = deletingFuture.get();
             }
         }
         catch (Exception e) {

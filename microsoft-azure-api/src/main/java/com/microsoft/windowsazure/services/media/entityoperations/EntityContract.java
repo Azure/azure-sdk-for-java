@@ -145,6 +145,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
+    @SuppressWarnings("rawtypes")
     Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException;
 
     /**

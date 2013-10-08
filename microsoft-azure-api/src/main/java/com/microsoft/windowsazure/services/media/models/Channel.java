@@ -436,7 +436,7 @@ public class Channel {
      * @return the entity action operation
      */
     public static EntityActionOperation stop(String channelId) {
-        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Start");
+        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Stop");
     }
 
 }

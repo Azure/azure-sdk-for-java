@@ -308,8 +308,14 @@ public abstract class EntityRestProxy implements EntityContract {
         entityActionOperation.setProxyData(createProxyData());
         Builder webResource = getResource(entityActionOperation.getUri())
                 .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
-                .accept(MediaType.APPLICATION_XML_TYPE)
-                .entity(entityActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
+                .accept(MediaType.APPLICATION_XML_TYPE);
+        if (entityActionOperation.getRequestContents() != null) {
+            webResource = webResource.entity(entityActionOperation.getRequestContents(),
+                    entityActionOperation.getContentType());
+        }
+        else {
+            webResource = webResource.header("Content-Length", "0");
+        }
         return webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
     }
 }

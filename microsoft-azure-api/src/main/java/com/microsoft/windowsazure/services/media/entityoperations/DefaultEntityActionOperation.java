@@ -34,7 +34,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     private final EntityOperationBase.EntityUriBuilder uriBuilder;
 
     /** The content type. */
-    private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
+    private MediaType contentType = MediaType.APPLICATION_JSON_TYPE;
 
     /** The accept type. */
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;

@@ -91,10 +91,11 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
 
         ChannelState channelState = ChannelState.Stopped;
+        ChannelSettings channelSettings = createChannelSettings();
 
         // Act
         ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription)
-                .setSize(ChannelSize.Large));
+                .setSize(ChannelSize.Large).setSettings(channelSettings));
 
         // Assert
         verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
@@ -155,12 +156,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String[] ChannelNames = new String[] { testChannelPrefix + "cha", testChannelPrefix + "chb" };
         List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
+        ChannelSettings settings = createChannelSettings();
 
         ChannelState channelState = ChannelState.Stopped;
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
             expectedFutures.add(service.beginCreate(Channel.create().setName(name).setState(channelState)
-                    .setSize(ChannelSize.Large)));
+                    .setSize(ChannelSize.Large).setSettings(settings)));
         }
 
         // Act
@@ -182,10 +184,12 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
                 testChannelPrefix + "channellistc", testChannelPrefix + "channellistad" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
         List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
+        ChannelSettings settings = createChannelSettings();
 
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)));
+            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)
+                    .setSettings(settings)));
         }
 
         for (Future<OperationInfo<ChannelInfo>> futureOperationInfo : expectedFutures) {
@@ -238,8 +242,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updatechnoch";
+        ChannelSettings settings = createChannelSettings();
         Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
-                .setName(originalTestName).setSize(ChannelSize.Large));
+                .setName(originalTestName).setSize(ChannelSize.Large).setSettings(settings));
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         // Act
@@ -261,8 +266,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteChannelAsyncSuccess() throws Exception {
         String channelName = testChannelPrefix + "deletecha";
+        ChannelSettings settings = createChannelSettings();
         Future<OperationInfo<ChannelInfo>> createChannelFuture = service.beginCreate(Channel.create()
-                .setName(channelName).setSize(ChannelSize.Large));
+                .setName(channelName).setSize(ChannelSize.Large).setSettings(settings));
         OperationInfo<ChannelInfo> operationInfo = createChannelFuture.get();
         ChannelInfo channelInfo = operationInfo.getEntity();
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
@@ -283,7 +289,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         service.get(Channel.get(channelInfo.getId()));
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
