@@ -15,8 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.net.URI;
-
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
@@ -29,28 +27,28 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityOperatio
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
-import com.microsoft.windowsazure.services.media.implementation.ChannelSettingsMapper;
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
+import com.microsoft.windowsazure.services.media.implementation.content.ProgramType;
 import com.sun.jersey.api.client.GenericType;
 
 /**
- * Class for creating operations to manipulate Channel entities.
+ * Class for creating operations to manipulate Program entities.
  * 
  */
 public class Program {
 
     /** The Constant ENTITY_SET. */
-    private static final String ENTITY_SET = "Channels";
+    private static final String ENTITY_SET = "Programs";
 
     // Prevent instantiation
     /**
-     * Instantiates a new Channel.
+     * Instantiates a new Program.
      */
     private Program() {
     }
 
     /**
-     * Creates a channel creator.
+     * Creates a program creator.
      * 
      * @return the creator
      */
@@ -61,8 +59,8 @@ public class Program {
     /**
      * The Class Creator.
      */
-    public static class Creator extends EntityOperationSingleResultBase<ChannelInfo> implements
-            EntityCreateOperation<ChannelInfo> {
+    public static class Creator extends EntityOperationSingleResultBase<ProgramInfo> implements
+            EntityCreateOperation<ProgramInfo> {
 
         /** The name. */
         private String name;
@@ -70,29 +68,11 @@ public class Program {
         /** The description. */
         private String description;
 
-        /** The preview uri. */
-        private URI previewUri;
-
-        /** The ingest uri. */
-        private URI ingestUri;
-
-        /** The state. */
-        private ChannelState state;
-
-        /** The size. */
-        private ChannelSize size;
-
-        /** The settings. */
-        private ChannelSettings settings;
-
-        /** The channel settings mapper. */
-        private final ChannelSettingsMapper channelSettingsMapper = new ChannelSettingsMapper();
-
         /**
          * Instantiates a new creator.
          */
         public Creator() {
-            super(ENTITY_SET, ChannelInfo.class);
+            super(ENTITY_SET, ProgramInfo.class);
         }
 
         /* (non-Javadoc)
@@ -100,25 +80,11 @@ public class Program {
          */
         @Override
         public Object getRequestContents() {
-            ChannelType channelType = new ChannelType();
-            channelType.setName(name);
-            channelType.setDescription(description);
-            channelType.setPreviewUri(previewUri);
-            channelType.setIngestUri(ingestUri);
+            ProgramType programType = new ProgramType();
+            programType.setName(name);
+            programType.setDescription(description);
 
-            if (state != null) {
-                channelType.setState(state.toString());
-            }
-            if (size != null) {
-                channelType.setSize(size.toString());
-            }
-
-            if (settings != null) {
-                String channelSettings = channelSettingsMapper.toString(this.settings);
-                channelType.setSettings(channelSettings);
-            }
-
-            return channelType;
+            return programType;
         }
 
         /**
@@ -145,121 +111,38 @@ public class Program {
             return this;
         }
 
-        /**
-         * Sets the preview uri.
-         * 
-         * @param previewUri
-         *            the preview uri
-         * @return the creator
-         */
-        public Creator setPreviewUri(URI previewUri) {
-            this.previewUri = previewUri;
-            return this;
-        }
-
-        /**
-         * Sets the ingest uri.
-         * 
-         * @param ingestUri
-         *            the ingest uri
-         * @return the creator
-         */
-        public Creator setIngestUri(URI ingestUri) {
-            this.ingestUri = ingestUri;
-            return this;
-        }
-
-        /**
-         * Sets the state.
-         * 
-         * @param state
-         *            the state
-         * @return the creator
-         */
-        public Creator setState(ChannelState state) {
-            this.state = state;
-            return this;
-        }
-
-        /**
-         * Sets the size.
-         * 
-         * @param size
-         *            the size
-         * @return the creator
-         */
-        public Creator setSize(ChannelSize size) {
-            this.size = size;
-            return this;
-        }
-
-        /**
-         * Sets the settings.
-         * 
-         * @param settings
-         *            the settings
-         * @return the creator
-         */
-        public Creator setSettings(ChannelSettings settings) {
-            this.settings = settings;
-            return this;
-        }
-
     }
 
     /**
-     * Create an operation object that will get the state of the given Channel.
+     * Create an operation object that will get the state of the specified program.
      * 
-     * @param ChannelId
-     *            id of Channel to retrieve
+     * @param ProgramId
+     *            id of Program to retrieve
      * @return the get operation
      */
-    public static EntityGetOperation<ChannelInfo> get(String ChannelId) {
-        return new DefaultGetOperation<ChannelInfo>(ENTITY_SET, ChannelId, ChannelInfo.class);
+    public static EntityGetOperation<ProgramInfo> get(String programId) {
+        return new DefaultGetOperation<ProgramInfo>(ENTITY_SET, programId, ProgramInfo.class);
     }
 
     /**
-     * Get the Channel at the given link.
-     * 
-     * @param link
-     *            the link
-     * @return the get operation
-     */
-    public static EntityGetOperation<ChannelInfo> get(LinkInfo<ChannelInfo> link) {
-        return new DefaultGetOperation<ChannelInfo>(link.getHref(), ChannelInfo.class);
-    }
-
-    /**
-     * Create an operation that will list all the Channels.
+     * Create an operation that will list all the Programs.
      * 
      * @return The list operation
      */
-    public static DefaultListOperation<ChannelInfo> list() {
-        return new DefaultListOperation<ChannelInfo>(ENTITY_SET, new GenericType<ListResult<ChannelInfo>>() {
+    public static DefaultListOperation<ProgramInfo> list() {
+        return new DefaultListOperation<ProgramInfo>(ENTITY_SET, new GenericType<ListResult<ProgramInfo>>() {
         });
     }
 
     /**
-     * Create an operation that will list all the Channels at the given link.
+     * Create an operation that will update the given program.
      * 
-     * @param link
-     *            Link to request Channels from.
-     * @return The list operation.
-     */
-    public static DefaultListOperation<ChannelInfo> list(LinkInfo<ChannelInfo> link) {
-        return new DefaultListOperation<ChannelInfo>(link.getHref(), new GenericType<ListResult<ChannelInfo>>() {
-        });
-    }
-
-    /**
-     * Create an operation that will update the given Channel.
-     * 
-     * @param channelId
-     *            the channel id
+     * @param programId
+     *            the program id
      * @return the update operation
      */
-    public static Updater update(String channelId) {
-        return new Updater(channelId);
+    public static Updater update(String programId) {
+        return new Updater(programId);
     }
 
     /**
@@ -270,32 +153,14 @@ public class Program {
         /** The description. */
         private String description;
 
-        /** The ingest uri. */
-        private URI ingestUri;
-
-        /** The preview uri. */
-        private URI previewUri;
-
-        /** The size. */
-        private ChannelSize size;
-
-        /** The state. */
-        private ChannelState state;
-
-        /** The settings. */
-        private ChannelSettings settings;
-
-        /** The channel settings mapper. */
-        private final ChannelSettingsMapper channelSettingsMapper = new ChannelSettingsMapper();
-
         /**
          * Instantiates a new updater.
          * 
-         * @param channelId
-         *            the Channel id
+         * @param programId
+         *            the program id
          */
-        protected Updater(String channelId) {
-            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, channelId));
+        protected Updater(String programId) {
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, programId));
         }
 
         /* (non-Javadoc)
@@ -313,21 +178,6 @@ public class Program {
         public Object getRequestContents() {
             ChannelType channelType = new ChannelType();
             channelType.setDescription(description);
-            channelType.setIngestUri(ingestUri);
-            channelType.setPreviewUri(previewUri);
-            if (size != null) {
-                channelType.setSize(size.toString());
-            }
-
-            if (state != null) {
-                channelType.setState(state.toString());
-            }
-
-            if (settings != null) {
-                String channelSettings = channelSettingsMapper.toString(this.settings);
-                channelType.setSettings(channelSettings);
-            }
-
             return channelType;
         }
 
@@ -343,99 +193,39 @@ public class Program {
             return this;
         }
 
-        /**
-         * Sets the ingest uri.
-         * 
-         * @param ingestUri
-         *            the ingest uri
-         * @return the updater
-         */
-        public Updater setIngestUri(URI ingestUri) {
-            this.ingestUri = ingestUri;
-            return this;
-        }
-
-        /**
-         * Sets the preview uri.
-         * 
-         * @param previewUri
-         *            the preview uri
-         * @return the updater
-         */
-        public Updater setPreviewUri(URI previewUri) {
-            this.previewUri = previewUri;
-            return this;
-        }
-
-        /**
-         * Sets the size.
-         * 
-         * @param size
-         *            the size
-         * @return the updater
-         */
-        public Updater setSize(ChannelSize size) {
-            this.size = size;
-            return this;
-        }
-
-        /**
-         * Sets the state.
-         * 
-         * @param state
-         *            the state
-         * @return the updater
-         */
-        public Updater setState(ChannelState state) {
-            this.state = state;
-            return this;
-        }
-
-        /**
-         * Sets the settings.
-         * 
-         * @param settings
-         *            the settings
-         * @return the updater
-         */
-        public Updater setSettings(ChannelSettings settings) {
-            this.settings = settings;
-            return this;
-        }
-
     }
 
     /**
-     * Create an operation to delete the given Channel.
+     * Create an operation to delete the given program.
      * 
-     * @param channelId
-     *            id of Channel to delete
+     * @param programId
+     *            id of program to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String channelId) {
-        return new DefaultDeleteOperation(ENTITY_SET, channelId);
+    public static EntityDeleteOperation delete(String programId) {
+        return new DefaultDeleteOperation(ENTITY_SET, programId);
     }
 
     /**
-     * Start a channel with a specified channel ID.
+     * Start a channel with a specified program ID.
      * 
      * @param channelId
-     *            the ID of the channel.
+     *            the ID of the program.
      * @return the entity action operation
      */
-    public static EntityActionOperation start(String channelId) {
-        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Start");
+    public static EntityActionOperation start(String programId) {
+        return new DefaultEntityActionOperation(ENTITY_SET, programId, "Start");
     }
 
     /**
-     * Stop a channel with a specified channel ID.
+     * Stop a channel with a specified program ID.
      * 
      * @param channelId
-     *            the ID of the channel.
+     *            the ID of the program.
      * @return the entity action operation
      */
-    public static EntityActionOperation stop(String channelId) {
-        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Stop");
+    public static EntityActionOperation stop(String programId) {
+        return new DefaultEntityActionOperation(ENTITY_SET, programId, "Stop");
     }
 
 }

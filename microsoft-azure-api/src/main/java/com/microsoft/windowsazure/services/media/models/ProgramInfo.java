@@ -21,7 +21,6 @@ import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.content.ProgramType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Data about a Media Services Live Streaming Program entity.
  * 
@@ -103,14 +102,29 @@ public class ProgramInfo extends ODataEntity<ProgramType> {
         return this.getContent().getAssetId();
     }
 
+    /**
+     * Gets the dvr window length seconds.
+     * 
+     * @return the dvr window length seconds
+     */
     public int getDvrWindowLengthSeconds() {
         return this.getContent().getDvrWindowLengthSeconds();
     }
 
+    /**
+     * Gets the estimated duration seconds.
+     * 
+     * @return the estimated duration seconds
+     */
     public int getEstimatedDurationSeconds() {
         return this.getContent().getEstimatedDurationSeconds();
     }
 
+    /**
+     * Checks if is enable archive.
+     * 
+     * @return true, if is enable archive
+     */
     public boolean isEnableArchive() {
         return this.getContent().isEnableArchive();
     }
