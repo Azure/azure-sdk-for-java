@@ -15,50 +15,42 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Date;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
-import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
+import com.microsoft.windowsazure.services.media.implementation.content.ProgramType;
 
+// TODO: Auto-generated Javadoc
 /**
- * Data about a Media Services Live Streaming Channel entity.
+ * Data about a Media Services Live Streaming Program entity.
  * 
  */
-public class ProgramInfo extends ODataEntity<ChannelType> {
-
-    /** The object mapper. */
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    /** The type reference. */
-    private final TypeReference<ChannelSettings> typeReference = new TypeReference<ChannelSettings>() {
-    };
+public class ProgramInfo extends ODataEntity<ProgramType> {
 
     /**
-     * Instantiates a new channel info instance.
+     * Instantiates a new program info instance.
      * 
      * @param entry
      *            the entry
      * @param content
      *            the content
      */
-    public ProgramInfo(EntryType entry, ChannelType content) {
+    public ProgramInfo(EntryType entry, ProgramType content) {
         super(entry, content);
     }
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public String getId() {
         return this.getContent().getId();
     }
 
     /**
-     * Get the channel name.
+     * Get the program name.
      * 
      * @return the name
      */
@@ -67,21 +59,12 @@ public class ProgramInfo extends ODataEntity<ChannelType> {
     }
 
     /**
-     * Get the channel description.
+     * Get the program description.
      * 
      * @return the description
      */
     public String getDescription() {
         return this.getContent().getDescription();
-    }
-
-    /**
-     * Get the asset state.
-     * 
-     * @return the state
-     */
-    public ChannelState getState() {
-        return ChannelState.valueOf(getContent().getState());
     }
 
     /**
@@ -103,50 +86,42 @@ public class ProgramInfo extends ODataEntity<ChannelType> {
     }
 
     /**
-     * Gets the size.
+     * Gets the channel id.
      * 
-     * @return the size
+     * @return the channel id
      */
-    public ChannelSize getSize() {
-        return ChannelSize.valueOf(getContent().getSize());
+    public String getChannelId() {
+        return this.getContent().getChannelId();
     }
 
     /**
-     * Gets the preview uri.
+     * Gets the asset id.
      * 
-     * @return the preview uri
+     * @return the asset id
      */
-    public URI getPreviewUri() {
-        return getContent().getPreviewUri();
+    public String getAssetId() {
+        return this.getContent().getAssetId();
+    }
+
+    public int getDvrWindowLengthSeconds() {
+        return this.getContent().getDvrWindowLengthSeconds();
+    }
+
+    public int getEstimatedDurationSeconds() {
+        return this.getContent().getEstimatedDurationSeconds();
+    }
+
+    public boolean isEnableArchive() {
+        return this.getContent().isEnableArchive();
     }
 
     /**
-     * Gets the ingest uri.
+     * Get the program state.
      * 
-     * @return the ingest uri
+     * @return the state
      */
-    public URI getIngestUri() {
-        return getContent().getIngestUri();
+    public ProgramState getState() {
+        return ProgramState.valueOf(getContent().getState());
     }
 
-    /**
-     * Gets the settings.
-     * 
-     * @return the settings
-     */
-    public ChannelSettings getSettings() {
-
-        try {
-            return objectMapper.readValue(getContent().getSettings(), typeReference);
-        }
-        catch (JsonParseException e) {
-            return null;
-        }
-        catch (JsonMappingException e) {
-            return null;
-        }
-        catch (IOException e) {
-            return null;
-        }
-    }
 }

@@ -33,7 +33,6 @@ import com.microsoft.windowsazure.services.media.implementation.ChannelSettingsM
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.sun.jersey.api.client.GenericType;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Channel entities.
  * 
