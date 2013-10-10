@@ -157,4 +157,13 @@ public class ObjectFactory {
     public OperationType createOperationType() {
         return new OperationType();
     }
+
+    /**
+     * Creates a new Object object.
+     * 
+     * @return the program type
+     */
+    public ProgramType createProgramType() {
+        return new ProgramType();
+    }
 }

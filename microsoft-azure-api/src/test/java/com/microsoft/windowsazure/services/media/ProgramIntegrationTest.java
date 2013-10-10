@@ -24,100 +24,79 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.Channel;
-import com.microsoft.windowsazure.services.media.models.ChannelInfo;
-import com.microsoft.windowsazure.services.media.models.ChannelSettings;
-import com.microsoft.windowsazure.services.media.models.ChannelSize;
-import com.microsoft.windowsazure.services.media.models.ChannelState;
 import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.Ipv4;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.microsoft.windowsazure.services.media.models.OperationState;
 import com.microsoft.windowsazure.services.media.models.PreviewEndPointSettings;
+import com.microsoft.windowsazure.services.media.models.Program;
+import com.microsoft.windowsazure.services.media.models.ProgramInfo;
+import com.microsoft.windowsazure.services.media.models.ProgramState;
 import com.microsoft.windowsazure.services.media.models.SecuritySettings;
 
 public class ProgramIntegrationTest extends IntegrationTestBase {
 
-    protected String testChannelPrefix = "testchannelprefix";
-    protected String invalidChannelName = "invalidChannelName";
+    protected String testProgramPrefix = "testProgramprefix";
+    protected String invalidProgramName = "invalidProgramName";
 
-    private void verifyInfosEqual(String message, ChannelInfo expected, ChannelInfo actual) {
-        verifyChannelProperties(message, expected.getName(), expected.getDescription(), expected.getState(), actual);
+    private void verifyInfosEqual(String message, ProgramInfo expected, ProgramInfo actual) {
+        verifyProgramProperties(message, expected.getName(), expected.getDescription(), expected.getState(), actual);
     }
 
-    private void verifyChannelProperties(String message, String testName, String testDescription,
-            ChannelState channelState, ChannelInfo actualChannel) {
-        verifyChannelProperties(message, testName, testDescription, channelState, null, null, actualChannel);
+    private void verifyProgramProperties(String message, String testName, String testDescription,
+            ProgramState ProgramState, ProgramInfo actualProgram) {
+        verifyProgramProperties(message, testName, testDescription, ProgramState, null, null, actualProgram);
     }
 
-    private void verifyChannelProperties(String message, String testName, String testDescription,
-            ChannelState channelState, Date created, Date lastModified, ChannelInfo actualChannel) {
-        assertNotNull(message, actualChannel);
-        assertEquals(message + " Name", testName, actualChannel.getName());
-        assertEquals(message + " Description", testDescription, actualChannel.getDescription());
-        assertEquals(message + " State", channelState, actualChannel.getState());
+    private void verifyProgramProperties(String message, String testName, String testDescription,
+            ProgramState ProgramState, Date created, Date lastModified, ProgramInfo actualProgram) {
+        assertNotNull(message, actualProgram);
+        assertEquals(message + " Name", testName, actualProgram.getName());
+        assertEquals(message + " Description", testDescription, actualProgram.getDescription());
+        assertEquals(message + " State", ProgramState, actualProgram.getState());
 
         if (created != null) {
-            assertEquals(message + " Created", created, actualChannel.getCreated());
+            assertEquals(message + " Created", created, actualProgram.getCreated());
         }
         if (lastModified != null) {
-            assertEquals(message + " LastModified", lastModified, actualChannel.getLastModified());
+            assertEquals(message + " LastModified", lastModified, actualProgram.getLastModified());
         }
-    }
-
-    private ChannelSettings createChannelSettings() {
-        ChannelSettings settings = new ChannelSettings();
-        IngestEndpointSettings ingestEndPointSettings = new IngestEndpointSettings();
-        SecuritySettings securitySettings = new SecuritySettings();
-        List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
-        Ipv4 ipv4 = new Ipv4();
-        ipv4.setName("Allow all");
-        ipv4.setIp("0.0.0.0/0");
-        ipV4AllowList.add(ipv4);
-        securitySettings.setIpV4AllowList(ipV4AllowList);
-        ingestEndPointSettings.setSecurity(securitySettings);
-        settings.setIngest(ingestEndPointSettings);
-        return settings;
     }
 
     @Test
-    public void createChannelOptionsSuccess() throws Exception {
+    public void createProgramOptionsSuccess() throws Exception {
         // Arrange
-        String testName = testChannelPrefix + "createchopt";
+        String testName = testProgramPrefix + "createchopt";
         String testDescription = "testDescription";
 
-        ChannelState channelState = ChannelState.Stopped;
-        ChannelSettings channelSettings = createChannelSettings();
+        ProgramState programState = ProgramState.Stopped;
 
         // Act
-        ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription)
-                .setSize(ChannelSize.Large).setSettings(channelSettings));
+        ProgramInfo actualProgram = service.create(Program.create().setName(testName).setDescription(testDescription));
 
         // Assert
-        verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
+        verifyProgramProperties("actualProgram", testName, testDescription, programState, actualProgram);
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
     @Test
-    public void channelCanBeStartedAndStopped() throws Exception {
+    public void ProgramCanBeStartedAndStopped() throws Exception {
         // Arrange 
-        String testName = testChannelPrefix + "channelsas";
+        String testName = testProgramPrefix + "Programsas";
         String testDescription = "testDescription";
-        ChannelSettings channelSettings = createChannelSettings();
 
         // Act
-        Future<OperationInfo<ChannelInfo>> actualChannel = service.beginCreate(Channel.create().setName(testName)
-                .setDescription(testDescription).setSize(ChannelSize.Large).setSettings(channelSettings));
+        Future<OperationInfo<ProgramInfo>> actualProgram = service.beginCreate(Program.create().setName(testName)
+                .setDescription(testDescription));
 
-        ChannelInfo channelInfo = actualChannel.get().getEntity();
-        Future<OperationInfo> startFuture = service.beginAction(Channel.start(channelInfo.getId()));
+        ProgramInfo ProgramInfo = actualProgram.get().getEntity();
+        Future<OperationInfo> startFuture = service.beginAction(Program.start(ProgramInfo.getId()));
         OperationInfo startOperationInfo = startFuture.get();
 
-        Future<OperationInfo> stopFuture = service.beginAction(Channel.stop(channelInfo.getId()));
+        Future<OperationInfo> stopFuture = service.beginAction(Program.stop(ProgramInfo.getId()));
         OperationInfo stopOperationInfo = stopFuture.get();
 
         // Assert
@@ -125,95 +104,88 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getChannelSuccess() throws Exception {
+    public void getProgramSuccess() throws Exception {
         // Arrange
-        String testName = testChannelPrefix + "getchannel";
+        String testName = testProgramPrefix + "getProgram";
         String testDescription = "testDescription";
-        ChannelState channelState = ChannelState.Stopped;
-        ChannelSize channelSize = ChannelSize.Large;
-        ChannelSettings settings = createChannelSettings();
+        ProgramState programState = ProgramState.Stopped;
 
-        Future<OperationInfo<ChannelInfo>> futureOperationInfo = service.beginCreate(Channel.create().setName(testName)
-                .setDescription(testDescription).setState(channelState).setSize(channelSize).setSettings(settings));
-        ChannelInfo channelInfo = futureOperationInfo.get().getEntity();
+        Future<OperationInfo<ProgramInfo>> futureOperationInfo = service.beginCreate(Program.create().setName(testName)
+                .setDescription(testDescription).setState(programState));
+        ProgramInfo ProgramInfo = futureOperationInfo.get().getEntity();
         // Act
-        ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
+        ProgramInfo actualProgramInfo = service.get(Program.get(ProgramInfo.getId()));
 
         // Assert
-        verifyInfosEqual("actualChannel", channelInfo, actualChannelInfo);
+        verifyInfosEqual("actualProgram", ProgramInfo, actualProgramInfo);
     }
 
     @Test
-    public void getChannelInvalidId() throws ServiceException {
+    public void getProgramInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.get(Channel.get(invalidId));
+        service.get(Program.get(invalidId));
     }
 
     @Test
-    public void listChannelSuccess() throws ServiceException, InterruptedException, ExecutionException {
+    public void listProgramSuccess() throws ServiceException, InterruptedException, ExecutionException {
         // Arrange
-        String[] ChannelNames = new String[] { testChannelPrefix + "cha", testChannelPrefix + "chb" };
-        List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
-        List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
-        ChannelSettings settings = createChannelSettings();
+        String[] ProgramNames = new String[] { testProgramPrefix + "cha", testProgramPrefix + "chb" };
+        List<Future<OperationInfo<ProgramInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ProgramInfo>>>();
+        List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
 
-        ChannelState channelState = ChannelState.Stopped;
-        for (int i = 0; i < ChannelNames.length; i++) {
-            String name = ChannelNames[i];
-            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setState(channelState)
-                    .setSize(ChannelSize.Large).setSettings(settings)));
+        ProgramState programState = ProgramState.Stopped;
+        for (int i = 0; i < ProgramNames.length; i++) {
+            String name = ProgramNames[i];
+            expectedFutures.add(service.beginCreate(Program.create().setName(name).setState(programState)));
         }
 
         // Act
-        Collection<ChannelInfo> listChannelResult = service.list(Channel.list());
+        Collection<ProgramInfo> listProgramResult = service.list(Program.list());
 
         // Assert
 
-        verifyListResultContains("listChannels", expectedChannels, listChannelResult, new ComponentDelegate() {
+        verifyListResultContains("listPrograms", expectedPrograms, listProgramResult, new ComponentDelegate() {
             @Override
             public void verifyEquals(String message, Object expected, Object actual) {
-                verifyInfosEqual(message, (ChannelInfo) expected, (ChannelInfo) actual);
+                verifyInfosEqual(message, (ProgramInfo) expected, (ProgramInfo) actual);
             }
         });
     }
 
     @Test
-    public void canListChannelsWithOptions() throws ServiceException, InterruptedException, ExecutionException {
-        String[] ChannelNames = new String[] { testChannelPrefix + "channellista", testChannelPrefix + "channellistb",
-                testChannelPrefix + "channellistc", testChannelPrefix + "channellistad" };
-        List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
-        List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
-        ChannelSettings settings = createChannelSettings();
+    public void canListProgramsWithOptions() throws ServiceException, InterruptedException, ExecutionException {
+        String[] ProgramNames = new String[] { testProgramPrefix + "Programlista", testProgramPrefix + "Programlistb",
+                testProgramPrefix + "Programlistc", testProgramPrefix + "Programlistad" };
+        List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
+        List<Future<OperationInfo<ProgramInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ProgramInfo>>>();
 
-        for (int i = 0; i < ChannelNames.length; i++) {
-            String name = ChannelNames[i];
-            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)
-                    .setSettings(settings)));
+        for (int i = 0; i < ProgramNames.length; i++) {
+            String name = ProgramNames[i];
+            expectedFutures.add(service.beginCreate(Program.create().setName(name)));
         }
 
-        for (Future<OperationInfo<ChannelInfo>> futureOperationInfo : expectedFutures) {
-            expectedChannels.add(futureOperationInfo.get().getEntity());
+        for (Future<OperationInfo<ProgramInfo>> futureOperationInfo : expectedFutures) {
+            expectedPrograms.add(futureOperationInfo.get().getEntity());
         }
 
-        Collection<ChannelInfo> listChannelResult = service.list(Channel.list().setTop(2));
+        Collection<ProgramInfo> listProgramResult = service.list(Program.list().setTop(2));
 
         // Assert
 
-        assertEquals(2, listChannelResult.size());
+        assertEquals(2, listProgramResult.size());
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
-    @Ignore("Due to issue 746")
     @Test
-    public void updateChannelAsyncSuccess() throws Exception {
+    public void updateProgramAsyncSuccess() throws Exception {
         // Arrange
-        String originalTestName = testChannelPrefix + "updatecho";
-        ChannelState originalChannelState = ChannelState.Stopped;
+        String originalTestName = testProgramPrefix + "updatecho";
+        ProgramState originalProgramState = ProgramState.Stopped;
 
-        Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
-                .setName(originalTestName).setSize(ChannelSize.Large));
-        ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
+        Future<OperationInfo<ProgramInfo>> futureCreateProgram = service.beginCreate(Program.create().setName(
+                originalTestName));
+        ProgramInfo originalProgram = futureCreateProgram.get().getEntity();
 
         String updatedDescription = "description";
         SecuritySettings securitySettings = new SecuritySettings();
@@ -224,83 +196,78 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(securitySettings);
         PreviewEndPointSettings preview = null;
 
-        ChannelSettings updatedSettings = new ChannelSettings().setIngest(ingest).setPreview(preview);
-
         // Act
-        Future<OperationInfo> futureUpdate = service.beginUpdate(Channel.update(originalChannel.getId()).setSettings(
-                updatedSettings));
+        Future<OperationInfo> futureUpdate = service.beginUpdate(Program.update(originalProgram.getId()));
         OperationInfo operationInfo = futureUpdate.get();
 
-        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
+        ProgramInfo updatedProgram = service.get(Program.get(originalProgram.getId()));
 
         // Assert
-        verifyChannelProperties("updatedChannel", originalTestName, updatedDescription, originalChannelState,
-                updatedChannel);
+        verifyProgramProperties("updatedProgram", originalTestName, updatedDescription, originalProgramState,
+                updatedProgram);
     }
 
     @Test
-    public void updateChannelNoChangesSuccess() throws Exception {
+    public void updateProgramNoChangesSuccess() throws Exception {
         // Arrange
-        String originalTestName = testChannelPrefix + "updatechnoch";
-        ChannelSettings settings = createChannelSettings();
-        Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
-                .setName(originalTestName).setSize(ChannelSize.Large).setSettings(settings));
-        ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
+        String originalTestName = testProgramPrefix + "updatechnoch";
+        Future<OperationInfo<ProgramInfo>> futureCreateProgram = service.beginCreate(Program.create().setName(
+                originalTestName));
+        ProgramInfo originalProgram = futureCreateProgram.get().getEntity();
 
         // Act
-        service.update(Channel.update(originalChannel.getId()));
-        ChannelInfo updatedChannel = service.get(Channel.get(originalChannel.getId()));
+        service.update(Program.update(originalProgram.getId()));
+        ProgramInfo updatedProgram = service.get(Program.get(originalProgram.getId()));
 
         // Assert
-        verifyInfosEqual("updatedChannel", originalChannel, updatedChannel);
+        verifyInfosEqual("updatedProgram", originalProgram, updatedProgram);
     }
 
     @Test
-    public void updateChannelFailedWithInvalidId() throws ServiceException {
+    public void updateProgramFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.beginUpdate(Channel.update(invalidChannelName));
+        service.beginUpdate(Program.update(invalidProgramName));
     }
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void deleteChannelAsyncSuccess() throws Exception {
-        String channelName = testChannelPrefix + "deletecha";
-        ChannelSettings settings = createChannelSettings();
-        Future<OperationInfo<ChannelInfo>> createChannelFuture = service.beginCreate(Channel.create()
-                .setName(channelName).setSize(ChannelSize.Large).setSettings(settings));
-        OperationInfo<ChannelInfo> operationInfo = createChannelFuture.get();
-        ChannelInfo channelInfo = operationInfo.getEntity();
-        List<ChannelInfo> listChannelsResult = service.list(Channel.list());
-        int ChannelCountBaseline = listChannelsResult.size();
+    public void deleteProgramAsyncSuccess() throws Exception {
+        String ProgramName = testProgramPrefix + "deletecha";
+        Future<OperationInfo<ProgramInfo>> createProgramFuture = service.beginCreate(Program.create().setName(
+                ProgramName));
+        OperationInfo<ProgramInfo> operationInfo = createProgramFuture.get();
+        ProgramInfo ProgramInfo = operationInfo.getEntity();
+        List<ProgramInfo> listProgramsResult = service.list(Program.list());
+        int ProgramCountBaseline = listProgramsResult.size();
 
         // Act
-        Future<OperationInfo> deleteFuture = service.beginDelete(Channel.delete(channelInfo.getId()));
+        Future<OperationInfo> deleteFuture = service.beginDelete(Program.delete(ProgramInfo.getId()));
         OperationInfo deleteOperationInfo = deleteFuture.get();
 
         // Assert
 
-        listChannelsResult = service.list(Channel.list());
-        assertEquals("listChannelsResult.size", ChannelCountBaseline - 1, listChannelsResult.size());
+        listProgramsResult = service.list(Program.list());
+        assertEquals("listProgramsResult.size", ProgramCountBaseline - 1, listProgramsResult.size());
         assertEquals(OperationState.Succeeded, deleteOperationInfo.getState());
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Channel.get(channelInfo.getId()));
+        service.get(Program.get(ProgramInfo.getId()));
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
     @Test
-    public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
+    public void deleteProgramAsyncFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        Future<OperationInfo> future = service.beginDelete(Channel.delete(invalidChannelName));
+        Future<OperationInfo> future = service.beginDelete(Program.delete(invalidProgramName));
     }
 
     @Test
-    public void deleteChannelFailedWithInvalidId() throws ServiceException {
+    public void deleteProgramFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.delete(Channel.delete(invalidChannelName));
+        service.delete(Program.delete(invalidProgramName));
     }
 }

@@ -68,6 +68,8 @@ public class Program {
         /** The description. */
         private String description;
 
+        private ProgramState state;
+
         /**
          * Instantiates a new creator.
          */
@@ -83,7 +85,9 @@ public class Program {
             ProgramType programType = new ProgramType();
             programType.setName(name);
             programType.setDescription(description);
-
+            if (state != null) {
+                programType.setState(state.toString());
+            }
             return programType;
         }
 
@@ -108,6 +112,11 @@ public class Program {
          */
         public Creator setDescription(String description) {
             this.description = description;
+            return this;
+        }
+
+        public EntityCreateOperation<ProgramInfo> setState(ProgramState programState) {
+            this.state = programState;
             return this;
         }
 
