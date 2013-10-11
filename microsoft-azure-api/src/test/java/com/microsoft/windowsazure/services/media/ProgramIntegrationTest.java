@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.Channel;
 import com.microsoft.windowsazure.services.media.models.ChannelInfo;
+import com.microsoft.windowsazure.services.media.models.ChannelSettings;
 import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.Ipv4;
@@ -71,6 +72,21 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    private ChannelSettings createChannelSettings() {
+        ChannelSettings settings = new ChannelSettings();
+        IngestEndpointSettings ingestEndPointSettings = new IngestEndpointSettings();
+        SecuritySettings securitySettings = new SecuritySettings();
+        List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
+        Ipv4 ipv4 = new Ipv4();
+        ipv4.setName("Allow all");
+        ipv4.setIp("0.0.0.0/0");
+        ipV4AllowList.add(ipv4);
+        securitySettings.setIpV4AllowList(ipV4AllowList);
+        ingestEndPointSettings.setSecurity(securitySettings);
+        settings.setIngest(ingestEndPointSettings);
+        return settings;
+    }
+
     @Test
     public void createProgramOptionsSuccess() throws Exception {
         // Arrange
@@ -78,8 +94,9 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
         ProgramState programState = ProgramState.Stopped;
         AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
         Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
-                .setSize(ChannelSize.Large).setName(testName));
+                .setSize(ChannelSize.Large).setName(testName).setSettings(settings));
         ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
         int estimatedDurationSeconds = 3600;
         int dvrWindowLengthSeconds = 60;

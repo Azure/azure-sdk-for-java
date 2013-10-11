@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation.content;
 
-import java.net.URI;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -50,35 +49,29 @@ public class ProgramType implements MediaServiceDTO {
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
     protected Date lastModified;
 
-    /** The preview uri. */
-    @XmlElement(name = "PreviewUri", namespace = Constants.ODATA_DATA_NS)
-    protected URI previewUri;
+    /** The channel id. */
+    @XmlElement(name = "ChannelId", namespace = Constants.ODATA_DATA_NS)
+    protected String channelId;
 
-    /** The ingest uri. */
-    @XmlElement(name = "IngestUri", namespace = Constants.ODATA_DATA_NS)
-    protected URI ingestUri;
+    /** The asset id. */
+    @XmlElement(name = "AssetId", namespace = Constants.ODATA_DATA_NS)
+    protected String assetId;
+
+    /** The dvr window length seconds. */
+    @XmlElement(name = "DvrWindowLengthSeconds", namespace = Constants.ODATA_DATA_NS)
+    protected int dvrWindowLengthSeconds;
+
+    /** The estimated duration seconds. */
+    @XmlElement(name = "EstimatedDurationSeconds", namespace = Constants.ODATA_DATA_NS)
+    protected int estimatedDurationSeconds;
+
+    /** The enable archive. */
+    @XmlElement(name = "EnableArchive", namespace = Constants.ODATA_DATA_NS)
+    protected boolean enableArchive;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
     protected String state;
-
-    /** The size. */
-    @XmlElement(name = "Size", namespace = Constants.ODATA_DATA_NS)
-    protected String size;
-
-    /** The settings. */
-    @XmlElement(name = "Settings", namespace = Constants.ODATA_DATA_NS)
-    protected String settings;
-
-    private String channelId;
-
-    private boolean enableArchive;
-
-    private int estimatedDurationSeconds;
-
-    private int dvrWindowLengthSeconds;
-
-    private String assetId;
 
     /**
      * Gets the id.
@@ -186,48 +179,6 @@ public class ProgramType implements MediaServiceDTO {
     }
 
     /**
-     * Sets the preview uri.
-     * 
-     * @param previewUri
-     *            the preview uri
-     * @return the channel type
-     */
-    public ProgramType setPreviewUri(URI previewUri) {
-        this.previewUri = previewUri;
-        return this;
-    }
-
-    /**
-     * Gets the preview uri.
-     * 
-     * @return the preview
-     */
-    public URI getPreviewUri() {
-        return previewUri;
-    }
-
-    /**
-     * Sets the ingest uri.
-     * 
-     * @param ingestUri
-     *            the ingest uri
-     * @return the channel type
-     */
-    public ProgramType setIngestUri(URI ingestUri) {
-        this.ingestUri = ingestUri;
-        return this;
-    }
-
-    /**
-     * Gets the ingest uri.
-     * 
-     * @return the ingest uri
-     */
-    public URI getIngestUri() {
-        return ingestUri;
-    }
-
-    /**
      * Sets the state.
      * 
      * @param state
@@ -249,83 +200,96 @@ public class ProgramType implements MediaServiceDTO {
     }
 
     /**
-     * Gets the size.
+     * Gets the channel id.
      * 
-     * @return the name
+     * @return the channel id
      */
-    public String getSize() {
-        return this.size;
-    }
-
-    /**
-     * Sets the size.
-     * 
-     * @param size
-     *            the size
-     * @return the channel type
-     */
-    public ProgramType setSize(String size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Gets the settings.
-     * 
-     * @return the settings
-     */
-    public String getSettings() {
-        return this.settings;
-    }
-
-    /**
-     * Sets the settings.
-     * 
-     * @param settings
-     *            the settings
-     * @return the channel type
-     */
-    public ProgramType setSettings(String settings) {
-        this.settings = settings;
-        return this;
-    }
-
     public String getChannelId() {
         return this.channelId;
     }
 
+    /**
+     * Gets the asset id.
+     * 
+     * @return the asset id
+     */
     public String getAssetId() {
         return this.assetId;
     }
 
+    /**
+     * Gets the dvr window length seconds.
+     * 
+     * @return the dvr window length seconds
+     */
     public int getDvrWindowLengthSeconds() {
         return this.dvrWindowLengthSeconds;
     }
 
+    /**
+     * Gets the estimated duration seconds.
+     * 
+     * @return the estimated duration seconds
+     */
     public int getEstimatedDurationSeconds() {
         return this.estimatedDurationSeconds;
     }
 
+    /**
+     * Checks if is enable archive.
+     * 
+     * @return true, if is enable archive
+     */
     public boolean isEnableArchive() {
         return this.enableArchive;
     }
 
+    /**
+     * Sets the enable archive.
+     * 
+     * @param enableArchive
+     *            the new enable archive
+     */
     public void setEnableArchive(boolean enableArchive) {
         this.enableArchive = enableArchive;
     }
 
+    /**
+     * Sets the asset id.
+     * 
+     * @param assetId
+     *            the new asset id
+     */
     public void setAssetId(String assetId) {
         this.assetId = assetId;
     }
 
+    /**
+     * Sets the channel id.
+     * 
+     * @param channelId
+     *            the new channel id
+     */
     public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
+    /**
+     * Sets the estimated duration seconds.
+     * 
+     * @param estimatedDurationSeconds
+     *            the new estimated duration seconds
+     */
     public void setEstimatedDurationSeconds(int estimatedDurationSeconds) {
         this.estimatedDurationSeconds = estimatedDurationSeconds;
     }
 
+    /**
+     * Sets the dvr window length seconds.
+     * 
+     * @param dvrWindowLengthSeconds
+     *            the new dvr window length seconds
+     */
     public void setDvrWindowLengthSeconds(int dvrWindowLengthSeconds) {
         this.dvrWindowLengthSeconds = dvrWindowLengthSeconds;
     }
