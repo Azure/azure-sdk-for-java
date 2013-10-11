@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.5</version>
+  <version>0.4.6</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
