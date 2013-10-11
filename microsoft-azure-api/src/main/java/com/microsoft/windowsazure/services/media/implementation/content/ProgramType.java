@@ -309,4 +309,24 @@ public class ProgramType implements MediaServiceDTO {
     public boolean isEnableArchive() {
         return this.enableArchive;
     }
+
+    public void setEnableArchive(boolean enableArchive) {
+        this.enableArchive = enableArchive;
+    }
+
+    public void setAssetId(String assetId) {
+        this.assetId = assetId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public void setEstimatedDurationSeconds(int estimatedDurationSeconds) {
+        this.estimatedDurationSeconds = estimatedDurationSeconds;
+    }
+
+    public void setDvrWindowLengthSeconds(int dvrWindowLengthSeconds) {
+        this.dvrWindowLengthSeconds = dvrWindowLengthSeconds;
+    }
 }

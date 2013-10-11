@@ -68,7 +68,19 @@ public class Program {
         /** The description. */
         private String description;
 
+        /** The state. */
         private ProgramState state;
+
+        /** The enable archive. */
+        private boolean enableArchive;
+
+        private String assetId;
+
+        private String channelId;
+
+        private int estimatedDurationSeconds;
+
+        private int dvrWindowLengthSeconds;
 
         /**
          * Instantiates a new creator.
@@ -88,6 +100,11 @@ public class Program {
             if (state != null) {
                 programType.setState(state.toString());
             }
+            programType.setEnableArchive(enableArchive);
+            programType.setAssetId(assetId);
+            programType.setChannelId(channelId);
+            programType.setEstimatedDurationSeconds(estimatedDurationSeconds);
+            programType.setDvrWindowLengthSeconds(dvrWindowLengthSeconds);
             return programType;
         }
 
@@ -115,8 +132,47 @@ public class Program {
             return this;
         }
 
-        public EntityCreateOperation<ProgramInfo> setState(ProgramState programState) {
+        /**
+         * Sets the state.
+         * 
+         * @param programState
+         *            the program state
+         * @return the entity create operation
+         */
+        public Creator setState(ProgramState programState) {
             this.state = programState;
+            return this;
+        }
+
+        /**
+         * Checks if is enable archive.
+         * 
+         * @param enableArchive
+         *            the enable archive
+         * @return the entity create operation
+         */
+        public Creator isEnableArchive(boolean enableArchive) {
+            this.enableArchive = false;
+            return this;
+        }
+
+        public Creator setAssetId(String assetId) {
+            this.assetId = assetId;
+            return this;
+        }
+
+        public Creator setChannelId(String channelId) {
+            this.channelId = channelId;
+            return this;
+        }
+
+        public Creator setEstimatedDurationSeconds(int estimatedDurationSeconds) {
+            this.estimatedDurationSeconds = estimatedDurationSeconds;
+            return this;
+        }
+
+        public Creator setDvrWindowLengthSeconds(int dvrWindowLengthSeconds) {
+            this.dvrWindowLengthSeconds = dvrWindowLengthSeconds;
             return this;
         }
 
@@ -125,8 +181,8 @@ public class Program {
     /**
      * Create an operation object that will get the state of the specified program.
      * 
-     * @param ProgramId
-     *            id of Program to retrieve
+     * @param programId
+     *            the program id
      * @return the get operation
      */
     public static EntityGetOperation<ProgramInfo> get(String programId) {
@@ -216,10 +272,10 @@ public class Program {
     }
 
     /**
-     * Start a channel with a specified program ID.
+     * Start a program with a specified program ID.
      * 
-     * @param channelId
-     *            the ID of the program.
+     * @param programId
+     *            the program id
      * @return the entity action operation
      */
     public static EntityActionOperation start(String programId) {
@@ -227,10 +283,10 @@ public class Program {
     }
 
     /**
-     * Stop a channel with a specified program ID.
+     * Stop a program with a specified program ID.
      * 
-     * @param channelId
-     *            the ID of the program.
+     * @param programId
+     *            the program id
      * @return the entity action operation
      */
     public static EntityActionOperation stop(String programId) {

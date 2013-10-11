@@ -27,6 +27,11 @@ import java.util.concurrent.Future;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetInfo;
+import com.microsoft.windowsazure.services.media.models.Channel;
+import com.microsoft.windowsazure.services.media.models.ChannelInfo;
+import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.Ipv4;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
@@ -71,11 +76,20 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         // Arrange
         String testName = testProgramPrefix + "createchopt";
         String testDescription = "testDescription";
-
         ProgramState programState = ProgramState.Stopped;
+        AssetInfo assetInfo = service.create(Asset.create());
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(testName));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
+        int estimatedDurationSeconds = 3600;
+        int dvrWindowLengthSeconds = 60;
 
         // Act
-        ProgramInfo actualProgram = service.create(Program.create().setName(testName).setDescription(testDescription));
+        Future<OperationInfo<ProgramInfo>> futureOperationProgram = service.beginCreate(Program.create()
+                .setName(testName).setDescription(testDescription).setAssetId(assetInfo.getId())
+                .setChannelId(channelInfo.getId()).setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
+        ProgramInfo actualProgram = futureOperationProgram.get().getEntity();
 
         // Assert
         verifyProgramProperties("actualProgram", testName, testDescription, programState, actualProgram);
