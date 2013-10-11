@@ -126,14 +126,15 @@ public final class RetryExponentialRetry extends RetryPolicy implements RetryPol
         if (currentRetryCount < this.maximumAttempts) {
             // Calculate backoff Interval between 80% and 120% of the desired
             // backoff, multiply by 2^n -1 for exponential
-            int incrementDelta = (int) (Math.pow(2, currentRetryCount) - 1);
+            double incrementDelta = (Math.pow(2, currentRetryCount) - 1);
             final int boundedRandDelta = (int) (this.deltaBackoffIntervalInMs * 0.8)
                     + this.randRef.nextInt((int) (this.deltaBackoffIntervalInMs * 1.2)
                             - (int) (this.deltaBackoffIntervalInMs * 0.8));
             incrementDelta *= boundedRandDelta;
 
             // Enforce max / min backoffs
-            return new RetryResult(Math.min(this.resolvedMinBackoff + incrementDelta, this.resolvedMaxBackoff), true);
+            return new RetryResult((int) Math.round(Math.min(this.resolvedMinBackoff + incrementDelta,
+                    this.resolvedMaxBackoff)), true);
         }
         else {
             return new RetryResult(-1, false);

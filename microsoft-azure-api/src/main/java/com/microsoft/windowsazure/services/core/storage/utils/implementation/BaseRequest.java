@@ -200,6 +200,8 @@ public final class BaseRequest {
         retConnection.setRequestProperty(Constants.HeaderConstants.STORAGE_VERSION_HEADER,
                 Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         retConnection.setRequestProperty(Constants.HeaderConstants.USER_AGENT, getUserAgent());
+        retConnection.setRequestProperty(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER,
+                opContext.getClientRequestID());
 
         // Java6 TODO remove me, this has to be manually set or it will
         // sometimes default to application/x-www-form-urlencoded without us
