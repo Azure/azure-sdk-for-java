@@ -172,12 +172,19 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     public void listProgramSuccess() throws ServiceException, InterruptedException, ExecutionException {
         // Arrange
         String[] ProgramNames = new String[] { testProgramPrefix + "cha", testProgramPrefix + "chb" };
+
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(testChannelPrefix + "listProgramSuc").setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
         List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
 
-        ProgramState programState = ProgramState.Stopped;
         for (int i = 0; i < ProgramNames.length; i++) {
             String name = ProgramNames[i];
-            expectedPrograms.add(service.create(Program.create().setName(name).setState(programState)));
+            AssetInfo assetInfo = service.create(Asset.create());
+            expectedPrograms.add(service.create(Program.create().setName(name).setAssetId(assetInfo.getId())
+                    .setChannelId(channelInfo.getId()).setEstimatedDurationSeconds(estimatedDurationSeconds)
+                    .setDvrWindowLengthSeconds(dvrWindowLengthSeconds)));
         }
 
         // Act
@@ -198,10 +205,17 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         String[] ProgramNames = new String[] { testProgramPrefix + "Programlista", testProgramPrefix + "Programlistb",
                 testProgramPrefix + "Programlistc", testProgramPrefix + "Programlistad" };
         List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(testChannelPrefix + "CanListProgram").setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
 
         for (int i = 0; i < ProgramNames.length; i++) {
             String name = ProgramNames[i];
-            expectedPrograms.add(service.create(Program.create().setName(name)));
+            AssetInfo assetInfo = service.create(Asset.create());
+            expectedPrograms.add(service.create(Program.create().setName(name).setAssetId(assetInfo.getId())
+                    .setChannelId(channelInfo.getId()).setEstimatedDurationSeconds(estimatedDurationSeconds)
+                    .setDvrWindowLengthSeconds(dvrWindowLengthSeconds)));
         }
 
         Collection<ProgramInfo> listProgramResult = service.list(Program.list().setTop(2));
@@ -217,8 +231,16 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         // Arrange
         String originalTestName = testProgramPrefix + "updatecho";
         ProgramState originalProgramState = ProgramState.Stopped;
+        AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName("testListProgram").setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
 
-        ProgramInfo originalProgram = service.create(Program.create().setName(originalTestName));
+        ProgramInfo originalProgram = service.create(Program.create().setName(originalTestName)
+                .setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
+                .setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
 
         String updatedDescription = "description";
         SecuritySettings securitySettings = new SecuritySettings();
@@ -250,8 +272,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
                 .setSize(ChannelSize.Large).setName(originalTestName).setSettings(settings));
         ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
-        int estimatedDurationSeconds = 3600;
-        int dvrWindowLengthSeconds = 60;
+
         ProgramInfo originalProgram = service.create(Program.create().setName(originalTestName)
                 .setDescription(testDescription).setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
                 .setEstimatedDurationSeconds(estimatedDurationSeconds)
@@ -275,8 +296,18 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     @SuppressWarnings("rawtypes")
     @Test
     public void deleteProgramAsyncSuccess() throws Exception {
-        String ProgramName = testProgramPrefix + "deletecha";
-        ProgramInfo programInfo = service.create(Program.create().setName(ProgramName));
+        String programName = testProgramPrefix + "deletecha";
+        String channelName = testChannelPrefix + "deletecha";
+        AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(channelName).setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
+
+        ProgramInfo programInfo = service.create(Program.create().setName(programName).setAssetId(assetInfo.getId())
+                .setChannelId(channelInfo.getId()).setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
+
         List<ProgramInfo> listProgramsResult = service.list(Program.list());
         int ProgramCountBaseline = listProgramsResult.size();
 

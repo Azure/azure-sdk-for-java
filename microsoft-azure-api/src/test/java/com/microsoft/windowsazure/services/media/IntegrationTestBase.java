@@ -73,6 +73,8 @@ public abstract class IntegrationTestBase {
     protected static final String testContentKeyPrefix = "testContentKey";
     protected static final String testJobPrefix = "testJobPrefix";
     protected static final String testQueuePrefix = "testqueueprefix";
+    protected static final String testChannelPrefix = "testChannel";
+    protected static final String testProgramPrefix = "testProgram";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
