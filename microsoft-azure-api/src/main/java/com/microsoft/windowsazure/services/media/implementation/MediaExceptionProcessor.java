@@ -266,4 +266,18 @@ public class MediaExceptionProcessor implements MediaContract {
         }
     }
 
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException {
+        try {
+            return service.beginAction(action);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
 }

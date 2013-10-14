@@ -26,16 +26,15 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * Generic implementation of Delete operation usable by most entities.
  */
-public class DefaultActionOperation implements EntityActionOperation {
+public class DefaultEntityActionOperation implements EntityActionOperation {
 
     /** The proxy data. */
     private EntityProxyData proxyData;
 
-    /** The name. */
-    protected String name;
+    private final EntityOperationBase.EntityUriBuilder uriBuilder;
 
     /** The content type. */
-    private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
+    private MediaType contentType = MediaType.APPLICATION_JSON_TYPE;
 
     /** The accept type. */
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
@@ -43,22 +42,31 @@ public class DefaultActionOperation implements EntityActionOperation {
     /** The query parameters. */
     protected MultivaluedMap<String, String> queryParameters;
 
+    /** The entity name. */
+    private final String entityName;
+
+    /** The entity id. */
+    private final String entityId;
+
+    /** The action name. */
+    private final String actionName;
+
     /**
      * The default action operation.
      * 
-     * @param name
-     *            the name
+     * @param entityName
+     *            the entity name
+     * @param entityId
+     *            the entity id
+     * @param actionName
+     *            the action name
      */
-    public DefaultActionOperation(String name) {
-        this();
-        this.name = name;
-    }
-
-    /**
-     * Instantiates a new default action operation.
-     */
-    public DefaultActionOperation() {
+    public DefaultEntityActionOperation(String entityName, String entityId, String actionName) {
         this.queryParameters = new MultivaluedMapImpl();
+        this.entityName = entityName;
+        this.entityId = entityId;
+        this.actionName = actionName;
+        this.uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityName, entityId).setActionName(actionName);
     }
 
     /* (non-Javadoc)
@@ -78,12 +86,39 @@ public class DefaultActionOperation implements EntityActionOperation {
         return proxyData;
     }
 
+    /**
+     * Gets the entity name.
+     * 
+     * @return the entity name
+     */
+    public String getEntityName() {
+        return this.entityName;
+    }
+
+    /**
+     * Gets the entity id.
+     * 
+     * @return the entity id
+     */
+    public String getEntityId() {
+        return this.entityId;
+    }
+
+    /**
+     * Gets the action name.
+     * 
+     * @return the action name
+     */
+    public String getActionName() {
+        return this.actionName;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getUri()
      */
     @Override
     public String getUri() {
-        return name;
+        return uriBuilder.getUri();
     }
 
     /* (non-Javadoc)
@@ -98,7 +133,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
      */
     @Override
-    public DefaultActionOperation addQueryParameter(String key, String value) {
+    public DefaultEntityActionOperation addQueryParameter(String key, String value) {
         this.queryParameters.add(key, value);
         return this;
     }
@@ -119,7 +154,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      * @return the default action operation
      */
     @Override
-    public DefaultActionOperation setContentType(MediaType contentType) {
+    public DefaultEntityActionOperation setContentType(MediaType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -139,7 +174,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      *            the accept type
      * @return the default action operation
      */
-    public DefaultActionOperation setAcceptType(MediaType acceptType) {
+    public DefaultEntityActionOperation setAcceptType(MediaType acceptType) {
         this.acceptType = acceptType;
         return this;
     }
@@ -149,7 +184,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     @Override
     public String getVerb() {
-        return "GET";
+        return "POST";
     }
 
     /* (non-Javadoc)
@@ -157,7 +192,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     @Override
     public Object getRequestContents() {
-        return null;
+        return "";
     }
 
     /* (non-Javadoc)

@@ -18,8 +18,10 @@ package com.microsoft.windowsazure.services.media.models;
 import java.net.URI;
 
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
@@ -31,6 +33,7 @@ import com.microsoft.windowsazure.services.media.implementation.ChannelSettingsM
 import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
 import com.sun.jersey.api.client.GenericType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for creating operations to manipulate Channel entities.
  * 
@@ -83,6 +86,7 @@ public class Channel {
         /** The settings. */
         private ChannelSettings settings;
 
+        /** The channel settings mapper. */
         private final ChannelSettingsMapper channelSettingsMapper = new ChannelSettingsMapper();
 
         /**
@@ -282,6 +286,7 @@ public class Channel {
         /** The settings. */
         private ChannelSettings settings;
 
+        /** The channel settings mapper. */
         private final ChannelSettingsMapper channelSettingsMapper = new ChannelSettingsMapper();
 
         /**
@@ -404,12 +409,34 @@ public class Channel {
     /**
      * Create an operation to delete the given Channel.
      * 
-     * @param channelName
+     * @param channelId
      *            id of Channel to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String channelName) {
-        return new DefaultDeleteOperation(ENTITY_SET, channelName);
+    public static EntityDeleteOperation delete(String channelId) {
+        return new DefaultDeleteOperation(ENTITY_SET, channelId);
+    }
+
+    /**
+     * Start a channel with a specified channel ID.
+     * 
+     * @param channelId
+     *            the ID of the channel.
+     * @return the entity action operation
+     */
+    public static EntityActionOperation start(String channelId) {
+        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Start");
+    }
+
+    /**
+     * Stop a channel with a specified channel ID.
+     * 
+     * @param channelId
+     *            the ID of the channel.
+     * @return the entity action operation
+     */
+    public static EntityActionOperation stop(String channelId) {
+        return new DefaultEntityActionOperation(ENTITY_SET, channelId, "Stop");
     }
 
 }

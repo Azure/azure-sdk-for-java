@@ -69,6 +69,21 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    private ChannelSettings createChannelSettings() {
+        ChannelSettings settings = new ChannelSettings();
+        IngestEndpointSettings ingestEndPointSettings = new IngestEndpointSettings();
+        SecuritySettings securitySettings = new SecuritySettings();
+        List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
+        Ipv4 ipv4 = new Ipv4();
+        ipv4.setName("Allow all");
+        ipv4.setIp("0.0.0.0/0");
+        ipV4AllowList.add(ipv4);
+        securitySettings.setIpV4AllowList(ipV4AllowList);
+        ingestEndPointSettings.setSecurity(securitySettings);
+        settings.setIngest(ingestEndPointSettings);
+        return settings;
+    }
+
     @Test
     public void createChannelOptionsSuccess() throws Exception {
         // Arrange
@@ -76,13 +91,37 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
 
         ChannelState channelState = ChannelState.Stopped;
+        ChannelSettings channelSettings = createChannelSettings();
 
         // Act
         ChannelInfo actualChannel = service.create(Channel.create().setName(testName).setDescription(testDescription)
-                .setSize(ChannelSize.Large));
+                .setSize(ChannelSize.Large).setSettings(channelSettings));
 
         // Assert
         verifyChannelProperties("actualChannel", testName, testDescription, channelState, actualChannel);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unused" })
+    @Test
+    public void channelCanBeStartedAndStopped() throws Exception {
+        // Arrange 
+        String testName = testChannelPrefix + "channelsas";
+        String testDescription = "testDescription";
+        ChannelSettings channelSettings = createChannelSettings();
+
+        // Act
+        Future<OperationInfo<ChannelInfo>> actualChannel = service.beginCreate(Channel.create().setName(testName)
+                .setDescription(testDescription).setSize(ChannelSize.Large).setSettings(channelSettings));
+
+        ChannelInfo channelInfo = actualChannel.get().getEntity();
+        Future<OperationInfo> startFuture = service.beginAction(Channel.start(channelInfo.getId()));
+        OperationInfo startOperationInfo = startFuture.get();
+
+        Future<OperationInfo> stopFuture = service.beginAction(Channel.stop(channelInfo.getId()));
+        OperationInfo stopOperationInfo = stopFuture.get();
+
+        // Assert
+
     }
 
     @Test
@@ -92,9 +131,10 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
         ChannelState channelState = ChannelState.Stopped;
         ChannelSize channelSize = ChannelSize.Large;
+        ChannelSettings settings = createChannelSettings();
 
         Future<OperationInfo<ChannelInfo>> futureOperationInfo = service.beginCreate(Channel.create().setName(testName)
-                .setDescription(testDescription).setState(channelState).setSize(channelSize));
+                .setDescription(testDescription).setState(channelState).setSize(channelSize).setSettings(settings));
         ChannelInfo channelInfo = futureOperationInfo.get().getEntity();
         // Act
         ChannelInfo actualChannelInfo = service.get(Channel.get(channelInfo.getId()));
@@ -116,12 +156,13 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         String[] ChannelNames = new String[] { testChannelPrefix + "cha", testChannelPrefix + "chb" };
         List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
+        ChannelSettings settings = createChannelSettings();
 
         ChannelState channelState = ChannelState.Stopped;
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
             expectedFutures.add(service.beginCreate(Channel.create().setName(name).setState(channelState)
-                    .setSize(ChannelSize.Large)));
+                    .setSize(ChannelSize.Large).setSettings(settings)));
         }
 
         // Act
@@ -143,10 +184,12 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
                 testChannelPrefix + "channellistc", testChannelPrefix + "channellistad" };
         List<ChannelInfo> expectedChannels = new ArrayList<ChannelInfo>();
         List<Future<OperationInfo<ChannelInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ChannelInfo>>>();
+        ChannelSettings settings = createChannelSettings();
 
         for (int i = 0; i < ChannelNames.length; i++) {
             String name = ChannelNames[i];
-            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)));
+            expectedFutures.add(service.beginCreate(Channel.create().setName(name).setSize(ChannelSize.Large)
+                    .setSettings(settings)));
         }
 
         for (Future<OperationInfo<ChannelInfo>> futureOperationInfo : expectedFutures) {
@@ -199,8 +242,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     public void updateChannelNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testChannelPrefix + "updatechnoch";
+        ChannelSettings settings = createChannelSettings();
         Future<OperationInfo<ChannelInfo>> futureCreateChannel = service.beginCreate(Channel.create()
-                .setName(originalTestName).setSize(ChannelSize.Large));
+                .setName(originalTestName).setSize(ChannelSize.Large).setSettings(settings));
         ChannelInfo originalChannel = futureCreateChannel.get().getEntity();
 
         // Act
@@ -222,8 +266,9 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteChannelAsyncSuccess() throws Exception {
         String channelName = testChannelPrefix + "deletecha";
+        ChannelSettings settings = createChannelSettings();
         Future<OperationInfo<ChannelInfo>> createChannelFuture = service.beginCreate(Channel.create()
-                .setName(channelName).setSize(ChannelSize.Large));
+                .setName(channelName).setSize(ChannelSize.Large).setSettings(settings));
         OperationInfo<ChannelInfo> operationInfo = createChannelFuture.get();
         ChannelInfo channelInfo = operationInfo.getEntity();
         List<ChannelInfo> listChannelsResult = service.list(Channel.list());
@@ -244,7 +289,7 @@ public class ChannelIntegrationTest extends IntegrationTestBase {
         service.get(Channel.get(channelInfo.getId()));
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void deleteChannelAsyncFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
