@@ -54,6 +54,9 @@ import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
+import com.microsoft.windowsazure.services.media.models.Program;
+import com.microsoft.windowsazure.services.media.models.ProgramInfo;
+import com.microsoft.windowsazure.services.media.models.ProgramState;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -128,7 +131,48 @@ public abstract class IntegrationTestBase {
         removeAllTestAccessPolicies();
         removeAllTestJobs();
         removeAllTestContentKeys();
+        removeAllTestPrograms();
         removeAllTestChannels();
+    }
+
+    @SuppressWarnings({ "rawtypes", "unused" })
+    private static void removeAllTestPrograms() {
+        try {
+            List<ProgramInfo> programInfos = service.list(Program.list());
+
+            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
+            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
+
+            for (ProgramInfo programInfo : programInfos) {
+                if (programInfo.getState() == ProgramState.Running) {
+                    Future<OperationInfo> operationInfoFuture = service.beginAction(Program.stop(programInfo.getId()));
+                    stoppingFutures.add(operationInfoFuture);
+                }
+            }
+
+            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
+                OperationInfo operationInfo = stoppingFuture.get();
+            }
+
+            for (ProgramInfo programInfo : programInfos) {
+                try {
+                    Future<OperationInfo> operationInfoFuture = service
+                            .beginDelete(Program.delete(programInfo.getId()));
+                    deletingFutures.add(operationInfoFuture);
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            for (Future<OperationInfo> deletingFuture : deletingFutures) {
+                OperationInfo operationInfo = deletingFuture.get();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })

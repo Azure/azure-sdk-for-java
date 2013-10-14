@@ -47,6 +47,8 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
 
     protected String testProgramPrefix = "testProgramprefix";
     protected String invalidProgramName = "invalidProgramName";
+    protected int estimatedDurationSeconds = 3600;
+    protected int dvrWindowLengthSeconds = 60;
 
     private void verifyInfosEqual(String message, ProgramInfo expected, ProgramInfo actual) {
         verifyProgramProperties(message, expected.getName(), expected.getDescription(), expected.getState(), actual);
@@ -98,15 +100,12 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
                 .setSize(ChannelSize.Large).setName(testName).setSettings(settings));
         ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
-        int estimatedDurationSeconds = 3600;
-        int dvrWindowLengthSeconds = 60;
 
         // Act
-        Future<OperationInfo<ProgramInfo>> futureOperationProgram = service.beginCreate(Program.create()
-                .setName(testName).setDescription(testDescription).setAssetId(assetInfo.getId())
-                .setChannelId(channelInfo.getId()).setEstimatedDurationSeconds(estimatedDurationSeconds)
+        ProgramInfo actualProgram = service.create(Program.create().setName(testName).setDescription(testDescription)
+                .setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
+                .setEstimatedDurationSeconds(estimatedDurationSeconds)
                 .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
-        ProgramInfo actualProgram = futureOperationProgram.get().getEntity();
 
         // Assert
         verifyProgramProperties("actualProgram", testName, testDescription, programState, actualProgram);
@@ -118,16 +117,22 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         // Arrange 
         String testName = testProgramPrefix + "Programsas";
         String testDescription = "testDescription";
+        AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(testName).setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
 
         // Act
-        Future<OperationInfo<ProgramInfo>> actualProgram = service.beginCreate(Program.create().setName(testName)
-                .setDescription(testDescription));
+        ProgramInfo programInfo = service.create(Program.create().setName(testName).setDescription(testDescription)
+                .setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
+                .setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
 
-        ProgramInfo ProgramInfo = actualProgram.get().getEntity();
-        Future<OperationInfo> startFuture = service.beginAction(Program.start(ProgramInfo.getId()));
+        Future<OperationInfo> startFuture = service.beginAction(Program.start(programInfo.getId()));
         OperationInfo startOperationInfo = startFuture.get();
 
-        Future<OperationInfo> stopFuture = service.beginAction(Program.stop(ProgramInfo.getId()));
+        Future<OperationInfo> stopFuture = service.beginAction(Program.stop(programInfo.getId()));
         OperationInfo stopOperationInfo = stopFuture.get();
 
         // Assert
@@ -139,16 +144,21 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         // Arrange
         String testName = testProgramPrefix + "getProgram";
         String testDescription = "testDescription";
-        ProgramState programState = ProgramState.Stopped;
+        AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(testName).setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
 
-        Future<OperationInfo<ProgramInfo>> futureOperationInfo = service.beginCreate(Program.create().setName(testName)
-                .setDescription(testDescription).setState(programState));
-        ProgramInfo ProgramInfo = futureOperationInfo.get().getEntity();
+        ProgramInfo programInfo = service.create(Program.create().setName(testName).setDescription(testDescription)
+                .setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
+                .setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
         // Act
-        ProgramInfo actualProgramInfo = service.get(Program.get(ProgramInfo.getId()));
+        ProgramInfo actualProgramInfo = service.get(Program.get(programInfo.getId()));
 
         // Assert
-        verifyInfosEqual("actualProgram", ProgramInfo, actualProgramInfo);
+        verifyInfosEqual("actualProgram", programInfo, actualProgramInfo);
     }
 
     @Test
@@ -162,13 +172,12 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     public void listProgramSuccess() throws ServiceException, InterruptedException, ExecutionException {
         // Arrange
         String[] ProgramNames = new String[] { testProgramPrefix + "cha", testProgramPrefix + "chb" };
-        List<Future<OperationInfo<ProgramInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ProgramInfo>>>();
         List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
 
         ProgramState programState = ProgramState.Stopped;
         for (int i = 0; i < ProgramNames.length; i++) {
             String name = ProgramNames[i];
-            expectedFutures.add(service.beginCreate(Program.create().setName(name).setState(programState)));
+            expectedPrograms.add(service.create(Program.create().setName(name).setState(programState)));
         }
 
         // Act
@@ -189,15 +198,10 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         String[] ProgramNames = new String[] { testProgramPrefix + "Programlista", testProgramPrefix + "Programlistb",
                 testProgramPrefix + "Programlistc", testProgramPrefix + "Programlistad" };
         List<ProgramInfo> expectedPrograms = new ArrayList<ProgramInfo>();
-        List<Future<OperationInfo<ProgramInfo>>> expectedFutures = new ArrayList<Future<OperationInfo<ProgramInfo>>>();
 
         for (int i = 0; i < ProgramNames.length; i++) {
             String name = ProgramNames[i];
-            expectedFutures.add(service.beginCreate(Program.create().setName(name)));
-        }
-
-        for (Future<OperationInfo<ProgramInfo>> futureOperationInfo : expectedFutures) {
-            expectedPrograms.add(futureOperationInfo.get().getEntity());
+            expectedPrograms.add(service.create(Program.create().setName(name)));
         }
 
         Collection<ProgramInfo> listProgramResult = service.list(Program.list().setTop(2));
@@ -214,9 +218,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         String originalTestName = testProgramPrefix + "updatecho";
         ProgramState originalProgramState = ProgramState.Stopped;
 
-        Future<OperationInfo<ProgramInfo>> futureCreateProgram = service.beginCreate(Program.create().setName(
-                originalTestName));
-        ProgramInfo originalProgram = futureCreateProgram.get().getEntity();
+        ProgramInfo originalProgram = service.create(Program.create().setName(originalTestName));
 
         String updatedDescription = "description";
         SecuritySettings securitySettings = new SecuritySettings();
@@ -242,9 +244,18 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     public void updateProgramNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testProgramPrefix + "updatechnoch";
-        Future<OperationInfo<ProgramInfo>> futureCreateProgram = service.beginCreate(Program.create().setName(
-                originalTestName));
-        ProgramInfo originalProgram = futureCreateProgram.get().getEntity();
+        String testDescription = "testDescription";
+        AssetInfo assetInfo = service.create(Asset.create());
+        ChannelSettings settings = createChannelSettings();
+        Future<OperationInfo<ChannelInfo>> futureOperationChannelInfo = service.beginCreate(Channel.create()
+                .setSize(ChannelSize.Large).setName(originalTestName).setSettings(settings));
+        ChannelInfo channelInfo = futureOperationChannelInfo.get().getEntity();
+        int estimatedDurationSeconds = 3600;
+        int dvrWindowLengthSeconds = 60;
+        ProgramInfo originalProgram = service.create(Program.create().setName(originalTestName)
+                .setDescription(testDescription).setAssetId(assetInfo.getId()).setChannelId(channelInfo.getId())
+                .setEstimatedDurationSeconds(estimatedDurationSeconds)
+                .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
 
         // Act
         service.update(Program.update(originalProgram.getId()));
@@ -265,15 +276,12 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
     @Test
     public void deleteProgramAsyncSuccess() throws Exception {
         String ProgramName = testProgramPrefix + "deletecha";
-        Future<OperationInfo<ProgramInfo>> createProgramFuture = service.beginCreate(Program.create().setName(
-                ProgramName));
-        OperationInfo<ProgramInfo> operationInfo = createProgramFuture.get();
-        ProgramInfo ProgramInfo = operationInfo.getEntity();
+        ProgramInfo programInfo = service.create(Program.create().setName(ProgramName));
         List<ProgramInfo> listProgramsResult = service.list(Program.list());
         int ProgramCountBaseline = listProgramsResult.size();
 
         // Act
-        Future<OperationInfo> deleteFuture = service.beginDelete(Program.delete(ProgramInfo.getId()));
+        Future<OperationInfo> deleteFuture = service.beginDelete(Program.delete(programInfo.getId()));
         OperationInfo deleteOperationInfo = deleteFuture.get();
 
         // Assert
@@ -284,7 +292,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
-        service.get(Program.get(ProgramInfo.getId()));
+        service.get(Program.get(programInfo.getId()));
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
