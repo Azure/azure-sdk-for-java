@@ -227,7 +227,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         assertEquals(2, listProgramResult.size());
     }
 
-    @SuppressWarnings({ "rawtypes", "unused" })
+    @SuppressWarnings({ "unused" })
     @Test
     public void updateProgramSuccess() throws Exception {
         // Arrange

@@ -74,12 +74,16 @@ public class Program {
         /** The enable archive. */
         private boolean enableArchive;
 
+        /** The asset id. */
         private String assetId;
 
+        /** The channel id. */
         private String channelId;
 
+        /** The estimated duration seconds. */
         private int estimatedDurationSeconds;
 
+        /** The dvr window length seconds. */
         private int dvrWindowLengthSeconds;
 
         /**
@@ -156,21 +160,49 @@ public class Program {
             return this;
         }
 
+        /**
+         * Sets the asset id.
+         * 
+         * @param assetId
+         *            the asset id
+         * @return the creator
+         */
         public Creator setAssetId(String assetId) {
             this.assetId = assetId;
             return this;
         }
 
+        /**
+         * Sets the channel id.
+         * 
+         * @param channelId
+         *            the channel id
+         * @return the creator
+         */
         public Creator setChannelId(String channelId) {
             this.channelId = channelId;
             return this;
         }
 
+        /**
+         * Sets the estimated duration seconds.
+         * 
+         * @param estimatedDurationSeconds
+         *            the estimated duration seconds
+         * @return the creator
+         */
         public Creator setEstimatedDurationSeconds(int estimatedDurationSeconds) {
             this.estimatedDurationSeconds = estimatedDurationSeconds;
             return this;
         }
 
+        /**
+         * Sets the dvr window length seconds.
+         * 
+         * @param dvrWindowLengthSeconds
+         *            the dvr window length seconds
+         * @return the creator
+         */
         public Creator setDvrWindowLengthSeconds(int dvrWindowLengthSeconds) {
             this.dvrWindowLengthSeconds = dvrWindowLengthSeconds;
             return this;

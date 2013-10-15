@@ -31,10 +31,7 @@ public enum ProgramState {
     Running(2),
 
     /** The Stopping. */
-    Stopping(3),
-
-    /** The Deleting. */
-    Deleting(4);
+    Stopping(3);
 
     /** The Channel state code. */
     private int channelStateCode;
@@ -75,8 +72,6 @@ public enum ProgramState {
                 return ProgramState.Running;
             case 3:
                 return ProgramState.Stopping;
-            case 4:
-                return ProgramState.Deleting;
             default:
                 throw new InvalidParameterException("ChannelStateCode");
         }
