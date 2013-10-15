@@ -128,6 +128,9 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
                 .setEstimatedDurationSeconds(estimatedDurationSeconds)
                 .setDvrWindowLengthSeconds(dvrWindowLengthSeconds));
 
+        Future<OperationInfo> channelStartFuture = service.beginAction(Channel.start(channelInfo.getId()));
+        OperationInfo channelStartOperationInfo = channelStartFuture.get();
+
         Future<OperationInfo> startFuture = service.beginAction(Program.start(programInfo.getId()));
         OperationInfo startOperationInfo = startFuture.get();
 
