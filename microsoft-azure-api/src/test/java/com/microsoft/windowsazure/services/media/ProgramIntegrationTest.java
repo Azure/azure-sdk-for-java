@@ -36,7 +36,6 @@ import com.microsoft.windowsazure.services.media.models.ChannelSize;
 import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.Ipv4;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
-import com.microsoft.windowsazure.services.media.models.OperationState;
 import com.microsoft.windowsazure.services.media.models.PreviewEndPointSettings;
 import com.microsoft.windowsazure.services.media.models.Program;
 import com.microsoft.windowsazure.services.media.models.ProgramInfo;
@@ -227,7 +226,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
 
     @SuppressWarnings({ "rawtypes", "unused" })
     @Test
-    public void updateProgramAsyncSuccess() throws Exception {
+    public void updateProgramSuccess() throws Exception {
         // Arrange
         String originalTestName = testProgramPrefix + "updatecho";
         ProgramState originalProgramState = ProgramState.Stopped;
@@ -252,8 +251,7 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         PreviewEndPointSettings preview = null;
 
         // Act
-        Future<OperationInfo> futureUpdate = service.beginUpdate(Program.update(originalProgram.getId()));
-        OperationInfo operationInfo = futureUpdate.get();
+        service.update(Program.update(originalProgram.getId()).setDescription(updatedDescription));
 
         ProgramInfo updatedProgram = service.get(Program.get(originalProgram.getId()));
 
@@ -293,9 +291,8 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         service.beginUpdate(Program.update(invalidProgramName));
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
-    public void deleteProgramAsyncSuccess() throws Exception {
+    public void deleteProgramSuccess() throws Exception {
         String programName = testProgramPrefix + "deletecha";
         String channelName = testChannelPrefix + "deletecha";
         AssetInfo assetInfo = service.create(Asset.create());
@@ -312,14 +309,12 @@ public class ProgramIntegrationTest extends IntegrationTestBase {
         int ProgramCountBaseline = listProgramsResult.size();
 
         // Act
-        Future<OperationInfo> deleteFuture = service.beginDelete(Program.delete(programInfo.getId()));
-        OperationInfo deleteOperationInfo = deleteFuture.get();
+        service.delete(Program.delete(programInfo.getId()));
 
         // Assert
 
         listProgramsResult = service.list(Program.list());
         assertEquals("listProgramsResult.size", ProgramCountBaseline - 1, listProgramsResult.size());
-        assertEquals(OperationState.Succeeded, deleteOperationInfo.getState());
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
