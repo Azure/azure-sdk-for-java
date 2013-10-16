@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.services.media.models;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Date;
 
 import org.codehaus.jackson.JsonParseException;
@@ -26,39 +25,44 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataEntity;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
-import com.microsoft.windowsazure.services.media.implementation.content.ChannelType;
+import com.microsoft.windowsazure.services.media.implementation.content.OriginType;
 
 /**
- * Data about a Media Services Live Streaming Channel entity.
+ * Data about a Media Services Live Streaming Origin entity.
  * 
  */
-public class OriginInfo extends ODataEntity<ChannelType> {
+public class OriginInfo extends ODataEntity<OriginType> {
 
     /** The object mapper. */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /** The type reference. */
-    private final TypeReference<ChannelSettings> typeReference = new TypeReference<ChannelSettings>() {
+    private final TypeReference<OriginSettings> typeReference = new TypeReference<OriginSettings>() {
     };
 
     /**
-     * Instantiates a new channel info instance.
+     * Instantiates a new Origin info instance.
      * 
      * @param entry
      *            the entry
      * @param content
      *            the content
      */
-    public OriginInfo(EntryType entry, ChannelType content) {
+    public OriginInfo(EntryType entry, OriginType content) {
         super(entry, content);
     }
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public String getId() {
         return this.getContent().getId();
     }
 
     /**
-     * Get the channel name.
+     * Get the Origin name.
      * 
      * @return the name
      */
@@ -67,7 +71,7 @@ public class OriginInfo extends ODataEntity<ChannelType> {
     }
 
     /**
-     * Get the channel description.
+     * Get the Origin description.
      * 
      * @return the description
      */
@@ -103,38 +107,11 @@ public class OriginInfo extends ODataEntity<ChannelType> {
     }
 
     /**
-     * Gets the size.
-     * 
-     * @return the size
-     */
-    public ChannelSize getSize() {
-        return ChannelSize.valueOf(getContent().getSize());
-    }
-
-    /**
-     * Gets the preview uri.
-     * 
-     * @return the preview uri
-     */
-    public URI getPreviewUri() {
-        return getContent().getPreviewUri();
-    }
-
-    /**
-     * Gets the ingest uri.
-     * 
-     * @return the ingest uri
-     */
-    public URI getIngestUri() {
-        return getContent().getIngestUri();
-    }
-
-    /**
      * Gets the settings.
      * 
      * @return the settings
      */
-    public ChannelSettings getSettings() {
+    public OriginSettings getSettings() {
 
         try {
             return objectMapper.readValue(getContent().getSettings(), typeReference);
