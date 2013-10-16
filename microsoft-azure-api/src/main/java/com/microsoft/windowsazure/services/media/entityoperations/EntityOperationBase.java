@@ -23,7 +23,6 @@ import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 
-// TODO: Auto-generated Javadoc
 /**
  * Default implementation of EntityOperation<T> to provide
  * default values for common methods.

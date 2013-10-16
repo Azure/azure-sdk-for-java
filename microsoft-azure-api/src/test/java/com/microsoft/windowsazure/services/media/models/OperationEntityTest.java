@@ -33,6 +33,7 @@ public class OperationEntityTest {
     public OperationEntityTest() throws Exception {
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void operationGetReturnsExpectedUri() throws Exception {
         EntityGetOperation<OperationInfo> getter = Operation.get(sampleOperationId);

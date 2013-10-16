@@ -22,6 +22,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.Operatio
 
 public class OperationInfoTest {
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetSetId() {
         // Arrange
@@ -36,6 +37,7 @@ public class OperationInfoTest {
 
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetSetTargetEntityId() {
         // Arrange
@@ -50,6 +52,7 @@ public class OperationInfoTest {
         assertEquals(expectedTargetEntityId, actualTargetEntityId);
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetSetState() throws Exception {
         // Arrange
@@ -65,6 +68,7 @@ public class OperationInfoTest {
 
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetSetErrorCode() throws Exception {
         // Arrange
@@ -78,6 +82,7 @@ public class OperationInfoTest {
         assertEquals(expectedErrorCode, actualErrorCode);
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testGetSetErrorMessage() {
         // Arrange
