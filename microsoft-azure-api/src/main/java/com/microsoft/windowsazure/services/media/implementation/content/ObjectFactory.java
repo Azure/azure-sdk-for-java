@@ -157,4 +157,13 @@ public class ObjectFactory {
     public OperationType createOperationType() {
         return new OperationType();
     }
+
+    /**
+     * Creates an instance of (@link OriginType).
+     * 
+     * @return the origin type
+     */
+    public OriginType createOriginType() {
+        return new OriginType();
+    }
 }

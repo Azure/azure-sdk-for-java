@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
@@ -201,7 +200,6 @@ public class OriginIntegrationTest extends IntegrationTestBase {
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
-    @Ignore("Due to issue 746")
     @Test
     public void updateOriginAsyncSuccess() throws Exception {
         // Arrange
@@ -222,6 +220,8 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         PreviewEndPointSettings preview = null;
 
         OriginSettings updatedSettings = new OriginSettings().setIngest(ingest).setPreview(preview);
+        Future<OperationInfo> startFuture = service.beginAction(Origin.start(originalOrigin.getId()));
+        OperationInfo startOperationInfo = startFuture.get();
 
         // Act
         Future<OperationInfo> futureUpdate = service.beginUpdate(Origin.update(originalOrigin.getId()).setSettings(
@@ -229,6 +229,9 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         OperationInfo operationInfo = futureUpdate.get();
 
         OriginInfo updatedOrigin = service.get(Origin.get(originalOrigin.getId()));
+
+        Future<OperationInfo> stopFuture = service.beginAction(Origin.stop(originalOrigin.getId()));
+        OperationInfo stopOperationInfo = stopFuture.get();
 
         // Assert
         verifyOriginProperties("updatedOrigin", originalTestName, updatedDescription, originalOriginState,
