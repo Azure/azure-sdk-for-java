@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 import com.microsoft.windowsazure.services.media.implementation.content.OperationType;
+import com.microsoft.windowsazure.services.media.implementation.content.ProgramType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
@@ -130,17 +131,18 @@ public class ODataAtomMarshaller {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(AccessPolicyType.class);
         classes.add(AssetType.class);
-        classes.add(EntryType.class);
-        classes.add(FeedType.class);
-        classes.add(JobType.class);
-        classes.add(LocatorRestType.class);
-        classes.add(TaskType.class);
-        classes.add(ContentKeyRestType.class);
         classes.add(AssetFileType.class);
         classes.add(ChannelType.class);
-        classes.add(OperationType.class);
-        classes.add(NotificationEndPointType.class);
+        classes.add(ContentKeyRestType.class);
+        classes.add(EntryType.class);
+        classes.add(FeedType.class);
         classes.add(JobNotificationSubscriptionType.class);
+        classes.add(JobType.class);
+        classes.add(LocatorRestType.class);
+        classes.add(NotificationEndPointType.class);
+        classes.add(OperationType.class);
+        classes.add(ProgramType.class);
+        classes.add(TaskType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }
