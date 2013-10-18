@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityOperatio
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
+import com.microsoft.windowsazure.services.media.implementation.OriginSettingsMapper;
 import com.microsoft.windowsazure.services.media.implementation.content.OriginType;
 import com.sun.jersey.api.client.GenericType;
 
@@ -73,6 +74,12 @@ public class Origin {
         /** The settings. */
         private OriginSettings settings;
 
+        /** The reserved units. */
+        private int reservedUnits;
+
+        /** The origin settings mapper. */
+        private final OriginSettingsMapper originSettingsMapper = new OriginSettingsMapper();
+
         /**
          * Instantiates a new creator.
          */
@@ -85,20 +92,22 @@ public class Origin {
          */
         @Override
         public Object getRequestContents() {
-            OriginType OriginType = new OriginType();
-            OriginType.setName(name);
-            OriginType.setDescription(description);
+            OriginType originType = new OriginType();
+            originType.setName(name);
+            originType.setDescription(description);
 
             if (state != null) {
-                OriginType.setState(state.toString());
+                originType.setState(state.toString());
             }
 
             if (settings != null) {
-                String OriginSettings = null;
-                OriginType.setSettings(OriginSettings);
+                String originSettings = originSettingsMapper.toString(this.settings);
+                originType.setSettings(originSettings);
             }
 
-            return OriginType;
+            originType.setReservedUnits(reservedUnits);
+
+            return originType;
         }
 
         /**
@@ -220,6 +229,9 @@ public class Origin {
         /** The settings. */
         private OriginSettings settings;
 
+        /** The origin settings mapper. */
+        private final OriginSettingsMapper originSettingsMapper = new OriginSettingsMapper();
+
         /**
          * Instantiates a new updater.
          * 
@@ -251,7 +263,7 @@ public class Origin {
             }
 
             if (settings != null) {
-                String OriginSettings = null;
+                String OriginSettings = originSettingsMapper.toString(this.settings);
                 OriginType.setSettings(OriginSettings);
             }
 
@@ -299,8 +311,8 @@ public class Origin {
     /**
      * Create an operation to delete the given Origin.
      * 
-     * @param OriginId
-     *            id of Origin to delete
+     * @param originId
+     *            the origin id
      * @return the delete operation
      */
     public static EntityDeleteOperation delete(String originId) {
@@ -310,8 +322,8 @@ public class Origin {
     /**
      * Start a Origin with a specified Origin ID.
      * 
-     * @param OriginId
-     *            the ID of the Origin.
+     * @param originId
+     *            the origin id
      * @return the entity action operation
      */
     public static EntityActionOperation start(String originId) {
@@ -321,8 +333,8 @@ public class Origin {
     /**
      * Stop a Origin with a specified Origin ID.
      * 
-     * @param OriginId
-     *            the ID of the Origin.
+     * @param originId
+     *            the origin id
      * @return the entity action operation
      */
     public static EntityActionOperation stop(String originId) {

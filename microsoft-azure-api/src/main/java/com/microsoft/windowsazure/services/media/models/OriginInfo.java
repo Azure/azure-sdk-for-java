@@ -107,6 +107,24 @@ public class OriginInfo extends ODataEntity<OriginType> {
     }
 
     /**
+     * Gets the host name.
+     * 
+     * @return the host name
+     */
+    public String getHostName() {
+        return getContent().getHostName();
+    }
+
+    /**
+     * Gets the reserved units.
+     * 
+     * @return the reserved units
+     */
+    public int getReservedUnits() {
+        return getContent().getReservedUnits();
+    }
+
+    /**
      * Gets the settings.
      * 
      * @return the settings
