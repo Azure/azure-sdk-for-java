@@ -341,4 +341,15 @@ public class Origin {
         return new DefaultEntityActionOperation(ENTITY_SET, originId, "Stop");
     }
 
+    /**
+     * Scale.
+     * 
+     * @param originId
+     *            the origin id
+     * @return the entity action operation
+     */
+    public static EntityActionOperation scale(String originId) {
+        return new DefaultEntityActionOperation(ENTITY_SET, originId, "Scale");
+    }
+
 }

@@ -123,6 +123,27 @@ public class OriginIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    public void scaleOriginSuccess() throws Exception {
+        // Arrange
+        String testName = testOriginPrefix + "scaleOrigin";
+        String testDescription = "testDescription";
+        OriginState originState = OriginState.Stopped;
+        OriginSettings settings = createOriginSettings();
+
+        Future<OperationInfo<OriginInfo>> futureOperationInfo = service.beginCreate(Origin.create().setName(testName)
+                .setDescription(testDescription).setState(originState).setSettings(settings));
+        OriginInfo OriginInfo = futureOperationInfo.get().getEntity();
+        // Act
+        OriginInfo actualOriginInfo = service.get(Origin.get(OriginInfo.getId()));
+        Future<OperationInfo> futureScaleOperationInfo = service.beginAction(Origin.scale(actualOriginInfo.getId()));
+        OperationInfo operationInfo = futureScaleOperationInfo.get();
+
+        // Assert
+        verifyInfosEqual("actualOrigin", OriginInfo, actualOriginInfo);
+
+    }
+
+    @Test
     public void getOriginSuccess() throws Exception {
         // Arrange
         String testName = testOriginPrefix + "getOrigin";
