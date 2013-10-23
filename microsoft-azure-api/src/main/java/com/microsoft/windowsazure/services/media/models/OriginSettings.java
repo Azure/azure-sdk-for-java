@@ -19,61 +19,35 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
- * The Class ChannelSettings.
+ * The Class OriginSettings.
  */
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class OriginSettings {
 
-    /** The preview. */
-    private PreviewEndPointSettings preview;
-
-    /** The ingest. */
-    private IngestEndpointSettings ingest;
+    /** The playback. */
+    private PlaybackEndPointSettings playback;
 
     /**
-     * Gets the preview.
+     * Gets the playback.
      * 
-     * @return the preview
+     * @return the playback
      */
-    @JsonProperty("Preview")
-    public PreviewEndPointSettings getPreview() {
-        return this.preview;
+    @JsonProperty("Playback")
+    public PlaybackEndPointSettings getPlayback() {
+        return this.playback;
     }
 
     /**
-     * Sets the preview.
+     * Sets the playback.
      * 
-     * @param preview
-     *            the preview
-     * @return the channel settings
+     * @param playback
+     *            the playback
+     * @return the origin settings
      */
-    @JsonProperty("Preview")
-    public OriginSettings setPreview(PreviewEndPointSettings preview) {
-        this.preview = preview;
-        return this;
-    }
-
-    /**
-     * Gets the ingest.
-     * 
-     * @return the ingest
-     */
-    @JsonProperty("Ingest")
-    public IngestEndpointSettings getIngest() {
-        return this.ingest;
-    }
-
-    /**
-     * Sets the ingest.
-     * 
-     * @param ingest
-     *            the ingest
-     * @return the channel settings
-     */
-    @JsonProperty("Ingest")
-    public OriginSettings setIngest(IngestEndpointSettings ingest) {
-        this.ingest = ingest;
+    @JsonProperty("Playback")
+    public OriginSettings setPlayback(PlaybackEndPointSettings playback) {
+        this.playback = playback;
         return this;
     }
 

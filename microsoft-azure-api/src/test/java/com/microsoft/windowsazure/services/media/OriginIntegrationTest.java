@@ -27,7 +27,6 @@ import java.util.concurrent.Future;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.media.models.IngestEndpointSettings;
 import com.microsoft.windowsazure.services.media.models.Ipv4;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.microsoft.windowsazure.services.media.models.OperationState;
@@ -35,7 +34,7 @@ import com.microsoft.windowsazure.services.media.models.Origin;
 import com.microsoft.windowsazure.services.media.models.OriginInfo;
 import com.microsoft.windowsazure.services.media.models.OriginSettings;
 import com.microsoft.windowsazure.services.media.models.OriginState;
-import com.microsoft.windowsazure.services.media.models.PreviewEndPointSettings;
+import com.microsoft.windowsazure.services.media.models.PlaybackEndPointSettings;
 import com.microsoft.windowsazure.services.media.models.SecuritySettings;
 
 public class OriginIntegrationTest extends IntegrationTestBase {
@@ -69,7 +68,6 @@ public class OriginIntegrationTest extends IntegrationTestBase {
 
     private OriginSettings createOriginSettings() {
         OriginSettings settings = new OriginSettings();
-        IngestEndpointSettings ingestEndPointSettings = new IngestEndpointSettings();
         SecuritySettings securitySettings = new SecuritySettings();
         List<Ipv4> ipV4AllowList = new ArrayList<Ipv4>();
         Ipv4 ipv4 = new Ipv4();
@@ -77,8 +75,8 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         ipv4.setIp("0.0.0.0/0");
         ipV4AllowList.add(ipv4);
         securitySettings.setIpV4AllowList(ipV4AllowList);
-        ingestEndPointSettings.setSecurity(securitySettings);
-        settings.setIngest(ingestEndPointSettings);
+        PlaybackEndPointSettings playback = new PlaybackEndPointSettings();
+        settings.setPlayback(playback);
         return settings;
     }
 
@@ -122,6 +120,7 @@ public class OriginIntegrationTest extends IntegrationTestBase {
 
     }
 
+    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void scaleOriginSuccess() throws Exception {
         // Arrange
@@ -237,10 +236,9 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         List<Ipv4> ipV4List = new ArrayList<Ipv4>();
         ipV4List.add(ipv4);
         securitySettings.setIpV4AllowList(ipV4List);
-        IngestEndpointSettings ingest = new IngestEndpointSettings().setSecurity(securitySettings);
-        PreviewEndPointSettings preview = null;
+        PlaybackEndPointSettings playback = new PlaybackEndPointSettings().setSecurity(securitySettings);
 
-        OriginSettings updatedSettings = new OriginSettings().setIngest(ingest).setPreview(preview);
+        OriginSettings updatedSettings = new OriginSettings().setPlayback(playback);
         Future<OperationInfo> startFuture = service.beginAction(Origin.start(originalOrigin.getId()));
         OperationInfo startOperationInfo = startFuture.get();
 
