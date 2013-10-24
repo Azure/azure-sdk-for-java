@@ -15,8 +15,15 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
@@ -51,6 +58,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     /** The action name. */
     private final String actionName;
 
+    protected Map<String, Object> bodyParameters;
+
     /**
      * The default action operation.
      * 
@@ -63,6 +72,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     public DefaultEntityActionOperation(String entityName, String entityId, String actionName) {
         this.queryParameters = new MultivaluedMapImpl();
+        this.bodyParameters = new HashMap<String, Object>();
         this.entityName = entityName;
         this.entityId = entityId;
         this.actionName = actionName;
@@ -138,6 +148,11 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
         return this;
     }
 
+    @Override
+    public Map<String, Object> getBodyParameters() {
+        return this.bodyParameters;
+    }
+
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getContentType()
      */
@@ -192,7 +207,16 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public Object getRequestContents() {
-        return "";
+        if (this.bodyParameters.size() == 0)
+        {
+            return "";
+        }else{
+            Writer writer = new StringWriter();
+            String jsonString = "";
+            ObjectMapper objectMapper = new ObjectMapper(); 
+            jsonString = objectMapper.writeValueAsString(value)
+            return jsonString;
+        }
     }
 
     /* (non-Javadoc)
@@ -202,6 +226,12 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     public Object processResponse(Object rawResponse) throws ServiceException {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
+    }
+
+    @Override
+    public EntityActionOperation addBodyParameter(String key, Object value) {
+        this.bodyParameters.put(key, value);
+        return this;
     }
 
 }

@@ -128,13 +128,15 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         String testDescription = "testDescription";
         OriginState originState = OriginState.Stopped;
         OriginSettings settings = createOriginSettings();
+        int reservedUnits = 2;
 
         Future<OperationInfo<OriginInfo>> futureOperationInfo = service.beginCreate(Origin.create().setName(testName)
                 .setDescription(testDescription).setState(originState).setSettings(settings));
         OriginInfo OriginInfo = futureOperationInfo.get().getEntity();
         // Act
         OriginInfo actualOriginInfo = service.get(Origin.get(OriginInfo.getId()));
-        Future<OperationInfo> futureScaleOperationInfo = service.beginAction(Origin.scale(actualOriginInfo.getId()));
+        Future<OperationInfo> futureScaleOperationInfo = service.beginAction(Origin.scale(actualOriginInfo.getId(),
+                reservedUnits));
         OperationInfo operationInfo = futureScaleOperationInfo.get();
 
         // Assert

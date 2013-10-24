@@ -346,10 +346,11 @@ public class Origin {
      * 
      * @param originId
      *            the origin id
+     * @param reservedUnits
      * @return the entity action operation
      */
-    public static EntityActionOperation scale(String originId) {
-        return new DefaultEntityActionOperation(ENTITY_SET, originId, "Scale");
+    public static EntityActionOperation scale(String originId, int reservedUnits) {
+        return new DefaultEntityActionOperation(ENTITY_SET, originId, "Scale").addBodyParameter("reservedUnits",
+                reservedUnits);
     }
-
 }

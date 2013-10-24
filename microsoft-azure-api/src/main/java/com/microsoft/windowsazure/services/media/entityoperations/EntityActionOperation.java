@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -64,4 +66,7 @@ public interface EntityActionOperation extends EntityOperation {
      */
     EntityActionOperation setContentType(MediaType contentType);
 
+    Map<String, Object> getBodyParameters();
+
+    EntityActionOperation addBodyParameter(String key, Object value);
 }
