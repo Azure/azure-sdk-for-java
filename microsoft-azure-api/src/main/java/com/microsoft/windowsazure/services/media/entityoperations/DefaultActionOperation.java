@@ -46,6 +46,7 @@ public class DefaultActionOperation implements EntityActionOperation {
     /** The query parameters. */
     protected MultivaluedMap<String, String> queryParameters;
 
+    /** The body parameters. */
     protected Map<String, Object> bodyParameters;
 
     /**
@@ -175,11 +176,17 @@ public class DefaultActionOperation implements EntityActionOperation {
         return rawResponse;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getBodyParameters()
+     */
     @Override
     public Map<String, Object> getBodyParameters() {
         return this.bodyParameters;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addBodyParameter(java.lang.String, java.lang.Object)
+     */
     @Override
     public EntityActionOperation addBodyParameter(String key, Object value) {
         this.bodyParameters.put(key, value);

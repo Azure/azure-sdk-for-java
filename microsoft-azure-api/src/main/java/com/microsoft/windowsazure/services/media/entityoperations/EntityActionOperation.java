@@ -66,7 +66,21 @@ public interface EntityActionOperation extends EntityOperation {
      */
     EntityActionOperation setContentType(MediaType contentType);
 
+    /**
+     * Gets the body parameters.
+     * 
+     * @return the body parameters
+     */
     Map<String, Object> getBodyParameters();
 
+    /**
+     * Adds the body parameter.
+     * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return the entity action operation
+     */
     EntityActionOperation addBodyParameter(String key, Object value);
 }
