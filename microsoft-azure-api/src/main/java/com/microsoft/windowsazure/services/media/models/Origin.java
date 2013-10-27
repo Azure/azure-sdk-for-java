@@ -350,7 +350,7 @@ public class Origin {
      * @return the entity action operation
      */
     public static EntityActionOperation scale(String originId, int reservedUnits) {
-        return new DefaultEntityActionOperation(ENTITY_SET, originId, "Scale").addBodyParameter("reservedUnits",
+        return new DefaultEntityActionOperation(ENTITY_SET, originId, "Scale").addBodyParameter("ReservedUnits",
                 reservedUnits);
     }
 }

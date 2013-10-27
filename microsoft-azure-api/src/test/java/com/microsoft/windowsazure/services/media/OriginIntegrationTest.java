@@ -120,7 +120,6 @@ public class OriginIntegrationTest extends IntegrationTestBase {
 
     }
 
-    @SuppressWarnings({ "rawtypes", "unused" })
     @Test
     public void scaleOriginSuccess() throws Exception {
         // Arrange
@@ -132,15 +131,14 @@ public class OriginIntegrationTest extends IntegrationTestBase {
 
         Future<OperationInfo<OriginInfo>> futureOperationInfo = service.beginCreate(Origin.create().setName(testName)
                 .setDescription(testDescription).setState(originState).setSettings(settings));
-        OriginInfo OriginInfo = futureOperationInfo.get().getEntity();
+        OriginInfo originInfo = futureOperationInfo.get().getEntity();
+
         // Act
-        OriginInfo actualOriginInfo = service.get(Origin.get(OriginInfo.getId()));
-        Future<OperationInfo> futureScaleOperationInfo = service.beginAction(Origin.scale(actualOriginInfo.getId(),
-                reservedUnits));
-        OperationInfo operationInfo = futureScaleOperationInfo.get();
+        service.action(Origin.scale(originInfo.getId(), reservedUnits));
+        OriginInfo actualOriginInfo = service.get(Origin.get(originInfo.getId()));
 
         // Assert
-        verifyInfosEqual("actualOrigin", OriginInfo, actualOriginInfo);
+        assertEquals(2, actualOriginInfo.getReservedUnits());
 
     }
 
