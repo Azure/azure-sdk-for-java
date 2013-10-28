@@ -142,21 +142,9 @@ public class ODataAtomMarshaller {
         classes.add(LocatorRestType.class);
         classes.add(NotificationEndPointType.class);
         classes.add(OperationType.class);
+        classes.add(OriginType.class);
         classes.add(ProgramType.class);
         classes.add(TaskType.class);
-        classes.add(ContentKeyRestType.class);
-        classes.add(AssetFileType.class);
-        classes.add(ChannelType.class);
-        classes.add(OperationType.class);
-        classes.add(NotificationEndPointType.class);
-        classes.add(JobNotificationSubscriptionType.class);
-        classes.add(ContentKeyRestType.class);
-        classes.add(AssetFileType.class);
-        classes.add(ChannelType.class);
-        classes.add(OperationType.class);
-        classes.add(OriginType.class);
-        classes.add(NotificationEndPointType.class);
-        classes.add(JobNotificationSubscriptionType.class);
         return classes.toArray(new Class<?>[0]);
     }
 }
