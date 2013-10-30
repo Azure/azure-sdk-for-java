@@ -159,7 +159,16 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates a new Object object.
+     * Creates an instance of (@link OriginType).
+     * 
+     * @return the origin type
+     */
+    public OriginType createOriginType() {
+        return new OriginType();
+    }
+
+    /**
+     * Creates a instance of (@link @ProgramType).
      * 
      * @return the program type
      */

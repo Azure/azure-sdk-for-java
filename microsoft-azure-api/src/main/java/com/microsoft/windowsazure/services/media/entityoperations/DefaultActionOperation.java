@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -43,6 +46,9 @@ public class DefaultActionOperation implements EntityActionOperation {
     /** The query parameters. */
     protected MultivaluedMap<String, String> queryParameters;
 
+    /** The body parameters. */
+    protected Map<String, Object> bodyParameters;
+
     /**
      * The default action operation.
      * 
@@ -59,6 +65,7 @@ public class DefaultActionOperation implements EntityActionOperation {
      */
     public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
+        this.bodyParameters = new HashMap<String, Object>();
     }
 
     /* (non-Javadoc)
@@ -167,6 +174,23 @@ public class DefaultActionOperation implements EntityActionOperation {
     public Object processResponse(Object rawResponse) throws ServiceException {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getBodyParameters()
+     */
+    @Override
+    public Map<String, Object> getBodyParameters() {
+        return this.bodyParameters;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addBodyParameter(java.lang.String, java.lang.Object)
+     */
+    @Override
+    public EntityActionOperation addBodyParameter(String key, Object value) {
+        this.bodyParameters.put(key, value);
+        return this;
     }
 
 }

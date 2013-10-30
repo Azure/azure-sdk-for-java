@@ -54,6 +54,9 @@ import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
 import com.microsoft.windowsazure.services.media.models.OperationInfo;
+import com.microsoft.windowsazure.services.media.models.Origin;
+import com.microsoft.windowsazure.services.media.models.OriginInfo;
+import com.microsoft.windowsazure.services.media.models.OriginState;
 import com.microsoft.windowsazure.services.media.models.Program;
 import com.microsoft.windowsazure.services.media.models.ProgramInfo;
 import com.microsoft.windowsazure.services.media.models.ProgramState;
@@ -135,6 +138,47 @@ public abstract class IntegrationTestBase {
         removeAllTestContentKeys();
         removeAllTestPrograms();
         removeAllTestChannels();
+        removeAllTestOrigins();
+    }
+
+    @SuppressWarnings({ "rawtypes", "unused" })
+    private static void removeAllTestOrigins() {
+        try {
+            List<OriginInfo> originInfos = service.list(Origin.list());
+
+            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
+            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
+
+            for (OriginInfo originInfo : originInfos) {
+                if ((originInfo.getState() == OriginState.Running) || (originInfo.getState() == OriginState.Starting)
+                        || (originInfo.getState() == OriginState.Scaling)) {
+                    Future<OperationInfo> operationInfoFuture = service.beginAction(Origin.stop(originInfo.getId()));
+                    stoppingFutures.add(operationInfoFuture);
+                }
+            }
+
+            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
+                OperationInfo operationInfo = stoppingFuture.get();
+            }
+
+            for (OriginInfo originInfo : originInfos) {
+                try {
+                    Future<OperationInfo> operationInfoFuture = service.beginDelete(Origin.delete(originInfo.getId()));
+                    deletingFutures.add(operationInfoFuture);
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            for (Future<OperationInfo> deletingFuture : deletingFutures) {
+                OperationInfo operationInfo = deletingFuture.get();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings({ "rawtypes", "unused" })
@@ -186,7 +230,8 @@ public abstract class IntegrationTestBase {
             List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
 
             for (ChannelInfo channelInfo : channelInfos) {
-                if (channelInfo.getState() == ChannelState.Running) {
+                if ((channelInfo.getState() == ChannelState.Running)
+                        || (channelInfo.getState() == ChannelState.Starting)) {
                     Future<OperationInfo> operationInfoFuture = service.beginAction(Channel.stop(channelInfo.getId()));
                     stoppingFutures.add(operationInfoFuture);
                 }

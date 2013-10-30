@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -31,6 +34,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     /** The proxy data. */
     private EntityProxyData proxyData;
 
+    /** The uri builder. */
     private final EntityOperationBase.EntityUriBuilder uriBuilder;
 
     /** The content type. */
@@ -51,6 +55,9 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     /** The action name. */
     private final String actionName;
 
+    /** The body parameters. */
+    protected Map<String, Object> bodyParameters;
+
     /**
      * The default action operation.
      * 
@@ -63,6 +70,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     public DefaultEntityActionOperation(String entityName, String entityId, String actionName) {
         this.queryParameters = new MultivaluedMapImpl();
+        this.bodyParameters = new HashMap<String, Object>();
         this.entityName = entityName;
         this.entityId = entityId;
         this.actionName = actionName;
@@ -139,6 +147,14 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     }
 
     /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getBodyParameters()
+     */
+    @Override
+    public Map<String, Object> getBodyParameters() {
+        return this.bodyParameters;
+    }
+
+    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getContentType()
      */
     @Override
@@ -146,12 +162,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
         return this.contentType;
     }
 
-    /**
-     * Sets the content type.
-     * 
-     * @param contentType
-     *            the content type
-     * @return the default action operation
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#setContentType(javax.ws.rs.core.MediaType)
      */
     @Override
     public DefaultEntityActionOperation setContentType(MediaType contentType) {
@@ -192,7 +204,15 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public Object getRequestContents() {
-        return "";
+        if (this.bodyParameters.size() == 0) {
+            return "";
+        }
+        else {
+            String jsonString = "";
+            EntityActionBodyParameterMapper mapper = new EntityActionBodyParameterMapper();
+            jsonString = mapper.toString(this.bodyParameters);
+            return jsonString;
+        }
     }
 
     /* (non-Javadoc)
@@ -202,6 +222,15 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     public Object processResponse(Object rawResponse) throws ServiceException {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addBodyParameter(java.lang.String, java.lang.Object)
+     */
+    @Override
+    public EntityActionOperation addBodyParameter(String key, Object value) {
+        this.bodyParameters.put(key, value);
+        return this;
     }
 
 }

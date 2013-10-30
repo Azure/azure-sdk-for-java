@@ -58,4 +58,5 @@ public interface EntityOperation {
      *             the service exception
      */
     Object processResponse(Object rawResponse) throws ServiceException;
+
 }
