@@ -221,7 +221,7 @@ public class OriginIntegrationTest extends IntegrationTestBase {
 
     @SuppressWarnings({ "rawtypes", "unused" })
     @Test
-    public void updateOriginAsyncSuccess() throws Exception {
+    public void updateOriginSuccess() throws Exception {
         // Arrange
         String originalTestName = testOriginPrefix + "updatecho";
         OriginState originalOriginState = OriginState.Stopped;
@@ -243,14 +243,12 @@ public class OriginIntegrationTest extends IntegrationTestBase {
         OperationInfo startOperationInfo = startFuture.get();
 
         // Act
-        Future<OperationInfo> futureUpdate = service.beginUpdate(Origin.update(originalOrigin.getId()).setSettings(
-                updatedSettings));
-        OperationInfo operationInfo = futureUpdate.get();
-
-        OriginInfo updatedOrigin = service.get(Origin.get(originalOrigin.getId()));
+        service.update(Origin.update(originalOrigin.getId()).setSettings(updatedSettings)
+                .setDescription(updatedDescription));
 
         Future<OperationInfo> stopFuture = service.beginAction(Origin.stop(originalOrigin.getId()));
         OperationInfo stopOperationInfo = stopFuture.get();
+        OriginInfo updatedOrigin = service.get(Origin.get(originalOrigin.getId()));
 
         // Assert
         verifyOriginProperties("updatedOrigin", originalTestName, updatedDescription, originalOriginState,
