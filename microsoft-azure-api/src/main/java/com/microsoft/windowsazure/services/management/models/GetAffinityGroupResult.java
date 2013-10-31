@@ -15,23 +15,43 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-
 /**
  * The base result class for all the result of service management operation.
  * 
  */
 public class GetAffinityGroupResult extends OperationResult {
 
+    /** The value. */
     private AffinityGroupInfo value;
 
+    /**
+     * Instantiates a new gets the affinity group result.
+     * 
+     * @param statusCode
+     *            the status code
+     * @param requestId
+     *            the request id
+     */
     public GetAffinityGroupResult(int statusCode, String requestId) {
         super(statusCode, requestId);
     }
 
+    /**
+     * Gets the value.
+     * 
+     * @return the value
+     */
     public AffinityGroupInfo getValue() {
         return value;
     }
 
+    /**
+     * Sets the value.
+     * 
+     * @param affinityGroupInfo
+     *            the affinity group info
+     * @return the gets the affinity group result
+     */
     public GetAffinityGroupResult setValue(AffinityGroupInfo affinityGroupInfo) {
         this.value = affinityGroupInfo;
         return this;
