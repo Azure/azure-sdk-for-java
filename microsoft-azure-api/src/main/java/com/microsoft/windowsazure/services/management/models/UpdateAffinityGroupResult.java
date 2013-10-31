@@ -23,27 +23,62 @@ import java.util.Date;
  */
 public class UpdateAffinityGroupResult extends OperationResult {
 
+    /** The region. */
     private String region;
+
+    /** The date. */
     private Date date;
 
+    /**
+     * Instantiates a new update affinity group result.
+     * 
+     * @param statusCode
+     *            the status code
+     * @param requestId
+     *            the request id
+     */
     public UpdateAffinityGroupResult(int statusCode, String requestId) {
         super(statusCode, requestId);
     }
 
+    /**
+     * Sets the region.
+     * 
+     * @param region
+     *            the region
+     * @return the update affinity group result
+     */
     public UpdateAffinityGroupResult setRegion(String region) {
         this.region = region;
         return this;
     }
 
+    /**
+     * Sets the date.
+     * 
+     * @param date
+     *            the date
+     * @return the update affinity group result
+     */
     public UpdateAffinityGroupResult setDate(Date date) {
         this.date = date;
         return this;
     }
 
+    /**
+     * Gets the region.
+     * 
+     * @return the region
+     */
     public String getRegion() {
         return this.region;
     }
 
+    /**
+     * Gets the date.
+     * 
+     * @return the date
+     */
     public Date getDate() {
         return this.date;
     }

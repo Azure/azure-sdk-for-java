@@ -15,25 +15,45 @@
 
 package com.microsoft.windowsazure.services.management.models;
 
-
 /**
  * The base result class for all the result of service management operation.
  * 
  */
 public class OperationResult {
 
+    /** The request id. */
     protected final String requestId;
+
+    /** The status code. */
     protected final int statusCode;
 
+    /**
+     * Instantiates a new operation result.
+     * 
+     * @param statusCode
+     *            the status code
+     * @param requestId
+     *            the request id
+     */
     public OperationResult(int statusCode, String requestId) {
         this.statusCode = statusCode;
         this.requestId = requestId;
     }
 
+    /**
+     * Gets the status code.
+     * 
+     * @return the status code
+     */
     public int getStatusCode() {
         return this.statusCode;
     }
 
+    /**
+     * Gets the request id.
+     * 
+     * @return the request id
+     */
     public String getRequestId() {
         return this.requestId;
     }
