@@ -34,7 +34,12 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.core.storage.AuthenticationScheme;
+import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ResultSegment;
+import com.microsoft.windowsazure.services.core.storage.RetryExponentialRetry;
+import com.microsoft.windowsazure.services.core.storage.RetryLinearRetry;
+import com.microsoft.windowsazure.services.core.storage.RetryPolicy;
+import com.microsoft.windowsazure.services.core.storage.RetryResult;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
@@ -671,5 +676,32 @@ public class TableClientTests extends TableTestBase {
         String sasString = table
                 .generateSharedAccessSignature(policy, accessIdentifier, startPk, startRk, endPk, endRk);
         return new CloudTableClient(tClient.getEndpoint(), new StorageCredentialsSharedAccessSignature(sasString));
+    }
+
+    @Test
+    public void VerifyBackoffTimeOverflow() {
+        RetryExponentialRetry exponentialRetry = new RetryExponentialRetry(4000, 100000);
+        VerifyBackoffTimeOverflow(exponentialRetry, 100000);
+
+        RetryLinearRetry linearRetry = new RetryLinearRetry(4000, 100000);
+        VerifyBackoffTimeOverflow(linearRetry, 100000);
+    }
+
+    private void VerifyBackoffTimeOverflow(RetryPolicy retryPolicy, int maxAttempts) {
+        Exception e = new Exception();
+        OperationContext context = new OperationContext();
+        int previousRetryInterval = 1000; // larger than zero to ensure we never get zero back
+
+        for (int i = 0; i < maxAttempts; i++) {
+            RetryResult result = retryPolicy.shouldRetry(i, HttpURLConnection.HTTP_INTERNAL_ERROR, e, context);
+            int retryInterval = result.getBackOffIntervalInMs();
+            Assert.assertTrue(String.format("Attempt: '%d'", i), result.isShouldRetry());
+            Assert.assertTrue(String.format("Retry Interval: '%d', Previous Retry Interval: '%d', Attempt: '%d'",
+                    retryInterval, previousRetryInterval, i), retryInterval >= previousRetryInterval);
+            previousRetryInterval = retryInterval;
+        }
+
+        Assert.assertFalse(retryPolicy.shouldRetry(maxAttempts, HttpURLConnection.HTTP_INTERNAL_ERROR, e, context)
+                .isShouldRetry());
     }
 }
