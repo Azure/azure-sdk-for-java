@@ -47,13 +47,12 @@ public class ChannelInfoTest {
     public void testGetSetDescription() {
         // Arrange
         String expectedDescription = "expectedDescription";
-        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setName(expectedDescription));
+        ChannelInfo channelInfo = new ChannelInfo(null, new ChannelType().setDescription(expectedDescription));
 
         // Act 
         String actualDescription = channelInfo.getDescription();
 
-        // Assert
-        assertEquals(expectedDescription, actualDescription);
+        // Assert        assertEquals(expectedDescription, actualDescription);
     }
 
     @Test
