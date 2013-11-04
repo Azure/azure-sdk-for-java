@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Future;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -41,9 +40,6 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
-import com.microsoft.windowsazure.services.media.models.Channel;
-import com.microsoft.windowsazure.services.media.models.ChannelInfo;
-import com.microsoft.windowsazure.services.media.models.ChannelState;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.Job;
@@ -53,13 +49,6 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
-import com.microsoft.windowsazure.services.media.models.OperationInfo;
-import com.microsoft.windowsazure.services.media.models.Origin;
-import com.microsoft.windowsazure.services.media.models.OriginInfo;
-import com.microsoft.windowsazure.services.media.models.OriginState;
-import com.microsoft.windowsazure.services.media.models.Program;
-import com.microsoft.windowsazure.services.media.models.ProgramInfo;
-import com.microsoft.windowsazure.services.media.models.ProgramState;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -136,136 +125,6 @@ public abstract class IntegrationTestBase {
         removeAllTestAccessPolicies();
         removeAllTestJobs();
         removeAllTestContentKeys();
-        removeAllTestPrograms();
-        removeAllTestChannels();
-        removeAllTestOrigins();
-    }
-
-    @SuppressWarnings({ "rawtypes", "unused" })
-    private static void removeAllTestOrigins() {
-        try {
-            List<OriginInfo> originInfos = service.list(Origin.list());
-
-            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
-            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
-
-            for (OriginInfo originInfo : originInfos) {
-                if ((originInfo.getState() == OriginState.Running) || (originInfo.getState() == OriginState.Starting)
-                        || (originInfo.getState() == OriginState.Scaling)) {
-                    Future<OperationInfo> operationInfoFuture = service.beginAction(Origin.stop(originInfo.getId()));
-                    stoppingFutures.add(operationInfoFuture);
-                }
-            }
-
-            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
-                OperationInfo operationInfo = stoppingFuture.get();
-            }
-
-            for (OriginInfo originInfo : originInfos) {
-                try {
-                    Future<OperationInfo> operationInfoFuture = service.beginDelete(Origin.delete(originInfo.getId()));
-                    deletingFutures.add(operationInfoFuture);
-
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (Future<OperationInfo> deletingFuture : deletingFutures) {
-                OperationInfo operationInfo = deletingFuture.get();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unused" })
-    private static void removeAllTestPrograms() {
-        try {
-            List<ProgramInfo> programInfos = service.list(Program.list());
-
-            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
-            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
-
-            for (ProgramInfo programInfo : programInfos) {
-                if (programInfo.getState() == ProgramState.Running) {
-                    Future<OperationInfo> operationInfoFuture = service.beginAction(Program.stop(programInfo.getId()));
-                    stoppingFutures.add(operationInfoFuture);
-                }
-            }
-
-            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
-                OperationInfo operationInfo = stoppingFuture.get();
-            }
-
-            for (ProgramInfo programInfo : programInfos) {
-                try {
-                    Future<OperationInfo> operationInfoFuture = service
-                            .beginDelete(Program.delete(programInfo.getId()));
-                    deletingFutures.add(operationInfoFuture);
-
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (Future<OperationInfo> deletingFuture : deletingFutures) {
-                OperationInfo operationInfo = deletingFuture.get();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unused" })
-    private static void removeAllTestChannels() {
-        try {
-            List<ChannelInfo> channelInfos = service.list(Channel.list());
-
-            List<Future<OperationInfo>> stoppingFutures = new ArrayList<Future<OperationInfo>>();
-            List<Future<OperationInfo>> deletingFutures = new ArrayList<Future<OperationInfo>>();
-
-            for (ChannelInfo channelInfo : channelInfos) {
-                if ((channelInfo.getState() == ChannelState.Running)
-                        || (channelInfo.getState() == ChannelState.Starting)) {
-                    Future<OperationInfo> operationInfoFuture = service.beginAction(Channel.stop(channelInfo.getId()));
-                    stoppingFutures.add(operationInfoFuture);
-                }
-            }
-
-            for (Future<OperationInfo> stoppingFuture : stoppingFutures) {
-                OperationInfo operationInfo = stoppingFuture.get();
-            }
-
-            for (ChannelInfo channelInfo : channelInfos) {
-                try {
-                    Future<OperationInfo> operationInfoFuture = service
-                            .beginDelete(Channel.delete(channelInfo.getId()));
-                    deletingFutures.add(operationInfoFuture);
-
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (Future<OperationInfo> deletingFuture : deletingFutures) {
-                OperationInfo operationInfo = deletingFuture.get();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(10000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         removeAllTestQueues();
     }
 

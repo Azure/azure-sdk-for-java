@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.services.media.entityoperations;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import javax.ws.rs.core.MediaType;
 
@@ -25,9 +24,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceFilter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
 import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
-import com.microsoft.windowsazure.services.media.implementation.content.ErrorType;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.OperationInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -44,9 +41,6 @@ public abstract class EntityRestProxy implements EntityContract {
     private final Client channel;
     /** The filters. */
     private final ServiceFilter[] filters;
-
-    /** The operation interval. */
-    private final int operationInterval = 1000;
 
     /**
      * Instantiates a new entity rest proxy.
@@ -137,28 +131,6 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginCreate(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException {
-        creator.setProxyData(createProxyData());
-        ClientResponse clientResponse = getResource(creator).post(ClientResponse.class, creator.getRequestContents());
-        String operationId = clientResponse.getHeaders().getFirst("operation-id");
-        if (operationId == null) {
-            ServiceException serviceException = createServiceException(clientResponse);
-            throw serviceException;
-        }
-        Object rawResponse = clientResponse.getEntity(creator.getResponseClass());
-        T entity = (T) creator.processResponse(rawResponse);
-
-        Future<OperationInfo<T>> result = executorService.submit(new OperationThread<T>(this, operationId,
-                operationInterval, entity));
-
-        return result;
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#get(com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation)
      */
     @SuppressWarnings("unchecked")
@@ -197,67 +169,12 @@ public abstract class EntityRestProxy implements EntityContract {
     }
 
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginUpdate(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    public Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException {
-        updater.setProxyData(createProxyData());
-        ClientResponse clientResponse = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(
-                ClientResponse.class, updater.getRequestContents());
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
-        String operationId = clientResponse.getHeaders().getFirst("operation-id");
-        if (operationId == null) {
-            ServiceException serviceException = createServiceException(clientResponse);
-            throw serviceException;
-        }
-        updater.processResponse(clientResponse);
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
-                null));
-        return result;
-    }
-
-    /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#delete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
      */
     @Override
     public void delete(EntityDeleteOperation deleter) throws ServiceException {
         deleter.setProxyData(createProxyData());
         getResource(deleter.getUri()).delete();
-    }
-
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#beginDelete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    public Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException {
-        deleter.setProxyData(createProxyData());
-        ClientResponse clientResponse = getResource(deleter.getUri()).delete(ClientResponse.class);
-        String operationId = clientResponse.getHeaders().getFirst("operation-id");
-        if (operationId == null) {
-            ServiceException serviceException = createServiceException(clientResponse);
-            throw serviceException;
-        }
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
-                null));
-        return result;
-
-    }
-
-    /**
-     * Creates the service exception.
-     * 
-     * @param clientResponse
-     *            the client response
-     * @return the service exception
-     */
-    private ServiceException createServiceException(ClientResponse clientResponse) {
-        ErrorType errorType = clientResponse.getEntity(ErrorType.class);
-        ServiceException serviceException = new ServiceException(errorType.getMessage());
-        serviceException.setErrorCode(errorType.getCode());
-        serviceException.setHttpStatusCode(clientResponse.getStatus());
-        return serviceException;
     }
 
     /* (non-Javadoc)
@@ -281,20 +198,6 @@ public abstract class EntityRestProxy implements EntityContract {
     @Override
     public void action(EntityActionOperation entityActionOperation) throws ServiceException {
         entityActionOperation.processResponse(getActionClientResponse(entityActionOperation));
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    public Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException {
-        ClientResponse clientResponse = getActionClientResponse(action);
-        String operationId = clientResponse.getHeaders().getFirst("operation-id");
-        if (operationId == null) {
-            ServiceException serviceException = createServiceException(clientResponse);
-            throw serviceException;
-        }
-        Future<OperationInfo> result = executorService.submit(new OperationThread(this, operationId, operationInterval,
-                null));
-        return result;
     }
 
     /**
