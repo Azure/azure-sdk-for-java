@@ -15,11 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
-import java.util.concurrent.Future;
-
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
-import com.microsoft.windowsazure.services.media.models.OperationInfo;
 
 /**
  * Contract for interacting with the back end service
@@ -42,19 +39,6 @@ public interface EntityContract {
      *             The created entity
      */
     <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
-
-    /**
-     * Create a new instance of an entity async.
-     * 
-     * @param <T>
-     *            the generic type
-     * @param creator
-     *            the creator
-     * @return the future
-     * @throws ServiceException
-     *             the service exception
-     */
-    <T> Future<OperationInfo<T>> beginCreate(EntityCreateOperation<T> creator) throws ServiceException;
 
     /**
      * Retrieve an existing entity by id.
@@ -93,18 +77,6 @@ public interface EntityContract {
     void update(EntityUpdateOperation updater) throws ServiceException;
 
     /**
-     * Updates an existing entity asyncronously.
-     * 
-     * @param updater
-     *            the updater
-     * @return the future
-     * @throws ServiceException
-     *             the service exception
-     */
-    @SuppressWarnings("rawtypes")
-    Future<OperationInfo> beginUpdate(EntityUpdateOperation updater) throws ServiceException;
-
-    /**
      * Delete an entity.
      * 
      * @param deleter
@@ -115,18 +87,6 @@ public interface EntityContract {
     void delete(EntityDeleteOperation deleter) throws ServiceException;
 
     /**
-     * Delete an entity asycronously.
-     * 
-     * @param deleter
-     *            the deleter
-     * @return the future
-     * @throws ServiceException
-     *             the service exception
-     */
-    @SuppressWarnings("rawtypes")
-    Future<OperationInfo> beginDelete(EntityDeleteOperation deleter) throws ServiceException;
-
-    /**
      * Perform an action on an entity.
      * 
      * @param action
@@ -135,18 +95,6 @@ public interface EntityContract {
      *             the service exception
      */
     void action(EntityActionOperation action) throws ServiceException;
-
-    /**
-     * Begin action.
-     * 
-     * @param action
-     *            the action
-     * @return the future
-     * @throws ServiceException
-     *             the service exception
-     */
-    @SuppressWarnings("rawtypes")
-    Future<OperationInfo> beginAction(EntityActionOperation action) throws ServiceException;
 
     /**
      * Action.
