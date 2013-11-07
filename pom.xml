@@ -78,6 +78,6 @@
     </dependencies>
   </dependencyManagement>
   <modules>
-    <module>parent</module>
+    <module>microsoft-azure-api-parent</module>
   </modules>
 </project>
