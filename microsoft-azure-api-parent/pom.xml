@@ -22,11 +22,11 @@
   </parent>
 
   <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-windowsazure-api-parent</artifactId>
+  <artifactId>microsoft-azure-api-parent</artifactId>
   <version>0.4.6</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
-  <name>Microsoft Windows Azure Client API</name>
+  <name>Microsoft Windows Azure Client API Parent</name>
   <description>API for Microsoft Windows Azure Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
@@ -316,4 +316,7 @@
       </plugin>
     </plugins>
   </reporting>
+  <modules>
+    <module>../microsoft-azure-api-core</module>
+  </modules>
 </project>

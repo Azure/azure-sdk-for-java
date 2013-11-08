@@ -17,15 +17,15 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.windowsazure</groupId>
-    <artifactId>microsoft-windowsazure-api-parent</artifactId>
+    <artifactId>microsoft-azure-api-parent</artifactId>
     <version>0.4.6</version>
-    <relativePath>../microsoft-windowsazure-api-parent/pom.xml</relativePath>
+    <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>microsoft-windowsazure-api-core</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Client API</name>
+  <name>Microsoft Windows Azure Client API Core</name>
   <description>API for Microsoft Windows Azure Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
