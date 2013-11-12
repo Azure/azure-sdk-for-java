@@ -318,5 +318,6 @@
   </reporting>
   <modules>
     <module>../microsoft-azure-api-core</module>
+    <module>../microsoft-azure-api-serviceBus</module>
   </modules>
 </project>

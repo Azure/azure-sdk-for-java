@@ -22,7 +22,7 @@
     <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-windowsazure-api-core</artifactId>
+  <artifactId>microsoft-azure-api-core</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Client API Core</name>

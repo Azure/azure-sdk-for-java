@@ -22,7 +22,7 @@
     <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-windowsazure-api-serviceBus</artifactId>
+  <artifactId>microsoft-azure-api-serviceBus</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Service Bus Client API</name>
@@ -55,9 +55,10 @@
   </developers>
 
   <dependencies>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-core</artifactId>
+      <version>0.4.6</version>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
