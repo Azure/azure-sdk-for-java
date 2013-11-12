@@ -130,7 +130,11 @@ public final class LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
      */
     @Override
     public ENTITY_TYPE next() {
-        return this.currentSegmentIterator.next();
+        if(hasNext()) {
+          return this.currentSegmentIterator.next();
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     /**
