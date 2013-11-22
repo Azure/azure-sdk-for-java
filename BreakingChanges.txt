@@ -1,0 +1,28 @@
+ * Removed setCopyState property from CloudBlob - it was marked reserved for internal use but nonetheless was public
+ * Modified the CloudBlobContainer exists, delete, uploadMetadata, downloadAttributes APIs to take AccessCondition in order to specify LeaseIDs for these operations
+ * Added throws StorageException to listBlobs and listContainers
+ * Added throws StorageException to executeQuery methods for tables
+ * Added throws XMLStreamException to commitBlockList
+ * Container and Blob ChangeLease now returns the new lease ID
+ * Blob downloadRange now takes a Long for length instead of int
+ * Blob downloadRange now downloads to a Stream(newly added). The previous downloadRange has been renamed to downloadRangeToByteArray. Added downloadToByteArray.
+ * getAttributes in ContainerResponse was made protected (the class was marked RESERVED FOR INTERNAL USE, but this was still accessible)
+ * StorageErrorConstants: INVALID_XML_NODE_VALUE, UNSUPPORTED_XML_NODE has been removed
+ * In tables, StorageErrorConstants: INVALID_DOCUMENT calls have been replaced with StorageErrorConstants: INVALID_DOCUMENT
+ * Removed id field (along with getId, setId) from TableResult
+ * Removed sparse page blob feature
+ * The packaging structure has changed to
+	1. com.microsoft.windowsazure.storage – RetryPolicies, LocationMode, StorageException, Storage Credentials etc. Basically all public classes that are common across services.
+	2. com.microsoft.windowsazure.storage.core – These classes are reserved for internal use and users never have to include this namespace in their projects. 
+	3. com.microsoft.windowsazure.storage.blob
+	4. com.microsoft.windowsazure.storage.queue
+	5. com.microsoft.windowsazure.storage.table
+ * RetryResult class has been replaced by the RetryInfo class. Custom retry policies should implement RetryPolicyFactory and extend RetryPolicy.
+ * Moved LeaseAction enum from core package to blob package (internal use only)
+ * CloudBlobContainer.createIfNotExist was renamed to CloudBlobContainer.createIfNotExists
+ * CloudQueue.createIfNotExist was renamed to CloudQueue.createIfNotExists
+ * CloudTable.createIfNotExist was renamed to CloudTable.createIfNotExists
+ * CloudBlobClient.streamMinimumReadSizeInBytes has been removed.  This functionality is now CloudBlob.streamMinimumReadSizeInBytes (settable per-blob, not per-client.)
+ * CloudBlobClient.pageBlobStreamWriteSizeInBytes and CloudBlobClient.writeBlockSizeInBytes have been removed.  This functionality is now CloudBlob.streamWriteSizeInBytes, settable per-blob, and now using only one variable.
+ * copyFromBlob has been renamed to startCopyFromBlob. This API requests the service to start copying a blob's contents, properties, and metadata to a new blob and returns the copy ID associated with the copy operation.
+ * CloudBlob.tryBreakLease() was removed, as this method didn't do anything useful.  (BreakLease is already idempotent.)
