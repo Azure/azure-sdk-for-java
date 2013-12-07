@@ -556,7 +556,7 @@ public final class CloudBlockBlob extends CloudBlob {
             // If the stream is of unknown length or we need to calculate
             // the MD5, then we we need to read the stream contents first
 
-            descriptor = Utility.analyzeStream(sourceStream, length, options.getSingleBlobPutThresholdInBytes(),
+            descriptor = Utility.analyzeStream(sourceStream, length, options.getSingleBlobPutThresholdInBytes() + 1,
                     true /* rewindSourceStream */, options.getStoreBlobContentMD5());
 
             if (descriptor.getMd5() != null && options.getStoreBlobContentMD5()) {
@@ -567,7 +567,7 @@ public final class CloudBlockBlob extends CloudBlob {
         // If the stream is rewindable, and the length is known and less than
         // threshold the upload in a single put, otherwise use a stream.
         if (sourceStream.markSupported() && descriptor.getLength() != -1
-                && descriptor.getLength() < options.getSingleBlobPutThresholdInBytes()) {
+                && descriptor.getLength() < options.getSingleBlobPutThresholdInBytes() + 1) {
             this.uploadFullBlob(sourceStream, descriptor.getLength(), accessCondition, options, opContext);
         }
         else {

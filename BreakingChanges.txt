@@ -26,3 +26,5 @@
  * CloudBlobClient.pageBlobStreamWriteSizeInBytes and CloudBlobClient.writeBlockSizeInBytes have been removed.  This functionality is now CloudBlob.streamWriteSizeInBytes, settable per-blob, and now using only one variable.
  * copyFromBlob has been renamed to startCopyFromBlob. This API requests the service to start copying a blob's contents, properties, and metadata to a new blob and returns the copy ID associated with the copy operation.
  * CloudBlob.tryBreakLease() was removed, as this method didn't do anything useful.  (BreakLease is already idempotent.)
+ * Removed all getDirectoryReference, getPageBlobReference, getBlockBlobReference methods from CloudBlobClient
+ * CloudTable, CloudQueue, and CloudContainer constructors which take (String name, *Client client) assert that client is not null

@@ -827,6 +827,139 @@ public class CloudBlockBlobTests extends BlobTestBase {
         blockBlobRef.upload(srcStream, -1, condition, null, context);
     }
 
+    @Test
+    public void testBlobConditionalAccess() throws StorageException, IOException, URISyntaxException {
+        CloudBlockBlob blob = (CloudBlockBlob) BlobTestBase.uploadNewBlob(container, BlobType.BLOCK_BLOB, "test", 128,
+                null);
+        blob.downloadAttributes();
+
+        String currentETag = blob.getProperties().getEtag();
+        Date currentModifiedTime = blob.getProperties().getLastModified();
+
+        // ETag conditional tests
+        blob.getMetadata().put("ETagConditionalName", "ETagConditionalValue");
+        blob.uploadMetadata(AccessCondition.generateIfMatchCondition(currentETag), null, null);
+
+        blob.downloadAttributes();
+        String newETag = blob.getProperties().getEtag();
+        assertFalse(newETag.equals(currentETag));
+
+        blob.getMetadata().put("ETagConditionalName", "ETagConditionalValue2");
+
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfNoneMatchCondition(newETag), null, null);
+            fail("If none match on conditional test should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        String invalidETag = "\"0x10101010\"";
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfMatchCondition(invalidETag), null, null);
+            fail("Invalid ETag on conditional test should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        currentETag = blob.getProperties().getEtag();
+        blob.uploadMetadata(AccessCondition.generateIfNoneMatchCondition(invalidETag), null, null);
+
+        blob.downloadAttributes();
+        newETag = blob.getProperties().getEtag();
+
+        // LastModifiedTime tests
+        currentModifiedTime = blob.getProperties().getLastModified();
+
+        blob.getMetadata().put("DateConditionalName", "DateConditionalValue");
+
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfModifiedSinceCondition(currentModifiedTime), null, null);
+            fail("IfModifiedSince conditional on current modified time should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - 5);
+        Date pastTime = cal.getTime();
+        blob.uploadMetadata(AccessCondition.generateIfModifiedSinceCondition(pastTime), null, null);
+
+        cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 5);
+        pastTime = cal.getTime();
+        blob.uploadMetadata(AccessCondition.generateIfModifiedSinceCondition(pastTime), null, null);
+
+        cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 5);
+        pastTime = cal.getTime();
+        blob.uploadMetadata(AccessCondition.generateIfModifiedSinceCondition(pastTime), null, null);
+
+        currentModifiedTime = blob.getProperties().getLastModified();
+
+        cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - 5);
+        pastTime = cal.getTime();
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfNotModifiedSinceCondition(pastTime), null, null);
+            fail("IfNotModifiedSince conditional on past time should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.HOUR, cal.get(Calendar.HOUR) - 5);
+        pastTime = cal.getTime();
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfNotModifiedSinceCondition(pastTime), null, null);
+            fail("IfNotModifiedSince conditional on past time should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        cal = Calendar.getInstance();
+        cal.setTime(currentModifiedTime);
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 5);
+        pastTime = cal.getTime();
+        try {
+            blob.uploadMetadata(AccessCondition.generateIfNotModifiedSinceCondition(pastTime), null, null);
+            fail("IfNotModifiedSince conditional on past time should throw");
+        }
+        catch (StorageException e) {
+            assertEquals("ConditionNotMet", e.getErrorCode());
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, e.getHttpStatusCode());
+            assertEquals("The condition specified using HTTP conditional header(s) is not met.", e.getMessage());
+        }
+
+        blob.getMetadata().put("DateConditionalName", "DateConditionalValue2");
+
+        currentETag = blob.getProperties().getEtag();
+        blob.uploadMetadata(AccessCondition.generateIfNotModifiedSinceCondition(currentModifiedTime), null, null);
+
+        blob.downloadAttributes();
+        newETag = blob.getProperties().getEtag();
+        assertFalse("ETage should be modified on write metadata", newETag.equals(currentETag));
+    }
+
     private void doUploadDownloadStringTest(CloudBlockBlob blob, int length) throws StorageException, IOException {
         String stringToUse = this.getRandomUNCString(length);
         blob.uploadText(stringToUse, Constants.UTF8_CHARSET, null, null, null);

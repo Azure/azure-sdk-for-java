@@ -419,6 +419,8 @@ public class TableQueryTests extends TableTestBase {
         TableBatchOperation batch = new TableBatchOperation();
         String pk = UUID.randomUUID().toString();
 
+        long maxInt = Integer.MAX_VALUE; // used to ensure the test sends longs that cannot be interpreted as ints
+
         ComplexEntity middleRef = null;
 
         for (int j = 0; j < 100; j++) {
@@ -433,9 +435,9 @@ public class TableQueryTests extends TableTestBase {
             ent.setDouble(j + ((double) j) / 100);
             ent.setDoublePrimitive(j + ((double) j) / 100);
             ent.setInt32(j);
-            ent.setInt64((long) j);
+            ent.setInt64(j + maxInt);
             ent.setIntegerPrimitive(j);
-            ent.setLongPrimitive(j);
+            ent.setLongPrimitive(j + maxInt);
             ent.setGuid(UUID.randomUUID());
             ent.setString(String.format("%04d", j));
 

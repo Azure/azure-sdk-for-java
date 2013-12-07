@@ -106,19 +106,29 @@ public final class CloudQueue {
     /**
      * Creates an instance of the <code>CloudQueue</code> class using the specified address and client.
      * 
-     * @param queueAddress
-     *            A <code>String</code> that represents either the absolute URI to the queue, or the queue name.
+     * @param queueName
+     *            A <code>String</code> that represents the queue name.
      * @param client
      *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Queue service.
      * 
+     * @throws StorageException
+     *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI is invalid.
-     * @throws StorageException
      */
-    public CloudQueue(final String queueAddress, final CloudQueueClient client) throws URISyntaxException,
+    public CloudQueue(final String queueName, final CloudQueueClient client) throws URISyntaxException,
             StorageException {
-        this(PathUtility.appendPathToUri(client.getStorageUri(), queueAddress), client);
+        Utility.assertNotNull("client", client);
+        Utility.assertNotNull("queueName", queueName);
+
+        this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), queueName);
+
+        this.name = PathUtility.getQueueNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
+        this.queueServiceClient = client;
+        this.shouldEncodeMessage = true;
+
+        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
     }
 
     /**
@@ -129,8 +139,11 @@ public final class CloudQueue {
      * @param client
      *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Queue service.
+     * 
      * @throws StorageException
+     *             If a storage service error occurred.
      * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
     public CloudQueue(final URI uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
         this(new StorageUri(uri, null), client);
@@ -144,15 +157,25 @@ public final class CloudQueue {
      * @param client
      *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Queue service.
+     * 
      * @throws StorageException
+     *             If a storage service error occurred.
      * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
     public CloudQueue(final StorageUri uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("storageUri", uri);
+
         this.storageUri = uri;
-        this.name = PathUtility.getQueueNameFromUri(uri.getPrimaryUri(), client.isUsePathStyleUris());
+
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri(),
+                null) : client.isUsePathStyleUris();
+
+        this.name = PathUtility.getQueueNameFromUri(uri.getPrimaryUri(), usePathStyleUris);
         this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
-        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
+
+        this.parseQueryAndVerify(this.storageUri, client, usePathStyleUris);
     }
 
     /**
@@ -1811,6 +1834,7 @@ public final class CloudQueue {
         if (existingClient != null && !sameCredentials) {
             this.queueServiceClient.setRetryPolicyFactory(existingClient.getRetryPolicyFactory());
             this.queueServiceClient.setTimeoutInMs(existingClient.getTimeoutInMs());
+            this.queueServiceClient.setLocationMode(existingClient.getLocationMode());
         }
     }
 }

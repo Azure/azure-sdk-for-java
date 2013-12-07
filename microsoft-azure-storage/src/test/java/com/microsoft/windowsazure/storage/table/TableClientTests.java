@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -47,7 +46,6 @@ import com.microsoft.windowsazure.storage.RetryExponentialRetry;
 import com.microsoft.windowsazure.storage.RetryInfo;
 import com.microsoft.windowsazure.storage.RetryLinearRetry;
 import com.microsoft.windowsazure.storage.RetryPolicy;
-import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageLocation;
 import com.microsoft.windowsazure.storage.TestBase;
@@ -246,176 +244,6 @@ public class TableClientTests extends TableTestBase {
     }
 
     @Test
-    public void tableCreateAndAttemptCreateOnceExists() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-        try {
-            table.create();
-            assertTrue(table.exists());
-
-            // Should fail as it already exists
-            try {
-                table.create();
-                fail();
-            }
-            catch (StorageException ex) {
-                assertEquals(ex.getErrorCode(), "TableAlreadyExists");
-            }
-        }
-        finally {
-            // cleanup
-            table.deleteIfExists();
-        }
-    }
-
-    @Test
-    public void tableCreateExistsAndDelete() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-        try {
-            assertTrue(table.createIfNotExists());
-            assertTrue(table.exists());
-            assertTrue(table.deleteIfExists());
-        }
-        finally {
-            // cleanup
-            table.deleteIfExists();
-        }
-    }
-
-    @Test
-    public void tableCreateIfNotExists() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-        try {
-            assertTrue(table.createIfNotExists());
-            assertTrue(table.exists());
-            assertFalse(table.createIfNotExists());
-        }
-        finally {
-            // cleanup
-            table.deleteIfExists();
-        }
-    }
-
-    @Test
-    public void tableDeleteIfExists() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-        assertFalse(table.deleteIfExists());
-
-        table.create();
-        assertTrue(table.exists());
-        assertTrue(table.deleteIfExists());
-
-        assertFalse(table.deleteIfExists());
-    }
-
-    @Test
-    public void tableDeleteWhenExistAndNotExists() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-
-        try {
-            // Should fail as it doesnt already exists
-            try {
-                table.delete();
-                fail();
-            }
-            catch (StorageException ex) {
-                assertEquals(ex.getMessage(), "Not Found");
-            }
-
-            table.create();
-            assertTrue(table.exists());
-            table.delete();
-            assertFalse(table.exists());
-        }
-        finally {
-            table.deleteIfExists();
-        }
-    }
-
-    @Test
-    public void tableDoesTableExist() throws StorageException, URISyntaxException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-
-        try {
-            assertFalse(table.exists());
-            assertTrue(table.createIfNotExists());
-            assertTrue(table.exists());
-        }
-        finally {
-            // cleanup
-            table.deleteIfExists();
-        }
-    }
-
-    @Test
-    public void tableGetSetPermissionTest() throws StorageException, URISyntaxException, InterruptedException {
-        String tableName = generateRandomTableName();
-        CloudTable table = tClient.getTableReference(tableName);
-        table.create();
-
-        TablePermissions expectedPermissions;
-        TablePermissions testPermissions;
-
-        try {
-            // Test new permissions.
-            expectedPermissions = new TablePermissions();
-            testPermissions = table.downloadPermissions();
-            assertTablePermissionsEqual(expectedPermissions, testPermissions);
-
-            // Test setting empty permissions.
-            table.uploadPermissions(expectedPermissions);
-            Thread.sleep(30000);
-
-            testPermissions = table.downloadPermissions();
-            assertTablePermissionsEqual(expectedPermissions, testPermissions);
-
-            // Add a policy, check setting and getting.
-            SharedAccessTablePolicy policy1 = new SharedAccessTablePolicy();
-            Calendar now = GregorianCalendar.getInstance();
-            policy1.setSharedAccessStartTime(now.getTime());
-            now.add(Calendar.MINUTE, 10);
-            policy1.setSharedAccessExpiryTime(now.getTime());
-
-            policy1.setPermissions(EnumSet.of(SharedAccessTablePermissions.ADD, SharedAccessTablePermissions.QUERY,
-                    SharedAccessTablePermissions.UPDATE, SharedAccessTablePermissions.DELETE));
-            expectedPermissions.getSharedAccessPolicies().put(UUID.randomUUID().toString(), policy1);
-
-            table.uploadPermissions(expectedPermissions);
-            Thread.sleep(30000);
-            testPermissions = table.downloadPermissions();
-            assertTablePermissionsEqual(expectedPermissions, testPermissions);
-        }
-        finally {
-            // cleanup
-            table.deleteIfExists();
-        }
-    }
-
-    static void assertTablePermissionsEqual(TablePermissions expected, TablePermissions actual) {
-        HashMap<String, SharedAccessTablePolicy> expectedPolicies = expected.getSharedAccessPolicies();
-        HashMap<String, SharedAccessTablePolicy> actualPolicies = actual.getSharedAccessPolicies();
-        assertEquals("SharedAccessPolicies.Count", expectedPolicies.size(), actualPolicies.size());
-        for (String name : expectedPolicies.keySet()) {
-            assertTrue("Key" + name + " doesn't exist", actualPolicies.containsKey(name));
-            SharedAccessTablePolicy expectedPolicy = expectedPolicies.get(name);
-            SharedAccessTablePolicy actualPolicy = actualPolicies.get(name);
-            assertEquals("Policy: " + name + "\tPermissions\n", expectedPolicy.getPermissions().toString(),
-                    actualPolicy.getPermissions().toString());
-            assertEquals("Policy: " + name + "\tStartDate\n", expectedPolicy.getSharedAccessStartTime().toString(),
-                    actualPolicy.getSharedAccessStartTime().toString());
-            assertEquals("Policy: " + name + "\tExpireDate\n", expectedPolicy.getSharedAccessExpiryTime().toString(),
-                    actualPolicy.getSharedAccessExpiryTime().toString());
-
-        }
-
-    }
-
-    @Test
     public void testTableSASFromIdentifier() throws StorageException, URISyntaxException, InvalidKeyException,
             InterruptedException {
         String name = generateRandomTableName();
@@ -452,8 +280,8 @@ public class TableClientTests extends TableTestBase {
                 tClient.execute(name, batch);
             }
 
-            CloudTableClient tableClientFromIdentifierSAS = getTableForSas(table, null, identifier, null, null, null,
-                    null);
+            CloudTableClient tableClientFromIdentifierSAS = TableTestBase.getTableForSas(table, null, identifier, null,
+                    null, null, null);
 
             {
                 Class1 randEnt = TableTestBase.generateRandomEntity(null);
@@ -578,9 +406,9 @@ public class TableClientTests extends TableTestBase {
                 tClient.execute(name, batch);
             }
 
-            CloudTableClient tableClientFromPermission = getTableForSas(table, policy1, null, "javatables_batch_0",
-                    "0", "javatables_batch_9", "9");
-            CloudTableClient tableClientFromPermissionJustPks = getTableForSas(table, policy1, null,
+            CloudTableClient tableClientFromPermission = TableTestBase.getTableForSas(table, policy1, null,
+                    "javatables_batch_0", "0", "javatables_batch_9", "9");
+            CloudTableClient tableClientFromPermissionJustPks = TableTestBase.getTableForSas(table, policy1, null,
                     "javatables_batch_0", null, "javatables_batch_9", null);
 
             {
@@ -714,16 +542,6 @@ public class TableClientTests extends TableTestBase {
             // cleanup
             table.deleteIfExists();
         }
-    }
-
-    private CloudTableClient getTableForSas(CloudTable table, SharedAccessTablePolicy policy, String accessIdentifier,
-            String startPk, String startRk, String endPk, String endRk) throws InvalidKeyException, StorageException {
-        String sasString = table
-                .generateSharedAccessSignature(policy, accessIdentifier, startPk, startRk, endPk, endRk);
-        CloudTableClient client = new CloudTableClient(tClient.getEndpoint(),
-                new StorageCredentialsSharedAccessSignature(sasString));
-        client.setTablePayloadFormat(tClient.getTablePayloadFormat());
-        return client;
     }
 
     @Test

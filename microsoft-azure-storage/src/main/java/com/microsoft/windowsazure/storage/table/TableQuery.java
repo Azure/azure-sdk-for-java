@@ -381,9 +381,11 @@ public class TableQuery<T extends TableEntity> {
     public static String generateFilterCondition(String propertyName, String operation, String value, EdmType edmType) {
         String valueOperand = null;
 
-        if (edmType == EdmType.BOOLEAN || edmType == EdmType.DOUBLE || edmType == EdmType.INT32
-                || edmType == EdmType.INT64) {
+        if (edmType == EdmType.BOOLEAN || edmType == EdmType.DOUBLE || edmType == EdmType.INT32) {
             valueOperand = value;
+        }
+        else if (edmType == EdmType.INT64) {
+            valueOperand = String.format("%sL", value);
         }
         else if (edmType == EdmType.DATE_TIME) {
             valueOperand = String.format("datetime'%s'", value);

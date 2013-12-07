@@ -244,16 +244,13 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    protected String getPrefix() throws StorageException {
+    protected String getPrefix() throws StorageException, URISyntaxException {
         if (this.prefix == null) {
-            try {
-                final String containerUri = this.getContainer().getUri().toString().concat("/");
-                this.prefix = Utility.safeRelativize(new URI(containerUri), this.getUri());
-            }
-            catch (final URISyntaxException e) {
-                throw Utility.generateNewUnexpectedStorageException(e);
-            }
+            final String containerUri = this.getContainer().getUri().toString().concat("/");
+            this.prefix = Utility.safeRelativize(new URI(containerUri), this.getUri());
         }
 
         return this.prefix;
@@ -271,7 +268,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
     /**
      * Returns a reference to a virtual blob directory beneath this directory.
      * 
-     * @param itemName
+     * @param directoryName
      *            A <code>String</code> that represents the name of the virtual subdirectory.
      * 
      * @return A <code>CloudBlobDirectory</code> object that represents a virtual blob directory beneath this directory.
@@ -281,15 +278,15 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getSubDirectoryReference(String itemName) throws StorageException, URISyntaxException {
-        Utility.assertNotNullOrEmpty("itemName", itemName);
+    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws StorageException, URISyntaxException {
+        Utility.assertNotNullOrEmpty("itemName", directoryName);
 
         if (this.blobServiceClient.getDirectoryDelimiter() != null
-                && !itemName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
-            itemName = itemName.concat(this.blobServiceClient.getDirectoryDelimiter());
+                && !directoryName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
+            directoryName = directoryName.concat(this.blobServiceClient.getDirectoryDelimiter());
         }
 
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, itemName,
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, directoryName,
                 this.blobServiceClient.getDirectoryDelimiter());
 
         return new CloudBlobDirectory(address, this, this.blobServiceClient);

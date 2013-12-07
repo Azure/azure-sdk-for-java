@@ -93,7 +93,7 @@ public class SR {
     public static final String PARTITIONKEY_MISSING_FOR_DELETE = "Delete requires a partition key.";
     public static final String PARTITIONKEY_MISSING_FOR_MERGE = "Merge requires a partition key.";
     public static final String PARTITIONKEY_MISSING_FOR_UPDATE = "Replace requires a partition key.";
-    public static final String PARTITIONKEY_MISSING_FOR_UPSERT = "Upsert requires a partition key.";
+    public static final String PARTITIONKEY_MISSING_FOR_INSERT = "Insert requires a partition key.";
     public static final String PATH_STYLE_URI_MISSING_ACCOUNT_INFORMATION = "Missing account name information inside path style URI. Path style URIs should be of the form http://<IPAddress:Port>/<accountName>";
     public static final String PERMISSIONS_COULD_NOT_BE_PARSED = "Permissions could not be parsed from '%s'.";
     public static final String PRIMARY_ONLY_COMMAND = "This operation can only be executed against the primary storage location.";
@@ -107,7 +107,7 @@ public class SR {
     public static final String ROWKEY_MISSING_FOR_DELETE = "Delete requires a row key.";
     public static final String ROWKEY_MISSING_FOR_MERGE = "Merge requires a row key.";
     public static final String ROWKEY_MISSING_FOR_UPDATE = "Replace requires a row key.";
-    public static final String ROWKEY_MISSING_FOR_UPSERT = "Upsert requires a row key.";
+    public static final String ROWKEY_MISSING_FOR_INSERT = "Insert requires a row key.";
     public static final String SCHEME_NULL_OR_EMPTY = "The protocol to use is null. Please specify whether to use http or https.";
     public static final String SECONDARY_ONLY_COMMAND = "This operation can only be executed against the secondary storage location.";
     public static final String SNAPSHOT_LISTING_ERROR = "Listing snapshots is only supported in flat mode (no delimiter). Consider setting useFlatBlobListing to true.";

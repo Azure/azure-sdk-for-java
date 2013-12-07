@@ -25,6 +25,7 @@ import java.util.UUID;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.TestBase;
 import com.microsoft.windowsazure.storage.table.TableRequestOptions.PropertyResolver;
@@ -67,6 +68,17 @@ public class TableTestBase extends TestBase {
         ref.setPartitionKey(pk);
         ref.setRowKey(UUID.randomUUID().toString());
         return ref;
+    }
+
+    public static CloudTableClient getTableForSas(CloudTable table, SharedAccessTablePolicy policy,
+            String accessIdentifier, String startPk, String startRk, String endPk, String endRk)
+            throws InvalidKeyException, StorageException {
+        String sasString = table
+                .generateSharedAccessSignature(policy, accessIdentifier, startPk, startRk, endPk, endRk);
+        CloudTableClient client = new CloudTableClient(tClient.getEndpoint(),
+                new StorageCredentialsSharedAccessSignature(sasString));
+        client.setTablePayloadFormat(tClient.getTablePayloadFormat());
+        return client;
     }
 
     public static class Class1 extends TableServiceEntity implements PropertyResolver {

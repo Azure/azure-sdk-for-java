@@ -106,7 +106,7 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
         assertEquals("Dir1" + delimiter, blockParent.getPrefix());
 
         CloudBlobDirectory subDirectory = dir1.getSubDirectoryReference("SubDirectory");
-        assertEquals(dir1.getContainer().getName(), pageBlob.getContainer().getName());
+        assertEquals(dir1.getContainer().getName(), subDirectory.getContainer().getName());
         assertEquals(dir1.getServiceClient().getEndpoint().toString(), subDirectory.getServiceClient().getEndpoint()
                 .toString());
         assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
@@ -469,7 +469,7 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
 
     @Test
     public void testHierarchicalTraversal() throws StorageException, URISyntaxException {
-        ////Traverse hierarchically starting with length 1
+        // Traverse hierarchically starting with length 1
         CloudBlobDirectory directory1 = container.getDirectoryReference("Dir1" + delimiter);
 
         CloudBlobDirectory subdir1 = directory1.getSubDirectoryReference("Dir2");
@@ -507,7 +507,7 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
         CloudBlobContainer container = client.getContainerReference("$root");
 
         CloudPageBlob pageBlob = container.getPageBlobReference("Dir1" + delimiter + "Blob1");
-        if (delimiter == "/") {
+        if (delimiter.equals("/")) {
             try {
                 pageBlob.create(0);
                 fail("Try to create a CloudBlobDirectory/blob which has a slash in its name in the root container");
