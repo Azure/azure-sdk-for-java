@@ -260,7 +260,7 @@ public class CloudBlobContainerTests extends BlobTestBase {
     }
 
     @Test
-    public void CloudBlobContainerUploadMetadata() throws StorageException, URISyntaxException {
+    public void testCloudBlobContainerUploadMetadata() throws StorageException, URISyntaxException {
         container.create();
 
         CloudBlobContainer container2 = container.getServiceClient().getContainerReference(container.getName());

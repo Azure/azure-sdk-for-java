@@ -23,11 +23,14 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.LocationMode;
+import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.ResultSegment;
+import com.microsoft.windowsazure.storage.SendingRequestEvent;
+import com.microsoft.windowsazure.storage.StorageEvent;
 import com.microsoft.windowsazure.storage.StorageException;
-import com.microsoft.windowsazure.storage.StorageLocation;
 import com.microsoft.windowsazure.storage.TestHelper;
 
 /**
@@ -84,37 +87,68 @@ public class CloudBlobClientTests extends BlobTestBase {
     }
 
     @Test
-    public void testCloudBlobClientListContainersInMultiLocations() throws StorageException, URISyntaxException {
-        String name = generateRandomContainerName();
-        ArrayList<String> containerNames = new ArrayList<String>();
-        CloudBlobClient blobClient = createCloudBlobClient();
+    public void testSingleBlobPutThresholdInBytes() throws URISyntaxException, StorageException, IOException {
+        CloudBlobClient bClient = createCloudBlobClient();
 
         try {
-            for (Integer i = 0; i < 2; i++) {
-                String containerName = name + i.toString();
-                containerNames.add(containerName);
-                blobClient.getContainerReference(containerName).create();
-            }
+            bClient.setSingleBlobPutThresholdInBytes(BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES + 1);
+            fail("Cannot set upload blob threshold above 64 MB");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("SingleBlobUploadThresholdInBytes", e.getMessage());
+        }
 
-            ResultSegment<CloudBlobContainer> resultSegment = blobClient.listContainersSegmented(name,
-                    ContainerListingDetails.NONE, 1, null, null, null);
-            assertEquals(StorageLocation.PRIMARY, resultSegment.getContinuationToken().getTargetLocation());
+        try {
+            bClient.setSingleBlobPutThresholdInBytes(Constants.MB - 1);
+            fail("Cannot set upload blob threshold below 1 MB");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("SingleBlobUploadThresholdInBytes", e.getMessage());
+        }
 
-            BlobRequestOptions options = new BlobRequestOptions();
-            options.setLocationMode(LocationMode.SECONDARY_ONLY);
+        int maxSize = 2 * Constants.MB;
 
-            try {
-                blobClient.listContainersSegmented(name, ContainerListingDetails.NONE, 1,
-                        resultSegment.getContinuationToken(), options, null);
+        bClient.setSingleBlobPutThresholdInBytes(maxSize);
+
+        final ArrayList<Boolean> callList = new ArrayList<Boolean>();
+        OperationContext sendingRequestEventContext = new OperationContext();
+        sendingRequestEventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
+                callList.add(true);
             }
-            catch (StorageException ex) {
-                assertEquals(IllegalArgumentException.class, ex.getCause().getClass());
-            }
+        });
+
+        assertEquals(0, callList.size());
+
+        CloudBlobContainer container = null;
+        try {
+            container = bClient.getContainerReference(BlobTestBase.generateRandomContainerName());
+            container.createIfNotExists();
+            CloudBlockBlob blob = container.getBlockBlobReference(BlobTestBase
+                    .generateRandomBlobNameWithPrefix("uploadThreshold"));
+
+            // this should make a single call as it is less than the max
+            blob.upload(BlobTestBase.getRandomDataStream(maxSize - 1), maxSize - 1, null, null,
+                    sendingRequestEventContext);
+
+            assertEquals(1, callList.size());
+
+            // this should make one call as it is equal to the max
+            blob.upload(BlobTestBase.getRandomDataStream(maxSize), maxSize, null, null, sendingRequestEventContext);
+
+            assertEquals(2, callList.size());
+
+            // this should make two calls as it is greater than the max
+            blob.upload(BlobTestBase.getRandomDataStream(maxSize + 1), maxSize + 1, null, null,
+                    sendingRequestEventContext);
+
+            assertEquals(4, callList.size());
         }
         finally {
-            for (String containerName : containerNames) {
-                blobClient.getContainerReference(containerName).delete();
-            }
+            container.deleteIfExists();
         }
     }
 }

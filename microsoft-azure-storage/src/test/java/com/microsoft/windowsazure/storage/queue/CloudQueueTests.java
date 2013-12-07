@@ -35,10 +35,13 @@ import javax.xml.stream.XMLStreamException;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.storage.AuthenticationScheme;
+import com.microsoft.windowsazure.storage.LocationMode;
 import com.microsoft.windowsazure.storage.OperationContext;
+import com.microsoft.windowsazure.storage.RetryNoRetry;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.core.PathUtility;
 
 /**
  * Queue Tests
@@ -135,6 +138,31 @@ public class CloudQueueTests extends QueueTestBase {
             policySasQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
             CloudQueueMessage message2 = policySasQueue.retrieveMessage();
             policySasQueue.deleteMessage(message2);
+
+            // do not give the client and check that the new queue's client has the correct perms
+            CloudQueue queueFromUri = new CloudQueue(PathUtility.addToQuery(newQueue.getStorageUri(),
+                    newQueue.generateSharedAccessSignature(null, "readperm")), null);
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), queueFromUri.getServiceClient()
+                    .getCredentials().getClass().toString());
+
+            // pass in a client which will have different permissions and check the sas permissions are used
+            // and that the properties set in the old service client are passed to the new client
+            CloudQueueClient queueClient = policySasQueue.getServiceClient();
+
+            // set some arbitrary settings to make sure they are passed on
+            queueClient.setLocationMode(LocationMode.PRIMARY_THEN_SECONDARY);
+            queueClient.setTimeoutInMs(1000);
+            queueClient.setRetryPolicyFactory(new RetryNoRetry());
+
+            queueFromUri = new CloudQueue(PathUtility.addToQuery(newQueue.getStorageUri(),
+                    newQueue.generateSharedAccessSignature(null, "readperm")), queueClient);
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(), queueFromUri.getServiceClient()
+                    .getCredentials().getClass().toString());
+
+            assertEquals(queueClient.getLocationMode(), queueFromUri.getServiceClient().getLocationMode());
+            assertEquals(queueClient.getTimeoutInMs(), queueFromUri.getServiceClient().getTimeoutInMs());
+            assertEquals(queueClient.getRetryPolicyFactory().getClass(), queueFromUri.getServiceClient()
+                    .getRetryPolicyFactory().getClass());
         }
         finally {
             // cleanup

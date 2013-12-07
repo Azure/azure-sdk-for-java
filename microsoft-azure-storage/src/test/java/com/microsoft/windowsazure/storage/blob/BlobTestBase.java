@@ -48,6 +48,9 @@ public class BlobTestBase extends TestBase {
     }
 
     protected static String generateRandomBlobNameWithPrefix(String prefix) {
+        if (prefix == null) {
+            prefix = "";
+        }
         String blobName = prefix + UUID.randomUUID().toString();
         return blobName.replace("-", "");
     }

@@ -144,7 +144,11 @@ public abstract class CloudBlob implements ListBlobItem {
         this.blobServiceClient = client;
         this.storageUri = uri;
 
-        this.parseURIQueryStringAndVerify(uri, client, client.isUsePathStyleUris());
+        this.parseURIQueryStringAndVerify(
+                this.storageUri,
+                client,
+                client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri(), null) : client
+                        .isUsePathStyleUris());
     }
 
     /**
@@ -2392,6 +2396,7 @@ public abstract class CloudBlob implements ListBlobItem {
             this.blobServiceClient.setDirectoryDelimiter(existingClient.getDirectoryDelimiter());
             this.blobServiceClient.setRetryPolicyFactory(existingClient.getRetryPolicyFactory());
             this.blobServiceClient.setTimeoutInMs(existingClient.getTimeoutInMs());
+            this.blobServiceClient.setLocationMode(existingClient.getLocationMode());
         }
     }
 

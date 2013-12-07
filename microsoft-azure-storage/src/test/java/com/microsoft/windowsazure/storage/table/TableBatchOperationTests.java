@@ -108,6 +108,46 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
+    public void testBatchAddAllIndex() throws StorageException {
+        ArrayList<TableOperation> ops = allOpsList();
+
+        TableBatchOperation batch = new TableBatchOperation();
+        boolean added = batch.addAll(0, ops);
+        assertTrue(added);
+
+        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        assertEquals(8, results.size());
+
+        Iterator<TableResult> iter = results.iterator();
+
+        for (int i = 0; i < 7; i++) {
+            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, iter.next().getHttpStatusCode());
+        }
+
+        // test to make sure we can't now add a query with addAll()
+        ops.clear();
+        Class1 ref = generateRandomEntity("jxscl_odata");
+        ops.add(TableOperation.retrieve(ref.partitionKey, ref.rowKey, ref.getClass()));
+        try {
+            batch.addAll(0, ops);
+        }
+        catch (Exception e) {
+            assertEquals(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH, e.getMessage());
+        }
+
+        // test to make sure we can't now add an operation with a different partition key with addAll()
+        ops.clear();
+        ref.partitionKey = "jxscl_odata_different";
+        ops.add(TableOperation.insert(ref));
+        try {
+            batch.addAll(0, ops);
+        }
+        catch (Exception e) {
+            assertEquals(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY, e.getMessage());
+        }
+    }
+
+    @Test
     public void testBatchAddAllWithRetrieveShouldThrow() throws StorageException {
         ArrayList<TableOperation> ops = allOpsList();
 

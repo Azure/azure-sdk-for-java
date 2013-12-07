@@ -1,43 +1,19 @@
-#Windows Azure SDK for Java
+#Windows Azure Storage SDK for Java
 
-This project provides a client library in Java that makes it easy to consume Windows Azure services. For documentation please see the [Windows Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/).
+This project provides a client library in Java that makes it easy to consume Windows Azure Storage services. For documentation please see the [Windows Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/) and the [JavaDocs](http://dl.windowsazure.com/storage/javadoc).
 
 #Features
-
-* Storage
-    * Blob
-        * Create/Read/Update/Delete containers
-        * Create/Read/Update/Delete blobs
-    * Queue
-        * Create/Delete Queues
-        * Insert/Peek Queue Messages
-        * Advanced Queue Operations
-    * Table
-        * Create/Read/Update/Delete tables
-        * Create/Read/Update/Delete entities
-        * Batch operation
-* Service Bus
-    * Queues
-        * Create/Read/Update/Delete queues
-        * Send/Receive/Unlock/Delete messages
-        * Renew message lock
-        * Message forwarding
-    * Topics
-        * Create/Read/Update/Delete topics
-        * Create/Read/Update/Delete subscriptions
-        * Create/Read/Update/Delete rules
-        * Send/Receive/Unlock/Delete messages
-        * Renew message lock
-        * Message forwarding
-* Media Services
-    * Create/Read/Update/Delete access policies
-    * Create/Read/Update/Delete asset files
-    * Create/Read/Update/Delete assets
-    * Create/Read/Update/Delete/Rebind content keys
-    * Create/Read/Update/Cancel/Delete jobs
-* Service Runtime
-    * Retrieve information about the state of your Azure Compute instances
-  
+  * Blob
+      * Create/Read/Update/Delete containers
+      * Create/Read/Update/Delete blobs
+  * Queue
+      * Create/Delete Queues
+      * Insert/Peek Queue Messages
+      * Advanced Queue Operations
+  * Table
+      * Create/Read/Update/Delete tables
+      * Create/Read/Update/Delete entities
+      * Batch operation 
 
 #Getting Started
 
@@ -46,8 +22,8 @@ This project provides a client library in Java that makes it easy to consume Win
 
 To get the source code of the SDK via git just type:
 
-    git clone git://github.com/WindowsAzure/azure-sdk-for-java.git
-    cd ./azure-sdk-for-java/microsoft-azure-api/
+    git clone git://github.com/WindowsAzure/azure-storage-java.git
+    cd ./azure-storage-java/microsoft-azure-storage
     mvn compile
 
 ###Option 2: Via Maven
@@ -57,9 +33,9 @@ within your project you can also have them installed by the Java package manager
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-windowsazure-api</artifactId>
-  <version>0.4.4</version>
+	<groupId>com.microsoft.windowsazure.storage</groupId>
+	<artifactId>microsoft-windowsazure-storage-sdk</artifactId>
+	<version>0.5.0</version>
 </dependency>
 ```
 
@@ -78,14 +54,13 @@ deployment tools.
 
 ##Code Sample
 
-The following is a quick example on how to set up a Azure blob using the API
-and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides listed [here](http://www.windowsazure.com/en-us/develop/java/).
+The following is a quick example on how to set up a Azure blob using the API and uploading a file to it.  For additional information on using the client libraries to access Azure services see the How To guides for [blobs](http://www.windowsazure.com/en-us/develop/java/how-to-guides/blob-storage/), [queues](http://www.windowsazure.com/en-us/develop/java/how-to-guides/queue-service/) and [tables](http://www.windowsazure.com/en-us/develop/java/how-to-guides/table-service/) and the [general documentation](http://www.windowsazure.com/en-us/develop/java/).
 
 ```java
 import java.io.*;
 
-import com.microsoft.windowsazure.services.core.storage.*;
-import com.microsoft.windowsazure.services.blob.client.*;
+import com.microsoft.windowsazure.storage.*;
+import com.microsoft.windowsazure.storage.blob.*;
 
 public class BlobSample {
 	public static final String storageConnectionString =
@@ -104,7 +79,7 @@ public class BlobSample {
 			serviceClient = account.createCloudBlobClient();
 			// Container name must be lower case.
 			container = serviceClient.getContainerReference("blobsample");
-			container.createIfNotExist();
+			container.createIfNotExists();
 
 			// Set anonymous access on the container.
 			BlobContainerPermissions containerPermissions;
@@ -135,16 +110,16 @@ public class BlobSample {
 
 #Need Help?
 
-Be sure to check out the Windows Azure [Developer Forums on Stack Overflow](http://go.microsoft.com/fwlink/?LinkId=234489) if you have trouble with the provided code.
+Be sure to check out the Windows Azure [Developer Forums on MSDN](http://social.msdn.microsoft.com/Forums/windowsazure/en-US/home?forum=windowsazuredata) or the [Developer Forums on Stack Overflow](http://stackoverflow.com/questions/tagged/azure+windows-azure-storage) if you have trouble with the provided code.
 
 #Contribute Code or Provide Feedback
 
 If you would like to become an active contributor to this project please follow the instructions provided in [Windows Azure Projects Contribution Guidelines](http://windowsazure.github.com/guidelines.html).
 
-If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/WindowsAzure/azure-sdk-for-java/issues) section of the project.
+If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/WindowsAzure/azure-storage-java/issues) section of the project.
 
 #Learn More
 
 * [Windows Azure Java Developer Center](http://www.windowsazure.com/en-us/develop/java/)
-* [JavaDocs](http://dl.windowsazure.com/javadoc/)
-
+* [Windows Azure Storage Service](http://www.windowsazure.com/en-us/documentation/services/storage/)
+* [JavaDocs](http://dl.windowsazure.com/storage/javadoc)

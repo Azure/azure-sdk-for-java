@@ -377,7 +377,7 @@ public final class Utility {
         String path = baseURI.getPath();
 
         if (knownAccountName == null) {
-            if (Utility.isNullOrEmpty(path) || path.equals("/")) {
+            if (Utility.isNullOrEmpty(path) || path.equals("/") || baseURI.getPort() == -1) {
                 return false;
             }
 

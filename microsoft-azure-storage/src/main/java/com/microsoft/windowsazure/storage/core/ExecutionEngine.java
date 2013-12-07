@@ -110,8 +110,7 @@ public final class ExecutionEngine {
                 // that location no matter what the retry policy says.
                 task.validateLocation();
 
-                Logger.info(opContext, LogConstants.INIT_LOCATION, task.getCurrentLocation(),
-                        task.getRequestLocationMode());
+                Logger.info(opContext, LogConstants.INIT_LOCATION, task.getCurrentLocation(), task.getLocationMode());
 
                 // 1. Build the request
                 HttpURLConnection request = task.buildRequest(client, parentObject, opContext);

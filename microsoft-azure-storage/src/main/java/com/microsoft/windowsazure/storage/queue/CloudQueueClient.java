@@ -78,9 +78,8 @@ public final class CloudQueueClient extends ServiceClient {
      * Gets a {@link CloudQueue} object that represents the storage service
      * queue for the specified address.
      * 
-     * @param queueAddress
-     *            A <code>String</code> that represents the name of the queue,
-     *            or the absolute URI to the queue.
+     * @param queueName
+     *            A <code>String</code> that represents the name of the queue.
      * 
      * @return A {@link CloudQueue} object that represents a reference to the
      *         queue.
@@ -90,9 +89,8 @@ public final class CloudQueueClient extends ServiceClient {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public CloudQueue getQueueReference(final String queueAddress) throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("queueAddress", queueAddress);
-        return new CloudQueue(queueAddress, this);
+    public CloudQueue getQueueReference(final String queueName) throws URISyntaxException, StorageException {
+        return new CloudQueue(queueName, this);
     }
 
     /**

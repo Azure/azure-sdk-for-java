@@ -34,7 +34,6 @@ import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.core.ExecutionEngine;
 import com.microsoft.windowsazure.storage.core.LazySegmentedIterable;
 import com.microsoft.windowsazure.storage.core.ListingContext;
-import com.microsoft.windowsazure.storage.core.PathUtility;
 import com.microsoft.windowsazure.storage.core.SegmentedStorageRequest;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
 import com.microsoft.windowsazure.storage.core.Utility;
@@ -103,49 +102,6 @@ public final class CloudBlobClient extends ServiceClient {
     }
 
     /**
-     * Returns a reference to a {@link CloudBlockBlob} object that represents a block blob.
-     * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
-     * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified block blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri) throws URISyntaxException,
-            StorageException {
-        return this.getBlockBlobReference(blobAddressUri, null);
-    }
-
-    /**
-     * Returns a reference to a {@link CloudBlockBlob} object that represents a block blob in this container, using the
-     * specified snapshot ID.
-     * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot ID of the blob.
-     * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified block blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri, final String snapshotID)
-            throws StorageException, URISyntaxException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
-
-        final StorageUri completeUri = PathUtility.appendPathToUri(this.getStorageUri(), blobAddressUri);
-
-        return new CloudBlockBlob(completeUri, snapshotID, this);
-    }
-
-    /**
      * Returns the number of maximum concurrent requests allowed.
      * 
      * @return The number of maximum concurrent requests allowed.
@@ -158,8 +114,9 @@ public final class CloudBlobClient extends ServiceClient {
      * Returns a reference to a {@link CloudBlobContainer} object that represents the cloud blob container for the
      * specified address.
      * 
-     * @param containerAddress
-     *            A <code>String</code> that represents the name of the container, or the absolute URI to the container.
+     * @param containerName
+     *            A <code>String</code> that represents the name of the container.
+     * 
      * @return A {@link CloudBlobContainer} object that represents a reference to the cloud blob container.
      * 
      * @throws URISyntaxException
@@ -167,10 +124,9 @@ public final class CloudBlobClient extends ServiceClient {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public CloudBlobContainer getContainerReference(final String containerAddress) throws URISyntaxException,
+    public CloudBlobContainer getContainerReference(final String containerName) throws URISyntaxException,
             StorageException {
-        Utility.assertNotNullOrEmpty("containerAddress", containerAddress);
-        return new CloudBlobContainer(containerAddress, this);
+        return new CloudBlobContainer(containerName, this);
     }
 
     /**
@@ -180,48 +136,6 @@ public final class CloudBlobClient extends ServiceClient {
      */
     public String getDirectoryDelimiter() {
         return this.directoryDelimiter;
-    }
-
-    /**
-     * Returns a reference to a {@link CloudPageBlob} object that represents a page blob.
-     * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
-     * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified page blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     */
-    public CloudPageBlob getPageBlobReference(final String blobAddressUri) throws URISyntaxException, StorageException {
-        return this.getPageBlobReference(blobAddressUri, null);
-    }
-
-    /**
-     * Returns a reference to a {@link CloudPageBlob} object that represents a page blob, using the specified snapshot
-     * ID.
-     * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot ID of the blob.
-     * 
-     * @return A {@link CloudBlockBlob} object that represents a reference to the specified page blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     */
-    public CloudPageBlob getPageBlobReference(final String blobAddressUri, final String snapshotID)
-            throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
-
-        final StorageUri completeUri = PathUtility.appendPathToUri(this.getStorageUri(), blobAddressUri);
-
-        return new CloudPageBlob(completeUri, snapshotID, this);
     }
 
     /**

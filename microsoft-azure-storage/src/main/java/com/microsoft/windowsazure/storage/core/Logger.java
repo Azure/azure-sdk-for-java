@@ -253,7 +253,8 @@ public class Logger {
     }
 
     private static String formatLogEntry(OperationContext opContext, String format) {
-        return String.format("{%s}: {%s}", (opContext == null) ? "*" : opContext.getClientRequestID(), format);
+        return String.format("{%s}: {%s}", (opContext == null) ? "*" : opContext.getClientRequestID(),
+                format.replace('\n', '.'));
     }
 
     private static String formatLogEntry(OperationContext opContext, String format, Object... args) {

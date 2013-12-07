@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.HashMap;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -29,6 +30,7 @@ import com.microsoft.windowsazure.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageCredentials;
 import com.microsoft.windowsazure.storage.StorageCredentialsAccountAndKey;
+import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
@@ -53,12 +55,12 @@ public final class CloudTable {
     /**
      * Holds the list of URIs for all locations.
      */
-    private final StorageUri storageUri;
+    private StorageUri storageUri;
 
     /**
      * A reference to the associated service client.
      */
-    private final CloudTableClient tableServiceClient;
+    private CloudTableClient tableServiceClient;
 
     /**
      * Gets the name of the table.
@@ -105,11 +107,22 @@ public final class CloudTable {
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
      * 
+     * @throws StorageException
+     *             If a storage service error occurred.
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException {
-        this(PathUtility.appendPathToUri(client.getStorageUri(), tableName), client);
+    public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
+            StorageException {
+        Utility.assertNotNull("client", client);
+        Utility.assertNotNull("tableName", tableName);
+
+        this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), tableName);
+
+        this.name = PathUtility.getTableNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
+        this.tableServiceClient = client;
+
+        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
     }
 
     /**
@@ -120,8 +133,13 @@ public final class CloudTable {
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    public CloudTable(final URI uri, final CloudTableClient client) {
+    public CloudTable(final URI uri, final CloudTableClient client) throws URISyntaxException, StorageException {
         this(new StorageUri(uri, null), client);
     }
 
@@ -133,11 +151,24 @@ public final class CloudTable {
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    public CloudTable(final StorageUri uri, final CloudTableClient client) {
+    public CloudTable(final StorageUri uri, final CloudTableClient client) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("storageUri", uri);
+
         this.storageUri = uri;
-        this.name = PathUtility.getTableNameFromUri(uri.getPrimaryUri(), client.isUsePathStyleUris());
+
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri(),
+                null) : client.isUsePathStyleUris();
+
+        this.name = PathUtility.getTableNameFromUri(uri.getPrimaryUri(), usePathStyleUris);
         this.tableServiceClient = client;
+
+        this.parseQueryAndVerify(this.storageUri, client, usePathStyleUris);
     }
 
     /**
@@ -694,6 +725,57 @@ public final class CloudTable {
         else {
             return PathUtility.getCanonicalPathFromCredentials(this.tableServiceClient.getCredentials(), this.getUri()
                     .getPath());
+        }
+    }
+
+    /**
+     * Parse Uri for SAS (Shared access signature) information.
+     * 
+     * Validate that no other query parameters are passed in. Any SAS information will be recorded as corresponding
+     * credentials instance. If existingClient is passed in, any SAS information found will not be supported. Otherwise
+     * a new client is created based on SAS information or as anonymous credentials.
+     * 
+     * @param completeUri
+     *            The complete Uri.
+     * @param existingClient
+     *            The client to use.
+     * @param usePathStyleUris
+     *            If true, path style Uris are used.
+     * @throws URISyntaxException
+     * @throws StorageException
+     */
+    private void parseQueryAndVerify(final StorageUri completeUri, final CloudTableClient existingClient,
+            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("completeUri", completeUri);
+
+        if (!completeUri.isAbsolute()) {
+            final String errorMessage = String.format(SR.RELATIVE_ADDRESS_NOT_PERMITTED, completeUri.toString());
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
+
+        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+        final StorageCredentialsSharedAccessSignature sasCreds = SharedAccessSignatureHelper
+                .parseQuery(queryParameters);
+
+        if (sasCreds == null) {
+            return;
+        }
+
+        final Boolean sameCredentials = existingClient == null ? false : Utility.areCredentialsEqual(sasCreds,
+                existingClient.getCredentials());
+
+        if (existingClient == null || !sameCredentials) {
+            this.tableServiceClient = new CloudTableClient(new URI(PathUtility.getServiceClientBaseAddress(
+                    this.getUri(), usePathStyleUris)), sasCreds);
+        }
+
+        if (existingClient != null && !sameCredentials) {
+            this.tableServiceClient.setRetryPolicyFactory(existingClient.getRetryPolicyFactory());
+            this.tableServiceClient.setTimeoutInMs(existingClient.getTimeoutInMs());
+            this.tableServiceClient.setLocationMode(existingClient.getLocationMode());
+            this.tableServiceClient.setTablePayloadFormat(existingClient.getTablePayloadFormat());
         }
     }
 }

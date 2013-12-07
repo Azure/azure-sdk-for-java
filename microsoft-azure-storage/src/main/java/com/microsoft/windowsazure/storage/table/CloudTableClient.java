@@ -146,9 +146,8 @@ public final class CloudTableClient extends ServiceClient {
      * Gets a {@link CloudTable} object that represents the storage service
      * queue for the specified address.
      * 
-     * @param tableAddress
-     *            A <code>String</code> that represents the name of the table,
-     *            or the absolute URI to the queue.
+     * @param tableName
+     *            A <code>String</code> that represents the name of the table.
      * 
      * @return A {@link CloudQueue} object that represents a reference to the
      *         table.
@@ -158,9 +157,9 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public CloudTable getTableReference(final String tableAddress) throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("tableAddress", tableAddress);
-        return new CloudTable(tableAddress, this);
+    public CloudTable getTableReference(final String tableName) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("tableName", tableName);
+        return new CloudTable(tableName, this);
     }
 
     /**

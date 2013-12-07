@@ -377,10 +377,10 @@ public class TableOperation {
         final String tableIdentity = isTableEntry ? this.getEntity().writeEntity(opContext)
                 .get(TableConstants.TABLE_NAME).getValueAsString() : null;
 
-        // Upserts need row key and partition key
+        // Inserts need row key and partition key
         if (!isTableEntry) {
-            Utility.assertNotNull(SR.PARTITIONKEY_MISSING_FOR_UPSERT, this.getEntity().getPartitionKey());
-            Utility.assertNotNull(SR.ROWKEY_MISSING_FOR_UPSERT, this.getEntity().getRowKey());
+            Utility.assertNotNull(SR.PARTITIONKEY_MISSING_FOR_INSERT, this.getEntity().getPartitionKey());
+            Utility.assertNotNull(SR.ROWKEY_MISSING_FOR_INSERT, this.getEntity().getRowKey());
         }
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();

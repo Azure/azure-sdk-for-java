@@ -127,8 +127,8 @@ public final class CloudBlobContainer {
     /**
      * Creates an instance of the <code>CloudBlobContainer</code> class using the specified address and client.
      * 
-     * @param containerAddress
-     *            A <code>String</code> that represents either the absolute URI to the container, or the container name.
+     * @param containerName
+     *            A <code>String</code> that represents the container name.
      * @param client
      *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
      *            endpoint for the Blob service.
@@ -138,14 +138,16 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobContainer(final String containerAddress, final CloudBlobClient client) throws URISyntaxException,
+    public CloudBlobContainer(final String containerName, final CloudBlobClient client) throws URISyntaxException,
             StorageException {
         this(client);
 
-        final StorageUri resURI = PathUtility.appendPathToUri(client.getStorageUri(), containerAddress);
+        Utility.assertNotNull("client", client);
+        Utility.assertNotNull("containerName", containerName);
 
-        this.storageUri = resURI;
-        this.name = PathUtility.getContainerNameFromUri(resURI.getPrimaryUri(), client.isUsePathStyleUris());
+        this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), containerName);
+
+        this.name = PathUtility.getContainerNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
 
         this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
     }
@@ -186,10 +188,16 @@ public final class CloudBlobContainer {
             StorageException {
         this(client);
 
-        this.storageUri = storageUri;
-        this.name = PathUtility.getContainerNameFromUri(storageUri.getPrimaryUri(), client.isUsePathStyleUris());
+        Utility.assertNotNull("storageUri", storageUri);
 
-        this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
+        this.storageUri = storageUri;
+
+        boolean usePathStyleUris = client == null ? Utility.determinePathStyleFromUri(this.storageUri.getPrimaryUri(),
+                null) : client.isUsePathStyleUris();
+
+        this.name = PathUtility.getContainerNameFromUri(storageUri.getPrimaryUri(), usePathStyleUris);
+
+        this.parseQueryAndVerify(this.storageUri, client, usePathStyleUris);
     }
 
     /**
@@ -1423,6 +1431,7 @@ public final class CloudBlobContainer {
             this.blobServiceClient.setDirectoryDelimiter(existingClient.getDirectoryDelimiter());
             this.blobServiceClient.setRetryPolicyFactory(existingClient.getRetryPolicyFactory());
             this.blobServiceClient.setTimeoutInMs(existingClient.getTimeoutInMs());
+            this.blobServiceClient.setLocationMode(existingClient.getLocationMode());
         }
     }
 
