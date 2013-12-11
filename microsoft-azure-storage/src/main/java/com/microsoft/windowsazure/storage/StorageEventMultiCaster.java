@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.storage;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Represents a generic event multi-caster that allows event listeners to be dynamically added and removed.
@@ -24,12 +24,12 @@ import java.util.ArrayList;
  * @param <EVENT_LISTENTER_TYPE>
  *            An object that represents the type of the event listener.
  */
-public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE extends StorageEvent<EVENT_TYPE>> {
+public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENER_TYPE extends StorageEvent<EVENT_TYPE>> {
 
     /**
      * Holds the list of listeners.
      */
-    private final ArrayList<EVENT_LISTENTER_TYPE> listeners = new ArrayList<EVENT_LISTENTER_TYPE>();
+    private final CopyOnWriteArrayList<EVENT_LISTENER_TYPE> listeners = new CopyOnWriteArrayList<EVENT_LISTENER_TYPE>();
 
     /**
      * Adds a listener to the event chain.
@@ -37,7 +37,7 @@ public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE exte
      * @param listener
      *            An <code>EventListenerType</code> object that represents the listener to add.
      */
-    public synchronized void addListener(final EVENT_LISTENTER_TYPE listener) {
+    public void addListener(final EVENT_LISTENER_TYPE listener) {
         this.listeners.add(listener);
     }
 
@@ -47,7 +47,7 @@ public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE exte
      * @param event
      *            An <code>EVENTTYPE</code>object that represents the event being multi-casted.
      */
-    public synchronized void fireEvent(final EVENT_TYPE event) {
+    public void fireEvent(final EVENT_TYPE event) {
         for (final StorageEvent<EVENT_TYPE> listener : this.listeners) {
             listener.eventOccurred(event);
         }
@@ -58,7 +58,7 @@ public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE exte
      * 
      * @return <code>true</code> if any event listeners are registered; otherwise, <code>false</code>.
      */
-    public synchronized boolean hasListeners() {
+    public boolean hasListeners() {
         return this.listeners.size() > 0;
     }
 
@@ -68,7 +68,7 @@ public final class StorageEventMultiCaster<EVENT_TYPE, EVENT_LISTENTER_TYPE exte
      * @param listener
      *            An <code>EventListenerType</code> object that represents the listener to remove.
      */
-    public synchronized void removeListener(final EVENT_LISTENTER_TYPE listener) {
+    public void removeListener(final EVENT_LISTENER_TYPE listener) {
         this.listeners.remove(listener);
     }
 }
