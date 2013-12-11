@@ -1,3 +1,4 @@
+2013.12.10 Version 0.5.0
  * Fixed content disposition parsing in BlobDeserializationHelper and added it to BlobProperties
  * Fixed etag for snapshots, which was previously not set correctly in CloudBlob
  * Fixed etag parsing so that quotes around etag are removed
@@ -5,7 +6,6 @@
  * Fixed blob/container BreakLease so that the breakPeriodInSeconds is honored
  * Blob downloads now resume on every retry
  * Sending request event on the opContext is now fired before the connection is set up
- * Added prefer content/no content header support on table inserts
  * Added Json support for tables
  * Added read from secondary support for blobs/queue/tables
  * Fixed Canonicalizer to ignore empty header values while signing
