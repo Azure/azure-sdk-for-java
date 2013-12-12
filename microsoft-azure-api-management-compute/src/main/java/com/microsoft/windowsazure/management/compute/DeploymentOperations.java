@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.OperationResponse;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentCreateParameters;
@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -829,7 +830,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters);
+    ComputeOperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -883,7 +884,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters);
+    ComputeOperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -935,7 +936,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
+    ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
     
     /**
     * The Create Deployment operation uploads a new service package and creates
@@ -983,7 +984,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteByName(String serviceName, String deploymentName);
+    ComputeOperationStatusResponse deleteByName(String serviceName, String deploymentName) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1029,7 +1030,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot);
+    ComputeOperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1205,7 +1206,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName);
+    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Reboot Role Instance operation requests a reboot of a role instance
@@ -1255,7 +1256,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Reboot Role Instance operation requests a reboot of a role instance
@@ -1305,7 +1306,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName);
+    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1355,7 +1356,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1489,7 +1490,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters);
+    ComputeOperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Swap Deployment operation initiates a virtual IP address swap between
@@ -1541,7 +1542,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters);
+    ComputeOperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1595,7 +1596,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters);
+    ComputeOperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1668,7 +1669,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters);
+    ComputeOperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -1760,7 +1761,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters);
+    ComputeOperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -1852,7 +1853,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters);
+    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a
@@ -1944,7 +1945,7 @@ public interface DeploymentOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters);
+    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a

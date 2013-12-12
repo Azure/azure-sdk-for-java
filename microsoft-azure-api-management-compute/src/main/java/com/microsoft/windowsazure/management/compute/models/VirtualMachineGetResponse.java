@@ -21,12 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
-import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
-import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleType;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.util.ArrayList;
 
 /**

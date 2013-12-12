@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.DomainJoinCredentials;
-import com.microsoft.windowsazure.management.compute.models.DomainJoinProvisioning;
 
 /**
 * Optional.  Contains properties that specify a domain to which the virtual

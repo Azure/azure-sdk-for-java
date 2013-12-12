@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.PostShutdownAction;
 
 /**
 * The parameters required for shutting down the virtual machine

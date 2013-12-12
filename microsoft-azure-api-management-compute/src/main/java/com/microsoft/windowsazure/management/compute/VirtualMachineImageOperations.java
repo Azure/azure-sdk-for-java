@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.OperationResponse;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageGetResponse;
@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -58,7 +59,7 @@ public interface VirtualMachineImageOperations
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
+    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
     
     /**
     * The Add OS Image operation adds an operating system image that is stored
@@ -85,7 +86,7 @@ public interface VirtualMachineImageOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete OS Image operation deletes the specified OS image from your
@@ -155,7 +156,7 @@ public interface VirtualMachineImageOperations
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
+    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update OS Image operation updates an OS image that in your image

@@ -21,8 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.net.URI;
 
 /**

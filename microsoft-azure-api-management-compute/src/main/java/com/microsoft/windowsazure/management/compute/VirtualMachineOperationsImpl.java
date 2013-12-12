@@ -21,11 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsAzure.services.core.ServiceException;
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClient;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl;
-import com.microsoft.windowsazure.management.compute.VirtualMachineOperations;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
@@ -57,13 +53,14 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdo
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdownRolesParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineStartRolesParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateLoadBalancedSetParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineWindowsRemoteManagementListenerType;
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementListener;
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementSettings;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.StreamUtils;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -73,6 +70,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -85,7 +83,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -146,11 +143,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginCreatingAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginCreating(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginCreating(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -177,7 +175,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -336,7 +334,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getLocalPort() != null)
                         {
                             Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                            localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort().toString()));
+                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                             inputEndpointElement.appendChild(localPortElement);
                         }
                         
@@ -350,7 +348,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getPort() != null)
                         {
                             Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getPort().toString()));
+                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                             inputEndpointElement.appendChild(portElement);
                         }
                         
@@ -367,7 +365,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPort().toString()));
+                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
                             loadBalancerProbeElement.appendChild(portElement2);
                             
                             Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
@@ -377,14 +375,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
                             {
                                 Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds().toString()));
+                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                 loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                             }
                             
                             if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
                             {
                                 Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds().toString()));
+                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                 loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
@@ -399,14 +397,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getVirtualIPAddress() != null)
                         {
                             Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress()));
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
                         if (inputEndpointsItem.getEnableDirectServerReturn() != null)
                         {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getEnableDirectServerReturn().toString().toLower()));
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
@@ -426,7 +424,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     if (rulesItem.getOrder() != null)
                                     {
                                         Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                        orderElement.appendChild(requestDoc.createTextNode(rulesItem.getOrder().toString()));
+                                        orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                         ruleElement.appendChild(orderElement);
                                     }
                                     
@@ -487,14 +485,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
                 {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getResetPasswordOnFirstLogon().toString().toLower()));
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
                 if (configurationSetsItem.getEnableAutomaticUpdates() != null)
                 {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getEnableAutomaticUpdates().toString().toLower()));
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
@@ -641,7 +639,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
                 {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDisableSshPasswordAuthentication().toString().toLower()));
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
@@ -731,12 +729,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
                 {
                     Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                    lunElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalUnitNumber().toString()));
+                    lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                     dataVirtualHardDiskElement.appendChild(lunElement);
                 }
                 
                 Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalDiskSizeInGB().toString()));
+                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                 dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                 
                 if (dataVirtualHardDisksItem.getMediaLink() != null)
@@ -817,34 +815,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -867,11 +855,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginCreatingDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginCreatingDeployment(serviceName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginCreatingDeployment(serviceName, parameters);
+            }
          });
     }
     
@@ -1094,7 +1083,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             if (inputEndpointsItem.getLocalPort() != null)
                             {
                                 Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort().toString()));
+                                localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                                 inputEndpointElement.appendChild(localPortElement);
                             }
                             
@@ -1108,7 +1097,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             if (inputEndpointsItem.getPort() != null)
                             {
                                 Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                portElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getPort().toString()));
+                                portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                                 inputEndpointElement.appendChild(portElement);
                             }
                             
@@ -1125,7 +1114,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                portElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPort().toString()));
+                                portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
                                 loadBalancerProbeElement.appendChild(portElement2);
                                 
                                 Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
@@ -1135,14 +1124,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
                                 {
                                     Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                    intervalInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds().toString()));
+                                    intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                     loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                                 }
                                 
                                 if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
                                 {
                                     Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                    timeoutInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds().toString()));
+                                    timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                     loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                                 }
                             }
@@ -1157,14 +1146,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             if (inputEndpointsItem.getVirtualIPAddress() != null)
                             {
                                 Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress()));
+                                vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
                                 inputEndpointElement.appendChild(vipElement);
                             }
                             
                             if (inputEndpointsItem.getEnableDirectServerReturn() != null)
                             {
                                 Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getEnableDirectServerReturn().toString().toLower()));
+                                enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
                                 inputEndpointElement.appendChild(enableDirectServerReturnElement);
                             }
                             
@@ -1184,7 +1173,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         if (rulesItem.getOrder() != null)
                                         {
                                             Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                            orderElement.appendChild(requestDoc.createTextNode(rulesItem.getOrder().toString()));
+                                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                             ruleElement.appendChild(orderElement);
                                         }
                                         
@@ -1245,14 +1234,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
                     {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getResetPasswordOnFirstLogon().toString().toLower()));
+                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
                         configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                     }
                     
                     if (configurationSetsItem.getEnableAutomaticUpdates() != null)
                     {
                         Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getEnableAutomaticUpdates().toString().toLower()));
+                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
                         configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                     }
                     
@@ -1399,7 +1388,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
                     {
                         Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDisableSshPasswordAuthentication().toString().toLower()));
+                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
                         configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                     }
                     
@@ -1489,12 +1478,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
                     {
                         Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                        lunElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalUnitNumber().toString()));
+                        lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                         dataVirtualHardDiskElement.appendChild(lunElement);
                     }
                     
                     Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalDiskSizeInGB().toString()));
+                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                     dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                     
                     if (dataVirtualHardDisksItem.getMediaLink() != null)
@@ -1608,7 +1597,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (dnsServersItem.getAddress() != null)
                     {
                         Element addressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Address");
-                        addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress()));
+                        addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress().toString()));
                         dnsServerElement.appendChild(addressElement);
                     }
                 }
@@ -1629,34 +1618,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -1673,11 +1652,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginDeletingAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginDeleting(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginDeleting(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -1693,7 +1673,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, IOException, ServiceException
+    public OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -1715,41 +1695,31 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -1766,11 +1736,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginRestartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginRestarting(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginRestarting(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -1823,34 +1794,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -1868,11 +1829,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginShutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginShutdown(serviceName, deploymentName, virtualMachineName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginShutdown(serviceName, deploymentName, virtualMachineName, parameters);
+            }
          });
     }
     
@@ -1951,34 +1913,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -1994,11 +1946,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginShuttingDownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginShuttingDownRoles(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginShuttingDownRoles(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -2086,34 +2039,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -2130,11 +2073,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginStartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginStarting(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginStarting(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -2187,34 +2131,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -2229,11 +2163,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginStartingRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginStartingRoles(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginStartingRoles(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -2313,34 +2248,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -2360,11 +2285,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginUpdating(serviceName, deploymentName, virtualMachineName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginUpdating(serviceName, deploymentName, virtualMachineName, parameters);
+            }
          });
     }
     
@@ -2550,7 +2476,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getLocalPort() != null)
                         {
                             Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                            localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort().toString()));
+                            localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                             inputEndpointElement.appendChild(localPortElement);
                         }
                         
@@ -2564,7 +2490,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getPort() != null)
                         {
                             Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getPort().toString()));
+                            portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                             inputEndpointElement.appendChild(portElement);
                         }
                         
@@ -2581,7 +2507,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                            portElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPort().toString()));
+                            portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
                             loadBalancerProbeElement.appendChild(portElement2);
                             
                             Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
@@ -2591,14 +2517,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
                             {
                                 Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds().toString()));
+                                intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                 loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                             }
                             
                             if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
                             {
                                 Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds().toString()));
+                                timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                 loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
@@ -2613,14 +2539,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getVirtualIPAddress() != null)
                         {
                             Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress()));
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
                         if (inputEndpointsItem.getEnableDirectServerReturn() != null)
                         {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getEnableDirectServerReturn().toString().toLower()));
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
@@ -2640,7 +2566,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     if (rulesItem.getOrder() != null)
                                     {
                                         Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                        orderElement.appendChild(requestDoc.createTextNode(rulesItem.getOrder().toString()));
+                                        orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                         ruleElement.appendChild(orderElement);
                                     }
                                     
@@ -2701,14 +2627,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
                 {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getResetPasswordOnFirstLogon().toString().toLower()));
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
                 if (configurationSetsItem.getEnableAutomaticUpdates() != null)
                 {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getEnableAutomaticUpdates().toString().toLower()));
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
@@ -2855,7 +2781,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
                 {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDisableSshPasswordAuthentication().toString().toLower()));
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
@@ -2945,12 +2871,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
                 {
                     Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                    lunElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalUnitNumber().toString()));
+                    lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                     dataVirtualHardDiskElement.appendChild(lunElement);
                 }
                 
                 Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getLogicalDiskSizeInGB().toString()));
+                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                 dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                 
                 if (dataVirtualHardDisksItem.getMediaLink() != null)
@@ -3028,34 +2954,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -3074,11 +2990,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginUpdatingLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginUpdatingLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -3154,7 +3071,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (loadBalancedEndpointsItem.getLocalPort() != null)
                 {
                     Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                    localPortElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLocalPort().toString()));
+                    localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLocalPort())));
                     inputEndpointElement.appendChild(localPortElement);
                 }
                 
@@ -3168,7 +3085,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (loadBalancedEndpointsItem.getPort() != null)
                 {
                     Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                    portElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getPort().toString()));
+                    portElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getPort())));
                     inputEndpointElement.appendChild(portElement);
                 }
                 
@@ -3185,7 +3102,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                    portElement2.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getPort().toString()));
+                    portElement2.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getPort())));
                     loadBalancerProbeElement.appendChild(portElement2);
                     
                     Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
@@ -3195,14 +3112,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
                     {
                         Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                        intervalInSecondsElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds().toString()));
+                        intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                         loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                     }
                     
                     if (loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
                     {
                         Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                        timeoutInSecondsElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds().toString()));
+                        timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                         loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                     }
                 }
@@ -3217,14 +3134,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 if (loadBalancedEndpointsItem.getVirtualIPAddress() != null)
                 {
                     Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                    vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress()));
+                    vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress().toString()));
                     inputEndpointElement.appendChild(vipElement);
                 }
                 
                 if (loadBalancedEndpointsItem.getEnableDirectServerReturn() != null)
                 {
                     Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getEnableDirectServerReturn().toString().toLower()));
+                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
                     inputEndpointElement.appendChild(enableDirectServerReturnElement);
                 }
                 
@@ -3242,7 +3159,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (rulesItem.getOrder() != null)
                         {
                             Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                            orderElement.appendChild(requestDoc.createTextNode(rulesItem.getOrder().toString()));
+                            orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                             ruleElement.appendChild(orderElement);
                         }
                         
@@ -3285,34 +3202,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -3339,11 +3246,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<OperationResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return capture(serviceName, deploymentName, virtualMachineName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return capture(serviceName, deploymentName, virtualMachineName, parameters);
+            }
          });
     }
     
@@ -3533,7 +3441,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (inputEndpointsItem.getLocalPort() != null)
                     {
                         Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort().toString()));
+                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                         inputEndpointElement.appendChild(localPortElement);
                     }
                     
@@ -3547,7 +3455,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (inputEndpointsItem.getPort() != null)
                     {
                         Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getPort().toString()));
+                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                         inputEndpointElement.appendChild(portElement);
                     }
                     
@@ -3564,7 +3472,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPort().toString()));
+                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
                         loadBalancerProbeElement.appendChild(portElement2);
                         
                         Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
@@ -3574,14 +3482,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
                         {
                             Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds().toString()));
+                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                             loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                         }
                         
                         if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
                         {
                             Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds().toString()));
+                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                             loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                         }
                     }
@@ -3596,14 +3504,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (inputEndpointsItem.getVirtualIPAddress() != null)
                     {
                         Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress()));
+                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
                         inputEndpointElement.appendChild(vipElement);
                     }
                     
                     if (inputEndpointsItem.getEnableDirectServerReturn() != null)
                     {
                         Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getEnableDirectServerReturn().toString().toLower()));
+                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
                         inputEndpointElement.appendChild(enableDirectServerReturnElement);
                     }
                     
@@ -3623,7 +3531,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 if (rulesItem.getOrder() != null)
                                 {
                                     Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                    orderElement.appendChild(requestDoc.createTextNode(rulesItem.getOrder().toString()));
+                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                     ruleElement.appendChild(orderElement);
                                 }
                                 
@@ -3684,14 +3592,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (parameters.getProvisioningConfiguration().getResetPasswordOnFirstLogon() != null)
             {
                 Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getResetPasswordOnFirstLogon().toString().toLower()));
+                resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getResetPasswordOnFirstLogon()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(resetPasswordOnFirstLogonElement);
             }
             
             if (parameters.getProvisioningConfiguration().getEnableAutomaticUpdates() != null)
             {
                 Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getEnableAutomaticUpdates().toString().toLower()));
+                enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getEnableAutomaticUpdates()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(enableAutomaticUpdatesElement);
             }
             
@@ -3838,7 +3746,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication() != null)
             {
                 Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication().toString().toLower()));
+                disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(disableSshPasswordAuthenticationElement);
             }
             
@@ -3908,34 +3816,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 201)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 201)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -3970,11 +3868,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return create(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return create(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -4008,17 +3907,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginCreatingAsync(serviceName, deploymentName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginCreatingAsync(serviceName, deploymentName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -4060,11 +3959,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> createDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return createDeployment(serviceName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return createDeployment(serviceName, parameters);
+            }
          });
     }
     
@@ -4093,17 +3993,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters)
+    public ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginCreatingDeploymentAsync(serviceName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginCreatingDeploymentAsync(serviceName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -4139,11 +4039,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> deleteAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return delete(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return delete(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -4166,17 +4067,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
+    public ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginDeletingAsync(serviceName, deploymentName, virtualMachineName);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginDeletingAsync(serviceName, deploymentName, virtualMachineName).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -4205,11 +4106,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<VirtualMachineGetResponse> getAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetResponse>() { @Override
-        public VirtualMachineGetResponse call() throws Exception, Exception
-        {
-            return get(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetResponse>() { 
+            @Override
+            public VirtualMachineGetResponse call() throws Exception
+            {
+                return get(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -4225,7 +4127,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The Get Virtual Machine operation response.
     */
     @Override
-    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, URISyntaxException
+    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (serviceName == null)
@@ -4254,753 +4156,743 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
+        }
+        
+        // Create Result
+        VirtualMachineGetResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineGetResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
+        Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (persistentVMRoleElement != null)
+        {
+            NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
+            Element roleNameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (roleNameElement != null)
             {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
+                String roleNameInstance;
+                roleNameInstance = roleNameElement.getTextContent();
+                result.setRoleName(roleNameInstance);
             }
             
-            // Create Result
-            VirtualMachineGetResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
-            Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (persistentVMRoleElement != null)
+            NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
+            Element osVersionElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            if (osVersionElement != null)
             {
-                NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
-                Element roleNameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (roleNameElement != null)
+                String osVersionInstance;
+                osVersionInstance = osVersionElement.getTextContent();
+                result.setOsVersion(osVersionInstance);
+            }
+            
+            NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
+            Element roleTypeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            if (roleTypeElement != null)
+            {
+                VirtualMachineRoleType roleTypeInstance;
+                roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
+                result.setRoleType(roleTypeInstance);
+            }
+            
+            NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
+            Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            if (availabilitySetNameElement != null)
+            {
+                String availabilitySetNameInstance;
+                availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                result.setAvailabilitySetName(availabilitySetNameInstance);
+            }
+            
+            NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
+            Element roleSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            if (roleSizeElement != null)
+            {
+                VirtualMachineRoleSize roleSizeInstance;
+                roleSizeInstance = VirtualMachineRoleSize.valueOf(roleSizeElement.getTextContent());
+                result.setRoleSize(roleSizeInstance);
+            }
+            
+            NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+            Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            if (defaultWinRmCertificateThumbprintElement != null)
+            {
+                String defaultWinRmCertificateThumbprintInstance;
+                defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+            }
+            
+            NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
+            Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            if (configurationSetsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
                 {
-                    String roleNameInstance;
-                    roleNameInstance = roleNameElement.getTextContent();
-                    result.setRoleName(roleNameInstance);
-                }
-                
-                NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
-                Element osVersionElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (osVersionElement != null)
-                {
-                    String osVersionInstance;
-                    osVersionInstance = osVersionElement.getTextContent();
-                    result.setOsVersion(osVersionInstance);
-                }
-                
-                NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
-                Element roleTypeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (roleTypeElement != null)
-                {
-                    VirtualMachineRoleType roleTypeInstance;
-                    roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
-                    result.setRoleType(roleTypeInstance);
-                }
-                
-                NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
-                Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (availabilitySetNameElement != null)
-                {
-                    String availabilitySetNameInstance;
-                    availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
-                    result.setAvailabilitySetName(availabilitySetNameInstance);
-                }
-                
-                NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
-                Element roleSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (roleSizeElement != null)
-                {
-                    VirtualMachineRoleSize roleSizeInstance;
-                    roleSizeInstance = VirtualMachineRoleSize.valueOf(roleSizeElement.getTextContent());
-                    result.setRoleSize(roleSizeInstance);
-                }
-                
-                NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (defaultWinRmCertificateThumbprintElement != null)
-                {
-                    String defaultWinRmCertificateThumbprintInstance;
-                    defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
-                    result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
-                }
-                
-                NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
-                Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                if (configurationSetsSequenceElement != null)
-                {
-                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
+                    org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
+                    ConfigurationSet configurationSetInstance = new ConfigurationSet();
+                    result.getConfigurationSets().add(configurationSetInstance);
+                    
+                    NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                    Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    if (configurationSetTypeElement != null)
                     {
-                        org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
-                        ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                        result.getConfigurationSets().add(configurationSetInstance);
-                        
-                        NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                        Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                        if (configurationSetTypeElement != null)
+                        String configurationSetTypeInstance;
+                        configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                        configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
+                    }
+                    
+                    NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                    Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    if (inputEndpointsSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
                         {
-                            String configurationSetTypeInstance;
-                            configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
-                            configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
-                        }
-                        
-                        NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                        Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                        if (inputEndpointsSequenceElement != null)
-                        {
-                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
+                            org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
+                            InputEndpoint inputEndpointInstance = new InputEndpoint();
+                            configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
+                            
+                            NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                            Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                            if (loadBalancedEndpointSetNameElement != null)
                             {
-                                org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
-                                InputEndpoint inputEndpointInstance = new InputEndpoint();
-                                configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
+                                String loadBalancedEndpointSetNameInstance;
+                                loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
+                            }
+                            
+                            NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                            Element localPortElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                            if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                int localPortInstance;
+                                localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                inputEndpointInstance.setLocalPort(localPortInstance);
+                            }
+                            
+                            NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
+                            Element nameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                            if (nameElement != null)
+                            {
+                                String nameInstance;
+                                nameInstance = nameElement.getTextContent();
+                                inputEndpointInstance.setName(nameInstance);
+                            }
+                            
+                            NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
+                            Element portElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                            if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                int portInstance;
+                                portInstance = Integer.parseInt(portElement.getTextContent());
+                                inputEndpointInstance.setPort(portInstance);
+                            }
+                            
+                            NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                            Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                            if (loadBalancerProbeElement != null)
+                            {
+                                LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
+                                inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                 
-                                NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                                Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                                if (loadBalancedEndpointSetNameElement != null)
+                                NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                Element pathElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                                if (pathElement != null)
                                 {
-                                    String loadBalancedEndpointSetNameInstance;
-                                    loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
-                                    inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
+                                    String pathInstance;
+                                    pathInstance = pathElement.getTextContent();
+                                    loadBalancerProbeInstance.setPath(pathInstance);
                                 }
                                 
-                                NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                                Element localPortElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                                if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                                NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                Element portElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                                if (portElement2 != null)
                                 {
-                                    int localPortInstance;
-                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
-                                    inputEndpointInstance.setLocalPort(localPortInstance);
+                                    int portInstance2;
+                                    portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                    loadBalancerProbeInstance.setPort(portInstance2);
                                 }
                                 
-                                NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
-                                Element nameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                                if (nameElement != null)
+                                NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                Element protocolElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                                if (protocolElement != null)
                                 {
-                                    String nameInstance;
-                                    nameInstance = nameElement.getTextContent();
-                                    inputEndpointInstance.setName(nameInstance);
+                                    LoadBalancerProbeTransportProtocol protocolInstance;
+                                    protocolInstance = ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement.getTextContent());
+                                    loadBalancerProbeInstance.setProtocol(protocolInstance);
                                 }
                                 
-                                NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
-                                Element portElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                                if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
+                                NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                                if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    int portInstance;
-                                    portInstance = Integer.parseInt(portElement.getTextContent());
-                                    inputEndpointInstance.setPort(portInstance);
+                                    int intervalInSecondsInstance;
+                                    intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                    loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                 }
                                 
-                                NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                                Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                                if (loadBalancerProbeElement != null)
+                                NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                                if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                    inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
-                                    
-                                    NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                    Element pathElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                                    if (pathElement != null)
+                                    int timeoutInSecondsInstance;
+                                    timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                    loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
+                                }
+                            }
+                            
+                            NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
+                            Element protocolElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                            if (protocolElement2 != null)
+                            {
+                                String protocolInstance2;
+                                protocolInstance2 = protocolElement2.getTextContent();
+                                inputEndpointInstance.setProtocol(protocolInstance2);
+                            }
+                            
+                            NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
+                            Element vipElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                            if (vipElement != null)
+                            {
+                                InetAddress vipInstance;
+                                vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                inputEndpointInstance.setVirtualIPAddress(vipInstance);
+                            }
+                            
+                            NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                            Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                            if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean enableDirectServerReturnInstance;
+                                enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                            }
+                            
+                            NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                            Element endpointAclElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                            if (endpointAclElement != null)
+                            {
+                                EndpointAcl endpointAclInstance = new EndpointAcl();
+                                inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                
+                                NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
+                                Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                                if (rulesSequenceElement != null)
+                                {
+                                    for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
                                     {
-                                        String pathInstance;
-                                        pathInstance = pathElement.getTextContent();
-                                        loadBalancerProbeInstance.setPath(pathInstance);
-                                    }
-                                    
-                                    NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                    Element portElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                                    if (portElement2 != null)
-                                    {
-                                        int portInstance2;
-                                        portInstance2 = Integer.parseInt(portElement2.getTextContent());
-                                        loadBalancerProbeInstance.setPort(portInstance2);
-                                    }
-                                    
-                                    NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                    Element protocolElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                                    if (protocolElement != null)
-                                    {
-                                        LoadBalancerProbeTransportProtocol protocolInstance;
-                                        protocolInstance = ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement.getTextContent());
-                                        loadBalancerProbeInstance.setProtocol(protocolInstance);
-                                    }
-                                    
-                                    NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                    Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int intervalInSecondsInstance;
-                                        intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
-                                        loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
-                                    }
-                                    
-                                    NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                    Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int timeoutInSecondsInstance;
-                                        timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
-                                        loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
-                                    }
-                                }
-                                
-                                NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
-                                Element protocolElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                                if (protocolElement2 != null)
-                                {
-                                    String protocolInstance2;
-                                    protocolInstance2 = protocolElement2.getTextContent();
-                                    inputEndpointInstance.setProtocol(protocolInstance2);
-                                }
-                                
-                                NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
-                                Element vipElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
-                                if (vipElement != null)
-                                {
-                                    InetAddress vipInstance;
-                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
-                                    inputEndpointInstance.setVirtualIPAddress(vipInstance);
-                                }
-                                
-                                NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                                Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
-                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
-                                {
-                                    boolean enableDirectServerReturnInstance;
-                                    enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
-                                    inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
-                                }
-                                
-                                NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                                Element endpointAclElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
-                                if (endpointAclElement != null)
-                                {
-                                    EndpointAcl endpointAclInstance = new EndpointAcl();
-                                    inputEndpointInstance.setEndpointAcl(endpointAclInstance);
-                                    
-                                    NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
-                                    Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
-                                    if (rulesSequenceElement != null)
-                                    {
-                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
+                                        org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i3));
+                                        AccessControlListRule ruleInstance = new AccessControlListRule();
+                                        endpointAclInstance.getRules().add(ruleInstance);
+                                        
+                                        NodeList elements26 = rulesElement.getElementsByTagName("Order");
+                                        Element orderElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                                        if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
                                         {
-                                            org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i3));
-                                            AccessControlListRule ruleInstance = new AccessControlListRule();
-                                            endpointAclInstance.getRules().add(ruleInstance);
-                                            
-                                            NodeList elements26 = rulesElement.getElementsByTagName("Order");
-                                            Element orderElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
-                                            if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
-                                            {
-                                                int orderInstance;
-                                                orderInstance = Integer.parseInt(orderElement.getTextContent());
-                                                ruleInstance.setOrder(orderInstance);
-                                            }
-                                            
-                                            NodeList elements27 = rulesElement.getElementsByTagName("Action");
-                                            Element actionElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
-                                            if (actionElement != null)
-                                            {
-                                                String actionInstance;
-                                                actionInstance = actionElement.getTextContent();
-                                                ruleInstance.setAction(actionInstance);
-                                            }
-                                            
-                                            NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                            Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
-                                            if (remoteSubnetElement != null)
-                                            {
-                                                String remoteSubnetInstance;
-                                                remoteSubnetInstance = remoteSubnetElement.getTextContent();
-                                                ruleInstance.setRemoteSubnet(remoteSubnetInstance);
-                                            }
-                                            
-                                            NodeList elements29 = rulesElement.getElementsByTagName("Description");
-                                            Element descriptionElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
-                                            if (descriptionElement != null)
-                                            {
-                                                String descriptionInstance;
-                                                descriptionInstance = descriptionElement.getTextContent();
-                                                ruleInstance.setDescription(descriptionInstance);
-                                            }
+                                            int orderInstance;
+                                            orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                            ruleInstance.setOrder(orderInstance);
+                                        }
+                                        
+                                        NodeList elements27 = rulesElement.getElementsByTagName("Action");
+                                        Element actionElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                                        if (actionElement != null)
+                                        {
+                                            String actionInstance;
+                                            actionInstance = actionElement.getTextContent();
+                                            ruleInstance.setAction(actionInstance);
+                                        }
+                                        
+                                        NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                        Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+                                        if (remoteSubnetElement != null)
+                                        {
+                                            String remoteSubnetInstance;
+                                            remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                            ruleInstance.setRemoteSubnet(remoteSubnetInstance);
+                                        }
+                                        
+                                        NodeList elements29 = rulesElement.getElementsByTagName("Description");
+                                        Element descriptionElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                                        if (descriptionElement != null)
+                                        {
+                                            String descriptionInstance;
+                                            descriptionInstance = descriptionElement.getTextContent();
+                                            ruleInstance.setDescription(descriptionInstance);
                                         }
                                     }
                                 }
                             }
                         }
-                        
-                        NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                        Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
-                        if (subnetNamesSequenceElement != null)
-                        {
-                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
-                            {
-                                org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
-                                configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
-                            }
-                        }
-                        
-                        NodeList elements31 = configurationSetsElement.getElementsByTagName("ComputerName");
-                        Element computerNameElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
-                        if (computerNameElement != null)
-                        {
-                            String computerNameInstance;
-                            computerNameInstance = computerNameElement.getTextContent();
-                            configurationSetInstance.setComputerName(computerNameInstance);
-                        }
-                        
-                        NodeList elements32 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                        Element adminPasswordElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
-                        if (adminPasswordElement != null)
-                        {
-                            String adminPasswordInstance;
-                            adminPasswordInstance = adminPasswordElement.getTextContent();
-                            configurationSetInstance.setAdminPassword(adminPasswordInstance);
-                        }
-                        
-                        NodeList elements33 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                        Element resetPasswordOnFirstLogonElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
-                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
-                        {
-                            boolean resetPasswordOnFirstLogonInstance;
-                            resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
-                            configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
-                        }
-                        
-                        NodeList elements34 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                        Element enableAutomaticUpdatesElement = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
-                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
-                        {
-                            boolean enableAutomaticUpdatesInstance;
-                            enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
-                            configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
-                        }
-                        
-                        NodeList elements35 = configurationSetsElement.getElementsByTagName("TimeZone");
-                        Element timeZoneElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
-                        if (timeZoneElement != null)
-                        {
-                            String timeZoneInstance;
-                            timeZoneInstance = timeZoneElement.getTextContent();
-                            configurationSetInstance.setTimeZone(timeZoneInstance);
-                        }
-                        
-                        NodeList elements36 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                        Element domainJoinElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
-                        if (domainJoinElement != null)
-                        {
-                            DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                            configurationSetInstance.setDomainJoin(domainJoinInstance);
-                            
-                            NodeList elements37 = domainJoinElement.getElementsByTagName("Credentials");
-                            Element credentialsElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
-                            if (credentialsElement != null)
-                            {
-                                DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                                domainJoinInstance.setCredentials(credentialsInstance);
-                                
-                                NodeList elements38 = credentialsElement.getElementsByTagName("Domain");
-                                Element domainElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
-                                if (domainElement != null)
-                                {
-                                    String domainInstance;
-                                    domainInstance = domainElement.getTextContent();
-                                    credentialsInstance.setDomain(domainInstance);
-                                }
-                                
-                                NodeList elements39 = credentialsElement.getElementsByTagName("Username");
-                                Element usernameElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
-                                if (usernameElement != null)
-                                {
-                                    String usernameInstance;
-                                    usernameInstance = usernameElement.getTextContent();
-                                    credentialsInstance.setUserName(usernameInstance);
-                                }
-                                
-                                NodeList elements40 = credentialsElement.getElementsByTagName("Password");
-                                Element passwordElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
-                                if (passwordElement != null)
-                                {
-                                    String passwordInstance;
-                                    passwordInstance = passwordElement.getTextContent();
-                                    credentialsInstance.setPassword(passwordInstance);
-                                }
-                            }
-                            
-                            NodeList elements41 = domainJoinElement.getElementsByTagName("JoinDomain");
-                            Element joinDomainElement = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
-                            if (joinDomainElement != null)
-                            {
-                                String joinDomainInstance;
-                                joinDomainInstance = joinDomainElement.getTextContent();
-                                domainJoinInstance.setDomainToJoin(joinDomainInstance);
-                            }
-                            
-                            NodeList elements42 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                            Element machineObjectOUElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
-                            if (machineObjectOUElement != null)
-                            {
-                                String machineObjectOUInstance;
-                                machineObjectOUInstance = machineObjectOUElement.getTextContent();
-                                domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
-                            }
-                            
-                            NodeList elements43 = domainJoinElement.getElementsByTagName("Provisioning");
-                            Element provisioningElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
-                            if (provisioningElement != null)
-                            {
-                                DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                                domainJoinInstance.setProvisioning(provisioningInstance);
-                                
-                                NodeList elements44 = provisioningElement.getElementsByTagName("AccountData");
-                                Element accountDataElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
-                                if (accountDataElement != null)
-                                {
-                                    String accountDataInstance;
-                                    accountDataInstance = accountDataElement.getTextContent();
-                                    provisioningInstance.setAccountData(accountDataInstance);
-                                }
-                            }
-                        }
-                        
-                        NodeList elements45 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                        Element storedCertificateSettingsSequenceElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
-                        if (storedCertificateSettingsSequenceElement != null)
-                        {
-                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
-                            {
-                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
-                                StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                                configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
-                                
-                                NodeList elements46 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                                Element storeLocationElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
-                                if (storeLocationElement != null)
-                                {
-                                }
-                                
-                                NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                                Element storeNameElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
-                                if (storeNameElement != null)
-                                {
-                                    String storeNameInstance;
-                                    storeNameInstance = storeNameElement.getTextContent();
-                                    certificateSettingInstance.setStoreName(storeNameInstance);
-                                }
-                                
-                                NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                                Element thumbprintElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
-                                if (thumbprintElement != null)
-                                {
-                                    String thumbprintInstance;
-                                    thumbprintInstance = thumbprintElement.getTextContent();
-                                    certificateSettingInstance.setThumbprint(thumbprintInstance);
-                                }
-                            }
-                        }
-                        
-                        NodeList elements49 = configurationSetsElement.getElementsByTagName("WinRM");
-                        Element winRMElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
-                        if (winRMElement != null)
-                        {
-                            WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                            configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
-                            
-                            NodeList elements50 = winRMElement.getElementsByTagName("Listeners");
-                            Element listenersSequenceElement = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
-                            if (listenersSequenceElement != null)
-                            {
-                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
-                                {
-                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i6));
-                                    WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                    winRMInstance.getListeners().add(listenerInstance);
-                                    
-                                    NodeList elements51 = listenersElement.getElementsByTagName("Protocol");
-                                    Element protocolElement3 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
-                                    if (protocolElement3 != null)
-                                    {
-                                        VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
-                                        protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
-                                        listenerInstance.setListenerType(protocolInstance3);
-                                    }
-                                    
-                                    NodeList elements52 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                    Element certificateThumbprintElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
-                                    if (certificateThumbprintElement != null)
-                                    {
-                                        String certificateThumbprintInstance;
-                                        certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
-                                        listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
-                                    }
-                                }
-                            }
-                        }
-                        
-                        NodeList elements53 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                        Element adminUsernameElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
-                        if (adminUsernameElement != null)
-                        {
-                            String adminUsernameInstance;
-                            adminUsernameInstance = adminUsernameElement.getTextContent();
-                            configurationSetInstance.setAdminUserName(adminUsernameInstance);
-                        }
-                        
-                        NodeList elements54 = configurationSetsElement.getElementsByTagName("HostName");
-                        Element hostNameElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
-                        if (hostNameElement != null)
-                        {
-                            String hostNameInstance;
-                            hostNameInstance = hostNameElement.getTextContent();
-                            configurationSetInstance.setHostName(hostNameInstance);
-                        }
-                        
-                        NodeList elements55 = configurationSetsElement.getElementsByTagName("UserName");
-                        Element userNameElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
-                        if (userNameElement != null)
-                        {
-                            String userNameInstance;
-                            userNameInstance = userNameElement.getTextContent();
-                            configurationSetInstance.setUserName(userNameInstance);
-                        }
-                        
-                        NodeList elements56 = configurationSetsElement.getElementsByTagName("UserPassword");
-                        Element userPasswordElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
-                        if (userPasswordElement != null)
-                        {
-                            String userPasswordInstance;
-                            userPasswordInstance = userPasswordElement.getTextContent();
-                            configurationSetInstance.setUserPassword(userPasswordInstance);
-                        }
-                        
-                        NodeList elements57 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                        Element disableSshPasswordAuthenticationElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
-                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
-                        {
-                            boolean disableSshPasswordAuthenticationInstance;
-                            disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
-                            configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
-                        }
-                        
-                        NodeList elements58 = configurationSetsElement.getElementsByTagName("SSH");
-                        Element sSHElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
-                        if (sSHElement != null)
-                        {
-                            SshSettings sSHInstance = new SshSettings();
-                            configurationSetInstance.setSshSettings(sSHInstance);
-                            
-                            NodeList elements59 = sSHElement.getElementsByTagName("PublicKeys");
-                            Element publicKeysSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
-                            if (publicKeysSequenceElement != null)
-                            {
-                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
-                                {
-                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
-                                    SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                    sSHInstance.getPublicKeys().add(publicKeyInstance);
-                                    
-                                    NodeList elements60 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                    Element fingerprintElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
-                                    if (fingerprintElement != null)
-                                    {
-                                        String fingerprintInstance;
-                                        fingerprintInstance = fingerprintElement.getTextContent();
-                                        publicKeyInstance.setFingerprint(fingerprintInstance);
-                                    }
-                                    
-                                    NodeList elements61 = publicKeysElement.getElementsByTagName("Path");
-                                    Element pathElement2 = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
-                                    if (pathElement2 != null)
-                                    {
-                                        String pathInstance2;
-                                        pathInstance2 = pathElement2.getTextContent();
-                                        publicKeyInstance.setPath(pathInstance2);
-                                    }
-                                }
-                            }
-                            
-                            NodeList elements62 = sSHElement.getElementsByTagName("KeyPairs");
-                            Element keyPairsSequenceElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
-                            if (keyPairsSequenceElement != null)
-                            {
-                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
-                                {
-                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
-                                    SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                    sSHInstance.getKeyPairs().add(keyPairInstance);
-                                    
-                                    NodeList elements63 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                    Element fingerprintElement2 = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
-                                    if (fingerprintElement2 != null)
-                                    {
-                                        String fingerprintInstance2;
-                                        fingerprintInstance2 = fingerprintElement2.getTextContent();
-                                        keyPairInstance.setFingerprint(fingerprintInstance2);
-                                    }
-                                    
-                                    NodeList elements64 = keyPairsElement.getElementsByTagName("Path");
-                                    Element pathElement3 = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
-                                    if (pathElement3 != null)
-                                    {
-                                        String pathInstance3;
-                                        pathInstance3 = pathElement3.getTextContent();
-                                        keyPairInstance.setPath(pathInstance3);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                NodeList elements65 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
-                Element dataVirtualHardDisksSequenceElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
-                if (dataVirtualHardDisksSequenceElement != null)
-                {
-                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
-                    {
-                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
-                        DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                        result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
-                        
-                        NodeList elements66 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                        Element hostCachingElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
-                        if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
-                        {
-                            VirtualHardDiskHostCaching hostCachingInstance;
-                            hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
-                            dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
-                        }
-                        
-                        NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                        Element diskLabelElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
-                        if (diskLabelElement != null)
-                        {
-                            String diskLabelInstance;
-                            diskLabelInstance = diskLabelElement.getTextContent();
-                            dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
-                        }
-                        
-                        NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                        Element diskNameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
-                        if (diskNameElement != null)
-                        {
-                            String diskNameInstance;
-                            diskNameInstance = diskNameElement.getTextContent();
-                            dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
-                        }
-                        
-                        NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                        Element lunElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
-                        if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
-                        {
-                            int lunInstance;
-                            lunInstance = Integer.parseInt(lunElement.getTextContent());
-                            dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
-                        }
-                        
-                        NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                        Element logicalDiskSizeInGBElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
-                        if (logicalDiskSizeInGBElement != null)
-                        {
-                            int logicalDiskSizeInGBInstance;
-                            logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
-                            dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
-                        }
-                        
-                        NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                        Element mediaLinkElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
-                        if (mediaLinkElement != null)
-                        {
-                            URI mediaLinkInstance;
-                            mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                            dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
-                        }
-                    }
-                }
-                
-                NodeList elements72 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
-                Element oSVirtualHardDiskElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
-                if (oSVirtualHardDiskElement != null)
-                {
-                    OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                    result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-                    
-                    NodeList elements73 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                    Element hostCachingElement2 = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
-                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualHardDiskHostCaching hostCachingInstance2;
-                        hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
-                        oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                     }
                     
-                    NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                    Element diskLabelElement2 = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
-                    if (diskLabelElement2 != null)
+                    NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                    Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                    if (subnetNamesSequenceElement != null)
                     {
-                        String diskLabelInstance2;
-                        diskLabelInstance2 = diskLabelElement2.getTextContent();
-                        oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                        for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
+                        {
+                            org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
+                            configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
+                        }
                     }
                     
-                    NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                    Element diskNameElement2 = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
-                    if (diskNameElement2 != null)
+                    NodeList elements31 = configurationSetsElement.getElementsByTagName("ComputerName");
+                    Element computerNameElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                    if (computerNameElement != null)
                     {
-                        String diskNameInstance2;
-                        diskNameInstance2 = diskNameElement2.getTextContent();
-                        oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                        String computerNameInstance;
+                        computerNameInstance = computerNameElement.getTextContent();
+                        configurationSetInstance.setComputerName(computerNameInstance);
                     }
                     
-                    NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                    Element mediaLinkElement2 = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
-                    if (mediaLinkElement2 != null)
+                    NodeList elements32 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                    Element adminPasswordElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+                    if (adminPasswordElement != null)
                     {
-                        URI mediaLinkInstance2;
-                        mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
-                        oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
+                        String adminPasswordInstance;
+                        adminPasswordInstance = adminPasswordElement.getTextContent();
+                        configurationSetInstance.setAdminPassword(adminPasswordInstance);
                     }
                     
-                    NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                    Element sourceImageNameElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
-                    if (sourceImageNameElement != null)
+                    NodeList elements33 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                    Element resetPasswordOnFirstLogonElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+                    if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                     {
-                        String sourceImageNameInstance;
-                        sourceImageNameInstance = sourceImageNameElement.getTextContent();
-                        oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
+                        boolean resetPasswordOnFirstLogonInstance;
+                        resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                        configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                     }
                     
-                    NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                    Element osElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
-                    if (osElement != null)
+                    NodeList elements34 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                    Element enableAutomaticUpdatesElement = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+                    if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
                     {
-                        String osInstance;
-                        osInstance = osElement.getTextContent();
-                        oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                        boolean enableAutomaticUpdatesInstance;
+                        enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                        configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                    }
+                    
+                    NodeList elements35 = configurationSetsElement.getElementsByTagName("TimeZone");
+                    Element timeZoneElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+                    if (timeZoneElement != null)
+                    {
+                        String timeZoneInstance;
+                        timeZoneInstance = timeZoneElement.getTextContent();
+                        configurationSetInstance.setTimeZone(timeZoneInstance);
+                    }
+                    
+                    NodeList elements36 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                    Element domainJoinElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                    if (domainJoinElement != null)
+                    {
+                        DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
+                        configurationSetInstance.setDomainJoin(domainJoinInstance);
+                        
+                        NodeList elements37 = domainJoinElement.getElementsByTagName("Credentials");
+                        Element credentialsElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
+                        if (credentialsElement != null)
+                        {
+                            DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
+                            domainJoinInstance.setCredentials(credentialsInstance);
+                            
+                            NodeList elements38 = credentialsElement.getElementsByTagName("Domain");
+                            Element domainElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
+                            if (domainElement != null)
+                            {
+                                String domainInstance;
+                                domainInstance = domainElement.getTextContent();
+                                credentialsInstance.setDomain(domainInstance);
+                            }
+                            
+                            NodeList elements39 = credentialsElement.getElementsByTagName("Username");
+                            Element usernameElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                            if (usernameElement != null)
+                            {
+                                String usernameInstance;
+                                usernameInstance = usernameElement.getTextContent();
+                                credentialsInstance.setUserName(usernameInstance);
+                            }
+                            
+                            NodeList elements40 = credentialsElement.getElementsByTagName("Password");
+                            Element passwordElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
+                            if (passwordElement != null)
+                            {
+                                String passwordInstance;
+                                passwordInstance = passwordElement.getTextContent();
+                                credentialsInstance.setPassword(passwordInstance);
+                            }
+                        }
+                        
+                        NodeList elements41 = domainJoinElement.getElementsByTagName("JoinDomain");
+                        Element joinDomainElement = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
+                        if (joinDomainElement != null)
+                        {
+                            String joinDomainInstance;
+                            joinDomainInstance = joinDomainElement.getTextContent();
+                            domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                        }
+                        
+                        NodeList elements42 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                        Element machineObjectOUElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                        if (machineObjectOUElement != null)
+                        {
+                            String machineObjectOUInstance;
+                            machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                            domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                        }
+                        
+                        NodeList elements43 = domainJoinElement.getElementsByTagName("Provisioning");
+                        Element provisioningElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
+                        if (provisioningElement != null)
+                        {
+                            DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
+                            domainJoinInstance.setProvisioning(provisioningInstance);
+                            
+                            NodeList elements44 = provisioningElement.getElementsByTagName("AccountData");
+                            Element accountDataElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
+                            if (accountDataElement != null)
+                            {
+                                String accountDataInstance;
+                                accountDataInstance = accountDataElement.getTextContent();
+                                provisioningInstance.setAccountData(accountDataInstance);
+                            }
+                        }
+                    }
+                    
+                    NodeList elements45 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                    Element storedCertificateSettingsSequenceElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+                    if (storedCertificateSettingsSequenceElement != null)
+                    {
+                        for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
+                        {
+                            org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
+                            StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
+                            configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
+                            
+                            NodeList elements46 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                            Element storeLocationElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+                            if (storeLocationElement != null)
+                            {
+                            }
+                            
+                            NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                            Element storeNameElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+                            if (storeNameElement != null)
+                            {
+                                String storeNameInstance;
+                                storeNameInstance = storeNameElement.getTextContent();
+                                certificateSettingInstance.setStoreName(storeNameInstance);
+                            }
+                            
+                            NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                            Element thumbprintElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
+                            if (thumbprintElement != null)
+                            {
+                                String thumbprintInstance;
+                                thumbprintInstance = thumbprintElement.getTextContent();
+                                certificateSettingInstance.setThumbprint(thumbprintInstance);
+                            }
+                        }
+                    }
+                    
+                    NodeList elements49 = configurationSetsElement.getElementsByTagName("WinRM");
+                    Element winRMElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
+                    if (winRMElement != null)
+                    {
+                        WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
+                        configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                        
+                        NodeList elements50 = winRMElement.getElementsByTagName("Listeners");
+                        Element listenersSequenceElement = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
+                        if (listenersSequenceElement != null)
+                        {
+                            for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
+                            {
+                                org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i6));
+                                WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
+                                winRMInstance.getListeners().add(listenerInstance);
+                                
+                                NodeList elements51 = listenersElement.getElementsByTagName("Protocol");
+                                Element protocolElement3 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
+                                if (protocolElement3 != null)
+                                {
+                                    VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
+                                    protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
+                                    listenerInstance.setListenerType(protocolInstance3);
+                                }
+                                
+                                NodeList elements52 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                Element certificateThumbprintElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
+                                if (certificateThumbprintElement != null)
+                                {
+                                    String certificateThumbprintInstance;
+                                    certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                    listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                }
+                            }
+                        }
+                    }
+                    
+                    NodeList elements53 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                    Element adminUsernameElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
+                    if (adminUsernameElement != null)
+                    {
+                        String adminUsernameInstance;
+                        adminUsernameInstance = adminUsernameElement.getTextContent();
+                        configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                    }
+                    
+                    NodeList elements54 = configurationSetsElement.getElementsByTagName("HostName");
+                    Element hostNameElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
+                    if (hostNameElement != null)
+                    {
+                        String hostNameInstance;
+                        hostNameInstance = hostNameElement.getTextContent();
+                        configurationSetInstance.setHostName(hostNameInstance);
+                    }
+                    
+                    NodeList elements55 = configurationSetsElement.getElementsByTagName("UserName");
+                    Element userNameElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
+                    if (userNameElement != null)
+                    {
+                        String userNameInstance;
+                        userNameInstance = userNameElement.getTextContent();
+                        configurationSetInstance.setUserName(userNameInstance);
+                    }
+                    
+                    NodeList elements56 = configurationSetsElement.getElementsByTagName("UserPassword");
+                    Element userPasswordElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
+                    if (userPasswordElement != null)
+                    {
+                        String userPasswordInstance;
+                        userPasswordInstance = userPasswordElement.getTextContent();
+                        configurationSetInstance.setUserPassword(userPasswordInstance);
+                    }
+                    
+                    NodeList elements57 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                    Element disableSshPasswordAuthenticationElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
+                    if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        boolean disableSshPasswordAuthenticationInstance;
+                        disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                        configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                    }
+                    
+                    NodeList elements58 = configurationSetsElement.getElementsByTagName("SSH");
+                    Element sSHElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
+                    if (sSHElement != null)
+                    {
+                        SshSettings sSHInstance = new SshSettings();
+                        configurationSetInstance.setSshSettings(sSHInstance);
+                        
+                        NodeList elements59 = sSHElement.getElementsByTagName("PublicKeys");
+                        Element publicKeysSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
+                        if (publicKeysSequenceElement != null)
+                        {
+                            for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
+                            {
+                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
+                                SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
+                                sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                
+                                NodeList elements60 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                Element fingerprintElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
+                                if (fingerprintElement != null)
+                                {
+                                    String fingerprintInstance;
+                                    fingerprintInstance = fingerprintElement.getTextContent();
+                                    publicKeyInstance.setFingerprint(fingerprintInstance);
+                                }
+                                
+                                NodeList elements61 = publicKeysElement.getElementsByTagName("Path");
+                                Element pathElement2 = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
+                                if (pathElement2 != null)
+                                {
+                                    String pathInstance2;
+                                    pathInstance2 = pathElement2.getTextContent();
+                                    publicKeyInstance.setPath(pathInstance2);
+                                }
+                            }
+                        }
+                        
+                        NodeList elements62 = sSHElement.getElementsByTagName("KeyPairs");
+                        Element keyPairsSequenceElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
+                        if (keyPairsSequenceElement != null)
+                        {
+                            for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
+                            {
+                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
+                                SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
+                                sSHInstance.getKeyPairs().add(keyPairInstance);
+                                
+                                NodeList elements63 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                Element fingerprintElement2 = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
+                                if (fingerprintElement2 != null)
+                                {
+                                    String fingerprintInstance2;
+                                    fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                    keyPairInstance.setFingerprint(fingerprintInstance2);
+                                }
+                                
+                                NodeList elements64 = keyPairsElement.getElementsByTagName("Path");
+                                Element pathElement3 = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
+                                if (pathElement3 != null)
+                                {
+                                    String pathInstance3;
+                                    pathInstance3 = pathElement3.getTextContent();
+                                    keyPairInstance.setPath(pathInstance3);
+                                }
+                            }
+                        }
                     }
                 }
             }
             
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            NodeList elements65 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
+            Element dataVirtualHardDisksSequenceElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
+            if (dataVirtualHardDisksSequenceElement != null)
             {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+                for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
+                {
+                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
+                    DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
+                    result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
+                    
+                    NodeList elements66 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                    Element hostCachingElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
+                    if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        VirtualHardDiskHostCaching hostCachingInstance;
+                        hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                        dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
+                    }
+                    
+                    NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                    Element diskLabelElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
+                    if (diskLabelElement != null)
+                    {
+                        String diskLabelInstance;
+                        diskLabelInstance = diskLabelElement.getTextContent();
+                        dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
+                    }
+                    
+                    NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                    Element diskNameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
+                    if (diskNameElement != null)
+                    {
+                        String diskNameInstance;
+                        diskNameInstance = diskNameElement.getTextContent();
+                        dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                    }
+                    
+                    NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                    Element lunElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
+                    if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        int lunInstance;
+                        lunInstance = Integer.parseInt(lunElement.getTextContent());
+                        dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
+                    }
+                    
+                    NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                    Element logicalDiskSizeInGBElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
+                    if (logicalDiskSizeInGBElement != null)
+                    {
+                        int logicalDiskSizeInGBInstance;
+                        logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                        dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                    }
+                    
+                    NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                    Element mediaLinkElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
+                    if (mediaLinkElement != null)
+                    {
+                        URI mediaLinkInstance;
+                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                        dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                    }
+                }
             }
             
-            return result;
+            NodeList elements72 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
+            Element oSVirtualHardDiskElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
+            if (oSVirtualHardDiskElement != null)
+            {
+                OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
+                result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                
+                NodeList elements73 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                Element hostCachingElement2 = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
+                if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
+                {
+                    VirtualHardDiskHostCaching hostCachingInstance2;
+                    hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                    oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
+                }
+                
+                NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                Element diskLabelElement2 = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
+                if (diskLabelElement2 != null)
+                {
+                    String diskLabelInstance2;
+                    diskLabelInstance2 = diskLabelElement2.getTextContent();
+                    oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                }
+                
+                NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                Element diskNameElement2 = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
+                if (diskNameElement2 != null)
+                {
+                    String diskNameInstance2;
+                    diskNameInstance2 = diskNameElement2.getTextContent();
+                    oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                }
+                
+                NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                Element mediaLinkElement2 = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
+                if (mediaLinkElement2 != null)
+                {
+                    URI mediaLinkInstance2;
+                    mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                    oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
+                }
+                
+                NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                Element sourceImageNameElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
+                if (sourceImageNameElement != null)
+                {
+                    String sourceImageNameInstance;
+                    sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                    oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
+                }
+                
+                NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                Element osElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
+                if (osElement != null)
+                {
+                    String osInstance;
+                    osInstance = osElement.getTextContent();
+                    oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                }
+            }
         }
-        finally
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -5017,11 +4909,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetRemoteDesktopFileResponse>() { @Override
-        public VirtualMachineGetRemoteDesktopFileResponse call() throws Exception, Exception
-        {
-            return getRemoteDesktopFile(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetRemoteDesktopFileResponse>() { 
+            @Override
+            public VirtualMachineGetRemoteDesktopFileResponse call() throws Exception
+            {
+                return getRemoteDesktopFile(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -5066,38 +4959,28 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            VirtualMachineGetRemoteDesktopFileResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineGetRemoteDesktopFileResponse();
-            result.setRemoteDesktopFile(responseContent.getBytes("UTF-8"));
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        VirtualMachineGetRemoteDesktopFileResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineGetRemoteDesktopFileResponse();
+        result.setRemoteDesktopFile(StreamUtils.toString(responseContent).getBytes("UTF-8"));
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -5121,11 +5004,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> restartAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return restart(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return restart(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -5148,17 +5032,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName)
+    public ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginRestartingAsync(serviceName, deploymentName, virtualMachineName);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginRestartingAsync(serviceName, deploymentName, virtualMachineName).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5195,11 +5079,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> shutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return shutdown(serviceName, deploymentName, virtualMachineName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return shutdown(serviceName, deploymentName, virtualMachineName, parameters);
+            }
          });
     }
     
@@ -5223,17 +5108,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters)
+    public ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5268,11 +5153,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> shutdownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return shutdownRoles(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return shutdownRoles(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -5294,17 +5180,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters)
+    public ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5340,11 +5226,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> startAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return start(serviceName, deploymentName, virtualMachineName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return start(serviceName, deploymentName, virtualMachineName);
+            }
          });
     }
     
@@ -5367,17 +5254,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName)
+    public ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginStartingAsync(serviceName, deploymentName, virtualMachineName);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginStartingAsync(serviceName, deploymentName, virtualMachineName).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5411,11 +5298,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> startRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return startRoles(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return startRoles(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -5436,17 +5324,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters)
+    public ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginStartingRolesAsync(serviceName, deploymentName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginStartingRolesAsync(serviceName, deploymentName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5485,11 +5373,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return update(serviceName, deploymentName, virtualMachineName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return update(serviceName, deploymentName, virtualMachineName, parameters);
+            }
          });
     }
     
@@ -5515,17 +5404,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -5563,11 +5452,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     @Override
     public Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return updateLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return updateLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
+            }
          });
     }
     
@@ -5592,17 +5482,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters)
+    public ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getVirtualMachines().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getVirtualMachines().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         

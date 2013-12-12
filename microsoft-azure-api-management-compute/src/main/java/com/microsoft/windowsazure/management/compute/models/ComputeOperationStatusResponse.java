@@ -21,9 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse.ErrorDetails;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
+import com.microsoft.windowsazure.management.OperationResponse;
 
 /**
 * The response body contains the status of the specified asynchronous

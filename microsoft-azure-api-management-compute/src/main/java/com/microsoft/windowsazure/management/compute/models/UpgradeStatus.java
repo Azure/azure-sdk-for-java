@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.DeploymentUpgradeType;
-import com.microsoft.windowsazure.management.compute.models.UpgradeDomainState;
 
 /**
 * Contains upgrade details of the deployment.

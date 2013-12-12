@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
 
 /**
 * Parameters supplied to the Create Service Certificate operation.

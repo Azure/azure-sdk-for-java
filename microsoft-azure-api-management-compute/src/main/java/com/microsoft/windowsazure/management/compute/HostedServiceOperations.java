@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.OperationResponse;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceAddExtensionParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCheckNameAvailabilityResponse;
@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -74,7 +75,7 @@ public interface HostedServiceOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters);
+    ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Add Extension operation adds an available extension to your cloud
@@ -195,7 +196,7 @@ public interface HostedServiceOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse create(HostedServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
+    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
     
     /**
     * The Create Hosted Service operation creates a new cloud service in
@@ -220,7 +221,7 @@ public interface HostedServiceOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String serviceName) throws IOException, ServiceException;
+    OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
@@ -253,7 +254,7 @@ public interface HostedServiceOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId);
+    ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Extension operation deletes the specified extension from a
@@ -436,7 +437,7 @@ public interface HostedServiceOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException;
+    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Hosted Service operation can update the label or description

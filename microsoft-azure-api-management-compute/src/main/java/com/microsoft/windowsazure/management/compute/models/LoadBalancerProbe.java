@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 
 /**
 * Contains properties that specify the endpoint settings which the Windows

@@ -21,9 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
-import com.microsoft.windowsazure.management.compute.models.DnsSettings;
-import com.microsoft.windowsazure.management.compute.models.Role;
 import java.util.ArrayList;
 
 /**

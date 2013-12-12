@@ -21,14 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.compute.DeploymentOperations;
-import com.microsoft.windowsazure.management.compute.HostedServiceOperations;
-import com.microsoft.windowsazure.management.compute.OperatingSystemOperations;
-import com.microsoft.windowsazure.management.compute.ServiceCertificateOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineDiskOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineImageOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineOperations;
+import com.microsoft.windowsazure.management.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import java.io.IOException;

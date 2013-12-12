@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
-import com.microsoft.windowsazure.management.compute.models.PostCaptureAction;
 
 /**
 * Parameters supplied to the Capture Virtual Machine operation.

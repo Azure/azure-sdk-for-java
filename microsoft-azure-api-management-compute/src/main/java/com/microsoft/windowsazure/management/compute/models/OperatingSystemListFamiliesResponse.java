@@ -21,9 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse.OperatingSystem;
-import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse.OperatingSystemFamily;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 

@@ -21,9 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.InstanceEndpoint;
-import com.microsoft.windowsazure.management.compute.models.RoleInstancePowerState;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
 import java.net.InetAddress;
 import java.util.ArrayList;
 

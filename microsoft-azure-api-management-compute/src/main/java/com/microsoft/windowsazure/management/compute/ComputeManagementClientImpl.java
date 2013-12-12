@@ -21,27 +21,10 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.ManagementConfiguration;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClient;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl;
-import com.microsoft.windowsazure.management.compute.DeploymentOperations;
-import com.microsoft.windowsazure.management.compute.DeploymentOperationsImpl;
-import com.microsoft.windowsazure.management.compute.HostedServiceOperations;
-import com.microsoft.windowsazure.management.compute.HostedServiceOperationsImpl;
-import com.microsoft.windowsazure.management.compute.OperatingSystemOperations;
-import com.microsoft.windowsazure.management.compute.OperatingSystemOperationsImpl;
-import com.microsoft.windowsazure.management.compute.ServiceCertificateOperations;
-import com.microsoft.windowsazure.management.compute.ServiceCertificateOperationsImpl;
-import com.microsoft.windowsazure.management.compute.VirtualMachineDiskOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineDiskOperationsImpl;
-import com.microsoft.windowsazure.management.compute.VirtualMachineImageOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineImageOperationsImpl;
-import com.microsoft.windowsazure.management.compute.VirtualMachineOperations;
-import com.microsoft.windowsazure.management.compute.VirtualMachineOperationsImpl;
+import com.microsoft.windowsazure.management.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse.ErrorDetails;
 import com.microsoft.windowsazure.management.compute.models.HostingResources;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OperationStatus;
@@ -256,11 +239,12 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     @Override
     public Future<ComputeOperationStatusResponse> getOperationStatusAsync(final String requestId)
     {
-        return this.getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception
-        {
-            return getOperationStatus(requestId);
-        }
+        return this.getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return getOperationStatus(requestId);
+            }
          });
     }
     
@@ -286,7 +270,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException
+    public ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (requestId == null)
@@ -307,98 +291,88 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            ComputeOperationStatusResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ComputeOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (operationElement != null)
-            {
-                NodeList elements2 = operationElement.getElementsByTagName("ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (idElement != null)
-                {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
-                
-                NodeList elements3 = operationElement.getElementsByTagName("Status");
-                Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (statusElement != null)
-                {
-                    OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (httpStatusCodeElement != null)
-                {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                NodeList elements5 = operationElement.getElementsByTagName("Error");
-                Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (errorElement != null)
-                {
-                    ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    NodeList elements6 = errorElement.getElementsByTagName("Code");
-                    Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                    if (codeElement != null)
-                    {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
-                    }
-                    
-                    NodeList elements7 = errorElement.getElementsByTagName("Message");
-                    Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
-                    }
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        ComputeOperationStatusResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new ComputeOperationStatusResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("Operation");
+        Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (operationElement != null)
         {
-            if (httpResponse != null)
+            NodeList elements2 = operationElement.getElementsByTagName("ID");
+            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (idElement != null)
             {
-                httpResponse.close();
+                String idInstance;
+                idInstance = idElement.getTextContent();
+                result.setId(idInstance);
+            }
+            
+            NodeList elements3 = operationElement.getElementsByTagName("Status");
+            Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            if (statusElement != null)
+            {
+                OperationStatus statusInstance;
+                statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                result.setStatus(statusInstance);
+            }
+            
+            NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
+            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            if (httpStatusCodeElement != null)
+            {
+                Integer httpStatusCodeInstance;
+                httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                result.setHttpStatusCode(httpStatusCodeInstance);
+            }
+            
+            NodeList elements5 = operationElement.getElementsByTagName("Error");
+            Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            if (errorElement != null)
+            {
+                ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
+                result.setError(errorInstance);
+                
+                NodeList elements6 = errorElement.getElementsByTagName("Code");
+                Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                if (codeElement != null)
+                {
+                    String codeInstance;
+                    codeInstance = codeElement.getTextContent();
+                    errorInstance.setCode(codeInstance);
+                }
+                
+                NodeList elements7 = errorElement.getElementsByTagName("Message");
+                Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                if (messageElement != null)
+                {
+                    String messageInstance;
+                    messageInstance = messageElement.getTextContent();
+                    errorInstance.setMessage(messageInstance);
+                }
             }
         }
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        }
+        
+        return result;
     }
     
     /**
@@ -411,11 +385,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     {
         if (value == "pfx")
         {
-            return CertificateFormat.getPfx();
+            return CertificateFormat.Pfx;
         }
         if (value == "cer")
         {
-            return CertificateFormat.getCer();
+            return CertificateFormat.Cer;
         }
         throw new IllegalArgumentException("value");
     }
@@ -428,11 +402,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static String certificateFormatToString(CertificateFormat value)
     {
-        if (value == CertificateFormat.getPfx())
+        if (value == CertificateFormat.Pfx)
         {
             return "pfx";
         }
-        if (value == CertificateFormat.getCer())
+        if (value == CertificateFormat.Cer)
         {
             return "cer";
         }
@@ -449,15 +423,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     {
         if (value == "WebRole")
         {
-            return HostingResources.getWebRole();
+            return HostingResources.WebRole;
         }
         if (value == "WorkerRole")
         {
-            return HostingResources.getWorkerRole();
+            return HostingResources.WorkerRole;
         }
         if (value == "WebRole|WorkerRole")
         {
-            return HostingResources.getWebOrWorkerRole();
+            return HostingResources.WebOrWorkerRole;
         }
         throw new IllegalArgumentException("value");
     }
@@ -470,15 +444,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static String hostingResourcesToString(HostingResources value)
     {
-        if (value == HostingResources.getWebRole())
+        if (value == HostingResources.WebRole)
         {
             return "WebRole";
         }
-        if (value == HostingResources.getWorkerRole())
+        if (value == HostingResources.WorkerRole)
         {
             return "WorkerRole";
         }
-        if (value == HostingResources.getWebOrWorkerRole())
+        if (value == HostingResources.WebOrWorkerRole)
         {
             return "WebRole|WorkerRole";
         }
@@ -495,11 +469,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     {
         if (value == "tcp")
         {
-            return LoadBalancerProbeTransportProtocol.getTcp();
+            return LoadBalancerProbeTransportProtocol.Tcp;
         }
         if (value == "http")
         {
-            return LoadBalancerProbeTransportProtocol.getHttp();
+            return LoadBalancerProbeTransportProtocol.Http;
         }
         throw new IllegalArgumentException("value");
     }
@@ -512,11 +486,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value)
     {
-        if (value == LoadBalancerProbeTransportProtocol.getTcp())
+        if (value == LoadBalancerProbeTransportProtocol.Tcp)
         {
             return "tcp";
         }
-        if (value == LoadBalancerProbeTransportProtocol.getHttp())
+        if (value == LoadBalancerProbeTransportProtocol.Http)
         {
             return "http";
         }
@@ -533,11 +507,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     {
         if (value == "auto")
         {
-            return RollbackUpdateOrUpgradeMode.getAuto();
+            return RollbackUpdateOrUpgradeMode.Auto;
         }
         if (value == "manual")
         {
-            return RollbackUpdateOrUpgradeMode.getManual();
+            return RollbackUpdateOrUpgradeMode.Manual;
         }
         throw new IllegalArgumentException("value");
     }
@@ -550,11 +524,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static String rollbackUpdateOrUpgradeModeToString(RollbackUpdateOrUpgradeMode value)
     {
-        if (value == RollbackUpdateOrUpgradeMode.getAuto())
+        if (value == RollbackUpdateOrUpgradeMode.Auto)
         {
             return "auto";
         }
-        if (value == RollbackUpdateOrUpgradeMode.getManual())
+        if (value == RollbackUpdateOrUpgradeMode.Manual)
         {
             return "manual";
         }

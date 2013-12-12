@@ -21,9 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
-import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint;
 import java.net.InetAddress;
 import java.util.ArrayList;
 

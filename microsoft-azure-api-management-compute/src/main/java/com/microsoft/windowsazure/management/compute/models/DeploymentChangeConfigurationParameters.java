@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationMode;
-import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration;
 import java.util.HashMap;
 
 /**
@@ -44,7 +42,7 @@ public class DeploymentChangeConfigurationParameters
     */
     public void setConfiguration(String configuration) { this.configuration = configuration; }
     
-    private HashMap extendedProperties;
+    private HashMap<String, String> extendedProperties;
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
@@ -57,7 +55,7 @@ public class DeploymentChangeConfigurationParameters
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
     */
-    public HashMap getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
@@ -70,7 +68,7 @@ public class DeploymentChangeConfigurationParameters
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
     */
-    public void setExtendedProperties(HashMap extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
     
     private ExtensionConfiguration extensionConfiguration;
     

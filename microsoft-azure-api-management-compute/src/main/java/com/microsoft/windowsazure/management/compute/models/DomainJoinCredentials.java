@@ -34,7 +34,7 @@ public class DomainJoinCredentials
     * account. The value is a fully qualified DNS domain.  If the domains name
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
-    * fully-qualified-DNS-domain\username format.  Example: example.com
+    * fully-qualified-DNS-domain\\username format.  Example: example.com
     */
     public String getDomain() { return this.domain; }
     
@@ -43,7 +43,7 @@ public class DomainJoinCredentials
     * account. The value is a fully qualified DNS domain.  If the domains name
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
-    * fully-qualified-DNS-domain\username format.  Example: example.com
+    * fully-qualified-DNS-domain\\username format.  Example: example.com
     */
     public void setDomain(String domain) { this.domain = domain; }
     

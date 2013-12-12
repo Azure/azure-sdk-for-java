@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineWindowsRemoteManagementListenerType;
 
 /**
 * Contains the type and certificate information for the listener.

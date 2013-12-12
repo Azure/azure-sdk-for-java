@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.SshSettingKeyPair;
-import com.microsoft.windowsazure.management.compute.models.SshSettingPublicKey;
 import java.util.ArrayList;
 
 /**

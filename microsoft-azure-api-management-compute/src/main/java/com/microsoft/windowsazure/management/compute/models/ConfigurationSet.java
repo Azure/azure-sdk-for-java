@@ -21,11 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.DomainJoinSettings;
-import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
-import com.microsoft.windowsazure.management.compute.models.SshSettings;
-import com.microsoft.windowsazure.management.compute.models.StoredCertificateSettings;
-import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementSettings;
 import java.util.ArrayList;
 
 /**
@@ -238,11 +233,11 @@ public class ConfigurationSet
     * is only used with the WindowsProvisioningConfiguration set.  For a
     * complete list of supported time zone entries, you can:  Refer to the
     * values listed in the registry entry
-    * HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-    * Zones on a computer running Windows 7, Windows Server 2008, and Windows
-    * Server 2008 R2.  You can use the tzutil command-line tool to list the
-    * valid time. The tzutil tool is installed by default on Windows 7,
-    * Windows Server 2008, and Windows Server 2008 R2.
+    * HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows
+    * NT\\CurrentVersion\\Time Zones on a computer running Windows 7, Windows
+    * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
+    * command-line tool to list the valid time. The tzutil tool is installed
+    * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     */
     public String getTimeZone() { return this.timeZone; }
     
@@ -251,11 +246,11 @@ public class ConfigurationSet
     * is only used with the WindowsProvisioningConfiguration set.  For a
     * complete list of supported time zone entries, you can:  Refer to the
     * values listed in the registry entry
-    * HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-    * Zones on a computer running Windows 7, Windows Server 2008, and Windows
-    * Server 2008 R2.  You can use the tzutil command-line tool to list the
-    * valid time. The tzutil tool is installed by default on Windows 7,
-    * Windows Server 2008, and Windows Server 2008 R2.
+    * HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows
+    * NT\\CurrentVersion\\Time Zones on a computer running Windows 7, Windows
+    * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
+    * command-line tool to list the valid time. The tzutil tool is installed
+    * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     */
     public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
     

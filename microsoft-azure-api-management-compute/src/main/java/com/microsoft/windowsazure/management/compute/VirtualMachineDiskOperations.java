@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.OperationResponse;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDataDiskParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskResponse;

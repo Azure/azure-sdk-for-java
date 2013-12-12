@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
 import java.net.URI;
 import java.util.Calendar;
 

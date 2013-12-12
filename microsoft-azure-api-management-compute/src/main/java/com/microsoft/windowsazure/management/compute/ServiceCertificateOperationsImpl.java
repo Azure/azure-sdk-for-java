@@ -21,11 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsAzure.services.core.ServiceException;
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClient;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl;
-import com.microsoft.windowsazure.management.compute.ServiceCertificateOperations;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
@@ -33,9 +29,9 @@ import com.microsoft.windowsazure.management.compute.models.ServiceCertificateDe
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateGetParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateGetResponse;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateListResponse;
-import com.microsoft.windowsazure.management.compute.models.ServiceCertificateListResponse.Certificate;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -44,6 +40,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,7 +53,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -107,11 +103,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<OperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginCreating(serviceName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginCreating(serviceName, parameters);
+            }
          });
     }
     
@@ -130,7 +127,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -196,34 +193,24 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -243,11 +230,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<OperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return beginDeleting(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginDeleting(parameters);
+            }
          });
     }
     
@@ -293,41 +281,31 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + parameters.getServiceName() + "/certificates/" + parameters.getThumbprintAlgorithm() + "-" + parameters.getThumbprint();
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 202)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 202)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -355,11 +333,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return create(serviceName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return create(serviceName, parameters);
+            }
          });
     }
     
@@ -386,17 +365,17 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getServiceCertificates().beginCreatingAsync(serviceName, parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getServiceCertificates().beginCreatingAsync(serviceName, parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -435,11 +414,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<ComputeOperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { @Override
-        public ComputeOperationStatusResponse call() throws Exception, Exception
-        {
-            return delete(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception
+            {
+                return delete(parameters);
+            }
          });
     }
     
@@ -465,17 +445,17 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException
+    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         
-        OperationResponse response = client2.getServiceCertificates().beginDeletingAsync(parameters);
-        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId());
+        OperationResponse response = client2.getServiceCertificates().beginDeletingAsync(parameters).get();
+        ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
         int delayInSeconds = 30;
         while ((result.getStatus() != OperationStatus.InProgress) == false)
         {
             Thread.sleep(delayInSeconds * 1000);
-            result = client2.getOperationStatusAsync(response.getRequestId());
+            result = client2.getOperationStatusAsync(response.getRequestId()).get();
             delayInSeconds = 30;
         }
         
@@ -503,11 +483,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<ServiceCertificateGetResponse> getAsync(final ServiceCertificateGetParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateGetResponse>() { @Override
-        public ServiceCertificateGetResponse call() throws Exception, Exception
-        {
-            return get(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateGetResponse>() { 
+            @Override
+            public ServiceCertificateGetResponse call() throws Exception
+            {
+                return get(parameters);
+            }
          });
     }
     
@@ -522,7 +503,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The Get Service Certificate operation response.
     */
     @Override
-    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException
+    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (parameters == null)
@@ -556,54 +537,44 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            ServiceCertificateGetResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceCertificateGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("Certificate");
-            Element certificateElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (certificateElement != null)
-            {
-                NodeList elements2 = certificateElement.getElementsByTagName("Data");
-                Element dataElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (dataElement != null)
-                {
-                    byte[] dataInstance;
-                    dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
-                    result.setData(dataInstance);
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        ServiceCertificateGetResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new ServiceCertificateGetResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("Certificate");
+        Element certificateElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (certificateElement != null)
         {
-            if (httpResponse != null)
+            NodeList elements2 = certificateElement.getElementsByTagName("Data");
+            Element dataElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (dataElement != null)
             {
-                httpResponse.close();
+                byte[] dataInstance;
+                dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                result.setData(dataInstance);
             }
         }
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        }
+        
+        return result;
     }
     
     /**
@@ -618,11 +589,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     @Override
     public Future<ServiceCertificateListResponse> listAsync(final String serviceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateListResponse>() { @Override
-        public ServiceCertificateListResponse call() throws Exception, Exception
-        {
-            return list(serviceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateListResponse>() { 
+            @Override
+            public ServiceCertificateListResponse call() throws Exception
+            {
+                return list(serviceName);
+            }
          });
     }
     
@@ -636,7 +608,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The List Service Certificates operation response.
     */
     @Override
-    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException
+    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (serviceName == null)
@@ -658,87 +630,77 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
+        }
+        
+        // Create Result
+        ServiceCertificateListResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new ServiceCertificateListResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("Certificates");
+        Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (certificatesSequenceElement != null)
+        {
+            for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1)
             {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            ServiceCertificateListResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("Certificates");
-            Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (certificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1)
+                org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element)certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
+                ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
+                result.getCertificates().add(certificateInstance);
+                
+                NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
+                Element certificateUrlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                if (certificateUrlElement != null)
                 {
-                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element)certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
-                    ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
-                    result.getCertificates().add(certificateInstance);
-                    
-                    NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
-                    Element certificateUrlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                    if (certificateUrlElement != null)
-                    {
-                        URI certificateUrlInstance;
-                        certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
-                        certificateInstance.setCertificateUri(certificateUrlInstance);
-                    }
-                    
-                    NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
-                        String thumbprintInstance;
-                        thumbprintInstance = thumbprintElement.getTextContent();
-                        certificateInstance.setThumbprint(thumbprintInstance);
-                    }
-                    
-                    NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
-                    Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null)
-                    {
-                        String thumbprintAlgorithmInstance;
-                        thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
-                        certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
-                    }
-                    
-                    NodeList elements5 = certificatesElement.getElementsByTagName("Data");
-                    Element dataElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                    if (dataElement != null)
-                    {
-                        byte[] dataInstance;
-                        dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
-                        certificateInstance.setData(dataInstance);
-                    }
+                    URI certificateUrlInstance;
+                    certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
+                    certificateInstance.setCertificateUri(certificateUrlInstance);
+                }
+                
+                NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
+                Element thumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                if (thumbprintElement != null)
+                {
+                    String thumbprintInstance;
+                    thumbprintInstance = thumbprintElement.getTextContent();
+                    certificateInstance.setThumbprint(thumbprintInstance);
+                }
+                
+                NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
+                Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                if (thumbprintAlgorithmElement != null)
+                {
+                    String thumbprintAlgorithmInstance;
+                    thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
+                    certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
+                }
+                
+                NodeList elements5 = certificatesElement.getElementsByTagName("Data");
+                Element dataElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                if (dataElement != null)
+                {
+                    byte[] dataInstance;
+                    dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                    certificateInstance.setData(dataInstance);
                 }
             }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
         }
-        finally
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
 }

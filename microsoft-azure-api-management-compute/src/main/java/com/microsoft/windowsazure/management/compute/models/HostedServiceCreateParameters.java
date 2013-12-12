@@ -64,7 +64,7 @@ public class HostedServiceCreateParameters
     */
     public void setDescription(String description) { this.description = description; }
     
-    private HashMap extendedProperties;
+    private HashMap<String, String> extendedProperties;
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -78,7 +78,7 @@ public class HostedServiceCreateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public HashMap getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -92,7 +92,7 @@ public class HostedServiceCreateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
     
     private String label;
     

@@ -21,19 +21,17 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl;
-import com.microsoft.windowsazure.management.compute.VirtualMachineImageOperations;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageListResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageListResponse.VirtualMachineImage;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageUpdateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageUpdateResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -45,6 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,7 +55,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -106,11 +104,12 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     @Override
     public Future<VirtualMachineImageCreateResponse> createAsync(final VirtualMachineImageCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageCreateResponse>() { @Override
-        public VirtualMachineImageCreateResponse call() throws Exception, Exception
-        {
-            return create(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageCreateResponse>() { 
+            @Override
+            public VirtualMachineImageCreateResponse call() throws Exception
+            {
+                return create(parameters);
+            }
          });
     }
     
@@ -126,7 +125,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * operation.
     */
     @Override
-    public VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, ParseException, URISyntaxException, URISyntaxException, URISyntaxException
+    public VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException
     {
         // Validate
         if (parameters == null)
@@ -216,11 +215,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         }
         
         Element isPremiumElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-        isPremiumElement.appendChild(requestDoc.createTextNode(parameters.getIsPremium().toString().toLower()));
+        isPremiumElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsPremium()).toLowerCase()));
         oSImageElement.appendChild(isPremiumElement);
         
         Element showInGuiElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
-        showInGuiElement.appendChild(requestDoc.createTextNode(parameters.getShowInGui().toString().toLower()));
+        showInGuiElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getShowInGui()).toLowerCase()));
         oSImageElement.appendChild(showInGuiElement);
         
         if (parameters.getPrivacyUri() != null)
@@ -271,219 +270,209 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            VirtualMachineImageCreateResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("OSImage");
-            Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (oSImageElement2 != null)
-            {
-                NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
-                Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (locationElement != null)
-                {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (categoryElement != null)
-                {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
-                Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (labelElement2 != null)
-                {
-                    String labelInstance;
-                    labelInstance = labelElement2.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (logicalSizeInGBElement != null)
-                {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
-                Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (mediaLinkElement2 != null)
-                {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
-                Element nameElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (nameElement2 != null)
-                {
-                    String nameInstance;
-                    nameInstance = nameElement2.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
-                Element osElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                if (osElement2 != null)
-                {
-                    String osInstance;
-                    osInstance = osElement2.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
-                Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                if (eulaElement2 != null)
-                {
-                    String eulaInstance;
-                    eulaInstance = eulaElement2.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
-                Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                if (descriptionElement2 != null)
-                {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement2.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
-                Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                if (imageFamilyElement2 != null)
-                {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement2.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
-                Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
-                    publishedDateInstance = calendar;
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
-                Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                if (publisherNameElement != null)
-                {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
-                Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
-                Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() != null && showInGuiElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement2.getTextContent());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
-                Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                if (privacyUriElement2 != null)
-                {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement2.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
-                Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                if (iconUriElement2 != null)
-                {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement2.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
-                Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                if (recommendedVMSizeElement2 != null)
-                {
-                    VirtualMachineRoleSize recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement2.getTextContent());
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
-                Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                if (smallIconUriElement2 != null)
-                {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
-                Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                if (languageElement2 != null)
-                {
-                    String languageInstance;
-                    languageInstance = languageElement2.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        VirtualMachineImageCreateResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineImageCreateResponse();
+        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+        Document responseDoc = documentBuilder2.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("OSImage");
+        Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (oSImageElement2 != null)
         {
-            if (httpResponse != null)
+            NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
+            Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (locationElement != null)
             {
-                httpResponse.close();
+                String locationInstance;
+                locationInstance = locationElement.getTextContent();
+                result.setLocation(locationInstance);
+            }
+            
+            NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
+            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            if (categoryElement != null)
+            {
+                String categoryInstance;
+                categoryInstance = categoryElement.getTextContent();
+                result.setCategory(categoryInstance);
+            }
+            
+            NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
+            Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            if (labelElement2 != null)
+            {
+                String labelInstance;
+                labelInstance = labelElement2.getTextContent();
+                result.setLabel(labelInstance);
+            }
+            
+            NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
+            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            if (logicalSizeInGBElement != null)
+            {
+                double logicalSizeInGBInstance;
+                logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                result.setLogicalSizeInGB(logicalSizeInGBInstance);
+            }
+            
+            NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
+            Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            if (mediaLinkElement2 != null)
+            {
+                URI mediaLinkInstance;
+                mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
+                result.setMediaLinkUri(mediaLinkInstance);
+            }
+            
+            NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
+            Element nameElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            if (nameElement2 != null)
+            {
+                String nameInstance;
+                nameInstance = nameElement2.getTextContent();
+                result.setName(nameInstance);
+            }
+            
+            NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
+            Element osElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            if (osElement2 != null)
+            {
+                String osInstance;
+                osInstance = osElement2.getTextContent();
+                result.setOperatingSystemType(osInstance);
+            }
+            
+            NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
+            Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            if (eulaElement2 != null)
+            {
+                String eulaInstance;
+                eulaInstance = eulaElement2.getTextContent();
+                result.setEula(eulaInstance);
+            }
+            
+            NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
+            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            if (descriptionElement2 != null)
+            {
+                String descriptionInstance;
+                descriptionInstance = descriptionElement2.getTextContent();
+                result.setDescription(descriptionInstance);
+            }
+            
+            NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
+            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            if (imageFamilyElement2 != null)
+            {
+                String imageFamilyInstance;
+                imageFamilyInstance = imageFamilyElement2.getTextContent();
+                result.setImageFamily(imageFamilyInstance);
+            }
+            
+            NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
+            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
+            {
+                Calendar publishedDateInstance;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
+                publishedDateInstance = calendar;
+                result.setPublishedDate(publishedDateInstance);
+            }
+            
+            NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
+            Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            if (publisherNameElement != null)
+            {
+                String publisherNameInstance;
+                publisherNameInstance = publisherNameElement.getTextContent();
+                result.setPublisherName(publisherNameInstance);
+            }
+            
+            NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
+            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
+            {
+                boolean isPremiumInstance;
+                isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
+                result.setIsPremium(isPremiumInstance);
+            }
+            
+            NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
+            Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() != null && showInGuiElement2.getTextContent().isEmpty() != true) == false)
+            {
+                boolean showInGuiInstance;
+                showInGuiInstance = Boolean.parseBoolean(showInGuiElement2.getTextContent());
+                result.setShowInGui(showInGuiInstance);
+            }
+            
+            NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
+            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            if (privacyUriElement2 != null)
+            {
+                URI privacyUriInstance;
+                privacyUriInstance = new URI(privacyUriElement2.getTextContent());
+                result.setPrivacyUri(privacyUriInstance);
+            }
+            
+            NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
+            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            if (iconUriElement2 != null)
+            {
+                URI iconUriInstance;
+                iconUriInstance = new URI(iconUriElement2.getTextContent());
+                result.setIconUri(iconUriInstance);
+            }
+            
+            NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
+            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            if (recommendedVMSizeElement2 != null)
+            {
+                VirtualMachineRoleSize recommendedVMSizeInstance;
+                recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement2.getTextContent());
+                result.setRecommendedVMSize(recommendedVMSizeInstance);
+            }
+            
+            NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
+            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            if (smallIconUriElement2 != null)
+            {
+                URI smallIconUriInstance;
+                smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
+                result.setSmallIconUri(smallIconUriInstance);
+            }
+            
+            NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
+            Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            if (languageElement2 != null)
+            {
+                String languageInstance;
+                languageInstance = languageElement2.getTextContent();
+                result.setLanguage(languageInstance);
             }
         }
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        }
+        
+        return result;
     }
     
     /**
@@ -501,11 +490,12 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     @Override
     public Future<OperationResponse> deleteAsync(final String imageName, final boolean deleteFromStorage)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
-        {
-            return delete(imageName, deleteFromStorage);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(imageName, deleteFromStorage);
+            }
          });
     }
     
@@ -522,7 +512,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * request ID.
     */
     @Override
-    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, IOException, ServiceException
+    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
     {
         // Validate
         if (imageName == null)
@@ -540,41 +530,31 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         }
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-06-01");
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            OperationResponse result = null;
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        OperationResponse result = null;
+        result = new OperationResponse();
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -589,11 +569,12 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     @Override
     public Future<VirtualMachineImageGetResponse> getAsync(final String imageName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageGetResponse>() { @Override
-        public VirtualMachineImageGetResponse call() throws Exception, Exception
-        {
-            return get(imageName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageGetResponse>() { 
+            @Override
+            public VirtualMachineImageGetResponse call() throws Exception
+            {
+                return get(imageName);
+            }
          });
     }
     
@@ -607,7 +588,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @return A virtual machine image associated with your subscription.
     */
     @Override
-    public VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, ParseException, URISyntaxException, URISyntaxException, URISyntaxException
+    public VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (imageName == null)
@@ -628,228 +609,218 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            VirtualMachineImageGetResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("OSImage");
-            Element oSImageElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (oSImageElement != null)
-            {
-                NodeList elements2 = oSImageElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (affinityGroupElement != null)
-                {
-                    String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
-                    result.setAffinityGroup(affinityGroupInstance);
-                }
-                
-                NodeList elements3 = oSImageElement.getElementsByTagName("Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (categoryElement != null)
-                {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                NodeList elements4 = oSImageElement.getElementsByTagName("Label");
-                Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (labelElement != null)
-                {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                NodeList elements5 = oSImageElement.getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (locationElement != null)
-                {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                NodeList elements6 = oSImageElement.getElementsByTagName("LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (logicalSizeInGBElement != null)
-                {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                NodeList elements7 = oSImageElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (mediaLinkElement != null)
-                {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                NodeList elements8 = oSImageElement.getElementsByTagName("Name");
-                Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                if (nameElement != null)
-                {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                NodeList elements9 = oSImageElement.getElementsByTagName("OS");
-                Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                if (osElement != null)
-                {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                NodeList elements10 = oSImageElement.getElementsByTagName("Eula");
-                Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                if (eulaElement != null)
-                {
-                    String eulaInstance;
-                    eulaInstance = eulaElement.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                NodeList elements11 = oSImageElement.getElementsByTagName("Description");
-                Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                if (descriptionElement != null)
-                {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                NodeList elements12 = oSImageElement.getElementsByTagName("ImageFamily");
-                Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                if (imageFamilyElement != null)
-                {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                NodeList elements13 = oSImageElement.getElementsByTagName("ShowInGui");
-                Element showInGuiElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                NodeList elements14 = oSImageElement.getElementsByTagName("PublishedDate");
-                Element publishedDateElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                if (publishedDateElement != null)
-                {
-                    Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
-                    publishedDateInstance = calendar;
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                NodeList elements15 = oSImageElement.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                NodeList elements16 = oSImageElement.getElementsByTagName("IconUri");
-                Element iconUriElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                if (iconUriElement != null)
-                {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                NodeList elements17 = oSImageElement.getElementsByTagName("PrivacyUri");
-                Element privacyUriElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                if (privacyUriElement != null)
-                {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                NodeList elements18 = oSImageElement.getElementsByTagName("RecommendedVMSize");
-                Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                if (recommendedVMSizeElement != null)
-                {
-                    VirtualMachineRoleSize recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement.getTextContent());
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                NodeList elements19 = oSImageElement.getElementsByTagName("PublisherName");
-                Element publisherNameElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                if (publisherNameElement != null)
-                {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                NodeList elements20 = oSImageElement.getElementsByTagName("SmallIconUri");
-                Element smallIconUriElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                if (smallIconUriElement != null)
-                {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                NodeList elements21 = oSImageElement.getElementsByTagName("Language");
-                Element languageElement = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                if (languageElement != null)
-                {
-                    String languageInstance;
-                    languageInstance = languageElement.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        VirtualMachineImageGetResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineImageGetResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("OSImage");
+        Element oSImageElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (oSImageElement != null)
         {
-            if (httpResponse != null)
+            NodeList elements2 = oSImageElement.getElementsByTagName("AffinityGroup");
+            Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (affinityGroupElement != null)
             {
-                httpResponse.close();
+                String affinityGroupInstance;
+                affinityGroupInstance = affinityGroupElement.getTextContent();
+                result.setAffinityGroup(affinityGroupInstance);
+            }
+            
+            NodeList elements3 = oSImageElement.getElementsByTagName("Category");
+            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            if (categoryElement != null)
+            {
+                String categoryInstance;
+                categoryInstance = categoryElement.getTextContent();
+                result.setCategory(categoryInstance);
+            }
+            
+            NodeList elements4 = oSImageElement.getElementsByTagName("Label");
+            Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            if (labelElement != null)
+            {
+                String labelInstance;
+                labelInstance = labelElement.getTextContent();
+                result.setLabel(labelInstance);
+            }
+            
+            NodeList elements5 = oSImageElement.getElementsByTagName("Location");
+            Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            if (locationElement != null)
+            {
+                String locationInstance;
+                locationInstance = locationElement.getTextContent();
+                result.setLocation(locationInstance);
+            }
+            
+            NodeList elements6 = oSImageElement.getElementsByTagName("LogicalSizeInGB");
+            Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            if (logicalSizeInGBElement != null)
+            {
+                double logicalSizeInGBInstance;
+                logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                result.setLogicalSizeInGB(logicalSizeInGBInstance);
+            }
+            
+            NodeList elements7 = oSImageElement.getElementsByTagName("MediaLink");
+            Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            if (mediaLinkElement != null)
+            {
+                URI mediaLinkInstance;
+                mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                result.setMediaLinkUri(mediaLinkInstance);
+            }
+            
+            NodeList elements8 = oSImageElement.getElementsByTagName("Name");
+            Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            if (nameElement != null)
+            {
+                String nameInstance;
+                nameInstance = nameElement.getTextContent();
+                result.setName(nameInstance);
+            }
+            
+            NodeList elements9 = oSImageElement.getElementsByTagName("OS");
+            Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            if (osElement != null)
+            {
+                String osInstance;
+                osInstance = osElement.getTextContent();
+                result.setOperatingSystemType(osInstance);
+            }
+            
+            NodeList elements10 = oSImageElement.getElementsByTagName("Eula");
+            Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            if (eulaElement != null)
+            {
+                String eulaInstance;
+                eulaInstance = eulaElement.getTextContent();
+                result.setEula(eulaInstance);
+            }
+            
+            NodeList elements11 = oSImageElement.getElementsByTagName("Description");
+            Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            if (descriptionElement != null)
+            {
+                String descriptionInstance;
+                descriptionInstance = descriptionElement.getTextContent();
+                result.setDescription(descriptionInstance);
+            }
+            
+            NodeList elements12 = oSImageElement.getElementsByTagName("ImageFamily");
+            Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            if (imageFamilyElement != null)
+            {
+                String imageFamilyInstance;
+                imageFamilyInstance = imageFamilyElement.getTextContent();
+                result.setImageFamily(imageFamilyInstance);
+            }
+            
+            NodeList elements13 = oSImageElement.getElementsByTagName("ShowInGui");
+            Element showInGuiElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
+            {
+                boolean showInGuiInstance;
+                showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
+                result.setShowInGui(showInGuiInstance);
+            }
+            
+            NodeList elements14 = oSImageElement.getElementsByTagName("PublishedDate");
+            Element publishedDateElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            if (publishedDateElement != null)
+            {
+                Calendar publishedDateInstance;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
+                publishedDateInstance = calendar;
+                result.setPublishedDate(publishedDateInstance);
+            }
+            
+            NodeList elements15 = oSImageElement.getElementsByTagName("IsPremium");
+            Element isPremiumElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+            {
+                boolean isPremiumInstance;
+                isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                result.setIsPremium(isPremiumInstance);
+            }
+            
+            NodeList elements16 = oSImageElement.getElementsByTagName("IconUri");
+            Element iconUriElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            if (iconUriElement != null)
+            {
+                URI iconUriInstance;
+                iconUriInstance = new URI(iconUriElement.getTextContent());
+                result.setIconUri(iconUriInstance);
+            }
+            
+            NodeList elements17 = oSImageElement.getElementsByTagName("PrivacyUri");
+            Element privacyUriElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            if (privacyUriElement != null)
+            {
+                URI privacyUriInstance;
+                privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                result.setPrivacyUri(privacyUriInstance);
+            }
+            
+            NodeList elements18 = oSImageElement.getElementsByTagName("RecommendedVMSize");
+            Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            if (recommendedVMSizeElement != null)
+            {
+                VirtualMachineRoleSize recommendedVMSizeInstance;
+                recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement.getTextContent());
+                result.setRecommendedVMSize(recommendedVMSizeInstance);
+            }
+            
+            NodeList elements19 = oSImageElement.getElementsByTagName("PublisherName");
+            Element publisherNameElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            if (publisherNameElement != null)
+            {
+                String publisherNameInstance;
+                publisherNameInstance = publisherNameElement.getTextContent();
+                result.setPublisherName(publisherNameInstance);
+            }
+            
+            NodeList elements20 = oSImageElement.getElementsByTagName("SmallIconUri");
+            Element smallIconUriElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            if (smallIconUriElement != null)
+            {
+                URI smallIconUriInstance;
+                smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
+                result.setSmallIconUri(smallIconUriInstance);
+            }
+            
+            NodeList elements21 = oSImageElement.getElementsByTagName("Language");
+            Element languageElement = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+            if (languageElement != null)
+            {
+                String languageInstance;
+                languageInstance = languageElement.getTextContent();
+                result.setLanguage(languageInstance);
             }
         }
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        }
+        
+        return result;
     }
     
     /**
@@ -863,11 +834,12 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     @Override
     public Future<VirtualMachineImageListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageListResponse>() { @Override
-        public VirtualMachineImageListResponse call() throws Exception, Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageListResponse>() { 
+            @Override
+            public VirtualMachineImageListResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     
@@ -880,7 +852,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @return The List OS Images operation response.
     */
     @Override
-    public VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, ParseException, URISyntaxException, URISyntaxException, URISyntaxException
+    public VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         
@@ -897,226 +869,216 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
+            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+            throw ex;
+        }
+        
+        // Create Result
+        VirtualMachineImageListResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineImageListResponse();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document responseDoc = documentBuilder.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("Images");
+        Element imagesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (imagesSequenceElement != null)
+        {
+            for (int i1 = 0; i1 < imagesSequenceElement.getElementsByTagName("OSImage").getLength(); i1 = i1 + 1)
             {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            VirtualMachineImageListResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("Images");
-            Element imagesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (imagesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < imagesSequenceElement.getElementsByTagName("OSImage").getLength(); i1 = i1 + 1)
+                org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element)imagesSequenceElement.getElementsByTagName("OSImage").item(i1));
+                VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
+                result.getImages().add(oSImageInstance);
+                
+                NodeList elements2 = imagesElement.getElementsByTagName("AffinityGroup");
+                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                if (affinityGroupElement != null)
                 {
-                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element)imagesSequenceElement.getElementsByTagName("OSImage").item(i1));
-                    VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
-                    result.getImages().add(oSImageInstance);
-                    
-                    NodeList elements2 = imagesElement.getElementsByTagName("AffinityGroup");
-                    Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                    if (affinityGroupElement != null)
-                    {
-                        String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement.getTextContent();
-                        oSImageInstance.setAffinityGroup(affinityGroupInstance);
-                    }
-                    
-                    NodeList elements3 = imagesElement.getElementsByTagName("Category");
-                    Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                    if (categoryElement != null)
-                    {
-                        String categoryInstance;
-                        categoryInstance = categoryElement.getTextContent();
-                        oSImageInstance.setCategory(categoryInstance);
-                    }
-                    
-                    NodeList elements4 = imagesElement.getElementsByTagName("Label");
-                    Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                    if (labelElement != null)
-                    {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        oSImageInstance.setLabel(labelInstance);
-                    }
-                    
-                    NodeList elements5 = imagesElement.getElementsByTagName("Location");
-                    Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                    if (locationElement != null)
-                    {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        oSImageInstance.setLocation(locationInstance);
-                    }
-                    
-                    NodeList elements6 = imagesElement.getElementsByTagName("LogicalSizeInGB");
-                    Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                    if (logicalSizeInGBElement != null)
-                    {
-                        double logicalSizeInGBInstance;
-                        logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
-                        oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
-                    }
-                    
-                    NodeList elements7 = imagesElement.getElementsByTagName("MediaLink");
-                    Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                    if (mediaLinkElement != null)
-                    {
-                        URI mediaLinkInstance;
-                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                        oSImageInstance.setMediaLinkUri(mediaLinkInstance);
-                    }
-                    
-                    NodeList elements8 = imagesElement.getElementsByTagName("Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                    if (nameElement != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        oSImageInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements9 = imagesElement.getElementsByTagName("OS");
-                    Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                    if (osElement != null)
-                    {
-                        String osInstance;
-                        osInstance = osElement.getTextContent();
-                        oSImageInstance.setOperatingSystemType(osInstance);
-                    }
-                    
-                    NodeList elements10 = imagesElement.getElementsByTagName("Eula");
-                    Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                    if (eulaElement != null)
-                    {
-                        String eulaInstance;
-                        eulaInstance = eulaElement.getTextContent();
-                        oSImageInstance.setEula(eulaInstance);
-                    }
-                    
-                    NodeList elements11 = imagesElement.getElementsByTagName("Description");
-                    Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        oSImageInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    NodeList elements12 = imagesElement.getElementsByTagName("ImageFamily");
-                    Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                    if (imageFamilyElement != null)
-                    {
-                        String imageFamilyInstance;
-                        imageFamilyInstance = imageFamilyElement.getTextContent();
-                        oSImageInstance.setImageFamily(imageFamilyInstance);
-                    }
-                    
-                    NodeList elements13 = imagesElement.getElementsByTagName("PublishedDate");
-                    Element publishedDateElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                    if (publishedDateElement != null)
-                    {
-                        Calendar publishedDateInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
-                        publishedDateInstance = calendar;
-                        oSImageInstance.setPublishedDate(publishedDateInstance);
-                    }
-                    
-                    NodeList elements14 = imagesElement.getElementsByTagName("IsPremium");
-                    Element isPremiumElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean isPremiumInstance;
-                        isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
-                        oSImageInstance.setIsPremium(isPremiumInstance);
-                    }
-                    
-                    NodeList elements15 = imagesElement.getElementsByTagName("PrivacyUri");
-                    Element privacyUriElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                    if (privacyUriElement != null)
-                    {
-                        URI privacyUriInstance;
-                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                        oSImageInstance.setPrivacyUri(privacyUriInstance);
-                    }
-                    
-                    NodeList elements16 = imagesElement.getElementsByTagName("RecommendedVMSize");
-                    Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                    if (recommendedVMSizeElement != null)
-                    {
-                        VirtualMachineRoleSize recommendedVMSizeInstance;
-                        recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement.getTextContent());
-                        oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
-                    }
-                    
-                    NodeList elements17 = imagesElement.getElementsByTagName("PublisherName");
-                    Element publisherNameElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                    if (publisherNameElement != null)
-                    {
-                        String publisherNameInstance;
-                        publisherNameInstance = publisherNameElement.getTextContent();
-                        oSImageInstance.setPublisherName(publisherNameInstance);
-                    }
-                    
-                    NodeList elements18 = imagesElement.getElementsByTagName("PricingDetailLink");
-                    Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                    if (pricingDetailLinkElement != null)
-                    {
-                        URI pricingDetailLinkInstance;
-                        pricingDetailLinkInstance = new URI(pricingDetailLinkElement.getTextContent());
-                        oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
-                    }
-                    
-                    NodeList elements19 = imagesElement.getElementsByTagName("SmallIconUri");
-                    Element smallIconUriElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                    if (smallIconUriElement != null)
-                    {
-                        URI smallIconUriInstance;
-                        smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
-                        oSImageInstance.setSmallIconUri(smallIconUriInstance);
-                    }
-                    
-                    NodeList elements20 = imagesElement.getElementsByTagName("Language");
-                    Element languageElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                    if (languageElement != null)
-                    {
-                        String languageInstance;
-                        languageInstance = languageElement.getTextContent();
-                        oSImageInstance.setLanguage(languageInstance);
-                    }
+                    String affinityGroupInstance;
+                    affinityGroupInstance = affinityGroupElement.getTextContent();
+                    oSImageInstance.setAffinityGroup(affinityGroupInstance);
+                }
+                
+                NodeList elements3 = imagesElement.getElementsByTagName("Category");
+                Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                if (categoryElement != null)
+                {
+                    String categoryInstance;
+                    categoryInstance = categoryElement.getTextContent();
+                    oSImageInstance.setCategory(categoryInstance);
+                }
+                
+                NodeList elements4 = imagesElement.getElementsByTagName("Label");
+                Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                if (labelElement != null)
+                {
+                    String labelInstance;
+                    labelInstance = labelElement.getTextContent();
+                    oSImageInstance.setLabel(labelInstance);
+                }
+                
+                NodeList elements5 = imagesElement.getElementsByTagName("Location");
+                Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                if (locationElement != null)
+                {
+                    String locationInstance;
+                    locationInstance = locationElement.getTextContent();
+                    oSImageInstance.setLocation(locationInstance);
+                }
+                
+                NodeList elements6 = imagesElement.getElementsByTagName("LogicalSizeInGB");
+                Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                if (logicalSizeInGBElement != null)
+                {
+                    double logicalSizeInGBInstance;
+                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                    oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
+                }
+                
+                NodeList elements7 = imagesElement.getElementsByTagName("MediaLink");
+                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                if (mediaLinkElement != null)
+                {
+                    URI mediaLinkInstance;
+                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                    oSImageInstance.setMediaLinkUri(mediaLinkInstance);
+                }
+                
+                NodeList elements8 = imagesElement.getElementsByTagName("Name");
+                Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    oSImageInstance.setName(nameInstance);
+                }
+                
+                NodeList elements9 = imagesElement.getElementsByTagName("OS");
+                Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                if (osElement != null)
+                {
+                    String osInstance;
+                    osInstance = osElement.getTextContent();
+                    oSImageInstance.setOperatingSystemType(osInstance);
+                }
+                
+                NodeList elements10 = imagesElement.getElementsByTagName("Eula");
+                Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                if (eulaElement != null)
+                {
+                    String eulaInstance;
+                    eulaInstance = eulaElement.getTextContent();
+                    oSImageInstance.setEula(eulaInstance);
+                }
+                
+                NodeList elements11 = imagesElement.getElementsByTagName("Description");
+                Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                if (descriptionElement != null)
+                {
+                    String descriptionInstance;
+                    descriptionInstance = descriptionElement.getTextContent();
+                    oSImageInstance.setDescription(descriptionInstance);
+                }
+                
+                NodeList elements12 = imagesElement.getElementsByTagName("ImageFamily");
+                Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                if (imageFamilyElement != null)
+                {
+                    String imageFamilyInstance;
+                    imageFamilyInstance = imageFamilyElement.getTextContent();
+                    oSImageInstance.setImageFamily(imageFamilyInstance);
+                }
+                
+                NodeList elements13 = imagesElement.getElementsByTagName("PublishedDate");
+                Element publishedDateElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                if (publishedDateElement != null)
+                {
+                    Calendar publishedDateInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
+                    publishedDateInstance = calendar;
+                    oSImageInstance.setPublishedDate(publishedDateInstance);
+                }
+                
+                NodeList elements14 = imagesElement.getElementsByTagName("IsPremium");
+                Element isPremiumElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean isPremiumInstance;
+                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                    oSImageInstance.setIsPremium(isPremiumInstance);
+                }
+                
+                NodeList elements15 = imagesElement.getElementsByTagName("PrivacyUri");
+                Element privacyUriElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                if (privacyUriElement != null)
+                {
+                    URI privacyUriInstance;
+                    privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                    oSImageInstance.setPrivacyUri(privacyUriInstance);
+                }
+                
+                NodeList elements16 = imagesElement.getElementsByTagName("RecommendedVMSize");
+                Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                if (recommendedVMSizeElement != null)
+                {
+                    VirtualMachineRoleSize recommendedVMSizeInstance;
+                    recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement.getTextContent());
+                    oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
+                }
+                
+                NodeList elements17 = imagesElement.getElementsByTagName("PublisherName");
+                Element publisherNameElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                if (publisherNameElement != null)
+                {
+                    String publisherNameInstance;
+                    publisherNameInstance = publisherNameElement.getTextContent();
+                    oSImageInstance.setPublisherName(publisherNameInstance);
+                }
+                
+                NodeList elements18 = imagesElement.getElementsByTagName("PricingDetailLink");
+                Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                if (pricingDetailLinkElement != null)
+                {
+                    URI pricingDetailLinkInstance;
+                    pricingDetailLinkInstance = new URI(pricingDetailLinkElement.getTextContent());
+                    oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
+                }
+                
+                NodeList elements19 = imagesElement.getElementsByTagName("SmallIconUri");
+                Element smallIconUriElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                if (smallIconUriElement != null)
+                {
+                    URI smallIconUriInstance;
+                    smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
+                    oSImageInstance.setSmallIconUri(smallIconUriInstance);
+                }
+                
+                NodeList elements20 = imagesElement.getElementsByTagName("Language");
+                Element languageElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                if (languageElement != null)
+                {
+                    String languageInstance;
+                    languageInstance = languageElement.getTextContent();
+                    oSImageInstance.setLanguage(languageInstance);
                 }
             }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
         }
-        finally
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
-            if (httpResponse != null)
-            {
-                httpResponse.close();
-            }
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
         }
+        
+        return result;
     }
     
     /**
@@ -1134,11 +1096,12 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     @Override
     public Future<VirtualMachineImageUpdateResponse> updateAsync(final String imageName, final VirtualMachineImageUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageUpdateResponse>() { @Override
-        public VirtualMachineImageUpdateResponse call() throws Exception, Exception
-        {
-            return update(imageName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageUpdateResponse>() { 
+            @Override
+            public VirtualMachineImageUpdateResponse call() throws Exception
+            {
+                return update(imageName, parameters);
+            }
          });
     }
     
@@ -1155,7 +1118,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * operation.
     */
     @Override
-    public VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, ParseException, URISyntaxException, URISyntaxException, URISyntaxException
+    public VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
     {
         // Validate
         if (imageName == null)
@@ -1225,7 +1188,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         }
         
         Element isPremiumElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-        isPremiumElement.appendChild(requestDoc.createTextNode(parameters.getIsPremium().toString().toLower()));
+        isPremiumElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsPremium()).toLowerCase()));
         oSImageElement.appendChild(isPremiumElement);
         
         if (parameters.getPrivacyUri() != null)
@@ -1276,218 +1239,208 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
+        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 200)
         {
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 200)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                throw ex;
-            }
-            
-            // Create Result
-            VirtualMachineImageUpdateResponse result = null;
-            // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageUpdateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("OSImage");
-            Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-            if (oSImageElement2 != null)
-            {
-                NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
-                Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (locationElement != null)
-                {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (categoryElement != null)
-                {
-                    String categoryInstance;
-                    categoryInstance = categoryElement.getTextContent();
-                    result.setCategory(categoryInstance);
-                }
-                
-                NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
-                Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (labelElement2 != null)
-                {
-                    String labelInstance;
-                    labelInstance = labelElement2.getTextContent();
-                    result.setLabel(labelInstance);
-                }
-                
-                NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (logicalSizeInGBElement != null)
-                {
-                    double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
-                    result.setLogicalSizeInGB(logicalSizeInGBInstance);
-                }
-                
-                NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (mediaLinkElement != null)
-                {
-                    URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                    result.setMediaLinkUri(mediaLinkInstance);
-                }
-                
-                NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
-                Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (nameElement != null)
-                {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
-                
-                NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
-                Element osElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                if (osElement != null)
-                {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    result.setOperatingSystemType(osInstance);
-                }
-                
-                NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
-                Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                if (eulaElement2 != null)
-                {
-                    String eulaInstance;
-                    eulaInstance = eulaElement2.getTextContent();
-                    result.setEula(eulaInstance);
-                }
-                
-                NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
-                Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                if (descriptionElement2 != null)
-                {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement2.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
-                Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                if (imageFamilyElement2 != null)
-                {
-                    String imageFamilyInstance;
-                    imageFamilyInstance = imageFamilyElement2.getTextContent();
-                    result.setImageFamily(imageFamilyInstance);
-                }
-                
-                NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
-                Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
-                    publishedDateInstance = calendar;
-                    result.setPublishedDate(publishedDateInstance);
-                }
-                
-                NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
-                Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                if (publisherNameElement != null)
-                {
-                    String publisherNameInstance;
-                    publisherNameInstance = publisherNameElement.getTextContent();
-                    result.setPublisherName(publisherNameInstance);
-                }
-                
-                NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
-                Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
-                    result.setIsPremium(isPremiumInstance);
-                }
-                
-                NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
-                Element showInGuiElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
-                    result.setShowInGui(showInGuiInstance);
-                }
-                
-                NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
-                Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                if (privacyUriElement2 != null)
-                {
-                    URI privacyUriInstance;
-                    privacyUriInstance = new URI(privacyUriElement2.getTextContent());
-                    result.setPrivacyUri(privacyUriInstance);
-                }
-                
-                NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
-                Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                if (iconUriElement2 != null)
-                {
-                    URI iconUriInstance;
-                    iconUriInstance = new URI(iconUriElement2.getTextContent());
-                    result.setIconUri(iconUriInstance);
-                }
-                
-                NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
-                Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                if (recommendedVMSizeElement2 != null)
-                {
-                    VirtualMachineRoleSize recommendedVMSizeInstance;
-                    recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement2.getTextContent());
-                    result.setRecommendedVMSize(recommendedVMSizeInstance);
-                }
-                
-                NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
-                Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                if (smallIconUriElement2 != null)
-                {
-                    URI smallIconUriInstance;
-                    smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
-                    result.setSmallIconUri(smallIconUriInstance);
-                }
-                
-                NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
-                Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                if (languageElement2 != null)
-                {
-                    String languageInstance;
-                    languageInstance = languageElement2.getTextContent();
-                    result.setLanguage(languageInstance);
-                }
-            }
-            
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            return result;
+            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+            throw ex;
         }
-        finally
+        
+        // Create Result
+        VirtualMachineImageUpdateResponse result = null;
+        // Deserialize Response
+        InputStream responseContent = httpResponse.getEntity().getContent();
+        result = new VirtualMachineImageUpdateResponse();
+        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+        Document responseDoc = documentBuilder2.parse(responseContent);
+        
+        NodeList elements = responseDoc.getElementsByTagName("OSImage");
+        Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        if (oSImageElement2 != null)
         {
-            if (httpResponse != null)
+            NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
+            Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            if (locationElement != null)
             {
-                httpResponse.close();
+                String locationInstance;
+                locationInstance = locationElement.getTextContent();
+                result.setLocation(locationInstance);
+            }
+            
+            NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
+            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            if (categoryElement != null)
+            {
+                String categoryInstance;
+                categoryInstance = categoryElement.getTextContent();
+                result.setCategory(categoryInstance);
+            }
+            
+            NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
+            Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            if (labelElement2 != null)
+            {
+                String labelInstance;
+                labelInstance = labelElement2.getTextContent();
+                result.setLabel(labelInstance);
+            }
+            
+            NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
+            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            if (logicalSizeInGBElement != null)
+            {
+                double logicalSizeInGBInstance;
+                logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                result.setLogicalSizeInGB(logicalSizeInGBInstance);
+            }
+            
+            NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
+            Element mediaLinkElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            if (mediaLinkElement != null)
+            {
+                URI mediaLinkInstance;
+                mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                result.setMediaLinkUri(mediaLinkInstance);
+            }
+            
+            NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
+            Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            if (nameElement != null)
+            {
+                String nameInstance;
+                nameInstance = nameElement.getTextContent();
+                result.setName(nameInstance);
+            }
+            
+            NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
+            Element osElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            if (osElement != null)
+            {
+                String osInstance;
+                osInstance = osElement.getTextContent();
+                result.setOperatingSystemType(osInstance);
+            }
+            
+            NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
+            Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            if (eulaElement2 != null)
+            {
+                String eulaInstance;
+                eulaInstance = eulaElement2.getTextContent();
+                result.setEula(eulaInstance);
+            }
+            
+            NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
+            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            if (descriptionElement2 != null)
+            {
+                String descriptionInstance;
+                descriptionInstance = descriptionElement2.getTextContent();
+                result.setDescription(descriptionInstance);
+            }
+            
+            NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
+            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            if (imageFamilyElement2 != null)
+            {
+                String imageFamilyInstance;
+                imageFamilyInstance = imageFamilyElement2.getTextContent();
+                result.setImageFamily(imageFamilyInstance);
+            }
+            
+            NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
+            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
+            {
+                Calendar publishedDateInstance;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
+                publishedDateInstance = calendar;
+                result.setPublishedDate(publishedDateInstance);
+            }
+            
+            NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
+            Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            if (publisherNameElement != null)
+            {
+                String publisherNameInstance;
+                publisherNameInstance = publisherNameElement.getTextContent();
+                result.setPublisherName(publisherNameInstance);
+            }
+            
+            NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
+            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
+            {
+                boolean isPremiumInstance;
+                isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
+                result.setIsPremium(isPremiumInstance);
+            }
+            
+            NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
+            Element showInGuiElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
+            {
+                boolean showInGuiInstance;
+                showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
+                result.setShowInGui(showInGuiInstance);
+            }
+            
+            NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
+            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            if (privacyUriElement2 != null)
+            {
+                URI privacyUriInstance;
+                privacyUriInstance = new URI(privacyUriElement2.getTextContent());
+                result.setPrivacyUri(privacyUriInstance);
+            }
+            
+            NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
+            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            if (iconUriElement2 != null)
+            {
+                URI iconUriInstance;
+                iconUriInstance = new URI(iconUriElement2.getTextContent());
+                result.setIconUri(iconUriInstance);
+            }
+            
+            NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
+            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            if (recommendedVMSizeElement2 != null)
+            {
+                VirtualMachineRoleSize recommendedVMSizeInstance;
+                recommendedVMSizeInstance = VirtualMachineRoleSize.valueOf(recommendedVMSizeElement2.getTextContent());
+                result.setRecommendedVMSize(recommendedVMSizeInstance);
+            }
+            
+            NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
+            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            if (smallIconUriElement2 != null)
+            {
+                URI smallIconUriInstance;
+                smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
+                result.setSmallIconUri(smallIconUriInstance);
+            }
+            
+            NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
+            Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            if (languageElement2 != null)
+            {
+                String languageInstance;
+                languageInstance = languageElement2.getTextContent();
+                result.setLanguage(languageInstance);
             }
         }
+        
+        result.setStatusCode(statusCode);
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        }
+        
+        return result;
     }
 }

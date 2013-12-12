@@ -21,9 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
-import com.microsoft.windowsazure.management.compute.models.HostedServiceProperties;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;

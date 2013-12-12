@@ -21,9 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.HostedServiceListAvailableExtensionsResponse.ExtensionImage;
-import com.microsoft.windowsazure.management.compute.models.HostingResources;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 

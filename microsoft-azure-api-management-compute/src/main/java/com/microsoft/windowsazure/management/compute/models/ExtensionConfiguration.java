@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration.Extension;
-import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration.NamedRole;
 import java.util.ArrayList;
 
 /**

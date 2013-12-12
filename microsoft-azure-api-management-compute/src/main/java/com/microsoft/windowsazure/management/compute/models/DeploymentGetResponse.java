@@ -21,16 +21,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
-import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
-import com.microsoft.windowsazure.management.compute.models.DnsSettings;
-import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration;
-import com.microsoft.windowsazure.management.compute.models.PersistentVMDowntime;
-import com.microsoft.windowsazure.management.compute.models.Role;
-import com.microsoft.windowsazure.management.compute.models.RoleInstance;
-import com.microsoft.windowsazure.management.compute.models.UpgradeStatus;
-import com.microsoft.windowsazure.management.compute.models.VirtualIPAddress;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +80,7 @@ public class DeploymentGetResponse extends OperationResponse
     */
     public void setDnsSettings(DnsSettings dnsSettings) { this.dnsSettings = dnsSettings; }
     
-    private HashMap extendedProperties;
+    private HashMap<String, String> extendedProperties;
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -103,7 +94,7 @@ public class DeploymentGetResponse extends OperationResponse
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public HashMap getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -117,7 +108,7 @@ public class DeploymentGetResponse extends OperationResponse
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
     
     private ExtensionConfiguration extensionConfiguration;
     

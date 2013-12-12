@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import com.microsoft.windowsazure.management.compute.models.EndpointAcl;
-import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import java.net.InetAddress;
 
 /**
