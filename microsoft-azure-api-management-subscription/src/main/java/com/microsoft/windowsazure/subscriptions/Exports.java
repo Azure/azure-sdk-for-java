@@ -12,16 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.microsoft.windowsazure.subscriptions;
 
-package com.microsoft.windowsazure.management;
+import com.microsoft.windowsazure.services.core.Builder;
 
-import com.microsoft.windowsazure.CloudCredentials;
+/**
+ * The Class Exports.
+ */
+public class Exports implements Builder.Exports {
 
-public abstract class SubscriptionCloudCredentials extends CloudCredentials {
-    /*
-    * When you create a Windows Azure subscription, it is uniquely
-    * identified by a subscription ID. The subscription ID forms part of
-    * the URI for every call that you make to the Service Management API.
-    */
-    public abstract String getSubscriptionId();
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.Builder.Exports#register(com.microsoft.windowsazure.services.core.Builder.Registry)
+     */
+    @Override
+    public void register(Builder.Registry registry) {
+
+        // provide contract implementation
+        registry.add(SubscriptionClient.class, SubscriptionClientImpl.class);
+    }
 }

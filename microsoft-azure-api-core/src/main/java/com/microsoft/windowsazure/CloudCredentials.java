@@ -13,15 +13,10 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.management;
+package com.microsoft.windowsazure;
 
-import com.microsoft.windowsazure.CloudCredentials;
+import org.apache.http.impl.client.CloseableHttpClient;
 
-public abstract class SubscriptionCloudCredentials extends CloudCredentials {
-    /*
-    * When you create a Windows Azure subscription, it is uniquely
-    * identified by a subscription ID. The subscription ID forms part of
-    * the URI for every call that you make to the Service Management API.
-    */
-    public abstract String getSubscriptionId();
+public abstract class CloudCredentials {
+    public abstract CloseableHttpClient initializeClient();
 }
