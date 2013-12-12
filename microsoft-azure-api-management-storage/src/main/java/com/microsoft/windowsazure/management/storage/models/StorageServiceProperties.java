@@ -21,8 +21,6 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceStatus;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;

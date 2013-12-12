@@ -22,7 +22,6 @@
 package com.microsoft.windowsazure.management.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse.AffinityGroup;
 import java.util.ArrayList;
 import java.util.Iterator;
 

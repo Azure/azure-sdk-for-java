@@ -22,8 +22,6 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.storage.models.OperationStatus;
-import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse.ErrorDetails;
 
 /**
 * The response body contains the status of the specified asynchronous

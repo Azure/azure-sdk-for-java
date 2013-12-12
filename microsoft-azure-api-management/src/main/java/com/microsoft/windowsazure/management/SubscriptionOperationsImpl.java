@@ -21,14 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.ManagementClientImpl;
-import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.SubscriptionOperations;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.OperationCallerDetails;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.SubscriptionOperation;
 import com.microsoft.windowsazure.management.models.SubscriptionStatus;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;

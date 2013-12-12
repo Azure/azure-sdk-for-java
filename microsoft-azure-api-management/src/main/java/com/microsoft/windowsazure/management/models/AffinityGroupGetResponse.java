@@ -22,8 +22,6 @@
 package com.microsoft.windowsazure.management.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.HostedServiceReference;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.StorageServiceReference;
 import java.net.URI;
 import java.util.ArrayList;
 

@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;

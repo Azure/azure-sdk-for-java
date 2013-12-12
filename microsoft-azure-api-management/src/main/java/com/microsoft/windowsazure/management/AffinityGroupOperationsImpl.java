@@ -21,15 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.AffinityGroupOperations;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
-import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.HostedServiceReference;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.StorageServiceReference;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse.AffinityGroup;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;

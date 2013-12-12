@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
-import com.microsoft.windowsazure.management.storage.models.StorageKeyType;
 
 /**
 * Parameters supplied to the Regenerate Keys operation.

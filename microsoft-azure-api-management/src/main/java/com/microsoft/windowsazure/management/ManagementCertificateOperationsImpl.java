@@ -21,13 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.ManagementCertificateOperations;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
-import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse.SubscriptionCertificate;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
 import java.io.IOException;
