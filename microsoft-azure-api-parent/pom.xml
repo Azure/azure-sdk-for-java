@@ -319,6 +319,7 @@
   <modules>
     <module>../microsoft-azure-api-core</module>
     <module>../microsoft-azure-api-management</module>
+    <module>../microsoft-azure-api-management-storage</module>
     <module>../microsoft-azure-api-media</module>
     <module>../microsoft-azure-api-serviceBus</module>
     <module>../microsoft-azure-api-serviceRuntime</module>

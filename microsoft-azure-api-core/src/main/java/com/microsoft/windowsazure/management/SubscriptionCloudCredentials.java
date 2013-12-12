@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure;
+package com.microsoft.windowsazure.management;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 

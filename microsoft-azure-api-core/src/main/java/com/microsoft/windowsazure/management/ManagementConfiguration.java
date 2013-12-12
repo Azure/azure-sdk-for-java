@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.CertificateCloudCredentials;
 import com.microsoft.windowsazure.services.core.Configuration;
 
 /**

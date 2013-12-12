@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure;
+package com.microsoft.windowsazure.management;
 
 public class OperationResponse {
     private int _httpStatusCode;

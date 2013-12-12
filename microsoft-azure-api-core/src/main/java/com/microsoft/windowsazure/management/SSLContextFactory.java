@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure;
+package com.microsoft.windowsazure.management;
 
 import java.io.File;
 import java.io.FileInputStream;

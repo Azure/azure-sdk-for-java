@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.OperationResponse;
+import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse.SubscriptionCertificate;
 import java.util.ArrayList;
 import java.util.Calendar;

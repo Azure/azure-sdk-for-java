@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure;
+package com.microsoft.windowsazure.management;
 
 /**
  * The Enum representing the type of the KeyStore.

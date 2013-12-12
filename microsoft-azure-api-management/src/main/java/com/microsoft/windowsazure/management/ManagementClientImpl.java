@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.AffinityGroupOperations;
 import com.microsoft.windowsazure.management.AffinityGroupOperationsImpl;
 import com.microsoft.windowsazure.management.LocationOperations;
@@ -31,6 +30,7 @@ import com.microsoft.windowsazure.management.ManagementCertificateOperationsImpl
 import com.microsoft.windowsazure.management.ManagementClient;
 import com.microsoft.windowsazure.management.ManagementClientImpl;
 import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.SubscriptionOperations;
 import com.microsoft.windowsazure.management.SubscriptionOperationsImpl;
 import com.microsoft.windowsazure.management.models.OperationStatus;
@@ -243,7 +243,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * failure.
     */
     @Override
-    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException
+    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (requestId == null)
@@ -272,10 +272,11 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
             throw ex;
         }
         
+        // Create Result
+        OperationStatusResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        OperationStatusResponse result = new OperationStatusResponse();
+        result = new OperationStatusResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
