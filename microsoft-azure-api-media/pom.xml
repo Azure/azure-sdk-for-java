@@ -60,6 +60,11 @@
       <artifactId>microsoft-azure-api-core</artifactId>
       <version>0.4.6</version>
     </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-storage</artifactId>
+      <version>0.4.6</version>
+    </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
