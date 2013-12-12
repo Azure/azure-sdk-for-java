@@ -25,7 +25,7 @@
   <artifactId>microsoft-azure-api-core</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Client API Core</name>
+  <name>Microsoft Windows Azure Core Client API</name>
   <description>API for Microsoft Windows Azure Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 

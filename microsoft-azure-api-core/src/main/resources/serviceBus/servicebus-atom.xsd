@@ -1,0 +1,40 @@
+<xs:schema xmlns:tns="http://www.w3.org/2005/Atom"
+	xmlns:sb="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	targetNamespace="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/">
+	<xs:import
+		namespace="http://schemas.microsoft.com/netservices/2011/06/servicebus"
+		schemaLocation="schemas.microsoft.com.netservices.2011.06.servicebus.xsd" />
+	<xs:import
+		namespace="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+		schemaLocation="schemas.microsoft.com.netservices.2010.10.servicebus.connect.xsd" />
+	<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/"
+		schemaLocation="schemas.microsoft.com.2003.10.Serialization.xsd"></xs:import>
+	<xs:element name="feed">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="title" type="xs:string" />
+				<xs:element ref="tns:entry" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="entry">
+		<xs:complexType>
+			<xs:sequence>
+        <xs:element name="id" type="xs:string" />
+        <xs:element name="title" type="xs:string" />
+				<xs:element name="content" type="tns:content" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="content">
+		<xs:sequence>
+			<xs:element ref="sb:QueueDescription" minOccurs="0" />
+			<xs:element ref="sb:TopicDescription" minOccurs="0" />
+			<xs:element ref="sb:SubscriptionDescription" minOccurs="0" />
+			<xs:element ref="sb:RuleDescription" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:string" />
+	</xs:complexType>
+</xs:schema>
