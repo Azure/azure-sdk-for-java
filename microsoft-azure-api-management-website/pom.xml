@@ -25,8 +25,8 @@
   <artifactId>microsoft-azure-api-management-website</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Management Website Client API</name>
-  <description>Windows Azure Management Website SDK Clients</description>
+  <name>Microsoft Windows Azure Website Management Client API</name>
+  <description>Windows Azure Website Management SDK Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
   <licenses>

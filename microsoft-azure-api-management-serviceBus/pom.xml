@@ -22,11 +22,11 @@
     <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-store</artifactId>
+  <artifactId>microsoft-azure-api-management-serviceBus</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Store Management Client API</name>
-  <description>Windows Azure Store Management SDK Clients</description>
+  <name>Microsoft Windows Azure Service Bus Management Client API</name>
+  <description>Windows Azure Service Bus Management SDK Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
   <licenses>

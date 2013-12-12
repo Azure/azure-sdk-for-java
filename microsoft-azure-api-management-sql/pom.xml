@@ -25,8 +25,8 @@
   <artifactId>microsoft-azure-api-management-sql</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Management SQL Client API</name>
-  <description>Windows Azure Management SQL SDK Clients</description>
+  <name>Microsoft Windows Azure SQL Management Client API</name>
+  <description>Windows Azure SQL Management SDK Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
   <licenses>
