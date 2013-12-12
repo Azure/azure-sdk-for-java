@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,13 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.ManagementCertificateOperations;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse.SubscriptionCertificate;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
 import java.io.IOException;
@@ -105,7 +101,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return create(parameters);
         }
@@ -126,7 +122,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -198,7 +194,8 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
@@ -224,7 +221,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     public Future<OperationResponse> deleteAsync(final String thumbprint)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return delete(thumbprint);
         }
@@ -244,7 +241,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse delete(String thumbprint) throws IOException, ServiceException, IOException, ServiceException
+    public OperationResponse delete(String thumbprint) throws IOException, ServiceException
     {
         // Validate
         if (thumbprint == null)
@@ -274,7 +271,8 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
@@ -301,7 +299,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     public Future<ManagementCertificateGetResponse> getAsync(final String thumbprint)
     {
         return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateGetResponse>() { @Override
-        public ManagementCertificateGetResponse call() throws Exception, Exception
+        public ManagementCertificateGetResponse call() throws Exception
         {
             return get(thumbprint);
         }
@@ -322,7 +320,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The Get Management Certificate operation response.
     */
     @Override
-    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ParseException
+    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (thumbprint == null)
@@ -351,10 +349,11 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             throw ex;
         }
         
+        // Create Result
+        ManagementCertificateGetResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        ManagementCertificateGetResponse result = new ManagementCertificateGetResponse();
+        result = new ManagementCertificateGetResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
@@ -427,7 +426,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     public Future<ManagementCertificateListResponse> listAsync()
     {
         return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateListResponse>() { @Override
-        public ManagementCertificateListResponse call() throws Exception, Exception
+        public ManagementCertificateListResponse call() throws Exception
         {
             return list();
         }
@@ -446,7 +445,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The List Management Certificates operation response.
     */
     @Override
-    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ParseException
+    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
     {
         // Validate
         
@@ -471,10 +470,11 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             throw ex;
         }
         
+        // Create Result
+        ManagementCertificateListResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        ManagementCertificateListResponse result = new ManagementCertificateListResponse();
+        result = new ManagementCertificateListResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);

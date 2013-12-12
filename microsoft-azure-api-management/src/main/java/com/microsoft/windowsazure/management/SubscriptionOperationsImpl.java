@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,14 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
-import com.microsoft.windowsazure.management.SubscriptionOperations;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.OperationCallerDetails;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.SubscriptionOperation;
 import com.microsoft.windowsazure.management.models.SubscriptionStatus;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
@@ -91,7 +86,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     public Future<SubscriptionGetResponse> getAsync()
     {
         return this.getClient().getExecutorService().submit(new Callable<SubscriptionGetResponse>() { @Override
-        public SubscriptionGetResponse call() throws Exception, Exception
+        public SubscriptionGetResponse call() throws Exception
         {
             return get();
         }
@@ -107,7 +102,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * @return The Get Subscription operation response.
     */
     @Override
-    public SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException
+    public SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         
@@ -132,10 +127,11 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             throw ex;
         }
         
+        // Create Result
+        SubscriptionGetResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        SubscriptionGetResponse result = new SubscriptionGetResponse();
+        result = new SubscriptionGetResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
@@ -322,7 +318,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     public Future<SubscriptionListOperationsResponse> listOperationsAsync(final SubscriptionListOperationsParameters parameters)
     {
         return this.getClient().getExecutorService().submit(new Callable<SubscriptionListOperationsResponse>() { @Override
-        public SubscriptionListOperationsResponse call() throws Exception, Exception
+        public SubscriptionListOperationsResponse call() throws Exception
         {
             return listOperations(parameters);
         }
@@ -341,7 +337,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * @return The List Subscription Operations operation response.
     */
     @Override
-    public SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ParseException, ParseException
+    public SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
     {
         // Validate
         if (parameters == null)
@@ -388,10 +384,11 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             throw ex;
         }
         
+        // Create Result
+        SubscriptionListOperationsResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        SubscriptionListOperationsResponse result = new SubscriptionListOperationsResponse();
+        result = new SubscriptionListOperationsResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
@@ -561,7 +558,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     public Future<OperationResponse> registerResourceAsync(final String resourceName)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return registerResource(resourceName);
         }
@@ -607,7 +604,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
@@ -628,7 +626,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     public Future<OperationResponse> unregisterResourceAsync(final String resourceName)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return unregisterResource(resourceName);
         }
@@ -674,7 +672,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
