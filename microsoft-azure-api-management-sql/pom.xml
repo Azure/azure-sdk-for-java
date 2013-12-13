@@ -78,8 +78,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpasyncclient</artifactId>
-      <version>4.0</version>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.1</version>
     </dependency>
 
     <dependency>
