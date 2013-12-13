@@ -1,12 +1,11 @@
-/*
- * Copyright 2013 andrerod.
- *
+/**
+ * Copyright Microsoft Corporation
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +15,13 @@
 
 package com.microsoft.windowsazure.management;
 
-import org.apache.http.impl.client.CloseableHttpClient;
+import com.microsoft.windowsazure.CloudCredentials;
 
-public interface SubscriptionCloudCredentials {
+public abstract class SubscriptionCloudCredentials extends CloudCredentials {
     /*
     * When you create a Windows Azure subscription, it is uniquely
     * identified by a subscription ID. The subscription ID forms part of
     * the URI for every call that you make to the Service Management API.
     */
-    public String getSubscriptionId();
-    
-    public CloseableHttpClient initializeClient();
+    public abstract String getSubscriptionId();
 }
