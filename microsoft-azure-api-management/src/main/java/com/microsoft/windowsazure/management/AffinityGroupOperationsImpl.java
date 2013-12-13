@@ -81,7 +81,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
     public ManagementClientImpl getClient() { return this.client; }
-    
+
     /**
     * The Create Affinity Group operation creates a new affinity group for the
     * specified subscription.  (see
