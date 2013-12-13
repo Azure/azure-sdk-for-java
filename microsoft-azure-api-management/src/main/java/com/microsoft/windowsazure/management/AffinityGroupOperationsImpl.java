@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,15 +21,9 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.AffinityGroupOperations;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.HostedServiceReference;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse.StorageServiceReference;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse.AffinityGroup;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
@@ -87,7 +81,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
     public ManagementClientImpl getClient() { return this.client; }
-    
+
     /**
     * The Create Affinity Group operation creates a new affinity group for the
     * specified subscription.  (see
@@ -103,7 +97,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     public Future<OperationResponse> createAsync(final AffinityGroupCreateParameters parameters)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return create(parameters);
         }
@@ -212,7 +206,8 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
@@ -236,7 +231,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     public Future<OperationResponse> deleteAsync(final String affinityGroupName)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return delete(affinityGroupName);
         }
@@ -284,7 +279,8 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {
@@ -308,7 +304,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     public Future<AffinityGroupGetResponse> getAsync(final String affinityGroupName)
     {
         return this.getClient().getExecutorService().submit(new Callable<AffinityGroupGetResponse>() { @Override
-        public AffinityGroupGetResponse call() throws Exception, Exception
+        public AffinityGroupGetResponse call() throws Exception
         {
             return get(affinityGroupName);
         }
@@ -326,7 +322,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * @return The Get Affinity Group operation response.
     */
     @Override
-    public AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException, URISyntaxException, URISyntaxException, ParseException
+    public AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
     {
         // Validate
         if (affinityGroupName == null)
@@ -355,10 +351,11 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             throw ex;
         }
         
+        // Create Result
+        AffinityGroupGetResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        AffinityGroupGetResponse result = new AffinityGroupGetResponse();
+        result = new AffinityGroupGetResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
@@ -496,7 +493,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     public Future<AffinityGroupListResponse> listAsync()
     {
         return this.getClient().getExecutorService().submit(new Callable<AffinityGroupListResponse>() { @Override
-        public AffinityGroupListResponse call() throws Exception, Exception
+        public AffinityGroupListResponse call() throws Exception
         {
             return list();
         }
@@ -512,7 +509,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * @return The List Affinity Groups operation response.
     */
     @Override
-    public AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ParseException
+    public AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
     {
         // Validate
         
@@ -537,10 +534,11 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             throw ex;
         }
         
+        // Create Result
+        AffinityGroupListResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        AffinityGroupListResponse result = new AffinityGroupListResponse();
+        result = new AffinityGroupListResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);
@@ -629,7 +627,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     public Future<OperationResponse> updateAsync(final String affinityGroupName, final AffinityGroupUpdateParameters parameters)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception, Exception
+        public OperationResponse call() throws Exception
         {
             return update(affinityGroupName, parameters);
         }
@@ -727,7 +725,8 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Create Result
-        OperationResponse result = new OperationResponse();
+        OperationResponse result = null;
+        result = new OperationResponse();
         result.setStatusCode(statusCode);
         if (httpResponse.getHeaders("x-ms-request-id").length > 0)
         {

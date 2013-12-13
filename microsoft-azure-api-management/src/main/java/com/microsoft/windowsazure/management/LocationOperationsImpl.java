@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,10 +21,7 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.LocationOperations;
-import com.microsoft.windowsazure.management.ManagementClientImpl;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
-import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
 import java.io.IOException;
@@ -80,7 +77,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     public Future<LocationsListResponse> listAsync()
     {
         return this.getClient().getExecutorService().submit(new Callable<LocationsListResponse>() { @Override
-        public LocationsListResponse call() throws Exception, Exception
+        public LocationsListResponse call() throws Exception
         {
             return list();
         }
@@ -96,7 +93,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     * @return The List Locations operation response.
     */
     @Override
-    public LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ServiceException, ParserConfigurationException, SAXException, IOException, ParseException
+    public LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
     {
         // Validate
         
@@ -121,10 +118,11 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
             throw ex;
         }
         
+        // Create Result
+        LocationsListResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
-        // Create Result
-        LocationsListResponse result = new LocationsListResponse();
+        result = new LocationsListResponse();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document responseDoc = documentBuilder.parse(responseContent);

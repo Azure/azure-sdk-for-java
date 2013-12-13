@@ -1,5 +1,5 @@
 // 
-// Copyright (c) Microsoft.  All rights reserved.
+// Copyright (c) Microsoft and contributors.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +21,7 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.OperationResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.OperationCallerDetails;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.SubscriptionOperation;
+import com.microsoft.windowsazure.management.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -222,17 +220,17 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         */
         public void setOperationObjectId(String operationObjectId) { this.operationObjectId = operationObjectId; }
         
-        private HashMap operationParameters;
+        private HashMap<String, String> operationParameters;
         
         /**
         * The collection of parameters for the performed operation.
         */
-        public HashMap getOperationParameters() { return this.operationParameters; }
+        public HashMap<String, String> getOperationParameters() { return this.operationParameters; }
         
         /**
         * The collection of parameters for the performed operation.
         */
-        public void setOperationParameters(HashMap operationParameters) { this.operationParameters = operationParameters; }
+        public void setOperationParameters(HashMap<String, String> operationParameters) { this.operationParameters = operationParameters; }
         
         private Calendar operationStartedTime;
         
