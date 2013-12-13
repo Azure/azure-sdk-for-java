@@ -22,7 +22,6 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.management.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.storage.StorageAccountOperations;
 import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import java.io.IOException;

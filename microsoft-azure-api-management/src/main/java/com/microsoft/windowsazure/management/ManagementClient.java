@@ -21,11 +21,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.AffinityGroupOperations;
-import com.microsoft.windowsazure.management.LocationOperations;
-import com.microsoft.windowsazure.management.ManagementCertificateOperations;
-import com.microsoft.windowsazure.management.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.SubscriptionOperations;
 import com.microsoft.windowsazure.management.models.OperationStatusResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import java.io.IOException;

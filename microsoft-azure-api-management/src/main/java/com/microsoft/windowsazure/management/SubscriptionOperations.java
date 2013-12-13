@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;

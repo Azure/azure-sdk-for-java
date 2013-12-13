@@ -22,7 +22,6 @@
 package com.microsoft.windowsazure.management.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse.SubscriptionCertificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;

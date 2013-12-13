@@ -22,8 +22,6 @@
 package com.microsoft.windowsazure.management.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.OperationCallerDetails;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse.SubscriptionOperation;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;

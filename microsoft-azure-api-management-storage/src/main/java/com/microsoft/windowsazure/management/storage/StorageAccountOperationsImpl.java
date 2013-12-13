@@ -22,9 +22,6 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.storage.StorageAccountOperations;
-import com.microsoft.windowsazure.management.storage.StorageManagementClient;
-import com.microsoft.windowsazure.management.storage.StorageManagementClientImpl;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.OperationStatus;
@@ -36,7 +33,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdate
 import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceGetResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse.StorageService;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceProperties;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceStatus;
 import com.microsoft.windowsazure.services.core.ServiceException;

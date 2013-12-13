@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.OperationResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;

@@ -22,8 +22,6 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 import com.microsoft.windowsazure.management.OperationResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse.StorageService;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceProperties;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
