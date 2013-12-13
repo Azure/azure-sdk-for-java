@@ -14,8 +14,13 @@
  */
 package com.microsoft.windowsazure.services.core;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 public class ServiceException extends Exception {
 
@@ -123,5 +128,17 @@ public class ServiceException extends Exception {
 
     public String getRawResponseBody() {
         return rawResponseBody;
+    }
+    
+    public static ServiceException createFromXml(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    {
+        try {
+            ServiceException serviceException = new ServiceException();
+            serviceException.setErrorMessage(EntityUtils.toString(entity));
+            return serviceException;
+        }
+        catch (IOException e) {
+            return new ServiceException();
+        }
     }
 }
