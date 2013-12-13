@@ -47,36 +47,6 @@
       <name>Microsoft</name>
     </developer>
   </developers>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.microsoft.windowsazure</groupId>
-        <artifactId>compute</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.windowsazure</groupId>
-        <artifactId>media</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.windowsazure</groupId>
-        <artifactId>runtime</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.windowsazure</groupId>
-        <artifactId>serviceBus</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.windowsazure</groupId>
-        <artifactId>storage</artifactId>
-        <version>${projectVersion}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <modules>
     <module>microsoft-azure-api-parent</module>
   </modules>
