@@ -25,8 +25,8 @@
   <artifactId>microsoft-azure-api-management-store</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Windows Azure Management Store Client API</name>
-  <description>Windows Azure Management Store SDK Clients</description>
+  <name>Microsoft Windows Azure Store Management Client API</name>
+  <description>Windows Azure Store Management SDK Clients</description>
   <url>https://github.com/WindowsAzure/azure-sdk-for-java</url>
 
   <licenses>
@@ -78,8 +78,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpasyncclient</artifactId>
-      <version>4.0</version>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.1</version>
     </dependency>
 
     <dependency>
