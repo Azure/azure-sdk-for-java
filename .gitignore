@@ -11,6 +11,22 @@
 # Azure Tooling #
 node_modules
 
+# Eclipse #
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
 # Other Tooling #
 .classpath
 .project
