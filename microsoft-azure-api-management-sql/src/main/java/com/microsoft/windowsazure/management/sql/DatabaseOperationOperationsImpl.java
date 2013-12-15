@@ -80,11 +80,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     @Override
     public Future<DatabaseOperationGetResponse> getAsync(final String serverName, final String operationGuid)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationGetResponse>() { @Override
-        public DatabaseOperationGetResponse call() throws Exception
-        {
-            return get(serverName, operationGuid);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationGetResponse>() { 
+            @Override
+            public DatabaseOperationGetResponse call() throws Exception
+            {
+                return get(serverName, operationGuid);
+            }
          });
     }
     
@@ -316,11 +317,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     @Override
     public Future<DatabaseOperationListResponse> listByDatabaseAsync(final String serverName, final String databaseName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { @Override
-        public DatabaseOperationListResponse call() throws Exception
-        {
-            return listByDatabase(serverName, databaseName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
+            @Override
+            public DatabaseOperationListResponse call() throws Exception
+            {
+                return listByDatabase(serverName, databaseName);
+            }
          });
     }
     
@@ -554,11 +556,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     @Override
     public Future<DatabaseOperationListResponse> listByServerAsync(final String serverName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { @Override
-        public DatabaseOperationListResponse call() throws Exception
-        {
-            return listByServer(serverName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
+            @Override
+            public DatabaseOperationListResponse call() throws Exception
+            {
+                return listByServer(serverName);
+            }
          });
     }
     

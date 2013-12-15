@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -49,7 +50,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -96,11 +96,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     @Override
     public Future<DatabaseCreateResponse> createAsync(final String serverName, final DatabaseCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateResponse>() { @Override
-        public DatabaseCreateResponse call() throws Exception
-        {
-            return create(serverName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateResponse>() { 
+            @Override
+            public DatabaseCreateResponse call() throws Exception
+            {
+                return create(serverName, parameters);
+            }
          });
     }
     
@@ -397,11 +398,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     @Override
     public Future<OperationResponse> deleteAsync(final String serverName, final String databaseName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(serverName, databaseName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(serverName, databaseName);
+            }
          });
     }
     
@@ -435,7 +437,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databases/" + databaseName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
@@ -475,11 +477,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     @Override
     public Future<DatabaseGetResponse> getAsync(final String serverName, final String databaseName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseGetResponse>() { @Override
-        public DatabaseGetResponse call() throws Exception
-        {
-            return get(serverName, databaseName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseGetResponse>() { 
+            @Override
+            public DatabaseGetResponse call() throws Exception
+            {
+                return get(serverName, databaseName);
+            }
          });
     }
     
@@ -714,11 +717,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     @Override
     public Future<DatabaseListResponse> listAsync(final String serverName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseListResponse>() { @Override
-        public DatabaseListResponse call() throws Exception
-        {
-            return list(serverName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseListResponse>() { 
+            @Override
+            public DatabaseListResponse call() throws Exception
+            {
+                return list(serverName);
+            }
          });
     }
     
@@ -956,11 +960,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     @Override
     public Future<DatabaseUpdateResponse> updateAsync(final String serverName, final String databaseName, final DatabaseUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DatabaseUpdateResponse>() { @Override
-        public DatabaseUpdateResponse call() throws Exception
-        {
-            return update(serverName, databaseName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseUpdateResponse>() { 
+            @Override
+            public DatabaseUpdateResponse call() throws Exception
+            {
+                return update(serverName, databaseName, parameters);
+            }
          });
     }
     
