@@ -324,12 +324,12 @@
     <module>../microsoft-azure-api-management-sql</module>
     <module>../microsoft-azure-api-management-storage</module>
     <module>../microsoft-azure-api-management-store</module>
-    <module>../microsoft-azure-api-management-subscription</module>
     <module>../microsoft-azure-api-management-virtualnetwork</module>
     <module>../microsoft-azure-api-management-website</module>
     <module>../microsoft-azure-api-media</module>
     <module>../microsoft-azure-api-serviceBus</module>
     <module>../microsoft-azure-api-serviceRuntime</module>
     <module>../microsoft-azure-api-storage</module>
+    <module>../microsoft-azure-api-subscription</module>
   </modules>
 </project>

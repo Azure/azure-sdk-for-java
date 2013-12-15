@@ -22,7 +22,7 @@
     <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-subscription</artifactId>
+  <artifactId>microsoft-azure-api-subscription</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Subscription Management Client API</name>
