@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -47,7 +48,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -81,7 +81,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
     public ManagementClientImpl getClient() { return this.client; }
-
+    
     /**
     * The Create Affinity Group operation creates a new affinity group for the
     * specified subscription.  (see
@@ -96,11 +96,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     @Override
     public Future<OperationResponse> createAsync(final AffinityGroupCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return create(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return create(parameters);
+            }
          });
     }
     
@@ -230,11 +231,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     @Override
     public Future<OperationResponse> deleteAsync(final String affinityGroupName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(affinityGroupName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(affinityGroupName);
+            }
          });
     }
     
@@ -263,7 +265,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
@@ -303,11 +305,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     @Override
     public Future<AffinityGroupGetResponse> getAsync(final String affinityGroupName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupGetResponse>() { @Override
-        public AffinityGroupGetResponse call() throws Exception
-        {
-            return get(affinityGroupName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupGetResponse>() { 
+            @Override
+            public AffinityGroupGetResponse call() throws Exception
+            {
+                return get(affinityGroupName);
+            }
          });
     }
     
@@ -492,11 +495,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     @Override
     public Future<AffinityGroupListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupListResponse>() { @Override
-        public AffinityGroupListResponse call() throws Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupListResponse>() { 
+            @Override
+            public AffinityGroupListResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     
@@ -626,11 +630,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     @Override
     public Future<OperationResponse> updateAsync(final String affinityGroupName, final AffinityGroupUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return update(affinityGroupName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return update(affinityGroupName, parameters);
+            }
          });
     }
     

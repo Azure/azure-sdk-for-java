@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespa
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusSharedAccessAuthorizationRule;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -56,7 +57,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -103,11 +103,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<CheckNamespaceAvailabilityResponse> checkAvailabilityAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<CheckNamespaceAvailabilityResponse>() { @Override
-        public CheckNamespaceAvailabilityResponse call() throws Exception
-        {
-            return checkAvailability(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<CheckNamespaceAvailabilityResponse>() { 
+            @Override
+            public CheckNamespaceAvailabilityResponse call() throws Exception
+            {
+                return checkAvailability(namespaceName);
+            }
          });
     }
     
@@ -211,11 +212,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusNamespaceResponse> createAsync(final String namespaceName, final String region)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { @Override
-        public ServiceBusNamespaceResponse call() throws Exception
-        {
-            return create(namespaceName, region);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { 
+            @Override
+            public ServiceBusNamespaceResponse call() throws Exception
+            {
+                return create(namespaceName, region);
+            }
          });
     }
     
@@ -411,11 +413,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { @Override
-        public ServiceBusAuthorizationRuleResponse call() throws Exception
-        {
-            return createAuthorizationRule(namespaceName, rule);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
+            @Override
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
+                return createAuthorizationRule(namespaceName, rule);
+            }
          });
     }
     
@@ -684,11 +687,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<OperationResponse> deleteAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(namespaceName);
+            }
          });
     }
     
@@ -713,7 +717,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/servicebus/namespaces/" + namespaceName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("Accept", "application/atom+xml");
@@ -752,11 +756,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<OperationResponse> deleteAuthorizationRuleAsync(final String namespaceName, final String ruleName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return deleteAuthorizationRule(namespaceName, ruleName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return deleteAuthorizationRule(namespaceName, ruleName);
+            }
          });
     }
     
@@ -786,7 +791,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/servicebus/namespaces/" + namespaceName + "/AuthorizationRules/" + ruleName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
@@ -823,11 +828,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusNamespaceResponse> getAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { @Override
-        public ServiceBusNamespaceResponse call() throws Exception
-        {
-            return get(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { 
+            @Override
+            public ServiceBusNamespaceResponse call() throws Exception
+            {
+                return get(namespaceName);
+            }
          });
     }
     
@@ -988,11 +994,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(final String namespaceName, final String entityName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { @Override
-        public ServiceBusAuthorizationRuleResponse call() throws Exception
-        {
-            return getAuthorizationRule(namespaceName, entityName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
+            @Override
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
+                return getAuthorizationRule(namespaceName, entityName);
+            }
          });
     }
     
@@ -1177,11 +1184,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceDescriptionResponse>() { @Override
-        public ServiceBusNamespaceDescriptionResponse call() throws Exception
-        {
-            return getNamespaceDescription(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceDescriptionResponse>() { 
+            @Override
+            public ServiceBusNamespaceDescriptionResponse call() throws Exception
+            {
+                return getNamespaceDescription(namespaceName);
+            }
          });
     }
     
@@ -1322,11 +1330,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusNamespacesResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespacesResponse>() { @Override
-        public ServiceBusNamespacesResponse call() throws Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespacesResponse>() { 
+            @Override
+            public ServiceBusNamespacesResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     
@@ -1493,11 +1502,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRulesResponse>() { @Override
-        public ServiceBusAuthorizationRulesResponse call() throws Exception
-        {
-            return listAuthorizationRules(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRulesResponse>() { 
+            @Override
+            public ServiceBusAuthorizationRulesResponse call() throws Exception
+            {
+                return listAuthorizationRules(namespaceName);
+            }
          });
     }
     
@@ -1681,11 +1691,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     @Override
     public Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { @Override
-        public ServiceBusAuthorizationRuleResponse call() throws Exception
-        {
-            return updateAuthorizationRule(namespaceName, rule);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
+            @Override
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
+                return updateAuthorizationRule(namespaceName, rule);
+            }
          });
     }
     

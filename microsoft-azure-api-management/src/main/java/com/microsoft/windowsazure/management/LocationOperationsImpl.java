@@ -76,11 +76,12 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     @Override
     public Future<LocationsListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<LocationsListResponse>() { @Override
-        public LocationsListResponse call() throws Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<LocationsListResponse>() { 
+            @Override
+            public LocationsListResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     

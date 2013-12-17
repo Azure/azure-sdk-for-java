@@ -81,11 +81,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     @Override
     public Future<ServiceBusNotificationHubResponse> getAsync(final String namespaceName, final String notificationHubName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubResponse>() { @Override
-        public ServiceBusNotificationHubResponse call() throws Exception
-        {
-            return get(namespaceName, notificationHubName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubResponse>() { 
+            @Override
+            public ServiceBusNotificationHubResponse call() throws Exception
+            {
+                return get(namespaceName, notificationHubName);
+            }
          });
     }
     
@@ -272,11 +273,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     @Override
     public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String notificationHubName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { @Override
-        public ServiceBusConnectionDetailsResponse call() throws Exception
-        {
-            return getConnectionDetails(namespaceName, notificationHubName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
+            @Override
+            public ServiceBusConnectionDetailsResponse call() throws Exception
+            {
+                return getConnectionDetails(namespaceName, notificationHubName);
+            }
          });
     }
     
@@ -401,11 +403,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     @Override
     public Future<ServiceBusNotificationHubsResponse> listAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubsResponse>() { @Override
-        public ServiceBusNotificationHubsResponse call() throws Exception
-        {
-            return list(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubsResponse>() { 
+            @Override
+            public ServiceBusNotificationHubsResponse call() throws Exception
+            {
+                return list(namespaceName);
+            }
          });
     }
     

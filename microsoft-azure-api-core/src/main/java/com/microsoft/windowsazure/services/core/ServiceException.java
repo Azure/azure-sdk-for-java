@@ -133,6 +133,20 @@ public class ServiceException extends Exception {
     public static ServiceException createFromXml(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
     {
         try {
+            // TODO: actually implement this
+            ServiceException serviceException = new ServiceException();
+            serviceException.setErrorMessage(EntityUtils.toString(entity));
+            return serviceException;
+        }
+        catch (IOException e) {
+            return new ServiceException();
+        }
+    }
+    
+    public static ServiceException createFromJson(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    {
+        try {
+            // TODO: actually implement this
             ServiceException serviceException = new ServiceException();
             serviceException.setErrorMessage(EntityUtils.toString(entity));
             return serviceException;

@@ -76,11 +76,12 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     @Override
     public Future<ServiceObjectiveGetResponse> getAsync(final String serverName, final String serviceObjectiveId)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveGetResponse>() { @Override
-        public ServiceObjectiveGetResponse call() throws Exception
-        {
-            return get(serverName, serviceObjectiveId);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveGetResponse>() { 
+            @Override
+            public ServiceObjectiveGetResponse call() throws Exception
+            {
+                return get(serverName, serviceObjectiveId);
+            }
          });
     }
     
@@ -342,11 +343,12 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     @Override
     public Future<ServiceObjectiveListResponse> listAsync(final String serverName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveListResponse>() { @Override
-        public ServiceObjectiveListResponse call() throws Exception
-        {
-            return list(serverName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveListResponse>() { 
+            @Override
+            public ServiceObjectiveListResponse call() throws Exception
+            {
+                return list(serverName);
+            }
          });
     }
     

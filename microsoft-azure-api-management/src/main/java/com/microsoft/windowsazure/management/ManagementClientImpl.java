@@ -200,11 +200,12 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     @Override
     public Future<OperationStatusResponse> getOperationStatusAsync(final String requestId)
     {
-        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { @Override
-        public OperationStatusResponse call() throws Exception
-        {
-            return getOperationStatus(requestId);
-        }
+        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception
+            {
+                return getOperationStatus(requestId);
+            }
          });
     }
     

@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * The parameters required for shutting down the virtual machine
 */
