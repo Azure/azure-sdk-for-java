@@ -83,7 +83,7 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -675,7 +675,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         if (parameters.getExtendedProperties() != null)
         {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
             {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
@@ -3240,7 +3240,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         if (parameters.getExtendedProperties() != null)
         {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
             {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();

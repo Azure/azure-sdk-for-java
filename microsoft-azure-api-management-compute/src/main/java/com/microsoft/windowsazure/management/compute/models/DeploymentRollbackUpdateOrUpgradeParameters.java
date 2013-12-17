@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Parameters supplied to the Rollback Update Or Upgrade operation.
 */

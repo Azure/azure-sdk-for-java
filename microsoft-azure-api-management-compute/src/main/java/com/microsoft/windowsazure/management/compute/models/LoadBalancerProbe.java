@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Contains properties that specify the endpoint settings which the Windows
 * Azure load balancer uses to monitor the availability of this virtual machine

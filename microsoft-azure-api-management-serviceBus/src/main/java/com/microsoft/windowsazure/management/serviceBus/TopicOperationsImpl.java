@@ -39,6 +39,7 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import javax.xml.parsers.DocumentBuilder;
@@ -96,11 +97,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusTopicResponse> createAsync(final String namespaceName, final ServiceBusTopic topic)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { @Override
-        public ServiceBusTopicResponse call() throws Exception
-        {
-            return create(namespaceName, topic);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
+            @Override
+            public ServiceBusTopicResponse call() throws Exception
+            {
+                return create(namespaceName, topic);
+            }
          });
     }
     
@@ -227,7 +229,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     }
                     
                     Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                    createdTimeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getCreatedTime().toString()));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                     authorizationRuleElement.appendChild(createdTimeElement);
                     
                     if (authorizationRulesItem.getKeyName() != null)
@@ -238,7 +242,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     }
                     
                     Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                    modifiedTimeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getModifiedTime().toString()));
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                     authorizationRuleElement.appendChild(modifiedTimeElement);
                     
                     if (authorizationRulesItem.getPrimaryKey() != null)
@@ -266,15 +272,21 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-            createdAtElement.appendChild(requestDoc.createTextNode(topic.getCreatedAt().toString()));
+            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+            createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
             topicDescriptionElement.appendChild(createdAtElement);
             
             Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-            updatedAtElement.appendChild(requestDoc.createTextNode(topic.getUpdatedAt().toString()));
+            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+            updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
             topicDescriptionElement.appendChild(updatedAtElement);
             
             Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-            accessedAtElement.appendChild(requestDoc.createTextNode(topic.getAccessedAt().toString()));
+            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+            accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
             topicDescriptionElement.appendChild(accessedAtElement);
             
             Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
@@ -493,9 +505,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (createdTimeElement2 != null)
                             {
                                 Calendar createdTimeInstance;
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(simpleDateFormat.parse(createdTimeElement2.getTextContent()));
+                                calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
                                 createdTimeInstance = calendar;
                                 authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                             }
@@ -514,9 +526,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (modifiedTimeElement2 != null)
                             {
                                 Calendar modifiedTimeInstance;
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement2.getTextContent()));
+                                calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
                                 modifiedTimeInstance = calendar2;
                                 authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                             }
@@ -555,9 +567,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (createdAtElement2 != null)
                     {
                         Calendar createdAtInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(createdAtElement2.getTextContent()));
+                        calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
                         createdAtInstance = calendar3;
                         topicDescriptionInstance.setCreatedAt(createdAtInstance);
                     }
@@ -567,9 +579,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (updatedAtElement2 != null)
                     {
                         Calendar updatedAtInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(updatedAtElement2.getTextContent()));
+                        calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
                         updatedAtInstance = calendar4;
                         topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
                     }
@@ -579,9 +591,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (accessedAtElement2 != null)
                     {
                         Calendar accessedAtInstance;
-                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar5 = Calendar.getInstance();
-                        calendar5.setTime(simpleDateFormat5.parse(accessedAtElement2.getTextContent()));
+                        calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
                         accessedAtInstance = calendar5;
                         topicDescriptionInstance.setAccessedAt(accessedAtInstance);
                     }
@@ -655,11 +667,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusTopicResponse> getAsync(final String namespaceName, final String topicName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { @Override
-        public ServiceBusTopicResponse call() throws Exception
-        {
-            return get(namespaceName, topicName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
+            @Override
+            public ServiceBusTopicResponse call() throws Exception
+            {
+                return get(namespaceName, topicName);
+            }
          });
     }
     
@@ -1003,11 +1016,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String topicName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { @Override
-        public ServiceBusConnectionDetailsResponse call() throws Exception
-        {
-            return getConnectionDetails(namespaceName, topicName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
+            @Override
+            public ServiceBusConnectionDetailsResponse call() throws Exception
+            {
+                return getConnectionDetails(namespaceName, topicName);
+            }
          });
     }
     
@@ -1135,11 +1149,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusTopicsResponse> listAsync(final String namespaceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicsResponse>() { @Override
-        public ServiceBusTopicsResponse call() throws Exception
-        {
-            return list(namespaceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicsResponse>() { 
+            @Override
+            public ServiceBusTopicsResponse call() throws Exception
+            {
+                return list(namespaceName);
+            }
          });
     }
     
@@ -1493,11 +1508,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusTopicResponse> updateAsync(final String namespaceName, final ServiceBusTopic topic)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { @Override
-        public ServiceBusTopicResponse call() throws Exception
-        {
-            return update(namespaceName, topic);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
+            @Override
+            public ServiceBusTopicResponse call() throws Exception
+            {
+                return update(namespaceName, topic);
+            }
          });
     }
     
@@ -1622,7 +1638,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     }
                     
                     Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                    createdTimeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getCreatedTime().toString()));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                     authorizationRuleElement.appendChild(createdTimeElement);
                     
                     if (authorizationRulesItem.getKeyName() != null)
@@ -1633,7 +1651,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     }
                     
                     Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                    modifiedTimeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getModifiedTime().toString()));
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                     authorizationRuleElement.appendChild(modifiedTimeElement);
                     
                     if (authorizationRulesItem.getPrimaryKey() != null)
@@ -1661,15 +1681,21 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-            createdAtElement.appendChild(requestDoc.createTextNode(topic.getCreatedAt().toString()));
+            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+            createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
             topicDescriptionElement.appendChild(createdAtElement);
             
             Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-            updatedAtElement.appendChild(requestDoc.createTextNode(topic.getUpdatedAt().toString()));
+            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+            updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
             topicDescriptionElement.appendChild(updatedAtElement);
             
             Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-            accessedAtElement.appendChild(requestDoc.createTextNode(topic.getAccessedAt().toString()));
+            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+            accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
             topicDescriptionElement.appendChild(accessedAtElement);
             
             Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
@@ -1888,9 +1914,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (createdTimeElement2 != null)
                             {
                                 Calendar createdTimeInstance;
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(simpleDateFormat.parse(createdTimeElement2.getTextContent()));
+                                calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
                                 createdTimeInstance = calendar;
                                 authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                             }
@@ -1909,9 +1935,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (modifiedTimeElement2 != null)
                             {
                                 Calendar modifiedTimeInstance;
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement2.getTextContent()));
+                                calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
                                 modifiedTimeInstance = calendar2;
                                 authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                             }
@@ -1950,9 +1976,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (createdAtElement2 != null)
                     {
                         Calendar createdAtInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(createdAtElement2.getTextContent()));
+                        calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
                         createdAtInstance = calendar3;
                         topicDescriptionInstance.setCreatedAt(createdAtInstance);
                     }
@@ -1962,9 +1988,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (updatedAtElement2 != null)
                     {
                         Calendar updatedAtInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(updatedAtElement2.getTextContent()));
+                        calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
                         updatedAtInstance = calendar4;
                         topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
                     }
@@ -1974,9 +2000,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                     if (accessedAtElement2 != null)
                     {
                         Calendar accessedAtInstance;
-                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar5 = Calendar.getInstance();
-                        calendar5.setTime(simpleDateFormat5.parse(accessedAtElement2.getTextContent()));
+                        calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
                         accessedAtInstance = calendar5;
                         topicDescriptionInstance.setAccessedAt(accessedAtInstance);
                     }

@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -45,7 +46,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -96,11 +96,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     @Override
     public Future<OperationResponse> changeAdministratorPasswordAsync(final String serverName, final ServerChangeAdministratorPasswordParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return changeAdministratorPassword(serverName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return changeAdministratorPassword(serverName, parameters);
+            }
          });
     }
     
@@ -202,11 +203,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     @Override
     public Future<ServerCreateResponse> createAsync(final ServerCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServerCreateResponse>() { @Override
-        public ServerCreateResponse call() throws Exception
-        {
-            return create(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServerCreateResponse>() { 
+            @Override
+            public ServerCreateResponse call() throws Exception
+            {
+                return create(parameters);
+            }
          });
     }
     
@@ -332,11 +334,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     @Override
     public Future<OperationResponse> deleteAsync(final String serverName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(serverName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(serverName);
+            }
          });
     }
     
@@ -365,7 +368,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
@@ -403,11 +406,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     @Override
     public Future<ServerListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServerListResponse>() { @Override
-        public ServerListResponse call() throws Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServerListResponse>() { 
+            @Override
+            public ServerListResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     

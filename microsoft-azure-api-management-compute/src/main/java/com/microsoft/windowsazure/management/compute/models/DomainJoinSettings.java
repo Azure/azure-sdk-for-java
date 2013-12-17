@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Optional.  Contains properties that specify a domain to which the virtual
 * machine will be joined. This element is only used with the
