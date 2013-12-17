@@ -26,7 +26,6 @@ import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
-import com.microsoft.windowsazure.services.table.TableConfiguration;
 
 @SuppressWarnings("deprecation")
 public abstract class ScenarioTestBase {
@@ -45,10 +44,6 @@ public abstract class ScenarioTestBase {
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME);
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY);
         overrideWithEnv(config, QueueConfiguration.URI);
-
-        overrideWithEnv(config, TableConfiguration.ACCOUNT_NAME);
-        overrideWithEnv(config, TableConfiguration.ACCOUNT_KEY);
-        overrideWithEnv(config, TableConfiguration.URI);
 
         overrideWithEnv(config, MediaConfiguration.URI);
         overrideWithEnv(config, MediaConfiguration.OAUTH_URI);

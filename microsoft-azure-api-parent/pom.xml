@@ -330,6 +330,5 @@
     <module>../microsoft-azure-api-media</module>
     <module>../microsoft-azure-api-serviceBus</module>
     <module>../microsoft-azure-api-serviceRuntime</module>
-    <module>../microsoft-azure-api-storage</module>
   </modules>
 </project>
