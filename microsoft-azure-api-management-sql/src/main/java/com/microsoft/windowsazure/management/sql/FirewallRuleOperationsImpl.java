@@ -29,6 +29,7 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParame
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -47,7 +48,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -102,11 +102,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     @Override
     public Future<FirewallRuleCreateResponse> createAsync(final String serverName, final FirewallRuleCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleCreateResponse>() { @Override
-        public FirewallRuleCreateResponse call() throws Exception
-        {
-            return create(serverName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleCreateResponse>() { 
+            @Override
+            public FirewallRuleCreateResponse call() throws Exception
+            {
+                return create(serverName, parameters);
+            }
          });
     }
     
@@ -285,11 +286,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     @Override
     public Future<OperationResponse> deleteAsync(final String serverName, final String ruleName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(serverName, ruleName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(serverName, ruleName);
+            }
          });
     }
     
@@ -324,7 +326,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
@@ -365,11 +367,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     @Override
     public Future<FirewallRuleListResponse> listAsync(final String serverName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleListResponse>() { @Override
-        public FirewallRuleListResponse call() throws Exception
-        {
-            return list(serverName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleListResponse>() { 
+            @Override
+            public FirewallRuleListResponse call() throws Exception
+            {
+                return list(serverName);
+            }
          });
     }
     
@@ -497,11 +500,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     @Override
     public Future<FirewallRuleUpdateResponse> updateAsync(final String serverName, final String ruleName, final FirewallRuleUpdateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleUpdateResponse>() { @Override
-        public FirewallRuleUpdateResponse call() throws Exception
-        {
-            return update(serverName, ruleName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleUpdateResponse>() { 
+            @Override
+            public FirewallRuleUpdateResponse call() throws Exception
+            {
+                return update(serverName, ruleName, parameters);
+            }
          });
     }
     

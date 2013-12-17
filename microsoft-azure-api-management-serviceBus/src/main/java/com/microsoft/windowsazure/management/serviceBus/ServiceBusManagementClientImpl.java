@@ -203,11 +203,12 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     @Override
     public Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(final String requestId)
     {
-        return this.getExecutorService().submit(new Callable<ServiceBusOperationStatusResponse>() { @Override
-        public ServiceBusOperationStatusResponse call() throws Exception
-        {
-            return getOperationStatus(requestId);
-        }
+        return this.getExecutorService().submit(new Callable<ServiceBusOperationStatusResponse>() { 
+            @Override
+            public ServiceBusOperationStatusResponse call() throws Exception
+            {
+                return getOperationStatus(requestId);
+            }
          });
     }
     
@@ -349,11 +350,12 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     @Override
     public Future<ServiceBusRegionsResponse> getServiceBusRegionsAsync()
     {
-        return this.getExecutorService().submit(new Callable<ServiceBusRegionsResponse>() { @Override
-        public ServiceBusRegionsResponse call() throws Exception
-        {
-            return getServiceBusRegions();
-        }
+        return this.getExecutorService().submit(new Callable<ServiceBusRegionsResponse>() { 
+            @Override
+            public ServiceBusRegionsResponse call() throws Exception
+            {
+                return getServiceBusRegions();
+            }
          });
     }
     
