@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Contains the type and certificate information for the listener.
 */

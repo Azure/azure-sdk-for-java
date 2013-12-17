@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Parameters supplied to the Update Deployment Status operation.
 */

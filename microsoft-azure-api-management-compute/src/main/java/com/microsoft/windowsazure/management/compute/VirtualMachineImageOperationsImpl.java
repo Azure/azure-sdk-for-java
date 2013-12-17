@@ -42,6 +42,7 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -210,7 +211,9 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         if (parameters.getPublishedDate() != null)
         {
             Element publishedDateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-            publishedDateElement.appendChild(requestDoc.createTextNode(parameters.getPublishedDate().toString()));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            publishedDateElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(parameters.getPublishedDate().getTime())));
             oSImageElement.appendChild(publishedDateElement);
         }
         
@@ -386,9 +389,9 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
             {
                 Calendar publishedDateInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
+                calendar.setTime(simpleDateFormat2.parse(publishedDateElement2.getTextContent()));
                 publishedDateInstance = calendar;
                 result.setPublishedDate(publishedDateInstance);
             }
@@ -1183,7 +1186,9 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         if (parameters.getPublishedDate() != null)
         {
             Element publishedDateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-            publishedDateElement.appendChild(requestDoc.createTextNode(parameters.getPublishedDate().toString()));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            publishedDateElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(parameters.getPublishedDate().getTime())));
             oSImageElement.appendChild(publishedDateElement);
         }
         
@@ -1355,9 +1360,9 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
             {
                 Calendar publishedDateInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(publishedDateElement2.getTextContent()));
+                calendar.setTime(simpleDateFormat2.parse(publishedDateElement2.getTextContent()));
                 publishedDateInstance = calendar;
                 result.setPublishedDate(publishedDateInstance);
             }

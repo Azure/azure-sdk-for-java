@@ -89,11 +89,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     @Override
     public Future<DacImportExportResponse> exportAsync(final String serverName, final DacExportParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { @Override
-        public DacImportExportResponse call() throws Exception
-        {
-            return export(serverName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { 
+            @Override
+            public DacImportExportResponse call() throws Exception
+            {
+                return export(serverName, parameters);
+            }
          });
     }
     
@@ -267,11 +268,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     @Override
     public Future<DacGetStatusResponse> getStatusAsync(final String serverName, final String fullyQualifiedServerName, final String username, final String password, final String requestId)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DacGetStatusResponse>() { @Override
-        public DacGetStatusResponse call() throws Exception
-        {
-            return getStatus(serverName, fullyQualifiedServerName, username, password, requestId);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DacGetStatusResponse>() { 
+            @Override
+            public DacGetStatusResponse call() throws Exception
+            {
+                return getStatus(serverName, fullyQualifiedServerName, username, password, requestId);
+            }
          });
     }
     
@@ -470,11 +472,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     @Override
     public Future<DacImportExportResponse> importResourceAsync(final String serverName, final DacImportParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { @Override
-        public DacImportExportResponse call() throws Exception
-        {
-            return importResource(serverName, parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<DacImportExportResponse>() { 
+            @Override
+            public DacImportExportResponse call() throws Exception
+            {
+                return importResource(serverName, parameters);
+            }
          });
     }
     

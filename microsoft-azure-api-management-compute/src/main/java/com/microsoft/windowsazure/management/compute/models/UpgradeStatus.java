@@ -21,7 +21,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-
 /**
 * Contains upgrade details of the deployment.
 */

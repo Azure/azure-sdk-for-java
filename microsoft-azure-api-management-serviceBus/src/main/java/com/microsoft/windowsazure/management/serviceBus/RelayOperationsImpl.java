@@ -72,11 +72,12 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     @Override
     public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String relayName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { @Override
-        public ServiceBusConnectionDetailsResponse call() throws Exception
-        {
-            return getConnectionDetails(namespaceName, relayName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
+            @Override
+            public ServiceBusConnectionDetailsResponse call() throws Exception
+            {
+                return getConnectionDetails(namespaceName, relayName);
+            }
          });
     }
     

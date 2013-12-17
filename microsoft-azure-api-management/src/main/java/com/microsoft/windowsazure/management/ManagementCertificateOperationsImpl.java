@@ -26,6 +26,7 @@ import com.microsoft.windowsazure.management.models.ManagementCertificateGetResp
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.core.ServiceOperations;
+import com.microsoft.windowsazure.services.core.utils.pipeline.CustomHttpDelete;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -47,7 +48,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -100,11 +100,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     @Override
     public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return create(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return create(parameters);
+            }
          });
     }
     
@@ -220,11 +221,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     @Override
     public Future<OperationResponse> deleteAsync(final String thumbprint)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return delete(thumbprint);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(thumbprint);
+            }
          });
     }
     
@@ -255,7 +257,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates/" + thumbprint;
         
         // Create HTTP transport objects
-        HttpDelete httpRequest = new HttpDelete(url);
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
@@ -298,11 +300,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     @Override
     public Future<ManagementCertificateGetResponse> getAsync(final String thumbprint)
     {
-        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateGetResponse>() { @Override
-        public ManagementCertificateGetResponse call() throws Exception
-        {
-            return get(thumbprint);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateGetResponse>() { 
+            @Override
+            public ManagementCertificateGetResponse call() throws Exception
+            {
+                return get(thumbprint);
+            }
          });
     }
     
@@ -425,11 +428,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     @Override
     public Future<ManagementCertificateListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateListResponse>() { @Override
-        public ManagementCertificateListResponse call() throws Exception
-        {
-            return list();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateListResponse>() { 
+            @Override
+            public ManagementCertificateListResponse call() throws Exception
+            {
+                return list();
+            }
          });
     }
     

@@ -85,11 +85,12 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     @Override
     public Future<SubscriptionGetResponse> getAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<SubscriptionGetResponse>() { @Override
-        public SubscriptionGetResponse call() throws Exception
-        {
-            return get();
-        }
+        return this.getClient().getExecutorService().submit(new Callable<SubscriptionGetResponse>() { 
+            @Override
+            public SubscriptionGetResponse call() throws Exception
+            {
+                return get();
+            }
          });
     }
     
@@ -317,11 +318,12 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     @Override
     public Future<SubscriptionListOperationsResponse> listOperationsAsync(final SubscriptionListOperationsParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<SubscriptionListOperationsResponse>() { @Override
-        public SubscriptionListOperationsResponse call() throws Exception
-        {
-            return listOperations(parameters);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<SubscriptionListOperationsResponse>() { 
+            @Override
+            public SubscriptionListOperationsResponse call() throws Exception
+            {
+                return listOperations(parameters);
+            }
          });
     }
     
@@ -557,11 +559,12 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     @Override
     public Future<OperationResponse> registerResourceAsync(final String resourceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return registerResource(resourceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return registerResource(resourceName);
+            }
          });
     }
     
@@ -625,11 +628,12 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     @Override
     public Future<OperationResponse> unregisterResourceAsync(final String resourceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { @Override
-        public OperationResponse call() throws Exception
-        {
-            return unregisterResource(resourceName);
-        }
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return unregisterResource(resourceName);
+            }
          });
     }
     
