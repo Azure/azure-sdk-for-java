@@ -332,7 +332,6 @@
     <module>../microsoft-azure-api-scheduler</module>
     <module>../microsoft-azure-api-serviceBus</module>
     <module>../microsoft-azure-api-serviceRuntime</module>
-    <module>../microsoft-azure-api-storage</module>
     <module>../microsoft-azure-api-subscription</module>
   </modules>
 </project>
