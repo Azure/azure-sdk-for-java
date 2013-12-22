@@ -21,8 +21,11 @@
 
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.models.OperationStatusResponse;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
@@ -37,7 +40,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface ManagementClient
+public interface ManagementClient extends FilterableService<ManagementClient>
 {
     /**
     * The URI used as the base for all Service Management requests.
@@ -59,7 +62,7 @@ public interface ManagementClient
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
     */
-    AffinityGroupOperations getAffinityGroups(); 
+    AffinityGroupOperations getAffinityGroupsOperations(); 
     
     /**
     * The Service Management API includes operations for listing the available
@@ -67,7 +70,7 @@ public interface ManagementClient
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
     * more information)
     */
-    LocationOperations getLocations(); 
+    LocationOperations getLocationsOperations(); 
     
     /**
     * You can use management certificates, which are also known as subscription
@@ -76,14 +79,14 @@ public interface ManagementClient
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
     */
-    ManagementCertificateOperations getManagementCertificates(); 
+    ManagementCertificateOperations getManagementCertificatesOperations(); 
     
     /**
     * Operation for listing subscription operations and details.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
     */
-    SubscriptionOperations getSubscriptions(); 
+    SubscriptionOperations getSubscriptionsOperations(); 
     
     /**
     * The Get Operation Status operation returns the status of thespecified

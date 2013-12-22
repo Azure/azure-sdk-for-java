@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.core.storage.AccessCondition;
-import com.microsoft.windowsazure.services.core.utils.AccessConditionHeader;
+import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
  * Represents the options that may be set on a

@@ -14,8 +14,8 @@
  */
 package com.microsoft.windowsazure.services.queue;
 
-import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.services.queue.implementation.QueueExceptionProcessor;
 import com.microsoft.windowsazure.services.queue.implementation.QueueRestProxy;
 import com.microsoft.windowsazure.services.queue.implementation.SharedKeyFilter;

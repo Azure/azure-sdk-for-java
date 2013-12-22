@@ -16,9 +16,9 @@ package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
 import com.microsoft.windowsazure.services.queue.models.GetQueueMetadataResult;
@@ -39,7 +39,7 @@ import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
  * associate a {@link Configuration} with the implementation, so the methods on the instance of
  * <strong>QueueContract</strong> all work with a particular storage account.
  */
-public interface QueueContract extends FilterableService<QueueContract> {
+public interface QueueContract extends JerseyFilterableService<QueueContract> {
     /**
      * Gets the service properties of the queue.
      * 

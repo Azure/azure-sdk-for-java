@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.services.blob;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.Configuration;
 
 public abstract class IntegrationTestBase {
     protected static Configuration createConfiguration() {

@@ -14,13 +14,13 @@
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
+import com.microsoft.windowsazure.Configuration;
 import static com.microsoft.windowsazure.services.serviceBus.Util.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
 import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;

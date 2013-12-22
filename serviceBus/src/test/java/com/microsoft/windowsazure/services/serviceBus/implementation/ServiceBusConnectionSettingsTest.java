@@ -15,11 +15,11 @@
 
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.Configuration;
 import static junit.framework.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Configuration;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 
 public class ServiceBusConnectionSettingsTest {

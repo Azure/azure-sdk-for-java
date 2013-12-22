@@ -15,6 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.io.InputStream;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
@@ -24,8 +26,8 @@ import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.sun.jersey.api.client.Client;
 
@@ -37,12 +39,20 @@ import com.sun.jersey.api.client.Client;
 public class MediaBlobContainerWriter implements WritableBlobContainerContract {
 
     private final BlobContract blobService;
-    private final BlobContract restProxy;
+    private BlobContract restProxy;
+
+    public BlobContract getBlobContract()
+    {
+        return this.restProxy;
+    }
+    
+    public void setBlobContract(BlobContract blobContract)
+    {
+        this.restProxy = blobContract;
+    }
+    
     private final String containerName;
 
-    /**
-     * 
-     */
     public MediaBlobContainerWriter(Client client, String accountName, String blobServiceUri, String containerName,
             String sasToken) {
         this.containerName = containerName;
@@ -50,20 +60,61 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract {
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
 
-    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter, ServiceFilter filter) {
+    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter) {
         this.containerName = baseWriter.containerName;
-        this.restProxy = baseWriter.restProxy.withFilter(filter);
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
-
+    
     /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+     * @see com.microsoft.windowsazure.services.core.JerseyFilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
     public WritableBlobContainerContract withFilter(ServiceFilter filter) {
-        return new MediaBlobContainerWriter(this, filter);
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withFilter(filter));
+        return mediaBlobContainerWriter;
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public WritableBlobContainerContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withRequestFilterFirst(serviceRequestFilter));
+        return mediaBlobContainerWriter;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public WritableBlobContainerContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withRequestFilterLast(serviceRequestFilter));
+        return mediaBlobContainerWriter;
+    }
+    
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public WritableBlobContainerContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withResponseFilterFirst(serviceResponseFilter));
+        return mediaBlobContainerWriter;
+    }
+    
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public WritableBlobContainerContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withResponseFilterLast(serviceResponseFilter));
+        return mediaBlobContainerWriter;
+    }
+    
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#createBlockBlob(java.lang.String, java.io.InputStream)
      */

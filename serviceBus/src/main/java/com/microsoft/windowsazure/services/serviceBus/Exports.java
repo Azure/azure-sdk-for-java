@@ -14,10 +14,10 @@
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import java.util.Map;
 
 import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.BrokerPropertiesMapper;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntryModelProvider;
 import com.microsoft.windowsazure.services.serviceBus.implementation.MarshallerProvider;

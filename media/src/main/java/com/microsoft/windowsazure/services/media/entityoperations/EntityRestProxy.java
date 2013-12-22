@@ -20,15 +20,15 @@ import java.util.concurrent.Executors;
 
 import javax.ws.rs.core.MediaType;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * The Class EntityRestProxy.
@@ -40,7 +40,7 @@ public abstract class EntityRestProxy implements EntityContract {
     /** The channel. */
     private final Client channel;
     /** The filters. */
-    private final ServiceFilter[] filters;
+    private final ClientFilter[] filters;
 
     /**
      * Instantiates a new entity rest proxy.
@@ -50,7 +50,7 @@ public abstract class EntityRestProxy implements EntityContract {
      * @param filters
      *            the filters
      */
-    public EntityRestProxy(Client channel, ServiceFilter[] filters) {
+    public EntityRestProxy(Client channel, ClientFilter[] filters) {
         this.channel = channel;
         this.filters = filters;
         this.executorService = Executors.newCachedThreadPool();
@@ -79,7 +79,7 @@ public abstract class EntityRestProxy implements EntityContract {
      * 
      * @return the filters
      */
-    protected ServiceFilter[] getFilters() {
+    protected ClientFilter[] getFilters() {
         return filters;
     }
 
@@ -99,8 +99,8 @@ public abstract class EntityRestProxy implements EntityContract {
      */
     private WebResource getResource(String entityName) {
         WebResource resource = channel.resource(entityName);
-        for (ServiceFilter filter : filters) {
-            resource.addFilter(new ClientFilterAdapter(filter));
+        for (ClientFilter filter : filters) {
+            resource.addFilter(filter);
         }
         return resource;
     }

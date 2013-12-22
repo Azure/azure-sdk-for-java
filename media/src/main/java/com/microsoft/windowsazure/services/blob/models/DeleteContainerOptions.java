@@ -15,7 +15,7 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.services.core.utils.AccessConditionHeader;
+import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
  * Represents the options that may be set on a {@link BlobContract#deleteContainer(String, DeleteContainerOptions)

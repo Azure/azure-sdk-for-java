@@ -14,14 +14,14 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import static org.junit.Assert.*;
 
 import java.net.URI;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 import com.sun.jersey.api.client.Client;
 

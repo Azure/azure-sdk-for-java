@@ -14,6 +14,9 @@
  */
 package com.microsoft.windowsazure.services.queue.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +24,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.HttpURLConnectionClient;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.RFC1123DateConverter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
@@ -46,6 +50,7 @@ import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class QueueRestProxy implements QueueContract {
     //private static Log log = LogFactory.getLog(QueueRestProxy.class);
@@ -55,7 +60,7 @@ public class QueueRestProxy implements QueueContract {
     private final String accountName;
     private final String url;
     private final RFC1123DateConverter dateMapper;
-    private final ServiceFilter[] filters;
+    private final ClientFilter[] filters;
     private final SharedKeyFilter sharedKeyFilter;
 
     @Inject
@@ -67,12 +72,12 @@ public class QueueRestProxy implements QueueContract {
         this.url = url;
         this.sharedKeyFilter = sharedKeyFilter;
         this.dateMapper = new RFC1123DateConverter();
-        this.filters = new ServiceFilter[0];
+        this.filters = new ClientFilter[0];
         channel.addFilter(sharedKeyFilter);
-        channel.addFilter(userAgentFilter);
+        channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
-    public QueueRestProxy(HttpURLConnectionClient channel, ServiceFilter[] filters, String accountName, String url,
+    public QueueRestProxy(HttpURLConnectionClient channel, ClientFilter[] filters, String accountName, String url,
             SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = channel;
@@ -85,12 +90,51 @@ public class QueueRestProxy implements QueueContract {
 
     @Override
     public QueueContract withFilter(ServiceFilter filter) {
-        ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
-        newFilters[filters.length] = filter;
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterAdapter(filter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
+                this.dateMapper);
+    }
+    
+    @Override
+    public QueueContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
         return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
                 this.dateMapper);
     }
 
+    @Override
+    public QueueContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
+                this.dateMapper);
+    }
+    
+    @Override
+    public QueueContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
+                this.dateMapper);
+    }
+    
+    @Override
+    public QueueContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
+                this.dateMapper);
+    }
+    
     private void ThrowIfError(ClientResponse r) {
         PipelineHelpers.ThrowIfError(r);
     }
@@ -114,8 +158,8 @@ public class QueueRestProxy implements QueueContract {
     private WebResource getResource(QueueServiceOptions options) {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", options.getTimeout());
-        for (ServiceFilter filter : filters) {
-            webResource.addFilter(new ClientFilterAdapter(filter));
+        for (ClientFilter filter : filters) {
+            webResource.addFilter(filter);
         }
 
         return webResource;

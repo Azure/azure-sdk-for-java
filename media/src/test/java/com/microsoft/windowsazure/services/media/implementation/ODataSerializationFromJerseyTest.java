@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -23,8 +24,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
-import com.microsoft.windowsazure.services.core.utils.DefaultDateFactory;
+import com.microsoft.windowsazure.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.MediaContract;

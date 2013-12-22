@@ -29,8 +29,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.utils.DateFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.utils.DateFactory;
 
 public class OAuthTokenManagerTest {
     private OAuthContract contract;

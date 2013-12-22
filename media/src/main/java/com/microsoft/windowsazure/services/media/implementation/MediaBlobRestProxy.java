@@ -15,13 +15,20 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
 import java.util.Arrays;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.BlobOperationRestProxy;
-import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
+import com.microsoft.windowsazure.core.RFC1123DateConverter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.services.blob.implementation.BlobRestProxy;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * Rest proxy for blob operations that's specialized for working
@@ -64,7 +71,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy {
      * @param dateMapper
      *            date conversion helper object
      */
-    public MediaBlobRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url,
+    public MediaBlobRestProxy(Client channel, ClientFilter[] filters, String accountName, String url,
             SASTokenFilter tokenFilter, RFC1123DateConverter dateMapper) {
         super(channel, filters, accountName, url, dateMapper);
 
@@ -76,9 +83,47 @@ class MediaBlobRestProxy extends BlobOperationRestProxy {
      */
     @Override
     public BlobContract withFilter(ServiceFilter filter) {
-        ServiceFilter[] currentFilters = getFilters();
-        ServiceFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
-        newFilters[currentFilters.length] = filter;
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterAdapter(filter);
+        return new MediaBlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.tokenFilter,
+                getDateMapper());
+    }
+    
+    @Override
+    public BlobContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new MediaBlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.tokenFilter,
+                getDateMapper());
+    }
+
+    @Override
+    public BlobContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new MediaBlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.tokenFilter,
+                getDateMapper());
+    }
+    
+    @Override
+    public BlobContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new MediaBlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.tokenFilter,
+                getDateMapper());
+    }
+    
+    @Override
+    public BlobContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
         return new MediaBlobRestProxy(getChannel(), newFilters, getAccountName(), getUrl(), this.tokenFilter,
                 getDateMapper());
     }

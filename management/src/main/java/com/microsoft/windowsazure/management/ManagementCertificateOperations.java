@@ -21,10 +21,11 @@
 
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;

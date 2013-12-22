@@ -21,14 +21,16 @@
 
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.management.models.OperationStatus;
 import com.microsoft.windowsazure.management.models.OperationStatusResponse;
-import com.microsoft.windowsazure.services.core.ServiceClient;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,6 +39,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -50,7 +53,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> implements ManagementClient
+public class ManagementClientImpl extends ServiceClient<ManagementClient> implements ManagementClient
 {
     private URI baseUri;
     
@@ -78,7 +81,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
     */
-    public AffinityGroupOperations getAffinityGroups() { return this.affinityGroups; }
+    public AffinityGroupOperations getAffinityGroupsOperations() { return this.affinityGroups; }
     
     private LocationOperations locations;
     
@@ -88,7 +91,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
     * more information)
     */
-    public LocationOperations getLocations() { return this.locations; }
+    public LocationOperations getLocationsOperations() { return this.locations; }
     
     private ManagementCertificateOperations managementCertificates;
     
@@ -99,7 +102,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
     */
-    public ManagementCertificateOperations getManagementCertificates() { return this.managementCertificates; }
+    public ManagementCertificateOperations getManagementCertificatesOperations() { return this.managementCertificates; }
     
     private SubscriptionOperations subscriptions;
     
@@ -108,15 +111,17 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
     */
-    public SubscriptionOperations getSubscriptions() { return this.subscriptions; }
+    public SubscriptionOperations getSubscriptionsOperations() { return this.subscriptions; }
     
     /**
     * Initializes a new instance of the ManagementClientImpl class.
     *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
-    private ManagementClientImpl()
+    private ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
     {
-        super();
+        super(httpBuilder, executorService);
         this.affinityGroups = new AffinityGroupOperationsImpl(this);
         this.locations = new LocationOperationsImpl(this);
         this.managementCertificates = new ManagementCertificateOperationsImpl(this);
@@ -126,6 +131,8 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     /**
     * Initializes a new instance of the ManagementClientImpl class.
     *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     * @param credentials When you create a Windows Azure subscription, it is
     * uniquely identified by a subscription ID. The subscription ID forms part
     * of the URI for every call that you make to the Service Management API.
@@ -135,9 +142,9 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * @param baseUri The URI used as the base for all Service Management
     * requests.
     */
-    public ManagementClientImpl(SubscriptionCloudCredentials credentials, URI baseUri)
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri)
     {
-        this();
+        this(httpBuilder, executorService);
         if (credentials == null)
         {
             throw new NullPointerException("credentials");
@@ -148,13 +155,14 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
         }
         this.credentials = credentials;
         this.baseUri = baseUri;
-        
-        httpClient = credentials.initializeClient();
     }
     
     /**
     * Initializes a new instance of the ManagementClientImpl class.
+    * Initializes a new instance of the ManagementClientImpl class.
     *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     * @param credentials When you create a Windows Azure subscription, it is
     * uniquely identified by a subscription ID. The subscription ID forms part
     * of the URI for every call that you make to the Service Management API.
@@ -163,17 +171,25 @@ public class ManagementClientImpl extends ServiceClient<ManagementClientImpl> im
     * service is secure.  No anonymous requests are allowed.
     */
     @Inject
-    public ManagementClientImpl(@Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
     {
-        this();
+        this(httpBuilder, executorService);
         if (credentials == null)
         {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
         this.baseUri = new URI("https://management.core.windows.net");
-        
-        httpClient = credentials.initializeClient();
+    }
+    
+    /**
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    protected ManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
+        return new ManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
     /**

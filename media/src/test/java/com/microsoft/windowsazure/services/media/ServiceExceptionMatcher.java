@@ -18,7 +18,7 @@ package com.microsoft.windowsazure.services.media;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 public class ServiceExceptionMatcher extends BaseMatcher<ServiceException> {
     private final int httpStatusCode;

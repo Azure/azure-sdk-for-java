@@ -21,7 +21,7 @@ import java.net.URLEncoder;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;

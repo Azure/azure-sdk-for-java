@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.queue.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -21,9 +23,9 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;
 import com.microsoft.windowsazure.services.queue.models.CreateQueueOptions;
@@ -58,6 +60,38 @@ public class QueueExceptionProcessor implements QueueContract {
         return new QueueExceptionProcessor(service.withFilter(filter));
     }
 
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public QueueContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        return new QueueExceptionProcessor(service.withRequestFilterFirst(serviceRequestFilter));
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public QueueContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        return new QueueExceptionProcessor(service.withRequestFilterLast(serviceRequestFilter));
+    }
+    
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public QueueContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        return new QueueExceptionProcessor(service.withResponseFilterFirst(serviceResponseFilter));
+    }
+    
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+     */
+    @Override
+    public QueueContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        return new QueueExceptionProcessor(service.withResponseFilterLast(serviceResponseFilter));
+    }
+    
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("queue", e);

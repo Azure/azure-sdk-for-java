@@ -22,7 +22,7 @@
 package com.microsoft.windowsazure.management;
 
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.concurrent.Future;

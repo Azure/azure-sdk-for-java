@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
-import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;

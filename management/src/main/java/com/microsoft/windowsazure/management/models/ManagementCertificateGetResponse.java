@@ -21,7 +21,7 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.management.OperationResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.Calendar;
 
 /**

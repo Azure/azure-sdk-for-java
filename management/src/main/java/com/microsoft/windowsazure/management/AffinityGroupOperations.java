@@ -21,11 +21,12 @@
 
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;

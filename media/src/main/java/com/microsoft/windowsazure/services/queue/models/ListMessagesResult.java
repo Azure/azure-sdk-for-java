@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.core.RFC1123DateAdapter;
+import com.microsoft.windowsazure.core.RFC1123DateAdapter;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
