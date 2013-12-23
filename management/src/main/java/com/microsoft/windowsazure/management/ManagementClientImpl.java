@@ -21,11 +21,11 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.OperationStatus;
 import com.microsoft.windowsazure.management.models.OperationStatusResponse;
-import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -142,7 +142,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * @param baseUri The URI used as the base for all Service Management
     * requests.
     */
-    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri)
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
     {
         this(httpBuilder, executorService);
         if (credentials == null)

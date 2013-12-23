@@ -22,8 +22,8 @@
 package com.microsoft.windowsazure.management;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
-import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
