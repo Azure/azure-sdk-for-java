@@ -19,7 +19,7 @@
     <groupId>com.microsoft.windowsazure</groupId>
     <artifactId>microsoft-azure-api-parent</artifactId>
     <version>0.4.6</version>
-    <relativePath>../microsoft-azure-api-parent/pom.xml</relativePath>
+    <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>microsoft-azure-api-core</artifactId>
