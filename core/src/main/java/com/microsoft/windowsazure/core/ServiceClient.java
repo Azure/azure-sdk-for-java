@@ -18,11 +18,13 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.apache.HttpRequestInterceptorAdapter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.apache.HttpResponseInterceptorAdapter;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public abstract class ServiceClient<TClient> implements FilterableService<TClient> {
+public abstract class ServiceClient<TClient> implements FilterableService<TClient>, Closeable {
     private final ExecutorService executorService;
     
     public ExecutorService getExecutorService() { return this.executorService; }
@@ -77,5 +79,11 @@ public abstract class ServiceClient<TClient> implements FilterableService<TClien
     {
         httpClientBuilder.addInterceptorLast(new HttpResponseInterceptorAdapter(serviceResponseFilter));
         return this.newInstance(httpClientBuilder, executorService);
+    }
+    
+    @Override
+    public void close() throws IOException
+    {
+        httpClient.close();
     }
 }

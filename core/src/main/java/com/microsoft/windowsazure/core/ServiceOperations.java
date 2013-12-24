@@ -15,4 +15,5 @@
 package com.microsoft.windowsazure.core;
 
 public interface ServiceOperations<TClient> {
+    TClient getClient();
 }
