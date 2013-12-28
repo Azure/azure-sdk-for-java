@@ -15,10 +15,14 @@
 package com.microsoft.windowsazure.services.serviceBus;
 
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.core.filter.ServiceRequestContext;
-import com.microsoft.windowsazure.core.filter.ServiceResponseContext;
+import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.Builder.Alteration;
+import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter.Next;
+import com.microsoft.windowsazure.exception.ServiceException;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -30,10 +34,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.Builder.Alteration;
-import com.microsoft.windowsazure.services.core.Builder.Registry;
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;

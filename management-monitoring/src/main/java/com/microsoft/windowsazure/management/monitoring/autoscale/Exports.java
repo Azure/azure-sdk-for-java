@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale;
 
-import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.core.Builder;
 
 /**
  * The Class Exports.

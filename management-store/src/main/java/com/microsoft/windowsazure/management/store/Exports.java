@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.management.store;
 
-import com.microsoft.windowsazure.services.core.Builder;
+import com.microsoft.windowsazure.core.Builder;
 
 /**
  * The Class Exports.

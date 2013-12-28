@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.utils.DateFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -27,9 +29,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.utils.DateFactory;
 
 public class WrapTokenManagerTest {
     private WrapContract contract;

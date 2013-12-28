@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.utils.DateFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -24,9 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 import javax.management.timer.Timer;
-
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.utils.DateFactory;
 
 public class WrapTokenManager {
 
