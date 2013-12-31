@@ -48,6 +48,6 @@
     </developer>
   </developers>
   <modules>
-    <module>microsoft-azure-api-parent</module>
+    <module>parent</module>
   </modules>
 </project>
