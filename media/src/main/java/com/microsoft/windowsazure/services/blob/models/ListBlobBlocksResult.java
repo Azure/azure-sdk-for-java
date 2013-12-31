@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.services.core.utils.pipeline.Base64StringAdapter;
+import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get Block List operation. This is returned by

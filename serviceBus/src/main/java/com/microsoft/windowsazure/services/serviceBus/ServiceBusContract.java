@@ -14,8 +14,8 @@
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
-import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateRuleResult;
@@ -47,7 +47,7 @@ import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
  * Defines the service bus contract.
  * 
  */
-public interface ServiceBusContract extends FilterableService<ServiceBusContract> {
+public interface ServiceBusContract extends JerseyFilterableService<ServiceBusContract> {
 
     /**
      * Sends a queue message.

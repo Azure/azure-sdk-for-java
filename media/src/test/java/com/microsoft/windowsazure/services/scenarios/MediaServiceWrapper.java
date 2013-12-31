@@ -41,7 +41,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import junit.framework.Assert;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;

@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.microsoft.windowsazure.services.core.utils.pipeline.Base64StringAdapter;
+import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
 
 /**
  * Represents a list of blocks that may be committed to a block blob.

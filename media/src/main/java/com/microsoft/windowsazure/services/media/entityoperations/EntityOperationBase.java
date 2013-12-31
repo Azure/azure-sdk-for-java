@@ -21,7 +21,7 @@ import java.security.InvalidParameterException;
 
 import javax.ws.rs.core.MediaType;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * Default implementation of EntityOperation<T> to provide

@@ -14,10 +14,10 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;

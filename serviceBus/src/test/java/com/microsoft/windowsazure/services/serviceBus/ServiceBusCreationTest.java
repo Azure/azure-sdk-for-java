@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
 
 public class ServiceBusCreationTest {

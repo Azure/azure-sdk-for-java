@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.blob.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -66,9 +68,9 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -89,7 +91,27 @@ public class BlobExceptionProcessor implements BlobContract {
     public BlobContract withFilter(ServiceFilter filter) {
         return new BlobExceptionProcessor(service.withFilter(filter));
     }
+    
+    @Override
+    public BlobContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        return new BlobExceptionProcessor(service.withRequestFilterFirst(serviceRequestFilter));
+    }
 
+    @Override
+    public BlobContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        return new BlobExceptionProcessor(service.withRequestFilterLast(serviceRequestFilter));
+    }
+    
+    @Override
+    public BlobContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        return new BlobExceptionProcessor(service.withResponseFilterFirst(serviceResponseFilter));
+    }
+    
+    @Override
+    public BlobContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        return new BlobExceptionProcessor(service.withResponseFilterLast(serviceResponseFilter));
+    }
+    
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("blob", e);

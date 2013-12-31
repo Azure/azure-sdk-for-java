@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;

@@ -18,7 +18,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.microsoft.windowsazure.services.core.ISO8601DateConverter;
+import com.microsoft.windowsazure.core.ISO8601DateConverter;
 
 /*
  * JAXB adapter for a "not quite" ISO 8601 date time element

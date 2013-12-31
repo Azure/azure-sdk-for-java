@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import com.microsoft.windowsazure.services.core.FilterableService;
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityContract;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
  * Contract for interacting with the back end of Media Services
  * 
  */
-public interface MediaContract extends FilterableService<MediaContract>, EntityContract {
+public interface MediaContract extends JerseyFilterableService<MediaContract>, EntityContract {
     /**
      * Creates an instance of the <code>WritableBlobContainerContract</code> API that will
      * write to the blob container given by the provided locator.

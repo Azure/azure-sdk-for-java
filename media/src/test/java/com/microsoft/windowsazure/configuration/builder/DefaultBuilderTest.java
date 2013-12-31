@@ -24,7 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.services.core.DefaultBuilder;
+import com.microsoft.windowsazure.core.DefaultBuilder;
 
 public class DefaultBuilderTest {
 

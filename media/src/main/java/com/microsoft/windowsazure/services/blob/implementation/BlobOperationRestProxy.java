@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.blob.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.apache.HttpRequestInterceptorAdapter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -66,17 +69,17 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
-import com.microsoft.windowsazure.services.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.core.utils.CommaStringBuilder;
-import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.RFC1123DateConverter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
+import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.core.util.Base64;
 
 public abstract class BlobOperationRestProxy implements BlobContract {
@@ -86,13 +89,13 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     private final String accountName;
     private final String url;
     private final RFC1123DateConverter dateMapper;
-    private final ServiceFilter[] filters;
+    private final ClientFilter[] filters;
 
     protected BlobOperationRestProxy(Client channel, String accountName, String url) {
-        this(channel, new ServiceFilter[0], accountName, url, new RFC1123DateConverter());
+        this(channel, new ClientFilter[0], accountName, url, new RFC1123DateConverter());
     }
 
-    protected BlobOperationRestProxy(Client channel, ServiceFilter[] filters, String accountName, String url,
+    protected BlobOperationRestProxy(Client channel, ClientFilter[] filters, String accountName, String url,
             RFC1123DateConverter dateMapper) {
         this.channel = channel;
         this.accountName = accountName;
@@ -101,12 +104,18 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         this.dateMapper = dateMapper;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
-     */
     @Override
-    public abstract BlobContract withFilter(ServiceFilter filter);
+    public abstract BlobContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter);
 
+    @Override
+    public abstract BlobContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter);
+    
+    @Override
+    public abstract BlobContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter);
+    
+    @Override
+    public abstract BlobContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter);
+    
     protected Client getChannel() {
         return channel;
     }
@@ -123,7 +132,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         return dateMapper;
     }
 
-    protected ServiceFilter[] getFilters() {
+    protected ClientFilter[] getFilters() {
         return filters;
     }
 
@@ -237,8 +246,8 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     private WebResource getResource(BlobServiceOptions options) {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout", options.getTimeout());
-        for (ServiceFilter filter : filters) {
-            webResource.addFilter(new ClientFilterAdapter(filter));
+        for (ClientFilter filter : filters) {
+            webResource.addFilter(filter);
         }
 
         return webResource;

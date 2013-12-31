@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
+import com.microsoft.windowsazure.Configuration;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import com.microsoft.windowsazure.services.core.Configuration;
 
 public class ServiceBusConfigurationTest {
     @Test

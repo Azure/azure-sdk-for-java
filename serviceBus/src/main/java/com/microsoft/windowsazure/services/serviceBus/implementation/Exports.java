@@ -14,14 +14,12 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-import static com.microsoft.windowsazure.services.core.utils.ExportUtils.*;
-
+import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.utils.ConnectionStringSyntaxException;
+import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
+import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 import java.net.URISyntaxException;
 import java.util.Map;
-
-import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.utils.ConnectionStringSyntaxException;
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
 
 public class Exports implements Builder.Exports {
 

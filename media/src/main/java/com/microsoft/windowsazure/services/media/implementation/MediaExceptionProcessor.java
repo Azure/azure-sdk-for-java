@@ -15,14 +15,19 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.services.blob.BlobContract;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation;
@@ -36,6 +41,8 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.api.client.filter.ClientFilter;
+import java.util.Arrays;
 
 /**
  * /**
@@ -80,6 +87,26 @@ public class MediaExceptionProcessor implements MediaContract {
         return new MediaExceptionProcessor(service.withFilter(filter));
     }
 
+    @Override
+    public MediaContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        return new MediaExceptionProcessor(service.withRequestFilterFirst(serviceRequestFilter));
+    }
+
+    @Override
+    public MediaContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        return new MediaExceptionProcessor(service.withRequestFilterLast(serviceRequestFilter));
+    }
+    
+    @Override
+    public MediaContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        return new MediaExceptionProcessor(service.withResponseFilterFirst(serviceResponseFilter));
+    }
+    
+    @Override
+    public MediaContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        return new MediaExceptionProcessor(service.withResponseFilterLast(serviceResponseFilter));
+    }
+    
     /**
      * Process a catch.
      * 

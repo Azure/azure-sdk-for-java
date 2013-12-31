@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.services.blob;
 
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import java.io.InputStream;
 import java.util.HashMap;
 
@@ -60,8 +61,7 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
-import com.microsoft.windowsazure.services.core.FilterableService;
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * Defines the methods available on the Windows Azure blob storage service. Construct an object instance implementing
@@ -69,7 +69,7 @@ import com.microsoft.windowsazure.services.core.ServiceException;
  * associate a <code>Configuration</code> with the implementation, so the methods on the instance of
  * <code>BlobContract</code> all work with a particular storage account.
  */
-public interface BlobContract extends FilterableService<BlobContract> {
+public interface BlobContract extends JerseyFilterableService<BlobContract> {
     /**
      * Gets the service properties of the blob storage account.
      * 

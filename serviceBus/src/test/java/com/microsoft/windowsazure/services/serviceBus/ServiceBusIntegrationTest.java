@@ -14,6 +14,15 @@
  */
 package com.microsoft.windowsazure.services.serviceBus;
 
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.Builder.Alteration;
+import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter.Next;
+import com.microsoft.windowsazure.exception.ServiceException;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -25,14 +34,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.Builder;
-import com.microsoft.windowsazure.services.core.Builder.Alteration;
-import com.microsoft.windowsazure.services.core.Builder.Registry;
-import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.ServiceFilter.Request;
-import com.microsoft.windowsazure.services.core.ServiceFilter.Response;
 import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
 import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
@@ -770,14 +771,14 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     @Test
     public void filterCanSeeAndChangeRequestOrResponse() throws ServiceException {
         // Arrange
-        final List<Request> requests = new ArrayList<Request>();
-        final List<Response> responses = new ArrayList<Response>();
+        final List<ServiceRequestContext> requests = new ArrayList<ServiceRequestContext>();
+        final List<ServiceResponseContext> responses = new ArrayList<ServiceResponseContext>();
 
         ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
             @Override
-            public Response handle(Request request, Next next) throws Exception {
+            public ServiceResponseContext handle(ServiceRequestContext request, Next next) throws Exception {
                 requests.add(request);
-                Response response = next.handle(request);
+                ServiceResponseContext response = next.handle(request);
                 responses.add(response);
                 return response;
             }

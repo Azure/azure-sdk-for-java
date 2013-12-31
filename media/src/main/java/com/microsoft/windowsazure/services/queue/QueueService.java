@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.services.queue;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.Configuration;
 
 /**
  * A class for static factory methods that return instances implementing {@link QueueContract}.

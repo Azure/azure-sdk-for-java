@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media.entityoperations;
 
 import javax.ws.rs.core.MediaType;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 public interface EntityOperation {
 

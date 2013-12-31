@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
-import com.microsoft.windowsazure.services.core.RFC1123DateAdapter;
+import com.microsoft.windowsazure.core.RFC1123DateAdapter;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API List Containers operation. This is returned by

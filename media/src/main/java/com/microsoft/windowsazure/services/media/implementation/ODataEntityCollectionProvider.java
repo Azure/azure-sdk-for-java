@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 

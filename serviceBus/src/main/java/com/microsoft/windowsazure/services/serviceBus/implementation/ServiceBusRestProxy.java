@@ -14,6 +14,15 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,11 +35,6 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.ClientFilterAdapter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
@@ -62,6 +66,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class ServiceBusRestProxy implements ServiceBusContract {
 
@@ -71,22 +76,22 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     private final CustomPropertiesMapper customPropertiesMapper;
     static Log log = LogFactory.getLog(ServiceBusContract.class);
 
-    ServiceFilter[] filters;
+    ClientFilter[] filters;
 
     @Inject
     public ServiceBusRestProxy(Client channel, WrapFilter authFilter, UserAgentFilter userAgentFilter,
             ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
 
         this.channel = channel;
-        this.filters = new ServiceFilter[0];
+        this.filters = new ClientFilter[0];
         this.uri = connectionSettings.getUri();
         this.mapper = mapper;
         this.customPropertiesMapper = new CustomPropertiesMapper();
         channel.addFilter(authFilter);
-        channel.addFilter(userAgentFilter);
+        channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
-    public ServiceBusRestProxy(Client channel, ServiceFilter[] filters, String uri, BrokerPropertiesMapper mapper) {
+    public ServiceBusRestProxy(Client channel, ClientFilter[] filters, String uri, BrokerPropertiesMapper mapper) {
         this.channel = channel;
         this.filters = filters;
         this.uri = uri;
@@ -96,11 +101,45 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public ServiceBusContract withFilter(ServiceFilter filter) {
-        ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
-        newFilters[filters.length] = filter;
+        ClientFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
+        newFilters[filters.length] = new ClientFilterAdapter(filter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
 
+    @Override
+    public ServiceBusContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
+    }
+
+    @Override
+    public ServiceBusContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
+    }
+    
+    @Override
+    public ServiceBusContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
+    }
+    
+    @Override
+    public ServiceBusContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
+    }
+    
     public Client getChannel() {
         return channel;
     }
@@ -111,8 +150,8 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     private WebResource getResource() {
         WebResource resource = getChannel().resource(uri).queryParam("api-version", "2012-08");
-        for (ServiceFilter filter : filters) {
-            resource.addFilter(new ClientFilterAdapter(filter));
+        for (ClientFilter filter : filters) {
+            resource.addFilter(filter);
         }
         return resource;
     }

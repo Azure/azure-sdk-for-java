@@ -14,13 +14,13 @@
  */
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import static org.junit.Assert.*;
 
 import java.net.URI;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;

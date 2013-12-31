@@ -72,12 +72,14 @@ import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
 import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
-import com.microsoft.windowsazure.services.core.Configuration;
-import com.microsoft.windowsazure.services.core.ExponentialRetryPolicy;
-import com.microsoft.windowsazure.services.core.RetryPolicyFilter;
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.AccessConditionHeader;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
+import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static final String testContainersPrefix = "sdktest-";
@@ -1609,7 +1611,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase {
         public int requestCount;
 
         @Override
-        public Response handle(Request request, Next next) throws Exception {
+        public ServiceResponseContext handle(ServiceRequestContext request, Next next) throws Exception {
             requestCount++;
             return next.handle(request);
         }

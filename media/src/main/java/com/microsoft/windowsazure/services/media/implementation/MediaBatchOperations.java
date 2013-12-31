@@ -43,7 +43,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.InputStreamDataSource;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityBatchOperation;
 import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;

@@ -14,57 +14,65 @@
  */
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
+import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
+import com.microsoft.windowsazure.Configuration;
+import java.io.IOException;
 
 /**
  * Provides functionality to create a service management configuration.
  * 
  */
 public class ManagementConfiguration {
-
+    /**
+     * Defines the subscription cloud credentials object of the Windows Azure account.
+     */
+    public static final String SUBSCRIPTION_CLOUD_CREDENTIALS = "com.microsoft.windowsazure.Configuration.credentials";
+    
     /**
      * Defines the path of the keystore.
      * 
      */
-    public final static String KEYSTORE_PATH = "AZURE_MANAGEMENT_KEYSTORE_PATH";
+    public final static String KEYSTORE_PATH = "management.keystore.path";
 
     /**
      * Defines the password of the keystore.
      * 
      */
-    public final static String KEYSTORE_PASSWORD = "AZURE_MANAGEMENT_KEYSTORE_PASSWORD";
+    public final static String KEYSTORE_PASSWORD = "management.keystore.password";
 
     /**
      * Defines the type of the keystore.
      */
-    public static final String KEYSTORE_TYPE = "AZURE_MANAGEMENT_KEYSTORE_TYPE";
+    public static final String KEYSTORE_TYPE = "management.keystore.type";
 
     /**
      * Defines the URI of service management.
      * 
      */
-    public final static String URI = "AZURE_MANAGEMENT_URI";
+    public final static String URI = "management.uri";
 
     /**
      * Defines the subscription ID of the Windows Azure account.
      */
-    public static final String SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
-    
-    public static final String SUBSCRIPTION_CLOUD_CREDENTIALS = "AZURE_SUBSCRIPTION_CLOUD_CREDENTIALS";
+    public static final String SUBSCRIPTION_ID = "management.subscription.id";
 
     /**
      * Creates a service management configuration using specified URI, and subscription ID.
      * 
-     * @param uri
-     *            A <code>String</code> object that represents the root URI of the service management service.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription ID.
+     * @param keyStoreLocation
+     *            A <code>String</code> object that represents the key store location.
+     * @param keyStorePassword
+     *            A <code>String</code> object that represents the key store password.
      * @return the configuration
      *         A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ManagementContract</code> class.
+     * @throws java.io.IOException If the key store location or its contents is invalid.
      */
-    public static Configuration configure(String uri, String subscriptionId) {
-        return configure(null, Configuration.getInstance(), uri, subscriptionId, null, null);
+    public static Configuration configure(String subscriptionId, String keyStoreLocation, String keyStorePassword) throws IOException {
+        return configure(null, Configuration.getInstance(), subscriptionId, keyStoreLocation, keyStorePassword);
     }
 
     /**
@@ -74,8 +82,6 @@ public class ManagementConfiguration {
      *            A <code>String</code> object that represents the profile.
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
-     * @param uri
-     *            A <code>String</code> object that represents the URI of the service management service.
      * @param subscriptionId
      *            A <code>String</code> object that represents the subscription ID.
      * @param keyStoreLocation
@@ -84,9 +90,10 @@ public class ManagementConfiguration {
      *            A <code>String</code> object that represents the password of the keystore.
      * @return A <code>Configuration</code> object that can be used when creating an instance of the
      *         <code>ManagementContract</code> class.
+     * @throws java.io.IOException If the key store location or its contents is invalid.
      */
-    public static Configuration configure(String profile, Configuration configuration, String uri,
-            String subscriptionId, String keyStoreLocation, String keyStorePassword) {
+    public static Configuration configure(String profile, Configuration configuration,
+            String subscriptionId, String keyStoreLocation, String keyStorePassword) throws IOException {
 
         if (profile == null) {
             profile = "";
@@ -95,13 +102,15 @@ public class ManagementConfiguration {
             profile = profile + ".";
         }
 
-        configuration.setProperty(profile + URI, "https://" + uri);
         configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
         configuration.setProperty(profile + KEYSTORE_PATH, keyStoreLocation);
         configuration.setProperty(profile + KEYSTORE_PASSWORD, keyStorePassword);
         
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
-                new CertificateCloudCredentials(subscriptionId));
+                new CertificateCloudCredentials(subscriptionId,
+                new KeyStoreCredential(
+                        keyStoreLocation,
+                        keyStorePassword)));
         
         return configuration;
     }

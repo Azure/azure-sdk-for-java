@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media.implementation;
 
 import java.net.URI;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 public interface OAuthContract {
     /**

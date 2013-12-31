@@ -15,9 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.jersey.IdempotentClientFilter;
 import javax.ws.rs.core.UriBuilder;
 
-import com.microsoft.windowsazure.services.core.IdempotentClientFilter;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 

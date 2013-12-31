@@ -15,10 +15,9 @@
 
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.utils.ConnectionStringSyntaxException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import com.microsoft.windowsazure.services.core.utils.ConnectionStringSyntaxException;
 
 /**
  * Class that encapsulates all the various settings needed

@@ -15,6 +15,9 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.net.URI;
 import java.util.Arrays;
 
@@ -23,18 +26,23 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
-import com.microsoft.windowsazure.services.core.utils.pipeline.ClientConfigSettings;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientConfigSettings;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import com.microsoft.windowsazure.services.media.WritableBlobContainerContract;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityRestProxy;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.queue.QueueContract;
+import com.microsoft.windowsazure.services.queue.implementation.QueueRestProxy;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * The Class MediaRestProxy.
@@ -69,14 +77,14 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
     public MediaRestProxy(Client channel, OAuthFilter authFilter, RedirectFilter redirectFilter,
             VersionHeadersFilter versionHeadersFilter, UserAgentFilter userAgentFilter,
             ClientConfigSettings clientConfigSettings) {
-        super(channel, new ServiceFilter[0]);
+        super(channel, new ClientFilter[0]);
 
         this.clientConfigSettings = clientConfigSettings;
         this.redirectFilter = redirectFilter;
         channel.addFilter(redirectFilter);
         channel.addFilter(authFilter);
         channel.addFilter(versionHeadersFilter);
-        channel.addFilter(userAgentFilter);
+        channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
     /**
@@ -89,22 +97,53 @@ public class MediaRestProxy extends EntityRestProxy implements MediaContract {
      * @param clientConfigSettings
      *            currently configured HTTP client settings
      */
-    private MediaRestProxy(Client channel, ServiceFilter[] filters, ClientConfigSettings clientConfigSettings) {
+    private MediaRestProxy(Client channel, ClientFilter[] filters, ClientConfigSettings clientConfigSettings) {
         super(channel, filters);
         this.clientConfigSettings = clientConfigSettings;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
-     */
     @Override
     public MediaContract withFilter(ServiceFilter filter) {
-        ServiceFilter[] filters = getFilters();
-        ServiceFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
-        newFilters[filters.length] = filter;
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterAdapter(filter);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
+    }
+    
+    @Override
+    public MediaContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
         return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
     }
 
+    @Override
+    public MediaContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
+    }
+    
+    @Override
+    public MediaContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
+    }
+    
+    @Override
+    public MediaContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        ClientFilter[] currentFilters = getFilters();
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new MediaRestProxy(getChannel(), newFilters, clientConfigSettings);
+    }
+    
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.media.entityoperations.EntityRestProxy#createProxyData()
      */

@@ -14,15 +14,17 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceFilter;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;
@@ -71,6 +73,26 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
         return new ServiceBusExceptionProcessor(next.withFilter(filter));
     }
 
+    @Override
+    public ServiceBusContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+        return new ServiceBusExceptionProcessor(next.withRequestFilterFirst(serviceRequestFilter));
+    }
+
+    @Override
+    public ServiceBusContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+        return new ServiceBusExceptionProcessor(next.withRequestFilterLast(serviceRequestFilter));
+    }
+    
+    @Override
+    public ServiceBusContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+        return new ServiceBusExceptionProcessor(next.withResponseFilterFirst(serviceResponseFilter));
+    }
+    
+    @Override
+    public ServiceBusContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+        return new ServiceBusExceptionProcessor(next.withResponseFilterLast(serviceResponseFilter));
+    }
+    
     private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("serviceBus", e);

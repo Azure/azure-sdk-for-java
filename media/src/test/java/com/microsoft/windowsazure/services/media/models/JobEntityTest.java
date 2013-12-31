@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMultipart;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData;
 

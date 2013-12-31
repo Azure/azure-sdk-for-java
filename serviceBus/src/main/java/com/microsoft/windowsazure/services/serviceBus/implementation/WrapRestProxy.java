@@ -14,15 +14,16 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
+import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.UserAgentFilter;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
@@ -35,7 +36,7 @@ public class WrapRestProxy implements WrapContract {
     @Inject
     public WrapRestProxy(Client channel, UserAgentFilter userAgentFilter) {
         this.channel = channel;
-        this.channel.addFilter(userAgentFilter);
+        this.channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
     @Override

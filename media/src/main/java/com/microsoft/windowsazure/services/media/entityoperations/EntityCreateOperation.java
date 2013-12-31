@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * The Interface EntityCreateOperation.
