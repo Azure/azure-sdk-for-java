@@ -15,13 +15,14 @@
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
 import com.microsoft.windowsazure.core.UserAgentFilter;
-import com.microsoft.windowsazure.core.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.core.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;

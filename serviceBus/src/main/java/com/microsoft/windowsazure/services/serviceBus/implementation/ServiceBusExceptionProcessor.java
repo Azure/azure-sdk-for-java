@@ -14,17 +14,17 @@
  */
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-import com.microsoft.windowsazure.core.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.core.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
 import com.microsoft.windowsazure.services.serviceBus.ServiceBusContract;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import com.microsoft.windowsazure.services.serviceBus.models.CreateQueueResult;

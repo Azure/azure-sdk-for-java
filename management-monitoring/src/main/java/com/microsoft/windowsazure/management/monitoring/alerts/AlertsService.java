@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.management.monitoring.alerts;
 
-import com.microsoft.windowsazure.services.core.Configuration;
+import com.microsoft.windowsazure.Configuration;
 
 /**
  * 

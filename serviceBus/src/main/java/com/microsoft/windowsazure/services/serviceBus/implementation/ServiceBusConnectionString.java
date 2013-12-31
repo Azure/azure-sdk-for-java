@@ -15,8 +15,8 @@
 
 package com.microsoft.windowsazure.services.serviceBus.implementation;
 
-import com.microsoft.windowsazure.services.core.utils.ConnectionStringSyntaxException;
-import com.microsoft.windowsazure.services.core.utils.ParsedConnectionString;
+import com.microsoft.windowsazure.core.utils.ConnectionStringSyntaxException;
+import com.microsoft.windowsazure.core.utils.ParsedConnectionString;
 
 /**
  * Class that parses the fields present in a service bus connection string.
