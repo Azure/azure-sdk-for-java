@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus.implementation;
+package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.UserAgentFilter;
@@ -22,7 +22,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
+import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 import com.sun.jersey.api.client.Client;
 
 public class WrapRestProxyIntegrationTest {

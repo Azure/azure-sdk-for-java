@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package com.microsoft.windowsazure.services.serviceBus.implementation;
+package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.Configuration;
 import static junit.framework.Assert.*;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
+import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 
 public class ServiceBusConnectionSettingsTest {
 

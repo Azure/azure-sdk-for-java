@@ -12,7 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus.implementation;
+package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.core.utils.DateFactory;
 import com.microsoft.windowsazure.exception.ServiceException;

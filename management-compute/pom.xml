@@ -147,7 +147,7 @@
                 <schemaIncludes> 
                     <include>servicebus-atom.xsd</include> 
                 </schemaIncludes>
-                <generatePackage>com.microsoft.windowsazure.services.serviceBus.implementation</generatePackage>
+                <generatePackage>com.microsoft.windowsazure.services.servicebus.implementation</generatePackage>
                 <removeOldOutput>false</removeOldOutput>
                 <forceRegenerate>true</forceRegenerate>
             </configuration>

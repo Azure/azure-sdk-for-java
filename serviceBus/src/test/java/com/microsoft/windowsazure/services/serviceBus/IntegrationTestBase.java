@@ -12,19 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.servicebus;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.exception.ServiceException;
-import static com.microsoft.windowsazure.services.serviceBus.Util.*;
+import static com.microsoft.windowsazure.services.servicebus.Util.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
-import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
+import com.microsoft.windowsazure.services.servicebus.models.QueueInfo;
+import com.microsoft.windowsazure.services.servicebus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 
 public abstract class IntegrationTestBase {
 
