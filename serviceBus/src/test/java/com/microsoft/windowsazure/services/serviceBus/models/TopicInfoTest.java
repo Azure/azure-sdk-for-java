@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus.models;
+package com.microsoft.windowsazure.services.servicebus.models;
 
 import static org.junit.Assert.*;
 
@@ -24,9 +24,9 @@ import javax.xml.datatype.Duration;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.EntityAvailabilityStatus;
-import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
-import com.microsoft.windowsazure.services.serviceBus.implementation.PartitioningPolicy;
+import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvailabilityStatus;
+import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
+import com.microsoft.windowsazure.services.servicebus.implementation.PartitioningPolicy;
 
 public class TopicInfoTest {
 

@@ -12,14 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.servicebus;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.services.serviceBus.implementation.ServiceBusExceptionProcessor;
+import com.microsoft.windowsazure.services.servicebus.implementation.ServiceBusExceptionProcessor;
 
 public class ServiceBusCreationTest {
     @Test

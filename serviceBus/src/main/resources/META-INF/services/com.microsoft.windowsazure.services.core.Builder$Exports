@@ -1,2 +1,2 @@
-com.microsoft.windowsazure.services.serviceBus.Exports
-com.microsoft.windowsazure.services.serviceBus.implementation.Exports
+com.microsoft.windowsazure.services.servicebus.Exports
+com.microsoft.windowsazure.services.servicebus.implementation.Exports

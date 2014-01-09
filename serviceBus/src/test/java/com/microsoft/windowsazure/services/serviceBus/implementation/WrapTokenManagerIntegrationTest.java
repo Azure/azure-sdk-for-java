@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus.implementation;
+package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.Configuration;
 import java.net.URI;
@@ -21,7 +21,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.ServiceBusConfiguration;
+import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 
 public class WrapTokenManagerIntegrationTest {
     @Test

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.serviceBus;
+package com.microsoft.windowsazure.services.servicebus;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
@@ -34,29 +34,29 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.serviceBus.implementation.CorrelationFilter;
-import com.microsoft.windowsazure.services.serviceBus.implementation.EmptyRuleAction;
-import com.microsoft.windowsazure.services.serviceBus.implementation.EntityStatus;
-import com.microsoft.windowsazure.services.serviceBus.implementation.FalseFilter;
-import com.microsoft.windowsazure.services.serviceBus.implementation.MessageCountDetails;
-import com.microsoft.windowsazure.services.serviceBus.implementation.RuleDescription;
-import com.microsoft.windowsazure.services.serviceBus.implementation.SqlFilter;
-import com.microsoft.windowsazure.services.serviceBus.implementation.SqlRuleAction;
-import com.microsoft.windowsazure.services.serviceBus.implementation.TrueFilter;
-import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
-import com.microsoft.windowsazure.services.serviceBus.models.GetQueueResult;
-import com.microsoft.windowsazure.services.serviceBus.models.ListQueuesResult;
-import com.microsoft.windowsazure.services.serviceBus.models.ListRulesResult;
-import com.microsoft.windowsazure.services.serviceBus.models.ListSubscriptionsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsOptions;
-import com.microsoft.windowsazure.services.serviceBus.models.ListTopicsResult;
-import com.microsoft.windowsazure.services.serviceBus.models.QueueInfo;
-import com.microsoft.windowsazure.services.serviceBus.models.ReceiveMessageOptions;
-import com.microsoft.windowsazure.services.serviceBus.models.ReceiveQueueMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.ReceiveSubscriptionMessageResult;
-import com.microsoft.windowsazure.services.serviceBus.models.RuleInfo;
-import com.microsoft.windowsazure.services.serviceBus.models.SubscriptionInfo;
-import com.microsoft.windowsazure.services.serviceBus.models.TopicInfo;
+import com.microsoft.windowsazure.services.servicebus.implementation.CorrelationFilter;
+import com.microsoft.windowsazure.services.servicebus.implementation.EmptyRuleAction;
+import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
+import com.microsoft.windowsazure.services.servicebus.implementation.FalseFilter;
+import com.microsoft.windowsazure.services.servicebus.implementation.MessageCountDetails;
+import com.microsoft.windowsazure.services.servicebus.implementation.RuleDescription;
+import com.microsoft.windowsazure.services.servicebus.implementation.SqlFilter;
+import com.microsoft.windowsazure.services.servicebus.implementation.SqlRuleAction;
+import com.microsoft.windowsazure.services.servicebus.implementation.TrueFilter;
+import com.microsoft.windowsazure.services.servicebus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.servicebus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListQueuesResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListRulesResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListSubscriptionsResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListTopicsOptions;
+import com.microsoft.windowsazure.services.servicebus.models.ListTopicsResult;
+import com.microsoft.windowsazure.services.servicebus.models.QueueInfo;
+import com.microsoft.windowsazure.services.servicebus.models.ReceiveMessageOptions;
+import com.microsoft.windowsazure.services.servicebus.models.ReceiveQueueMessageResult;
+import com.microsoft.windowsazure.services.servicebus.models.ReceiveSubscriptionMessageResult;
+import com.microsoft.windowsazure.services.servicebus.models.RuleInfo;
+import com.microsoft.windowsazure.services.servicebus.models.SubscriptionInfo;
+import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
