@@ -339,6 +339,5 @@
     <module>../scheduler</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>
-    <module>../subscription</module>
   </modules>
 </project>
