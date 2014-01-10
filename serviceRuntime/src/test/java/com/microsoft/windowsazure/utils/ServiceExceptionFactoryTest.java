@@ -21,9 +21,9 @@ import java.net.SocketTimeoutException;
 
 import org.junit.Test;
 
-import com.microsoft.windowsazure.services.core.ServiceException;
-import com.microsoft.windowsazure.services.core.ServiceTimeoutException;
-import com.microsoft.windowsazure.services.core.utils.ServiceExceptionFactory;
+import com.microsoft.windowsazure.core.ServiceTimeoutException;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
