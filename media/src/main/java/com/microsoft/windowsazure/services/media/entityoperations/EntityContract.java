@@ -19,11 +19,12 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
- * Contract for interacting with the back end service
- * providing various odata entities.
+ * Contract for interacting with the back end service providing various odata
+ * entities.
  * 
  */
-public interface EntityContract {
+public interface EntityContract
+{
 
     /**
      * Create a new instance of an entity.
@@ -31,12 +32,10 @@ public interface EntityContract {
      * @param <T>
      *            the generic type
      * @param creator
-     *            Object providing the details of the entity to be
-     *            created
+     *            Object providing the details of the entity to be created
      * @return the t
      * @throws ServiceException
-     *             the service exception
-     *             The created entity
+     *             the service exception The created entity
      */
     <T> T create(EntityCreateOperation<T> creator) throws ServiceException;
 
@@ -64,7 +63,8 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException;
+    <T> ListResult<T> list(EntityListOperation<T> lister)
+            throws ServiceException;
 
     /**
      * Update an existing entity.
@@ -107,6 +107,7 @@ public interface EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    <T> T action(EntityTypeActionOperation<T> entityActionOperation) throws ServiceException;
+    <T> T action(EntityTypeActionOperation<T> entityActionOperation)
+            throws ServiceException;
 
 }

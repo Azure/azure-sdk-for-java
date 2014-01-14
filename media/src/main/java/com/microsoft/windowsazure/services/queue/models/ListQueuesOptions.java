@@ -17,30 +17,34 @@ package com.microsoft.windowsazure.services.queue.models;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
- * Represents the options that may be set on the Queue service for {@link QueueContract#listQueues(ListQueuesOptions)}
- * requests. These options include a server response timeout for the request, a prefix to match queue names to return, a
- * marker to specify where to resume a list queues query, the maximum number of queues to return in a single response,
- * and whether to include queue metadata with the response.
+ * Represents the options that may be set on the Queue service for
+ * {@link QueueContract#listQueues(ListQueuesOptions)} requests. These options
+ * include a server response timeout for the request, a prefix to match queue
+ * names to return, a marker to specify where to resume a list queues query, the
+ * maximum number of queues to return in a single response, and whether to
+ * include queue metadata with the response.
  */
-public class ListQueuesOptions extends QueueServiceOptions {
+public class ListQueuesOptions extends QueueServiceOptions
+{
     private String prefix;
     private String marker;
     private int maxResults;
     private boolean includeMetadata;
 
     /**
-     * Sets the server request timeout value associated with this {@link ListQueuesOptions} instance.
+     * Sets the server request timeout value associated with this
+     * {@link ListQueuesOptions} instance.
      * <p>
-     * The timeout value only affects calls made on methods where this {@link ListQueuesOptions} instance is passed as a
-     * parameter.
+     * The timeout value only affects calls made on methods where this
+     * {@link ListQueuesOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link ListQueuesOptions} instance.
+     * @return A reference to this {@link ListQueuesOptions} instance.
      */
     @Override
-    public ListQueuesOptions setTimeout(Integer timeout) {
+    public ListQueuesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -49,11 +53,12 @@ public class ListQueuesOptions extends QueueServiceOptions {
      * Gets the prefix {@link String} used to match queue names to return in a
      * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
-     * @return
-     *         The prefix {@link String} used to match queue names to return in a
-     *         {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * @return The prefix {@link String} used to match queue names to return in
+     *         a {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     *         request.
      */
-    public String getPrefix() {
+    public String getPrefix()
+    {
         return prefix;
     }
 
@@ -61,108 +66,120 @@ public class ListQueuesOptions extends QueueServiceOptions {
      * Sets the prefix {@link String} to use to match queue names to return in a
      * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
-     * The prefix value only affects calls made on methods where this {@link ListQueuesOptions} instance is passed as a
-     * parameter.
+     * The prefix value only affects calls made on methods where this
+     * {@link ListQueuesOptions} instance is passed as a parameter.
      * 
      * @param prefix
-     *            The prefix {@link String} to use to match queue names to return in a
-     *            {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
-     * @return
-     *         A reference to this {@link ListQueuesOptions} instance.
+     *            The prefix {@link String} to use to match queue names to
+     *            return in a
+     *            {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     *            request.
+     * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setPrefix(String prefix) {
+    public ListQueuesOptions setPrefix(String prefix)
+    {
         this.prefix = prefix;
         return this;
     }
 
     /**
-     * Gets a {@link String} value that identifies the beginning of the list of queues to be returned with a
+     * Gets a {@link String} value that identifies the beginning of the list of
+     * queues to be returned with a
      * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
-     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method returns a <strong>NextMarker</strong>
-     * element within the response if the list returned was not complete, which can be accessed with the
-     * {@link ListQueuesResult#getNextMarker()} method. This opaque value may then be set on a {@link ListQueuesOptions}
-     * instance with a call to {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a subsequent
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} call to request the next portion of the list of
-     * queues.
+     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method
+     * returns a <strong>NextMarker</strong> element within the response if the
+     * list returned was not complete, which can be accessed with the
+     * {@link ListQueuesResult#getNextMarker()} method. This opaque value may
+     * then be set on a {@link ListQueuesOptions} instance with a call to
+     * {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a
+     * subsequent {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * call to request the next portion of the list of queues.
      * 
-     * @return
-     *         The marker value that identifies the beginning of the list of queues to be returned.
+     * @return The marker value that identifies the beginning of the list of
+     *         queues to be returned.
      */
-    public String getMarker() {
+    public String getMarker()
+    {
         return marker;
     }
 
     /**
-     * Sets a {@link String} marker value that identifies the beginning of the list of queues to be returned with a
+     * Sets a {@link String} marker value that identifies the beginning of the
+     * list of queues to be returned with a
      * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * <p>
-     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method returns a <strong>NextMarker</strong>
-     * element within the response if the list returned was not complete, which can be accessed with the
-     * {@link ListQueuesResult#getNextMarker()} method. This opaque value may then be set on a {@link ListQueuesOptions}
-     * instance with a call to {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a subsequent
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} call to request the next portion of the list of
-     * queues.
+     * The {@link QueueContract#listQueues(ListQueuesOptions) listQueues} method
+     * returns a <strong>NextMarker</strong> element within the response if the
+     * list returned was not complete, which can be accessed with the
+     * {@link ListQueuesResult#getNextMarker()} method. This opaque value may
+     * then be set on a {@link ListQueuesOptions} instance with a call to
+     * {@link ListQueuesOptions#setMarker(String) setMarker} to be used in a
+     * subsequent {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * call to request the next portion of the list of queues.
      * 
      * @param marker
      *            The {@link String} marker value to set.
-     * @return
-     *         A reference to this {@link ListQueuesOptions} instance.
+     * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setMarker(String marker) {
+    public ListQueuesOptions setMarker(String marker)
+    {
         this.marker = marker;
         return this;
     }
 
     /**
-     * Gets the maximum number of queues to return with a {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
-     * request. If the value is not specified, the server will return up to 5,000 items.
+     * Gets the maximum number of queues to return with a
+     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * If the value is not specified, the server will return up to 5,000 items.
      * 
-     * @return
-     *         The maximum number of queues to return.
+     * @return The maximum number of queues to return.
      */
-    public int getMaxResults() {
+    public int getMaxResults()
+    {
         return maxResults;
     }
 
     /**
-     * Sets the maximum number of queues to return with a {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
-     * request. If the value is not specified, by default the server will return up to 5,000 items.
+     * Sets the maximum number of queues to return with a
+     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
+     * If the value is not specified, by default the server will return up to
+     * 5,000 items.
      * <p>
-     * The maxResults value only affects calls made on methods where this {@link ListQueuesOptions} instance is passed
-     * as a parameter.
+     * The maxResults value only affects calls made on methods where this
+     * {@link ListQueuesOptions} instance is passed as a parameter.
      * 
      * @param maxResults
      *            The maximum number of queues to return.
-     * @return
-     *         A reference to this {@link ListQueuesOptions} instance.
+     * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setMaxResults(int maxResults) {
+    public ListQueuesOptions setMaxResults(int maxResults)
+    {
         this.maxResults = maxResults;
         return this;
     }
 
     /**
-     * Gets a flag indicating whether to return metadata with a {@link QueueContract#listQueues(ListQueuesOptions)
-     * listQueues} request.
+     * Gets a flag indicating whether to return metadata with a
+     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
-     * @return
-     *         <code>true</code> to return metadata.
+     * @return <code>true</code> to return metadata.
      */
-    public boolean isIncludeMetadata() {
+    public boolean isIncludeMetadata()
+    {
         return includeMetadata;
     }
 
     /**
-     * Sets a flag indicating whether to return metadata with a {@link QueueContract#listQueues(ListQueuesOptions)
-     * listQueues} request.
+     * Sets a flag indicating whether to return metadata with a
+     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues} request.
      * 
      * @param includeMetadata
      *            <code>true</code> to return metadata.
-     * @return
-     *         A reference to this {@link ListQueuesOptions} instance.
+     * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setIncludeMetadata(boolean includeMetadata) {
+    public ListQueuesOptions setIncludeMetadata(boolean includeMetadata)
+    {
         this.includeMetadata = includeMetadata;
         return this;
     }

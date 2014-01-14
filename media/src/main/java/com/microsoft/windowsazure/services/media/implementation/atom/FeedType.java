@@ -20,7 +20,6 @@
 // Generated on: 2012.09.18 at 11:05:53 AM PDT 
 //
 
-
 package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.util.ArrayList;
@@ -41,15 +40,17 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
-
 /**
  * 
- *                 The Atom feed construct is defined in section 4.1.1 of the format spec.
- *             
+ * The Atom feed construct is defined in section 4.1.1 of the format spec.
  * 
- * <p>Java class for feedType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for feedType complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="feedType">
@@ -81,26 +82,24 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "feedType", propOrder = {
-    "feedChildren"
-})
-public class FeedType {
+@XmlType(name = "feedType", propOrder = { "feedChildren" })
+public class FeedType
+{
 
     @XmlElementRefs({
-        @XmlElementRef(name = "updated", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "generator", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "rights", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "id", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "link", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "subtitle", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "contributor", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "entry", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "logo", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "icon", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "author", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "category", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
-        @XmlElementRef(name = "title", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class)
-    })
+            @XmlElementRef(name = "updated", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "generator", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "rights", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "id", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "link", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "subtitle", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "contributor", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "entry", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "logo", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "icon", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "author", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "category", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
+            @XmlElementRef(name = "title", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class) })
     @XmlAnyElement(lax = true)
     protected List<Object> feedChildren;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
@@ -117,15 +116,16 @@ public class FeedType {
      * Gets the value of the feedChildren property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the feedChildren property.
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the feedChildren property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getFeedChildren().add(newItem);
+     * getFeedChildren().add(newItem);
      * </pre>
      * 
      * 
@@ -133,23 +133,23 @@ public class FeedType {
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link DateTimeType }{@code >}
      * {@link JAXBElement }{@code <}{@link GeneratorType }{@code >}
-     * {@link JAXBElement }{@code <}{@link TextType }{@code >}
-     * {@link JAXBElement }{@code <}{@link IdType }{@code >}
-     * {@link JAXBElement }{@code <}{@link LinkType }{@code >}
-     * {@link JAXBElement }{@code <}{@link TextType }{@code >}
-     * {@link JAXBElement }{@code <}{@link PersonType }{@code >}
-     * {@link Object }
-     * {@link JAXBElement }{@code <}{@link EntryType }{@code >}
-     * {@link JAXBElement }{@code <}{@link LogoType }{@code >}
-     * {@link JAXBElement }{@code <}{@link IconType }{@code >}
-     * {@link JAXBElement }{@code <}{@link PersonType }{@code >}
-     * {@link JAXBElement }{@code <}{@link CategoryType }{@code >}
-     * {@link JAXBElement }{@code <}{@link TextType }{@code >}
+     * {@link JAXBElement }{@code <}{@link TextType }{@code >} {@link JAXBElement }
+     * {@code <}{@link IdType }{@code >} {@link JAXBElement }{@code <}
+     * {@link LinkType }{@code >} {@link JAXBElement }{@code <}{@link TextType }
+     * {@code >} {@link JAXBElement }{@code <}{@link PersonType }{@code >}
+     * {@link Object } {@link JAXBElement }{@code <}{@link EntryType }{@code >}
+     * {@link JAXBElement }{@code <}{@link LogoType }{@code >} {@link JAXBElement }
+     * {@code <}{@link IconType }{@code >} {@link JAXBElement }{@code <}
+     * {@link PersonType }{@code >} {@link JAXBElement }{@code <}
+     * {@link CategoryType }{@code >} {@link JAXBElement }{@code <}
+     * {@link TextType }{@code >}
      * 
      * 
      */
-    public List<Object> getFeedChildren() {
-        if (feedChildren == null) {
+    public List<Object> getFeedChildren()
+    {
+        if (feedChildren == null)
+        {
             feedChildren = new ArrayList<Object>();
         }
         return this.feedChildren;
@@ -158,12 +158,11 @@ public class FeedType {
     /**
      * Gets the value of the base property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getBase() {
+    public String getBase()
+    {
         return base;
     }
 
@@ -171,23 +170,22 @@ public class FeedType {
      * Sets the value of the base property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setBase(String value) {
+    public void setBase(String value)
+    {
         this.base = value;
     }
 
     /**
      * Gets the value of the lang property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getLang() {
+    public String getLang()
+    {
         return lang;
     }
 
@@ -195,29 +193,30 @@ public class FeedType {
      * Sets the value of the lang property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setLang(String value) {
+    public void setLang(String value)
+    {
         this.lang = value;
     }
 
     /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
      * 
      * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
      * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
      * 
      * 
-     * @return
-     *     always non-null
+     * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes() {
+    public Map<QName, String> getOtherAttributes()
+    {
         return otherAttributes;
     }
 

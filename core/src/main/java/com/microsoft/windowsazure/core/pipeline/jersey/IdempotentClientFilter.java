@@ -21,20 +21,28 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
- * Base class for filters that enforces idempotency - the filter
- * will only be applied once for a particular request, even
- * if the request passes through this filter more than once.
+ * Base class for filters that enforces idempotency - the filter will only be
+ * applied once for a particular request, even if the request passes through
+ * this filter more than once.
  * 
  */
-public abstract class IdempotentClientFilter extends ClientFilter {
-    /* (non-Javadoc)
-     * @see com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api.client.ClientRequest)
+public abstract class IdempotentClientFilter extends ClientFilter
+{
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.sun.jersey.api.client.filter.ClientFilter#handle(com.sun.jersey.api
+     * .client.ClientRequest)
      */
     @Override
-    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr)
+            throws ClientHandlerException
+    {
         String key = getKey();
 
-        if (cr.getProperties().containsKey(key)) {
+        if (cr.getProperties().containsKey(key))
+        {
             return this.getNext().handle(cr);
         }
         cr.getProperties().put(key, this);
@@ -42,22 +50,25 @@ public abstract class IdempotentClientFilter extends ClientFilter {
     }
 
     /**
-     * Implemented by derived classes to provide the actual implementation for filtering.
+     * Implemented by derived classes to provide the actual implementation for
+     * filtering.
      * 
      * @param cr
      *            The ClientRequest being processed
      * @return The returned ClientResponse
      * @throws ClientHandlerException
      */
-    protected abstract ClientResponse doHandle(ClientRequest cr) throws ClientHandlerException;
+    protected abstract ClientResponse doHandle(ClientRequest cr)
+            throws ClientHandlerException;
 
     /**
-     * Get the key value used to detect multiple runs. By default,
-     * defaults to the class name for the filter.
+     * Get the key value used to detect multiple runs. By default, defaults to
+     * the class name for the filter.
      * 
      * @return Key name as a string
      */
-    protected String getKey() {
+    protected String getKey()
+    {
         return this.getClass().getName();
     }
 }

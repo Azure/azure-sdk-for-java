@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 /**
  * The Class JobInfo.
  */
-public class JobInfo extends ODataEntity<JobType> {
+public class JobInfo extends ODataEntity<JobType>
+{
 
     /**
      * Instantiates a new job info.
@@ -36,7 +37,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * @param content
      *            the content
      */
-    public JobInfo(EntryType entry, JobType content) {
+    public JobInfo(EntryType entry, JobType content)
+    {
         super(entry, content);
     }
 
@@ -45,7 +47,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -54,7 +57,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return getContent().getName();
     }
 
@@ -63,7 +67,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return getContent().getCreated();
     }
 
@@ -72,7 +77,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the last modified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return getContent().getLastModified();
     }
 
@@ -81,7 +87,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the end time
      */
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return getContent().getEndTime();
     }
 
@@ -90,7 +97,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the priority
      */
-    public int getPriority() {
+    public int getPriority()
+    {
         return getContent().getPriority();
     }
 
@@ -99,7 +107,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the running duration
      */
-    public double getRunningDuration() {
+    public double getRunningDuration()
+    {
         return getContent().getRunningDuration();
     }
 
@@ -108,7 +117,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the start time
      */
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return getContent().getStartTime();
     }
 
@@ -117,7 +127,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the state
      */
-    public JobState getState() {
+    public JobState getState()
+    {
         return JobState.fromCode(getContent().getState());
     }
 
@@ -126,7 +137,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the template id
      */
-    public String getTemplateId() {
+    public String getTemplateId()
+    {
         return getContent().getTemplateId();
     }
 
@@ -135,7 +147,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo<AssetInfo> getInputAssetsLink() {
+    public LinkInfo<AssetInfo> getInputAssetsLink()
+    {
         return this.<AssetInfo> getRelationLink("InputMediaAssets");
     }
 
@@ -144,7 +157,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return Link if found, null if not.
      */
-    public LinkInfo<AssetInfo> getOutputAssetsLink() {
+    public LinkInfo<AssetInfo> getOutputAssetsLink()
+    {
         return this.<AssetInfo> getRelationLink("OutputMediaAssets");
     }
 
@@ -153,7 +167,8 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the tasks link
      */
-    public LinkInfo<TaskInfo> getTasksLink() {
+    public LinkInfo<TaskInfo> getTasksLink()
+    {
         return this.<TaskInfo> getRelationLink("Tasks");
     }
 
@@ -162,8 +177,10 @@ public class JobInfo extends ODataEntity<JobType> {
      * 
      * @return the job notification subscriptions
      */
-    public List<JobNotificationSubscription> getJobNotificationSubscriptions() {
-        return JobNotificationSubscriptionListFactory.create(getContent().getJobNotificationSubscriptionTypes());
+    public List<JobNotificationSubscription> getJobNotificationSubscriptions()
+    {
+        return JobNotificationSubscriptionListFactory.create(getContent()
+                .getJobNotificationSubscriptionTypes());
     }
 
     /**
@@ -173,11 +190,17 @@ public class JobInfo extends ODataEntity<JobType> {
      *            the job notification subscription
      * @return the job info
      */
-    public JobInfo addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
+    public JobInfo addJobNotificationSubscription(
+            JobNotificationSubscription jobNotificationSubscription)
+    {
         getContent().addJobNotificationSubscriptionType(
-                new JobNotificationSubscriptionType().setNotificationEndPointId(
-                        jobNotificationSubscription.getNotificationEndPointId()).setTargetJobState(
-                        jobNotificationSubscription.getTargetJobState().getCode()));
+                new JobNotificationSubscriptionType()
+                        .setNotificationEndPointId(
+                                jobNotificationSubscription
+                                        .getNotificationEndPointId())
+                        .setTargetJobState(
+                                jobNotificationSubscription.getTargetJobState()
+                                        .getCode()));
         return this;
     }
 }

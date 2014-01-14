@@ -24,17 +24,17 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* The status of this execution attempt, completed or failed.
-*/
+ * The status of this execution attempt, completed or failed.
+ */
 public enum JobHistoryStatus
 {
     /**
-    * A completed execution attempt.
-    */
+     * A completed execution attempt.
+     */
     Completed,
-    
+
     /**
-    * A failed execution attempt.
-    */
+     * A failed execution attempt.
+     */
     Failed,
 }

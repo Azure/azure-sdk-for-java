@@ -20,14 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
- * Annotation used to mark method setters to be used
- * when the field name in the connection string isn't
- * a valid Java method name.
+ * Annotation used to mark method setters to be used when the field name in the
+ * connection string isn't a valid Java method name.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ConnectionStringField {
+public @interface ConnectionStringField
+{
     public String name();
 }

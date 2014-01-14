@@ -22,13 +22,15 @@ import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
  * Provides access to OData links
  * 
  */
-public class LinkInfo<T extends ODataEntity<?>> {
+public class LinkInfo<T extends ODataEntity<?>>
+{
     private final LinkType rawLink;
 
     /**
      * Construct a new {@link LinkInfo} instance
      */
-    public LinkInfo(LinkType rawLink) {
+    public LinkInfo(LinkType rawLink)
+    {
         this.rawLink = rawLink;
     }
 
@@ -37,7 +39,8 @@ public class LinkInfo<T extends ODataEntity<?>> {
      * 
      * @return the href
      */
-    public String getHref() {
+    public String getHref()
+    {
         return rawLink.getHref();
     }
 }

@@ -35,9 +35,11 @@ import com.sun.jersey.api.client.ClientResponse;
  * Class for creating operations to manipulate protection key pseudo-entities.
  * 
  */
-public class ProtectionKey {
+public class ProtectionKey
+{
 
-    private ProtectionKey() {
+    private ProtectionKey()
+    {
     }
 
     /**
@@ -47,9 +49,13 @@ public class ProtectionKey {
      *            the content key type
      * @return the protection key id
      */
-    public static EntityTypeActionOperation<String> getProtectionKeyId(ContentKeyType contentKeyType) {
-        return new GetProtectionKeyIdActionOperation("GetProtectionKeyId").addQueryParameter("contentKeyType",
-                String.format("%d", contentKeyType.getCode())).setAcceptType(MediaType.APPLICATION_XML_TYPE);
+    public static EntityTypeActionOperation<String> getProtectionKeyId(
+            ContentKeyType contentKeyType)
+    {
+        return new GetProtectionKeyIdActionOperation("GetProtectionKeyId")
+                .addQueryParameter("contentKeyType",
+                        String.format("%d", contentKeyType.getCode()))
+                .setAcceptType(MediaType.APPLICATION_XML_TYPE);
     }
 
     /**
@@ -59,9 +65,13 @@ public class ProtectionKey {
      *            the protection key id
      * @return the protection key
      */
-    public static EntityTypeActionOperation<String> getProtectionKey(String protectionKeyId) {
-        return new GetProtectionKeyActionOperation("GetProtectionKey").addQueryParameter("ProtectionKeyId",
-                String.format("'%s'", protectionKeyId)).setAcceptType(MediaType.APPLICATION_XML_TYPE);
+    public static EntityTypeActionOperation<String> getProtectionKey(
+            String protectionKeyId)
+    {
+        return new GetProtectionKeyActionOperation("GetProtectionKey")
+                .addQueryParameter("ProtectionKeyId",
+                        String.format("'%s'", protectionKeyId)).setAcceptType(
+                        MediaType.APPLICATION_XML_TYPE);
     }
 
     /**
@@ -69,7 +79,9 @@ public class ProtectionKey {
      * 
      * @param <T>
      */
-    private static class GetProtectionKeyIdActionOperation extends DefaultEntityTypeActionOperation<String> {
+    private static class GetProtectionKeyIdActionOperation extends
+            DefaultEntityTypeActionOperation<String>
+    {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;
@@ -83,34 +95,44 @@ public class ProtectionKey {
          * @param name
          *            the name
          */
-        public GetProtectionKeyIdActionOperation(String name) {
+        public GetProtectionKeyIdActionOperation(String name)
+        {
             super(name);
-            try {
-                jaxbContext = JAXBContext.newInstance(ProtectionKeyIdType.class);
-            }
-            catch (JAXBException e) {
+            try
+            {
+                jaxbContext = JAXBContext
+                        .newInstance(ProtectionKeyIdType.class);
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
-            try {
+            try
+            {
                 unmarshaller = jaxbContext.createUnmarshaller();
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * DefaultActionOperation
+         * #processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
-        public String processTypeResponse(ClientResponse clientResponse) {
+        public String processTypeResponse(ClientResponse clientResponse)
+        {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
             ProtectionKeyIdType protectionKeyIdType;
-            try {
+            try
+            {
                 protectionKeyIdType = parseResponse(clientResponse);
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
@@ -126,11 +148,14 @@ public class ProtectionKey {
          * @throws JAXBException
          *             the jAXB exception
          */
-        private ProtectionKeyIdType parseResponse(ClientResponse clientResponse) throws JAXBException {
+        private ProtectionKeyIdType parseResponse(ClientResponse clientResponse)
+                throws JAXBException
+        {
 
             InputStream inputStream = clientResponse.getEntityInputStream();
-            JAXBElement<ProtectionKeyIdType> protectionKeyIdTypeJaxbElement = unmarshaller.unmarshal(new StreamSource(
-                    inputStream), ProtectionKeyIdType.class);
+            JAXBElement<ProtectionKeyIdType> protectionKeyIdTypeJaxbElement = unmarshaller
+                    .unmarshal(new StreamSource(inputStream),
+                            ProtectionKeyIdType.class);
             return protectionKeyIdTypeJaxbElement.getValue();
 
         }
@@ -140,7 +165,9 @@ public class ProtectionKey {
     /**
      * The Class GetProtectionKeyActionOperation.
      */
-    private static class GetProtectionKeyActionOperation extends DefaultEntityTypeActionOperation<String> {
+    private static class GetProtectionKeyActionOperation extends
+            DefaultEntityTypeActionOperation<String>
+    {
 
         /** The jaxb context. */
         private final JAXBContext jaxbContext;
@@ -154,34 +181,44 @@ public class ProtectionKey {
          * @param name
          *            the name
          */
-        public GetProtectionKeyActionOperation(String name) {
+        public GetProtectionKeyActionOperation(String name)
+        {
             super(name);
-            try {
-                jaxbContext = JAXBContext.newInstance(ProtectionKeyRestType.class);
-            }
-            catch (JAXBException e) {
+            try
+            {
+                jaxbContext = JAXBContext
+                        .newInstance(ProtectionKeyRestType.class);
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
-            try {
+            try
+            {
                 unmarshaller = jaxbContext.createUnmarshaller();
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#processResponse(com.sun.jersey.api.client.ClientResponse)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * DefaultActionOperation
+         * #processResponse(com.sun.jersey.api.client.ClientResponse)
          */
         @Override
-        public String processTypeResponse(ClientResponse clientResponse) {
+        public String processTypeResponse(ClientResponse clientResponse)
+        {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
             ProtectionKeyRestType protectionKeyRestType;
-            try {
+            try
+            {
                 protectionKeyRestType = parseResponse(clientResponse);
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
@@ -197,10 +234,13 @@ public class ProtectionKey {
          * @throws JAXBException
          *             the jAXB exception
          */
-        private ProtectionKeyRestType parseResponse(ClientResponse clientResponse) throws JAXBException {
+        private ProtectionKeyRestType parseResponse(
+                ClientResponse clientResponse) throws JAXBException
+        {
             InputStream inputStream = clientResponse.getEntityInputStream();
-            JAXBElement<ProtectionKeyRestType> protectionKeyTypeJaxbElement = unmarshaller.unmarshal(new StreamSource(
-                    inputStream), ProtectionKeyRestType.class);
+            JAXBElement<ProtectionKeyRestType> protectionKeyTypeJaxbElement = unmarshaller
+                    .unmarshal(new StreamSource(inputStream),
+                            ProtectionKeyRestType.class);
             return protectionKeyTypeJaxbElement.getValue();
 
         }

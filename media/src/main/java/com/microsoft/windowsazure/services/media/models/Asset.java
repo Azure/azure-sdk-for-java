@@ -38,7 +38,8 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Asset entities.
  * 
  */
-public class Asset {
+public class Asset
+{
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Assets";
@@ -47,7 +48,8 @@ public class Asset {
     /**
      * Instantiates a new asset.
      */
-    private Asset() {
+    private Asset()
+    {
     }
 
     /**
@@ -55,15 +57,18 @@ public class Asset {
      * 
      * @return the creator
      */
-    public static Creator create() {
+    public static Creator create()
+    {
         return new Creator();
     }
 
     /**
      * The Class Creator.
      */
-    public static class Creator extends EntityOperationSingleResultBase<AssetInfo> implements
-            EntityCreateOperation<AssetInfo> {
+    public static class Creator extends
+            EntityOperationSingleResultBase<AssetInfo> implements
+            EntityCreateOperation<AssetInfo>
+    {
 
         /** The name. */
         private String name;
@@ -80,22 +85,29 @@ public class Asset {
         /**
          * Instantiates a new creator.
          */
-        public Creator() {
+        public Creator()
+        {
             super(ENTITY_SET, AssetInfo.class);
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#getRequestContents()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityCreateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() {
+        public Object getRequestContents()
+        {
             AssetType assetType = new AssetType();
             assetType.setName(name);
             assetType.setAlternateId(alternateId);
-            if (options != null) {
+            if (options != null)
+            {
                 assetType.setOptions(options.getCode());
             }
-            if (state != null) {
+            if (state != null)
+            {
                 assetType.setState(state.getCode());
             }
             return assetType;
@@ -108,7 +120,8 @@ public class Asset {
          *            The name
          * @return The creator object (for call chaining)
          */
-        public Creator setName(String name) {
+        public Creator setName(String name)
+        {
             this.name = name;
             return this;
         }
@@ -121,7 +134,8 @@ public class Asset {
          * 
          * @return The creator object (for call chaining)
          */
-        public Creator setAlternateId(String alternateId) {
+        public Creator setAlternateId(String alternateId)
+        {
             this.alternateId = alternateId;
             return this;
         }
@@ -133,7 +147,8 @@ public class Asset {
          *            the options
          * @return the creator
          */
-        public Creator setOptions(AssetOption options) {
+        public Creator setOptions(AssetOption options)
+        {
             this.options = options;
             return this;
         }
@@ -145,7 +160,8 @@ public class Asset {
          *            the state
          * @return the creator
          */
-        public Creator setState(AssetState state) {
+        public Creator setState(AssetState state)
+        {
             this.state = state;
             return this;
         }
@@ -158,8 +174,10 @@ public class Asset {
      *            id of asset to retrieve
      * @return the get operation
      */
-    public static EntityGetOperation<AssetInfo> get(String assetId) {
-        return new DefaultGetOperation<AssetInfo>(ENTITY_SET, assetId, AssetInfo.class);
+    public static EntityGetOperation<AssetInfo> get(String assetId)
+    {
+        return new DefaultGetOperation<AssetInfo>(ENTITY_SET, assetId,
+                AssetInfo.class);
     }
 
     /**
@@ -169,8 +187,10 @@ public class Asset {
      *            the link
      * @return the get operation
      */
-    public static EntityGetOperation<AssetInfo> get(LinkInfo<AssetInfo> link) {
-        return new DefaultGetOperation<AssetInfo>(link.getHref(), AssetInfo.class);
+    public static EntityGetOperation<AssetInfo> get(LinkInfo<AssetInfo> link)
+    {
+        return new DefaultGetOperation<AssetInfo>(link.getHref(),
+                AssetInfo.class);
     }
 
     /**
@@ -178,9 +198,12 @@ public class Asset {
      * 
      * @return The list operation
      */
-    public static DefaultListOperation<AssetInfo> list() {
-        return new DefaultListOperation<AssetInfo>(ENTITY_SET, new GenericType<ListResult<AssetInfo>>() {
-        });
+    public static DefaultListOperation<AssetInfo> list()
+    {
+        return new DefaultListOperation<AssetInfo>(ENTITY_SET,
+                new GenericType<ListResult<AssetInfo>>()
+                {
+                });
     }
 
     /**
@@ -190,9 +213,12 @@ public class Asset {
      *            Link to request assets from.
      * @return The list operation.
      */
-    public static DefaultListOperation<AssetInfo> list(LinkInfo<AssetInfo> link) {
-        return new DefaultListOperation<AssetInfo>(link.getHref(), new GenericType<ListResult<AssetInfo>>() {
-        });
+    public static DefaultListOperation<AssetInfo> list(LinkInfo<AssetInfo> link)
+    {
+        return new DefaultListOperation<AssetInfo>(link.getHref(),
+                new GenericType<ListResult<AssetInfo>>()
+                {
+                });
     }
 
     /**
@@ -202,14 +228,17 @@ public class Asset {
      *            id of the asset to update
      * @return the update operation
      */
-    public static Updater update(String assetId) {
+    public static Updater update(String assetId)
+    {
         return new Updater(assetId);
     }
 
     /**
      * The Class Updater.
      */
-    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+    public static class Updater extends EntityOperationBase implements
+            EntityUpdateOperation
+    {
 
         /** The name. */
         private String name;
@@ -223,23 +252,35 @@ public class Asset {
          * @param assetId
          *            the asset id
          */
-        protected Updater(String assetId) {
-            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, assetId));
+        protected Updater(String assetId)
+        {
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
+                    assetId));
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityOperation
+         * #setProxyData(com.microsoft.windowsazure.services.media
+         * .entityoperations.EntityProxyData)
          */
         @Override
-        public void setProxyData(EntityProxyData proxyData) {
+        public void setProxyData(EntityProxyData proxyData)
+        {
             // Deliberately empty
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation#getRequestContents()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityUpdateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() {
+        public Object getRequestContents()
+        {
             AssetType assetType = new AssetType();
             assetType.setName(name);
             assetType.setAlternateId(alternateId);
@@ -253,7 +294,8 @@ public class Asset {
          *            The new name
          * @return Updater instance
          */
-        public Updater setName(String name) {
+        public Updater setName(String name)
+        {
             this.name = name;
             return this;
         }
@@ -265,7 +307,8 @@ public class Asset {
          *            the new alternate id
          * @return Updater instance
          */
-        public Updater setAlternateId(String alternateId) {
+        public Updater setAlternateId(String alternateId)
+        {
             this.alternateId = alternateId;
             return this;
         }
@@ -278,7 +321,8 @@ public class Asset {
      *            id of asset to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String assetId) {
+    public static EntityDeleteOperation delete(String assetId)
+    {
         return new DefaultDeleteOperation(ENTITY_SET, assetId);
     }
 
@@ -291,15 +335,20 @@ public class Asset {
      *            the content key id
      * @return the entity action operation
      */
-    public static EntityLinkOperation linkContentKey(String assetId, String contentKeyId) {
+    public static EntityLinkOperation linkContentKey(String assetId,
+            String contentKeyId)
+    {
         String escapedContentKeyId = null;
-        try {
+        try
+        {
             escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             throw new InvalidParameterException("contentKeyId");
         }
-        URI contentKeyUri = URI.create(String.format("ContentKeys('%s')", escapedContentKeyId));
-        return new EntityLinkOperation("Assets", assetId, "ContentKeys", contentKeyUri);
+        URI contentKeyUri = URI.create(String.format("ContentKeys('%s')",
+                escapedContentKeyId));
+        return new EntityLinkOperation("Assets", assetId, "ContentKeys",
+                contentKeyUri);
     }
 }

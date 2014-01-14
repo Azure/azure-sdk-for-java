@@ -19,7 +19,8 @@ import java.util.EnumSet;
 /**
  * Represents the logging properties for the analytics service.
  */
-public final class LoggingProperties {
+public final class LoggingProperties
+{
 
     /**
      * The analytics version to use.
@@ -27,9 +28,11 @@ public final class LoggingProperties {
     private String version = "1.0";
 
     /**
-     * A EnumSet of <code>LoggingOperationTypes</code> that represent which storage operations should be logged.
+     * A EnumSet of <code>LoggingOperationTypes</code> that represent which
+     * storage operations should be logged.
      */
-    private EnumSet<LoggingOperations> logOperationTypes = EnumSet.noneOf(LoggingOperations.class);
+    private EnumSet<LoggingOperations> logOperationTypes = EnumSet
+            .noneOf(LoggingOperations.class);
 
     /**
      * The Retention policy for the logging data.
@@ -39,21 +42,24 @@ public final class LoggingProperties {
     /**
      * @return the logOperationTypes
      */
-    public EnumSet<LoggingOperations> getLogOperationTypes() {
+    public EnumSet<LoggingOperations> getLogOperationTypes()
+    {
         return this.logOperationTypes;
     }
 
     /**
      * @return the retentionIntervalInDays
      */
-    public Integer getRetentionIntervalInDays() {
+    public Integer getRetentionIntervalInDays()
+    {
         return this.retentionIntervalInDays;
     }
 
     /**
      * @return the version
      */
-    public String getVersion() {
+    public String getVersion()
+    {
         return this.version;
     }
 
@@ -61,7 +67,9 @@ public final class LoggingProperties {
      * @param logOperationTypes
      *            the logOperationTypes to set
      */
-    public void setLogOperationTypes(final EnumSet<LoggingOperations> logOperationTypes) {
+    public void setLogOperationTypes(
+            final EnumSet<LoggingOperations> logOperationTypes)
+    {
         this.logOperationTypes = logOperationTypes;
     }
 
@@ -69,7 +77,8 @@ public final class LoggingProperties {
      * @param retentionIntervalInDays
      *            the retentionIntervalInDays to set
      */
-    public void setRetentionIntervalInDays(final Integer retentionIntervalInDays) {
+    public void setRetentionIntervalInDays(final Integer retentionIntervalInDays)
+    {
         this.retentionIntervalInDays = retentionIntervalInDays;
     }
 
@@ -77,7 +86,8 @@ public final class LoggingProperties {
      * @param version
      *            the version to set
      */
-    public void setVersion(final String version) {
+    public void setVersion(final String version)
+    {
         this.version = version;
     }
 }

@@ -21,14 +21,18 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
 
-public class MediaServiceTest {
+public class MediaServiceTest
+{
 
     @Test
-    public void createMediaContractSuccessTest() {
+    public void createMediaContractSuccessTest()
+    {
         // Arrange
         Configuration configurationInstance = Configuration.getInstance();
-        configurationInstance = MediaConfiguration.configureWithOAuthAuthentication(configurationInstance,
-                "mediaServiceBaseUri", "oAuthUri", "clientId", "clientSecret", "testScope");
+        configurationInstance = MediaConfiguration
+                .configureWithOAuthAuthentication(configurationInstance,
+                        "mediaServiceBaseUri", "oAuthUri", "clientId",
+                        "clientSecret", "testScope");
 
         // Act
         MediaContract mediaContract = MediaService.create();
@@ -40,12 +44,14 @@ public class MediaServiceTest {
     }
 
     @Test
-    public void createMediaContractWithSpecifiedConfigurationTest() {
+    public void createMediaContractWithSpecifiedConfigurationTest()
+    {
         // Arrange
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("mediaServiceBaseUri",
-                "oAuthUri", "clientId", "clientSecret", "testScope");
+        Configuration configuration = MediaConfiguration
+                .configureWithOAuthAuthentication("mediaServiceBaseUri",
+                        "oAuthUri", "clientId", "clientSecret", "testScope");
 
-        // Act 
+        // Act
         MediaContract mediaContract = MediaService.create(configuration);
 
         // Assert
@@ -53,7 +59,8 @@ public class MediaServiceTest {
     }
 
     @Test
-    public void createMediaContractWithSpecifiedProfileTest() {
+    public void createMediaContractWithSpecifiedProfileTest()
+    {
         // Arrange
         String profile = "testProfile";
 
@@ -66,14 +73,18 @@ public class MediaServiceTest {
     }
 
     @Test
-    public void createMediaContractWithSpecifiedProfileAndConfiguration() {
+    public void createMediaContractWithSpecifiedProfileAndConfiguration()
+    {
         // Arrange
         String profile = "testProfile";
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(profile, new Configuration(),
-                "mediaServiceBaseUri", "oAuthUri", "clientId", "clientSecret", "testScope");
+        Configuration configuration = MediaConfiguration
+                .configureWithOAuthAuthentication(profile, new Configuration(),
+                        "mediaServiceBaseUri", "oAuthUri", "clientId",
+                        "clientSecret", "testScope");
 
-        // Act 
-        MediaContract mediaContract = MediaService.create(profile, configuration);
+        // Act
+        MediaContract mediaContract = MediaService.create(profile,
+                configuration);
 
         // Assert
         assertNotNull(mediaContract);

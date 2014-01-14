@@ -22,13 +22,16 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 
-public class LocatorInfoTest {
+public class LocatorInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "testId";
-        LocatorInfo locator = new LocatorInfo(null, new LocatorRestType().setId(expectedId));
+        LocatorInfo locator = new LocatorInfo(null,
+                new LocatorRestType().setId(expectedId));
 
         // Act
         String actualId = locator.getId();
@@ -38,11 +41,13 @@ public class LocatorInfoTest {
     }
 
     @Test
-    public void testGetSetExpirationDateTime() {
+    public void testGetSetExpirationDateTime()
+    {
         // Arrange
         Date expectedExpirationDateTime = new Date();
         LocatorInfo locatorInfo = new LocatorInfo(null,
-                new LocatorRestType().setExpirationDateTime(expectedExpirationDateTime));
+                new LocatorRestType()
+                        .setExpirationDateTime(expectedExpirationDateTime));
 
         // Act
         Date actualExpirationDateTime = locatorInfo.getExpirationDateTime();
@@ -52,23 +57,27 @@ public class LocatorInfoTest {
     }
 
     @Test
-    public void testGetSetType() {
+    public void testGetSetType()
+    {
         // Arrange
         LocatorType expectedLocatorType = LocatorType.SAS;
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setType(expectedLocatorType.getCode()));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setType(expectedLocatorType.getCode()));
 
-        // Act 
+        // Act
         LocatorType actualLocatorType = locatorInfo.getLocatorType();
 
-        // Assert 
+        // Assert
         assertEquals(expectedLocatorType, actualLocatorType);
     }
 
     @Test
-    public void testGetSetPath() {
+    public void testGetSetPath()
+    {
         // Arrange
         String expectedPath = "testPath";
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setPath(expectedPath));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setPath(expectedPath));
 
         // Act
         String actualPath = locatorInfo.getPath();
@@ -78,10 +87,12 @@ public class LocatorInfoTest {
     }
 
     @Test
-    public void testGetSetAccessPolicyId() {
+    public void testGetSetAccessPolicyId()
+    {
         // Arrange
         String expectedAccessPolicyId = "testAccessPolicyId";
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setAccessPolicyId(expectedAccessPolicyId));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setAccessPolicyId(expectedAccessPolicyId));
 
         // Act
         String actualAccessPolicyId = locatorInfo.getAccessPolicyId();
@@ -91,10 +102,12 @@ public class LocatorInfoTest {
     }
 
     @Test
-    public void testGetSetAssetId() {
+    public void testGetSetAssetId()
+    {
         // Arrange
         String expectedAssetId = "testAssetId";
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setAssetId(expectedAssetId));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setAssetId(expectedAssetId));
 
         // Act
         String actualAssetId = locatorInfo.getAssetId();
@@ -104,42 +117,51 @@ public class LocatorInfoTest {
     }
 
     @Test
-    public void testGetSetStartTime() {
+    public void testGetSetStartTime()
+    {
         // Arrange
         Date expectedStartTime = new Date();
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setStartTime(expectedStartTime));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setStartTime(expectedStartTime));
 
         // Act
         Date actualStartTime = locatorInfo.getStartTime();
 
-        // Assert 
+        // Assert
         assertEquals(expectedStartTime, actualStartTime);
     }
 
     @Test
-    public void testGetSetBaseUri() {
+    public void testGetSetBaseUri()
+    {
         // Arrange
         String expectedBaseUri = "testBaseUri";
-        LocatorInfo locatorInfo = new LocatorInfo(null, new LocatorRestType().setBaseUri(expectedBaseUri));
+        LocatorInfo locatorInfo = new LocatorInfo(null,
+                new LocatorRestType().setBaseUri(expectedBaseUri));
 
         // Act
         String actualBaseUri = locatorInfo.getBaseUri();
 
-        // Assert 
+        // Assert
         assertEquals(expectedBaseUri, actualBaseUri);
     }
 
     @Test
-    public void testGetSetContentAccessComponent() {
+    public void testGetSetContentAccessComponent()
+    {
         // Arrange
         String expectedContentAccessComponent = "testContentAccessToken";
-        LocatorInfo locatorInfo = new LocatorInfo(null,
-                new LocatorRestType().setContentAccessComponent(expectedContentAccessComponent));
+        LocatorInfo locatorInfo = new LocatorInfo(
+                null,
+                new LocatorRestType()
+                        .setContentAccessComponent(expectedContentAccessComponent));
 
         // Act
-        String actualContentAccessComponent = locatorInfo.getContentAccessToken();
+        String actualContentAccessComponent = locatorInfo
+                .getContentAccessToken();
 
-        // Assert 
-        assertEquals(expectedContentAccessComponent, actualContentAccessComponent);
+        // Assert
+        assertEquals(expectedContentAccessComponent,
+                actualContentAccessComponent);
     }
 }

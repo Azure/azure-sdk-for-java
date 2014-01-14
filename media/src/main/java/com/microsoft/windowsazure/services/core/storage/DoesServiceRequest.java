@@ -20,10 +20,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * An attribute used to describe a method that will make a request to the storage service.
+ * An attribute used to describe a method that will make a request to the
+ * storage service.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DoesServiceRequest {
+public @interface DoesServiceRequest
+{
     // No attributes
 }

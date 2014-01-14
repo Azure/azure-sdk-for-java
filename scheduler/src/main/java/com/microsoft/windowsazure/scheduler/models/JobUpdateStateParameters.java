@@ -24,26 +24,38 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Parameters supplied to the Update Job State operation.
-*/
+ * Parameters supplied to the Update Job State operation.
+ */
 public class JobUpdateStateParameters
 {
     private JobState state;
-    
-    public JobState getState() { return this.state; }
-    
-    public void setState(JobState state) { this.state = state; }
-    
+
+    public JobState getState()
+    {
+        return this.state;
+    }
+
+    public void setState(JobState state)
+    {
+        this.state = state;
+    }
+
     private String updateStateReason;
-    
-    public String getUpdateStateReason() { return this.updateStateReason; }
-    
-    public void setUpdateStateReason(String updateStateReason) { this.updateStateReason = updateStateReason; }
-    
+
+    public String getUpdateStateReason()
+    {
+        return this.updateStateReason;
+    }
+
+    public void setUpdateStateReason(String updateStateReason)
+    {
+        this.updateStateReason = updateStateReason;
+    }
+
     /**
-    * Initializes a new instance of the JobUpdateStateParameters class.
-    *
-    */
+     * Initializes a new instance of the JobUpdateStateParameters class.
+     * 
+     */
     public JobUpdateStateParameters()
     {
     }

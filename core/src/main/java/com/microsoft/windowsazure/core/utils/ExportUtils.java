@@ -19,16 +19,20 @@ import java.util.Map;
 
 /**
  * Helper functions useful when creating Exports classses.
- *
+ * 
  */
-public abstract class ExportUtils {
+public abstract class ExportUtils
+{
 
-    private static String normalizeProfile(String profile) {
-        if (profile == null || profile.equals("")) {
+    private static String normalizeProfile(String profile)
+    {
+        if (profile == null || profile.equals(""))
+        {
             return "";
         }
 
-        if (profile.endsWith(".")) {
+        if (profile.endsWith("."))
+        {
             return profile;
         }
 
@@ -36,18 +40,24 @@ public abstract class ExportUtils {
     }
 
     /**
-     * Check if the given property exists under the given profile. If
-     * so, return the value, otherwise return null.
-     *
-     * @param profile profile to search
-     * @param properties the set of property values
-     * @param propertyName name of desired property
+     * Check if the given property exists under the given profile. If so, return
+     * the value, otherwise return null.
+     * 
+     * @param profile
+     *            profile to search
+     * @param properties
+     *            the set of property values
+     * @param propertyName
+     *            name of desired property
      * @return the property value, or null if it is not set.
      */
-    public static Object getPropertyIfExists(String profile, Map<String, Object> properties, String propertyName) {
+    public static Object getPropertyIfExists(String profile,
+            Map<String, Object> properties, String propertyName)
+    {
         String fullPropertyName = normalizeProfile(profile) + propertyName;
 
-        if (properties.containsKey(fullPropertyName)) {
+        if (properties.containsKey(fullPropertyName))
+        {
             return properties.get(fullPropertyName);
         }
         return null;

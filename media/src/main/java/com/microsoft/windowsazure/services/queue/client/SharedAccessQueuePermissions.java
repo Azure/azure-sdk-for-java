@@ -19,7 +19,8 @@ import java.util.EnumSet;
 /**
  * Specifies the set of possible permissions for a shared access queue policy.
  */
-public enum SharedAccessQueuePermissions {
+public enum SharedAccessQueuePermissions
+{
 
     /**
      * No shared access granted.
@@ -47,27 +48,36 @@ public enum SharedAccessQueuePermissions {
     PROCESSMESSAGES((byte) 0x8);
 
     /**
-     * Returns the enum set representing the shared access permissions for the specified byte value.
+     * Returns the enum set representing the shared access permissions for the
+     * specified byte value.
      * 
      * @param value
      *            The byte value to convert to the corresponding enum set.
-     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessQueuePermissions</code> values
-     *         corresponding to the specified byte value.
+     * @return A <code>java.util.EnumSet</code> object that contains the
+     *         <code>SharedAccessQueuePermissions</code> values corresponding to
+     *         the specified byte value.
      */
-    protected static EnumSet<SharedAccessQueuePermissions> fromByte(final byte value) {
-        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet.noneOf(SharedAccessQueuePermissions.class);
+    protected static EnumSet<SharedAccessQueuePermissions> fromByte(
+            final byte value)
+    {
+        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet
+                .noneOf(SharedAccessQueuePermissions.class);
 
-        if (value == READ.value) {
+        if (value == READ.value)
+        {
             retSet.add(READ);
         }
 
-        if (value == PROCESSMESSAGES.value) {
+        if (value == PROCESSMESSAGES.value)
+        {
             retSet.add(PROCESSMESSAGES);
         }
-        if (value == ADD.value) {
+        if (value == ADD.value)
+        {
             retSet.add(ADD);
         }
-        if (value == UPDATE.value) {
+        if (value == UPDATE.value)
+        {
             retSet.add(UPDATE);
         }
 
@@ -85,7 +95,8 @@ public enum SharedAccessQueuePermissions {
      * @param val
      *            The value being assigned.
      */
-    SharedAccessQueuePermissions(final byte val) {
+    SharedAccessQueuePermissions(final byte val)
+    {
         this.value = val;
     }
 }

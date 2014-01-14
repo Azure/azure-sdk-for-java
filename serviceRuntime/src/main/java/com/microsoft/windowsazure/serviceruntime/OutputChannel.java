@@ -19,6 +19,7 @@ import java.io.OutputStream;
 /**
  * 
  */
-interface OutputChannel {
+interface OutputChannel
+{
     public abstract OutputStream getOutputStream(String name);
 }

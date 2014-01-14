@@ -39,47 +39,71 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implements SchedulerClient
+public class SchedulerClientImpl extends ServiceClient<SchedulerClient>
+        implements SchedulerClient
 {
     private URI baseUri;
-    
-    public URI getBaseUri() { return this.baseUri; }
-    
+
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
+
     private String cloudServiceName;
-    
-    public String getCloudServiceName() { return this.cloudServiceName; }
-    
+
+    public String getCloudServiceName()
+    {
+        return this.cloudServiceName;
+    }
+
     private SubscriptionCloudCredentials credentials;
-    
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
-    
+
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
+
     private String jobCollectionName;
-    
-    public String getJobCollectionName() { return this.jobCollectionName; }
-    
+
+    public String getJobCollectionName()
+    {
+        return this.jobCollectionName;
+    }
+
     private JobOperations jobs;
-    
-    public JobOperations getJobsOperations() { return this.jobs; }
-    
+
+    public JobOperations getJobsOperations()
+    {
+        return this.jobs;
+    }
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    private SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
+     * Initializes a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    private SchedulerClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService)
     {
         super(httpBuilder, executorService);
         this.jobs = new JobOperationsImpl(this);
     }
-    
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, String cloudServiceName, String jobCollectionName, URI baseUri)
+     * Initializes a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    public SchedulerClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            SubscriptionCloudCredentials credentials, String cloudServiceName,
+            String jobCollectionName, URI baseUri)
     {
         this(httpBuilder, executorService);
         if (credentials == null)
@@ -103,16 +127,23 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         this.jobCollectionName = jobCollectionName;
         this.baseUri = baseUri;
     }
-    
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
+     * Initializes a new instance of the SchedulerClientImpl class. Initializes
+     * a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
     @Inject
-    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, String cloudServiceName, String jobCollectionName) throws java.net.URISyntaxException
+    public SchedulerClientImpl(
+            HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials,
+            String cloudServiceName, String jobCollectionName)
+            throws java.net.URISyntaxException
     {
         this(httpBuilder, executorService);
         if (credentials == null)
@@ -132,24 +163,30 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         this.jobCollectionName = jobCollectionName;
         this.baseUri = new URI("https://management.core.windows.net/");
     }
-    
+
     /**
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    protected SchedulerClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    protected SchedulerClientImpl newInstance(HttpClientBuilder httpBuilder,
+            ExecutorService executorService)
     {
-        return new SchedulerClientImpl(httpBuilder, executorService, this.getCredentials(), this.getCloudServiceName(), this.getJobCollectionName(), this.getBaseUri());
+        return new SchedulerClientImpl(httpBuilder, executorService,
+                this.getCredentials(), this.getCloudServiceName(),
+                this.getJobCollectionName(), this.getBaseUri());
     }
-    
+
     /**
-    * Parse enum values for type JobActionType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobActionType parseJobActionType(String value)
+     * Parse enum values for type JobActionType.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobActionType parseJobActionType(String value)
     {
         if (value == "http")
         {
@@ -165,14 +202,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobActionType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobActionTypeToString(JobActionType value)
+     * Convert an enum of type JobActionType to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobActionTypeToString(JobActionType value)
     {
         if (value == JobActionType.Http)
         {
@@ -188,14 +226,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobHistoryActionName.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobHistoryActionName parseJobHistoryActionName(String value)
+     * Parse enum values for type JobHistoryActionName.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobHistoryActionName parseJobHistoryActionName(String value)
     {
         if (value == "MainAction")
         {
@@ -207,14 +246,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobHistoryActionName to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobHistoryActionNameToString(JobHistoryActionName value)
+     * Convert an enum of type JobHistoryActionName to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobHistoryActionNameToString(JobHistoryActionName value)
     {
         if (value == JobHistoryActionName.MainAction)
         {
@@ -226,14 +266,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobHistoryStatus.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobHistoryStatus parseJobHistoryStatus(String value)
+     * Parse enum values for type JobHistoryStatus.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobHistoryStatus parseJobHistoryStatus(String value)
     {
         if (value == "completed")
         {
@@ -245,14 +286,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobHistoryStatus to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobHistoryStatusToString(JobHistoryStatus value)
+     * Convert an enum of type JobHistoryStatus to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobHistoryStatusToString(JobHistoryStatus value)
     {
         if (value == JobHistoryStatus.Completed)
         {
@@ -264,14 +306,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobRecurrenceFrequency.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobRecurrenceFrequency parseJobRecurrenceFrequency(String value)
+     * Parse enum values for type JobRecurrenceFrequency.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobRecurrenceFrequency parseJobRecurrenceFrequency(String value)
     {
         if (value == "minute")
         {
@@ -299,14 +342,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobRecurrenceFrequency to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobRecurrenceFrequencyToString(JobRecurrenceFrequency value)
+     * Convert an enum of type JobRecurrenceFrequency to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobRecurrenceFrequencyToString(JobRecurrenceFrequency value)
     {
         if (value == JobRecurrenceFrequency.Minute)
         {
@@ -334,14 +378,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobScheduleDay.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobScheduleDay parseJobScheduleDay(String value)
+     * Parse enum values for type JobScheduleDay.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobScheduleDay parseJobScheduleDay(String value)
     {
         if (value == "monday")
         {
@@ -373,14 +418,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobScheduleDay to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobScheduleDayToString(JobScheduleDay value)
+     * Convert an enum of type JobScheduleDay to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobScheduleDayToString(JobScheduleDay value)
     {
         if (value == JobScheduleDay.Monday)
         {
@@ -412,14 +458,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobState.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobState parseJobState(String value)
+     * Parse enum values for type JobState.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobState parseJobState(String value)
     {
         if (value == "enabled")
         {
@@ -439,14 +486,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobState to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobStateToString(JobState value)
+     * Convert an enum of type JobState to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobStateToString(JobState value)
     {
         if (value == JobState.Enabled)
         {
@@ -466,14 +514,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type RetryType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static RetryType parseRetryType(String value)
+     * Parse enum values for type RetryType.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static RetryType parseRetryType(String value)
     {
         if (value == "none")
         {
@@ -485,14 +534,15 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type RetryType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String retryTypeToString(RetryType value)
+     * Convert an enum of type RetryType to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String retryTypeToString(RetryType value)
     {
         if (value == RetryType.None)
         {

@@ -37,7 +37,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.MediaUri
 /**
  * Generic implementation of $link operation of two entities.
  */
-public class EntityLinkOperation extends DefaultActionOperation {
+public class EntityLinkOperation extends DefaultActionOperation
+{
 
     /** The primary entity set. */
     private final String primaryEntitySet;
@@ -75,73 +76,96 @@ public class EntityLinkOperation extends DefaultActionOperation {
      * @param secondaryEntityUri
      *            the secondary entity uri
      */
-    public EntityLinkOperation(String primaryEntitySet, String primaryEntityId, String secondaryEntitySet,
-            URI secondaryEntityUri) {
+    public EntityLinkOperation(String primaryEntitySet, String primaryEntityId,
+            String secondaryEntitySet, URI secondaryEntityUri)
+    {
         super();
         this.primaryEntitySet = primaryEntitySet;
         this.primaryEntityId = primaryEntityId;
         this.secondaryEntitySet = secondaryEntitySet;
         this.secondaryEntityUri = secondaryEntityUri;
-        try {
+        try
+        {
             jaxbContext = JAXBContext.newInstance(MediaUriType.class);
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
-        try {
+        try
+        {
             marshaller = jaxbContext.createMarshaller();
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
         documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        try {
+        try
+        {
             documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e)
+        {
             throw new RuntimeException(e);
         }
 
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation#getUri()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation
+     * #getUri()
      */
     @Override
-    public String getUri() {
+    public String getUri()
+    {
         String escapedEntityId;
-        try {
+        try
+        {
             escapedEntityId = URLEncoder.encode(primaryEntityId, "UTF-8");
+        } catch (UnsupportedEncodingException e)
+        {
+            throw new InvalidParameterException(
+                    "UTF-8 encoding is not supported.");
         }
-        catch (UnsupportedEncodingException e) {
-            throw new InvalidParameterException("UTF-8 encoding is not supported.");
-        }
-        return String.format("%s('%s')/$links/%s", primaryEntitySet, escapedEntityId, secondaryEntitySet);
+        return String.format("%s('%s')/$links/%s", primaryEntitySet,
+                escapedEntityId, secondaryEntitySet);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#getVerb()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * DefaultActionOperation#getVerb()
      */
     @Override
-    public String getVerb() {
+    public String getVerb()
+    {
         return "POST";
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.DefaultActionOperation#getRequestContents()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * DefaultActionOperation#getRequestContents()
      */
     @Override
-    public Object getRequestContents() {
+    public Object getRequestContents()
+    {
         MediaUriType mediaUriType = new MediaUriType();
-        mediaUriType.setUri(getProxyData().getServiceUri().toString() + this.secondaryEntityUri.toString());
-        JAXBElement<MediaUriType> mediaUriTypeElement = new JAXBElement<MediaUriType>(new QName(
-                Constants.ODATA_DATA_NS, "uri"), MediaUriType.class, mediaUriType);
+        mediaUriType.setUri(getProxyData().getServiceUri().toString()
+                + this.secondaryEntityUri.toString());
+        JAXBElement<MediaUriType> mediaUriTypeElement = new JAXBElement<MediaUriType>(
+                new QName(Constants.ODATA_DATA_NS, "uri"), MediaUriType.class,
+                mediaUriType);
         Document document = documentBuilder.newDocument();
         document.setXmlStandalone(true);
-        try {
+        try
+        {
             marshaller.marshal(mediaUriTypeElement, document);
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
         return document;

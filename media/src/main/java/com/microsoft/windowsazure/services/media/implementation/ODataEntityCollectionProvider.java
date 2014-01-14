@@ -33,38 +33,49 @@ import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
  * Jersey provider to unmarshal lists of entities from Media Services.
  * 
  */
-public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterProvider<ListResult<ODataEntity<?>>> {
+public class ODataEntityCollectionProvider extends
+        AbstractMessageReaderWriterProvider<ListResult<ODataEntity<?>>>
+{
     private final ODataAtomUnmarshaller unmarshaller;
 
-    public ODataEntityCollectionProvider() throws JAXBException {
+    public ODataEntityCollectionProvider() throws JAXBException
+    {
         unmarshaller = new ODataAtomUnmarshaller();
     }
 
     @Override
-    public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isReadable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         return ODataEntity.isODataEntityCollectionType(type, genericType);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public ListResult<ODataEntity<?>> readFrom(Class<ListResult<ODataEntity<?>>> type, Type genericType,
-            Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
-            InputStream entityStream) throws IOException {
+    public ListResult<ODataEntity<?>> readFrom(
+            Class<ListResult<ODataEntity<?>>> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+            throws IOException
+    {
 
         String responseType = mediaType.getParameters().get("type");
-        try {
-            if (responseType == null || responseType.equals("feed")) {
+        try
+        {
+            if (responseType == null || responseType.equals("feed"))
+            {
                 return unmarshaller.unmarshalFeed(entityStream,
-                        (Class<ODataEntity<?>>) ODataEntity.getCollectedType(genericType));
-            }
-            else {
+                        (Class<ODataEntity<?>>) ODataEntity
+                                .getCollectedType(genericType));
+            } else
+            {
                 throw new RuntimeException();
             }
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
-        }
-        catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -75,20 +86,24 @@ public class ODataEntityCollectionProvider extends AbstractMessageReaderWriterPr
      * @return false - we don't support writing
      */
     @Override
-    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isWriteable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         return false;
     }
 
     /**
-     * Write the given object to the stream.
-     * This method implementation throws, we don't support writing.
+     * Write the given object to the stream. This method implementation throws,
+     * we don't support writing.
      * 
      * @throws UnsupportedOperationException
      */
     @Override
-    public void writeTo(ListResult<ODataEntity<?>> t, Class<?> type, Type genericType, Annotation[] annotations,
-            MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-            throws IOException {
+    public void writeTo(ListResult<ODataEntity<?>> t, Class<?> type,
+            Type genericType, Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, Object> httpHeaders,
+            OutputStream entityStream) throws IOException
+    {
 
         throw new UnsupportedOperationException();
     }

@@ -21,7 +21,8 @@ import java.util.HashMap;
  * RESERVED FOR INTERNAL USE. Represents a blob's attributes.
  * 
  */
-final class BlobAttributes {
+final class BlobAttributes
+{
 
     /**
      * Holds the metadata for the blob.
@@ -48,13 +49,15 @@ final class BlobAttributes {
      */
     protected URI uri;
 
-     /**
-     * Initializes a new instance of the BlobAttributes class. RESERVED FOR INTERNAL USE.
+    /**
+     * Initializes a new instance of the BlobAttributes class. RESERVED FOR
+     * INTERNAL USE.
      * 
      * @param type
-     *         The type of blob to set.
+     *            The type of blob to set.
      */
-    public BlobAttributes(final BlobType type) {
+    public BlobAttributes(final BlobType type)
+    {
         this.setMetadata(new HashMap<String, String>());
         this.setProperties(new BlobProperties(type));
     }
@@ -62,9 +65,11 @@ final class BlobAttributes {
     /**
      * Gets the metadata for the blob. RESERVED FOR INTERNAL USE.
      * 
-     * @return A <code>HashMap</code> object containing the metadata for the blob.
+     * @return A <code>HashMap</code> object containing the metadata for the
+     *         blob.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return this.metadata;
     }
 
@@ -73,16 +78,19 @@ final class BlobAttributes {
      * 
      * @return A <code>CopyState</code> object representing the copy state.
      */
-    public CopyState getCopyState() {
+    public CopyState getCopyState()
+    {
         return this.copyState;
     }
 
     /**
      * Gets the properties for the blob. RESERVED FOR INTERNAL USE.
      * 
-     * @return A <code>BlobProperties</code> object that represents the blob properties.
+     * @return A <code>BlobProperties</code> object that represents the blob
+     *         properties.
      */
-    public BlobProperties getProperties() {
+    public BlobProperties getProperties()
+    {
         return this.properties;
     }
 
@@ -90,9 +98,10 @@ final class BlobAttributes {
      * Sets the metadata for a blob. RESERVED FOR INTERNAL USE.
      * 
      * @param metadata
-     *         The blob meta data to set.
+     *            The blob meta data to set.
      */
-    protected void setMetadata(final HashMap<String, String> metadata) {
+    protected void setMetadata(final HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 
@@ -100,9 +109,10 @@ final class BlobAttributes {
      * Sets the properties for a blob. RESERVED FOR INTERNAL USE.
      * 
      * @param properties
-     *         The blob properties to set.
+     *            The blob properties to set.
      */
-    protected void setProperties(final BlobProperties properties) {
+    protected void setProperties(final BlobProperties properties)
+    {
         this.properties = properties;
     }
 
@@ -110,9 +120,10 @@ final class BlobAttributes {
      * Sets the copy state for a blob. RESERVED FOR INTERNAL USE.
      * 
      * @param copyState
-     *         The blob copy state to set.
+     *            The blob copy state to set.
      */
-    public void setCopyState(final CopyState copyState) {
+    public void setCopyState(final CopyState copyState)
+    {
         this.copyState = copyState;
     }
 }

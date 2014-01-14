@@ -29,19 +29,23 @@ import org.junit.Before;
 /**
  *
  */
-public class RoleEnvironmentTests {
+public class RoleEnvironmentTests
+{
     @Before
-    public void setupTests() {
+    public void setupTests()
+    {
         horrificEnvironmentModification("\\\\.\\pipe\\578cb0d1-a330-4019-b634-755aa3d1e9d2");
     }
 
-    //@Test
-    public void roleEnvironmentIsAvailable() {
+    // @Test
+    public void roleEnvironmentIsAvailable()
+    {
         assertThat(RoleEnvironment.isAvailable(), is(true));
     }
 
-    //@Test
-    public void roleEnvironmentSetStateSetsState() {
+    // @Test
+    public void roleEnvironmentSetStateSetsState()
+    {
         Calendar exp = Calendar.getInstance(TimeZone.getTimeZone("GMT+0:00"));
 
         exp.add(Calendar.MINUTE, 1);
@@ -50,28 +54,32 @@ public class RoleEnvironmentTests {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void horrificEnvironmentModification(String endpoint) {
-        try {
-            Class processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
-            Field field = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+    public void horrificEnvironmentModification(String endpoint)
+    {
+        try
+        {
+            Class processEnvironmentClass = Class
+                    .forName("java.lang.ProcessEnvironment");
+            Field field = processEnvironmentClass
+                    .getDeclaredField("theCaseInsensitiveEnvironment");
             field.setAccessible(true);
             Object obj = field.get(null);
             Map<String, String> map = (Map<String, String>) obj;
             map.put("WaRuntimeEndpoint", endpoint);
-        }
-        catch (SecurityException e) {
+        } catch (SecurityException e)
+        {
             e.printStackTrace();
-        }
-        catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException e)
+        {
             e.printStackTrace();
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e)
+        {
             e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e)
+        {
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e)
+        {
             e.printStackTrace();
         }
     }

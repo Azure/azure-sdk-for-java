@@ -22,11 +22,13 @@ import com.sun.jersey.api.client.GenericType;
  * Entity operations for Media processors
  * 
  */
-public class MediaProcessor {
+public class MediaProcessor
+{
 
     private static final String ENTITY_SET = "MediaProcessors";
 
-    private MediaProcessor() {
+    private MediaProcessor()
+    {
     }
 
     /**
@@ -34,9 +36,11 @@ public class MediaProcessor {
      * 
      * @return the list operation
      */
-    public static DefaultListOperation<MediaProcessorInfo> list() {
+    public static DefaultListOperation<MediaProcessorInfo> list()
+    {
         return new DefaultListOperation<MediaProcessorInfo>(ENTITY_SET,
-                new GenericType<ListResult<MediaProcessorInfo>>() {
+                new GenericType<ListResult<MediaProcessorInfo>>()
+                {
                 });
     }
 

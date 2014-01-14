@@ -27,10 +27,10 @@ import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
- * Queue Test Base
- * Queue test refactoring will be done in future.
+ * Queue Test Base Queue test refactoring will be done in future.
  */
-public class QueueTestBase {
+public class QueueTestBase
+{
     public static boolean USE_DEV_FABRIC = false;
     public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=http;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
     public static final String CLOUD_ACCOUNT_HTTPS = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
@@ -41,14 +41,19 @@ public class QueueTestBase {
     protected static CloudQueue queue;
 
     @BeforeClass
-    public static void setup() throws URISyntaxException, StorageException, InvalidKeyException {
-        if (USE_DEV_FABRIC) {
+    public static void setup() throws URISyntaxException, StorageException,
+            InvalidKeyException
+    {
+        if (USE_DEV_FABRIC)
+        {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
-        }
-        else {
+        } else
+        {
             String cloudAccount = CLOUD_ACCOUNT_HTTP;
-            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("queue.accountName"));
-            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("queue.accountKey"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]",
+                    System.getenv("queue.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]",
+                    System.getenv("queue.accountKey"));
 
             httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
@@ -61,25 +66,30 @@ public class QueueTestBase {
     }
 
     @AfterClass
-    public static void teardown() throws StorageException, URISyntaxException {
+    public static void teardown() throws StorageException, URISyntaxException
+    {
         CloudQueue queue = qClient.getQueueReference(testSuiteQueueName);
         queue.delete();
     }
 
-    protected static String generateRandomQueueName() {
+    protected static String generateRandomQueueName()
+    {
         String queueName = "queue" + UUID.randomUUID().toString();
         return queueName.replace("-", "");
     }
 
-    static String AppendQueueName(URI baseURI, String queueName) throws URISyntaxException {
+    static String AppendQueueName(URI baseURI, String queueName)
+            throws URISyntaxException
+    {
         if (baseURI == null)
             return queueName;
 
         String baseAddress = baseURI.toString();
-        if (baseAddress.endsWith("/")) {
+        if (baseAddress.endsWith("/"))
+        {
             return baseAddress + queueName;
-        }
-        else {
+        } else
+        {
             return baseAddress + "/" + queueName;
         }
     }

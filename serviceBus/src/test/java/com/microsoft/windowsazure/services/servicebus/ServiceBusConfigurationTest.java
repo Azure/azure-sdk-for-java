@@ -19,37 +19,46 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ServiceBusConfigurationTest {
+public class ServiceBusConfigurationTest
+{
     @Test
-    public void ConfigureSetsExpectedProperties() {
+    public void ConfigureSetsExpectedProperties()
+    {
         // Arrange
         Configuration config = new Configuration();
 
         // Act
-        ServiceBusConfiguration.configureWithWrapAuthentication(config, "alpha", "beta", "gamma",
-                ".servicebus.windows.net/", "-sb.accesscontrol.windows.net/WRAPv0.9");
+        ServiceBusConfiguration.configureWithWrapAuthentication(config,
+                "alpha", "beta", "gamma", ".servicebus.windows.net/",
+                "-sb.accesscontrol.windows.net/WRAPv0.9");
 
         // Assert
-        assertEquals("https://alpha.servicebus.windows.net/", config.getProperty("serviceBus.uri"));
-        assertEquals("https://alpha-sb.accesscontrol.windows.net/WRAPv0.9", config.getProperty("serviceBus.wrap.uri"));
+        assertEquals("https://alpha.servicebus.windows.net/",
+                config.getProperty("serviceBus.uri"));
+        assertEquals("https://alpha-sb.accesscontrol.windows.net/WRAPv0.9",
+                config.getProperty("serviceBus.wrap.uri"));
         assertEquals("beta", config.getProperty("serviceBus.wrap.name"));
         assertEquals("gamma", config.getProperty("serviceBus.wrap.password"));
     }
 
     @Test
-    public void UsingProfileAddsPrefix() {
+    public void UsingProfileAddsPrefix()
+    {
         // Arrange
         Configuration config = new Configuration();
 
         // Act
-        ServiceBusConfiguration.configureWithWrapAuthentication("backup", config, "alpha", "beta", "gamma",
-                ".servicebus.windows.net/", "-sb.accesscontrol.windows.net/WRAPv0.9");
+        ServiceBusConfiguration.configureWithWrapAuthentication("backup",
+                config, "alpha", "beta", "gamma", ".servicebus.windows.net/",
+                "-sb.accesscontrol.windows.net/WRAPv0.9");
 
         // Assert
-        assertEquals("https://alpha.servicebus.windows.net/", config.getProperty("backup.serviceBus.uri"));
+        assertEquals("https://alpha.servicebus.windows.net/",
+                config.getProperty("backup.serviceBus.uri"));
         assertEquals("https://alpha-sb.accesscontrol.windows.net/WRAPv0.9",
                 config.getProperty("backup.serviceBus.wrap.uri"));
         assertEquals("beta", config.getProperty("backup.serviceBus.wrap.name"));
-        assertEquals("gamma", config.getProperty("backup.serviceBus.wrap.password"));
+        assertEquals("gamma",
+                config.getProperty("backup.serviceBus.wrap.password"));
     }
 }

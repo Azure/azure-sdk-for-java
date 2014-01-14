@@ -23,26 +23,32 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 
-public class ProtectionKeyIntegrationTest extends IntegrationTestBase {
+public class ProtectionKeyIntegrationTest extends IntegrationTestBase
+{
 
     @Test
-    public void canGetProtectionKeyId() throws ServiceException {
-        // Arrange 
+    public void canGetProtectionKeyId() throws ServiceException
+    {
+        // Arrange
 
-        // Act 
-        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
+        // Act
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.CommonEncryption));
 
         // Assert
         assertNotNull(protectionKeyId);
     }
 
     @Test
-    public void canGetProtectionKey() throws ServiceException {
+    public void canGetProtectionKey() throws ServiceException
+    {
         // Arrange
-        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.CommonEncryption));
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.CommonEncryption));
 
-        // Act 
-        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        // Act
+        String protectionKey = service.action(ProtectionKey
+                .getProtectionKey(protectionKeyId));
 
         // Assert
         assertNotNull(protectionKey);

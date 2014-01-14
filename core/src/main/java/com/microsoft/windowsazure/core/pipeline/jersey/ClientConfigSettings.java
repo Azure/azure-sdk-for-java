@@ -23,7 +23,8 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
  * Class used for injecting settings into the various places that need it.
  * 
  */
-public class ClientConfigSettings {
+public class ClientConfigSettings
+{
     private static final int DEFAULT_TIMEOUT_MS = 90 * 1000;
 
     private final Integer connectTimeout;
@@ -34,15 +35,15 @@ public class ClientConfigSettings {
      * Construct a {@link ClientConfigSettings} object with the default
      * settings.
      */
-    public ClientConfigSettings() {
+    public ClientConfigSettings()
+    {
         connectTimeout = Integer.valueOf(null);
         readTimeout = Integer.valueOf(null);
         shouldLog = false;
     }
 
     /**
-     * Construct a {@link ClientConfigSettings} object wit the given
-     * settings.
+     * Construct a {@link ClientConfigSettings} object wit the given settings.
      * 
      * @param connectTimeout
      *            Connection timeout in milliseconds
@@ -51,7 +52,9 @@ public class ClientConfigSettings {
      * @param shouldLog
      *            if true, add logging filter to clients.
      */
-    public ClientConfigSettings(Object connectTimeout, Object readTimeout, boolean shouldLog) {
+    public ClientConfigSettings(Object connectTimeout, Object readTimeout,
+            boolean shouldLog)
+    {
         this.connectTimeout = getTimeout(connectTimeout);
         this.readTimeout = getTimeout(readTimeout);
         this.shouldLog = shouldLog;
@@ -64,33 +67,42 @@ public class ClientConfigSettings {
      * @param clientConfig
      *            object to update.
      */
-    public void applyConfig(ClientConfig clientConfig) {
-        clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, connectTimeout);
-        clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, readTimeout);
+    public void applyConfig(ClientConfig clientConfig)
+    {
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT,
+                connectTimeout);
+        clientConfig.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT,
+                readTimeout);
     }
 
     /**
-     * Update the given {@link client} object with the appropriate settings
-     * from configuration.
+     * Update the given {@link client} object with the appropriate settings from
+     * configuration.
      * 
      * @param client
      */
-    public void applyConfig(Client client) {
-        if (shouldLog) {
+    public void applyConfig(Client client)
+    {
+        if (shouldLog)
+        {
             client.addFilter(new LoggingFilter());
         }
     }
 
-    private Integer getTimeout(Object timeoutValue) {
-        if (timeoutValue == null) {
+    private Integer getTimeout(Object timeoutValue)
+    {
+        if (timeoutValue == null)
+        {
             return new Integer(DEFAULT_TIMEOUT_MS);
         }
 
-        if (timeoutValue instanceof Integer) {
+        if (timeoutValue instanceof Integer)
+        {
             return (Integer) timeoutValue;
         }
 
-        if (timeoutValue instanceof String) {
+        if (timeoutValue instanceof String)
+        {
             return Integer.valueOf((String) timeoutValue);
         }
 

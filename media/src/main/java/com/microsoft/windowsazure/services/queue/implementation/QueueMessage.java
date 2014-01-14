@@ -18,15 +18,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "QueueMessage")
-public class QueueMessage {
+public class QueueMessage
+{
     private String messageText;
 
     @XmlElement(name = "MessageText")
-    public String getMessageText() {
+    public String getMessageText()
+    {
         return messageText;
     }
 
-    public void setMessageText(String messageText) {
+    public void setMessageText(String messageText)
+    {
         this.messageText = messageText;
     }
 

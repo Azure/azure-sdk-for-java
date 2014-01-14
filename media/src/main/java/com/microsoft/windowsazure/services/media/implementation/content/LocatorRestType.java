@@ -26,7 +26,8 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class LocatorRestType implements MediaServiceDTO {
+public class LocatorRestType implements MediaServiceDTO
+{
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -69,7 +70,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -80,7 +82,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the id to set
      * @return the locator rest type
      */
-    public LocatorRestType setId(String id) {
+    public LocatorRestType setId(String id)
+    {
         this.id = id;
         return this;
     }
@@ -90,7 +93,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the expiration date time
      */
-    public Date getExpirationDateTime() {
+    public Date getExpirationDateTime()
+    {
         return expirationDateTime;
     }
 
@@ -101,7 +105,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the expiration date time
      * @return the locator rest type
      */
-    public LocatorRestType setExpirationDateTime(Date expirationDateTime) {
+    public LocatorRestType setExpirationDateTime(Date expirationDateTime)
+    {
         this.expirationDateTime = expirationDateTime;
         return this;
     }
@@ -111,7 +116,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the type
      */
-    public Integer getType() {
+    public Integer getType()
+    {
         return this.type;
     }
 
@@ -122,7 +128,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the type
      * @return the locator rest type
      */
-    public LocatorRestType setType(Integer type) {
+    public LocatorRestType setType(Integer type)
+    {
         this.type = type;
         return this;
     }
@@ -132,7 +139,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the access policy id
      */
-    public String getAccessPolicyId() {
+    public String getAccessPolicyId()
+    {
         return this.accessPolicyId;
     }
 
@@ -143,7 +151,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the access policy id
      * @return the locator rest type
      */
-    public LocatorRestType setAccessPolicyId(String accessPolicyId) {
+    public LocatorRestType setAccessPolicyId(String accessPolicyId)
+    {
         this.accessPolicyId = accessPolicyId;
         return this;
     }
@@ -153,7 +162,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the asset id
      */
-    public String getAssetId() {
+    public String getAssetId()
+    {
         return this.assetId;
     }
 
@@ -164,7 +174,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the asset id
      * @return the locator rest type
      */
-    public LocatorRestType setAssetId(String assetId) {
+    public LocatorRestType setAssetId(String assetId)
+    {
         this.assetId = assetId;
         return this;
     }
@@ -174,7 +185,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the start time
      */
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return this.startTime;
     }
 
@@ -185,7 +197,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the start time
      * @return the locator rest type
      */
-    public LocatorRestType setStartTime(Date startTime) {
+    public LocatorRestType setStartTime(Date startTime)
+    {
         this.startTime = startTime;
         return this;
     }
@@ -195,7 +208,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the path
      */
-    public String getPath() {
+    public String getPath()
+    {
         return this.path;
     }
 
@@ -206,7 +220,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the path
      * @return the locator rest type
      */
-    public LocatorRestType setPath(String path) {
+    public LocatorRestType setPath(String path)
+    {
         this.path = path;
         return this;
     }
@@ -216,7 +231,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the base uri
      */
-    public String getBaseUri() {
+    public String getBaseUri()
+    {
         return this.baseUri;
     }
 
@@ -227,7 +243,8 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the base uri
      * @return the locator rest type
      */
-    public LocatorRestType setBaseUri(String baseUri) {
+    public LocatorRestType setBaseUri(String baseUri)
+    {
         this.baseUri = baseUri;
         return this;
     }
@@ -237,7 +254,8 @@ public class LocatorRestType implements MediaServiceDTO {
      * 
      * @return the content access component
      */
-    public String getContentAccessComponent() {
+    public String getContentAccessComponent()
+    {
         return this.contentAccessComponent;
     }
 
@@ -248,7 +266,9 @@ public class LocatorRestType implements MediaServiceDTO {
      *            the content access component
      * @return the locator rest type
      */
-    public LocatorRestType setContentAccessComponent(String contentAccessComponent) {
+    public LocatorRestType setContentAccessComponent(
+            String contentAccessComponent)
+    {
         this.contentAccessComponent = contentAccessComponent;
         return this;
     }

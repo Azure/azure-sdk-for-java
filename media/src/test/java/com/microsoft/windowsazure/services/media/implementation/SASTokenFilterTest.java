@@ -32,14 +32,16 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class SASTokenFilterTest {
+public class SASTokenFilterTest
+{
 
     private final String sampleSASToken = "st=2012-10-05T21%3A10%3A25Z&se=2012-10-05T21%3A15%3A25Z&sr=c&si=89fa57b4-293f-40df-a0cb-9d84ee493b8c&sig=iMDPr8V%2FIJrYG8t2GeSqBh5tTUdM7ykOObFVICa%2F%2F1Q%3D";
     private RequestRecordingFilter sink;
     private Client client;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() throws Exception
+    {
         sink = new RequestRecordingFilter();
         client = Client.create();
         client.addFilter(sink);
@@ -47,9 +49,11 @@ public class SASTokenFilterTest {
     }
 
     @Test
-    public void filterAddsQueryParameterToRequestUrl() throws Exception {
+    public void filterAddsQueryParameterToRequestUrl() throws Exception
+    {
 
-        WebResource r = client.resource("http://astorageaccount.blob.something.example/asset-abcd");
+        WebResource r = client
+                .resource("http://astorageaccount.blob.something.example/asset-abcd");
 
         r.get(ClientResponse.class);
 
@@ -57,13 +61,16 @@ public class SASTokenFilterTest {
     }
 
     @Test
-    public void filterPreservesQueryParameters() throws Exception {
-        client.resource("http://storage.service.example/asset-efgh").queryParam("param0", "first")
-                .queryParam("param1", "second").get(ClientResponse.class);
+    public void filterPreservesQueryParameters() throws Exception
+    {
+        client.resource("http://storage.service.example/asset-efgh")
+                .queryParam("param0", "first").queryParam("param1", "second")
+                .get(ClientResponse.class);
 
         assertContainsSASToken(sink.request.getURI());
 
-        Map<String, String> queryParams = parseQueryParameters(sink.request.getURI());
+        Map<String, String> queryParams = parseQueryParameters(sink.request
+                .getURI());
         assertTrue(queryParams.containsKey("param0"));
         assertTrue(queryParams.containsKey("param1"));
         assertEquals("first", queryParams.get("param0"));
@@ -77,11 +84,14 @@ public class SASTokenFilterTest {
     // the wire. Also holds onto the request object that went through
     // the pipeline so that it can be asserted against in the test.
     //
-    private class RequestRecordingFilter extends ClientFilter {
+    private class RequestRecordingFilter extends ClientFilter
+    {
         public ClientRequest request;
 
         @Override
-        public ClientResponse handle(ClientRequest request) throws ClientHandlerException {
+        public ClientResponse handle(ClientRequest request)
+                throws ClientHandlerException
+        {
             this.request = request;
 
             ClientResponse response = Mockito.mock(ClientResponse.class);
@@ -92,7 +102,8 @@ public class SASTokenFilterTest {
 
     // Assertion helpers
 
-    private void assertContainsSASToken(URI uri) {
+    private void assertContainsSASToken(URI uri)
+    {
         Map<String, String> queryParams = parseQueryParameters(uri);
 
         assertTrue(queryParams.containsKey("st"));
@@ -101,21 +112,26 @@ public class SASTokenFilterTest {
         assertTrue(queryParams.containsKey("si"));
         assertTrue(queryParams.containsKey("sig"));
 
-        assertEquals("iMDPr8V%2FIJrYG8t2GeSqBh5tTUdM7ykOObFVICa%2F%2F1Q%3D", queryParams.get("sig"));
+        assertEquals("iMDPr8V%2FIJrYG8t2GeSqBh5tTUdM7ykOObFVICa%2F%2F1Q%3D",
+                queryParams.get("sig"));
     }
 
-    // Simplistic parsing of query parameters into map so we can assert against contents
+    // Simplistic parsing of query parameters into map so we can assert against
+    // contents
     // easily.
-    private Map<String, String> parseQueryParameters(URI uri) {
+    private Map<String, String> parseQueryParameters(URI uri)
+    {
         HashMap<String, String> queryParameters = new HashMap<String, String>();
         String queryString = uri.getRawQuery();
-        if (queryString.startsWith("?")) {
+        if (queryString.startsWith("?"))
+        {
             queryString = queryString.substring(1);
         }
 
         String[] parameters = queryString.split("&");
 
-        for (String param : parameters) {
+        for (String param : parameters)
+        {
             int firstEqualIndex = param.indexOf('=');
             String paramName = param.substring(0, firstEqualIndex);
             String value = param.substring(firstEqualIndex + 1);

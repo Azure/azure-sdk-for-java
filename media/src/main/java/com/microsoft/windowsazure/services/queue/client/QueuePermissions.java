@@ -21,7 +21,8 @@ import java.util.HashMap;
  * Represents the permissions for a container.
  */
 
-public final class QueuePermissions {
+public final class QueuePermissions
+{
 
     /**
      * Gets the set of shared access policies for the queue.
@@ -31,17 +32,20 @@ public final class QueuePermissions {
     /**
      * Creates an instance of the <code>QueuePermissions</code> class.
      */
-    public QueuePermissions() {
+    public QueuePermissions()
+    {
         this.sharedAccessPolicies = new HashMap<String, SharedAccessQueuePolicy>();
     }
 
     /**
      * Returns the set of shared access policies for the queue.
      * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessQueuePolicy} objects that represent the set of shared
-     *         access policies for the queue.
+     * @return A <code>HashMap</code> object of {@link SharedAccessQueuePolicy}
+     *         objects that represent the set of shared access policies for the
+     *         queue.
      */
-    public HashMap<String, SharedAccessQueuePolicy> getSharedAccessPolicies() {
+    public HashMap<String, SharedAccessQueuePolicy> getSharedAccessPolicies()
+    {
         return this.sharedAccessPolicies;
     }
 
@@ -49,10 +53,13 @@ public final class QueuePermissions {
      * Sets the set of shared access policies for the queue.
      * 
      * @param sharedAccessPolicies
-     *            The set of shared access policies to set for the queue, represented by a <code>HashMap</code> object
-     *            of {@link SharedAccessQueuePolicy} objects.
+     *            The set of shared access policies to set for the queue,
+     *            represented by a <code>HashMap</code> object of
+     *            {@link SharedAccessQueuePolicy} objects.
      */
-    public void setSharedAccessPolicies(final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies) {
+    public void setSharedAccessPolicies(
+            final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies)
+    {
         this.sharedAccessPolicies = sharedAccessPolicies;
     }
 }

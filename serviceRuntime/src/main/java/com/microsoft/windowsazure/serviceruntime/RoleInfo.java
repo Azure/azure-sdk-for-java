@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,11 +27,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for RoleInfo complex type.
+ * <p>
+ * Java class for RoleInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="RoleInfo">
@@ -53,7 +54,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleInfo", propOrder = {
 
 })
-class RoleInfo {
+class RoleInfo
+{
 
     @XmlElement(name = "Instances", required = true)
     protected RoleInstancesInfo instances;
@@ -63,12 +65,11 @@ class RoleInfo {
     /**
      * Gets the value of the instances property.
      * 
-     * @return
-     *     possible object is
-     *     {@link RoleInstancesInfo }
-     *     
+     * @return possible object is {@link RoleInstancesInfo }
+     * 
      */
-    public RoleInstancesInfo getInstances() {
+    public RoleInstancesInfo getInstances()
+    {
         return instances;
     }
 
@@ -76,23 +77,22 @@ class RoleInfo {
      * Sets the value of the instances property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link RoleInstancesInfo }
-     *     
+     *            allowed object is {@link RoleInstancesInfo }
+     * 
      */
-    public void setInstances(RoleInstancesInfo value) {
+    public void setInstances(RoleInstancesInfo value)
+    {
         this.instances = value;
     }
 
     /**
      * Gets the value of the name property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -100,11 +100,11 @@ class RoleInfo {
      * Sets the value of the name property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setName(String value) {
+    public void setName(String value)
+    {
         this.name = value;
     }
 

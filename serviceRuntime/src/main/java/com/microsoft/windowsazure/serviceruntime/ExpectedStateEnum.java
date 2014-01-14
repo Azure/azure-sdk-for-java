@@ -19,19 +19,21 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ExpectedStateEnum.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for ExpectedStateEnum.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="ExpectedStateEnum">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -44,25 +46,30 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "ExpectedStateEnum")
 @XmlEnum
-enum ExpectedStateEnum {
+enum ExpectedStateEnum
+{
 
     @XmlEnumValue("Started")
-    STARTED("Started"),
-    @XmlEnumValue("Stopped")
+    STARTED("Started"), @XmlEnumValue("Stopped")
     STOPPED("Stopped");
     private final String value;
 
-    ExpectedStateEnum(String v) {
+    ExpectedStateEnum(String v)
+    {
         value = v;
     }
 
-    public String value() {
+    public String value()
+    {
         return value;
     }
 
-    public static ExpectedStateEnum fromValue(String v) {
-        for (ExpectedStateEnum c: ExpectedStateEnum.values()) {
-            if (c.value.equals(v)) {
+    public static ExpectedStateEnum fromValue(String v)
+    {
+        for (ExpectedStateEnum c : ExpectedStateEnum.values())
+        {
+            if (c.value.equals(v))
+            {
                 return c;
             }
         }

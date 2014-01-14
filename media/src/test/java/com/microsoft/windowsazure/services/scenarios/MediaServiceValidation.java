@@ -40,14 +40,18 @@ import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
 
-class MediaServiceValidation {
+class MediaServiceValidation
+{
     private final MediaContract service;
 
-    public MediaServiceValidation(MediaContract service) {
+    public MediaServiceValidation(MediaContract service)
+    {
         this.service = service;
     }
 
-    public void validateAsset(AssetInfo asset, String name, AssetOption encryption) throws ServiceException {
+    public void validateAsset(AssetInfo asset, String name,
+            AssetOption encryption) throws ServiceException
+    {
         // Check the asset state.
         assertNotNull("asset", asset);
         assertNotNull("asset.getId", asset.getId());
@@ -56,7 +60,8 @@ class MediaServiceValidation {
         assertEquals("asset.getOptions", encryption, asset.getOptions());
 
         // Verify no files by default.
-        List<AssetFileInfo> initialFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
+        List<AssetFileInfo> initialFiles = service.list(AssetFile.list(asset
+                .getAssetFilesLink()));
         assertNotNull("initialFiles", initialFiles);
         assertEquals("initialFiles.size", 0, initialFiles.size());
 
@@ -66,18 +71,25 @@ class MediaServiceValidation {
         // Verify names match
         assertNotNull("reloadedAsset", reloadedAsset);
         assertNotNull("reloadedAsset.getId", reloadedAsset.getId());
-        assertEquals("reloadedAsset.getId, asset.getId", asset.getId(), reloadedAsset.getId());
-        assertEquals("reloadedAsset.state", AssetState.Initialized, reloadedAsset.getState());
-        assertEquals("reloadedAsset.getOptions", encryption, reloadedAsset.getOptions());
+        assertEquals("reloadedAsset.getId, asset.getId", asset.getId(),
+                reloadedAsset.getId());
+        assertEquals("reloadedAsset.state", AssetState.Initialized,
+                reloadedAsset.getState());
+        assertEquals("reloadedAsset.getOptions", encryption,
+                reloadedAsset.getOptions());
     }
 
-    public void validateAssetSortedPages(List<ListResult<AssetInfo>> pages, List<String> assetNames, int pageSize) {
+    public void validateAssetSortedPages(List<ListResult<AssetInfo>> pages,
+            List<String> assetNames, int pageSize)
+    {
         int sumSizeOfPages = 0;
         List<String> actualAssetNames = new ArrayList<String>();
 
-        for (ListResult<AssetInfo> page : pages) {
+        for (ListResult<AssetInfo> page : pages)
+        {
             sumSizeOfPages += page.size();
-            for (AssetInfo asset : page) {
+            for (AssetInfo asset : page)
+            {
                 actualAssetNames.add(asset.getName());
             }
         }
@@ -90,45 +102,66 @@ class MediaServiceValidation {
         // each page individually.
     }
 
-    public void validateAssetFiles(AssetInfo asset, Hashtable<String, InputStream> inputFiles) throws ServiceException,
-            IOException, NoSuchAlgorithmException {
-        List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset.getAssetFilesLink()));
+    public void validateAssetFiles(AssetInfo asset,
+            Hashtable<String, InputStream> inputFiles) throws ServiceException,
+            IOException, NoSuchAlgorithmException
+    {
+        List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset
+                .getAssetFilesLink()));
 
         assertNotNull("assetFiles", assetFiles);
         assertEquals("assetFiles.size", inputFiles.size(), assetFiles.size());
 
         ContentKeyInfo contentKey = null;
-        if (asset.getOptions() == AssetOption.StorageEncrypted) {
-            ListResult<ContentKeyInfo> contentKeys = service.list(ContentKey.list(asset.getContentKeysLink()));
+        if (asset.getOptions() == AssetOption.StorageEncrypted)
+        {
+            ListResult<ContentKeyInfo> contentKeys = service.list(ContentKey
+                    .list(asset.getContentKeysLink()));
             assertEquals("contentKeys size", 1, contentKeys.size());
             contentKey = contentKeys.get(0);
         }
 
         // Compare encryption info for asset files
-        for (AssetFileInfo assetFile : assetFiles) {
-            if (asset.getOptions() == AssetOption.StorageEncrypted) {
-                assertEquals("assetFile.getIsEncrypted", true, assetFile.getIsEncrypted());
-                assertEquals("assetFile.getEncryptionKeyId", contentKey.getId(), assetFile.getEncryptionKeyId());
-                assertNotNullOrEmpty("assetFile.getEncryptionScheme", assetFile.getEncryptionScheme());
-                assertNotNullOrEmpty("assetFile.getEncryptionVersion", assetFile.getEncryptionVersion());
-                assertNotNullOrEmpty("assetFile.getInitializationVector", assetFile.getInitializationVector());
-            }
-            else {
-                assertEquals("assetFile.getIsEncrypted", false, assetFile.getIsEncrypted());
-                assertNullOrEmpty("assetFile.getEncryptionKeyId", assetFile.getEncryptionKeyId());
-                assertNullOrEmpty("assetFile.getEncryptionScheme", assetFile.getEncryptionScheme());
-                assertNullOrEmpty("assetFile.getEncryptionVersion", assetFile.getEncryptionVersion());
-                assertNullOrEmpty("assetFile.getInitializationVector", assetFile.getInitializationVector());
+        for (AssetFileInfo assetFile : assetFiles)
+        {
+            if (asset.getOptions() == AssetOption.StorageEncrypted)
+            {
+                assertEquals("assetFile.getIsEncrypted", true,
+                        assetFile.getIsEncrypted());
+                assertEquals("assetFile.getEncryptionKeyId",
+                        contentKey.getId(), assetFile.getEncryptionKeyId());
+                assertNotNullOrEmpty("assetFile.getEncryptionScheme",
+                        assetFile.getEncryptionScheme());
+                assertNotNullOrEmpty("assetFile.getEncryptionVersion",
+                        assetFile.getEncryptionVersion());
+                assertNotNullOrEmpty("assetFile.getInitializationVector",
+                        assetFile.getInitializationVector());
+            } else
+            {
+                assertEquals("assetFile.getIsEncrypted", false,
+                        assetFile.getIsEncrypted());
+                assertNullOrEmpty("assetFile.getEncryptionKeyId",
+                        assetFile.getEncryptionKeyId());
+                assertNullOrEmpty("assetFile.getEncryptionScheme",
+                        assetFile.getEncryptionScheme());
+                assertNullOrEmpty("assetFile.getEncryptionVersion",
+                        assetFile.getEncryptionVersion());
+                assertNullOrEmpty("assetFile.getInitializationVector",
+                        assetFile.getInitializationVector());
             }
         }
 
         // Compare the asset files with all files
         List<AssetFileInfo> allFiles = service.list(AssetFile.list());
-        for (AssetFileInfo assetFile : assetFiles) {
-            assertEquals("fi.getParentAssetId", asset.getId(), assetFile.getParentAssetId());
+        for (AssetFileInfo assetFile : assetFiles)
+        {
+            assertEquals("fi.getParentAssetId", asset.getId(),
+                    assetFile.getParentAssetId());
             AssetFileInfo match = null;
-            for (AssetFileInfo aFile : allFiles) {
-                if (aFile.getId().equals(assetFile.getId())) {
+            for (AssetFileInfo aFile : allFiles)
+            {
+                if (aFile.getId().equals(assetFile.getId()))
+                {
                     match = aFile;
                     break;
                 }
@@ -139,112 +172,158 @@ class MediaServiceValidation {
     }
 
     public void validateAssetFiles(Hashtable<String, InputStream> inputFiles,
-            Hashtable<String, InputStream> actualFileStreams) throws IOException, InterruptedException {
-        assertEquals("fileUrls count", inputFiles.size(), actualFileStreams.size());
-        for (String fileName : actualFileStreams.keySet()) {
+            Hashtable<String, InputStream> actualFileStreams)
+            throws IOException, InterruptedException
+    {
+        assertEquals("fileUrls count", inputFiles.size(),
+                actualFileStreams.size());
+        for (String fileName : actualFileStreams.keySet())
+        {
             InputStream expected = inputFiles.get(fileName);
             InputStream actual = actualFileStreams.get(fileName);
             assertStreamsEqual(expected, actual);
         }
     }
 
-    public void validateJob(JobInfo job, String name, AssetInfo asset, List<Task.CreateBatchOperation> createTasks)
-            throws ServiceException {
+    public void validateJob(JobInfo job, String name, AssetInfo asset,
+            List<Task.CreateBatchOperation> createTasks)
+            throws ServiceException
+    {
         assertDateApproxEquals("getEndTime", new Date(), job.getCreated());
         assertEquals("job.getName", name, job.getName());
 
-        List<AssetInfo> inputAssets = service.list(Asset.list(job.getInputAssetsLink()));
+        List<AssetInfo> inputAssets = service.list(Asset.list(job
+                .getInputAssetsLink()));
         assertNotNull("inputAssets", inputAssets);
         assertEquals("inputAssets.size()", 1, inputAssets.size());
-        assertEquals("inputAssets.get(0)", asset.getId(), inputAssets.get(0).getId());
+        assertEquals("inputAssets.get(0)", asset.getId(), inputAssets.get(0)
+                .getId());
 
-        List<AssetInfo> outputAssets = service.list(Asset.list(job.getOutputAssetsLink()));
+        List<AssetInfo> outputAssets = service.list(Asset.list(job
+                .getOutputAssetsLink()));
         assertNotNull("outputAssets", outputAssets);
-        assertEquals("outputAssets.size()", createTasks.size(), outputAssets.size());
+        assertEquals("outputAssets.size()", createTasks.size(),
+                outputAssets.size());
     }
 
-    public void validateOutputAssets(List<AssetInfo> outputAssets, Enumeration<String> enumeration) {
+    public void validateOutputAssets(List<AssetInfo> outputAssets,
+            Enumeration<String> enumeration)
+    {
         assertNotNull("outputAssets", outputAssets);
-        for (AssetInfo asset : outputAssets) {
+        for (AssetInfo asset : outputAssets)
+        {
             assertNotNull("asset", asset);
             assertNotNull("asset.getId", asset.getId());
             assertFalse("asset.getId != ''", "".equals(asset.getId()));
-            assertEquals("asset.state", AssetState.Initialized, asset.getState());
-            assertEquals("asset.getOptions", AssetOption.None, asset.getOptions());
+            assertEquals("asset.state", AssetState.Initialized,
+                    asset.getState());
+            assertEquals("asset.getOptions", AssetOption.None,
+                    asset.getOptions());
         }
     }
 
-    public void assertFileInfosEqual(String message, AssetFileInfo fi, AssetFileInfo match) {
+    public void assertFileInfosEqual(String message, AssetFileInfo fi,
+            AssetFileInfo match)
+    {
         assertNotNull(message + ":fi", fi);
         assertNotNull(message + ":match", match);
-        assertEquals(message + ":getContentChecksum", fi.getContentChecksum(), match.getContentChecksum());
-        assertEquals(message + ":getContentFileSize", fi.getContentFileSize(), match.getContentFileSize());
-        assertEquals(message + ":getCreated", fi.getCreated(), match.getCreated());
-        assertEquals(message + ":getEncryptionKeyId", fi.getEncryptionKeyId(), match.getEncryptionKeyId());
-        assertEquals(message + ":getEncryptionScheme", fi.getEncryptionScheme(), match.getEncryptionScheme());
-        assertEquals(message + ":getEncryptionVersion", fi.getEncryptionVersion(), match.getEncryptionVersion());
+        assertEquals(message + ":getContentChecksum", fi.getContentChecksum(),
+                match.getContentChecksum());
+        assertEquals(message + ":getContentFileSize", fi.getContentFileSize(),
+                match.getContentFileSize());
+        assertEquals(message + ":getCreated", fi.getCreated(),
+                match.getCreated());
+        assertEquals(message + ":getEncryptionKeyId", fi.getEncryptionKeyId(),
+                match.getEncryptionKeyId());
+        assertEquals(message + ":getEncryptionScheme",
+                fi.getEncryptionScheme(), match.getEncryptionScheme());
+        assertEquals(message + ":getEncryptionVersion",
+                fi.getEncryptionVersion(), match.getEncryptionVersion());
         assertEquals(message + ":getId", fi.getId(), match.getId());
-        assertEquals(message + ":getIsEncrypted", fi.getIsEncrypted(), match.getIsEncrypted());
-        assertEquals(message + ":getIsPrimary", fi.getIsPrimary(), match.getIsPrimary());
-        assertEquals(message + ":getLastModified", fi.getLastModified(), match.getLastModified());
-        assertEquals(message + ":getMimeType", fi.getMimeType(), match.getMimeType());
+        assertEquals(message + ":getIsEncrypted", fi.getIsEncrypted(),
+                match.getIsEncrypted());
+        assertEquals(message + ":getIsPrimary", fi.getIsPrimary(),
+                match.getIsPrimary());
+        assertEquals(message + ":getLastModified", fi.getLastModified(),
+                match.getLastModified());
+        assertEquals(message + ":getMimeType", fi.getMimeType(),
+                match.getMimeType());
         assertEquals(message + ":getName", fi.getName(), match.getName());
-        assertEquals(message + ":getParentAssetId", fi.getParentAssetId(), match.getParentAssetId());
+        assertEquals(message + ":getParentAssetId", fi.getParentAssetId(),
+                match.getParentAssetId());
     }
 
-    protected void assertDateApproxEquals(String message, Date expected, Date actual) {
-        // Default allows for a 30 seconds difference in dates, for clock skew, network delays, etc.
+    protected void assertDateApproxEquals(String message, Date expected,
+            Date actual)
+    {
+        // Default allows for a 30 seconds difference in dates, for clock skew,
+        // network delays, etc.
         long deltaInMilliseconds = 30000;
 
-        if (expected == null || actual == null) {
+        if (expected == null || actual == null)
+        {
             assertEquals(message, expected, actual);
-        }
-        else {
-            long diffInMilliseconds = Math.abs(expected.getTime() - actual.getTime());
+        } else
+        {
+            long diffInMilliseconds = Math.abs(expected.getTime()
+                    - actual.getTime());
 
-            if (diffInMilliseconds > deltaInMilliseconds) {
+            if (diffInMilliseconds > deltaInMilliseconds)
+            {
                 assertEquals(message, expected, actual);
             }
         }
     }
 
-    private void assertStreamsEqual(InputStream inputStream1, InputStream inputStream2) throws IOException {
+    private void assertStreamsEqual(InputStream inputStream1,
+            InputStream inputStream2) throws IOException
+    {
         byte[] buffer1 = new byte[1024];
         byte[] buffer2 = new byte[1024];
-        try {
-            while (true) {
+        try
+        {
+            while (true)
+            {
                 int n1 = inputStream1.read(buffer1);
                 int n2 = inputStream2.read(buffer2);
                 assertEquals("number of bytes read from streams", n1, n2);
-                if (n1 == -1) {
+                if (n1 == -1)
+                {
                     break;
                 }
-                for (int i = 0; i < n1; i++) {
-                    assertEquals("byte " + i + " read from streams", buffer1[i], buffer2[i]);
+                for (int i = 0; i < n1; i++)
+                {
+                    assertEquals("byte " + i + " read from streams",
+                            buffer1[i], buffer2[i]);
                 }
             }
-        }
-        finally {
+        } finally
+        {
             inputStream1.close();
             inputStream2.close();
         }
     }
 
-    private void assertNullOrEmpty(String message, String actual) {
-        if (actual == null) {
+    private void assertNullOrEmpty(String message, String actual)
+    {
+        if (actual == null)
+        {
             assertNull(message, actual);
-        }
-        else {
+        } else
+        {
             assertEquals(message, "", actual);
         }
     }
 
-    private void assertNotNullOrEmpty(String message, String actual) {
-        if (actual == null) {
+    private void assertNotNullOrEmpty(String message, String actual)
+    {
+        if (actual == null)
+        {
             assertNotNull(message, actual);
-        }
-        else {
-            assertTrue(message + ": expect " + actual + " to be null or empty", actual.length() > 0);
+        } else
+        {
+            assertTrue(message + ": expect " + actual + " to be null or empty",
+                    actual.length() > 0);
         }
     }
 

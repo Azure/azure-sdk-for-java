@@ -38,15 +38,19 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 /**
  * Tests for the methods and factories of the Asset entity.
  */
-public class ChannelEntityTest {
+public class ChannelEntityTest
+{
     static final String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
-    private final String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
+    private final String expectedUri = String.format("Assets('%s')",
+            URLEncoder.encode(sampleAssetId, "UTF-8"));
 
-    public ChannelEntityTest() throws Exception {
+    public ChannelEntityTest() throws Exception
+    {
     }
 
     @Test
-    public void assetCreateReturnsDefaultCreatePayload() {
+    public void assetCreateReturnsDefaultCreatePayload()
+    {
         AssetType payload = (AssetType) Asset.create().getRequestContents();
 
         assertNotNull(payload);
@@ -60,10 +64,12 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetCreateCanSetAssetName() {
+    public void assetCreateCanSetAssetName()
+    {
         String name = "assetCreateCanSetAssetName";
 
-        Asset.Creator creator = Asset.create().setName("assetCreateCanSetAssetName");
+        Asset.Creator creator = Asset.create().setName(
+                "assetCreateCanSetAssetName");
 
         AssetType payload = (AssetType) creator.getRequestContents();
 
@@ -78,8 +84,10 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetGetReturnsExpectedUri() throws Exception {
-        String expectedUri = String.format("Assets('%s')", URLEncoder.encode(sampleAssetId, "UTF-8"));
+    public void assetGetReturnsExpectedUri() throws Exception
+    {
+        String expectedUri = String.format("Assets('%s')",
+                URLEncoder.encode(sampleAssetId, "UTF-8"));
 
         EntityGetOperation<AssetInfo> getter = Asset.get(sampleAssetId);
 
@@ -87,7 +95,8 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetListReturnsExpectedUri() {
+    public void assetListReturnsExpectedUri()
+    {
         EntityListOperation<AssetInfo> lister = Asset.list();
 
         assertEquals("Assets", lister.getUri());
@@ -96,8 +105,10 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetListCanTakeQueryParameters() {
-        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10).setSkip(2);
+    public void assetListCanTakeQueryParameters()
+    {
+        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10)
+                .setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
@@ -105,28 +116,34 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetListCanTakeQueryParametersChained() {
-        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10).setSkip(2).set("filter", "something");
+    public void assetListCanTakeQueryParametersChained()
+    {
+        EntityListOperation<AssetInfo> lister = Asset.list().setTop(10)
+                .setSkip(2).set("filter", "something");
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));
-        assertEquals("something", lister.getQueryParameters().getFirst("filter"));
+        assertEquals("something", lister.getQueryParameters()
+                .getFirst("filter"));
         assertEquals(3, lister.getQueryParameters().size());
     }
 
     @Test
-    public void assetUpdateReturnsExpectedUri() throws Exception {
+    public void assetUpdateReturnsExpectedUri() throws Exception
+    {
         EntityUpdateOperation updater = Asset.update(sampleAssetId);
         assertEquals(expectedUri, updater.getUri());
     }
 
     @Test
-    public void assetUpdateCanSetNameAndAltId() throws Exception {
+    public void assetUpdateCanSetNameAndAltId() throws Exception
+    {
 
         String expectedName = "newAssetName";
         String expectedAltId = "newAltId";
 
-        EntityUpdateOperation updater = Asset.update(sampleAssetId).setName(expectedName).setAlternateId(expectedAltId);
+        EntityUpdateOperation updater = Asset.update(sampleAssetId)
+                .setName(expectedName).setAlternateId(expectedAltId);
 
         AssetType payload = (AssetType) updater.getRequestContents();
 
@@ -135,7 +152,8 @@ public class ChannelEntityTest {
     }
 
     @Test
-    public void assetDeleteReturnsExpectedUri() throws Exception {
+    public void assetDeleteReturnsExpectedUri() throws Exception
+    {
         EntityDeleteOperation deleter = Asset.delete(sampleAssetId);
 
         assertEquals(expectedUri, deleter.getUri());
@@ -145,19 +163,24 @@ public class ChannelEntityTest {
     private static final String expectedInputAsset = "Job(someJobId)/InputAssets";
 
     @Test
-    public void listForLinkReturnsExpectedUri() throws Exception {
+    public void listForLinkReturnsExpectedUri() throws Exception
+    {
         JobInfo fakeJob = createJob();
 
-        EntityListOperation<AssetInfo> lister = Asset.list(fakeJob.getInputAssetsLink());
+        EntityListOperation<AssetInfo> lister = Asset.list(fakeJob
+                .getInputAssetsLink());
 
         assertEquals(lister.getUri(), expectedInputAsset);
     }
 
-    private JobInfo createJob() {
+    private JobInfo createJob()
+    {
         EntryType fakeJobEntry = new EntryType();
-        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/OutputMediaAssets", expectedOutputAsset,
+        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS
+                + "/related/OutputMediaAssets", expectedOutputAsset,
                 "application/atom+xml;type=feed", "OutputAssets");
-        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS + "/related/InputMediaAssets", expectedInputAsset,
+        addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS
+                + "/related/InputMediaAssets", expectedInputAsset,
                 "application/atom+xml;type=feed", "InputAssets");
 
         JobType payload = new JobType().setId("SomeId").setName("FakeJob");
@@ -166,26 +189,32 @@ public class ChannelEntityTest {
         return new JobInfo(fakeJobEntry, payload);
     }
 
-    private void addEntryLink(EntryType entry, String rel, String href, String type, String title) {
+    private void addEntryLink(EntryType entry, String rel, String href,
+            String type, String title)
+    {
         LinkType link = new LinkType();
         link.setRel(rel);
         link.setHref(href);
         link.setType(type);
         link.setTitle(title);
 
-        JAXBElement<LinkType> linkElement = new JAXBElement<LinkType>(new QName("link", Constants.ATOM_NS),
-                LinkType.class, link);
+        JAXBElement<LinkType> linkElement = new JAXBElement<LinkType>(
+                new QName("link", Constants.ATOM_NS), LinkType.class, link);
         entry.getEntryChildren().add(linkElement);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private ContentType addEntryContent(EntryType entry, Object content) {
+    private ContentType addEntryContent(EntryType entry, Object content)
+    {
         ContentType contentWrapper = new ContentType();
         contentWrapper.getContent().add(
-                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME, content.getClass(), content));
+                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME,
+                        content.getClass(), content));
 
         entry.getEntryChildren().add(
-                new JAXBElement<ContentType>(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, contentWrapper));
+                new JAXBElement<ContentType>(
+                        Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class,
+                        contentWrapper));
         return contentWrapper;
     }
 }

@@ -24,62 +24,86 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Queue and message for a queue message action type.
-*/
+ * Queue and message for a queue message action type.
+ */
 public class JobQueueMessage
 {
     private String message;
-    
+
     /**
-    * Message to send to the queue.
-    */
-    public String getMessage() { return this.message; }
-    
+     * Message to send to the queue.
+     */
+    public String getMessage()
+    {
+        return this.message;
+    }
+
     /**
-    * Message to send to the queue.
-    */
-    public void setMessage(String message) { this.message = message; }
-    
+     * Message to send to the queue.
+     */
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
+
     private String queueName;
-    
+
     /**
-    * Name of the queue to send to.
-    */
-    public String getQueueName() { return this.queueName; }
-    
+     * Name of the queue to send to.
+     */
+    public String getQueueName()
+    {
+        return this.queueName;
+    }
+
     /**
-    * Name of the queue to send to.
-    */
-    public void setQueueName(String queueName) { this.queueName = queueName; }
-    
+     * Name of the queue to send to.
+     */
+    public void setQueueName(String queueName)
+    {
+        this.queueName = queueName;
+    }
+
     private String sasToken;
-    
+
     /**
-    * SAS key for the storage account to send message to the queue.
-    */
-    public String getSasToken() { return this.sasToken; }
-    
+     * SAS key for the storage account to send message to the queue.
+     */
+    public String getSasToken()
+    {
+        return this.sasToken;
+    }
+
     /**
-    * SAS key for the storage account to send message to the queue.
-    */
-    public void setSasToken(String sasToken) { this.sasToken = sasToken; }
-    
+     * SAS key for the storage account to send message to the queue.
+     */
+    public void setSasToken(String sasToken)
+    {
+        this.sasToken = sasToken;
+    }
+
     private String storageAccountName;
-    
+
     /**
-    * Name of the storage account for the queue.
-    */
-    public String getStorageAccountName() { return this.storageAccountName; }
-    
+     * Name of the storage account for the queue.
+     */
+    public String getStorageAccountName()
+    {
+        return this.storageAccountName;
+    }
+
     /**
-    * Name of the storage account for the queue.
-    */
-    public void setStorageAccountName(String storageAccountName) { this.storageAccountName = storageAccountName; }
-    
+     * Name of the storage account for the queue.
+     */
+    public void setStorageAccountName(String storageAccountName)
+    {
+        this.storageAccountName = storageAccountName;
+    }
+
     /**
-    * Initializes a new instance of the JobQueueMessage class.
-    *
-    */
+     * Initializes a new instance of the JobQueueMessage class.
+     * 
+     */
     public JobQueueMessage()
     {
     }

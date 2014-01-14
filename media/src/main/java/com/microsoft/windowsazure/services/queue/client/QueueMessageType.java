@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.services.queue.client;
 /**
  * Reserved for internal use. Specifies queue message type.
  */
-public enum QueueMessageType {
+public enum QueueMessageType
+{
     /**
      * Indicates the message object stores the raw text string.
      */

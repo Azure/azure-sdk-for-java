@@ -32,7 +32,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  * RESERVED FOR INTERNAL USE. Provides methods for parsing the response stream
  * from a queue listing operation.
  */
-final class ListQueuesResponse {
+final class ListQueuesResponse
+{
 
     /**
      * The list of queues from the response to a list queues operation.
@@ -79,39 +80,45 @@ final class ListQueuesResponse {
      *            An <code>InputStream</code> to parse for the results of a list
      *            queues operation.
      */
-    public ListQueuesResponse(final InputStream stream) {
+    public ListQueuesResponse(final InputStream stream)
+    {
         this.streamRef = stream;
     }
 
     /**
      * Gets the value of the Marker element in the response to a list queues
-     * operation. This value is not initialized until {@link #getQueues(CloudQueueClient)} or
+     * operation. This value is not initialized until
+     * {@link #getQueues(CloudQueueClient)} or
      * {@link #parseResponse(CloudQueueClient)} has been called, and is only
      * present if the list queues request specified the marker.
      * 
      * @return A <code>String</code> containing the value of the Marker element
      *         in the response.
      */
-    public String getMarker() {
+    public String getMarker()
+    {
         return this.marker;
     }
 
     /**
      * Gets the value of the MaxResults element in the response to a list queues
-     * operation. This value is not initialized until {@link #getQueues(CloudQueueClient)} or
+     * operation. This value is not initialized until
+     * {@link #getQueues(CloudQueueClient)} or
      * {@link #parseResponse(CloudQueueClient)} has been called, and is only
      * present if the request specified a maxresults value.
      * 
      * @return An <code>int</code> containing the value of the MaxResults
      *         element in the response.
      */
-    public int getMaxResults() {
+    public int getMaxResults()
+    {
         return this.maxResults;
     }
 
     /**
      * Gets the value of the NextMarker element in the response to a list queues
-     * operation. This value is not initialized until {@link #getQueues(CloudQueueClient)} or
+     * operation. This value is not initialized until
+     * {@link #getQueues(CloudQueueClient)} or
      * {@link #parseResponse(CloudQueueClient)} has been called, and is only
      * present when maxresults was specified in the request, and more results
      * are available that have not yet been returned. This value may be sent as
@@ -121,13 +128,15 @@ final class ListQueuesResponse {
      * @return A <code>String</code> containing the value of the NextMarker
      *         element in the response.
      */
-    public String getNextMarker() {
+    public String getNextMarker()
+    {
         return this.nextMarker;
     }
 
     /**
      * Gets the value of the Prefix element in the response to a list queues
-     * operation. This value is not initialized until {@link #getQueues(CloudQueueClient)} or
+     * operation. This value is not initialized until
+     * {@link #getQueues(CloudQueueClient)} or
      * {@link #parseResponse(CloudQueueClient)} has been called, and is only
      * present if the request specified a prefix value. The list queues result
      * is filtered to return only queues with names that begin with the
@@ -136,13 +145,14 @@ final class ListQueuesResponse {
      * @return A <code>String</code> containing the value of the Prefix element
      *         in the response.
      */
-    public String getPrefix() {
+    public String getPrefix()
+    {
         return this.prefix;
     }
 
     /**
-     * Gets the list of queues returned by the list queues request as an <code>ArrayList</code> of (@link CloudQueue}
-     * objects.
+     * Gets the list of queues returned by the list queues request as an
+     * <code>ArrayList</code> of (@link CloudQueue} objects.
      * 
      * @param serviceClient
      *            A {@link CloudQueueClient} object associated with the storage
@@ -154,9 +164,11 @@ final class ListQueuesResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public ArrayList<CloudQueue> getQueues(final CloudQueueClient serviceClient) throws XMLStreamException,
-            StorageException {
-        if (!this.isParsed) {
+    public ArrayList<CloudQueue> getQueues(final CloudQueueClient serviceClient)
+            throws XMLStreamException, StorageException
+    {
+        if (!this.isParsed)
+        {
             this.parseResponse(serviceClient);
         }
 
@@ -176,8 +188,11 @@ final class ListQueuesResponse {
      *             response.
      * @throws StorageException
      */
-    public void parseResponse(final CloudQueueClient serviceClient) throws XMLStreamException, StorageException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(this.streamRef);
+    public void parseResponse(final CloudQueueClient serviceClient)
+            throws XMLStreamException, StorageException
+    {
+        final XMLStreamReader xmlr = Utility
+                .createXMLStreamReaderFromStream(this.streamRef);
         String tempParseString = null;
 
         // Start document
@@ -186,42 +201,60 @@ final class ListQueuesResponse {
 
         // 1. get enumerationResults Header
         eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, "EnumerationResults");
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                "EnumerationResults");
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MAX_RESULTS_ELEMENT)) {
-                    tempParseString = Utility.readElementFromXMLReader(xmlr, Constants.MAX_RESULTS_ELEMENT);
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.MAX_RESULTS_ELEMENT))
+                {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.MAX_RESULTS_ELEMENT);
                     this.maxResults = Integer.parseInt(tempParseString);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MARKER_ELEMENT)) {
-                    this.marker = Utility.readElementFromXMLReader(xmlr, Constants.MARKER_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.NEXT_MARKER_ELEMENT)) {
-                    this.nextMarker = Utility.readElementFromXMLReader(xmlr, Constants.NEXT_MARKER_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.PREFIX_ELEMENT)) {
-                    this.prefix = Utility.readElementFromXMLReader(xmlr, Constants.PREFIX_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(QueueConstants.QUEUES_ELEMENT)) {
-                    try {
-                        this.queues = QueueDeserializationHelper.readQueues(xmlr, serviceClient);
-                    }
-                    catch (final URISyntaxException e) {
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.MARKER_ELEMENT))
+                {
+                    this.marker = Utility.readElementFromXMLReader(xmlr,
+                            Constants.MARKER_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.NEXT_MARKER_ELEMENT))
+                {
+                    this.nextMarker = Utility.readElementFromXMLReader(xmlr,
+                            Constants.NEXT_MARKER_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.PREFIX_ELEMENT))
+                {
+                    this.prefix = Utility.readElementFromXMLReader(xmlr,
+                            Constants.PREFIX_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(QueueConstants.QUEUES_ELEMENT))
+                {
+                    try
+                    {
+                        this.queues = QueueDeserializationHelper.readQueues(
+                                xmlr, serviceClient);
+                    } catch (final URISyntaxException e)
+                    {
                         throw new XMLStreamException(e);
-                    }
-                    catch (final ParseException e) {
+                    } catch (final ParseException e)
+                    {
                         throw new XMLStreamException(e);
                     }
 
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, QueueConstants.QUEUES_ELEMENT);
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            QueueConstants.QUEUES_ELEMENT);
                     // eventType = xmlr.next();
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT && "EnumerationResults".equals(name)) {
+                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                        && "EnumerationResults".equals(name))
+                {
                     break;
                 }
             }
