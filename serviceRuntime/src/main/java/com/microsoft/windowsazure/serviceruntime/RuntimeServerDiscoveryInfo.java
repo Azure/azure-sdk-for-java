@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for RuntimeServerDiscoveryInfo complex type.
+ * <p>
+ * Java class for RuntimeServerDiscoveryInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="RuntimeServerDiscoveryInfo">
@@ -51,7 +52,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RuntimeServerDiscoveryInfo", propOrder = {
 
 })
-class RuntimeServerDiscoveryInfo {
+class RuntimeServerDiscoveryInfo
+{
 
     @XmlElement(name = "RuntimeServerEndpoints", required = true)
     protected RuntimeServerEndpointsInfo runtimeServerEndpoints;
@@ -59,12 +61,11 @@ class RuntimeServerDiscoveryInfo {
     /**
      * Gets the value of the runtimeServerEndpoints property.
      * 
-     * @return
-     *     possible object is
-     *     {@link RuntimeServerEndpointsInfo }
-     *     
+     * @return possible object is {@link RuntimeServerEndpointsInfo }
+     * 
      */
-    public RuntimeServerEndpointsInfo getRuntimeServerEndpoints() {
+    public RuntimeServerEndpointsInfo getRuntimeServerEndpoints()
+    {
         return runtimeServerEndpoints;
     }
 
@@ -72,11 +73,11 @@ class RuntimeServerDiscoveryInfo {
      * Sets the value of the runtimeServerEndpoints property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link RuntimeServerEndpointsInfo }
-     *     
+     *            allowed object is {@link RuntimeServerEndpointsInfo }
+     * 
      */
-    public void setRuntimeServerEndpoints(RuntimeServerEndpointsInfo value) {
+    public void setRuntimeServerEndpoints(RuntimeServerEndpointsInfo value)
+    {
         this.runtimeServerEndpoints = value;
     }
 

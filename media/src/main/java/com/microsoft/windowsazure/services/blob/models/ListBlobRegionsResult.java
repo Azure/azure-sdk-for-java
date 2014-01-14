@@ -23,14 +23,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Get Page Ranges operation. This is returned by
- * calls to implementations of {@link BlobContract#listBlobRegions(String, String, ListBlobRegionsOptions)}.
+ * A wrapper class for the response returned from a Blob Service REST API Get
+ * Page Ranges operation. This is returned by calls to implementations of
+ * {@link BlobContract#listBlobRegions(String, String, ListBlobRegionsOptions)}.
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691973.aspx">Get Page Ranges</a>
- * documentation on MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691973.aspx">Get
+ * Page Ranges</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
 @XmlRootElement(name = "PageList")
-public class ListBlobRegionsResult {
+public class ListBlobRegionsResult
+{
     private Date lastModified;
     private String etag;
     private long contentLength;
@@ -39,106 +43,120 @@ public class ListBlobRegionsResult {
     /**
      * Gets the last modified time of the blob.
      * <p>
-     * Any operation that modifies the blob, including updates to the blob's metadata or properties, changes the last
-     * modified time of the blob. This value can be used in an access condition when updating or deleting a blob to
-     * prevent the client from modifying data that has been changed by another client.
+     * Any operation that modifies the blob, including updates to the blob's
+     * metadata or properties, changes the last modified time of the blob. This
+     * value can be used in an access condition when updating or deleting a blob
+     * to prevent the client from modifying data that has been changed by
+     * another client.
      * 
-     * @return
-     *         A {@link java.util.Date} containing the last modified time of the blob.
+     * @return A {@link java.util.Date} containing the last modified time of the
+     *         blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the blob from the <code>Last-Modified</code> header
-     * returned in the response.
+     * Reserved for internal use. Sets the last modified time of the blob from
+     * the <code>Last-Modified</code> header returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param lastModified
-     *            A {@link java.util.Date} containing the last modified time of the blob.
+     *            A {@link java.util.Date} containing the last modified time of
+     *            the blob.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 
     /**
      * Gets the ETag of the blob.
      * <p>
-     * This value can be used in an access condition when updating or deleting a blob to prevent the client from
-     * modifying data that has been changed by another client.
+     * This value can be used in an access condition when updating or deleting a
+     * blob to prevent the client from modifying data that has been changed by
+     * another client.
      * 
-     * @return
-     *         A {@link String} containing the server-assigned ETag value for the blob.
+     * @return A {@link String} containing the server-assigned ETag value for
+     *         the blob.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
     /**
-     * Reserved for internal use. Sets the ETag of the blob from the <code>ETag</code> header returned in the
-     * response.
+     * Reserved for internal use. Sets the ETag of the blob from the
+     * <code>ETag</code> header returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param etag
-     *            A {@link String} containing the server-assigned ETag value for the blob.
+     *            A {@link String} containing the server-assigned ETag value for
+     *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
     /**
      * Gets the size of the blob in bytes.
      * 
-     * @return
-     *         The size of the blob in bytes.
+     * @return The size of the blob in bytes.
      */
-    public long getContentLength() {
+    public long getContentLength()
+    {
         return contentLength;
     }
 
     /**
-     * Reserved for internal use. Sets the content length of the blob from the <code>x-ms-blob-content-length</code>
-     * header returned in the response.
+     * Reserved for internal use. Sets the content length of the blob from the
+     * <code>x-ms-blob-content-length</code> header returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param contentLength
      *            The size of the blob in bytes.
      */
-    public void setContentLength(long contentLength) {
+    public void setContentLength(long contentLength)
+    {
         this.contentLength = contentLength;
     }
 
     /**
-     * Gets the list of non-overlapping valid page ranges in the blob that match the parameters of the request, sorted
-     * by increasing address page range.
+     * Gets the list of non-overlapping valid page ranges in the blob that match
+     * the parameters of the request, sorted by increasing address page range.
      * 
-     * @return
-     *         A {@link List} of {@link PageRange} instances containing the valid page ranges for the blob.
+     * @return A {@link List} of {@link PageRange} instances containing the
+     *         valid page ranges for the blob.
      */
     @XmlElement(name = "PageRange")
-    public List<PageRange> getPageRanges() {
+    public List<PageRange> getPageRanges()
+    {
         return pageRanges;
     }
 
     /**
-     * Reserved for internal use. Sets the list of valid page ranges in the blob that match the parameters of the
-     * request from the <strong>PageRange</strong> elements of the <strong>PageList</strong> element returned by the
-     * server in the response body.
+     * Reserved for internal use. Sets the list of valid page ranges in the blob
+     * that match the parameters of the request from the
+     * <strong>PageRange</strong> elements of the <strong>PageList</strong>
+     * element returned by the server in the response body.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param pageRanges
-     *            A {@link List} of {@link PageRange} instances containing the valid page ranges for the blob.
+     *            A {@link List} of {@link PageRange} instances containing the
+     *            valid page ranges for the blob.
      */
-    public void setPageRanges(List<PageRange> pageRanges) {
+    public void setPageRanges(List<PageRange> pageRanges)
+    {
         this.pageRanges = pageRanges;
     }
 }

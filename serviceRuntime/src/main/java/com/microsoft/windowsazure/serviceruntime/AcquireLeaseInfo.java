@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.math.BigInteger;
@@ -31,11 +30,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for AcquireLeaseInfo complex type.
+ * <p>
+ * Java class for AcquireLeaseInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AcquireLeaseInfo">
@@ -58,7 +59,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "AcquireLeaseInfo", propOrder = {
 
 })
-class AcquireLeaseInfo {
+class AcquireLeaseInfo
+{
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
@@ -68,19 +70,18 @@ class AcquireLeaseInfo {
     @XmlElement(name = "StatusDetail", required = true)
     protected String statusDetail;
     @XmlElement(name = "Expiration", required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "dateTime")
     protected Calendar expiration;
 
     /**
      * Gets the value of the incarnation property.
      * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     * @return possible object is {@link BigInteger }
+     * 
      */
-    public BigInteger getIncarnation() {
+    public BigInteger getIncarnation()
+    {
         return incarnation;
     }
 
@@ -88,23 +89,22 @@ class AcquireLeaseInfo {
      * Sets the value of the incarnation property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *            allowed object is {@link BigInteger }
+     * 
      */
-    public void setIncarnation(BigInteger value) {
+    public void setIncarnation(BigInteger value)
+    {
         this.incarnation = value;
     }
 
     /**
      * Gets the value of the status property.
      * 
-     * @return
-     *     possible object is
-     *     {@link CurrentStatusEnum }
-     *     
+     * @return possible object is {@link CurrentStatusEnum }
+     * 
      */
-    public CurrentStatusEnum getStatus() {
+    public CurrentStatusEnum getStatus()
+    {
         return status;
     }
 
@@ -112,23 +112,22 @@ class AcquireLeaseInfo {
      * Sets the value of the status property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link CurrentStatusEnum }
-     *     
+     *            allowed object is {@link CurrentStatusEnum }
+     * 
      */
-    public void setStatus(CurrentStatusEnum value) {
+    public void setStatus(CurrentStatusEnum value)
+    {
         this.status = value;
     }
 
     /**
      * Gets the value of the statusDetail property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getStatusDetail() {
+    public String getStatusDetail()
+    {
         return statusDetail;
     }
 
@@ -136,23 +135,22 @@ class AcquireLeaseInfo {
      * Sets the value of the statusDetail property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setStatusDetail(String value) {
+    public void setStatusDetail(String value)
+    {
         this.statusDetail = value;
     }
 
     /**
      * Gets the value of the expiration property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public Calendar getExpiration() {
+    public Calendar getExpiration()
+    {
         return expiration;
     }
 
@@ -160,11 +158,11 @@ class AcquireLeaseInfo {
      * Sets the value of the expiration property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setExpiration(Calendar value) {
+    public void setExpiration(Calendar value)
+    {
         this.expiration = value;
     }
 

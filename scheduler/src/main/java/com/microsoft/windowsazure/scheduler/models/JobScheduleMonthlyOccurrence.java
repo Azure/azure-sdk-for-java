@@ -24,40 +24,52 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Occurrences of days within a month.
-*/
+ * Occurrences of days within a month.
+ */
 public class JobScheduleMonthlyOccurrence
 {
     private JobScheduleDay day;
-    
+
     /**
-    * Day of the occurrence. Must be one of monday, tuesday, wednesday,
-    * thursday, friday, saturday, sunday.
-    */
-    public JobScheduleDay getDay() { return this.day; }
-    
+     * Day of the occurrence. Must be one of monday, tuesday, wednesday,
+     * thursday, friday, saturday, sunday.
+     */
+    public JobScheduleDay getDay()
+    {
+        return this.day;
+    }
+
     /**
-    * Day of the occurrence. Must be one of monday, tuesday, wednesday,
-    * thursday, friday, saturday, sunday.
-    */
-    public void setDay(JobScheduleDay day) { this.day = day; }
-    
+     * Day of the occurrence. Must be one of monday, tuesday, wednesday,
+     * thursday, friday, saturday, sunday.
+     */
+    public void setDay(JobScheduleDay day)
+    {
+        this.day = day;
+    }
+
     private Integer occurrence;
-    
+
     /**
-    * Occurrence of the day within the month. Must be between -31 and 31.
-    */
-    public Integer getOccurrence() { return this.occurrence; }
-    
+     * Occurrence of the day within the month. Must be between -31 and 31.
+     */
+    public Integer getOccurrence()
+    {
+        return this.occurrence;
+    }
+
     /**
-    * Occurrence of the day within the month. Must be between -31 and 31.
-    */
-    public void setOccurrence(Integer occurrence) { this.occurrence = occurrence; }
-    
+     * Occurrence of the day within the month. Must be between -31 and 31.
+     */
+    public void setOccurrence(Integer occurrence)
+    {
+        this.occurrence = occurrence;
+    }
+
     /**
-    * Initializes a new instance of the JobScheduleMonthlyOccurrence class.
-    *
-    */
+     * Initializes a new instance of the JobScheduleMonthlyOccurrence class.
+     * 
+     */
     public JobScheduleMonthlyOccurrence()
     {
     }

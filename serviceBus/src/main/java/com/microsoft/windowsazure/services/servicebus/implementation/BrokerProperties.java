@@ -28,7 +28,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class BrokerProperties {
+public class BrokerProperties
+{
 
     @JsonProperty("CorrelationId")
     String correlationId;
@@ -76,137 +77,167 @@ public class BrokerProperties {
     String lockLocation;
 
     @JsonIgnore
-    public Integer getDeliveryCount() {
+    public Integer getDeliveryCount()
+    {
         return deliveryCount;
     }
 
-    public void setDeliveryCount(Integer deliveryCount) {
+    public void setDeliveryCount(Integer deliveryCount)
+    {
         this.deliveryCount = deliveryCount;
     }
 
     @JsonIgnore
-    public String getMessageId() {
+    public String getMessageId()
+    {
         return messageId;
     }
 
-    public void setMessageId(String messageId) {
+    public void setMessageId(String messageId)
+    {
         this.messageId = messageId;
     }
 
     @JsonIgnore
-    public Long getSequenceNumber() {
+    public Long getSequenceNumber()
+    {
         return sequenceNumber;
     }
 
-    public void setSequenceNumber(Long sequenceNumber) {
+    public void setSequenceNumber(Long sequenceNumber)
+    {
         this.sequenceNumber = sequenceNumber;
     }
 
     @JsonIgnore
-    public Double getTimeToLive() {
+    public Double getTimeToLive()
+    {
         return timeToLive;
     }
 
-    public void setTimeToLive(Double timeToLive) {
+    public void setTimeToLive(Double timeToLive)
+    {
         this.timeToLive = timeToLive;
     }
 
     @JsonIgnore
-    public String getLockToken() {
+    public String getLockToken()
+    {
         return lockToken;
     }
 
-    public void setLockToken(String lockToken) {
+    public void setLockToken(String lockToken)
+    {
         this.lockToken = lockToken;
     }
 
     @JsonIgnore
-    public Date getLockedUntilUtc() {
+    public Date getLockedUntilUtc()
+    {
         return lockedUntilUtc;
     }
 
-    public void setLockedUntilUtc(Date lockedUntilUtc) {
+    public void setLockedUntilUtc(Date lockedUntilUtc)
+    {
         this.lockedUntilUtc = lockedUntilUtc;
     }
 
     @JsonIgnore
-    public String getCorrelationId() {
+    public String getCorrelationId()
+    {
         return correlationId;
     }
 
-    public void setCorrelationId(String correlationId) {
+    public void setCorrelationId(String correlationId)
+    {
         this.correlationId = correlationId;
     }
 
     @JsonIgnore
-    public String getSessionId() {
+    public String getSessionId()
+    {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
+    public void setSessionId(String sessionId)
+    {
         this.sessionId = sessionId;
     }
 
     @JsonIgnore
-    public String getLabel() {
+    public String getLabel()
+    {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(String label)
+    {
         this.label = label;
     }
 
     @JsonIgnore
-    public String getReplyTo() {
+    public String getReplyTo()
+    {
         return replyTo;
     }
 
-    public void setReplyTo(String replyTo) {
+    public void setReplyTo(String replyTo)
+    {
         this.replyTo = replyTo;
     }
 
     @JsonIgnore
-    public String getTo() {
+    public String getTo()
+    {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(String to)
+    {
         this.to = to;
     }
 
     @JsonIgnore
-    public Date getScheduledEnqueueTimeUtc() {
+    public Date getScheduledEnqueueTimeUtc()
+    {
         return scheduledEnqueueTimeUtc;
     }
 
-    public void setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
+    public void setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc)
+    {
         this.scheduledEnqueueTimeUtc = scheduledEnqueueTimeUtc;
     }
 
     @JsonIgnore
-    public String getReplyToSessionId() {
+    public String getReplyToSessionId()
+    {
         return replyToSessionId;
     }
 
-    public void setReplyToSessionId(String replyToSessionId) {
+    public void setReplyToSessionId(String replyToSessionId)
+    {
         this.replyToSessionId = replyToSessionId;
     }
 
     @JsonIgnore
-    public String getMessageLocation() {
+    public String getMessageLocation()
+    {
         return messageLocation;
     }
 
-    public void setMessageLocation(String messageLocation) {
+    public void setMessageLocation(String messageLocation)
+    {
         this.messageLocation = messageLocation;
     }
 
     @JsonIgnore
-    public String getLockLocation() {
+    public String getLockLocation()
+    {
         return lockLocation;
     }
 
-    public void setLockLocation(String lockLocation) {
+    public void setLockLocation(String lockLocation)
+    {
         this.lockLocation = lockLocation;
     }
 

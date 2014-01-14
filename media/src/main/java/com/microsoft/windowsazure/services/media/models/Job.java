@@ -47,7 +47,8 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Job entities.
  * 
  */
-public class Job {
+public class Job
+{
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Jobs";
@@ -56,7 +57,8 @@ public class Job {
     /**
      * Instantiates a new job.
      */
-    private Job() {
+    private Job()
+    {
     }
 
     /**
@@ -64,15 +66,18 @@ public class Job {
      * 
      * @return the creator
      */
-    public static Creator create() {
+    public static Creator create()
+    {
         return new Creator();
     }
 
     /**
      * The Class Creator.
      */
-    public static class Creator extends EntityOperationSingleResultBase<JobInfo> implements
-            EntityCreateOperation<JobInfo> {
+    public static class Creator extends
+            EntityOperationSingleResultBase<JobInfo> implements
+            EntityCreateOperation<JobInfo>
+    {
 
         /** The name. */
         private String name;
@@ -107,35 +112,40 @@ public class Job {
          * @param serviceUri
          *            the service uri
          */
-        private void buildMimeMultipart(URI serviceUri) {
+        private void buildMimeMultipart(URI serviceUri)
+        {
             mediaBatchOperations = null;
-            CreateBatchOperation createJobBatchOperation = CreateBatchOperation.create(serviceUri, this);
+            CreateBatchOperation createJobBatchOperation = CreateBatchOperation
+                    .create(serviceUri, this);
 
-            try {
+            try
+            {
                 mediaBatchOperations = new MediaBatchOperations(serviceUri);
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
-            }
-            catch (ParserConfigurationException e) {
+            } catch (ParserConfigurationException e)
+            {
                 throw new RuntimeException(e);
             }
 
             mediaBatchOperations.addOperation(createJobBatchOperation);
-            for (Task.CreateBatchOperation taskCreateBatchOperation : taskCreateBatchOperations) {
+            for (Task.CreateBatchOperation taskCreateBatchOperation : taskCreateBatchOperations)
+            {
                 mediaBatchOperations.addOperation(taskCreateBatchOperation);
             }
 
-            try {
+            try
+            {
                 mimeMultipart = mediaBatchOperations.getMimeMultipart();
-            }
-            catch (MessagingException e) {
+            } catch (MessagingException e)
+            {
                 throw new RuntimeException(e);
-            }
-            catch (IOException e) {
+            } catch (IOException e)
+            {
                 throw new RuntimeException(e);
-            }
-            catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
@@ -147,48 +157,69 @@ public class Job {
          * Instantiates a new creator.
          * 
          */
-        public Creator() {
+        public Creator()
+        {
             super(ENTITY_SET, JobInfo.class);
             this.inputMediaAssets = new ArrayList<String>();
             this.taskCreateBatchOperations = new ArrayList<Task.CreateBatchOperation>();
             this.fresh = true;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#getRequestContents()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityCreateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() throws ServiceException {
-            if (fresh) {
+        public Object getRequestContents() throws ServiceException
+        {
+            if (fresh)
+            {
                 buildMimeMultipart(getProxyData().getServiceUri());
             }
             return mimeMultipart;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase#getResponseClass()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityOperationSingleResultBase#getResponseClass()
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
-        public Class getResponseClass() {
+        public Class getResponseClass()
+        {
             return ClientResponse.class;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation#processResponse(java.lang.Object)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityCreateOperation#processResponse(java.lang.Object)
          */
         @Override
-        public Object processResponse(Object clientResponse) throws ServiceException {
-            try {
-                this.mediaBatchOperations.parseBatchResult((ClientResponse) clientResponse);
-            }
-            catch (IOException e) {
+        public Object processResponse(Object clientResponse)
+                throws ServiceException
+        {
+            try
+            {
+                this.mediaBatchOperations
+                        .parseBatchResult((ClientResponse) clientResponse);
+            } catch (IOException e)
+            {
                 throw new ServiceException(e);
             }
             JobInfo jobInfo = null;
-            for (EntityBatchOperation entityBatchOperation : this.mediaBatchOperations.getOperations()) {
-                if (entityBatchOperation instanceof Job.CreateBatchOperation) {
-                    jobInfo = ((Job.CreateBatchOperation) entityBatchOperation).getJobInfo();
+            for (EntityBatchOperation entityBatchOperation : this.mediaBatchOperations
+                    .getOperations())
+            {
+                if (entityBatchOperation instanceof Job.CreateBatchOperation)
+                {
+                    jobInfo = ((Job.CreateBatchOperation) entityBatchOperation)
+                            .getJobInfo();
                     break;
                 }
             }
@@ -203,7 +234,9 @@ public class Job {
          *            the task create batch operation
          * @return the creator
          */
-        public Creator addTaskCreator(Task.CreateBatchOperation taskCreateBatchOperation) {
+        public Creator addTaskCreator(
+                Task.CreateBatchOperation taskCreateBatchOperation)
+        {
             this.taskCreateBatchOperations.add(taskCreateBatchOperation);
             this.fresh = true;
             return this;
@@ -216,7 +249,8 @@ public class Job {
          *            The name
          * @return The creator object (for call chaining)
          */
-        public Creator setName(String name) {
+        public Creator setName(String name)
+        {
             this.name = name;
             this.fresh = true;
             return this;
@@ -227,7 +261,8 @@ public class Job {
          * 
          * @return the name
          */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
 
@@ -238,7 +273,8 @@ public class Job {
          *            the priority
          * @return the creator
          */
-        public Creator setPriority(Integer priority) {
+        public Creator setPriority(Integer priority)
+        {
             this.priority = priority;
             this.fresh = true;
             return this;
@@ -249,7 +285,8 @@ public class Job {
          * 
          * @return the priority
          */
-        public Integer getPriority() {
+        public Integer getPriority()
+        {
             return this.priority;
         }
 
@@ -258,7 +295,8 @@ public class Job {
          * 
          * @return the input media assets
          */
-        public List<String> getInputMediaAssets() {
+        public List<String> getInputMediaAssets()
+        {
             return inputMediaAssets;
         }
 
@@ -267,7 +305,8 @@ public class Job {
          * 
          * @return the task creators
          */
-        public List<Task.CreateBatchOperation> getTaskCreators() {
+        public List<Task.CreateBatchOperation> getTaskCreators()
+        {
             return this.taskCreateBatchOperations;
         }
 
@@ -278,28 +317,38 @@ public class Job {
          *            the asset id
          * @return the creator
          */
-        public Creator addInputMediaAsset(String assetId) {
+        public Creator addInputMediaAsset(String assetId)
+        {
             this.inputMediaAssets.add(assetId);
             this.fresh = true;
             return this;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase#getContentType()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityOperationBase#getContentType()
          */
         @Override
-        public MediaType getContentType() {
-            if (fresh) {
+        public MediaType getContentType()
+        {
+            if (fresh)
+            {
                 buildMimeMultipart(getProxyData().getServiceUri());
             }
             return this.contentType;
         }
 
-        /* (non-Javadoc)
-         * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase#getUri()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.microsoft.windowsazure.services.media.entityoperations.
+         * EntityOperationBase#getUri()
          */
         @Override
-        public String getUri() {
+        public String getUri()
+        {
             return "$batch";
         }
 
@@ -310,7 +359,9 @@ public class Job {
          *            the job notification subscription
          * @return the creator
          */
-        public Creator addJobNotificationSubscription(JobNotificationSubscription jobNotificationSubscription) {
+        public Creator addJobNotificationSubscription(
+                JobNotificationSubscription jobNotificationSubscription)
+        {
             this.jobNotificationSubscriptions.add(jobNotificationSubscription);
             this.fresh = true;
             return this;
@@ -321,7 +372,8 @@ public class Job {
          * 
          * @return the job notification subscription
          */
-        public List<JobNotificationSubscription> getJobNotificationSubscription() {
+        public List<JobNotificationSubscription> getJobNotificationSubscription()
+        {
             return this.jobNotificationSubscriptions;
         }
     }
@@ -329,7 +381,8 @@ public class Job {
     /**
      * The Class CreateBatchOperation.
      */
-    public static class CreateBatchOperation extends EntityBatchOperation {
+    public static class CreateBatchOperation extends EntityBatchOperation
+    {
 
         /** The service uri. */
         private final URI serviceUri;
@@ -343,7 +396,8 @@ public class Job {
          * @param serviceUri
          *            the service uri
          */
-        public CreateBatchOperation(URI serviceUri) {
+        public CreateBatchOperation(URI serviceUri)
+        {
             this.serviceUri = serviceUri;
             this.verb = "POST";
         }
@@ -357,25 +411,39 @@ public class Job {
          *            the creator
          * @return the creates the batch operation
          */
-        public static CreateBatchOperation create(URI serviceUri, Creator creator) {
-            CreateBatchOperation createBatchOperation = new CreateBatchOperation(serviceUri);
+        public static CreateBatchOperation create(URI serviceUri,
+                Creator creator)
+        {
+            CreateBatchOperation createBatchOperation = new CreateBatchOperation(
+                    serviceUri);
 
             JobType jobType = new JobType();
             jobType.setName(creator.getName());
             jobType.setPriority(creator.getPriority());
-            for (JobNotificationSubscription jobNotificationSubscription : creator.getJobNotificationSubscription()) {
+            for (JobNotificationSubscription jobNotificationSubscription : creator
+                    .getJobNotificationSubscription())
+            {
                 JobNotificationSubscriptionType jobNotificationSubscriptionType = new JobNotificationSubscriptionType();
-                jobNotificationSubscriptionType.setNotificationEndPointId(jobNotificationSubscription
-                        .getNotificationEndPointId());
-                jobNotificationSubscriptionType.setTargetJobState(jobNotificationSubscription.getTargetJobState()
-                        .getCode());
+                jobNotificationSubscriptionType
+                        .setNotificationEndPointId(jobNotificationSubscription
+                                .getNotificationEndPointId());
+                jobNotificationSubscriptionType
+                        .setTargetJobState(jobNotificationSubscription
+                                .getTargetJobState().getCode());
                 jobType.addJobNotificationSubscriptionType(jobNotificationSubscriptionType);
             }
 
-            for (String inputMediaAsset : creator.getInputMediaAssets()) {
-                createBatchOperation.addLink("InputMediaAssets", String.format("%s/Assets('%s')", createBatchOperation
-                        .getServiceUri().toString(), inputMediaAsset.toString()), "application/atom+xml;type=feed",
-                        "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
+            for (String inputMediaAsset : creator.getInputMediaAssets())
+            {
+                createBatchOperation
+                        .addLink(
+                                "InputMediaAssets",
+                                String.format("%s/Assets('%s')",
+                                        createBatchOperation.getServiceUri()
+                                                .toString(), inputMediaAsset
+                                                .toString()),
+                                "application/atom+xml;type=feed",
+                                "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
             }
             createBatchOperation.addContentObject(jobType);
             return createBatchOperation;
@@ -386,7 +454,8 @@ public class Job {
          * 
          * @return the service uri
          */
-        public URI getServiceUri() {
+        public URI getServiceUri()
+        {
             return this.serviceUri;
         }
 
@@ -397,7 +466,8 @@ public class Job {
          *            the job info
          * @return the creates the batch operation
          */
-        public CreateBatchOperation setJobInfo(JobInfo jobInfo) {
+        public CreateBatchOperation setJobInfo(JobInfo jobInfo)
+        {
             this.jobInfo = jobInfo;
             return this;
         }
@@ -407,7 +477,8 @@ public class Job {
          * 
          * @return the job info
          */
-        public JobInfo getJobInfo() {
+        public JobInfo getJobInfo()
+        {
             return this.jobInfo;
         }
 
@@ -420,8 +491,10 @@ public class Job {
      *            id of job to retrieve
      * @return the get operation
      */
-    public static EntityGetOperation<JobInfo> get(String jobId) {
-        return new DefaultGetOperation<JobInfo>(ENTITY_SET, jobId, JobInfo.class);
+    public static EntityGetOperation<JobInfo> get(String jobId)
+    {
+        return new DefaultGetOperation<JobInfo>(ENTITY_SET, jobId,
+                JobInfo.class);
     }
 
     /**
@@ -429,9 +502,12 @@ public class Job {
      * 
      * @return The list operation
      */
-    public static DefaultListOperation<JobInfo> list() {
-        return new DefaultListOperation<JobInfo>(ENTITY_SET, new GenericType<ListResult<JobInfo>>() {
-        });
+    public static DefaultListOperation<JobInfo> list()
+    {
+        return new DefaultListOperation<JobInfo>(ENTITY_SET,
+                new GenericType<ListResult<JobInfo>>()
+                {
+                });
     }
 
     /**
@@ -441,7 +517,8 @@ public class Job {
      *            id of job to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String jobId) {
+    public static EntityDeleteOperation delete(String jobId)
+    {
         return new DefaultDeleteOperation(ENTITY_SET, jobId);
     }
 
@@ -452,7 +529,9 @@ public class Job {
      *            the job id
      * @return the entity action operation
      */
-    public static EntityActionOperation cancel(String jobId) {
-        return new DefaultActionOperation("CancelJob").addQueryParameter("jobId", String.format("'%s'", jobId));
+    public static EntityActionOperation cancel(String jobId)
+    {
+        return new DefaultActionOperation("CancelJob").addQueryParameter(
+                "jobId", String.format("'%s'", jobId));
     }
 }

@@ -27,9 +27,11 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to parse a get block list response stream.
+ * RESERVED FOR INTERNAL USE. A class used to parse a get block list response
+ * stream.
  */
-final class GetBlockListResponse {
+final class GetBlockListResponse
+{
     /**
      * Holds the ArrayList of CloudBlobs from the response.
      */
@@ -51,7 +53,8 @@ final class GetBlockListResponse {
      * @param stream
      *            the inputstream for the response the server returned.
      */
-    public GetBlockListResponse(final InputStream stream) {
+    public GetBlockListResponse(final InputStream stream)
+    {
         this.streamRef = stream;
     }
 
@@ -62,8 +65,11 @@ final class GetBlockListResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public ArrayList<BlockEntry> getBlocks() throws XMLStreamException, StorageException {
-        if (!this.isParsed) {
+    public ArrayList<BlockEntry> getBlocks() throws XMLStreamException,
+            StorageException
+    {
+        if (!this.isParsed)
+        {
             this.parseResponse();
         }
 
@@ -76,8 +82,10 @@ final class GetBlockListResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public void parseResponse() throws XMLStreamException, StorageException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(this.streamRef);
+    public void parseResponse() throws XMLStreamException, StorageException
+    {
+        final XMLStreamReader xmlr = Utility
+                .createXMLStreamReaderFromStream(this.streamRef);
 
         // Start document
         int eventType = xmlr.getEventType();
@@ -85,38 +93,58 @@ final class GetBlockListResponse {
 
         // 1. get BlockList Header
         eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOCK_LIST_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.BLOCK_LIST_ELEMENT);
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
-                if (name.equals(BlobConstants.COMMITTED_BLOCKS_ELEMENT)) {
+                if (name.equals(BlobConstants.COMMITTED_BLOCKS_ELEMENT))
+                {
                     // Move to block element
                     eventType = xmlr.next();
                     if (eventType == XMLStreamConstants.START_ELEMENT
-                            && BlobConstants.BLOCK_ELEMENT.equals(xmlr.getName().toString())) {
-                        this.blocks.addAll(BlobDeserializationHelper.readBlobBlocks(xmlr, BlockSearchMode.COMMITTED));
-                        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.COMMITTED_BLOCKS_ELEMENT);
+                            && BlobConstants.BLOCK_ELEMENT.equals(xmlr
+                                    .getName().toString()))
+                    {
+                        this.blocks
+                                .addAll(BlobDeserializationHelper
+                                        .readBlobBlocks(xmlr,
+                                                BlockSearchMode.COMMITTED));
+                        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                                BlobConstants.COMMITTED_BLOCKS_ELEMENT);
                     }
-                }
-                else if (name.equals(BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT)) {
+                } else if (name
+                        .equals(BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT))
+                {
                     // Move to block element
                     eventType = xmlr.next();
                     if (eventType == XMLStreamConstants.START_ELEMENT
-                            && BlobConstants.BLOCK_ELEMENT.equals(xmlr.getName().toString())) {
-                        this.blocks.addAll(BlobDeserializationHelper.readBlobBlocks(xmlr, BlockSearchMode.UNCOMMITTED));
-                        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT);
+                            && BlobConstants.BLOCK_ELEMENT.equals(xmlr
+                                    .getName().toString()))
+                    {
+                        this.blocks.addAll(BlobDeserializationHelper
+                                .readBlobBlocks(xmlr,
+                                        BlockSearchMode.UNCOMMITTED));
+                        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                                BlobConstants.UNCOMMITTED_BLOCKS_ELEMENT);
                     }
-                }
-                else if (name.equals(BlobConstants.BLOCK_LIST_ELEMENT) && eventType == XMLStreamConstants.END_ELEMENT) {
+                } else if (name.equals(BlobConstants.BLOCK_LIST_ELEMENT)
+                        && eventType == XMLStreamConstants.END_ELEMENT)
+                {
                     break;
-                }
-                else {
-                    throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                } else
+                {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response received is invalid or improperly formatted.",
-                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                            null);
                 }
             }
         }

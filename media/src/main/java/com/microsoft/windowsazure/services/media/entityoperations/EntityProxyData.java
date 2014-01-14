@@ -18,14 +18,14 @@ package com.microsoft.windowsazure.services.media.entityoperations;
 import java.net.URI;
 
 /**
- * Interface used to communicate details about the proxy to
- * the operations, if they need it.
+ * Interface used to communicate details about the proxy to the operations, if
+ * they need it.
  * 
  */
-public interface EntityProxyData {
+public interface EntityProxyData
+{
     /**
-     * Gets the absolute URI currently being
-     * used by proxy.
+     * Gets the absolute URI currently being used by proxy.
      * 
      * @return The URI
      */

@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for EndpointInfo complex type.
+ * <p>
+ * Java class for EndpointInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="EndpointInfo">
@@ -50,7 +51,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EndpointInfo")
-class EndpointInfo {
+class EndpointInfo
+{
 
     @XmlAttribute(required = true)
     protected String name;
@@ -64,12 +66,11 @@ class EndpointInfo {
     /**
      * Gets the value of the name property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -77,23 +78,22 @@ class EndpointInfo {
      * Sets the value of the name property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setName(String value) {
+    public void setName(String value)
+    {
         this.name = value;
     }
 
     /**
      * Gets the value of the address property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
 
@@ -101,11 +101,11 @@ class EndpointInfo {
      * Sets the value of the address property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setAddress(String value) {
+    public void setAddress(String value)
+    {
         this.address = value;
     }
 
@@ -113,7 +113,8 @@ class EndpointInfo {
      * Gets the value of the port property.
      * 
      */
-    public int getPort() {
+    public int getPort()
+    {
         return port;
     }
 
@@ -121,19 +122,19 @@ class EndpointInfo {
      * Sets the value of the port property.
      * 
      */
-    public void setPort(int value) {
+    public void setPort(int value)
+    {
         this.port = value;
     }
 
     /**
      * Gets the value of the protocol property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ProtocolEnum }
-     *     
+     * @return possible object is {@link ProtocolEnum }
+     * 
      */
-    public ProtocolEnum getProtocol() {
+    public ProtocolEnum getProtocol()
+    {
         return protocol;
     }
 
@@ -141,11 +142,11 @@ class EndpointInfo {
      * Sets the value of the protocol property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link ProtocolEnum }
-     *     
+     *            allowed object is {@link ProtocolEnum }
+     * 
      */
-    public void setProtocol(ProtocolEnum value) {
+    public void setProtocol(ProtocolEnum value)
+    {
         this.protocol = value;
     }
 

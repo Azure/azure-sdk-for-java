@@ -26,10 +26,10 @@ package com.microsoft.windowsazure.scheduler.models;
 public enum JobState
 {
     Enabled,
-    
+
     Disabled,
-    
+
     Faulted,
-    
+
     Completed,
 }

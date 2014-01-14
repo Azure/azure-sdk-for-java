@@ -32,7 +32,8 @@ import com.sun.jersey.api.client.filter.ClientFilter;
 /**
  * The Class EntityRestProxy.
  */
-public abstract class EntityRestProxy implements EntityContract {
+public abstract class EntityRestProxy implements EntityContract
+{
 
     /** The executor service. */
     private final ExecutorService executorService;
@@ -49,7 +50,8 @@ public abstract class EntityRestProxy implements EntityContract {
      * @param filters
      *            the filters
      */
-    public EntityRestProxy(Client channel, ClientFilter[] filters) {
+    public EntityRestProxy(Client channel, ClientFilter[] filters)
+    {
         this.channel = channel;
         this.filters = filters;
         this.executorService = Executors.newCachedThreadPool();
@@ -60,7 +62,8 @@ public abstract class EntityRestProxy implements EntityContract {
      * 
      * @return the channel
      */
-    protected Client getChannel() {
+    protected Client getChannel()
+    {
         return channel;
     }
 
@@ -69,7 +72,8 @@ public abstract class EntityRestProxy implements EntityContract {
      * 
      * @return the executor service
      */
-    protected ExecutorService getExecutorService() {
+    protected ExecutorService getExecutorService()
+    {
         return executorService;
     }
 
@@ -78,7 +82,8 @@ public abstract class EntityRestProxy implements EntityContract {
      * 
      * @return the filters
      */
-    protected ClientFilter[] getFilters() {
+    protected ClientFilter[] getFilters()
+    {
         return filters;
     }
 
@@ -96,9 +101,11 @@ public abstract class EntityRestProxy implements EntityContract {
      *            the entity name
      * @return the resource
      */
-    private WebResource getResource(String entityName) {
+    private WebResource getResource(String entityName)
+    {
         WebResource resource = channel.resource(entityName);
-        for (ClientFilter filter : filters) {
+        for (ClientFilter filter : filters)
+        {
             resource.addFilter(filter);
         }
         return resource;
@@ -113,90 +120,147 @@ public abstract class EntityRestProxy implements EntityContract {
      * @throws ServiceException
      *             the service exception
      */
-    private Builder getResource(EntityOperation operation) throws ServiceException {
-        return getResource(operation.getUri()).type(operation.getContentType()).accept(operation.getAcceptType());
+    private Builder getResource(EntityOperation operation)
+            throws ServiceException
+    {
+        return getResource(operation.getUri()).type(operation.getContentType())
+                .accept(operation.getAcceptType());
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#create(com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #create(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityCreateOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T create(EntityCreateOperation<T> creator) throws ServiceException {
+    public <T> T create(EntityCreateOperation<T> creator)
+            throws ServiceException
+    {
         creator.setProxyData(createProxyData());
-        Object rawResponse = getResource(creator).post(creator.getResponseClass(), creator.getRequestContents());
+        Object rawResponse = getResource(creator).post(
+                creator.getResponseClass(), creator.getRequestContents());
         Object processedResponse = creator.processResponse(rawResponse);
         return (T) processedResponse;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#get(com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #get(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityGetOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T get(EntityGetOperation<T> getter) throws ServiceException {
+    public <T> T get(EntityGetOperation<T> getter) throws ServiceException
+    {
         getter.setProxyData(createProxyData());
         Object rawResponse = getResource(getter).get(getter.getResponseClass());
         Object processedResponse = getter.processResponse(rawResponse);
         return (T) processedResponse;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#list(com.microsoft.windowsazure.services.media.entityoperations.EntityListOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #list(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityListOperation)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> ListResult<T> list(EntityListOperation<T> lister) throws ServiceException {
+    public <T> ListResult<T> list(EntityListOperation<T> lister)
+            throws ServiceException
+    {
         lister.setProxyData(createProxyData());
-        Object rawResponse = getResource(lister.getUri()).queryParams(lister.getQueryParameters())
-                .type(lister.getContentType()).accept(lister.getAcceptType()).get(lister.getResponseGenericType());
+        Object rawResponse = getResource(lister.getUri())
+                .queryParams(lister.getQueryParameters())
+                .type(lister.getContentType()).accept(lister.getAcceptType())
+                .get(lister.getResponseGenericType());
         Object processedResponse = lister.processResponse(rawResponse);
         return (ListResult<T>) processedResponse;
 
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#update(com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #update(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityUpdateOperation)
      */
     @Override
-    public void update(EntityUpdateOperation updater) throws ServiceException {
+    public void update(EntityUpdateOperation updater) throws ServiceException
+    {
         updater.setProxyData(createProxyData());
-        Object rawResponse = getResource(updater).header("X-HTTP-METHOD", "MERGE").post(ClientResponse.class,
+        Object rawResponse = getResource(updater).header("X-HTTP-METHOD",
+                "MERGE").post(ClientResponse.class,
                 updater.getRequestContents());
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         updater.processResponse(rawResponse);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#delete(com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #delete(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityDeleteOperation)
      */
     @Override
-    public void delete(EntityDeleteOperation deleter) throws ServiceException {
+    public void delete(EntityDeleteOperation deleter) throws ServiceException
+    {
         deleter.setProxyData(createProxyData());
         getResource(deleter.getUri()).delete();
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #action(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation)
      */
     @Override
-    public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation) throws ServiceException {
+    public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation)
+            throws ServiceException
+    {
         entityTypeActionOperation.setProxyData(createProxyData());
         Builder webResource = getResource(entityTypeActionOperation.getUri())
                 .queryParams(entityTypeActionOperation.getQueryParameters())
-                .accept(entityTypeActionOperation.getAcceptType()).accept(MediaType.APPLICATION_XML_TYPE)
-                .entity(entityTypeActionOperation.getRequestContents(), MediaType.APPLICATION_XML_TYPE);
+                .accept(entityTypeActionOperation.getAcceptType())
+                .accept(MediaType.APPLICATION_XML_TYPE)
+                .entity(entityTypeActionOperation.getRequestContents(),
+                        MediaType.APPLICATION_XML_TYPE);
 
-        ClientResponse clientResponse = webResource.method(entityTypeActionOperation.getVerb(), ClientResponse.class);
+        ClientResponse clientResponse = webResource.method(
+                entityTypeActionOperation.getVerb(), ClientResponse.class);
         return entityTypeActionOperation.processTypeResponse(clientResponse);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityContract#action(com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityContract
+     * #action(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation)
      */
     @Override
-    public void action(EntityActionOperation entityActionOperation) throws ServiceException {
-        entityActionOperation.processResponse(getActionClientResponse(entityActionOperation));
+    public void action(EntityActionOperation entityActionOperation)
+            throws ServiceException
+    {
+        entityActionOperation
+                .processResponse(getActionClientResponse(entityActionOperation));
     }
 
     /**
@@ -206,18 +270,24 @@ public abstract class EntityRestProxy implements EntityContract {
      *            the entity action operation
      * @return the action client response
      */
-    private ClientResponse getActionClientResponse(EntityActionOperation entityActionOperation) {
+    private ClientResponse getActionClientResponse(
+            EntityActionOperation entityActionOperation)
+    {
         entityActionOperation.setProxyData(createProxyData());
         Builder webResource = getResource(entityActionOperation.getUri())
-                .queryParams(entityActionOperation.getQueryParameters()).accept(entityActionOperation.getAcceptType())
+                .queryParams(entityActionOperation.getQueryParameters())
+                .accept(entityActionOperation.getAcceptType())
                 .accept(MediaType.APPLICATION_XML_TYPE);
-        if (entityActionOperation.getRequestContents() != null) {
-            webResource = webResource.entity(entityActionOperation.getRequestContents(),
+        if (entityActionOperation.getRequestContents() != null)
+        {
+            webResource = webResource.entity(
+                    entityActionOperation.getRequestContents(),
                     entityActionOperation.getContentType());
-        }
-        else {
+        } else
+        {
             webResource = webResource.header("Content-Length", "0");
         }
-        return webResource.method(entityActionOperation.getVerb(), ClientResponse.class);
+        return webResource.method(entityActionOperation.getVerb(),
+                ClientResponse.class);
     }
 }

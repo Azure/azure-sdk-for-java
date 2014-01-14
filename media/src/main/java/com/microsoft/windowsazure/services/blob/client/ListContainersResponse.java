@@ -28,9 +28,11 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. A class for parsing a list containers response stream.
+ * RESERVED FOR INTERNAL USE. A class for parsing a list containers response
+ * stream.
  */
-final class ListContainersResponse {
+final class ListContainersResponse
+{
 
     /**
      * Holds the list of containers.
@@ -67,7 +69,8 @@ final class ListContainersResponse {
      */
     private final InputStream streamRef;
 
-    public ListContainersResponse(final InputStream stream) {
+    public ListContainersResponse(final InputStream stream)
+    {
         this.streamRef = stream;
     }
 
@@ -80,28 +83,35 @@ final class ListContainersResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public ArrayList<CloudBlobContainer> getContainers(final CloudBlobClient serviceClient) throws XMLStreamException,
-            StorageException {
-        if (!this.isParsed) {
+    public ArrayList<CloudBlobContainer> getContainers(
+            final CloudBlobClient serviceClient) throws XMLStreamException,
+            StorageException
+    {
+        if (!this.isParsed)
+        {
             this.parseResponse(serviceClient);
         }
 
         return this.containers;
     }
 
-    public String getMarker() {
+    public String getMarker()
+    {
         return this.marker;
     }
 
-    public int getMaxResults() {
+    public int getMaxResults()
+    {
         return this.maxResults;
     }
 
-    public String getNextMarker() {
+    public String getNextMarker()
+    {
         return this.nextMarker;
     }
 
-    public String getPrefix() {
+    public String getPrefix()
+    {
         return this.prefix;
     }
 
@@ -113,8 +123,11 @@ final class ListContainersResponse {
      * @throws XMLStreamException
      * @throws StorageException
      */
-    public void parseResponse(final CloudBlobClient serviceClient) throws XMLStreamException, StorageException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(this.streamRef);
+    public void parseResponse(final CloudBlobClient serviceClient)
+            throws XMLStreamException, StorageException
+    {
+        final XMLStreamReader xmlr = Utility
+                .createXMLStreamReaderFromStream(this.streamRef);
         String tempParseString = null;
 
         // Start document
@@ -123,42 +136,60 @@ final class ListContainersResponse {
 
         // 1. get enumerationResults Header
         eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, "EnumerationResults");
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                "EnumerationResults");
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MAX_RESULTS_ELEMENT)) {
-                    tempParseString = Utility.readElementFromXMLReader(xmlr, Constants.MAX_RESULTS_ELEMENT);
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.MAX_RESULTS_ELEMENT))
+                {
+                    tempParseString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.MAX_RESULTS_ELEMENT);
                     this.maxResults = Integer.parseInt(tempParseString);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.MARKER_ELEMENT)) {
-                    this.marker = Utility.readElementFromXMLReader(xmlr, Constants.MARKER_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.NEXT_MARKER_ELEMENT)) {
-                    this.nextMarker = Utility.readElementFromXMLReader(xmlr, Constants.NEXT_MARKER_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.PREFIX_ELEMENT)) {
-                    this.prefix = Utility.readElementFromXMLReader(xmlr, Constants.PREFIX_ELEMENT);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(BlobConstants.CONTAINERS_ELEMENT)) {
-                    try {
-                        this.containers = BlobDeserializationHelper.readContainers(xmlr, serviceClient);
-                    }
-                    catch (final URISyntaxException e) {
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.MARKER_ELEMENT))
+                {
+                    this.marker = Utility.readElementFromXMLReader(xmlr,
+                            Constants.MARKER_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.NEXT_MARKER_ELEMENT))
+                {
+                    this.nextMarker = Utility.readElementFromXMLReader(xmlr,
+                            Constants.NEXT_MARKER_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.PREFIX_ELEMENT))
+                {
+                    this.prefix = Utility.readElementFromXMLReader(xmlr,
+                            Constants.PREFIX_ELEMENT);
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(BlobConstants.CONTAINERS_ELEMENT))
+                {
+                    try
+                    {
+                        this.containers = BlobDeserializationHelper
+                                .readContainers(xmlr, serviceClient);
+                    } catch (final URISyntaxException e)
+                    {
                         throw new XMLStreamException(e);
-                    }
-                    catch (final ParseException e) {
+                    } catch (final ParseException e)
+                    {
                         throw new XMLStreamException(e);
                     }
 
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.CONTAINERS_ELEMENT);
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            BlobConstants.CONTAINERS_ELEMENT);
                     // eventType = xmlr.next();
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT && "EnumerationResults".equals(name)) {
+                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                        && "EnumerationResults".equals(name))
+                {
                     break;
                 }
             }

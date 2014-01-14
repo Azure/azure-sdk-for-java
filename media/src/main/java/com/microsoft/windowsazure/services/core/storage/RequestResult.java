@@ -20,10 +20,12 @@ import java.util.Date;
 /**
  * Represents the result of a physical request.
  */
-public final class RequestResult {
+public final class RequestResult
+{
 
     /**
-     * Represents an exception that occurred while processing the request. This field may be <code>null</code>.
+     * Represents an exception that occurred while processing the request. This
+     * field may be <code>null</code>.
      */
     private Exception exception;
 
@@ -70,63 +72,72 @@ public final class RequestResult {
     /**
      * @return the contentMD5
      */
-    public String getContentMD5() {
+    public String getContentMD5()
+    {
         return this.contentMD5;
     }
 
     /**
      * @return the etag
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return this.etag;
     }
 
     /**
      * @return the exception
      */
-    public Exception getException() {
+    public Exception getException()
+    {
         return this.exception;
     }
 
     /**
      * @return the requestDate
      */
-    public String getRequestDate() {
+    public String getRequestDate()
+    {
         return this.requestDate;
     }
 
     /**
      * @return the serviceRequestID
      */
-    public String getServiceRequestID() {
+    public String getServiceRequestID()
+    {
         return this.serviceRequestID;
     }
 
     /**
      * @return the startDate
      */
-    public Date getStartDate() {
+    public Date getStartDate()
+    {
         return this.startDate;
     }
 
     /**
      * @return the statusCode
      */
-    public int getStatusCode() {
+    public int getStatusCode()
+    {
         return this.statusCode;
     }
 
     /**
      * @return the statusMessage
      */
-    public String getStatusMessage() {
+    public String getStatusMessage()
+    {
         return this.statusMessage;
     }
 
     /**
      * @return the stopDate
      */
-    public Date getStopDate() {
+    public Date getStopDate()
+    {
         return this.stopDate;
     }
 
@@ -134,7 +145,8 @@ public final class RequestResult {
      * @param contentMD5
      *            the contentMD5 to set
      */
-    public void setContentMD5(final String contentMD5) {
+    public void setContentMD5(final String contentMD5)
+    {
         this.contentMD5 = contentMD5;
     }
 
@@ -142,7 +154,8 @@ public final class RequestResult {
      * @param etag
      *            the etag to set
      */
-    public void setEtag(final String etag) {
+    public void setEtag(final String etag)
+    {
         this.etag = etag;
     }
 
@@ -150,7 +163,8 @@ public final class RequestResult {
      * @param exception
      *            the exception to set
      */
-    public void setException(final Exception exception) {
+    public void setException(final Exception exception)
+    {
         this.exception = exception;
     }
 
@@ -158,7 +172,8 @@ public final class RequestResult {
      * @param requestDate
      *            the date to set
      */
-    public void setRequestDate(final String requestDate) {
+    public void setRequestDate(final String requestDate)
+    {
         this.requestDate = requestDate;
     }
 
@@ -166,7 +181,8 @@ public final class RequestResult {
      * @param serviceRequestID
      *            the serviceRequestID to set
      */
-    public void setServiceRequestID(final String serviceRequestID) {
+    public void setServiceRequestID(final String serviceRequestID)
+    {
         this.serviceRequestID = serviceRequestID;
     }
 
@@ -174,7 +190,8 @@ public final class RequestResult {
      * @param startDate
      *            the startDate to set
      */
-    public void setStartDate(final Date startDate) {
+    public void setStartDate(final Date startDate)
+    {
         this.startDate = startDate;
     }
 
@@ -182,7 +199,8 @@ public final class RequestResult {
      * @param statusCode
      *            the statusCode to set
      */
-    public void setStatusCode(final int statusCode) {
+    public void setStatusCode(final int statusCode)
+    {
         this.statusCode = statusCode;
     }
 
@@ -190,7 +208,8 @@ public final class RequestResult {
      * @param statusMessage
      *            the statusMessage to set
      */
-    public void setStatusMessage(final String statusMessage) {
+    public void setStatusMessage(final String statusMessage)
+    {
         this.statusMessage = statusMessage;
     }
 
@@ -198,7 +217,8 @@ public final class RequestResult {
      * @param stopDate
      *            the stopDate to set
      */
-    public void setStopDate(final Date stopDate) {
+    public void setStopDate(final Date stopDate)
+    {
         this.stopDate = stopDate;
     }
 }

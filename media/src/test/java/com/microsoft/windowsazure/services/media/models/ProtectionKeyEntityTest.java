@@ -24,26 +24,34 @@ import org.junit.Test;
 /**
  * Tests for the methods and factories of the ProtectionKey entity.
  */
-public class ProtectionKeyEntityTest {
+public class ProtectionKeyEntityTest
+{
 
-    public ProtectionKeyEntityTest() throws Exception {
+    public ProtectionKeyEntityTest() throws Exception
+    {
     }
 
     @Test
-    public void ProtectionKeyIdReturnsPayloadWithTheRightProtectionKeyType() {
-        List<String> contentKeyTypeArray = ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption)
+    public void ProtectionKeyIdReturnsPayloadWithTheRightProtectionKeyType()
+    {
+        List<String> contentKeyTypeArray = ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption)
                 .getQueryParameters().get("contentKeyType");
         String actualContentKeyType = contentKeyTypeArray.get(0);
 
-        assertEquals(ContentKeyType.StorageEncryption.getCode(), Integer.parseInt(actualContentKeyType));
+        assertEquals(ContentKeyType.StorageEncryption.getCode(),
+                Integer.parseInt(actualContentKeyType));
     }
 
     @Test
-    public void ProtectionKeyReturnsPayloadWithTheRightProtectionKeyId() {
+    public void ProtectionKeyReturnsPayloadWithTheRightProtectionKeyId()
+    {
         String expectedProtectionKeyId = "expectedProtectionKey";
-        String actualProtectionKeyId = ProtectionKey.getProtectionKey(expectedProtectionKeyId).getQueryParameters()
+        String actualProtectionKeyId = ProtectionKey
+                .getProtectionKey(expectedProtectionKeyId).getQueryParameters()
                 .getFirst("ProtectionKeyId");
-        expectedProtectionKeyId = String.format("'%s'", expectedProtectionKeyId);
+        expectedProtectionKeyId = String
+                .format("'%s'", expectedProtectionKeyId);
 
         assertEquals(expectedProtectionKeyId, actualProtectionKeyId);
     }

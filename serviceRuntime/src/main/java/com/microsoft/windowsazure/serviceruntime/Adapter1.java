@@ -19,23 +19,23 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.util.Calendar;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-class Adapter1
-    extends XmlAdapter<String, Calendar>
+class Adapter1 extends XmlAdapter<String, Calendar>
 {
 
-
-    public Calendar unmarshal(String value) {
+    public Calendar unmarshal(String value)
+    {
         return (javax.xml.bind.DatatypeConverter.parseDateTime(value));
     }
 
-    public String marshal(Calendar value) {
-        if (value == null) {
+    public String marshal(Calendar value)
+    {
+        if (value == null)
+        {
             return null;
         }
         return (javax.xml.bind.DatatypeConverter.printDateTime(value));

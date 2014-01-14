@@ -15,7 +15,8 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
-public interface EntityDeleteOperation {
+public interface EntityDeleteOperation
+{
 
     /**
      * Supplies the current proxy information to the action.

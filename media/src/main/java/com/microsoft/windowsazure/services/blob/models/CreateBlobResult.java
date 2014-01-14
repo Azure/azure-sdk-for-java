@@ -19,62 +19,74 @@ import java.util.Date;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Create Blob operation. This is returned by
- * calls to implementations of {@link BlobContract#createPageBlob(String, String, long, CreateBlobOptions)} and
- * {@link BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)}.
+ * A wrapper class for the response returned from a Blob Service REST API Create
+ * Blob operation. This is returned by calls to implementations of
+ * {@link BlobContract#createPageBlob(String, String, long, CreateBlobOptions)}
+ * and
+ * {@link BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)}
+ * .
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179451.aspx">Put Blob</a> documentation on
- * MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179451.aspx">Put
+ * Blob</a> documentation on MSDN for details of the underlying Blob Service
+ * REST API operation.
  */
-public class CreateBlobResult {
+public class CreateBlobResult
+{
     private String etag;
     private Date lastModified;
 
     /**
      * Gets the ETag of the blob.
      * 
-     * @return
-     *         A {@link String} containing the server-assigned ETag value for the snapshot.
+     * @return A {@link String} containing the server-assigned ETag value for
+     *         the snapshot.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
     /**
-     * Sets the ETag of the snapshot from the <code>ETag</code> header returned in the
-     * response.
+     * Sets the ETag of the snapshot from the <code>ETag</code> header returned
+     * in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param etag
-     *            A {@link String} containing the server-assigned ETag value for the blob.
+     *            A {@link String} containing the server-assigned ETag value for
+     *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
     /**
      * Gets the last modified time of the snapshot.
      * 
-     * @return
-     *         A {@link java.util.Date} containing the last modified time of the blob.
+     * @return A {@link java.util.Date} containing the last modified time of the
+     *         blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the snapshot from the <code>Last-Modified</code> header
-     * returned in the response.
+     * Reserved for internal use. Sets the last modified time of the snapshot
+     * from the <code>Last-Modified</code> header returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param lastModified
-     *            A {@link java.util.Date} containing the last modified time of the snapshot.
+     *            A {@link java.util.Date} containing the last modified time of
+     *            the snapshot.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 }

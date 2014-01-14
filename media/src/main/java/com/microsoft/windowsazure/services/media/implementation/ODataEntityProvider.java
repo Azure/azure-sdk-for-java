@@ -31,77 +31,112 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 
 /**
- * An implementation of {@link AbstractMessageReaderWriterProvider } that
- * is used to marshal and unmarshal instances of the ODataEntity<T> type.
+ * An implementation of {@link AbstractMessageReaderWriterProvider } that is used
+ * to marshal and unmarshal instances of the ODataEntity<T> type.
  * 
  */
-public class ODataEntityProvider extends AbstractMessageReaderWriterProvider<ODataEntity<?>> {
+public class ODataEntityProvider extends
+        AbstractMessageReaderWriterProvider<ODataEntity<?>>
+{
     private final ODataAtomUnmarshaller unmarshaller;
 
-    public ODataEntityProvider() throws JAXBException, ParserConfigurationException {
+    public ODataEntityProvider() throws JAXBException,
+            ParserConfigurationException
+    {
         unmarshaller = new ODataAtomUnmarshaller();
     }
 
-    /* (non-Javadoc)
-     * @see javax.ws.rs.ext.MessageBodyReader#isReadable(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.ws.rs.ext.MessageBodyReader#isReadable(java.lang.Class,
+     * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+     * javax.ws.rs.core.MediaType)
      */
     @Override
-    public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isReadable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         return ODataEntity.isODataEntityType(type);
     }
 
-    /* (non-Javadoc)
-     * @see javax.ws.rs.ext.MessageBodyReader#readFrom(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap, java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.ws.rs.ext.MessageBodyReader#readFrom(java.lang.Class,
+     * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+     * javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap,
+     * java.io.InputStream)
      */
     @Override
-    public ODataEntity<?> readFrom(Class<ODataEntity<?>> type, Type genericType, Annotation[] annotations,
-            MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-            throws IOException {
+    public ODataEntity<?> readFrom(Class<ODataEntity<?>> type,
+            Type genericType, Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+            throws IOException
+    {
 
         ODataEntity<?> result = null;
         String responseType = mediaType.getParameters().get("type");
-        try {
-            if (responseType == null || responseType.equals("feed")) {
+        try
+        {
+            if (responseType == null || responseType.equals("feed"))
+            {
                 List<ODataEntity<?>> feedContents = null;
-                synchronized (unmarshaller) {
-                    feedContents = unmarshaller.unmarshalFeed(entityStream, type);
+                synchronized (unmarshaller)
+                {
+                    feedContents = unmarshaller.unmarshalFeed(entityStream,
+                            type);
                 }
                 return feedContents.get(0);
-            }
-            else if (responseType.equals("entry")) {
-                synchronized (unmarshaller) {
+            } else if (responseType.equals("entry"))
+            {
+                synchronized (unmarshaller)
+                {
                     result = unmarshaller.unmarshalEntry(entityStream, type);
                 }
-            }
-            else {
+            } else
+            {
                 throw new RuntimeException();
             }
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
-        }
-        catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             throw new RuntimeException(e);
         }
 
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class,
+     * java.lang.reflect.Type, java.lang.annotation.Annotation[],
+     * javax.ws.rs.core.MediaType)
      */
     @Override
-    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isWriteable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see javax.ws.rs.ext.MessageBodyWriter#writeTo(java.lang.Object, java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.ws.rs.ext.MessageBodyWriter#writeTo(java.lang.Object,
+     * java.lang.Class, java.lang.reflect.Type,
+     * java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType,
+     * javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
      */
     @Override
-    public void writeTo(ODataEntity<?> t, Class<?> type, Type genericType, Annotation[] annotations,
-            MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
-            throws IOException {
+    public void writeTo(ODataEntity<?> t, Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, Object> httpHeaders,
+            OutputStream entityStream) throws IOException
+    {
         throw new UnsupportedOperationException();
     }
 }

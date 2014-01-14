@@ -39,19 +39,24 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Lea
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ListingContext;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to generate requests for contianer objects.
+ * RESERVED FOR INTERNAL USE. A class used to generate requests for contianer
+ * objects.
  */
-final class ContainerRequest {
+final class ContainerRequest
+{
     /**
-     * Adds user-defined metadata to the request as one or more name-value pairs.
+     * Adds user-defined metadata to the request as one or more name-value
+     * pairs.
      * 
      * @param request
      *            The web request.
      * @param metadata
      *            The user-defined metadata.
      * */
-    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
-            final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request,
+            final HashMap<String, String> metadata,
+            final OperationContext opContext)
+    {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
 
@@ -65,8 +70,10 @@ final class ContainerRequest {
      * @param value
      *            The metadata value.
      * */
-    public static void addMetadata(final HttpURLConnection request, final String name, final String value,
-            final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request,
+            final String name, final String value,
+            final OperationContext opContext)
+    {
         BaseRequest.addMetadata(request, name, value, opContext);
     }
 
@@ -81,8 +88,10 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection create(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection create(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
         return BaseRequest.create(uri, timeout, containerBuilder, opContext);
     }
@@ -100,13 +109,17 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    private static HttpURLConnection createURLConnection(final URI uri, final int timeout, final UriQueryBuilder query,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    private static HttpURLConnection createURLConnection(final URI uri,
+            final int timeout, final UriQueryBuilder query,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         return BaseRequest.createURLConnection(uri, timeout, query, opContext);
     }
 
     /**
-     * Constructs a web request to delete the container and all of blobs within it. Sign with no length specified.
+     * Constructs a web request to delete the container and all of blobs within
+     * it. Sign with no length specified.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -116,14 +129,17 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection delete(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection delete(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
         return BaseRequest.delete(uri, timeout, containerBuilder, opContext);
     }
 
     /**
-     * Constructs a web request to return the ACL for this container. Sign with no length specified.
+     * Constructs a web request to return the ACL for this container. Sign with
+     * no length specified.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -132,12 +148,15 @@ final class ContainerRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      */
-    public static HttpURLConnection getAcl(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getAcl(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "acl");
 
-        final HttpURLConnection request = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = createURLConnection(uri, timeout,
+                builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -151,19 +170,23 @@ final class ContainerRequest {
      * 
      * @throws StorageException
      */
-    protected static UriQueryBuilder getContainerUriQueryBuilder() throws StorageException {
+    protected static UriQueryBuilder getContainerUriQueryBuilder()
+            throws StorageException
+    {
         final UriQueryBuilder uriBuilder = new UriQueryBuilder();
-        try {
+        try
+        {
             uriBuilder.add("restype", "container");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
         return uriBuilder;
     }
 
     /**
-     * Constructs a web request to retrieve the container's metadata. Sign with no length specified.
+     * Constructs a web request to retrieve the container's metadata. Sign with
+     * no length specified.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -172,14 +195,18 @@ final class ContainerRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      */
-    public static HttpURLConnection getMetadata(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getMetadata(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
-        return BaseRequest.getMetadata(uri, timeout, containerBuilder, opContext);
+        return BaseRequest.getMetadata(uri, timeout, containerBuilder,
+                opContext);
     }
 
     /**
-     * Constructs a web request to return the user-defined metadata for this container. Sign with no length specified.
+     * Constructs a web request to return the user-defined metadata for this
+     * container. Sign with no length specified.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -188,15 +215,18 @@ final class ContainerRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
-    public static HttpURLConnection getProperties(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getProperties(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
-        return BaseRequest.getProperties(uri, timeout, containerBuilder, opContext);
+        return BaseRequest.getProperties(uri, timeout, containerBuilder,
+                opContext);
     }
 
     /**
-     * Constructs a request to return a listing of all containers in this storage account. Sign with no length
-     * specified.
+     * Constructs a request to return a listing of all containers in this
+     * storage account. Sign with no length specified.
      * 
      * @param uri
      *            The absolute URI for the account.
@@ -214,32 +244,44 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection list(final URI uri, final int timeout, final ListingContext listingContext,
-            final ContainerListingDetails detailsIncluded, final OperationContext opContext) throws URISyntaxException,
-            IOException, StorageException {
+    public static HttpURLConnection list(final URI uri, final int timeout,
+            final ListingContext listingContext,
+            final ContainerListingDetails detailsIncluded,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "list");
 
-        if (listingContext != null) {
-            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
+        if (listingContext != null)
+        {
+            if (!Utility.isNullOrEmpty(listingContext.getPrefix()))
+            {
                 builder.add("prefix", listingContext.getPrefix());
             }
 
-            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
+            if (!Utility.isNullOrEmpty(listingContext.getMarker()))
+            {
                 builder.add("marker", listingContext.getMarker());
             }
 
-            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
-                builder.add("maxresults", listingContext.getMaxResults().toString());
+            if (listingContext.getMaxResults() != null
+                    && listingContext.getMaxResults() > 0)
+            {
+                builder.add("maxresults", listingContext.getMaxResults()
+                        .toString());
             }
         }
 
-        if (detailsIncluded == ContainerListingDetails.ALL || detailsIncluded == ContainerListingDetails.METADATA) {
+        if (detailsIncluded == ContainerListingDetails.ALL
+                || detailsIncluded == ContainerListingDetails.METADATA)
+        {
             builder.add("include", "metadata");
         }
 
-        final HttpURLConnection request = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = createURLConnection(uri, timeout,
+                builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -259,25 +301,31 @@ final class ContainerRequest {
      * @throws StorageException
      * */
     public static HttpURLConnection setAcl(final URI uri, final int timeout,
-            final BlobContainerPublicAccessType publicAccess, final OperationContext opContext) throws IOException,
-            URISyntaxException, StorageException {
+            final BlobContainerPublicAccessType publicAccess,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "acl");
 
-        final HttpURLConnection request = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = createURLConnection(uri, timeout,
+                builder, opContext);
 
         request.setRequestMethod("PUT");
         request.setDoOutput(true);
 
-        if (publicAccess != BlobContainerPublicAccessType.OFF) {
-            request.setRequestProperty(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER, publicAccess.toString().toLowerCase());
+        if (publicAccess != BlobContainerPublicAccessType.OFF)
+        {
+            request.setRequestProperty(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER,
+                    publicAccess.toString().toLowerCase());
         }
 
         return request;
     }
 
     /**
-     * Constructs a web request to set user-defined metadata for the container, Sign with 0 Length.
+     * Constructs a web request to set user-defined metadata for the container,
+     * Sign with 0 Length.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -287,14 +335,18 @@ final class ContainerRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
-    public static HttpURLConnection setMetadata(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setMetadata(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
-        return BaseRequest.setMetadata(uri, timeout, containerBuilder, opContext);
+        return BaseRequest.setMetadata(uri, timeout, containerBuilder,
+                opContext);
     }
 
     /**
-     * Constructs a HttpURLConnection to Acquire,Release,Break, or Renew a blob lease. Sign with 0 length.
+     * Constructs a HttpURLConnection to Acquire,Release,Break, or Renew a blob
+     * lease. Sign with 0 length.
      * 
      * @param uri
      *            The absolute URI to the blob
@@ -304,19 +356,22 @@ final class ContainerRequest {
      *            the LeaseAction to perform
      * 
      * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
+     *            Specifies the the span of time for which to acquire the lease,
+     *            in seconds. If null, an infinite lease will be acquired. If
+     *            not null, this must be greater than zero.
      * 
      * @param proposedLeaseId
-     *            A <code>String</code> that represents the proposed lease ID for the new lease,
-     *            or null if no lease ID is proposed.
+     *            A <code>String</code> that represents the proposed lease ID
+     *            for the new lease, or null if no lease ID is proposed.
      * 
      * @param breakPeriodInSeconds
-     *            Specifies the amount of time to allow the lease to remain, in seconds.
-     *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
+     *            Specifies the amount of time to allow the lease to remain, in
+     *            seconds. If null, the break period is the remainder of the
+     *            current lease, or zero for infinite leases.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     *            An {@link AccessCondition} object that represents the access
+     *            conditions for the blob.
      * @param blobOptions
      *            the options to use for the request.
      * @param opContext
@@ -327,36 +382,47 @@ final class ContainerRequest {
      * @throws URISyntaxException
      *             if the resource URI is invalid
      * @throws StorageException
-     *             an exception representing any error which occurred during the operation.
+     *             an exception representing any error which occurred during the
+     *             operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection lease(final URI uri, final int timeout, final LeaseAction action,
-            final Integer leaseTimeInSeconds, final String proposedLeaseId, final Integer breakPeriodInSeconds,
-            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection lease(final URI uri, final int timeout,
+            final LeaseAction action, final Integer leaseTimeInSeconds,
+            final String proposedLeaseId, final Integer breakPeriodInSeconds,
+            final AccessCondition accessCondition,
+            final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
 
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add("comp", "lease");
 
-        final HttpURLConnection request = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = createURLConnection(uri, timeout,
+                builder, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
         request.setFixedLengthStreamingMode(0);
         request.setRequestProperty("x-ms-lease-action", action.toString());
 
-        if (leaseTimeInSeconds != null) {
-            request.setRequestProperty("x-ms-lease-duration", leaseTimeInSeconds.toString());
-        }
-        else {
+        if (leaseTimeInSeconds != null)
+        {
+            request.setRequestProperty("x-ms-lease-duration",
+                    leaseTimeInSeconds.toString());
+        } else
+        {
             request.setRequestProperty("x-ms-lease-duration", "-1");
         }
 
-        if (proposedLeaseId != null) {
-            request.setRequestProperty("x-ms-proposed-lease-id", proposedLeaseId);
+        if (proposedLeaseId != null)
+        {
+            request.setRequestProperty("x-ms-proposed-lease-id",
+                    proposedLeaseId);
         }
 
-        if (accessCondition != null) {
+        if (accessCondition != null)
+        {
             accessCondition.applyConditionToRequest(request);
         }
         return request;
@@ -371,9 +437,13 @@ final class ContainerRequest {
      *            The account credentials.
      * @throws StorageException
      * */
-    public static void signRequest(final HttpURLConnection request, final Credentials credentials,
-            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        BaseRequest.signRequestForBlobAndQueue(request, credentials, contentLength, opContext);
+    public static void signRequest(final HttpURLConnection request,
+            final Credentials credentials, final Long contentLength,
+            final OperationContext opContext) throws InvalidKeyException,
+            StorageException
+    {
+        BaseRequest.signRequestForBlobAndQueue(request, credentials,
+                contentLength, opContext);
     }
 
     /**
@@ -386,13 +456,18 @@ final class ContainerRequest {
      * @throws StorageException
      * @throws InvalidKeyException
      * */
-    public static void signRequestForSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
-            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        BaseRequest.signRequestForBlobAndQueueSharedKeyLite(request, credentials, contentLength, opContext);
+    public static void signRequestForSharedKeyLite(
+            final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
+        BaseRequest.signRequestForBlobAndQueueSharedKeyLite(request,
+                credentials, contentLength, opContext);
     }
 
     /**
-     * Writes a collection of shared access policies to the specified stream in XML format.
+     * Writes a collection of shared access policies to the specified stream in
+     * XML format.
      * 
      * @param sharedAccessPolicies
      *            A collection of shared access policies
@@ -401,18 +476,23 @@ final class ContainerRequest {
      * @throws XMLStreamException
      */
     public static void writeSharedAccessIdentifiersToStream(
-            final HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies, final StringWriter outWriter)
-            throws XMLStreamException {
+            final HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies,
+            final StringWriter outWriter) throws XMLStreamException
+    {
         Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
         Utility.assertNotNull("outWriter", outWriter);
 
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory
+                .newInstance();
+        final XMLStreamWriter xmlw = xmlOutFactoryInst
+                .createXMLStreamWriter(outWriter);
 
-        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
+        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS)
+        {
             final String errorMessage = String
                     .format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single container.",
-                            sharedAccessPolicies.keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
+                            sharedAccessPolicies.keySet().size(),
+                            Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
 
             throw new IllegalArgumentException(errorMessage);
         }
@@ -421,7 +501,9 @@ final class ContainerRequest {
         xmlw.writeStartDocument();
         xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
 
-        for (final Entry<String, SharedAccessBlobPolicy> entry : sharedAccessPolicies.entrySet()) {
+        for (final Entry<String, SharedAccessBlobPolicy> entry : sharedAccessPolicies
+                .entrySet())
+        {
             final SharedAccessBlobPolicy policy = entry.getValue();
             xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
 
@@ -434,19 +516,22 @@ final class ContainerRequest {
 
             // Set the Start Time
             xmlw.writeStartElement(Constants.START);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessStartTime()));
             // end Start
             xmlw.writeEndElement();
 
             // Set the Expiry Time
             xmlw.writeStartElement(Constants.EXPIRY);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessExpiryTime()));
             // end Expiry
             xmlw.writeEndElement();
 
             // Set the Permissions
             xmlw.writeStartElement(Constants.PERMISSION);
-            xmlw.writeCharacters(SharedAccessBlobPolicy.permissionsToString(policy.getPermissions()));
+            xmlw.writeCharacters(SharedAccessBlobPolicy
+                    .permissionsToString(policy.getPermissions()));
             // end Permission
             xmlw.writeEndElement();
 
@@ -465,7 +550,8 @@ final class ContainerRequest {
     /**
      * Private Default Ctor
      */
-    private ContainerRequest() {
+    private ContainerRequest()
+    {
         // No op
     }
 }

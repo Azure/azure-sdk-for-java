@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * A class which is used to list and commit blocks of a {@link CloudBlockBlob}.
  */
-public final class BlockEntry {
+public final class BlockEntry
+{
     /**
      * Represents the name of the block.
      */
@@ -29,7 +30,8 @@ public final class BlockEntry {
     private long size;
 
     /**
-     * Represents the block search mode. The default value is {@link BlockSearchMode#LATEST}.
+     * Represents the block search mode. The default value is
+     * {@link BlockSearchMode#LATEST}.
      */
     public BlockSearchMode searchMode = BlockSearchMode.LATEST;
 
@@ -39,9 +41,11 @@ public final class BlockEntry {
      * @param id
      *            A <code>String</code> that represents the name of the block.
      * @param searchMode
-     *            A {@link BlockSearchMode} value that represents the block search mode.
+     *            A {@link BlockSearchMode} value that represents the block
+     *            search mode.
      */
-    public BlockEntry(final String id, final BlockSearchMode searchMode) {
+    public BlockEntry(final String id, final BlockSearchMode searchMode)
+    {
         this.setId(id);
         this.searchMode = searchMode;
     }
@@ -49,14 +53,16 @@ public final class BlockEntry {
     /**
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return this.id;
     }
 
     /**
      * @return the size
      */
-    public long getSize() {
+    public long getSize()
+    {
         return this.size;
     }
 
@@ -64,7 +70,8 @@ public final class BlockEntry {
      * @param id
      *            the id to set
      */
-    public void setId(final String id) {
+    public void setId(final String id)
+    {
         this.id = id;
     }
 
@@ -72,7 +79,8 @@ public final class BlockEntry {
      * @param size
      *            the size to set
      */
-    public void setSize(final long size) {
+    public void setSize(final long size)
+    {
         this.size = size;
     }
 }

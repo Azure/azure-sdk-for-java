@@ -15,14 +15,15 @@
 
 package com.microsoft.windowsazure.core.pipeline.apache;
 
-public class ApacheConfigurationProperties {
+public class ApacheConfigurationProperties
+{
     public static final String PROPERTY_SSL_CONNECTION_SOCKET_FACTORY = "com.microsoft.windowsazure.Configuration.sslConnectionSocketFactory";
-    
+
     public static final String PROPERTY_CONNECTION_MANAGER = "com.microsoft.windowsazure.Configuration.connectionManager";
 
     public static final String PROPERTY_PROXY_URI = "com.microsoft.windowsazure.Configuration.proxy";
-    
+
     public static final String PROPERTY_RETRY_HANDLER = "com.microsoft.windowsazure.Configuration.retryHandler";
-    
+
     public static final String PROPERTY_HTTP_CLIENT_BUILDER = "com.microsoft.windowsazure.Configuration.httpClientBuilder";
 }

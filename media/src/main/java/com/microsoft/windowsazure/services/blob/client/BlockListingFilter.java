@@ -15,9 +15,11 @@
 package com.microsoft.windowsazure.services.blob.client;
 
 /**
- * Specifies whether to list only committed blocks, only uncommitted blocks, or all blocks.
+ * Specifies whether to list only committed blocks, only uncommitted blocks, or
+ * all blocks.
  */
-public enum BlockListingFilter {
+public enum BlockListingFilter
+{
     /**
      * List only committed blocks.
      */

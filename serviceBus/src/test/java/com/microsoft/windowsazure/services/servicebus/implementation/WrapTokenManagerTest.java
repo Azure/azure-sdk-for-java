@@ -30,64 +30,81 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public class WrapTokenManagerTest {
+public class WrapTokenManagerTest
+{
     private WrapContract contract;
     private WrapTokenManager client;
     private DateFactory dateFactory;
     private Calendar calendar;
 
     @Before
-    public void init() throws Exception {
+    public void init() throws Exception
+    {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
         dateFactory = mock(DateFactory.class);
         contract = mock(WrapContract.class);
-        ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(null, null, "testurl", "testname", "testpassword");
+        ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
+                null, null, "testurl", "testname", "testpassword");
         client = new WrapTokenManager(contract, dateFactory, settings);
 
-        when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
+        when(dateFactory.getDate()).thenAnswer(new Answer<Date>()
+        {
             @Override
-            public Date answer(InvocationOnMock invocation) throws Throwable {
+            public Date answer(InvocationOnMock invocation) throws Throwable
+            {
                 return calendar.getTime();
             }
         });
     }
 
-    private void doIncrementingTokens() throws ServiceException {
-        doAnswer(new Answer<WrapAccessTokenResult>() {
+    private void doIncrementingTokens() throws ServiceException
+    {
+        doAnswer(new Answer<WrapAccessTokenResult>()
+        {
             int count = 0;
 
             @Override
-            public WrapAccessTokenResult answer(InvocationOnMock invocation) throws Throwable {
+            public WrapAccessTokenResult answer(InvocationOnMock invocation)
+                    throws Throwable
+            {
                 ++count;
                 WrapAccessTokenResult wrapResponse = new WrapAccessTokenResult();
                 wrapResponse.setAccessToken("testaccesstoken1-" + count);
                 wrapResponse.setExpiresIn(83);
                 return wrapResponse;
             }
-        }).when(contract).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope");
+        }).when(contract).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope");
 
-        doAnswer(new Answer<WrapAccessTokenResult>() {
+        doAnswer(new Answer<WrapAccessTokenResult>()
+        {
             int count = 0;
 
             @Override
-            public WrapAccessTokenResult answer(InvocationOnMock invocation) throws Throwable {
+            public WrapAccessTokenResult answer(InvocationOnMock invocation)
+                    throws Throwable
+            {
                 ++count;
                 WrapAccessTokenResult wrapResponse = new WrapAccessTokenResult();
                 wrapResponse.setAccessToken("testaccesstoken2-" + count);
                 wrapResponse.setExpiresIn(83);
                 return wrapResponse;
             }
-        }).when(contract).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope2");
+        }).when(contract).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope2");
     }
 
     @Test
-    public void clientUsesContractToGetToken() throws ServiceException, URISyntaxException {
+    public void clientUsesContractToGetToken() throws ServiceException,
+            URISyntaxException
+    {
         // Arrange
         doIncrementingTokens();
 
         // Act
-        String accessToken = client.getAccessToken(new URI("https://test/scope"));
+        String accessToken = client
+                .getAccessToken(new URI("https://test/scope"));
 
         // Assert
         assertNotNull(accessToken);
@@ -95,61 +112,80 @@ public class WrapTokenManagerTest {
     }
 
     @Test
-    public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid() throws ServiceException, URISyntaxException {
+    public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid()
+            throws ServiceException, URISyntaxException
+    {
         // Arrange
         doIncrementingTokens();
 
         // Act
-        String accessToken1 = client.getAccessToken(new URI("https://test/scope?arg=1"));
-        String accessToken2 = client.getAccessToken(new URI("https://test/scope?arg=2"));
+        String accessToken1 = client.getAccessToken(new URI(
+                "https://test/scope?arg=1"));
+        String accessToken2 = client.getAccessToken(new URI(
+                "https://test/scope?arg=2"));
         calendar.add(Calendar.SECOND, 40);
-        String accessToken3 = client.getAccessToken(new URI("https://test/scope?arg=3"));
+        String accessToken3 = client.getAccessToken(new URI(
+                "https://test/scope?arg=3"));
 
         // Assert
         assertEquals("testaccesstoken1-1", accessToken1);
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-1", accessToken3);
 
-        verify(contract, times(1)).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope");
+        verify(contract, times(1)).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope");
     }
 
     @Test
-    public void callsToDifferentPathsWillResultInDifferentAccessTokens() throws ServiceException, URISyntaxException {
+    public void callsToDifferentPathsWillResultInDifferentAccessTokens()
+            throws ServiceException, URISyntaxException
+    {
         // Arrange
         doIncrementingTokens();
 
         // Act
-        String accessToken1 = client.getAccessToken(new URI("https://test/scope?arg=1"));
-        String accessToken2 = client.getAccessToken(new URI("https://test/scope2?arg=2"));
+        String accessToken1 = client.getAccessToken(new URI(
+                "https://test/scope?arg=1"));
+        String accessToken2 = client.getAccessToken(new URI(
+                "https://test/scope2?arg=2"));
         calendar.add(Calendar.SECOND, 40);
-        String accessToken3 = client.getAccessToken(new URI("https://test/scope?arg=3"));
+        String accessToken3 = client.getAccessToken(new URI(
+                "https://test/scope?arg=3"));
 
         // Assert
         assertEquals("testaccesstoken1-1", accessToken1);
         assertEquals("testaccesstoken2-1", accessToken2);
         assertEquals("testaccesstoken1-1", accessToken3);
 
-        verify(contract, times(1)).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope");
-        verify(contract, times(1)).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope2");
+        verify(contract, times(1)).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope");
+        verify(contract, times(1)).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope2");
     }
 
     @Test
-    public void clientWillBeCalledWhenTokenIsHalfwayToExpiring() throws ServiceException, URISyntaxException {
+    public void clientWillBeCalledWhenTokenIsHalfwayToExpiring()
+            throws ServiceException, URISyntaxException
+    {
         // Arrange
         doIncrementingTokens();
 
         // Act
-        String accessToken1 = client.getAccessToken(new URI("https://test/scope"));
-        String accessToken2 = client.getAccessToken(new URI("https://test/scope"));
+        String accessToken1 = client.getAccessToken(new URI(
+                "https://test/scope"));
+        String accessToken2 = client.getAccessToken(new URI(
+                "https://test/scope"));
         calendar.add(Calendar.SECOND, 45);
-        String accessToken3 = client.getAccessToken(new URI("https://test/scope"));
+        String accessToken3 = client.getAccessToken(new URI(
+                "https://test/scope"));
 
         // Assert
         assertEquals("testaccesstoken1-1", accessToken1);
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-2", accessToken3);
 
-        verify(contract, times(2)).wrapAccessToken("testurl", "testname", "testpassword", "http://test/scope");
+        verify(contract, times(2)).wrapAccessToken("testurl", "testname",
+                "testpassword", "http://test/scope");
     }
 
 }

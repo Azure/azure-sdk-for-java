@@ -17,9 +17,11 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 import com.microsoft.windowsazure.services.core.storage.Constants;
 
 /**
- * RESERVED FOR INTERNAL USE. Describes actions that can be performed on a lease.
+ * RESERVED FOR INTERNAL USE. Describes actions that can be performed on a
+ * lease.
  */
-public enum LeaseAction {
+public enum LeaseAction
+{
 
     /**
      * Acquire the lease.
@@ -47,21 +49,23 @@ public enum LeaseAction {
     CHANGE;
 
     @Override
-    public String toString() {
-        switch (this) {
-            case ACQUIRE:
-                return "Acquire";
-            case RENEW:
-                return "Renew";
-            case RELEASE:
-                return "Release";
-            case BREAK:
-                return "Break";
-            case CHANGE:
-                return "Change";
-            default:
-                // Wont Happen, all possible values covered above.
-                return Constants.EMPTY_STRING;
+    public String toString()
+    {
+        switch (this)
+        {
+        case ACQUIRE:
+            return "Acquire";
+        case RENEW:
+            return "Renew";
+        case RELEASE:
+            return "Release";
+        case BREAK:
+            return "Break";
+        case CHANGE:
+            return "Change";
+        default:
+            // Wont Happen, all possible values covered above.
+            return Constants.EMPTY_STRING;
         }
     }
 }

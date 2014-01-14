@@ -28,45 +28,56 @@ import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentials;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
-public final class CloudQueueClientTests extends QueueTestBase {
+public final class CloudQueueClientTests extends QueueTestBase
+{
 
     @Test
-    public void testQueueClientConstructor() throws URISyntaxException, StorageException {
+    public void testQueueClientConstructor() throws URISyntaxException,
+            StorageException
+    {
         StorageCredentials credentials = httpAcc.getCredentials();
         URI baseAddressUri = new URI(httpAcc.getQueueEndpoint().toString());
 
-        CloudQueueClient queueClient = new CloudQueueClient(baseAddressUri, credentials);
+        CloudQueueClient queueClient = new CloudQueueClient(baseAddressUri,
+                credentials);
 
         Assert.assertEquals(baseAddressUri, queueClient.getEndpoint());
         Assert.assertEquals(credentials, queueClient.getCredentials());
     }
 
     @Test
-    public void testQueueClientConstructorInvalidParam() throws URISyntaxException, StorageException {
+    public void testQueueClientConstructorInvalidParam()
+            throws URISyntaxException, StorageException
+    {
         StorageCredentials credentials = httpAcc.getCredentials();
-        try {
+        try
+        {
             new CloudQueueClient(null, credentials);
             Assert.fail();
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e)
+        {
 
         }
 
-        try {
+        try
+        {
             char[] name = new char[2000];
             new CloudQueueClient(new URI(name.toString()), credentials);
             Assert.fail();
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
 
         }
     }
 
     @Test
-    public void testListQueuesSmallNumber() throws URISyntaxException, StorageException {
+    public void testListQueuesSmallNumber() throws URISyntaxException,
+            StorageException
+    {
         int initialCount = 0;
 
-        for (CloudQueue queue : qClient.listQueues()) {
+        for (CloudQueue queue : qClient.listQueues())
+        {
             Assert.assertNotNull(queue);
             initialCount++;
         }
@@ -74,25 +85,32 @@ public final class CloudQueueClientTests extends QueueTestBase {
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
 
-        for (int i = 0; i < 25; i++) {
-            CloudQueue q = new CloudQueue(AppendQueueName(httpAcc.getQueueEndpoint(), UUID.randomUUID().toString()
-                    .toLowerCase()), qClient);
+        for (int i = 0; i < 25; i++)
+        {
+            CloudQueue q = new CloudQueue(AppendQueueName(
+                    httpAcc.getQueueEndpoint(), UUID.randomUUID().toString()
+                            .toLowerCase()), qClient);
             q.setMetadata(metadata1);
             q.create();
         }
 
         int count = 0;
-        for (CloudQueue queue : qClient.listQueues()) {
+        for (CloudQueue queue : qClient.listQueues())
+        {
             Assert.assertNotNull(queue);
             count++;
         }
 
         Assert.assertEquals(count, initialCount + 25);
 
-        String perfix = "prefixtest" + UUID.randomUUID().toString().substring(0, 8).toLowerCase();
-        for (int i = 0; i < 25; i++) {
-            CloudQueue q = new CloudQueue(AppendQueueName(httpAcc.getQueueEndpoint(), perfix
-                    + UUID.randomUUID().toString().toLowerCase()), qClient);
+        String perfix = "prefixtest"
+                + UUID.randomUUID().toString().substring(0, 8).toLowerCase();
+        for (int i = 0; i < 25; i++)
+        {
+            CloudQueue q = new CloudQueue(AppendQueueName(
+                    httpAcc.getQueueEndpoint(), perfix
+                            + UUID.randomUUID().toString().toLowerCase()),
+                    qClient);
             HashMap<String, String> metadata2 = new HashMap<String, String>();
             metadata2.put("tags", q.getName());
             q.setMetadata(metadata2);
@@ -100,7 +118,9 @@ public final class CloudQueueClientTests extends QueueTestBase {
         }
 
         count = 0;
-        for (CloudQueue queue : qClient.listQueues(perfix, QueueListingDetails.METADATA, null, null)) {
+        for (CloudQueue queue : qClient.listQueues(perfix,
+                QueueListingDetails.METADATA, null, null))
+        {
             count++;
             Assert.assertTrue(queue.getMetadata().size() == 1
                     && queue.getMetadata().get("tags").equals(queue.getName()));
@@ -110,29 +130,37 @@ public final class CloudQueueClientTests extends QueueTestBase {
     }
 
     @Test
-    public void testListQueuesAndListQueuesSegmentedLargeNumber() throws URISyntaxException, StorageException {
+    public void testListQueuesAndListQueuesSegmentedLargeNumber()
+            throws URISyntaxException, StorageException
+    {
         int count = 0;
-        for (CloudQueue queue : qClient.listQueues()) {
+        for (CloudQueue queue : qClient.listQueues())
+        {
             Assert.assertNotNull(queue);
             count++;
         }
 
         int totalLimit = 5005;
-        if (count < totalLimit) {
+        if (count < totalLimit)
+        {
 
             NumberFormat myFormat = NumberFormat.getInstance();
             myFormat.setMinimumIntegerDigits(4);
 
-            for (int i = 0, j = 0; i < totalLimit - count; j++) {
+            for (int i = 0, j = 0; i < totalLimit - count; j++)
+            {
                 String sub = myFormat.format(j);
-                CloudQueue q = new CloudQueue(AppendQueueName(httpAcc.getQueueEndpoint(),
-                        String.format("listqueue" + sub.replace(",", ""))), qClient);
+                CloudQueue q = new CloudQueue(AppendQueueName(
+                        httpAcc.getQueueEndpoint(),
+                        String.format("listqueue" + sub.replace(",", ""))),
+                        qClient);
                 if (q.createIfNotExist())
                     i++;
             }
 
             count = 0;
-            for (CloudQueue queue : qClient.listQueues()) {
+            for (CloudQueue queue : qClient.listQueues())
+            {
                 Assert.assertNotNull(queue);
                 count++;
             }
@@ -146,29 +174,38 @@ public final class CloudQueueClientTests extends QueueTestBase {
     }
 
     @Test
-    public void testListQueuesSegmented() throws URISyntaxException, StorageException {
-        String perfix = "segment" + UUID.randomUUID().toString().substring(0, 8).toLowerCase();
+    public void testListQueuesSegmented() throws URISyntaxException,
+            StorageException
+    {
+        String perfix = "segment"
+                + UUID.randomUUID().toString().substring(0, 8).toLowerCase();
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
 
-        for (int i = 0; i < 35; i++) {
-            CloudQueue q = new CloudQueue(AppendQueueName(httpAcc.getQueueEndpoint(), perfix
-                    + UUID.randomUUID().toString().toLowerCase()), qClient);
+        for (int i = 0; i < 35; i++)
+        {
+            CloudQueue q = new CloudQueue(AppendQueueName(
+                    httpAcc.getQueueEndpoint(), perfix
+                            + UUID.randomUUID().toString().toLowerCase()),
+                    qClient);
             q.setMetadata(metadata1);
             q.create();
         }
 
-        ResultSegment<CloudQueue> segment1 = qClient.listQueuesSegmented(perfix);
+        ResultSegment<CloudQueue> segment1 = qClient
+                .listQueuesSegmented(perfix);
         Assert.assertTrue(segment1.getLength() == 35);
 
-        ResultSegment<CloudQueue> segment2 = qClient.listQueuesSegmented(perfix, QueueListingDetails.NONE, 5, null,
-                null, null);
+        ResultSegment<CloudQueue> segment2 = qClient.listQueuesSegmented(
+                perfix, QueueListingDetails.NONE, 5, null, null, null);
         Assert.assertTrue(segment2.getLength() == 5);
 
         int totalRoundTrip = 1;
-        while (segment2.getHasMoreResults()) {
-            segment2 = qClient.listQueuesSegmented(perfix, QueueListingDetails.NONE, 5,
+        while (segment2.getHasMoreResults())
+        {
+            segment2 = qClient.listQueuesSegmented(perfix,
+                    QueueListingDetails.NONE, 5,
                     segment2.getContinuationToken(), null, null);
             Assert.assertTrue(segment2.getLength() == 5);
             totalRoundTrip++;
@@ -176,27 +213,32 @@ public final class CloudQueueClientTests extends QueueTestBase {
 
         Assert.assertTrue(totalRoundTrip == 7);
 
-        ResultSegment<CloudQueue> segment3 = qClient.listQueuesSegmented(perfix, QueueListingDetails.NONE, 0, null,
-                null, null);
+        ResultSegment<CloudQueue> segment3 = qClient.listQueuesSegmented(
+                perfix, QueueListingDetails.NONE, 0, null, null, null);
         Assert.assertTrue(segment3.getLength() == 35);
     }
 
     @Test
-    public void testListQueuesEqual() throws URISyntaxException, StorageException {
+    public void testListQueuesEqual() throws URISyntaxException,
+            StorageException
+    {
         int count1 = 0;
-        for (CloudQueue queue : qClient.listQueues()) {
+        for (CloudQueue queue : qClient.listQueues())
+        {
             Assert.assertNotNull(queue);
             count1++;
         }
 
         int count2 = 0;
-        for (CloudQueue queue : qClient.listQueues("")) {
+        for (CloudQueue queue : qClient.listQueues(""))
+        {
             Assert.assertNotNull(queue);
             count2++;
         }
 
         int count3 = 0;
-        for (CloudQueue queue : qClient.listQueues(null)) {
+        for (CloudQueue queue : qClient.listQueues(null))
+        {
             Assert.assertNotNull(queue);
             count3++;
         }
@@ -206,21 +248,25 @@ public final class CloudQueueClientTests extends QueueTestBase {
     }
 
     @Test
-    public void testTimeout() throws URISyntaxException, StorageException {
+    public void testTimeout() throws URISyntaxException, StorageException
+    {
         Assert.assertTrue(qClient.getTimeoutInMs() == 30 * 1000);
         qClient.setTimeoutInMs(60 * 1000);
         Assert.assertTrue(qClient.getTimeoutInMs() == 60 * 1000);
     }
 
-    static String AppendQueueName(URI baseURI, String queueName) throws URISyntaxException {
+    static String AppendQueueName(URI baseURI, String queueName)
+            throws URISyntaxException
+    {
         if (baseURI == null)
             return queueName;
 
         String baseAddress = baseURI.toString();
-        if (baseAddress.endsWith("/")) {
+        if (baseAddress.endsWith("/"))
+        {
             return baseAddress + queueName;
-        }
-        else {
+        } else
+        {
             return baseAddress + "/" + queueName;
         }
     }

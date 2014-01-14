@@ -17,69 +17,89 @@ package com.microsoft.windowsazure.services.blob;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- * A class for static factory methods that return instances implementing {@link BlobContract}.
+ * A class for static factory methods that return instances implementing
+ * {@link BlobContract}.
  */
-public class BlobService {
-    private BlobService() {
+public class BlobService
+{
+    private BlobService()
+    {
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link BlobContract} using default values for
-     * initializing a {@link Configuration} instance. Note that the returned interface will not work unless storage
-     * account credentials have been added to the "META-INF/com.microsoft.windowsazure.properties" resource file.
+     * A static factory method that returns an instance implementing
+     * {@link BlobContract} using default values for initializing a
+     * {@link Configuration} instance. Note that the returned interface will not
+     * work unless storage account credentials have been added to the
+     * "META-INF/com.microsoft.windowsazure.properties" resource file.
      * 
-     * @return
-     *         An instance implementing {@link BlobContract} for interacting with the blob service.
+     * @return An instance implementing {@link BlobContract} for interacting
+     *         with the blob service.
      */
-    public static BlobContract create() {
+    public static BlobContract create()
+    {
         return create(null, Configuration.getInstance());
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link BlobContract} using the specified
-     * {@link Configuration} instance. The {@link Configuration} instance must have storage account information and
-     * credentials set before this method is called for the returned interface to work.
+     * A static factory method that returns an instance implementing
+     * {@link BlobContract} using the specified {@link Configuration} instance.
+     * The {@link Configuration} instance must have storage account information
+     * and credentials set before this method is called for the returned
+     * interface to work.
      * 
      * @param config
-     *            A {@link Configuration} instance configured with storage account information and credentials.
+     *            A {@link Configuration} instance configured with storage
+     *            account information and credentials.
      * 
-     * @return
-     *         An instance implementing {@link BlobContract} for interacting with the blob service.
+     * @return An instance implementing {@link BlobContract} for interacting
+     *         with the blob service.
      */
-    public static BlobContract create(Configuration config) {
+    public static BlobContract create(Configuration config)
+    {
         return create(null, config);
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link BlobContract} using default values for
-     * initializing a {@link Configuration} instance, and using the specified profile prefix for service settings. Note
-     * that the returned interface will not work unless storage account settings and credentials have been added to the
-     * "META-INF/com.microsoft.windowsazure.properties" resource file with the specified profile prefix.
+     * A static factory method that returns an instance implementing
+     * {@link BlobContract} using default values for initializing a
+     * {@link Configuration} instance, and using the specified profile prefix
+     * for service settings. Note that the returned interface will not work
+     * unless storage account settings and credentials have been added to the
+     * "META-INF/com.microsoft.windowsazure.properties" resource file with the
+     * specified profile prefix.
      * 
      * @param profile
-     *            A string prefix for the account name and credentials settings in the {@link Configuration} instance.
-     * @return
-     *         An instance implementing {@link BlobContract} for interacting with the blob service.
+     *            A string prefix for the account name and credentials settings
+     *            in the {@link Configuration} instance.
+     * @return An instance implementing {@link BlobContract} for interacting
+     *         with the blob service.
      */
-    public static BlobContract create(String profile) {
+    public static BlobContract create(String profile)
+    {
         return create(profile, Configuration.getInstance());
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link BlobContract} using the specified
-     * {@link Configuration} instance and profile prefix for service settings. The {@link Configuration} instance must
-     * have storage account information and credentials set with the specified profile prefix before this method is
-     * called for the returned interface to work.
+     * A static factory method that returns an instance implementing
+     * {@link BlobContract} using the specified {@link Configuration} instance
+     * and profile prefix for service settings. The {@link Configuration}
+     * instance must have storage account information and credentials set with
+     * the specified profile prefix before this method is called for the
+     * returned interface to work.
      * 
      * @param profile
-     *            A string prefix for the account name and credentials settings in the {@link Configuration} instance.
+     *            A string prefix for the account name and credentials settings
+     *            in the {@link Configuration} instance.
      * @param config
-     *            A {@link Configuration} instance configured with storage account information and credentials.
+     *            A {@link Configuration} instance configured with storage
+     *            account information and credentials.
      * 
-     * @return
-     *         An instance implementing {@link BlobContract} for interacting with the blob service.
+     * @return An instance implementing {@link BlobContract} for interacting
+     *         with the blob service.
      */
-    public static BlobContract create(String profile, Configuration config) {
+    public static BlobContract create(String profile, Configuration config)
+    {
         return config.create(profile, BlobContract.class);
     }
 }

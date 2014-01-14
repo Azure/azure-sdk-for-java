@@ -28,33 +28,41 @@ import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 /**
  * Represents a container for a storage key.
  */
-public final class StorageKey {
+public final class StorageKey
+{
     /**
-     * Computes a signature for the specified string using the HMAC-SHA256 algorithm.
+     * Computes a signature for the specified string using the HMAC-SHA256
+     * algorithm.
      * 
      * @param storageKey
-     *            A <code>StorageKey</code> object that represents the storage key to use.
+     *            A <code>StorageKey</code> object that represents the storage
+     *            key to use.
      * @param stringToSign
      *            The UTF-8-encoded string to sign.
      * 
-     * @return A <code>String</code> that contains the HMAC-SHA256-encoded signature.
+     * @return A <code>String</code> that contains the HMAC-SHA256-encoded
+     *         signature.
      * 
      * @throws IllegalArgumentException
      *             If the string to sign is not a valid Base64-encoded string.
      * @throws InvalidKeyException
      *             If the key is not a valid storage key.
      */
-    public static synchronized String computeMacSha256(final StorageKey storageKey, final String stringToSign)
-            throws InvalidKeyException {
-        if (storageKey.hmacSha256 == null) {
+    public static synchronized String computeMacSha256(
+            final StorageKey storageKey, final String stringToSign)
+            throws InvalidKeyException
+    {
+        if (storageKey.hmacSha256 == null)
+        {
             storageKey.initHmacSha256();
         }
 
         byte[] utf8Bytes = null;
-        try {
+        try
+        {
             utf8Bytes = stringToSign.getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e)
+        {
             throw new IllegalArgumentException(e);
         }
 
@@ -62,31 +70,38 @@ public final class StorageKey {
     }
 
     /**
-     * Computes a signature for the specified string using the HMAC-SHA512 algorithm.
+     * Computes a signature for the specified string using the HMAC-SHA512
+     * algorithm.
      * 
      * @param storageKey
-     *            A <code>StorageKey</code> object that represents the storage key to use.
+     *            A <code>StorageKey</code> object that represents the storage
+     *            key to use.
      * @param stringToSign
      *            The UTF-8-encoded string to sign.
      * 
-     * @return A <code>String</code> that contains the HMAC-SHA512-encoded signature.
+     * @return A <code>String</code> that contains the HMAC-SHA512-encoded
+     *         signature.
      * 
      * @throws IllegalArgumentException
      *             If the string to sign is not a valid Base64-encoded string.
      * @throws InvalidKeyException
      *             If the key is not a valid storage key.
      */
-    public static synchronized String computeMacSha512(final StorageKey storageKey, final String stringToSign)
-            throws InvalidKeyException {
-        if (storageKey.hmacSha512 == null) {
+    public static synchronized String computeMacSha512(
+            final StorageKey storageKey, final String stringToSign)
+            throws InvalidKeyException
+    {
+        if (storageKey.hmacSha512 == null)
+        {
             storageKey.initHmacSha512();
         }
 
         byte[] utf8Bytes = null;
-        try {
+        try
+        {
             utf8Bytes = stringToSign.getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e)
+        {
             throw new IllegalArgumentException(e);
         }
 
@@ -124,7 +139,8 @@ public final class StorageKey {
      * @param key
      *            An array of bytes that represent the storage key.
      */
-    public StorageKey(final byte[] key) {
+    public StorageKey(final byte[] key)
+    {
         this.setKey(key);
     }
 
@@ -133,7 +149,8 @@ public final class StorageKey {
      * 
      * @return A <code>String</code> that represents the Base64-encoded key.
      */
-    public String getBase64EncodedKey() {
+    public String getBase64EncodedKey()
+    {
         return Base64.encode(this.key);
     }
 
@@ -142,7 +159,8 @@ public final class StorageKey {
      * 
      * @return A byte array that represents the key.
      */
-    public byte[] getKey() {
+    public byte[] getKey()
+    {
         final byte[] copy = this.key.clone();
         return copy;
     }
@@ -153,12 +171,14 @@ public final class StorageKey {
      * @throws InvalidKeyException
      *             if the key is not a valid SecretKey according to spec.
      */
-    private void initHmacSha256() throws InvalidKeyException {
+    private void initHmacSha256() throws InvalidKeyException
+    {
         this.key256 = new SecretKeySpec(this.key, "HmacSHA256");
-        try {
+        try
+        {
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
-        }
-        catch (final NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e)
+        {
             throw new IllegalArgumentException();
         }
         this.hmacSha256.init(this.key256);
@@ -170,12 +190,14 @@ public final class StorageKey {
      * @throws InvalidKeyException
      *             if the key is not a valid SecretKey according to spec.
      */
-    private void initHmacSha512() throws InvalidKeyException {
+    private void initHmacSha512() throws InvalidKeyException
+    {
         this.key512 = new SecretKeySpec(this.key, "HmacSHA512");
-        try {
+        try
+        {
             this.hmacSha512 = Mac.getInstance("HmacSHA512");
-        }
-        catch (final NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e)
+        {
             throw new IllegalArgumentException();
         }
         this.hmacSha512.init(this.key512);
@@ -184,12 +206,14 @@ public final class StorageKey {
     /**
      * Sets the key to be used, using the specified byte array as the key.
      * <p/>
-     * This method is provided to support key rotation. This method is not thread-safe.
+     * This method is provided to support key rotation. This method is not
+     * thread-safe.
      * 
      * @param key
      *            A byte array that represents the key being assigned.
      */
-    public void setKey(final byte[] key) {
+    public void setKey(final byte[] key)
+    {
         this.key = key;
         this.hmacSha256 = null;
         this.hmacSha512 = null;
@@ -198,16 +222,19 @@ public final class StorageKey {
     }
 
     /**
-     * Sets the key to be used, using the specified <code>String</code> as the key.
+     * Sets the key to be used, using the specified <code>String</code> as the
+     * key.
      * <p/>
-     * This method is provided to support key rotation. This method is not thread-safe.
+     * This method is provided to support key rotation. This method is not
+     * thread-safe.
      * 
      * @param key
      *            A <code>String</code> that represents the key being assigned.
      * @throws IOException
      *             If the specified key is not a valid Base64-encoded string.
      */
-    public void setKey(final String key) throws IOException {
+    public void setKey(final String key) throws IOException
+    {
         this.key = Base64.decode(key);
     }
 }
