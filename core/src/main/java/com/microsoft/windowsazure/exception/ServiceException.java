@@ -38,30 +38,32 @@ public class ServiceException extends Exception {
 
     private static final long serialVersionUID = -4942076377009150131L;
 
-    int httpStatusCode;
-    String httpReasonPhrase;
-    String serviceName;
+    private int httpStatusCode;
+    private String httpReasonPhrase;
+    private String serviceName;
 
-    String errorCode;
-    String errorMessage;
-    Map<String, String> errorValues;
-    String rawResponseBody;
+    private String errorCode;
+    private String errorMessage;
+    private Map<String, String> errorValues;
+    private String rawResponseBody;
 
     public ServiceException() {
+        super();
+
         init();
     }
 
-    public ServiceException(String message) {
+    public ServiceException(final String message) {
         super(message);
         init();
     }
 
-    public ServiceException(String message, Throwable cause) {
+    public ServiceException(final String message, final Throwable cause) {
         super(message, cause);
         init();
     }
 
-    public ServiceException(Throwable cause) {
+    public ServiceException(final Throwable cause) {
         super(cause);
         init();
     }
@@ -72,17 +74,22 @@ public class ServiceException extends Exception {
 
     @Override
     public String getMessage() {
-        if (this.rawResponseBody == null)
-            return super.getMessage();
-        else
-            return super.getMessage() + "\nResponse Body: " + this.rawResponseBody;
+        final StringBuffer buffer = new StringBuffer(50);
+        buffer.append(super.getMessage());
+        
+        if (this.rawResponseBody != null) {
+            buffer.append("\nResponse Body: ");
+            buffer.append(this.rawResponseBody);
+        }
+        
+        return buffer.toString();
     }
 
     public int getHttpStatusCode() {
         return httpStatusCode;
     }
 
-    public void setHttpStatusCode(int httpStatusCode) {
+    public void setHttpStatusCode(final int httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
     }
 
@@ -90,7 +97,7 @@ public class ServiceException extends Exception {
         return httpReasonPhrase;
     }
 
-    public void setHttpReasonPhrase(String httpReasonPhrase) {
+    public void setHttpReasonPhrase(final String httpReasonPhrase) {
         this.httpReasonPhrase = httpReasonPhrase;
     }
 
@@ -98,7 +105,7 @@ public class ServiceException extends Exception {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
+    public void setErrorCode(final String errorCode) {
         this.errorCode = errorCode;
     }
 
@@ -106,7 +113,7 @@ public class ServiceException extends Exception {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(final String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
@@ -114,15 +121,15 @@ public class ServiceException extends Exception {
         return errorValues;
     }
 
-    public void setErrorValues(Map<String, String> errorValues) {
+    public void setErrorValues(final Map<String, String> errorValues) {
         this.errorValues = errorValues;
     }
 
-    public String getErrorValue(String name) {
+    public String getErrorValue(final String name) {
         return errorValues.get(name);
     }
 
-    public void setErrorValue(String name, String value) {
+    public void setErrorValue(final String name, final String value) {
         this.errorValues.put(name, value);
     }
 
@@ -130,11 +137,11 @@ public class ServiceException extends Exception {
         return serviceName;
     }
 
-    public void setServiceName(String serviceName) {
+    public void setServiceName(final String serviceName) {
         this.serviceName = serviceName;
     }
 
-    public void setRawResponseBody(String body) {
+    public void setRawResponseBody(final String body) {
         this.rawResponseBody = body;
     }
 
@@ -142,25 +149,26 @@ public class ServiceException extends Exception {
         return rawResponseBody;
     }
     
-    public static ServiceException create(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity, String defaultTo)
+    public static ServiceException create(final HttpRequest httpRequest, final String requestContent, final HttpResponse httpResponse, final HttpEntity entity, final String defaultTo)
     {
-        if (httpResponse.getEntity().getContentType().getValue().equals("application/json") ||
-            httpResponse.getEntity().getContentType().getValue().equals("text/json"))
-        {
-            return createFromJson(httpRequest, requestContent, httpResponse, entity);
-        } else if (httpResponse.getEntity().getContentType().getValue().equals("application/xml") ||
-                   httpResponse.getEntity().getContentType().getValue().equals("text/xml"))
-        {
-            return createFromXml(httpRequest, requestContent, httpResponse, entity);
-        } else if (defaultTo.equals("Json"))
-        {
-            return createFromJson(httpRequest, requestContent, httpResponse, entity);
+        ServiceException serviceException;
+
+        if (httpResponse.getEntity().getContentType().getValue().equals("application/json")
+            || httpResponse.getEntity().getContentType().getValue().equals("text/json")) {
+            serviceException = createFromJson(httpRequest, requestContent, httpResponse, entity);
+        } else if (httpResponse.getEntity().getContentType().getValue().equals("application/xml")
+                   || httpResponse.getEntity().getContentType().getValue().equals("text/xml")) {
+            serviceException = createFromXml(httpRequest, requestContent, httpResponse, entity);
+        } else if ("Json".equals(defaultTo)) {
+            serviceException = createFromJson(httpRequest, requestContent, httpResponse, entity);
+        } else {
+            serviceException = createFromXml(httpRequest, requestContent, httpResponse, entity);
         }
 
-        return createFromXml(httpRequest, requestContent, httpResponse, entity);
+        return serviceException;
     }
     
-    public static ServiceException createFromXml(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    public static ServiceException createFromXml(final HttpRequest httpRequest, final String requestContent, final HttpResponse httpResponse, final HttpEntity entity)
     {
         String content;
         try

@@ -27,18 +27,21 @@ import org.apache.http.HttpResponse;
  * operations via implementations of the ICloudTracingInterceptor
  * interface.  All tracing is global.
  */
-public class CloudTracing {
+public abstract class CloudTracing {
+    private CloudTracing() {
+    }
+    
     /**
      * The collection of tracing interceptors to notify.
      */
-    private static final List<CloudTracingInterceptor> interceptors;
+    private static List<CloudTracingInterceptor> interceptors;
     
     /**
      * Gets the collection of tracing interceptors to notify.
      * 
      * @return the collection of tracing interceptors.
      */
-    static List<CloudTracingInterceptor> getInterceptors()
+    public static List<CloudTracingInterceptor> getInterceptors()
     {
         return interceptors;
     }
@@ -64,7 +67,7 @@ public class CloudTracing {
      * 
      * @param enabled Boolean value indicating if tracing is enabled.
      */
-    public static void setIsEnabled(boolean enabled)
+    public static void setIsEnabled(final boolean enabled)
     {
         isEnabled = enabled;
     }
@@ -80,7 +83,7 @@ public class CloudTracing {
      * 
      * @param cloudTracingInterceptor The tracing interceptor.
      */
-    public static void addTracingInterceptor(CloudTracingInterceptor cloudTracingInterceptor)
+    public static void addTracingInterceptor(final CloudTracingInterceptor cloudTracingInterceptor)
     {
         if (cloudTracingInterceptor == null)
         {
@@ -142,7 +145,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.information(message);
                 }
@@ -156,7 +159,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.enter(invocationId, instance, method, parameters);
                 }
@@ -170,7 +173,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.sendRequest(invocationId, request);
                 }
@@ -184,7 +187,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.receiveResponse(invocationId, response);
                 }
@@ -198,7 +201,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.error(invocationId, ex);
                 }
@@ -212,7 +215,7 @@ public class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.exit(invocationId, result);
                 }

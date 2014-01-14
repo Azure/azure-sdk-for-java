@@ -25,7 +25,9 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class PipelineHelpers {
+public final class PipelineHelpers {
+    private PipelineHelpers() {
+    }
 
     private static String createErrorMessage(ClientResponse clientResponse) {
         clientResponse.bufferEntity();

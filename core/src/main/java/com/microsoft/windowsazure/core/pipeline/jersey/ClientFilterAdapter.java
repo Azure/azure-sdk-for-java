@@ -43,7 +43,7 @@ public class ClientFilterAdapter extends ClientFilter {
                 }
             });
 
-            return ((JerseyServiceResponseContext) resp).clientResponse;
+            return ((JerseyServiceResponseContext) resp).getClientResponse();
         }
         catch (Exception e) {
             throw new ClientHandlerException(e);

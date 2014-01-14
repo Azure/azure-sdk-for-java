@@ -22,7 +22,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class ClientFilterRequestAdapter extends ClientFilter {
-    ServiceRequestFilter filter;
+    private ServiceRequestFilter filter;
 
     public ClientFilterRequestAdapter(ServiceRequestFilter filter) {
         this.filter = filter;

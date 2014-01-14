@@ -21,7 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 public class JerseyServiceRequestContext implements ServiceRequestContext {
-    ClientRequest clientRequest;
+    private ClientRequest clientRequest;
 
     public JerseyServiceRequestContext(ClientRequest clientRequest) {
         this.clientRequest = clientRequest;

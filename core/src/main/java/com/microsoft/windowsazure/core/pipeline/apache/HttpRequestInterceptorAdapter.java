@@ -20,7 +20,7 @@ import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
 public class HttpRequestInterceptorAdapter implements HttpRequestInterceptor {
-    ServiceRequestFilter filter;
+    private ServiceRequestFilter filter;
 
     public HttpRequestInterceptorAdapter(ServiceRequestFilter filter) {
         this.filter = filter;

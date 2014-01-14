@@ -18,8 +18,7 @@ package com.microsoft.windowsazure.core.pipeline.apache;
 import org.apache.http.client.methods.HttpPost;
 
 public class CustomHttpDelete extends HttpPost {
-    public CustomHttpDelete(String url)
-    {
+    public CustomHttpDelete(String url) {
         super(url);
     }
     

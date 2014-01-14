@@ -33,7 +33,9 @@ import javax.net.ssl.X509TrustManager;
 /**
  * A factory for creating SSLContext instance.
  */
-public class SSLContextFactory {
+public final class SSLContextFactory {
+    private SSLContextFactory() {
+    }
 
     /**
      * Creates a SSLContext with specified keystore credential.

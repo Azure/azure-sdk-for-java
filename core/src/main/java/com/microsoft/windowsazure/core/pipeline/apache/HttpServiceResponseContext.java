@@ -24,8 +24,8 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.protocol.HttpContext;
 
 public class HttpServiceResponseContext implements ServiceResponseContext {
-    HttpResponse clientResponse;
-    HttpContext httpContext;
+    private HttpResponse clientResponse;
+    private HttpContext httpContext;
 
     public HttpServiceResponseContext(HttpResponse clientResponse, HttpContext httpContext) {
         this.clientResponse = clientResponse;

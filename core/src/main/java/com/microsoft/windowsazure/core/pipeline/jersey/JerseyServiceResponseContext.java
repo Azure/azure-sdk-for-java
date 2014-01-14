@@ -21,9 +21,13 @@ import java.io.InputStream;
 import java.util.List;
 
 public class JerseyServiceResponseContext implements ServiceResponseContext {
-    ClientResponse clientResponse;
+    private final ClientResponse clientResponse;
 
-    public JerseyServiceResponseContext(ClientResponse clientResponse) {
+    protected ClientResponse getClientResponse() {
+        return this.clientResponse;
+    }
+    
+    public JerseyServiceResponseContext(final ClientResponse clientResponse) {
         this.clientResponse = clientResponse;
     }
 

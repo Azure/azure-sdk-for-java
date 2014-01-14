@@ -20,17 +20,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class StreamUtils {
-    public static String toString(InputStream in) throws IOException {
-        BufferedInputStream bis = new BufferedInputStream(in);
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+public final class StreamUtils {
+    private StreamUtils() {        
+    }
 
-        int result = bis.read();
-        while(result != -1) {
-          byte b = (byte)result;
-          buf.write(b);
-          result = bis.read();
-        }        
-        return buf.toString();
+    public static String toString(final InputStream inputStream) throws IOException {
+        final BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+
+        int result = bufferedStream.read();
+        while (result >= 0) {
+          final byte data = (byte) result;
+          byteStream.write(data);
+          result = bufferedStream.read();
+        }
+        return byteStream.toString();
     }
 }
