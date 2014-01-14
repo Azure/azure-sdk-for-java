@@ -15,10 +15,10 @@
 
 package com.microsoft.windowsazure.services.media.entityoperations;
 
-
 /**
  * Get operation for Entities
  * 
  */
-public interface EntityGetOperation<T> extends EntityOperationSingleResult<T> {
+public interface EntityGetOperation<T> extends EntityOperationSingleResult<T>
+{
 }

@@ -24,17 +24,23 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class PipelineHelpersTest {
+public class PipelineHelpersTest
+{
     @Test
-    public void addOptionalSourceAccessConditionHeaderSuccess() throws Exception {
+    public void addOptionalSourceAccessConditionHeaderSuccess()
+            throws Exception
+    {
         // Arrange
         Client client = Client.create();
         WebResource webResource = client.resource("http://www.microsoft.com");
         Builder builder = webResource.header("ms-version", "1.0");
-        AccessConditionHeader accessCondition = AccessConditionHeader.ifMatch("thisIsAETag");
+        AccessConditionHeader accessCondition = AccessConditionHeader
+                .ifMatch("thisIsAETag");
 
         // Act
-        Builder resultBuilder = PipelineHelpers.addOptionalSourceAccessConditionHeader(builder, accessCondition);
+        Builder resultBuilder = PipelineHelpers
+                .addOptionalSourceAccessConditionHeader(builder,
+                        accessCondition);
 
         // Assert
         assertNotNull(resultBuilder);

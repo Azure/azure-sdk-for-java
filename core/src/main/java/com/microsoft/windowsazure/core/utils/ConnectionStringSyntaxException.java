@@ -15,15 +15,18 @@
 
 package com.microsoft.windowsazure.core.utils;
 
-public class ConnectionStringSyntaxException extends Exception {
+public class ConnectionStringSyntaxException extends Exception
+{
 
     private static final long serialVersionUID = 9074252127254835859L;
 
-    public ConnectionStringSyntaxException(String message) {
+    public ConnectionStringSyntaxException(String message)
+    {
         super(message);
     }
 
-    public ConnectionStringSyntaxException(String message, Throwable cause) {
+    public ConnectionStringSyntaxException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

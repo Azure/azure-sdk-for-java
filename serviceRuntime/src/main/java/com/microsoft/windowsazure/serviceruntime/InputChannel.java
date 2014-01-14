@@ -19,6 +19,7 @@ import java.io.InputStream;
 /**
  * 
  */
-interface InputChannel {
+interface InputChannel
+{
     public abstract InputStream getInputStream(String name);
 }

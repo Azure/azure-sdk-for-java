@@ -20,7 +20,6 @@
 // Generated on: 2012.09.17 at 02:31:28 PM PDT 
 //
 
-
 package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.math.BigInteger;
@@ -37,15 +36,17 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
-
 /**
  * 
- *                 The Atom link construct is defined in section 3.4 of the format spec.
- *             
+ * The Atom link construct is defined in section 3.4 of the format spec.
  * 
- * <p>Java class for linkType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for linkType complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="linkType">
@@ -67,10 +68,9 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "linkType", propOrder = {
-    "content"
-})
-public class LinkType {
+@XmlType(name = "linkType", propOrder = { "content" })
+public class LinkType
+{
 
     @XmlValue
     protected String content;
@@ -102,15 +102,14 @@ public class LinkType {
 
     /**
      * 
-     *                 The Atom link construct is defined in section 3.4 of the format spec.
-     *             
+     * The Atom link construct is defined in section 3.4 of the format spec.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * 
+     * @return possible object is {@link String }
+     * 
      */
-    public String getContent() {
+    public String getContent()
+    {
         return content;
     }
 
@@ -118,23 +117,22 @@ public class LinkType {
      * Sets the value of the content property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setContent(String value) {
+    public void setContent(String value)
+    {
         this.content = value;
     }
 
     /**
      * Gets the value of the href property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getHref() {
+    public String getHref()
+    {
         return href;
     }
 
@@ -142,23 +140,22 @@ public class LinkType {
      * Sets the value of the href property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setHref(String value) {
+    public void setHref(String value)
+    {
         this.href = value;
     }
 
     /**
      * Gets the value of the rel property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getRel() {
+    public String getRel()
+    {
         return rel;
     }
 
@@ -166,23 +163,22 @@ public class LinkType {
      * Sets the value of the rel property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setRel(String value) {
+    public void setRel(String value)
+    {
         this.rel = value;
     }
 
     /**
      * Gets the value of the type property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
@@ -190,23 +186,22 @@ public class LinkType {
      * Sets the value of the type property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setType(String value) {
+    public void setType(String value)
+    {
         this.type = value;
     }
 
     /**
      * Gets the value of the hreflang property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getHreflang() {
+    public String getHreflang()
+    {
         return hreflang;
     }
 
@@ -214,23 +209,22 @@ public class LinkType {
      * Sets the value of the hreflang property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setHreflang(String value) {
+    public void setHreflang(String value)
+    {
         this.hreflang = value;
     }
 
     /**
      * Gets the value of the title property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
@@ -238,23 +232,22 @@ public class LinkType {
      * Sets the value of the title property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setTitle(String value) {
+    public void setTitle(String value)
+    {
         this.title = value;
     }
 
     /**
      * Gets the value of the length property.
      * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     * @return possible object is {@link BigInteger }
+     * 
      */
-    public BigInteger getLength() {
+    public BigInteger getLength()
+    {
         return length;
     }
 
@@ -262,23 +255,22 @@ public class LinkType {
      * Sets the value of the length property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *            allowed object is {@link BigInteger }
+     * 
      */
-    public void setLength(BigInteger value) {
+    public void setLength(BigInteger value)
+    {
         this.length = value;
     }
 
     /**
      * Gets the value of the base property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getBase() {
+    public String getBase()
+    {
         return base;
     }
 
@@ -286,23 +278,22 @@ public class LinkType {
      * Sets the value of the base property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setBase(String value) {
+    public void setBase(String value)
+    {
         this.base = value;
     }
 
     /**
      * Gets the value of the lang property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getLang() {
+    public String getLang()
+    {
         return lang;
     }
 
@@ -310,29 +301,30 @@ public class LinkType {
      * Sets the value of the lang property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setLang(String value) {
+    public void setLang(String value)
+    {
         this.lang = value;
     }
 
     /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
      * 
      * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
      * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
      * 
      * 
-     * @return
-     *     always non-null
+     * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes() {
+    public Map<QName, String> getOtherAttributes()
+    {
         return otherAttributes;
     }
 

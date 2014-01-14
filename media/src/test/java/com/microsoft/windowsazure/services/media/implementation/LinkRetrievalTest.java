@@ -35,14 +35,16 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
  * Testing retrieval of links from ATOM entities
  * 
  */
-public class LinkRetrievalTest {
+public class LinkRetrievalTest
+{
     private static QName linkName = new QName("link", Constants.ATOM_NS);
     private MediaProcessorInfo info;
     private LinkType link1;
     private LinkType link2;
 
     @Before
-    public void setup() {
+    public void setup()
+    {
         EntryType entry = new EntryType();
 
         link1 = new LinkType();
@@ -55,46 +57,57 @@ public class LinkRetrievalTest {
         link2.setRel("Related/else");
         link2.setHref("some/other/href/somewhere");
 
-        entry.getEntryChildren().add(new JAXBElement<LinkType>(linkName, LinkType.class, link1));
-        entry.getEntryChildren().add(new JAXBElement<LinkType>(linkName, LinkType.class, link2));
+        entry.getEntryChildren().add(
+                new JAXBElement<LinkType>(linkName, LinkType.class, link1));
+        entry.getEntryChildren().add(
+                new JAXBElement<LinkType>(linkName, LinkType.class, link2));
 
-        MediaProcessorType payload = new MediaProcessorType().setId("DummyId").setName("Dummy Name")
-                .setVersion("0.0.0").setVendor("Contoso").setSku("sku skiddo").setDescription("For testing links only");
+        MediaProcessorType payload = new MediaProcessorType().setId("DummyId")
+                .setName("Dummy Name").setVersion("0.0.0").setVendor("Contoso")
+                .setSku("sku skiddo").setDescription("For testing links only");
 
         ContentType contentElement = new ContentType();
         contentElement.getContent().add(
-                new JAXBElement<MediaProcessorType>(Constants.ODATA_PROPERTIES_ELEMENT_NAME, MediaProcessorType.class,
-                        payload));
+                new JAXBElement<MediaProcessorType>(
+                        Constants.ODATA_PROPERTIES_ELEMENT_NAME,
+                        MediaProcessorType.class, payload));
 
         entry.getEntryChildren().add(
-                new JAXBElement<ContentType>(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, contentElement));
+                new JAXBElement<ContentType>(
+                        Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class,
+                        contentElement));
 
         info = new MediaProcessorInfo(entry, payload);
     }
 
     @Test
-    public void canRetrieveSingleLinkFromEntity() {
+    public void canRetrieveSingleLinkFromEntity()
+    {
         assertTrue(info.hasLink(link1.getRel()));
     }
 
     @Test
-    public void getFalseWhenLinkIsntThere() {
+    public void getFalseWhenLinkIsntThere()
+    {
         assertFalse(info.hasLink("noSuchLink"));
     }
 
     @Test
-    public void canRetrieveEntireLinkByRel() {
+    public void canRetrieveEntireLinkByRel()
+    {
         LinkInfo<?> link = info.getLink(link2.getRel());
 
         assertLinksEqual(link2, link);
     }
 
     @Test
-    public void getNullWhenLinkIsntThere() {
+    public void getNullWhenLinkIsntThere()
+    {
         assertNull(info.getLink("noSuchLink"));
     }
 
-    private static void assertLinksEqual(LinkType expected, LinkInfo<?> actual) {
+    private static void assertLinksEqual(LinkType expected, LinkInfo<?> actual)
+    {
         assertEquals(expected.getHref(), actual.getHref());
     }
 }

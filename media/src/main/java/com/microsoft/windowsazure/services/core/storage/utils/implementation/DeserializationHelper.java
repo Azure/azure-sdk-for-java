@@ -24,9 +24,11 @@ import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. An internal helper class used to parse objects from responses.
+ * RESERVED FOR INTERNAL USE. An internal helper class used to parse objects
+ * from responses.
  */
-public final class DeserializationHelper {
+public final class DeserializationHelper
+{
     /**
      * Reads Metadata from the XMLStreamReader.
      * 
@@ -36,25 +38,33 @@ public final class DeserializationHelper {
      * @throws XMLStreamException
      *             if there is a parsing exception
      */
-    public static HashMap<String, String> parseMetadateFromXML(final XMLStreamReader xmlr) throws XMLStreamException {
+    public static HashMap<String, String> parseMetadateFromXML(
+            final XMLStreamReader xmlr) throws XMLStreamException
+    {
         final HashMap<String, String> retVals = new HashMap<String, String>();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.METADATA_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                Constants.METADATA_ELEMENT);
 
         int eventType = xmlr.getEventType();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
 
-            if (eventType == XMLStreamConstants.END_ELEMENT && Constants.METADATA_ELEMENT.equals(name)) {
+            if (eventType == XMLStreamConstants.END_ELEMENT
+                    && Constants.METADATA_ELEMENT.equals(name))
+            {
                 break;
-            }
-            else if (Constants.INVALID_METADATA_NAME.equals(name)) {
+            } else if (Constants.INVALID_METADATA_NAME.equals(name))
+            {
                 // no op , skip
-            }
-            else if (eventType == XMLStreamConstants.START_ELEMENT) {
-                final String tValue = Utility.readElementFromXMLReader(xmlr, name);
-                if (!Utility.isNullOrEmpty(tValue)) {
+            } else if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                final String tValue = Utility.readElementFromXMLReader(xmlr,
+                        name);
+                if (!Utility.isNullOrEmpty(tValue))
+                {
                     retVals.put(name, tValue);
                 }
             }
@@ -66,7 +76,8 @@ public final class DeserializationHelper {
     /**
      * Private Default Ctor
      */
-    private DeserializationHelper() {
+    private DeserializationHelper()
+    {
         // No op
     }
 }

@@ -16,29 +16,38 @@ package com.microsoft.windowsazure.core;
 
 import java.util.Map;
 
-public interface Builder {
+public interface Builder
+{
 
-    public abstract <S, T> T build(String profile, Class<S> service, Class<T> instance, Map<String, Object> properties);
+    public abstract <S, T> T build(String profile, Class<S> service,
+            Class<T> instance, Map<String, Object> properties);
 
-    public interface Factory<T> {
-        <S> T create(String profile, Class<S> service, Builder builder, Map<String, Object> properties);
+    public interface Factory<T>
+    {
+        <S> T create(String profile, Class<S> service, Builder builder,
+                Map<String, Object> properties);
     }
 
-    public interface Alteration<T> {
-        T alter(String profile, T instance, Builder builder, Map<String, Object> properties);
+    public interface Alteration<T>
+    {
+        T alter(String profile, T instance, Builder builder,
+                Map<String, Object> properties);
     }
 
-    public interface Registry {
+    public interface Registry
+    {
         <T> Registry add(Class<T> service);
 
         <T, TImpl> Registry add(Class<T> service, Class<TImpl> implementation);
 
         <T> Registry add(Factory<T> factory);
 
-        <S, T> void alter(Class<S> service, Class<T> instance, Alteration<T> alteration);
+        <S, T> void alter(Class<S> service, Class<T> instance,
+                Alteration<T> alteration);
     }
 
-    public interface Exports {
+    public interface Exports
+    {
         void register(Registry registry);
     }
 }

@@ -21,124 +21,153 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseRequest;
 
 /**
- * Represents a set of access conditions to be used for operations against the storage services.
+ * Represents a set of access conditions to be used for operations against the
+ * storage services.
  */
-public final class AccessCondition {
+public final class AccessCondition
+{
     /**
      * Generates a new empty AccessCondition.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
-     * @return An <code>AccessCondition</code> object that has no conditions set.
+     * @return An <code>AccessCondition</code> object that has no conditions
+     *         set.
      */
-    public static AccessCondition generateEmptyCondition() {
+    public static AccessCondition generateEmptyCondition()
+    {
         return new AccessCondition();
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource's ETag value matches
-     * the specified ETag value.
+     * Returns an access condition such that an operation will be performed only
+     * if the resource's ETag value matches the specified ETag value.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Match</i> conditional header. If this
-     * access condition is set, the operation is performed only if the ETag of the resource matches the specified ETag.
+     * Setting this access condition modifies the request to include the HTTP
+     * <i>If-Match</i> conditional header. If this access condition is set, the
+     * operation is performed only if the ETag of the resource matches the
+     * specified ETag.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
      * 
-     * @return An <code>AccessCondition</code> object that represents the <i>If-Match</i> condition.
+     * @return An <code>AccessCondition</code> object that represents the
+     *         <i>If-Match</i> condition.
      */
-    public static AccessCondition generateIfMatchCondition(final String etag) {
+    public static AccessCondition generateIfMatchCondition(final String etag)
+    {
         AccessCondition retCondition = new AccessCondition();
         retCondition.setIfMatch(etag);
         return retCondition;
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource has been modified since
-     * the specified time.
+     * Returns an access condition such that an operation will be performed only
+     * if the resource has been modified since the specified time.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Modified-Since</i> conditional
-     * header. If this access condition is set, the operation is performed only if the resource has been modified since
-     * the specified time.
+     * Setting this access condition modifies the request to include the HTTP
+     * <i>If-Modified-Since</i> conditional header. If this access condition is
+     * set, the operation is performed only if the resource has been modified
+     * since the specified time.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
      * @param lastMotified
-     *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
+     *            A <code>java.util.Date</code> object that represents the
+     *            last-modified time to check for the resource.
      * 
-     * @return An <code>AccessCondition</code> object that represents the <i>If-Modified-Since</i> condition.
+     * @return An <code>AccessCondition</code> object that represents the
+     *         <i>If-Modified-Since</i> condition.
      */
-    public static AccessCondition generateIfModifiedSinceCondition(final Date lastMotified) {
+    public static AccessCondition generateIfModifiedSinceCondition(
+            final Date lastMotified)
+    {
         AccessCondition retCondition = new AccessCondition();
         retCondition.ifModifiedSinceDate = lastMotified;
         return retCondition;
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource's ETag value does not
-     * match the specified ETag value.
+     * Returns an access condition such that an operation will be performed only
+     * if the resource's ETag value does not match the specified ETag value.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-None-Match</i> conditional header. If
-     * this access condition is set, the operation is performed only if the ETag of the resource does not match the
-     * specified ETag.
+     * Setting this access condition modifies the request to include the HTTP
+     * <i>If-None-Match</i> conditional header. If this access condition is set,
+     * the operation is performed only if the ETag of the resource does not
+     * match the specified ETag.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
      * @param etag
      *            A <code>String</code> that represents the ETag value to check.
      * 
-     * @return An <code>AccessCondition</code> object that represents the <i>If-None-Match</i> condition.
+     * @return An <code>AccessCondition</code> object that represents the
+     *         <i>If-None-Match</i> condition.
      */
-    public static AccessCondition generateIfNoneMatchCondition(final String etag) {
+    public static AccessCondition generateIfNoneMatchCondition(final String etag)
+    {
         AccessCondition retCondition = new AccessCondition();
         retCondition.setIfNoneMatch(etag);
         return retCondition;
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource has not been modified
-     * since the specified time.
+     * Returns an access condition such that an operation will be performed only
+     * if the resource has not been modified since the specified time.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Unmodified-Since</i> conditional
-     * header. If this access condition is set, the operation is performed only if the resource has not been modified
-     * since the specified time.
+     * Setting this access condition modifies the request to include the HTTP
+     * <i>If-Unmodified-Since</i> conditional header. If this access condition
+     * is set, the operation is performed only if the resource has not been
+     * modified since the specified time.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
      * @param lastMotified
-     *            A <code>java.util.Date</code> object that represents the last-modified time to check for the resource.
+     *            A <code>java.util.Date</code> object that represents the
+     *            last-modified time to check for the resource.
      * 
-     * @return An <code>AccessCondition</code> object that represents the <i>If-Unmodified-Since</i> condition.
+     * @return An <code>AccessCondition</code> object that represents the
+     *         <i>If-Unmodified-Since</i> condition.
      */
-    public static AccessCondition generateIfNotModifiedSinceCondition(final Date lastMotified) {
+    public static AccessCondition generateIfNotModifiedSinceCondition(
+            final Date lastMotified)
+    {
         AccessCondition retCondition = new AccessCondition();
         retCondition.ifUnmodifiedSinceDate = lastMotified;
         return retCondition;
     }
 
     /**
-     * Returns an access condition such that an operation will be performed only if the resource is accessible under the
-     * specified lease id.
+     * Returns an access condition such that an operation will be performed only
+     * if the resource is accessible under the specified lease id.
      * <p>
-     * Setting this access condition modifies the request to include the HTTP <i>If-Unmodified-Since</i> conditional
-     * header. If this access condition is set, the operation is performed only if the resource has not been modified
-     * since the specified time.
+     * Setting this access condition modifies the request to include the HTTP
+     * <i>If-Unmodified-Since</i> conditional header. If this access condition
+     * is set, the operation is performed only if the resource has not been
+     * modified since the specified time.
      * <p>
-     * For more information, see <a href= 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
+     * For more information, see <a href=
+     * 'http://go.microsoft.com/fwlink/?LinkID=224642&clcid=0x409'>Specifying
      * Conditional Headers for Blob Service Operations</a>.
      * 
      * @param leaseID
      *            The lease id to specify.
      * 
      */
-    public static AccessCondition generateLeaseCondition(final String leaseID) {
+    public static AccessCondition generateLeaseCondition(final String leaseID)
+    {
         AccessCondition retCondition = new AccessCondition();
         retCondition.leaseID = leaseID;
         return retCondition;
@@ -169,7 +198,8 @@ public final class AccessCondition {
     /**
      * Creates an instance of the <code>AccessCondition</code> class.
      */
-    public AccessCondition() {
+    public AccessCondition()
+    {
         // Empty Default Ctor
     }
 
@@ -177,13 +207,16 @@ public final class AccessCondition {
      * RESERVED FOR INTERNAL USE. Applies the access condition to the request.
      * 
      * @param request
-     *            A <code>java.net.HttpURLConnection</code> object that represents the request to which the condition is
-     *            being applied.
+     *            A <code>java.net.HttpURLConnection</code> object that
+     *            represents the request to which the condition is being
+     *            applied.
      * 
      * @throws StorageException
-     *             If there is an error parsing the date value of the access condition.
+     *             If there is an error parsing the date value of the access
+     *             condition.
      */
-    public void applyConditionToRequest(final HttpURLConnection request) {
+    public void applyConditionToRequest(final HttpURLConnection request)
+    {
         applyConditionToRequest(request, false);
     }
 
@@ -191,56 +224,83 @@ public final class AccessCondition {
      * RESERVED FOR INTERNAL USE. Applies the access condition to the request.
      * 
      * @param request
-     *            A <code>java.net.HttpURLConnection</code> object that represents the request to which the condition is
-     *            being applied.
+     *            A <code>java.net.HttpURLConnection</code> object that
+     *            represents the request to which the condition is being
+     *            applied.
      * @param useSourceAccessHeaders
-     *            If true will use the Source_ headers for the conditions, otherwise standard headers are used.
+     *            If true will use the Source_ headers for the conditions,
+     *            otherwise standard headers are used.
      * @throws StorageException
-     *             If there is an error parsing the date value of the access condition.
+     *             If there is an error parsing the date value of the access
+     *             condition.
      */
-    public void applyConditionToRequest(final HttpURLConnection request, boolean useSourceAccessHeaders) {
+    public void applyConditionToRequest(final HttpURLConnection request,
+            boolean useSourceAccessHeaders)
+    {
         // When used as a source access condition
-        if (useSourceAccessHeaders) {
-            if (!Utility.isNullOrEmpty(this.leaseID)) {
-                request.setRequestProperty(Constants.HeaderConstants.SOURCE_LEASE_ID_HEADER, this.leaseID);
+        if (useSourceAccessHeaders)
+        {
+            if (!Utility.isNullOrEmpty(this.leaseID))
+            {
+                request.setRequestProperty(
+                        Constants.HeaderConstants.SOURCE_LEASE_ID_HEADER,
+                        this.leaseID);
             }
 
-            if (this.ifModifiedSinceDate != null) {
-                request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_MODIFIED_SINCE_HEADER,
+            if (this.ifModifiedSinceDate != null)
+            {
+                request.setRequestProperty(
+                        Constants.HeaderConstants.SOURCE_IF_MODIFIED_SINCE_HEADER,
                         Utility.getGMTTime(this.ifModifiedSinceDate));
             }
 
-            if (this.ifUnmodifiedSinceDate != null) {
-                request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_UNMODIFIED_SINCE_HEADER,
+            if (this.ifUnmodifiedSinceDate != null)
+            {
+                request.setRequestProperty(
+                        Constants.HeaderConstants.SOURCE_IF_UNMODIFIED_SINCE_HEADER,
                         Utility.getGMTTime(this.ifUnmodifiedSinceDate));
             }
 
-            if (!Utility.isNullOrEmpty(this.etag)) {
-                if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_MATCH)) {
-                    request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_MATCH_HEADER, this.etag);
-                }
-                else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
-                    request.setRequestProperty(Constants.HeaderConstants.SOURCE_IF_NONE_MATCH_HEADER, this.etag);
+            if (!Utility.isNullOrEmpty(this.etag))
+            {
+                if (this.ifMatchHeaderType
+                        .equals(Constants.HeaderConstants.IF_MATCH))
+                {
+                    request.setRequestProperty(
+                            Constants.HeaderConstants.SOURCE_IF_MATCH_HEADER,
+                            this.etag);
+                } else if (this.ifMatchHeaderType
+                        .equals(Constants.HeaderConstants.IF_NONE_MATCH))
+                {
+                    request.setRequestProperty(
+                            Constants.HeaderConstants.SOURCE_IF_NONE_MATCH_HEADER,
+                            this.etag);
                 }
             }
-        }
-        else {
-            if (!Utility.isNullOrEmpty(this.leaseID)) {
+        } else
+        {
+            if (!Utility.isNullOrEmpty(this.leaseID))
+            {
                 BaseRequest.addLeaseId(request, this.leaseID);
             }
 
-            if (this.ifModifiedSinceDate != null) {
-                // The IfModifiedSince has a special helper in HttpURLConnection, use it instead of manually setting the
+            if (this.ifModifiedSinceDate != null)
+            {
+                // The IfModifiedSince has a special helper in
+                // HttpURLConnection, use it instead of manually setting the
                 // header.
                 request.setIfModifiedSince(this.ifModifiedSinceDate.getTime());
             }
 
-            if (this.ifUnmodifiedSinceDate != null) {
-                request.setRequestProperty(Constants.HeaderConstants.IF_UNMODIFIED_SINCE,
+            if (this.ifUnmodifiedSinceDate != null)
+            {
+                request.setRequestProperty(
+                        Constants.HeaderConstants.IF_UNMODIFIED_SINCE,
                         Utility.getGMTTime(this.ifUnmodifiedSinceDate));
             }
 
-            if (!Utility.isNullOrEmpty(this.etag)) {
+            if (!Utility.isNullOrEmpty(this.etag))
+            {
                 request.setRequestProperty(this.ifMatchHeaderType, this.etag);
             }
         }
@@ -249,35 +309,43 @@ public final class AccessCondition {
     /**
      * @return the etag when the If-Match condition is set.
      */
-    public String getIfMatch() {
-        return this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_MATCH) ? this.etag : null;
+    public String getIfMatch()
+    {
+        return this.ifMatchHeaderType
+                .equals(Constants.HeaderConstants.IF_MATCH) ? this.etag : null;
     }
 
     /**
      * @return the ifModifiedSinceDate
      */
-    public Date getIfModifiedSinceDate() {
+    public Date getIfModifiedSinceDate()
+    {
         return this.ifModifiedSinceDate;
     }
 
     /**
      * @return the etag when the If-None-Match condition is set.
      */
-    public String getIfNoneMatch() {
-        return this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH) ? this.etag : null;
+    public String getIfNoneMatch()
+    {
+        return this.ifMatchHeaderType
+                .equals(Constants.HeaderConstants.IF_NONE_MATCH) ? this.etag
+                : null;
     }
 
     /**
      * @return the ifUnmodifiedSinceDate
      */
-    public Date getIfUnmodifiedSinceDate() {
+    public Date getIfUnmodifiedSinceDate()
+    {
         return this.ifUnmodifiedSinceDate;
     }
 
     /**
      * @return the leaseID
      */
-    public String getLeaseID() {
+    public String getLeaseID()
+    {
         return this.leaseID;
     }
 
@@ -285,7 +353,8 @@ public final class AccessCondition {
      * @param etag
      *            the etag to set
      */
-    public void setIfMatch(String etag) {
+    public void setIfMatch(String etag)
+    {
         this.etag = normalizeEtag(etag);
         this.ifMatchHeaderType = Constants.HeaderConstants.IF_MATCH;
     }
@@ -294,7 +363,8 @@ public final class AccessCondition {
      * @param ifModifiedSinceDate
      *            the ifModifiedSinceDate to set
      */
-    public void setIfModifiedSinceDate(Date ifModifiedSinceDate) {
+    public void setIfModifiedSinceDate(Date ifModifiedSinceDate)
+    {
         this.ifModifiedSinceDate = ifModifiedSinceDate;
     }
 
@@ -302,7 +372,8 @@ public final class AccessCondition {
      * @param etag
      *            the etag to set
      */
-    public void setIfNoneMatch(String etag) {
+    public void setIfNoneMatch(String etag)
+    {
         this.etag = normalizeEtag(etag);
         this.ifMatchHeaderType = Constants.HeaderConstants.IF_NONE_MATCH;
     }
@@ -311,7 +382,8 @@ public final class AccessCondition {
      * @param ifUnmodifiedSinceDate
      *            the ifUnmodifiedSinceDate to set
      */
-    public void setIfUnmodifiedSinceDate(Date ifUnmodifiedSinceDate) {
+    public void setIfUnmodifiedSinceDate(Date ifUnmodifiedSinceDate)
+    {
         this.ifUnmodifiedSinceDate = ifUnmodifiedSinceDate;
     }
 
@@ -319,7 +391,8 @@ public final class AccessCondition {
      * @param leaseID
      *            the leaseID to set
      */
-    public void setLeaseID(String leaseID) {
+    public void setLeaseID(String leaseID)
+    {
         this.leaseID = leaseID;
     }
 
@@ -329,34 +402,48 @@ public final class AccessCondition {
      * @param etag
      *            A <code>String</code> that represents the ETag to check.
      * @param lastModified
-     *            A <code>java.util.Date</code> object that represents the last modified date/time.
+     *            A <code>java.util.Date</code> object that represents the last
+     *            modified date/time.
      * 
-     * @return <code>true</code> if the condition is satisfied; otherwise, <code>false</code>.
+     * @return <code>true</code> if the condition is satisfied; otherwise,
+     *         <code>false</code>.
      * 
      */
-    public boolean verifyConditional(final String etag, final Date lastModified) {
-        if (this.ifModifiedSinceDate != null) {
-            // The IfModifiedSince has a special helper in HttpURLConnection, use it instead of manually setting the
+    public boolean verifyConditional(final String etag, final Date lastModified)
+    {
+        if (this.ifModifiedSinceDate != null)
+        {
+            // The IfModifiedSince has a special helper in HttpURLConnection,
+            // use it instead of manually setting the
             // header.
-            if (!lastModified.after(this.ifModifiedSinceDate)) {
+            if (!lastModified.after(this.ifModifiedSinceDate))
+            {
                 return false;
             }
         }
 
-        if (this.ifUnmodifiedSinceDate != null) {
-            if (lastModified.after(this.ifUnmodifiedSinceDate)) {
+        if (this.ifUnmodifiedSinceDate != null)
+        {
+            if (lastModified.after(this.ifUnmodifiedSinceDate))
+            {
                 return false;
             }
         }
 
-        if (!Utility.isNullOrEmpty(this.etag)) {
-            if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_MATCH)) {
-                if (!this.etag.equals(etag) && !this.etag.equals("*")) {
+        if (!Utility.isNullOrEmpty(this.etag))
+        {
+            if (this.ifMatchHeaderType
+                    .equals(Constants.HeaderConstants.IF_MATCH))
+            {
+                if (!this.etag.equals(etag) && !this.etag.equals("*"))
+                {
                     return false;
                 }
-            }
-            else if (this.ifMatchHeaderType.equals(Constants.HeaderConstants.IF_NONE_MATCH)) {
-                if (this.etag.equals(etag)) {
+            } else if (this.ifMatchHeaderType
+                    .equals(Constants.HeaderConstants.IF_NONE_MATCH))
+            {
+                if (this.etag.equals(etag))
+                {
                     return false;
                 }
             }
@@ -372,14 +459,16 @@ public final class AccessCondition {
      *            the etag to normalize
      * @return the quoted etag
      */
-    private static String normalizeEtag(String inTag) {
-        if (Utility.isNullOrEmpty(inTag) || inTag.equals("*")) {
+    private static String normalizeEtag(String inTag)
+    {
+        if (Utility.isNullOrEmpty(inTag) || inTag.equals("*"))
+        {
             return inTag;
-        }
-        else if (inTag.startsWith("\"") && inTag.endsWith("\"")) {
+        } else if (inTag.startsWith("\"") && inTag.endsWith("\""))
+        {
             return inTag;
-        }
-        else {
+        } else
+        {
             return String.format("\"%s\"", inTag);
         }
     }

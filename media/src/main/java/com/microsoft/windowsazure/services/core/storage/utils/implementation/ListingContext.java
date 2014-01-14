@@ -15,9 +15,11 @@
 package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 /**
- * RESERVED FOR INTERNAL USE. A class which holds the current context of a listing
+ * RESERVED FOR INTERNAL USE. A class which holds the current context of a
+ * listing
  */
-public class ListingContext {
+public class ListingContext
+{
 
     /**
      * The Marker value.
@@ -42,7 +44,8 @@ public class ListingContext {
      * @param maxResults
      *            the maximum number of results to retrieve.
      */
-    public ListingContext(final String prefix, final Integer maxResults) {
+    public ListingContext(final String prefix, final Integer maxResults)
+    {
         this.setPrefix(prefix);
         this.setMaxResults(maxResults);
         this.setMarker(null);
@@ -51,21 +54,24 @@ public class ListingContext {
     /**
      * @return the marker
      */
-    public final String getMarker() {
+    public final String getMarker()
+    {
         return this.marker;
     }
 
     /**
      * @return the maxResults
      */
-    public final Integer getMaxResults() {
+    public final Integer getMaxResults()
+    {
         return this.maxResults;
     }
 
     /**
      * @return the prefix
      */
-    public final String getPrefix() {
+    public final String getPrefix()
+    {
         return this.prefix;
     }
 
@@ -73,7 +79,8 @@ public class ListingContext {
      * @param marker
      *            the marker to set
      */
-    public final void setMarker(final String marker) {
+    public final void setMarker(final String marker)
+    {
         this.marker = marker;
     }
 
@@ -81,7 +88,8 @@ public class ListingContext {
      * @param maxResults
      *            the maxResults to set
      */
-    protected final void setMaxResults(final Integer maxResults) {
+    protected final void setMaxResults(final Integer maxResults)
+    {
         this.maxResults = maxResults;
     }
 
@@ -89,7 +97,8 @@ public class ListingContext {
      * @param prefix
      *            the prefix to set
      */
-    public final void setPrefix(final String prefix) {
+    public final void setPrefix(final String prefix)
+    {
         this.prefix = prefix;
     }
 }

@@ -18,58 +18,70 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
- * Represents the options that may be set on a {@link BlobContract#deleteContainer(String, DeleteContainerOptions)
- * deleteContainer} request. These options include a server response timeout for the request and access conditions that
- * specify whether to perform the operation or not depending on the values of the Etag or last modified time of the
- * container. Options that are not set will not be passed to the server with a request.
+ * Represents the options that may be set on a
+ * {@link BlobContract#deleteContainer(String, DeleteContainerOptions)
+ * deleteContainer} request. These options include a server response timeout for
+ * the request and access conditions that specify whether to perform the
+ * operation or not depending on the values of the Etag or last modified time of
+ * the container. Options that are not set will not be passed to the server with
+ * a request.
  */
-public class DeleteContainerOptions extends BlobServiceOptions {
+public class DeleteContainerOptions extends BlobServiceOptions
+{
     private AccessConditionHeader accessCondition;
 
     /**
-     * Sets the server request timeout value associated with this {@link DeleteContainerOptions} instance.
+     * Sets the server request timeout value associated with this
+     * {@link DeleteContainerOptions} instance.
      * <p>
-     * The <em>timeout</em> value only affects calls made on methods where this {@link DeleteContainerOptions} instance
-     * is passed as a parameter.
+     * The <em>timeout</em> value only affects calls made on methods where this
+     * {@link DeleteContainerOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link DeleteContainerOptions} instance.
+     * @return A reference to this {@link DeleteContainerOptions} instance.
      */
     @Override
-    public DeleteContainerOptions setTimeout(Integer timeout) {
+    public DeleteContainerOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
 
     /**
-     * Gets the access conditions associated with this {@link DeleteContainerOptions} instance.
+     * Gets the access conditions associated with this
+     * {@link DeleteContainerOptions} instance.
      * 
-     * @return
-     *         An {@link AccessCondition} reference containing the Etag and last modified time conditions for performing
-     *         the delete container operation, or <code>null</code> if not set.
+     * @return An {@link AccessCondition} reference containing the Etag and last
+     *         modified time conditions for performing the delete container
+     *         operation, or <code>null</code> if not set.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
     /**
-     * Sets the access conditions associated with this {@link DeleteContainerOptions} instance. By default, the delete
-     * container operation will delete the container unconditionally. Use this method to specify conditions on the Etag
-     * or last modified time value for performing the delete container operation.
+     * Sets the access conditions associated with this
+     * {@link DeleteContainerOptions} instance. By default, the delete container
+     * operation will delete the container unconditionally. Use this method to
+     * specify conditions on the Etag or last modified time value for performing
+     * the delete container operation.
      * <p>
-     * The <em>accessCondition</em> value only affects calls made on methods where this {@link DeleteContainerOptions}
-     * instance is passed as a parameter.
+     * The <em>accessCondition</em> value only affects calls made on methods
+     * where this {@link DeleteContainerOptions} instance is passed as a
+     * parameter.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} reference containing the Etag and last modified time conditions for
-     *            performing the delete container operation. Specify <code>null</code> to make the operation
-     *            unconditional.
-     * @return
-     *         A reference to this {@link DeleteContainerOptions} instance.
+     *            An {@link AccessCondition} reference containing the Etag and
+     *            last modified time conditions for performing the delete
+     *            container operation. Specify <code>null</code> to make the
+     *            operation unconditional.
+     * @return A reference to this {@link DeleteContainerOptions} instance.
      */
-    public DeleteContainerOptions setAccessCondition(AccessConditionHeader accessCondition) {
+    public DeleteContainerOptions setAccessCondition(
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

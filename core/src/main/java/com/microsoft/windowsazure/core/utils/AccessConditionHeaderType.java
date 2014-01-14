@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.core.utils;
 /**
  * Specifies the kinds of conditional headers that may be set for a request.
  */
-public enum AccessConditionHeaderType {
+public enum AccessConditionHeaderType
+{
     /**
      * Specifies that no conditional headers are set.
      */
@@ -44,23 +45,27 @@ public enum AccessConditionHeaderType {
     IF_NONE_MATCH;
 
     /**
-     * Returns a string representation of the current value, or an empty string if no value is assigned.
+     * Returns a string representation of the current value, or an empty string
+     * if no value is assigned.
      * 
-     * @return A <code>String</code> that represents the currently assigned value.
+     * @return A <code>String</code> that represents the currently assigned
+     *         value.
      */
     @Override
-    public String toString() {
-        switch (this) {
-            case IF_MATCH:
-                return "If-Match";
-            case IF_UNMODIFIED_SINCE:
-                return "If-Unmodified-Since";
-            case IF_MODIFIED_SINCE:
-                return "If-Modified-Since";
-            case IF_NONE_MATCH:
-                return "If-None-Match";
-            default:
-                return "";
+    public String toString()
+    {
+        switch (this)
+        {
+        case IF_MATCH:
+            return "If-Match";
+        case IF_UNMODIFIED_SINCE:
+            return "If-Unmodified-Since";
+        case IF_MODIFIED_SINCE:
+            return "If-Modified-Since";
+        case IF_NONE_MATCH:
+            return "If-None-Match";
+        default:
+            return "";
         }
     }
 }

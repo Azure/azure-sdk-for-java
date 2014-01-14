@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * Represents a message in the Windows Azure Queue service.
  */
-public class CloudQueueMessage {
+public class CloudQueueMessage
+{
 
     /**
      * Holds the message ID.
@@ -70,7 +71,8 @@ public class CloudQueueMessage {
      * Initializes a new instance of the CloudQueueMessage class (used
      * internally).
      */
-    CloudQueueMessage() {
+    CloudQueueMessage()
+    {
         // no op
     }
 
@@ -81,7 +83,8 @@ public class CloudQueueMessage {
      * @param content
      *            The array of <code>byte</code> that contains the message.
      */
-    public CloudQueueMessage(final byte[] content) {
+    public CloudQueueMessage(final byte[] content)
+    {
         this.setMessageContent(content);
     }
 
@@ -92,7 +95,8 @@ public class CloudQueueMessage {
      * @param content
      *            The <code>String</code> that contains the message.
      */
-    public CloudQueueMessage(final String content) {
+    public CloudQueueMessage(final String content)
+    {
         this.setMessageContent(content);
     }
 
@@ -101,7 +105,8 @@ public class CloudQueueMessage {
      * 
      * @return The dequeue count.
      */
-    public final int getDequeueCount() {
+    public final int getDequeueCount()
+    {
         return this.dequeueCount;
     }
 
@@ -110,7 +115,8 @@ public class CloudQueueMessage {
      * 
      * @return The time that the message expires.
      */
-    public final Date getExpirationTime() {
+    public final Date getExpirationTime()
+    {
         return this.expirationTime;
     }
 
@@ -119,7 +125,8 @@ public class CloudQueueMessage {
      * 
      * @return A <code>String</code> that contains the message ID.
      */
-    public final String getId() {
+    public final String getId()
+    {
         return this.id;
     }
 
@@ -128,7 +135,8 @@ public class CloudQueueMessage {
      * 
      * @return The time that the message was added to the queue.
      */
-    public final Date getInsertionTime() {
+    public final Date getInsertionTime()
+    {
         return this.insertionTime;
     }
 
@@ -140,20 +148,24 @@ public class CloudQueueMessage {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final byte[] getMessageContentAsByte() throws StorageException {
-        if (Utility.isNullOrEmpty(this.messageContent)) {
+    public final byte[] getMessageContentAsByte() throws StorageException
+    {
+        if (Utility.isNullOrEmpty(this.messageContent))
+        {
             return new byte[0];
         }
 
-        if (this.messageType == QueueMessageType.RAW_STRING) {
-            try {
+        if (this.messageType == QueueMessageType.RAW_STRING)
+        {
+            try
+            {
                 return this.messageContent.getBytes("UTF8");
-            }
-            catch (final UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e)
+            {
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
-        }
-        else {
+        } else
+        {
             return Base64.decode(this.messageContent);
         }
     }
@@ -166,19 +178,23 @@ public class CloudQueueMessage {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final String getMessageContentAsString() throws StorageException {
-        if (this.messageType == QueueMessageType.RAW_STRING) {
+    public final String getMessageContentAsString() throws StorageException
+    {
+        if (this.messageType == QueueMessageType.RAW_STRING)
+        {
             return this.messageContent;
-        }
-        else {
-            if (Utility.isNullOrEmpty(this.messageContent)) {
+        } else
+        {
+            if (Utility.isNullOrEmpty(this.messageContent))
+            {
                 return null;
             }
 
-            try {
+            try
+            {
                 return new String(Base64.decode(this.messageContent), "UTF-8");
-            }
-            catch (final UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e)
+            {
                 throw Utility.generateNewUnexpectedStorageException(e);
             }
         }
@@ -191,18 +207,24 @@ public class CloudQueueMessage {
      * 
      * @throws StorageException
      */
-    protected final String getMessageContentForTransfer(final boolean shouldEncodeMessage) throws StorageException {
+    protected final String getMessageContentForTransfer(
+            final boolean shouldEncodeMessage) throws StorageException
+    {
         String result = null;
-        if (this.messageType == QueueMessageType.RAW_STRING && shouldEncodeMessage) {
+        if (this.messageType == QueueMessageType.RAW_STRING
+                && shouldEncodeMessage)
+        {
             result = Base64.encode(this.getMessageContentAsByte());
 
-        }
-        else {
+        } else
+        {
             result = this.messageContent;
         }
 
-        if (result != null && result.length() > QueueConstants.MAX_MESSAGE_SIZE) {
-            throw new IllegalArgumentException(String.format("The message size can't be larger than %s bytes. ",
+        if (result != null && result.length() > QueueConstants.MAX_MESSAGE_SIZE)
+        {
+            throw new IllegalArgumentException(String.format(
+                    "The message size can't be larger than %s bytes. ",
                     QueueConstants.MAX_MESSAGE_SIZE));
         }
 
@@ -215,7 +237,8 @@ public class CloudQueueMessage {
      * @return A <code>java.util.Date</code> with the time that the message will
      *         next be visible.
      */
-    public final Date getNextVisibleTime() {
+    public final Date getNextVisibleTime()
+    {
         return this.nextVisibleTime;
     }
 
@@ -224,7 +247,8 @@ public class CloudQueueMessage {
      * 
      * @return A <code>String</code> containing the message's pop receipt.
      */
-    public final String getPopReceipt() {
+    public final String getPopReceipt()
+    {
         return this.popReceipt;
     }
 
@@ -235,7 +259,8 @@ public class CloudQueueMessage {
      *            The <code>java.util.Date</code> representing the expiration
      *            time to set on the message.
      */
-    public final void setExpirationTime(final Date expirationTime) {
+    public final void setExpirationTime(final Date expirationTime)
+    {
         this.expirationTime = expirationTime;
     }
 
@@ -245,7 +270,8 @@ public class CloudQueueMessage {
      * @param content
      *            The content of the message.
      */
-    public final void setMessageContent(final byte[] content) {
+    public final void setMessageContent(final byte[] content)
+    {
         Utility.assertNotNull("content", content);
 
         this.messageContent = Base64.encode(content);
@@ -258,7 +284,8 @@ public class CloudQueueMessage {
      * @param content
      *            The content of the message.
      */
-    public final void setMessageContent(final String content) {
+    public final void setMessageContent(final String content)
+    {
         this.messageContent = content;
         this.messageType = QueueMessageType.RAW_STRING;
     }
@@ -270,7 +297,8 @@ public class CloudQueueMessage {
      *            The <code>java.util.Date</code> representing the time to set
      *            for the message to be visible.
      */
-    public final void setNextVisibleTime(final Date nextVisibleTime) {
+    public final void setNextVisibleTime(final Date nextVisibleTime)
+    {
         this.nextVisibleTime = nextVisibleTime;
     }
 }

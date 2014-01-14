@@ -32,14 +32,16 @@ import org.mockito.stubbing.Answer;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.utils.DateFactory;
 
-public class OAuthTokenManagerTest {
+public class OAuthTokenManagerTest
+{
     private OAuthContract contract;
     private OAuthTokenManager client;
     private DateFactory dateFactory;
     private Calendar calendar;
 
     @Before
-    public void init() throws URISyntaxException {
+    public void init() throws URISyntaxException
+    {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
         dateFactory = mock(DateFactory.class);
@@ -52,34 +54,45 @@ public class OAuthTokenManagerTest {
         String accountPassword = "testpassword";
         String scope = "testscope";
 
-        client = new OAuthTokenManager(contract, dateFactory, acsBaseUri, accountName, accountPassword, scope);
+        client = new OAuthTokenManager(contract, dateFactory, acsBaseUri,
+                accountName, accountPassword, scope);
 
-        when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
+        when(dateFactory.getDate()).thenAnswer(new Answer<Date>()
+        {
             @Override
-            public Date answer(InvocationOnMock invocation) throws Throwable {
+            public Date answer(InvocationOnMock invocation) throws Throwable
+            {
                 return calendar.getTime();
             }
         });
     }
 
-    private void doIncrementingTokens() throws ServiceException, URISyntaxException, IOException {
-        doAnswer(new Answer<OAuthTokenResponse>() {
+    private void doIncrementingTokens() throws ServiceException,
+            URISyntaxException, IOException
+    {
+        doAnswer(new Answer<OAuthTokenResponse>()
+        {
             int count = 0;
 
             @Override
-            public OAuthTokenResponse answer(InvocationOnMock invocation) throws Throwable {
+            public OAuthTokenResponse answer(InvocationOnMock invocation)
+                    throws Throwable
+            {
                 ++count;
                 OAuthTokenResponse wrapResponse = new OAuthTokenResponse();
                 wrapResponse.setAccessToken("testaccesstoken1-" + count);
                 wrapResponse.setExpiresIn(83);
                 return wrapResponse;
             }
-        }).when(contract).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
+        }).when(contract).getAccessToken(new URI("testurl"), "testname",
+                "testpassword", "testscope");
 
     }
 
     @Test
-    public void clientUsesContractToGetToken() throws ServiceException, URISyntaxException, IOException {
+    public void clientUsesContractToGetToken() throws ServiceException,
+            URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 
@@ -92,8 +105,9 @@ public class OAuthTokenManagerTest {
     }
 
     @Test
-    public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid() throws ServiceException, URISyntaxException,
-            IOException {
+    public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid()
+            throws ServiceException, URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 
@@ -108,12 +122,14 @@ public class OAuthTokenManagerTest {
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-1", accessToken3);
 
-        verify(contract, times(1)).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
+        verify(contract, times(1)).getAccessToken(new URI("testurl"),
+                "testname", "testpassword", "testscope");
     }
 
     @Test
-    public void clientWillBeCalledWhenTokenIsHalfwayToExpiring() throws ServiceException, URISyntaxException,
-            IOException {
+    public void clientWillBeCalledWhenTokenIsHalfwayToExpiring()
+            throws ServiceException, URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 
@@ -128,7 +144,8 @@ public class OAuthTokenManagerTest {
         assertEquals("testaccesstoken1-1", accessToken2);
         assertEquals("testaccesstoken1-2", accessToken3);
 
-        verify(contract, times(2)).getAccessToken(new URI("testurl"), "testname", "testpassword", "testscope");
+        verify(contract, times(2)).getAccessToken(new URI("testurl"),
+                "testname", "testpassword", "testscope");
     }
 
 }

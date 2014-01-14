@@ -25,7 +25,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 /**
  * Represents an exception for the Windows Azure storage service.
  */
-public class StorageException extends Exception {
+public class StorageException extends Exception
+{
 
     /**
      * Represents the serialization version number.
@@ -33,29 +34,35 @@ public class StorageException extends Exception {
     private static final long serialVersionUID = 7972747254288274928L;
 
     /**
-     * Returns extended error information from the specified request and operation context.
+     * Returns extended error information from the specified request and
+     * operation context.
      * 
      * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request whose extended error information
-     *            is being retrieved.
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request whose extended error information is being retrieved.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return A {@link StorageExtendedErrorInformation} object that represents the error details for the specified
-     *         request.
+     * @return A {@link StorageExtendedErrorInformation} object that represents
+     *         the error details for the specified request.
      */
-    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(final HttpURLConnection request,
-            final OperationContext opContext) {
-        if (request == null) {
+    protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(
+            final HttpURLConnection request, final OperationContext opContext)
+    {
+        if (request == null)
+        {
             return null;
         }
-        try {
-            final StorageErrorResponse response = new StorageErrorResponse(request.getErrorStream());
+        try
+        {
+            final StorageErrorResponse response = new StorageErrorResponse(
+                    request.getErrorStream());
             return response.getExtendedErrorInformation();
-        }
-        catch (final XMLStreamException e) {
+        } catch (final XMLStreamException e)
+        {
             return null;
         }
     }
@@ -64,70 +71,90 @@ public class StorageException extends Exception {
      * Translates the specified exception into a storage exception.
      * 
      * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request whose exception is being
-     *            translated.
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request whose exception is being translated.
      * @param cause
-     *            An <code>Exception</code> object that represents the exception to translate.
+     *            An <code>Exception</code> object that represents the exception
+     *            to translate.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return A <code>StorageException</code> object that represents translated exception.
+     * @return A <code>StorageException</code> object that represents translated
+     *         exception.
      */
-    public static StorageException translateException(final HttpURLConnection request, final Exception cause,
-            final OperationContext opContext) {
-        if (request == null) {
-            return new StorageException("Client error",
+    public static StorageException translateException(
+            final HttpURLConnection request, final Exception cause,
+            final OperationContext opContext)
+    {
+        if (request == null)
+        {
+            return new StorageException(
+                    "Client error",
                     "A Client side exception occurred, please check the inner exception for details",
                     Constants.HeaderConstants.HTTP_UNUSED_306, null, cause);
         }
 
-        final StorageExtendedErrorInformation extendedError = getErrorDetailsFromRequest(request, opContext);
+        final StorageExtendedErrorInformation extendedError = getErrorDetailsFromRequest(
+                request, opContext);
         StorageException translatedException = null;
 
         String responseMessage = Constants.EMPTY_STRING;
         int responseCode = 0;
-        try {
+        try
+        {
             responseCode = request.getResponseCode();
 
-            // When the exception is expected(IfNotExists) or we have already parsed the exception, we pass null as
-            // the cause. In such cases, we should just try to get the message from the request.
-            if (cause == null || cause instanceof SocketException) {
+            // When the exception is expected(IfNotExists) or we have already
+            // parsed the exception, we pass null as
+            // the cause. In such cases, we should just try to get the message
+            // from the request.
+            if (cause == null || cause instanceof SocketException)
+            {
                 responseMessage = request.getResponseMessage();
-            }
-            else if (cause != null) {
+            } else if (cause != null)
+            {
                 responseMessage = cause.getMessage();
             }
-        }
-        catch (final IOException e) {
+        } catch (final IOException e)
+        {
             // ignore errors
         }
 
-        if (responseMessage == null) {
+        if (responseMessage == null)
+        {
             responseMessage = Constants.EMPTY_STRING;
         }
 
         // 1. If extended information is available use it
-        if (extendedError != null) {
-            translatedException = new StorageException(extendedError.getErrorCode(), responseMessage, responseCode,
-                    extendedError, cause);
+        if (extendedError != null)
+        {
+            translatedException = new StorageException(
+                    extendedError.getErrorCode(), responseMessage,
+                    responseCode, extendedError, cause);
 
-            if (translatedException != null) {
+            if (translatedException != null)
+            {
                 return translatedException;
             }
         }
 
         // 2. If extended information is unavailable, translate exception based
         // on status code
-        translatedException = translateFromHttpStatus(responseCode, responseMessage, null, cause);
+        translatedException = translateFromHttpStatus(responseCode,
+                responseMessage, null, cause);
 
-        if (translatedException != null) {
+        if (translatedException != null)
+        {
             return translatedException;
         }
 
-        return new StorageException(StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
-                "The server encountered an unknown failure: ".concat(responseMessage),
+        return new StorageException(
+                StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
+                "The server encountered an unknown failure: "
+                        .concat(responseMessage),
                 HttpURLConnection.HTTP_INTERNAL_ERROR, null, cause);
     }
 
@@ -139,64 +166,81 @@ public class StorageException extends Exception {
      * @param statusDescription
      *            A <code>String</code> that represents the status description.
      * @param details
-     *            A {@link StorageExtendedErrorInformation} object that represents the errror details returned by the
-     *            operation.
+     *            A {@link StorageExtendedErrorInformation} object that
+     *            represents the errror details returned by the operation.
      * @param inner
-     *            An <code>Exception</code> object that represents a reference to the initial exception, if one exists.
+     *            An <code>Exception</code> object that represents a reference
+     *            to the initial exception, if one exists.
      * 
-     * @return A <code>StorageException</code> object that represents translated exception.
+     * @return A <code>StorageException</code> object that represents translated
+     *         exception.
      **/
-    protected static StorageException translateFromHttpStatus(final int statusCode, final String statusDescription,
-            final StorageExtendedErrorInformation details, final Exception inner) {
-        switch (statusCode) {
-            case HttpURLConnection.HTTP_FORBIDDEN:
-                return new StorageException(StorageErrorCode.ACCESS_DENIED.toString(), statusDescription, statusCode,
-                        details, inner);
+    protected static StorageException translateFromHttpStatus(
+            final int statusCode, final String statusDescription,
+            final StorageExtendedErrorInformation details, final Exception inner)
+    {
+        switch (statusCode)
+        {
+        case HttpURLConnection.HTTP_FORBIDDEN:
+            return new StorageException(
+                    StorageErrorCode.ACCESS_DENIED.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_GONE:
-            case HttpURLConnection.HTTP_NOT_FOUND:
-                return new StorageException(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), statusDescription,
-                        statusCode, details, inner);
+        case HttpURLConnection.HTTP_GONE:
+        case HttpURLConnection.HTTP_NOT_FOUND:
+            return new StorageException(
+                    StorageErrorCode.RESOURCE_NOT_FOUND.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_BAD_REQUEST:
-                return new StorageException(StorageErrorCode.BAD_REQUEST.toString(), statusDescription, statusCode,
-                        details, inner);
+        case HttpURLConnection.HTTP_BAD_REQUEST:
+            return new StorageException(
+                    StorageErrorCode.BAD_REQUEST.toString(), statusDescription,
+                    statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_PRECON_FAILED:
-            case HttpURLConnection.HTTP_NOT_MODIFIED:
-                return new StorageException(StorageErrorCode.CONDITION_FAILED.toString(), statusDescription,
-                        statusCode, details, inner);
+        case HttpURLConnection.HTTP_PRECON_FAILED:
+        case HttpURLConnection.HTTP_NOT_MODIFIED:
+            return new StorageException(
+                    StorageErrorCode.CONDITION_FAILED.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_CONFLICT:
-                return new StorageException(StorageErrorCode.RESOURCE_ALREADY_EXISTS.toString(), statusDescription,
-                        statusCode, details, inner);
+        case HttpURLConnection.HTTP_CONFLICT:
+            return new StorageException(
+                    StorageErrorCode.RESOURCE_ALREADY_EXISTS.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
-                return new StorageException(StorageErrorCode.SERVICE_TIMEOUT.toString(), statusDescription, statusCode,
-                        details, inner);
+        case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
+            return new StorageException(
+                    StorageErrorCode.SERVICE_TIMEOUT.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case 416:
-                // RequestedRangeNotSatisfiable - No corresponding enum in HttpURLConnection
-                return new StorageException(StorageErrorCode.BAD_REQUEST.toString(), statusDescription, statusCode,
-                        details, inner);
+        case 416:
+            // RequestedRangeNotSatisfiable - No corresponding enum in
+            // HttpURLConnection
+            return new StorageException(
+                    StorageErrorCode.BAD_REQUEST.toString(), statusDescription,
+                    statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_INTERNAL_ERROR:
-                return new StorageException(StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(), statusDescription,
-                        statusCode, details, inner);
+        case HttpURLConnection.HTTP_INTERNAL_ERROR:
+            return new StorageException(
+                    StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_NOT_IMPLEMENTED:
-                return new StorageException(StorageErrorCode.NOT_IMPLEMENTED.toString(), statusDescription, statusCode,
-                        details, inner);
+        case HttpURLConnection.HTTP_NOT_IMPLEMENTED:
+            return new StorageException(
+                    StorageErrorCode.NOT_IMPLEMENTED.toString(),
+                    statusDescription, statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_BAD_GATEWAY:
-                return new StorageException(StorageErrorCode.BAD_GATEWAY.toString(), statusDescription, statusCode,
-                        details, inner);
+        case HttpURLConnection.HTTP_BAD_GATEWAY:
+            return new StorageException(
+                    StorageErrorCode.BAD_GATEWAY.toString(), statusDescription,
+                    statusCode, details, inner);
 
-            case HttpURLConnection.HTTP_VERSION:
-                return new StorageException(StorageErrorCode.HTTP_VERSION_NOT_SUPPORTED.toString(), statusDescription,
-                        statusCode, details, inner);
-            default:
-                return null;
+        case HttpURLConnection.HTTP_VERSION:
+            return new StorageException(
+                    StorageErrorCode.HTTP_VERSION_NOT_SUPPORTED.toString(),
+                    statusDescription, statusCode, details, inner);
+        default:
+            return null;
         }
     }
 
@@ -218,24 +262,32 @@ public class StorageException extends Exception {
     private final int httpStatusCode;
 
     /**
-     * Creates an instance of the <code>StorageException</code> class using the specified parameters.
+     * Creates an instance of the <code>StorageException</code> class using the
+     * specified parameters.
      * 
      * @param errorCode
-     *            A <code>String</code> that represents the error code returned by the operation.
+     *            A <code>String</code> that represents the error code returned
+     *            by the operation.
      * @param message
-     *            A <code>String</code> that represents the error message returned by the operation.
+     *            A <code>String</code> that represents the error message
+     *            returned by the operation.
      * @param statusCode
      *            The HTTP status code returned by the operation.
      * @param extendedErrorInfo
-     *            A {@link StorageExtendedErrorInformation} object that represents the extended error information
-     *            returned by the operation.
+     *            A {@link StorageExtendedErrorInformation} object that
+     *            represents the extended error information returned by the
+     *            operation.
      * @param innerException
-     *            An <code>Exception</code> object that represents a reference to the initial exception, if one exists.
+     *            An <code>Exception</code> object that represents a reference
+     *            to the initial exception, if one exists.
      * 
      * @see StorageExtendedErrorInformation
      */
-    public StorageException(final String errorCode, final String message, final int statusCode,
-            final StorageExtendedErrorInformation extendedErrorInfo, final Exception innerException) {
+    public StorageException(final String errorCode, final String message,
+            final int statusCode,
+            final StorageExtendedErrorInformation extendedErrorInfo,
+            final Exception innerException)
+    {
         super(message, innerException);
         this.errorCode = errorCode;
         this.httpStatusCode = statusCode;
@@ -245,21 +297,24 @@ public class StorageException extends Exception {
     /**
      * @return the errorCode
      */
-    public String getErrorCode() {
+    public String getErrorCode()
+    {
         return this.errorCode;
     }
 
     /**
      * @return the extendedErrorInformation
      */
-    public StorageExtendedErrorInformation getExtendedErrorInformation() {
+    public StorageExtendedErrorInformation getExtendedErrorInformation()
+    {
         return this.extendedErrorInformation;
     }
 
     /**
      * @return the httpStatusCode
      */
-    public int getHttpStatusCode() {
+    public int getHttpStatusCode()
+    {
         return this.httpStatusCode;
     }
 }

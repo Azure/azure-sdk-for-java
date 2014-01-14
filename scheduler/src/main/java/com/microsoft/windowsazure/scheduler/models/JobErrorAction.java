@@ -24,50 +24,68 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Action to invoke for the job error.
-*/
+ * Action to invoke for the job error.
+ */
 public class JobErrorAction
 {
     private JobQueueMessage queueMessage;
-    
+
     /**
-    * Queue and message for a queue message action type.
-    */
-    public JobQueueMessage getQueueMessage() { return this.queueMessage; }
-    
+     * Queue and message for a queue message action type.
+     */
+    public JobQueueMessage getQueueMessage()
+    {
+        return this.queueMessage;
+    }
+
     /**
-    * Queue and message for a queue message action type.
-    */
-    public void setQueueMessage(JobQueueMessage queueMessage) { this.queueMessage = queueMessage; }
-    
+     * Queue and message for a queue message action type.
+     */
+    public void setQueueMessage(JobQueueMessage queueMessage)
+    {
+        this.queueMessage = queueMessage;
+    }
+
     private JobHttpRequest request;
-    
+
     /**
-    * Request for a http or https action type.
-    */
-    public JobHttpRequest getRequest() { return this.request; }
-    
+     * Request for a http or https action type.
+     */
+    public JobHttpRequest getRequest()
+    {
+        return this.request;
+    }
+
     /**
-    * Request for a http or https action type.
-    */
-    public void setRequest(JobHttpRequest request) { this.request = request; }
-    
+     * Request for a http or https action type.
+     */
+    public void setRequest(JobHttpRequest request)
+    {
+        this.request = request;
+    }
+
     private JobActionType type;
-    
+
     /**
-    * Type of action. Can be one of http, https, storageQueue.
-    */
-    public JobActionType getType() { return this.type; }
-    
+     * Type of action. Can be one of http, https, storageQueue.
+     */
+    public JobActionType getType()
+    {
+        return this.type;
+    }
+
     /**
-    * Type of action. Can be one of http, https, storageQueue.
-    */
-    public void setType(JobActionType type) { this.type = type; }
-    
+     * Type of action. Can be one of http, https, storageQueue.
+     */
+    public void setType(JobActionType type)
+    {
+        this.type = type;
+    }
+
     /**
-    * Initializes a new instance of the JobErrorAction class.
-    *
-    */
+     * Initializes a new instance of the JobErrorAction class.
+     * 
+     */
     public JobErrorAction()
     {
     }

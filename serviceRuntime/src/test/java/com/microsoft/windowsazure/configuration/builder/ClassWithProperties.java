@@ -14,11 +14,13 @@
  */
 package com.microsoft.windowsazure.configuration.builder;
 
-public class ClassWithProperties {
+public class ClassWithProperties
+{
     String foo;
     String bar;
 
-    public ClassWithProperties() {
+    public ClassWithProperties()
+    {
         foo = "one";
         bar = "two";
     }
@@ -26,7 +28,8 @@ public class ClassWithProperties {
     /**
      * @return the foo
      */
-    public String getFoo() {
+    public String getFoo()
+    {
         return foo;
     }
 
@@ -34,14 +37,16 @@ public class ClassWithProperties {
      * @param foo
      *            the foo to set
      */
-    public void setFoo(String foo) {
+    public void setFoo(String foo)
+    {
         this.foo = foo;
     }
 
     /**
      * @return the bar
      */
-    public String getBar() {
+    public String getBar()
+    {
         return bar;
     }
 
@@ -49,7 +54,8 @@ public class ClassWithProperties {
      * @param bar
      *            the bar to set
      */
-    public void setBar(String bar) {
+    public void setBar(String bar)
+    {
         this.bar = bar;
     }
 }

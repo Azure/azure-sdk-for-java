@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.util.ArrayList;
@@ -29,11 +28,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for LocalResourcesInfo complex type.
+ * <p>
+ * Java class for LocalResourcesInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="LocalResourcesInfo">
@@ -50,10 +51,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "LocalResourcesInfo", propOrder = {
-    "localResource"
-})
-class LocalResourcesInfo {
+@XmlType(name = "LocalResourcesInfo", propOrder = { "localResource" })
+class LocalResourcesInfo
+{
 
     @XmlElement(name = "LocalResource")
     protected List<LocalResourceInfo> localResource;
@@ -62,15 +62,16 @@ class LocalResourcesInfo {
      * Gets the value of the localResource property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the localResource property.
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the localResource property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getLocalResource().add(newItem);
+     * getLocalResource().add(newItem);
      * </pre>
      * 
      * 
@@ -80,8 +81,10 @@ class LocalResourcesInfo {
      * 
      * 
      */
-    public List<LocalResourceInfo> getLocalResource() {
-        if (localResource == null) {
+    public List<LocalResourceInfo> getLocalResource()
+    {
+        if (localResource == null)
+        {
             localResource = new ArrayList<LocalResourceInfo>();
         }
         return this.localResource;

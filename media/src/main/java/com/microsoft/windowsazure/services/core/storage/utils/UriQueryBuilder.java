@@ -23,9 +23,11 @@ import java.util.Map.Entry;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
- * RESERVED FOR INTERNAL USE. A helper class to help modify the query string of a URI
+ * RESERVED FOR INTERNAL USE. A helper class to help modify the query string of
+ * a URI
  */
-public final class UriQueryBuilder {
+public final class UriQueryBuilder
+{
     /**
      * Stores the one to one key/ value collection of query parameters.
      */
@@ -40,16 +42,21 @@ public final class UriQueryBuilder {
      *            the query value.
      * @throws StorageException
      */
-    public void add(final String name, final String value) throws StorageException {
-        if (Utility.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("Cannot encode a query parameter with a null or empty key");
+    public void add(final String name, final String value)
+            throws StorageException
+    {
+        if (Utility.isNullOrEmpty(name))
+        {
+            throw new IllegalArgumentException(
+                    "Cannot encode a query parameter with a null or empty key");
         }
 
         this.insertKeyValue(name, value);
     }
 
     /**
-     * Add query parameter to an existing Uri. This takes care of any existing query parameters in the Uri.
+     * Add query parameter to an existing Uri. This takes care of any existing
+     * query parameters in the Uri.
      * 
      * @param uri
      *            the original uri.
@@ -58,17 +65,22 @@ public final class UriQueryBuilder {
      *             if the resulting uri is invalid.
      * @throws StorageException
      */
-    public URI addToURI(final URI uri) throws URISyntaxException, StorageException {
+    public URI addToURI(final URI uri) throws URISyntaxException,
+            StorageException
+    {
         final String origRawQuery = uri.getRawQuery();
         final String rawFragment = uri.getRawFragment();
         final String uriString = uri.resolve(uri).toASCIIString();
 
-        final HashMap<String, String[]> origQueryMap = PathUtility.parseQueryString(origRawQuery);
+        final HashMap<String, String[]> origQueryMap = PathUtility
+                .parseQueryString(origRawQuery);
 
         // Try/Insert original queries to map
 
-        for (final Entry<String, String[]> entry : origQueryMap.entrySet()) {
-            for (final String val : entry.getValue()) {
+        for (final Entry<String, String[]> entry : origQueryMap.entrySet())
+        {
+            for (final String val : entry.getValue())
+            {
                 this.insertKeyValue(entry.getKey(), val);
             }
         }
@@ -76,31 +88,36 @@ public final class UriQueryBuilder {
         final StringBuilder retBuilder = new StringBuilder();
 
         // has a fragment
-        if (Utility.isNullOrEmpty(origRawQuery) && !Utility.isNullOrEmpty(rawFragment)) {
+        if (Utility.isNullOrEmpty(origRawQuery)
+                && !Utility.isNullOrEmpty(rawFragment))
+        {
             final int bangDex = uriString.indexOf('#');
             retBuilder.append(uriString.substring(0, bangDex));
-        }
-        else if (!Utility.isNullOrEmpty(origRawQuery)) {
+        } else if (!Utility.isNullOrEmpty(origRawQuery))
+        {
             // has a query
             final int queryDex = uriString.indexOf('?');
             retBuilder.append(uriString.substring(0, queryDex));
-        }
-        else {
+        } else
+        {
             // no fragment or query
             retBuilder.append(uriString);
-            if (uri.getRawPath().length() <= 0) {
+            if (uri.getRawPath().length() <= 0)
+            {
                 retBuilder.append("/");
             }
         }
 
         final String finalQuery = this.toString();
 
-        if (finalQuery.length() > 0) {
+        if (finalQuery.length() > 0)
+        {
             retBuilder.append("?");
             retBuilder.append(finalQuery);
         }
 
-        if (!Utility.isNullOrEmpty(rawFragment)) {
+        if (!Utility.isNullOrEmpty(rawFragment))
+        {
             retBuilder.append("#");
             retBuilder.append(rawFragment);
         }
@@ -109,7 +126,8 @@ public final class UriQueryBuilder {
     }
 
     /**
-     * Inserts a key / value in the Hashmap, assumes the value is already utf-8 encoded.
+     * Inserts a key / value in the Hashmap, assumes the value is already utf-8
+     * encoded.
      * 
      * @param key
      *            the key to insert
@@ -117,44 +135,56 @@ public final class UriQueryBuilder {
      *            the value to insert
      * @throws StorageException
      */
-    private void insertKeyValue(String key, String value) throws StorageException {
-        if (value != null) {
+    private void insertKeyValue(String key, String value)
+            throws StorageException
+    {
+        if (value != null)
+        {
             value = Utility.safeEncode(value);
         }
-        if (!key.startsWith("$")) {
+        if (!key.startsWith("$"))
+        {
             key = Utility.safeEncode(key);
         }
 
         ArrayList<String> list = this.parameters.get(key);
-        if (list == null) {
+        if (list == null)
+        {
             list = new ArrayList<String>();
             list.add(value);
             this.parameters.put(key, list);
-        }
-        else {
-            if (!list.contains(value)) {
+        } else
+        {
+            if (!list.contains(value))
+            {
                 list.add(value);
             }
         }
     }
 
     /**
-     * Returns a string that represents this instance. This will construct the full URI.
+     * Returns a string that represents this instance. This will construct the
+     * full URI.
      * 
      * @return a string that represents this instance.
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         final StringBuilder outString = new StringBuilder();
         Boolean isFirstPair = true;
 
-        for (final String key : this.parameters.keySet()) {
-            if (this.parameters.get(key) != null) {
-                for (final String val : this.parameters.get(key)) {
-                    if (isFirstPair) {
+        for (final String key : this.parameters.keySet())
+        {
+            if (this.parameters.get(key) != null)
+            {
+                for (final String val : this.parameters.get(key))
+                {
+                    if (isFirstPair)
+                    {
                         isFirstPair = false;
-                    }
-                    else {
+                    } else
+                    {
                         outString.append("&");
                     }
 

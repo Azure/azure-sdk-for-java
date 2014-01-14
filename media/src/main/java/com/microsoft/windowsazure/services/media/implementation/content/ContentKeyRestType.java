@@ -22,12 +22,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization
- * for Asset entities.
+ * This type maps the XML returned in the odata ATOM serialization for Asset
+ * entities.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ContentKeyRestType implements MediaServiceDTO {
+public class ContentKeyRestType implements MediaServiceDTO
+{
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -70,7 +71,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -81,7 +83,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the id to set
      * @return the content key rest type
      */
-    public ContentKeyRestType setId(String id) {
+    public ContentKeyRestType setId(String id)
+    {
         this.id = id;
         return this;
     }
@@ -91,7 +94,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return created;
     }
 
@@ -102,7 +106,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the created to set
      * @return the content key rest type
      */
-    public ContentKeyRestType setCreated(Date created) {
+    public ContentKeyRestType setCreated(Date created)
+    {
         this.created = created;
         return this;
     }
@@ -112,7 +117,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the lastModified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
@@ -123,7 +129,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the lastModified to set
      * @return the content key rest type
      */
-    public ContentKeyRestType setLastModified(Date lastModified) {
+    public ContentKeyRestType setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
         return this;
     }
@@ -133,7 +140,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the content key type
      */
-    public Integer getContentKeyType() {
+    public Integer getContentKeyType()
+    {
         return contentKeyType;
     }
 
@@ -144,7 +152,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the new content key type
      * @return the content key rest type
      */
-    public ContentKeyRestType setContentKeyType(Integer contentKeyType) {
+    public ContentKeyRestType setContentKeyType(Integer contentKeyType)
+    {
         this.contentKeyType = contentKeyType;
         return this;
     }
@@ -154,7 +163,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -165,7 +175,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the name to set
      * @return the content key rest type
      */
-    public ContentKeyRestType setName(String name) {
+    public ContentKeyRestType setName(String name)
+    {
         this.name = name;
         return this;
     }
@@ -177,7 +188,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the new checksum
      * @return the content key rest type
      */
-    public ContentKeyRestType setChecksum(String checksum) {
+    public ContentKeyRestType setChecksum(String checksum)
+    {
         this.checksum = checksum;
         return this;
     }
@@ -187,7 +199,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the checksum
      */
-    public String getChecksum() {
+    public String getChecksum()
+    {
         return this.checksum;
     }
 
@@ -198,7 +211,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the new protection key type
      * @return the content key rest type
      */
-    public ContentKeyRestType setProtectionKeyType(Integer protectionKeyType) {
+    public ContentKeyRestType setProtectionKeyType(Integer protectionKeyType)
+    {
         this.protectionKeyType = protectionKeyType;
         return this;
     }
@@ -208,7 +222,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the protection key type
      */
-    public Integer getProtectionKeyType() {
+    public Integer getProtectionKeyType()
+    {
         return this.protectionKeyType;
     }
 
@@ -219,7 +234,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the new protection key id
      * @return the content key rest type
      */
-    public ContentKeyRestType setProtectionKeyId(String protectionKeyId) {
+    public ContentKeyRestType setProtectionKeyId(String protectionKeyId)
+    {
         this.protectionKeyId = protectionKeyId;
         return this;
     }
@@ -229,7 +245,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the protection key id
      */
-    public String getProtectionKeyId() {
+    public String getProtectionKeyId()
+    {
         return this.protectionKeyId;
     }
 
@@ -240,7 +257,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      *            the encrypted content key
      * @return the content key rest type
      */
-    public ContentKeyRestType setEncryptedContentKey(String encryptedContentKey) {
+    public ContentKeyRestType setEncryptedContentKey(String encryptedContentKey)
+    {
         this.encryptedContentKey = encryptedContentKey;
         return this;
     }
@@ -250,7 +268,8 @@ public class ContentKeyRestType implements MediaServiceDTO {
      * 
      * @return the encrypted content key
      */
-    public String getEncryptedContentKey() {
+    public String getEncryptedContentKey()
+    {
         return this.encryptedContentKey;
     }
 }

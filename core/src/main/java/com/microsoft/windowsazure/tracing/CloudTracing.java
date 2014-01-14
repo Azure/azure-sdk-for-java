@@ -23,19 +23,21 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 
 /**
- * Provides tracing utilities that insight into all aspects of client
- * operations via implementations of the ICloudTracingInterceptor
- * interface.  All tracing is global.
+ * Provides tracing utilities that insight into all aspects of client operations
+ * via implementations of the ICloudTracingInterceptor interface. All tracing is
+ * global.
  */
-public abstract class CloudTracing {
-    private CloudTracing() {
+public abstract class CloudTracing
+{
+    private CloudTracing()
+    {
     }
-    
+
     /**
      * The collection of tracing interceptors to notify.
      */
     private static List<CloudTracingInterceptor> interceptors;
-    
+
     /**
      * Gets the collection of tracing interceptors to notify.
      * 
@@ -45,13 +47,13 @@ public abstract class CloudTracing {
     {
         return interceptors;
     }
-    
+
     /**
-     * Gets a value indicating whether tracing is enabled.
-     * Tracing can be disabled for performance.
+     * Gets a value indicating whether tracing is enabled. Tracing can be
+     * disabled for performance.
      */
     private static boolean isEnabled;
-    
+
     /**
      * Gets the value indicating whether tracing is enabled.
      * 
@@ -61,55 +63,61 @@ public abstract class CloudTracing {
     {
         return isEnabled;
     }
-    
+
     /**
      * Sets the value indicating whether tracing is enabled.
      * 
-     * @param enabled Boolean value indicating if tracing is enabled.
+     * @param enabled
+     *            Boolean value indicating if tracing is enabled.
      */
     public static void setIsEnabled(final boolean enabled)
     {
         isEnabled = enabled;
     }
-    
+
     static
     {
         isEnabled = true;
-        interceptors = Collections.synchronizedList(new ArrayList<CloudTracingInterceptor>());
+        interceptors = Collections
+                .synchronizedList(new ArrayList<CloudTracingInterceptor>());
     }
-    
+
     /**
      * Add a tracing interceptor to be notified of changes.
      * 
-     * @param cloudTracingInterceptor The tracing interceptor.
+     * @param cloudTracingInterceptor
+     *            The tracing interceptor.
      */
-    public static void addTracingInterceptor(final CloudTracingInterceptor cloudTracingInterceptor)
+    public static void addTracingInterceptor(
+            final CloudTracingInterceptor cloudTracingInterceptor)
     {
         if (cloudTracingInterceptor == null)
         {
             throw new NullPointerException();
         }
-        
+
         interceptors.add(cloudTracingInterceptor);
     }
-    
+
     /**
      * Remove a tracing interceptor from change notifications.
      * 
-     * @param cloudTracingInterceptor The tracing interceptor.
+     * @param cloudTracingInterceptor
+     *            The tracing interceptor.
      * @return True if the tracing interceptor was found and removed; false
-     * otherwise.
+     *         otherwise.
      */
-    public static boolean removeTracingInterceptor(CloudTracingInterceptor cloudTracingInterceptor)
+    public static boolean removeTracingInterceptor(
+            CloudTracingInterceptor cloudTracingInterceptor)
     {
         if (cloudTracingInterceptor == null)
         {
             throw new NullPointerException();
         }
-        
+
         return interceptors.remove(cloudTracingInterceptor);
     }
-    
+
     private static long nextInvocationId = 0;
 
     public static long getNextInvocationId()
@@ -153,7 +161,8 @@ public abstract class CloudTracing {
         }
     }
 
-    public static void enter(String invocationId, Object instance, String method, HashMap<String, Object> parameters)
+    public static void enter(String invocationId, Object instance,
+            String method, HashMap<String, Object> parameters)
     {
         if (isEnabled)
         {
@@ -181,7 +190,8 @@ public abstract class CloudTracing {
         }
     }
 
-    public static void receiveResponse(String invocationId, HttpResponse response)
+    public static void receiveResponse(String invocationId,
+            HttpResponse response)
     {
         if (isEnabled)
         {

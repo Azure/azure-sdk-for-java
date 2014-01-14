@@ -18,16 +18,19 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Represents extended error information returned by the Windows Azure storage service.
+ * Represents extended error information returned by the Windows Azure storage
+ * service.
  */
-public final class StorageExtendedErrorInformation implements Serializable {
+public final class StorageExtendedErrorInformation implements Serializable
+{
     /**
      * The serialization version number.
      */
     private static final long serialVersionUID = 1527013626991334677L;
 
     /**
-     * Represents additional error details, as a <code>java.util.HashMap</code> object.
+     * Represents additional error details, as a <code>java.util.HashMap</code>
+     * object.
      */
     private HashMap<String, String[]> additionalDetails;
 
@@ -42,30 +45,35 @@ public final class StorageExtendedErrorInformation implements Serializable {
     private String errorMessage;
 
     /**
-     * Creates an instance of the <code>StorageExtendedErrorInformation</code> class.
+     * Creates an instance of the <code>StorageExtendedErrorInformation</code>
+     * class.
      */
-    public StorageExtendedErrorInformation() {
+    public StorageExtendedErrorInformation()
+    {
         this.setAdditionalDetails(new HashMap<String, String[]>());
     }
 
     /**
      * @return the additionalDetails
      */
-    public HashMap<String, String[]> getAdditionalDetails() {
+    public HashMap<String, String[]> getAdditionalDetails()
+    {
         return this.additionalDetails;
     }
 
     /**
      * @return the errorCode
      */
-    public String getErrorCode() {
+    public String getErrorCode()
+    {
         return this.errorCode;
     }
 
     /**
      * @return the errorMessage
      */
-    public String getErrorMessage() {
+    public String getErrorMessage()
+    {
         return this.errorMessage;
     }
 
@@ -73,7 +81,9 @@ public final class StorageExtendedErrorInformation implements Serializable {
      * @param additionalDetails
      *            the additionalDetails to set
      */
-    protected void setAdditionalDetails(final HashMap<String, String[]> additionalDetails) {
+    protected void setAdditionalDetails(
+            final HashMap<String, String[]> additionalDetails)
+    {
         this.additionalDetails = additionalDetails;
     }
 
@@ -81,7 +91,8 @@ public final class StorageExtendedErrorInformation implements Serializable {
      * @param errorCode
      *            the errorCode to set
      */
-    public void setErrorCode(final String errorCode) {
+    public void setErrorCode(final String errorCode)
+    {
         this.errorCode = errorCode;
     }
 
@@ -89,7 +100,8 @@ public final class StorageExtendedErrorInformation implements Serializable {
      * @param errorMessage
      *            the errorMessage to set
      */
-    public void setErrorMessage(final String errorMessage) {
+    public void setErrorMessage(final String errorMessage)
+    {
         this.errorMessage = errorMessage;
     }
 }

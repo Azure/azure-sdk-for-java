@@ -17,42 +17,51 @@ package com.microsoft.windowsazure.services.blob.models;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the service properties returned in response to Blob Service REST API operations. This is
- * returned by calls to implementations of {@link BlobContract#getServiceProperties()} and
+ * A wrapper class for the service properties returned in response to Blob
+ * Service REST API operations. This is returned by calls to implementations of
+ * {@link BlobContract#getServiceProperties()} and
  * {@link BlobContract#getServiceProperties(BlobServiceOptions)}.
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/hh452239.aspx">Get Blob Service Properties</a>
- * documentation on MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/hh452239.aspx">Get
+ * Blob Service Properties</a> documentation on MSDN for details of the
+ * underlying Blob Service REST API operation.
  */
-public class GetServicePropertiesResult {
+public class GetServicePropertiesResult
+{
     private ServiceProperties value;
 
     /**
-     * Gets a {@link ServiceProperties} instance containing the service property values associated with the storage
-     * account.
+     * Gets a {@link ServiceProperties} instance containing the service property
+     * values associated with the storage account.
      * <p>
-     * Modifying the values in the {@link ServiceProperties} instance returned does not affect the values associated
-     * with the storage account. To change the values in the storage account, call the
-     * {@link BlobContract#setServiceProperties} method and pass the modified {@link ServiceProperties} instance as a
-     * parameter.
+     * Modifying the values in the {@link ServiceProperties} instance returned
+     * does not affect the values associated with the storage account. To change
+     * the values in the storage account, call the
+     * {@link BlobContract#setServiceProperties} method and pass the modified
+     * {@link ServiceProperties} instance as a parameter.
      * 
-     * @return
-     *         A {@link ServiceProperties} instance containing the property values associated with the storage account.
+     * @return A {@link ServiceProperties} instance containing the property
+     *         values associated with the storage account.
      */
-    public ServiceProperties getValue() {
+    public ServiceProperties getValue()
+    {
         return value;
     }
 
     /**
-     * Reserved for internal use. Sets the value of the {@link ServiceProperties} instance associated with a
-     * storage service call result. This method is invoked by the API to store service properties returned by
-     * a call to a REST operation and is not intended for public use.
+     * Reserved for internal use. Sets the value of the
+     * {@link ServiceProperties} instance associated with a storage service call
+     * result. This method is invoked by the API to store service properties
+     * returned by a call to a REST operation and is not intended for public
+     * use.
      * 
      * @param value
-     *            A {@link ServiceProperties} instance containing the property values associated with the storage
-     *            account.
+     *            A {@link ServiceProperties} instance containing the property
+     *            values associated with the storage account.
      */
-    public void setValue(ServiceProperties value) {
+    public void setValue(ServiceProperties value)
+    {
         this.value = value;
     }
 }

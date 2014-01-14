@@ -23,7 +23,8 @@ import javax.ws.rs.core.MultivaluedMap;
 /**
  * Action operation for Entities.
  */
-public interface EntityActionOperation extends EntityOperation {
+public interface EntityActionOperation extends EntityOperation
+{
 
     /**
      * Gets the query parameters.

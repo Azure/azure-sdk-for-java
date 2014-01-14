@@ -21,17 +21,22 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class ClientFilterResponseAdapter extends ClientFilter {
+public class ClientFilterResponseAdapter extends ClientFilter
+{
     private ServiceResponseFilter filter;
 
-    public ClientFilterResponseAdapter(ServiceResponseFilter filter) {
+    public ClientFilterResponseAdapter(ServiceResponseFilter filter)
+    {
         this.filter = filter;
     }
 
     @Override
-    public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest clientRequest)
+            throws ClientHandlerException
+    {
         ClientResponse clientResponse = getNext().handle(clientRequest);
-        filter.filter(new JerseyServiceRequestContext(clientRequest), new JerseyServiceResponseContext(clientResponse));
+        filter.filter(new JerseyServiceRequestContext(clientRequest),
+                new JerseyServiceResponseContext(clientResponse));
         return clientResponse;
     }
 }

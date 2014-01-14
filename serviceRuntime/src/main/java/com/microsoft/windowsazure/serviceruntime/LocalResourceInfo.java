@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for LocalResourceInfo complex type.
+ * <p>
+ * Java class for LocalResourceInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="LocalResourceInfo">
@@ -49,7 +50,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "LocalResourceInfo")
-class LocalResourceInfo {
+class LocalResourceInfo
+{
 
     @XmlAttribute(required = true)
     protected String name;
@@ -61,12 +63,11 @@ class LocalResourceInfo {
     /**
      * Gets the value of the name property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -74,23 +75,22 @@ class LocalResourceInfo {
      * Sets the value of the name property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setName(String value) {
+    public void setName(String value)
+    {
         this.name = value;
     }
 
     /**
      * Gets the value of the path property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getPath() {
+    public String getPath()
+    {
         return path;
     }
 
@@ -98,11 +98,11 @@ class LocalResourceInfo {
      * Sets the value of the path property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setPath(String value) {
+    public void setPath(String value)
+    {
         this.path = value;
     }
 
@@ -110,7 +110,8 @@ class LocalResourceInfo {
      * Gets the value of the sizeInMB property.
      * 
      */
-    public int getSizeInMB() {
+    public int getSizeInMB()
+    {
         return sizeInMB;
     }
 
@@ -118,7 +119,8 @@ class LocalResourceInfo {
      * Sets the value of the sizeInMB property.
      * 
      */
-    public void setSizeInMB(int value) {
+    public void setSizeInMB(int value)
+    {
         this.sizeInMB = value;
     }
 

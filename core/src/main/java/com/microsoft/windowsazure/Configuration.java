@@ -26,68 +26,82 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class Configuration {
-
+public class Configuration
+{
     /**
-     * Property name for socket connection timeout used by services created with this configuration.
+     * Property name for socket connection timeout used by services created with
+     * this configuration.
      */
     public static final String PROPERTY_CONNECT_TIMEOUT = "com.microsoft.windowsazure.Configuration.connectTimeout";
 
     /**
-     * Property name for socket read timeout used by services created with this configuration.
+     * Property name for socket read timeout used by services created with this
+     * configuration.
      */
     public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.Configuration.readTimeout";
 
     /**
-     * Property name to control if HTTP logging to console is on or off. If property is set, logging is on, regardless
-     * of value.
+     * Property name to control if HTTP logging to console is on or off. If
+     * property is set, logging is on, regardless of value.
      */
     public static final String PROPERTY_LOG_HTTP_REQUESTS = "com.microsoft.windowsazure.Configuration.logHttpRequests";
-    
+
     private static Configuration instance;
     Map<String, Object> properties;
     Builder builder;
 
     static Log log = LogFactory.getLog(Configuration.class);
 
-    public Configuration() {
+    public Configuration()
+    {
         this.properties = new HashMap<String, Object>();
         this.builder = DefaultBuilder.create();
     }
 
-    public Configuration(Builder builder) {
+    public Configuration(Builder builder)
+    {
         this.properties = new HashMap<String, Object>();
         this.builder = builder;
     }
 
-    public static Configuration getInstance() {
-        if (instance == null) {
-            try {
+    public static Configuration getInstance()
+    {
+        if (instance == null)
+        {
+            try
+            {
                 instance = Configuration.load();
-            }
-            catch (IOException e) {
-                log.error("Unable to load META-INF/com.microsoft.windowsazure.properties", e);
+            } catch (IOException e)
+            {
+                log.error(
+                        "Unable to load META-INF/com.microsoft.windowsazure.properties",
+                        e);
                 instance = new Configuration();
             }
         }
         return instance;
     }
 
-    public static void setInstance(final Configuration configuration) {
+    public static void setInstance(final Configuration configuration)
+    {
         Configuration.instance = configuration;
     }
 
-    public static Configuration load() throws IOException {
+    public static Configuration load() throws IOException
+    {
         final Configuration config = new Configuration();
 
-        final InputStream stream = Thread.currentThread()
+        final InputStream stream = Thread
+                .currentThread()
                 .getContextClassLoader()
                 .getResourceAsStream(
-                "META-INF/com.microsoft.windowsazure.properties");
-        if (stream != null) {
+                        "META-INF/com.microsoft.windowsazure.properties");
+        if (stream != null)
+        {
             final Properties properties = new Properties();
             properties.load(stream);
-            for (Map.Entry<Object, Object> key : properties.entrySet()) {
+            for (Map.Entry<Object, Object> key : properties.entrySet())
+            {
                 config.setProperty(key.getKey().toString(), key.getValue());
             }
         }
@@ -95,27 +109,33 @@ public class Configuration {
         return config;
     }
 
-    public <T> T create(Class<T> service) {
+    public <T> T create(Class<T> service)
+    {
         return builder.build("", service, service, properties);
     }
 
-    public <T> T create(String profile, Class<T> service) {
+    public <T> T create(String profile, Class<T> service)
+    {
         return builder.build(profile, service, service, properties);
     }
 
-    public Builder getBuilder() {
+    public Builder getBuilder()
+    {
         return builder;
     }
 
-    public Object getProperty(String name) {
+    public Object getProperty(String name)
+    {
         return properties.get(name);
     }
 
-    public void setProperty(String name, Object value) {
+    public void setProperty(String name, Object value)
+    {
         properties.put(name, value);
     }
 
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties()
+    {
         return properties;
     }
 }
