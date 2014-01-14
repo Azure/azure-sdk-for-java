@@ -21,7 +21,6 @@ import java.util.concurrent.Executors;
 import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.sun.jersey.api.client.Client;

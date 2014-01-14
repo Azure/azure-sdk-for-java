@@ -73,20 +73,22 @@ public class Configuration {
         return instance;
     }
 
-    public static void setInstance(Configuration instance) {
-        Configuration.instance = instance;
+    public static void setInstance(final Configuration configuration) {
+        Configuration.instance = configuration;
     }
 
     public static Configuration load() throws IOException {
-        Configuration config = new Configuration();
+        final Configuration config = new Configuration();
 
-        InputStream stream = Configuration.class.getClassLoader().getResourceAsStream(
+        final InputStream stream = Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(
                 "META-INF/com.microsoft.windowsazure.properties");
         if (stream != null) {
-            Properties properties = new Properties();
+            final Properties properties = new Properties();
             properties.load(stream);
-            for (Object key : properties.keySet()) {
-                config.setProperty(key.toString(), properties.get(key));
+            for (Map.Entry<Object, Object> key : properties.entrySet()) {
+                config.setProperty(key.getKey().toString(), key.getValue());
             }
         }
 

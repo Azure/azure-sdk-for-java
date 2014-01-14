@@ -21,7 +21,6 @@ import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter.Next;
 import com.microsoft.windowsazure.exception.ServiceException;
 import static org.junit.Assert.*;
 

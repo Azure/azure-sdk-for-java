@@ -16,9 +16,6 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

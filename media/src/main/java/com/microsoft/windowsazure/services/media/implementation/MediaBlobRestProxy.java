@@ -26,7 +26,6 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.BlobOperationRestProxy;
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
-import com.microsoft.windowsazure.services.blob.implementation.BlobRestProxy;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.ClientFilter;
 

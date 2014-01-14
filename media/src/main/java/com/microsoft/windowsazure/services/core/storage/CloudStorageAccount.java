@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
-
-import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
 import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
 
 /**

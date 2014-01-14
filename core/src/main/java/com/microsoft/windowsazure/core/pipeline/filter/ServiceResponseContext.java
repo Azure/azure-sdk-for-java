@@ -16,8 +16,6 @@
 package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.io.InputStream;
-import java.util.Map;
-import javax.ws.rs.core.MultivaluedMap;
 
 public interface ServiceResponseContext {
     int getStatus();

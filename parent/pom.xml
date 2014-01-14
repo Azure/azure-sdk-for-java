@@ -21,9 +21,7 @@
     <artifactId>microsoft-azure-api-bom</artifactId>
   </parent>
 
-  <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-parent</artifactId>
-  <version>0.4.6</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Windows Azure Client API Parent</name>

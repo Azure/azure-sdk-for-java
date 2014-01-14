@@ -31,13 +31,13 @@ public class ClientRequestTrackingHandler implements ServiceRequestFilter, Servi
     }
  
     @Override
-    public void filter (ServiceRequestContext request)
+    public void filter(ServiceRequestContext request)
     {
         request.setHeader("client-tracking-id", trackingId);
     }
     
     @Override
-    public void filter (ServiceRequestContext request, ServiceResponseContext response)
+    public void filter(ServiceRequestContext request, ServiceResponseContext response)
     {
         response.setHeader("client-tracking-id", trackingId);
     }

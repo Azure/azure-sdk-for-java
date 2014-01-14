@@ -16,7 +16,6 @@
 package com.microsoft.windowsazure.services.blob.implementation;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.core.pipeline.apache.HttpRequestInterceptorAdapter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -71,7 +70,6 @@ import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.SetContainerMetadataOptions;
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;

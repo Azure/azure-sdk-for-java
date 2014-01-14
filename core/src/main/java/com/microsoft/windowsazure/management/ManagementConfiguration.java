@@ -23,7 +23,10 @@ import java.io.IOException;
  * Provides functionality to create a service management configuration.
  * 
  */
-public class ManagementConfiguration {
+public final class ManagementConfiguration {
+    private ManagementConfiguration() {
+    }
+    
     /**
      * Defines the subscription cloud credentials object of the Windows Azure account.
      */
@@ -33,13 +36,13 @@ public class ManagementConfiguration {
      * Defines the path of the keystore.
      * 
      */
-    public final static String KEYSTORE_PATH = "management.keystore.path";
+    public static final String KEYSTORE_PATH = "management.keystore.path";
 
     /**
      * Defines the password of the keystore.
      * 
      */
-    public final static String KEYSTORE_PASSWORD = "management.keystore.password";
+    public static final String KEYSTORE_PASSWORD = "management.keystore.password";
 
     /**
      * Defines the type of the keystore.
@@ -50,7 +53,7 @@ public class ManagementConfiguration {
      * Defines the URI of service management.
      * 
      */
-    public final static String URI = "management.uri";
+    public static final String URI = "management.uri";
 
     /**
      * Defines the subscription ID of the Windows Azure account.

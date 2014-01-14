@@ -144,12 +144,17 @@ public class DefaultBuilder implements Builder, Builder.Registry {
     }
 
     protected String dotCombine(String profile, String named) {
-        boolean noProfile = profile == null || profile == "";
-        boolean noName = named == null || named == "";
+        boolean noProfile = profile == null || profile.isEmpty();
+        boolean noName = named == null || named.isEmpty();
         if (noName)
+        {
             return profile;
+        }
         if (noProfile)
+        {
             return named;
+        }
+
         return profile + "." + named;
     }
 

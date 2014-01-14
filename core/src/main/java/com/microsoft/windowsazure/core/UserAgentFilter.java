@@ -39,7 +39,7 @@ public class UserAgentFilter implements ServiceRequestFilter {
     }
 
     @Override
-    public void filter (ServiceRequestContext request)
+    public void filter(ServiceRequestContext request)
     {
         String userAgent;
 

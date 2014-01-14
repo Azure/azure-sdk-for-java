@@ -131,7 +131,7 @@ public abstract class CloudTracing {
         {
             synchronized (interceptors)
             {
-                for (CloudTracingInterceptor writer: interceptors)
+                for (CloudTracingInterceptor writer : interceptors)
                 {
                     writer.configuration(source, name, value);
                 }

@@ -44,7 +44,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 import com.microsoft.windowsazure.services.core.storage.utils.StreamMd5AndLength;
 import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ExecutionEngine;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.LeaseAction;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
