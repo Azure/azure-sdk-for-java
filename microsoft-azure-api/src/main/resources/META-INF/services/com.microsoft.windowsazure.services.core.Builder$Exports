@@ -1,9 +1,0 @@
-com.microsoft.windowsazure.services.blob.Exports
-com.microsoft.windowsazure.services.queue.Exports
-com.microsoft.windowsazure.services.table.Exports
-com.microsoft.windowsazure.services.serviceBus.Exports
-com.microsoft.windowsazure.services.serviceBus.implementation.Exports
-com.microsoft.windowsazure.services.core.utils.Exports
-com.microsoft.windowsazure.services.core.utils.pipeline.Exports
-com.microsoft.windowsazure.services.media.Exports
-com.microsoft.windowsazure.services.management.Exports
