@@ -25,40 +25,48 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class BrokerPropertiesMapper {
+public class BrokerPropertiesMapper
+{
 
-    public BrokerProperties fromString(String value) throws IllegalArgumentException {
+    public BrokerProperties fromString(String value)
+            throws IllegalArgumentException
+    {
 
         ObjectMapper mapper = new ObjectMapper();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         mapper.setDateFormat(simpleDateFormat);
-        try {
-            return mapper.readValue(value.getBytes("UTF-8"), BrokerProperties.class);
-        }
-        catch (JsonParseException e) {
+        try
+        {
+            return mapper.readValue(value.getBytes("UTF-8"),
+                    BrokerProperties.class);
+        } catch (JsonParseException e)
+        {
             throw new IllegalArgumentException(e);
-        }
-        catch (JsonMappingException e) {
+        } catch (JsonMappingException e)
+        {
             throw new IllegalArgumentException(e);
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public String toString(BrokerProperties value) {
+    public String toString(BrokerProperties value)
+    {
         ObjectMapper mapper = new ObjectMapper();
         Writer writer = new StringWriter();
-        try {
+        try
+        {
             mapper.writeValue(writer, value);
-        }
-        catch (JsonGenerationException e) {
+        } catch (JsonGenerationException e)
+        {
             throw new RuntimeException(e);
-        }
-        catch (JsonMappingException e) {
+        } catch (JsonMappingException e)
+        {
             throw new RuntimeException(e);
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
         return writer.toString();

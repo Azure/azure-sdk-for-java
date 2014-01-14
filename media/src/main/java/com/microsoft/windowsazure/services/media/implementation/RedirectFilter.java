@@ -23,19 +23,27 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 
-public class RedirectFilter extends IdempotentClientFilter {
+public class RedirectFilter extends IdempotentClientFilter
+{
     private final ResourceLocationManager locationManager;
 
-    public RedirectFilter(ResourceLocationManager locationManager) {
+    public RedirectFilter(ResourceLocationManager locationManager)
+    {
         this.locationManager = locationManager;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
+     * (com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest request) {
-        if (request == null) {
+    public ClientResponse doHandle(ClientRequest request)
+    {
+        if (request == null)
+        {
             throw new IllegalArgumentException("Request should not be null");
         }
 
@@ -43,15 +51,20 @@ public class RedirectFilter extends IdempotentClientFilter {
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
         ClientResponse response = getNext().handle(request);
-        while (response.getClientResponseStatus() == ClientResponse.Status.MOVED_PERMANENTLY) {
-            try {
-                locationManager.setRedirectedURI(response.getHeaders().getFirst("Location"));
-            }
-            catch (NullPointerException e) {
-                throw new ClientHandlerException("HTTP Redirect did not include Location header");
-            }
-            catch (URISyntaxException e) {
-                throw new ClientHandlerException("HTTP Redirect location is not a valid URI");
+        while (response.getClientResponseStatus() == ClientResponse.Status.MOVED_PERMANENTLY)
+        {
+            try
+            {
+                locationManager.setRedirectedURI(response.getHeaders()
+                        .getFirst("Location"));
+            } catch (NullPointerException e)
+            {
+                throw new ClientHandlerException(
+                        "HTTP Redirect did not include Location header");
+            } catch (URISyntaxException e)
+            {
+                throw new ClientHandlerException(
+                        "HTTP Redirect location is not a valid URI");
             }
 
             request.setURI(locationManager.getRedirectedURI(originalURI));
@@ -60,7 +73,8 @@ public class RedirectFilter extends IdempotentClientFilter {
         return response;
     }
 
-    public URI getBaseURI() {
+    public URI getBaseURI()
+    {
         return this.locationManager.getBaseURI();
     }
 }

@@ -26,10 +26,10 @@ import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
- * Blob Test Base
- * Blob test refactoring will be done in future.
+ * Blob Test Base Blob test refactoring will be done in future.
  */
-public class BlobTestBase {
+public class BlobTestBase
+{
     public static boolean USE_DEV_FABRIC = false;
     public static final String CLOUD_ACCOUNT_HTTP = "DefaultEndpointsProtocol=http;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
     public static final String CLOUD_ACCOUNT_HTTPS = "DefaultEndpointsProtocol=https;AccountName=[ACCOUNT NAME];AccountKey=[ACCOUNT KEY]";
@@ -40,14 +40,19 @@ public class BlobTestBase {
     protected static byte[] testData = new byte[] { 1, 2, 3, 4 };
 
     @BeforeClass
-    public static void setup() throws URISyntaxException, StorageException, InvalidKeyException {
-        if (USE_DEV_FABRIC) {
+    public static void setup() throws URISyntaxException, StorageException,
+            InvalidKeyException
+    {
+        if (USE_DEV_FABRIC)
+        {
             httpAcc = CloudStorageAccount.getDevelopmentStorageAccount();
-        }
-        else {
+        } else
+        {
             String cloudAccount = CLOUD_ACCOUNT_HTTP;
-            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]", System.getenv("blob.accountName"));
-            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]", System.getenv("blob.accountKey"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT NAME]",
+                    System.getenv("blob.accountName"));
+            cloudAccount = cloudAccount.replace("[ACCOUNT KEY]",
+                    System.getenv("blob.accountKey"));
 
             httpAcc = CloudStorageAccount.parse(cloudAccount);
         }
@@ -55,17 +60,21 @@ public class BlobTestBase {
         bClient = httpAcc.createCloudBlobClient();
         bClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYFULL);
         testSuiteContainerName = generateRandomContainerName();
-        CloudBlobContainer container = bClient.getContainerReference(testSuiteContainerName);
+        CloudBlobContainer container = bClient
+                .getContainerReference(testSuiteContainerName);
         container.create();
     }
 
     @AfterClass
-    public static void teardown() throws StorageException, URISyntaxException {
-        CloudBlobContainer container = bClient.getContainerReference(testSuiteContainerName);
+    public static void teardown() throws StorageException, URISyntaxException
+    {
+        CloudBlobContainer container = bClient
+                .getContainerReference(testSuiteContainerName);
         container.delete();
     }
 
-    protected static String generateRandomContainerName() {
+    protected static String generateRandomContainerName()
+    {
         String containerName = "container" + UUID.randomUUID().toString();
         return containerName.replace("-", "");
     }

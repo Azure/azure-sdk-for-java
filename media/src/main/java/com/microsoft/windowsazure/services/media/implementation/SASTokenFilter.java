@@ -25,31 +25,39 @@ import com.sun.jersey.api.client.ClientResponse;
  * Filter responsible for adding SAS tokens to outgoing requests.
  * 
  */
-public class SASTokenFilter extends IdempotentClientFilter {
+public class SASTokenFilter extends IdempotentClientFilter
+{
     private final String sasToken;
 
     /**
-     * Construct a SASTokenFilter that will insert the tokens given
-     * in the provided sasUrl.
+     * Construct a SASTokenFilter that will insert the tokens given in the
+     * provided sasUrl.
      * 
      * @param sasUrl
      *            URL containing authentication information
      */
-    public SASTokenFilter(String sasToken) {
+    public SASTokenFilter(String sasToken)
+    {
         this.sasToken = sasToken;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
+     * (com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest cr) {
+    public ClientResponse doHandle(ClientRequest cr)
+    {
         UriBuilder newUri = UriBuilder.fromUri(cr.getURI());
         String currentQuery = cr.getURI().getRawQuery();
-        if (currentQuery == null) {
+        if (currentQuery == null)
+        {
             currentQuery = "";
-        }
-        else if (currentQuery.length() > 0) {
+        } else if (currentQuery.length() > 0)
+        {
             currentQuery += "&";
         }
         currentQuery += sasToken;

@@ -24,42 +24,54 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* Parameters supplied to the Get Job History operation.
-*/
+ * Parameters supplied to the Get Job History operation.
+ */
 public class JobGetHistoryParameters
 {
     private int skip;
-    
+
     /**
-    * Specify the (0-based) index of the history list from which to begin
-    * requesting entries.
-    */
-    public int getSkip() { return this.skip; }
-    
+     * Specify the (0-based) index of the history list from which to begin
+     * requesting entries.
+     */
+    public int getSkip()
+    {
+        return this.skip;
+    }
+
     /**
-    * Specify the (0-based) index of the history list from which to begin
-    * requesting entries.
-    */
-    public void setSkip(int skip) { this.skip = skip; }
-    
+     * Specify the (0-based) index of the history list from which to begin
+     * requesting entries.
+     */
+    public void setSkip(int skip)
+    {
+        this.skip = skip;
+    }
+
     private int top;
-    
+
     /**
-    * Specify the number of history entries to request, in the of range
-    * [1..100].
-    */
-    public int getTop() { return this.top; }
-    
+     * Specify the number of history entries to request, in the of range
+     * [1..100].
+     */
+    public int getTop()
+    {
+        return this.top;
+    }
+
     /**
-    * Specify the number of history entries to request, in the of range
-    * [1..100].
-    */
-    public void setTop(int top) { this.top = top; }
-    
+     * Specify the number of history entries to request, in the of range
+     * [1..100].
+     */
+    public void setTop(int top)
+    {
+        this.top = top;
+    }
+
     /**
-    * Initializes a new instance of the JobGetHistoryParameters class.
-    *
-    */
+     * Initializes a new instance of the JobGetHistoryParameters class.
+     * 
+     */
     public JobGetHistoryParameters()
     {
     }

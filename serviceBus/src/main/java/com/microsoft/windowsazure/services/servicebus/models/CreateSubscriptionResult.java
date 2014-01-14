@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>createSubscription</code> operation.
  */
-public class CreateSubscriptionResult {
+public class CreateSubscriptionResult
+{
 
     private SubscriptionInfo value;
 
@@ -25,9 +26,11 @@ public class CreateSubscriptionResult {
      * Creates an instance of the <code>CreateSubscriptionResult</code> class.
      * 
      * @param value
-     *            A {@link SubscriptionInfo} object assigned as the value of the result.
+     *            A {@link SubscriptionInfo} object assigned as the value of the
+     *            result.
      */
-    public CreateSubscriptionResult(SubscriptionInfo value) {
+    public CreateSubscriptionResult(SubscriptionInfo value)
+    {
         this.setValue(value);
     }
 
@@ -38,16 +41,19 @@ public class CreateSubscriptionResult {
      *            A {@link SubscriptionInfo} object assigned as the value of the
      *            result.
      */
-    public void setValue(SubscriptionInfo value) {
+    public void setValue(SubscriptionInfo value)
+    {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link SubscriptionInfo} object that represents the value of the result.
+     * @return A {@link SubscriptionInfo} object that represents the value of
+     *         the result.
      */
-    public SubscriptionInfo getValue() {
+    public SubscriptionInfo getValue()
+    {
         return value;
     }
 

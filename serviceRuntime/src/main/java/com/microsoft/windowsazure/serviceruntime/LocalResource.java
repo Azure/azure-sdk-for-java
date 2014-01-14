@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Represents a local storage resource reserved for a service.
  */
-public final class LocalResource {
+public final class LocalResource
+{
 
     /**
      * maximum size in megabytes allocated for the local storage resource, as
@@ -42,7 +43,8 @@ public final class LocalResource {
      * @param name
      * @param rootPath
      */
-    LocalResource(int maximumSizeInMegabytes, String name, String rootPath) {
+    LocalResource(int maximumSizeInMegabytes, String name, String rootPath)
+    {
         this.maximumSizeInMegabytes = maximumSizeInMegabytes;
         this.name = name;
         this.rootPath = rootPath;
@@ -55,7 +57,8 @@ public final class LocalResource {
      * @return The maximum size, in megabytes, allocated for the local storage
      *         resource.
      */
-    public int getMaximumSizeInMegabytes() {
+    public int getMaximumSizeInMegabytes()
+    {
         return maximumSizeInMegabytes;
     }
 
@@ -66,7 +69,8 @@ public final class LocalResource {
      * @return A <code>String</code> object that represents the name of the
      *         local store.
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -76,7 +80,8 @@ public final class LocalResource {
      * @return A <code>String</code> object that represents the path to the
      *         local storage resource.
      */
-    public String getRootPath() {
+    public String getRootPath()
+    {
         return rootPath;
     }
 
@@ -88,7 +93,8 @@ public final class LocalResource {
      *         name, maximum size, and directory path.
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return name + " max:" + maximumSizeInMegabytes + "MB path:" + rootPath;
     }
 }

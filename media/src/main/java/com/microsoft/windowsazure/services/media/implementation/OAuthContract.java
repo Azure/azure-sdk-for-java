@@ -19,9 +19,11 @@ import java.net.URI;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public interface OAuthContract {
+public interface OAuthContract
+{
     /**
-     * Gets an OAuth access token with specified OAUTH URI, client ID, client secret, and scope.
+     * Gets an OAuth access token with specified OAUTH URI, client ID, client
+     * secret, and scope.
      * 
      * @param oAuthUri
      *            A <code>URI</code> object which represents an OAUTH URI.
@@ -38,7 +40,7 @@ public interface OAuthContract {
      * @return OAuthTokenResponse
      * @throws ServiceException
      */
-    OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId, String clientSecret, String scope)
-            throws ServiceException;
+    OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId,
+            String clientSecret, String scope) throws ServiceException;
 
 }

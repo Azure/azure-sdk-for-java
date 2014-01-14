@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.ContentK
 /**
  * The Class ContentKeyInfo.
  */
-public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
+public class ContentKeyInfo extends ODataEntity<ContentKeyRestType>
+{
 
     /**
      * Instantiates a new content key info.
@@ -34,7 +35,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * @param content
      *            the content
      */
-    public ContentKeyInfo(EntryType entry, ContentKeyRestType content) {
+    public ContentKeyInfo(EntryType entry, ContentKeyRestType content)
+    {
         super(entry, content);
     }
 
@@ -43,7 +45,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -52,7 +55,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return getContent().getCreated();
     }
 
@@ -61,7 +65,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the last modified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return getContent().getLastModified();
     }
 
@@ -70,7 +75,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return getContent().getName();
     }
 
@@ -79,7 +85,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the check sum
      */
-    public String getChecksum() {
+    public String getChecksum()
+    {
         return getContent().getChecksum();
     }
 
@@ -88,7 +95,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the protection key type
      */
-    public ProtectionKeyType getProtectionKeyType() {
+    public ProtectionKeyType getProtectionKeyType()
+    {
         return ProtectionKeyType.fromCode(getContent().getProtectionKeyType());
     }
 
@@ -97,7 +105,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the protection key id
      */
-    public String getProtectionKeyId() {
+    public String getProtectionKeyId()
+    {
         return getContent().getProtectionKeyId();
     }
 
@@ -106,7 +115,8 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the encrypted content key
      */
-    public String getEncryptedContentKey() {
+    public String getEncryptedContentKey()
+    {
         return getContent().getEncryptedContentKey();
     }
 
@@ -115,10 +125,12 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
      * 
      * @return the content key type
      */
-    public ContentKeyType getContentKeyType() {
+    public ContentKeyType getContentKeyType()
+    {
         Integer contentKeyTypeInteger = getContent().getContentKeyType();
         ContentKeyType contentKeyType = null;
-        if (contentKeyTypeInteger != null) {
+        if (contentKeyTypeInteger != null)
+        {
             contentKeyType = ContentKeyType.fromCode(contentKeyTypeInteger);
         }
         return contentKeyType;

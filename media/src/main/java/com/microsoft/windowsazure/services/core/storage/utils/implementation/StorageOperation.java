@@ -25,24 +25,29 @@ import com.microsoft.windowsazure.services.core.storage.ServiceClient;
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 
 /**
- * RESERVED FOR INTERNAL USE. A base class which encapsulate the execution of a given storage operation.
+ * RESERVED FOR INTERNAL USE. A base class which encapsulate the execution of a
+ * given storage operation.
  * 
  * @param <C>
  *            The service client type
  * @param <P>
- *            The type of the parent object, i.e. CloudBlobContainer for downloadAttributes etc.
+ *            The type of the parent object, i.e. CloudBlobContainer for
+ *            downloadAttributes etc.
  * @param <R>
  *            The type of the expected result
  */
-public abstract class StorageOperation<C, P, R> {
+public abstract class StorageOperation<C, P, R>
+{
 
     /**
-     * Holds a reference to a realized exception which occurred during execution.
+     * Holds a reference to a realized exception which occurred during
+     * execution.
      */
     private StorageException exceptionReference;
 
     /**
-     * A flag to indicate a failure which did not result in an exception, i.e a 400 class status code.
+     * A flag to indicate a failure which did not result in an exception, i.e a
+     * 400 class status code.
      */
     private boolean nonExceptionedRetryableFailure;
 
@@ -64,7 +69,8 @@ public abstract class StorageOperation<C, P, R> {
     /**
      * Default Ctor.
      */
-    protected StorageOperation() {
+    protected StorageOperation()
+    {
         // no op
     }
 
@@ -74,7 +80,8 @@ public abstract class StorageOperation<C, P, R> {
      * @param options
      *            the RequestOptions to use
      */
-    public StorageOperation(final RequestOptions options) {
+    public StorageOperation(final RequestOptions options)
+    {
         this.setRequestOptions(options);
     }
 
@@ -82,49 +89,57 @@ public abstract class StorageOperation<C, P, R> {
      * Executes the operation.
      * 
      * @param client
-     *            a reference to the service client associated with the object being operated against
+     *            a reference to the service client associated with the object
+     *            being operated against
      * @param parentObject
-     *            a reference to the parent object of the operation, (i.e. CloudBlobContainer for Create)
+     *            a reference to the parent object of the operation, (i.e.
+     *            CloudBlobContainer for Create)
      * @param opContext
      *            an object used to track the execution of the operation
      * @return the result from the operation
      * @throws Exception
      *             an error which occurred during execution
      */
-    public abstract R execute(C client, P parentObject, OperationContext opContext) throws Exception;
+    public abstract R execute(C client, P parentObject,
+            OperationContext opContext) throws Exception;
 
     /**
      * @return the exception
      */
-    public final StorageException getException() {
+    public final StorageException getException()
+    {
         return this.exceptionReference;
     }
 
     /**
      * @return the requestOptions
      */
-    public final RequestOptions getRequestOptions() {
+    public final RequestOptions getRequestOptions()
+    {
         return this.requestOptions;
     }
 
     /**
      * @return the result
      */
-    public final RequestResult getResult() {
+    public final RequestResult getResult()
+    {
         return this.result;
     }
 
     /**
      * @return the URL connection
      */
-    public final HttpURLConnection getConnection() {
+    public final HttpURLConnection getConnection()
+    {
         return this.connection;
     }
 
     /**
      * Resets the operation status flags between operations.
      */
-    protected final void initialize(OperationContext opContext) {
+    protected final void initialize(OperationContext opContext)
+    {
         RequestResult currResult = new RequestResult();
         this.setResult(currResult);
         opContext.appendRequestResult(currResult);
@@ -136,12 +151,14 @@ public abstract class StorageOperation<C, P, R> {
     /**
      * @return the nonExceptionedRetryableFailure
      */
-    public final boolean isNonExceptionedRetryableFailure() {
+    public final boolean isNonExceptionedRetryableFailure()
+    {
         return this.nonExceptionedRetryableFailure;
     }
 
     /**
-     * Returns either the held exception from the operation if it is set, otherwise the translated exception.
+     * Returns either the held exception from the operation if it is set,
+     * otherwise the translated exception.
      * 
      * @param request
      *            the reference to the HttpURLConnection for the operation.
@@ -149,32 +166,46 @@ public abstract class StorageOperation<C, P, R> {
      *            an object used to track the execution of the operation
      * @return the exception to throw.
      */
-    protected final StorageException materializeException(final HttpURLConnection request,
-            final OperationContext opContext) {
-        if (this.getException() != null) {
+    protected final StorageException materializeException(
+            final HttpURLConnection request, final OperationContext opContext)
+    {
+        if (this.getException() != null)
+        {
             return this.getException();
         }
 
         return StorageException.translateException(request, null, opContext);
     }
 
-    public final void signRequest(ServiceClient client, HttpURLConnection request, long contentLength,
-            OperationContext context) throws InvalidKeyException, StorageException {
-        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
-            client.getCredentials().signBlobAndQueueRequest(request, contentLength, context);
-        }
-        else {
-            client.getCredentials().signBlobAndQueueRequestLite(request, contentLength, context);
+    public final void signRequest(ServiceClient client,
+            HttpURLConnection request, long contentLength,
+            OperationContext context) throws InvalidKeyException,
+            StorageException
+    {
+        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL)
+        {
+            client.getCredentials().signBlobAndQueueRequest(request,
+                    contentLength, context);
+        } else
+        {
+            client.getCredentials().signBlobAndQueueRequestLite(request,
+                    contentLength, context);
         }
     }
 
-    public final void signTableRequest(ServiceClient client, HttpURLConnection request, long contentLength,
-            OperationContext context) throws InvalidKeyException, StorageException {
-        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL) {
-            client.getCredentials().signTableRequest(request, contentLength, context);
-        }
-        else {
-            client.getCredentials().signTableRequestLite(request, contentLength, context);
+    public final void signTableRequest(ServiceClient client,
+            HttpURLConnection request, long contentLength,
+            OperationContext context) throws InvalidKeyException,
+            StorageException
+    {
+        if (client.getAuthenticationScheme() == AuthenticationScheme.SHAREDKEYFULL)
+        {
+            client.getCredentials().signTableRequest(request, contentLength,
+                    context);
+        } else
+        {
+            client.getCredentials().signTableRequestLite(request,
+                    contentLength, context);
         }
     }
 
@@ -182,7 +213,8 @@ public abstract class StorageOperation<C, P, R> {
      * @param exceptionReference
      *            the exception to set
      */
-    protected final void setException(final StorageException exceptionReference) {
+    protected final void setException(final StorageException exceptionReference)
+    {
         this.exceptionReference = exceptionReference;
     }
 
@@ -190,7 +222,9 @@ public abstract class StorageOperation<C, P, R> {
      * @param nonExceptionedRetryableFailure
      *            the nonExceptionedRetryableFailure to set
      */
-    public final void setNonExceptionedRetryableFailure(final boolean nonExceptionedRetryableFailure) {
+    public final void setNonExceptionedRetryableFailure(
+            final boolean nonExceptionedRetryableFailure)
+    {
         this.nonExceptionedRetryableFailure = nonExceptionedRetryableFailure;
     }
 
@@ -198,7 +232,8 @@ public abstract class StorageOperation<C, P, R> {
      * @param requestOptions
      *            the requestOptions to set
      */
-    protected final void setRequestOptions(final RequestOptions requestOptions) {
+    protected final void setRequestOptions(final RequestOptions requestOptions)
+    {
         this.requestOptions = requestOptions;
     }
 
@@ -206,7 +241,8 @@ public abstract class StorageOperation<C, P, R> {
      * @param result
      *            the result to set
      */
-    public final void setResult(final RequestResult result) {
+    public final void setResult(final RequestResult result)
+    {
         this.result = result;
     }
 
@@ -214,7 +250,8 @@ public abstract class StorageOperation<C, P, R> {
      * @param connection
      *            the connection to set
      */
-    public final void setConnection(final HttpURLConnection connection) {
+    public final void setConnection(final HttpURLConnection connection)
+    {
         this.connection = connection;
     }
 }

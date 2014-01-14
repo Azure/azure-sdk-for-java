@@ -25,15 +25,17 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
-public class TaskInfoTest {
+public class TaskInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
         TaskInfo taskInfo = new TaskInfo(null, new TaskType().setId(expectedId));
 
-        // Act 
+        // Act
         String actualId = taskInfo.getId();
 
         // Assert
@@ -42,10 +44,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetConfiguration() {
+    public void testGetSetConfiguration()
+    {
         // Arrange
         String expectedConfiguration = "expectedConfiguration";
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setConfiguration(expectedConfiguration));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setConfiguration(expectedConfiguration));
 
         // Act
         String actualConfiguration = taskInfo.getConfiguration();
@@ -55,13 +59,15 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetEndTime() throws Exception {
+    public void testGetSetEndTime() throws Exception
+    {
         // Arrange
         Date expectedEndTime = new Date();
 
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEndTime(expectedEndTime));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setEndTime(expectedEndTime));
 
-        // Act 
+        // Act
         Date actualEndTime = taskInfo.getEndTime();
 
         // Assert
@@ -70,15 +76,19 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetErrorDetails() throws Exception {
+    public void testGetSetErrorDetails() throws Exception
+    {
         // Arrange
         List<ErrorDetail> expectedErrorDetails = new ArrayList<ErrorDetail>();
         List<ErrorDetailType> expectedErrorDetailsType = new ArrayList<ErrorDetailType>();
-        for (ErrorDetailType errorDetailType : expectedErrorDetailsType) {
-            ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
+        for (ErrorDetailType errorDetailType : expectedErrorDetailsType)
+        {
+            ErrorDetail errorDetail = new ErrorDetail(
+                    errorDetailType.getCode(), errorDetailType.getMessage());
             expectedErrorDetails.add(errorDetail);
         }
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setErrorDetails(expectedErrorDetailsType));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setErrorDetails(expectedErrorDetailsType));
 
         // Act
         List<ErrorDetail> actualErrorDetails = taskInfo.getErrorDetails();
@@ -88,10 +98,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetMediaProcessorId() {
+    public void testGetSetMediaProcessorId()
+    {
         // Arrange
         String expectedName = "testName";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setName(expectedName));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setName(expectedName));
 
         // Act
         String actualName = TaskInfo.getName();
@@ -101,11 +113,13 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
 
         TaskOption expectedOptions = TaskOption.None;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setOptions(expectedOptions.getCode()));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setOptions(expectedOptions.getCode()));
 
         // Act
         TaskOption actualOptions = TaskInfo.getOptions();
@@ -115,10 +129,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetPerfMessage() {
+    public void testGetSetPerfMessage()
+    {
         // Arrange
         String expectedPerfMessage = "testGetSetPerfMessage";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setPerfMessage(expectedPerfMessage));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setPerfMessage(expectedPerfMessage));
 
         // Act
         String actualPerfMessage = TaskInfo.getPerfMessage();
@@ -128,10 +144,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetPriority() {
+    public void testGetSetPriority()
+    {
         // Arrange
         int expectedPriority = 3;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setPriority(expectedPriority));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setPriority(expectedPriority));
 
         // Act
         int actualPriority = TaskInfo.getPriority();
@@ -141,10 +159,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetProgress() {
+    public void testGetSetProgress()
+    {
         // Arrange
         double expectedProgress = 3;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setProgress(expectedProgress));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setProgress(expectedProgress));
 
         // Act
         double actualProgress = TaskInfo.getProgress();
@@ -154,10 +174,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetRunningDuration() {
+    public void testGetSetRunningDuration()
+    {
         // Arrange
         double expectedRunningDuration = 3;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setRunningDuration(expectedRunningDuration));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setRunningDuration(expectedRunningDuration));
 
         // Act
         double actualRunningDuration = TaskInfo.getRunningDuration();
@@ -167,10 +189,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetStartTime() {
+    public void testGetSetStartTime()
+    {
         // Arrange
         Date expectedStartTime = new Date();
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setStartTime(expectedStartTime));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setStartTime(expectedStartTime));
 
         // Act
         Date actualStartTime = TaskInfo.getStartTime();
@@ -180,10 +204,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetState() {
+    public void testGetSetState()
+    {
         // Arrange
         TaskState expectedState = TaskState.Completed;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setState(expectedState.getCode()));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setState(expectedState.getCode()));
 
         // Act
         TaskState actualState = TaskInfo.getState();
@@ -193,10 +219,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetTaskBody() {
+    public void testGetSetTaskBody()
+    {
         // Arrange
         String expectedTaskBody = "getSetTaskBody";
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setTaskBody(expectedTaskBody));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setTaskBody(expectedTaskBody));
 
         // Act
         String actualTaskBody = TaskInfo.getTaskBody();
@@ -206,10 +234,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetOptions() {
+    public void testGetSetOptions()
+    {
         // Arrange
         TaskOption expectedTaskOption = TaskOption.ProtectedConfiguration;
-        TaskInfo TaskInfo = new TaskInfo(null, new TaskType().setOptions(expectedTaskOption.getCode()));
+        TaskInfo TaskInfo = new TaskInfo(null,
+                new TaskType().setOptions(expectedTaskOption.getCode()));
 
         // Act
         TaskOption actualTaskOption = TaskInfo.getOptions();
@@ -219,10 +249,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionKeyId() {
+    public void testGetSetEncryptionKeyId()
+    {
         // Arrange
         String expectedEncryptionKeyId = "getSetEncryptionKeyId";
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionKeyId(expectedEncryptionKeyId));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setEncryptionKeyId(expectedEncryptionKeyId));
 
         // Act
         String actualEncryptionKeyId = taskInfo.getEncryptionKeyId();
@@ -232,10 +264,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionScheme() {
+    public void testGetSetEncryptionScheme()
+    {
         // Arrange
         String expectedEncryptionScheme = "getSetEncryptionScheme";
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionScheme(expectedEncryptionScheme));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setEncryptionScheme(expectedEncryptionScheme));
 
         // Act
         String actualEncryptionScheme = taskInfo.getEncryptionScheme();
@@ -245,10 +279,12 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionVersion() {
+    public void testGetSetEncryptionVersion()
+    {
         // Arrange
         String expectedEncryptionVersion = "1.5";
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionVersion(expectedEncryptionVersion));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType().setEncryptionVersion(expectedEncryptionVersion));
 
         // Act
         String actualEncryptionVersion = taskInfo.getEncryptionVersion();
@@ -258,10 +294,13 @@ public class TaskInfoTest {
     }
 
     @Test
-    public void testGetSetInitializationVector() {
+    public void testGetSetInitializationVector()
+    {
         // Arrange
         String expectedInitializationVector = "testInitializationVector";
-        TaskInfo taskInfo = new TaskInfo(null, new TaskType().setEncryptionVersion(expectedInitializationVector));
+        TaskInfo taskInfo = new TaskInfo(null,
+                new TaskType()
+                        .setEncryptionVersion(expectedInitializationVector));
 
         // Act
         String actualInitializationVector = taskInfo.getEncryptionVersion();

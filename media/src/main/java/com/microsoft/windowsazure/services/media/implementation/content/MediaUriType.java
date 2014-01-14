@@ -21,28 +21,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * This type maps the URI. 
+ * This type maps the URI.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "uri", namespace = Constants.ODATA_DATA_NS)
-public class MediaUriType implements MediaServiceDTO {
+public class MediaUriType implements MediaServiceDTO
+{
     @XmlValue
     String uri;
 
     /**
      * @return the uri.
      */
-    public String getUri() {
+    public String getUri()
+    {
         return uri;
     }
 
     /**
      * @param uri
-     *            uri
-     *            the uri to set
+     *            uri the uri to set
      */
-    public void setUri(String uri) {
+    public void setUri(String uri)
+    {
         this.uri = uri;
     }
 

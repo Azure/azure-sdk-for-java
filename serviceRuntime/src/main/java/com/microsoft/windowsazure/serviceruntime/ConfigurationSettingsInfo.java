@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.util.ArrayList;
@@ -29,11 +28,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for ConfigurationSettingsInfo complex type.
+ * <p>
+ * Java class for ConfigurationSettingsInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="ConfigurationSettingsInfo">
@@ -50,10 +51,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ConfigurationSettingsInfo", propOrder = {
-    "configurationSetting"
-})
-class ConfigurationSettingsInfo {
+@XmlType(name = "ConfigurationSettingsInfo", propOrder = { "configurationSetting" })
+class ConfigurationSettingsInfo
+{
 
     @XmlElement(name = "ConfigurationSetting")
     protected List<ConfigurationSettingInfo> configurationSetting;
@@ -62,15 +62,16 @@ class ConfigurationSettingsInfo {
      * Gets the value of the configurationSetting property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the configurationSetting property.
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the configurationSetting property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getConfigurationSetting().add(newItem);
+     * getConfigurationSetting().add(newItem);
      * </pre>
      * 
      * 
@@ -80,8 +81,10 @@ class ConfigurationSettingsInfo {
      * 
      * 
      */
-    public List<ConfigurationSettingInfo> getConfigurationSetting() {
-        if (configurationSetting == null) {
+    public List<ConfigurationSettingInfo> getConfigurationSetting()
+    {
+        if (configurationSetting == null)
+        {
             configurationSetting = new ArrayList<ConfigurationSettingInfo>();
         }
         return this.configurationSetting;

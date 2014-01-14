@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.serviceruntime;
 
-enum CurrentStatus {
+enum CurrentStatus
+{
     STARTED, BUSY, RECYCLE, STOPPED,
 }

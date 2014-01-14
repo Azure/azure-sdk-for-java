@@ -15,28 +15,31 @@
 package com.microsoft.windowsazure.services.blob;
 
 /**
- * This class contains static strings used to identify parts of a service configuration instance associated with the
- * Windows Azure Blob service.
+ * This class contains static strings used to identify parts of a service
+ * configuration instance associated with the Windows Azure Blob service.
  * <p>
  * These values must not be altered.
  */
-public class BlobConfiguration {
+public class BlobConfiguration
+{
     /**
-     * The Blob configuration account name constant. This <code>String</code> value is used as a key in the
-     * configuration file, to identify the value for the DNS prefix name for the storage account.
+     * The Blob configuration account name constant. This <code>String</code>
+     * value is used as a key in the configuration file, to identify the value
+     * for the DNS prefix name for the storage account.
      */
     public final static String ACCOUNT_NAME = "blob.accountName";
 
     /**
-     * The Blob configuration account key constant. This <code>String</code> value is used as a key in the
-     * configuration file, to identify the value for the storage service account key.
+     * The Blob configuration account key constant. This <code>String</code>
+     * value is used as a key in the configuration file, to identify the value
+     * for the storage service account key.
      */
     public final static String ACCOUNT_KEY = "blob.accountKey";
 
     /**
-     * The Blob configuration URI constant. This <code>String</code> value is used as a key in the
-     * configuration file, to identify the URI value for the Blob storage service REST API address for the
-     * storage account.
+     * The Blob configuration URI constant. This <code>String</code> value is
+     * used as a key in the configuration file, to identify the URI value for
+     * the Blob storage service REST API address for the storage account.
      */
     public final static String URI = "blob.uri";
 }

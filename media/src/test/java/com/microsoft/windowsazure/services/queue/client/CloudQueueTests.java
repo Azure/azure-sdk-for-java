@@ -43,9 +43,12 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 /**
  * Table Client Tests
  */
-public class CloudQueueTests extends QueueTestBase {
+public class CloudQueueTests extends QueueTestBase
+{
     @Test
-    public void queueGetSetPermissionTest() throws StorageException, URISyntaxException {
+    public void queueGetSetPermissionTest() throws StorageException,
+            URISyntaxException
+    {
         String name = generateRandomQueueName();
         CloudQueue newQueue = qClient.getQueueReference(name);
         newQueue.create();
@@ -53,7 +56,8 @@ public class CloudQueueTests extends QueueTestBase {
         QueuePermissions expectedPermissions;
         QueuePermissions testPermissions;
 
-        try {
+        try
+        {
             // Test new permissions.
             expectedPermissions = new QueuePermissions();
             testPermissions = newQueue.downloadPermissions();
@@ -71,23 +75,28 @@ public class CloudQueueTests extends QueueTestBase {
             now.add(Calendar.MINUTE, 10);
             policy1.setSharedAccessExpiryTime(now.getTime());
 
-            policy1.setPermissions(EnumSet.of(SharedAccessQueuePermissions.READ,
-                    SharedAccessQueuePermissions.PROCESSMESSAGES, SharedAccessQueuePermissions.ADD,
+            policy1.setPermissions(EnumSet.of(
+                    SharedAccessQueuePermissions.READ,
+                    SharedAccessQueuePermissions.PROCESSMESSAGES,
+                    SharedAccessQueuePermissions.ADD,
                     SharedAccessQueuePermissions.UPDATE));
-            expectedPermissions.getSharedAccessPolicies().put(UUID.randomUUID().toString(), policy1);
+            expectedPermissions.getSharedAccessPolicies().put(
+                    UUID.randomUUID().toString(), policy1);
 
             newQueue.uploadPermissions(expectedPermissions);
             testPermissions = newQueue.downloadPermissions();
             assertQueuePermissionsEqual(expectedPermissions, testPermissions);
-        }
-        finally {
+        } finally
+        {
             // cleanup
             newQueue.deleteIfExists();
         }
     }
 
     @Test
-    public void testQueueSAS() throws StorageException, URISyntaxException, InvalidKeyException {
+    public void testQueueSAS() throws StorageException, URISyntaxException,
+            InvalidKeyException
+    {
         String name = generateRandomQueueName();
         CloudQueue newQueue = qClient.getQueueReference(name);
         newQueue.create();
@@ -95,7 +104,8 @@ public class CloudQueueTests extends QueueTestBase {
 
         QueuePermissions expectedPermissions;
 
-        try {
+        try
+        {
             expectedPermissions = new QueuePermissions();
             // Add a policy, check setting and getting.
             SharedAccessQueuePolicy policy1 = new SharedAccessQueuePolicy();
@@ -106,65 +116,90 @@ public class CloudQueueTests extends QueueTestBase {
             policy1.setSharedAccessExpiryTime(now.getTime());
             String identifier = UUID.randomUUID().toString();
 
-            policy1.setPermissions(EnumSet.of(SharedAccessQueuePermissions.READ,
-                    SharedAccessQueuePermissions.PROCESSMESSAGES, SharedAccessQueuePermissions.ADD,
+            policy1.setPermissions(EnumSet.of(
+                    SharedAccessQueuePermissions.READ,
+                    SharedAccessQueuePermissions.PROCESSMESSAGES,
+                    SharedAccessQueuePermissions.ADD,
                     SharedAccessQueuePermissions.UPDATE));
-            expectedPermissions.getSharedAccessPolicies().put(identifier, policy1);
+            expectedPermissions.getSharedAccessPolicies().put(identifier,
+                    policy1);
 
             newQueue.uploadPermissions(expectedPermissions);
 
-            CloudQueueClient queueClientFromIdentifierSAS = getQueueClientForSas(newQueue, null, identifier);
-            CloudQueue identifierSasQueue = queueClientFromIdentifierSAS.getQueueReference(newQueue.getName());
+            CloudQueueClient queueClientFromIdentifierSAS = getQueueClientForSas(
+                    newQueue, null, identifier);
+            CloudQueue identifierSasQueue = queueClientFromIdentifierSAS
+                    .getQueueReference(newQueue.getName());
 
             identifierSasQueue.downloadAttributes();
             identifierSasQueue.exists();
 
-            identifierSasQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
+            identifierSasQueue.addMessage(new CloudQueueMessage("message"), 20,
+                    0, null, null);
             CloudQueueMessage message1 = identifierSasQueue.retrieveMessage();
             identifierSasQueue.deleteMessage(message1);
 
-            CloudQueueClient queueClientFromPolicySAS = getQueueClientForSas(newQueue, policy1, null);
-            CloudQueue policySasQueue = queueClientFromPolicySAS.getQueueReference(newQueue.getName());
+            CloudQueueClient queueClientFromPolicySAS = getQueueClientForSas(
+                    newQueue, policy1, null);
+            CloudQueue policySasQueue = queueClientFromPolicySAS
+                    .getQueueReference(newQueue.getName());
             policySasQueue.exists();
             policySasQueue.downloadAttributes();
 
-            policySasQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
+            policySasQueue.addMessage(new CloudQueueMessage("message"), 20, 0,
+                    null, null);
             CloudQueueMessage message2 = policySasQueue.retrieveMessage();
             policySasQueue.deleteMessage(message2);
-        }
-        finally {
+        } finally
+        {
             // cleanup
             newQueue.deleteIfExists();
         }
     }
 
-    private CloudQueueClient getQueueClientForSas(CloudQueue queue, SharedAccessQueuePolicy policy,
-            String accessIdentifier) throws InvalidKeyException, StorageException {
-        String sasString = queue.generateSharedAccessSignature(policy, accessIdentifier);
-        return new CloudQueueClient(qClient.getEndpoint(), new StorageCredentialsSharedAccessSignature(sasString));
+    private CloudQueueClient getQueueClientForSas(CloudQueue queue,
+            SharedAccessQueuePolicy policy, String accessIdentifier)
+            throws InvalidKeyException, StorageException
+    {
+        String sasString = queue.generateSharedAccessSignature(policy,
+                accessIdentifier);
+        return new CloudQueueClient(qClient.getEndpoint(),
+                new StorageCredentialsSharedAccessSignature(sasString));
     }
 
-    static void assertQueuePermissionsEqual(QueuePermissions expected, QueuePermissions actual) {
-        HashMap<String, SharedAccessQueuePolicy> expectedPolicies = expected.getSharedAccessPolicies();
-        HashMap<String, SharedAccessQueuePolicy> actualPolicies = actual.getSharedAccessPolicies();
-        Assert.assertEquals("SharedAccessPolicies.Count", expectedPolicies.size(), actualPolicies.size());
-        for (String name : expectedPolicies.keySet()) {
-            Assert.assertTrue("Key" + name + " doesn't exist", actualPolicies.containsKey(name));
+    static void assertQueuePermissionsEqual(QueuePermissions expected,
+            QueuePermissions actual)
+    {
+        HashMap<String, SharedAccessQueuePolicy> expectedPolicies = expected
+                .getSharedAccessPolicies();
+        HashMap<String, SharedAccessQueuePolicy> actualPolicies = actual
+                .getSharedAccessPolicies();
+        Assert.assertEquals("SharedAccessPolicies.Count",
+                expectedPolicies.size(), actualPolicies.size());
+        for (String name : expectedPolicies.keySet())
+        {
+            Assert.assertTrue("Key" + name + " doesn't exist",
+                    actualPolicies.containsKey(name));
             SharedAccessQueuePolicy expectedPolicy = expectedPolicies.get(name);
             SharedAccessQueuePolicy actualPolicy = actualPolicies.get(name);
-            Assert.assertEquals("Policy: " + name + "\tPermissions\n", expectedPolicy.getPermissions().toString(),
-                    actualPolicy.getPermissions().toString());
-            Assert.assertEquals("Policy: " + name + "\tStartDate\n", expectedPolicy.getSharedAccessStartTime()
-                    .toString(), actualPolicy.getSharedAccessStartTime().toString());
-            Assert.assertEquals("Policy: " + name + "\tExpireDate\n", expectedPolicy.getSharedAccessExpiryTime()
-                    .toString(), actualPolicy.getSharedAccessExpiryTime().toString());
+            Assert.assertEquals("Policy: " + name + "\tPermissions\n",
+                    expectedPolicy.getPermissions().toString(), actualPolicy
+                            .getPermissions().toString());
+            Assert.assertEquals("Policy: " + name + "\tStartDate\n",
+                    expectedPolicy.getSharedAccessStartTime().toString(),
+                    actualPolicy.getSharedAccessStartTime().toString());
+            Assert.assertEquals("Policy: " + name + "\tExpireDate\n",
+                    expectedPolicy.getSharedAccessExpiryTime().toString(),
+                    actualPolicy.getSharedAccessExpiryTime().toString());
 
         }
 
     }
 
     @Test
-    public void testQueueClientConstructor() throws URISyntaxException, StorageException {
+    public void testQueueClientConstructor() throws URISyntaxException,
+            StorageException
+    {
         String queueName = "queue";
         String baseAddress = AppendQueueName(qClient.getEndpoint(), queueName);
         CloudQueue queue1 = new CloudQueue(baseAddress, qClient);
@@ -172,7 +207,8 @@ public class CloudQueueTests extends QueueTestBase {
         Assert.assertTrue(queue1.getUri().toString().endsWith(baseAddress));
         Assert.assertEquals(qClient, queue1.getServiceClient());
 
-        CloudQueue queue2 = new CloudQueue(new URI(AppendQueueName(qClient.getEndpoint(), queueName)), qClient);
+        CloudQueue queue2 = new CloudQueue(new URI(AppendQueueName(
+                qClient.getEndpoint(), queueName)), qClient);
 
         Assert.assertEquals(queueName, queue2.getName());
         Assert.assertEquals(qClient, queue2.getServiceClient());
@@ -183,13 +219,15 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testGetMetadata() throws URISyntaxException, StorageException {
+    public void testGetMetadata() throws URISyntaxException, StorageException
+    {
         HashMap<String, String> metadata = new HashMap<String, String>();
         metadata.put("ExistingMetadata", "ExistingMetadataValue");
         queue.setMetadata(metadata);
         queue.uploadMetadata();
         queue.downloadAttributes();
-        Assert.assertEquals(queue.getMetadata().get("ExistingMetadata"), "ExistingMetadataValue");
+        Assert.assertEquals(queue.getMetadata().get("ExistingMetadata"),
+                "ExistingMetadataValue");
         Assert.assertTrue(queue.getMetadata().containsKey("ExistingMetadata"));
 
         HashMap<String, String> empytMetadata = null;
@@ -200,27 +238,36 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testUploadMetadata() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(queue.getUri(), queue.getServiceClient());
+    public void testUploadMetadata() throws URISyntaxException,
+            StorageException
+    {
+        CloudQueue queueForGet = new CloudQueue(queue.getUri(),
+                queue.getServiceClient());
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
         metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
         queue.setMetadata(metadata1);
 
         queueForGet.downloadAttributes();
-        Assert.assertFalse(queueForGet.getMetadata().containsKey("ExistingMetadata1"));
+        Assert.assertFalse(queueForGet.getMetadata().containsKey(
+                "ExistingMetadata1"));
 
         queue.uploadMetadata();
         queueForGet.downloadAttributes();
-        Assert.assertTrue(queueForGet.getMetadata().containsKey("ExistingMetadata1"));
+        Assert.assertTrue(queueForGet.getMetadata().containsKey(
+                "ExistingMetadata1"));
     }
 
     @Test
-    public void testUploadMetadataNullInput() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(queue.getUri(), queue.getServiceClient());
+    public void testUploadMetadataNullInput() throws URISyntaxException,
+            StorageException
+    {
+        CloudQueue queueForGet = new CloudQueue(queue.getUri(),
+                queue.getServiceClient());
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
-        String key = "ExistingMetadata1" + UUID.randomUUID().toString().replace("-", "");
+        String key = "ExistingMetadata1"
+                + UUID.randomUUID().toString().replace("-", "");
         metadata1.put(key, "ExistingMetadataValue1");
         queue.setMetadata(metadata1);
 
@@ -238,11 +285,15 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testUploadMetadataClearExisting() throws URISyntaxException, StorageException {
-        CloudQueue queueForGet = new CloudQueue(queue.getUri(), queue.getServiceClient());
+    public void testUploadMetadataClearExisting() throws URISyntaxException,
+            StorageException
+    {
+        CloudQueue queueForGet = new CloudQueue(queue.getUri(),
+                queue.getServiceClient());
 
         HashMap<String, String> metadata1 = new HashMap<String, String>();
-        String key = "ExistingMetadata1" + UUID.randomUUID().toString().replace("-", "");
+        String key = "ExistingMetadata1"
+                + UUID.randomUUID().toString().replace("-", "");
         metadata1.put(key, "ExistingMetadataValue1");
         queue.setMetadata(metadata1);
 
@@ -257,37 +308,43 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testUploadMetadataNotFound() throws URISyntaxException, StorageException {
+    public void testUploadMetadataNotFound() throws URISyntaxException,
+            StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.uploadMetadata();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testQueueCreate() throws URISyntaxException, StorageException {
+    public void testQueueCreate() throws URISyntaxException, StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
-        try {
+        try
+        {
             HashMap<String, String> metadata1 = new HashMap<String, String>();
             metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
             queue.setMetadata(metadata1);
             queue.create();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_CONFLICT);
 
         }
@@ -295,28 +352,38 @@ public class CloudQueueTests extends QueueTestBase {
         queue.downloadAttributes();
         OperationContext createQueueContext2 = new OperationContext();
         queue.create(null, createQueueContext2);
-        Assert.assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(
+                createQueueContext2.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
 
         queue.delete();
     }
 
     @Test
-    public void testQueueCreateAlreadyExists() throws URISyntaxException, StorageException {
+    public void testQueueCreateAlreadyExists() throws URISyntaxException,
+            StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         OperationContext createQueueContext1 = new OperationContext();
         queue.create(null, createQueueContext1);
-        Assert.assertEquals(createQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(
+                createQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         OperationContext createQueueContext2 = new OperationContext();
         queue.create(null, createQueueContext2);
-        Assert.assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(
+                createQueueContext2.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
     }
 
     @Test
-    public void testQueueCreateAfterDelete() throws URISyntaxException, StorageException {
+    public void testQueueCreateAfterDelete() throws URISyntaxException,
+            StorageException
+    {
 
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
@@ -324,49 +391,66 @@ public class CloudQueueTests extends QueueTestBase {
 
         OperationContext createQueueContext1 = new OperationContext();
         Assert.assertTrue(queue.createIfNotExist(null, createQueueContext1));
-        Assert.assertEquals(createQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(
+                createQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         Assert.assertTrue(queue.deleteIfExists());
-        try {
+        try
+        {
             queue.create();
             Assert.fail("Queue CreateIfNotExists did not throw exception while trying to create a queue in BeingDeleted State");
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
-                    HttpURLConnection.HTTP_CONFLICT);
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex
-                    .getExtendedErrorInformation().getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_CONFLICT);
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown", ex
+                            .getExtendedErrorInformation().getErrorCode(),
+                    StorageErrorCodeStrings.QUEUE_BEING_DELETED);
         }
     }
 
     @Test
-    public void testQueueCreateIfNotExists() throws URISyntaxException, StorageException {
+    public void testQueueCreateIfNotExists() throws URISyntaxException,
+            StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         OperationContext createQueueContext = new OperationContext();
         Assert.assertTrue(queue.createIfNotExist(null, createQueueContext));
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
     }
 
     @Test
-    public void testQueueCreateIfNotExistsAfterCreate() throws URISyntaxException, StorageException {
+    public void testQueueCreateIfNotExistsAfterCreate()
+            throws URISyntaxException, StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         OperationContext createQueueContext1 = new OperationContext();
         Assert.assertTrue(queue.createIfNotExist(null, createQueueContext1));
-        Assert.assertEquals(createQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(
+                createQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         OperationContext createQueueContext2 = new OperationContext();
         Assert.assertFalse(queue.createIfNotExist(null, createQueueContext2));
-        Assert.assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(
+                createQueueContext2.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
     }
 
     @Test
-    public void testQueueCreateIfNotExistsAfterDelete() throws URISyntaxException, StorageException {
+    public void testQueueCreateIfNotExistsAfterDelete()
+            throws URISyntaxException, StorageException
+    {
 
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
@@ -374,48 +458,61 @@ public class CloudQueueTests extends QueueTestBase {
 
         OperationContext createQueueContext1 = new OperationContext();
         Assert.assertTrue(queue.createIfNotExist(null, createQueueContext1));
-        Assert.assertEquals(createQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(
+                createQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         Assert.assertTrue(queue.deleteIfExists());
-        try {
+        try
+        {
             queue.createIfNotExist();
             Assert.fail("Queue CreateIfNotExists did not throw exception while trying to create a queue in BeingDeleted State");
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
-                    HttpURLConnection.HTTP_CONFLICT);
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex
-                    .getExtendedErrorInformation().getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_CONFLICT);
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown", ex
+                            .getExtendedErrorInformation().getErrorCode(),
+                    StorageErrorCodeStrings.QUEUE_BEING_DELETED);
         }
     }
 
     @Test
-    public void testQueueDelete() throws URISyntaxException, StorageException {
+    public void testQueueDelete() throws URISyntaxException, StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         OperationContext deleteQueueContext = new OperationContext();
         queue.delete(null, deleteQueueContext);
-        Assert.assertEquals(deleteQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(deleteQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
 
-        try {
+        try
+        {
             queue.downloadAttributes();
             Assert.fail();
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 404 Exception", ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals("Expected 404 Exception",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
         }
 
         queue.delete();
     }
 
     @Test
-    public void testDeleteQueueIfExists() throws URISyntaxException, StorageException {
+    public void testDeleteQueueIfExists() throws URISyntaxException,
+            StorageException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
 
@@ -423,61 +520,78 @@ public class CloudQueueTests extends QueueTestBase {
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         Assert.assertTrue(queue.deleteIfExists());
 
-        try {
+        try
+        {
             queue.create();
             Assert.fail("Queue CreateIfNotExists did not throw exception while trying to create a queue in BeingDeleted State");
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
-                    HttpURLConnection.HTTP_CONFLICT);
-            Assert.assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex
-                    .getExtendedErrorInformation().getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_CONFLICT);
+            Assert.assertEquals(
+                    "Expected 409 Exception, QueueBeingDeleted not thrown", ex
+                            .getExtendedErrorInformation().getErrorCode(),
+                    StorageErrorCodeStrings.QUEUE_BEING_DELETED);
         }
     }
 
     @Test
-    public void testDeleteNonExistingQueue() throws URISyntaxException, StorageException {
+    public void testDeleteNonExistingQueue() throws URISyntaxException,
+            StorageException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
 
         final OperationContext existQueueContext1 = new OperationContext();
         Assert.assertTrue(!queue.exists(null, existQueueContext1));
-        Assert.assertEquals(existQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        Assert.assertEquals(existQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NOT_FOUND);
 
-        try {
+        try
+        {
             queue.delete();
             Assert.fail("Queue delete no exsiting queue. ");
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 404 Exception", ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals("Expected 404 Exception",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
         }
     }
 
     @Test
-    public void testQueueExist() throws URISyntaxException, StorageException {
+    public void testQueueExist() throws URISyntaxException, StorageException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
 
         final OperationContext existQueueContext1 = new OperationContext();
         Assert.assertTrue(!queue.exists(null, existQueueContext1));
-        Assert.assertEquals(existQueueContext1.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        Assert.assertEquals(existQueueContext1.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NOT_FOUND);
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         final OperationContext existQueueContext2 = new OperationContext();
         Assert.assertTrue(queue.exists(null, existQueueContext2));
-        Assert.assertEquals(existQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_OK);
+        Assert.assertEquals(existQueueContext2.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_OK);
     }
 
     @Test
-    public void testClearMessages() throws URISyntaxException, StorageException, UnsupportedEncodingException {
-        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID().toString().toLowerCase());
+    public void testClearMessages() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID()
+                .toString().toLowerCase());
         queue.create();
 
         CloudQueueMessage message1 = new CloudQueueMessage("messagetest1");
@@ -487,7 +601,8 @@ public class CloudQueueTests extends QueueTestBase {
         queue.addMessage(message2);
 
         int count = 0;
-        for (CloudQueueMessage m : queue.peekMessages(32)) {
+        for (CloudQueueMessage m : queue.peekMessages(32))
+        {
             Assert.assertNotNull(m);
             count++;
         }
@@ -496,10 +611,12 @@ public class CloudQueueTests extends QueueTestBase {
 
         OperationContext oc = new OperationContext();
         queue.clear(null, oc);
-        Assert.assertEquals(oc.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(oc.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
 
         count = 0;
-        for (CloudQueueMessage m : queue.peekMessages(32)) {
+        for (CloudQueueMessage m : queue.peekMessages(32))
+        {
             Assert.assertNotNull(m);
             count++;
         }
@@ -507,26 +624,36 @@ public class CloudQueueTests extends QueueTestBase {
         Assert.assertTrue(count == 0);
     }
 
-    public void testClearMessagesEmptyQueue() throws URISyntaxException, StorageException, UnsupportedEncodingException {
-        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID().toString().toLowerCase());
+    public void testClearMessagesEmptyQueue() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID()
+                .toString().toLowerCase());
         queue.create();
         queue.clear();
         queue.delete();
     }
 
-    public void testClearMessagesNotFound() throws URISyntaxException, StorageException, UnsupportedEncodingException {
-        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID().toString().toLowerCase());
-        try {
+    public void testClearMessagesNotFound() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID()
+                .toString().toLowerCase());
+        try
+        {
             queue.clear();
             Assert.fail();
-        }
-        catch (StorageException ex) {
-            Assert.assertEquals("Expected 404 Exception", ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        } catch (StorageException ex)
+        {
+            Assert.assertEquals("Expected 404 Exception",
+                    ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
         }
     }
 
     @Test
-    public void testAddMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testAddMessage() throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -536,13 +663,16 @@ public class CloudQueueTests extends QueueTestBase {
         queue.addMessage(message);
         CloudQueueMessage msgFromRetrieve1 = queue.retrieveMessage();
         Assert.assertEquals(message.getMessageContentAsString(), msgContent);
-        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
+        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(),
+                msgContent);
 
         queue.delete();
     }
 
     @Test
-    public void testAddMessageUnicode() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testAddMessageUnicode() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -557,7 +687,8 @@ public class CloudQueueTests extends QueueTestBase {
                 + "P3B-F</MODEL>\n      <COST> 123.00</COST>\n   </PART>\n   <PART>\n      <ITEM>Video Card</ITEM>\n      <MANUFACTURER>ATI</MANUFACTURER>\n      <MODEL>All-in-Wonder Pro</MODEL>\n      <COST> 160.00</COST>\n   </PART>\n   <PART>\n      <ITEM>Sound Card</ITEM>\n      <MANUFACTURER>"
                 + "Creative Labs</MANUFACTURER>\n      <MODEL>Sound Blaster Live</MODEL>\n      <COST> 80.00</COST>\n   </PART>\n   <PART>\n      <ITEM> inch Monitor</ITEM>\n      <MANUFACTURER>LG Electronics</MANUFACTURER>\n      <MODEL> 995E</MODEL>\n      <COST> 290.00</COST>\n   </PART>\n</PARTS>");
 
-        for (int i = 0; i < messages.size(); i++) {
+        for (int i = 0; i < messages.size(); i++)
+        {
             String msg = messages.get(i);
             queue.addMessage(new CloudQueueMessage(msg));
             CloudQueueMessage readBack = queue.retrieveMessage();
@@ -566,7 +697,8 @@ public class CloudQueueTests extends QueueTestBase {
         }
 
         queue.shouldEncodeMessage = false;
-        for (int i = 0; i < messages.size(); i++) {
+        for (int i = 0; i < messages.size(); i++)
+        {
             String msg = messages.get(i);
             queue.addMessage(new CloudQueueMessage(msg));
             CloudQueueMessage readBack = queue.retrieveMessage();
@@ -578,8 +710,9 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testAddMessageLargeVisibilityDelay() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testAddMessageLargeVisibilityDelay() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -594,8 +727,10 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testDeleteMessageWithDifferentQueueInstance() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testDeleteMessageWithDifferentQueueInstance()
+            throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue1 = qClient.getQueueReference(queueName);
         queue1.create();
@@ -612,27 +747,30 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testAddMessageToNonExistingQueue() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testAddMessageToNonExistingQueue() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
 
         String messageContent = "messagetest";
         CloudQueueMessage message1 = new CloudQueueMessage(messageContent);
 
-        try {
+        try
+        {
             newQueue.addMessage(message1);
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testQueueUnicodeAndXmlMessageTest() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testQueueUnicodeAndXmlMessageTest() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -642,22 +780,26 @@ public class CloudQueueTests extends QueueTestBase {
         queue.addMessage(message);
         CloudQueueMessage msgFromRetrieve1 = queue.retrieveMessage();
         Assert.assertEquals(message.getMessageContentAsString(), msgContent);
-        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
-        //Assert.assertEquals(message.getMessageContentAsByte(), msgFromRetrieve1.getMessageContentAsByte());
+        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(),
+                msgContent);
+        // Assert.assertEquals(message.getMessageContentAsByte(),
+        // msgFromRetrieve1.getMessageContentAsByte());
 
         queue.delete();
     }
 
     @Test
-    public void testAddMessageLargeMessageInput() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testAddMessageLargeMessageInput() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         final Random rand = new Random();
 
@@ -665,19 +807,22 @@ public class CloudQueueTests extends QueueTestBase {
         rand.nextBytes(content);
         CloudQueueMessage message1 = new CloudQueueMessage(new String(content));
 
-        try {
+        try
+        {
             queue.addMessage(message1);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
         queue.delete();
     }
 
     @Test
-    public void testAddMessageWithVisibilityTimeout() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException, InterruptedException {
+    public void testAddMessageWithVisibilityTimeout()
+            throws URISyntaxException, StorageException,
+            UnsupportedEncodingException, InterruptedException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -696,78 +841,95 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testAddMessageNullMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
-        try {
+    public void testAddMessageNullMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        try
+        {
             queue.addMessage(null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
     }
 
     @Test
-    public void testAddMessageSpecialVisibilityTimeout() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testAddMessageSpecialVisibilityTimeout()
+            throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         CloudQueueMessage message = new CloudQueueMessage("test");
         queue.addMessage(message, 1, 0, null, null);
         queue.addMessage(message, 7 * 24 * 60 * 60, 0, null, null);
-        queue.addMessage(message, 7 * 24 * 60 * 60, 7 * 24 * 60 * 60 - 1, null, null);
+        queue.addMessage(message, 7 * 24 * 60 * 60, 7 * 24 * 60 * 60 - 1, null,
+                null);
 
-        try {
+        try
+        {
             queue.addMessage(message, -1, 0, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.addMessage(message, 0, -1, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
-            queue.addMessage(message, 7 * 24 * 60 * 60, 7 * 24 * 60 * 60, null, null);
+        try
+        {
+            queue.addMessage(message, 7 * 24 * 60 * 60, 7 * 24 * 60 * 60, null,
+                    null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.addMessage(message, 7 * 24 * 60 * 60 + 1, 0, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.addMessage(message, 0, 7 * 24 * 60 * 60 + 1, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
-            queue.updateMessage(message, 0, EnumSet.of(MessageUpdateFields.CONTENT), null, null);
+        try
+        {
+            queue.updateMessage(message, 0,
+                    EnumSet.of(MessageUpdateFields.CONTENT), null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
         queue.delete();
     }
 
     @Test
-    public void testDeleteMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testDeleteMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -778,21 +940,27 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message2 = new CloudQueueMessage("messagetest2");
         newQueue.addMessage(message2);
 
-        for (CloudQueueMessage message : newQueue.retrieveMessages(32)) {
+        for (CloudQueueMessage message : newQueue.retrieveMessages(32))
+        {
             OperationContext deleteQueueContext = new OperationContext();
             newQueue.deleteMessage(message, null, deleteQueueContext);
-            Assert.assertEquals(deleteQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+            Assert.assertEquals(deleteQueueContext.getLastResult()
+                    .getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
 
         Assert.assertTrue(newQueue.retrieveMessage() == null);
     }
 
     @Test
-    public void testQueueCreateAddingMetaData() throws URISyntaxException, StorageException {
-        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID().toString().toLowerCase());
+    public void testQueueCreateAddingMetaData() throws URISyntaxException,
+            StorageException
+    {
+        final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID()
+                .toString().toLowerCase());
 
         final HashMap<String, String> metadata = new HashMap<String, String>(5);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
+        {
             metadata.put("key" + i, "value" + i);
         }
 
@@ -800,34 +968,41 @@ public class CloudQueueTests extends QueueTestBase {
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
     }
 
     @Test
-    public void testDeleteMessageNullMessage() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
-        try {
+    public void testDeleteMessageNullMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        try
+        {
             queue.deleteMessage(null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
     }
 
     @Test
-    public void testRetrieveMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException,
-            InterruptedException {
+    public void testRetrieveMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException,
+            InterruptedException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
         newQueue.addMessage(new CloudQueueMessage("message"), 20, 0, null, null);
         OperationContext opContext = new OperationContext();
-        CloudQueueMessage message1 = newQueue.retrieveMessage(10, null /*QueueRequestOptions*/, opContext);
+        CloudQueueMessage message1 = newQueue.retrieveMessage(10,
+                null /* QueueRequestOptions */, opContext);
         Date expirationTime1 = message1.getExpirationTime();
         Date insertionTime1 = message1.getInsertionTime();
         Date nextVisibleTime1 = message1.getNextVisibleTime();
 
-        Assert.assertEquals(HttpURLConnection.HTTP_OK, opContext.getLastResult().getStatusCode());
+        Assert.assertEquals(HttpURLConnection.HTTP_OK, opContext
+                .getLastResult().getStatusCode());
 
         newQueue.deleteMessage(message1);
 
@@ -845,72 +1020,84 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testRetrieveMessageNonExistingQueue() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessageNonExistingQueue()
+            throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.retrieveMessage();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testRetrieveMessageInvalidInput() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessageInvalidInput() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
 
-        try {
+        try
+        {
             queue.retrieveMessage(-1, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.retrieveMessage(7 * 24 * 3600 + 1, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
     }
 
     @Test
-    public void testRetrieveMessagesFromEmptyQueue() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessagesFromEmptyQueue() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
 
-        for (CloudQueueMessage m : newQueue.retrieveMessages(32)) {
+        for (CloudQueueMessage m : newQueue.retrieveMessages(32))
+        {
             Assert.assertTrue(m.getId() != null);
             Assert.assertTrue(m.getPopReceipt() == null);
         }
     }
 
     @Test
-    public void testRetrieveMessagesNonFound() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessagesNonFound() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.retrieveMessages(1);
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testDequeueCountIncreases() throws URISyntaxException, StorageException, UnsupportedEncodingException,
-            InterruptedException {
+    public void testDequeueCountIncreases() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException,
+            InterruptedException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -918,28 +1105,35 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message1 = newQueue.retrieveMessage(1, null, null);
         Assert.assertTrue(message1.getDequeueCount() == 1);
 
-        for (int i = 2; i < 5; i++) {
+        for (int i = 2; i < 5; i++)
+        {
             Thread.sleep(2000);
-            CloudQueueMessage message2 = newQueue.retrieveMessage(1, null, null);
+            CloudQueueMessage message2 = newQueue
+                    .retrieveMessage(1, null, null);
             Assert.assertTrue(message2.getDequeueCount() == i);
         }
 
     }
 
     @Test
-    public void testRetrieveMessageSpecialVisibilityTimeout() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessageSpecialVisibilityTimeout()
+            throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
 
-        try {
+        try
+        {
             queue.retrieveMessage(-1, null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
     }
 
     @Test
-    public void testRetrieveMessages() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testRetrieveMessages() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -950,52 +1144,60 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message2 = new CloudQueueMessage("messagetest2");
         newQueue.addMessage(message2);
 
-        for (CloudQueueMessage m : newQueue.retrieveMessages(32)) {
+        for (CloudQueueMessage m : newQueue.retrieveMessages(32))
+        {
             Assert.assertTrue(m.getId() != null);
             Assert.assertTrue(m.getPopReceipt() != null);
         }
     }
 
     @Test
-    public void testRetrieveMessagesInvalidInput() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testRetrieveMessagesInvalidInput() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.createIfNotExist();
 
-        for (int i = 0; i < 33; i++) {
+        for (int i = 0; i < 33; i++)
+        {
             queue.addMessage(new CloudQueueMessage("test" + i));
         }
 
         queue.retrieveMessages(1, 1, null, null);
         queue.retrieveMessages(32, 1, null, null);
 
-        try {
+        try
+        {
             queue.retrieveMessages(-1);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.retrieveMessages(0);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.retrieveMessages(33);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
         queue.delete();
     }
 
     @Test
-    public void testPeekMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testPeekMessage() throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -1011,7 +1213,9 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testPeekMessages() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testPeekMessages() throws URISyntaxException, StorageException,
+            UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -1022,7 +1226,8 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message2 = new CloudQueueMessage("messagetest2");
         newQueue.addMessage(message2);
 
-        for (CloudQueueMessage m : newQueue.peekMessages(32)) {
+        for (CloudQueueMessage m : newQueue.peekMessages(32))
+        {
             Assert.assertTrue(m.getId() != null);
             Assert.assertTrue(m.getPopReceipt() == null);
         }
@@ -1031,87 +1236,101 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testPeekMessagesInvalidInput() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testPeekMessagesInvalidInput() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.createIfNotExist();
 
-        for (int i = 0; i < 33; i++) {
+        for (int i = 0; i < 33; i++)
+        {
             queue.addMessage(new CloudQueueMessage("test" + i));
         }
 
         queue.peekMessages(1);
         queue.peekMessages(32);
 
-        try {
+        try
+        {
             queue.peekMessages(-1);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.peekMessages(0);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
-        try {
+        try
+        {
             queue.peekMessages(33);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
         queue.delete();
     }
 
     @Test
-    public void testPeekMessageNonExistingQueue() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testPeekMessageNonExistingQueue() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.peekMessage();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testPeekMessagesNonFound() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testPeekMessagesNonFound() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.peekMessages(1);
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testPeekMessagesFromEmptyQueue() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testPeekMessagesFromEmptyQueue() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
 
-        for (CloudQueueMessage m : newQueue.peekMessages(32)) {
+        for (CloudQueueMessage m : newQueue.peekMessages(32))
+        {
             Assert.assertTrue(m.getId() != null);
             Assert.assertTrue(m.getPopReceipt() == null);
         }
     }
 
     @Test
-    public void testUpdateMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException {
+    public void testUpdateMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
 
         queue.clear();
 
@@ -1124,19 +1343,25 @@ public class CloudQueueTests extends QueueTestBase {
 
         String newMesage = message1.getMessageContentAsString() + "updated";
 
-        for (CloudQueueMessage message : queue.retrieveMessages(32)) {
+        for (CloudQueueMessage message : queue.retrieveMessages(32))
+        {
             OperationContext oc = new OperationContext();
             message.setMessageContent(newMesage);
-            queue.updateMessage(message, 0, EnumSet.of(MessageUpdateFields.VISIBILITY), null, oc);
-            Assert.assertEquals(oc.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+            queue.updateMessage(message, 0,
+                    EnumSet.of(MessageUpdateFields.VISIBILITY), null, oc);
+            Assert.assertEquals(oc.getLastResult().getStatusCode(),
+                    HttpURLConnection.HTTP_NO_CONTENT);
             CloudQueueMessage messageFromGet = queue.retrieveMessage();
-            Assert.assertEquals(messageFromGet.getMessageContentAsString(), messageContent);
+            Assert.assertEquals(messageFromGet.getMessageContentAsString(),
+                    messageContent);
         }
     }
 
     @Test
-    public void testUpdateMessageFullPass() throws URISyntaxException, StorageException, UnsupportedEncodingException,
-            InterruptedException {
+    public void testUpdateMessageFullPass() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException,
+            InterruptedException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
         newQueue.create();
@@ -1145,7 +1370,8 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message1 = newQueue.retrieveMessage();
         String popreceipt1 = message1.getPopReceipt();
         Date NextVisibleTim1 = message1.getNextVisibleTime();
-        newQueue.updateMessage(message1, 100, EnumSet.of(MessageUpdateFields.VISIBILITY), null, null);
+        newQueue.updateMessage(message1, 100,
+                EnumSet.of(MessageUpdateFields.VISIBILITY), null, null);
         String popreceipt2 = message1.getPopReceipt();
         Date NextVisibleTim2 = message1.getNextVisibleTime();
         Assert.assertTrue(popreceipt2 != popreceipt1);
@@ -1156,8 +1382,10 @@ public class CloudQueueTests extends QueueTestBase {
         String newMesage = message.getMessageContentAsString() + "updated";
         message.setMessageContent(newMesage);
         OperationContext oc = new OperationContext();
-        newQueue.updateMessage(message1, 100, EnumSet.of(MessageUpdateFields.CONTENT), null, oc);
-        Assert.assertEquals(oc.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        newQueue.updateMessage(message1, 100,
+                EnumSet.of(MessageUpdateFields.CONTENT), null, oc);
+        Assert.assertEquals(oc.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
         String popreceipt3 = message1.getPopReceipt();
         Date NextVisibleTim3 = message1.getNextVisibleTime();
         Assert.assertTrue(popreceipt3 != popreceipt2);
@@ -1165,15 +1393,18 @@ public class CloudQueueTests extends QueueTestBase {
 
         Assert.assertTrue(newQueue.retrieveMessage() == null);
 
-        newQueue.updateMessage(message1, 0, EnumSet.of(MessageUpdateFields.VISIBILITY), null, null);
+        newQueue.updateMessage(message1, 0,
+                EnumSet.of(MessageUpdateFields.VISIBILITY), null, null);
 
         CloudQueueMessage messageFromGet = newQueue.retrieveMessage();
-        Assert.assertEquals(messageFromGet.getMessageContentAsString(), message1.getMessageContentAsString());
+        Assert.assertEquals(messageFromGet.getMessageContentAsString(),
+                message1.getMessageContentAsString());
     }
 
     @Test
-    public void testUpdateMessageWithContentChange() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testUpdateMessageWithContentChange() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
 
         CloudQueueMessage message1 = new CloudQueueMessage("messagetest1");
         queue.addMessage(message1);
@@ -1181,28 +1412,35 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message2 = new CloudQueueMessage("messagetest2");
         queue.addMessage(message2);
 
-        for (CloudQueueMessage message : queue.retrieveMessages(32)) {
+        for (CloudQueueMessage message : queue.retrieveMessages(32))
+        {
             OperationContext oc = new OperationContext();
-            message.setMessageContent(message.getMessageContentAsString() + "updated");
-            queue.updateMessage(message, 100, EnumSet.of(MessageUpdateFields.CONTENT), null, oc);
-            Assert.assertEquals(oc.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+            message.setMessageContent(message.getMessageContentAsString()
+                    + "updated");
+            queue.updateMessage(message, 100,
+                    EnumSet.of(MessageUpdateFields.CONTENT), null, oc);
+            Assert.assertEquals(oc.getLastResult().getStatusCode(),
+                    HttpURLConnection.HTTP_NO_CONTENT);
         }
     }
 
     @Test
-    public void testUpdateMessageNullMessage() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
-        try {
+    public void testUpdateMessageNullMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
+        try
+        {
             queue.updateMessage(null, 0);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
     }
 
     @Test
-    public void testUpdateMessageInvalidMessage() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testUpdateMessageInvalidMessage() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create(null, null);
@@ -1210,19 +1448,22 @@ public class CloudQueueTests extends QueueTestBase {
         CloudQueueMessage message = new CloudQueueMessage("test");
         queue.addMessage(message, 1, 0, null, null);
 
-        try {
-            queue.updateMessage(message, 0, EnumSet.of(MessageUpdateFields.CONTENT), null, null);
+        try
+        {
+            queue.updateMessage(message, 0,
+                    EnumSet.of(MessageUpdateFields.CONTENT), null, null);
             Assert.fail();
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
         }
 
         queue.delete();
     }
 
     @Test
-    public void testGetApproximateMessageCount() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException {
+    public void testGetApproximateMessageCount() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -1236,7 +1477,9 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testShouldEncodeMessage() throws URISyntaxException, StorageException {
+    public void testShouldEncodeMessage() throws URISyntaxException,
+            StorageException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         queue.create();
@@ -1246,21 +1489,24 @@ public class CloudQueueTests extends QueueTestBase {
         queue.setShouldEncodeMessage(true);
         queue.addMessage(message);
         CloudQueueMessage msgFromRetrieve1 = queue.retrieveMessage();
-        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
+        Assert.assertEquals(msgFromRetrieve1.getMessageContentAsString(),
+                msgContent);
         queue.deleteMessage(msgFromRetrieve1);
 
         queue.setShouldEncodeMessage(false);
         queue.addMessage(message);
         CloudQueueMessage msgFromRetrieve2 = queue.retrieveMessage();
-        Assert.assertEquals(msgFromRetrieve2.getMessageContentAsString(), msgContent);
+        Assert.assertEquals(msgFromRetrieve2.getMessageContentAsString(),
+                msgContent);
         queue.deleteMessage(msgFromRetrieve2);
 
         queue.setShouldEncodeMessage(true);
     }
 
     @Test
-    public void testQueueDownloadAttributes() throws URISyntaxException, StorageException,
-            UnsupportedEncodingException, XMLStreamException {
+    public void testQueueDownloadAttributes() throws URISyntaxException,
+            StorageException, UnsupportedEncodingException, XMLStreamException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
 
         final CloudQueue queue1 = qClient.getQueueReference(queueName);
@@ -1274,7 +1520,8 @@ public class CloudQueueTests extends QueueTestBase {
 
         final HashMap<String, String> metadata = new HashMap<String, String>(5);
         int sum = 5;
-        for (int i = 0; i < sum; i++) {
+        for (int i = 0; i < sum; i++)
+        {
             metadata.put("key" + i, "value" + i);
         }
 
@@ -1287,7 +1534,8 @@ public class CloudQueueTests extends QueueTestBase {
         System.out.println(queue2.getApproximateMessageCount());
 
         int count = 0;
-        for (final String s : queue2.getMetadata().keySet()) {
+        for (final String s : queue2.getMetadata().keySet())
+        {
             count++;
             System.out.println(s + ":" + queue2.getMetadata().get(s));
         }
@@ -1298,31 +1546,38 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testQueueDownloadAttributesNotFound() throws URISyntaxException, StorageException {
+    public void testQueueDownloadAttributesNotFound()
+            throws URISyntaxException, StorageException
+    {
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue newQueue = qClient.getQueueReference(queueName);
-        try {
+        try
+        {
             newQueue.downloadAttributes();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND);
 
         }
     }
 
     @Test
-    public void testQueueUpdateMetaData() throws URISyntaxException, StorageException {
+    public void testQueueUpdateMetaData() throws URISyntaxException,
+            StorageException
+    {
         final String queueName = UUID.randomUUID().toString().toLowerCase();
         final CloudQueue queue = qClient.getQueueReference(queueName);
         Assert.assertEquals(queueName, queue.getName());
 
         final OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
         final HashMap<String, String> metadata = new HashMap<String, String>(5);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++)
+        {
             metadata.put("key" + i, "value" + i);
         }
 
@@ -1331,7 +1586,9 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testSASClientParse() throws StorageException, URISyntaxException, InvalidKeyException {
+    public void testSASClientParse() throws StorageException,
+            URISyntaxException, InvalidKeyException
+    {
 
         // Add a policy, check setting and getting.
         SharedAccessQueuePolicy policy1 = new SharedAccessQueuePolicy();
@@ -1342,27 +1599,33 @@ public class CloudQueueTests extends QueueTestBase {
         policy1.setSharedAccessExpiryTime(now.getTime());
 
         policy1.setPermissions(EnumSet.of(SharedAccessQueuePermissions.READ,
-                SharedAccessQueuePermissions.PROCESSMESSAGES, SharedAccessQueuePermissions.ADD,
+                SharedAccessQueuePermissions.PROCESSMESSAGES,
+                SharedAccessQueuePermissions.ADD,
                 SharedAccessQueuePermissions.UPDATE));
 
         String sasString = queue.generateSharedAccessSignature(policy1, null);
 
-        URI queueUri = new URI("http://myaccount.queue.core.windows.net/myqueue");
+        URI queueUri = new URI(
+                "http://myaccount.queue.core.windows.net/myqueue");
 
-        CloudQueueClient queueClient1 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
+        CloudQueueClient queueClient1 = new CloudQueueClient(new URI(
+                "http://myaccount.queue.core.windows.net/"),
                 new StorageCredentialsSharedAccessSignature(sasString));
 
         CloudQueue queue1 = new CloudQueue(queueUri, queueClient1);
         queue1.getName();
 
-        CloudQueueClient queueClient2 = new CloudQueueClient(new URI("http://myaccount.queue.core.windows.net/"),
+        CloudQueueClient queueClient2 = new CloudQueueClient(new URI(
+                "http://myaccount.queue.core.windows.net/"),
                 new StorageCredentialsSharedAccessSignature(sasString));
         CloudQueue queue2 = new CloudQueue(queueUri, queueClient2);
         queue2.getName();
     }
 
     @Test
-    public void testQueueSharedKeyLite() throws URISyntaxException, StorageException {
+    public void testQueueSharedKeyLite() throws URISyntaxException,
+            StorageException
+    {
         qClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
         String queueName = UUID.randomUUID().toString().toLowerCase();
         CloudQueue queue = qClient.getQueueReference(queueName);
@@ -1370,16 +1633,18 @@ public class CloudQueueTests extends QueueTestBase {
 
         OperationContext createQueueContext = new OperationContext();
         queue.create(null, createQueueContext);
-        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(), HttpURLConnection.HTTP_CREATED);
+        Assert.assertEquals(createQueueContext.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_CREATED);
 
-        try {
+        try
+        {
             HashMap<String, String> metadata1 = new HashMap<String, String>();
             metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
             queue.setMetadata(metadata1);
             queue.create();
             Assert.fail();
-        }
-        catch (StorageException e) {
+        } catch (StorageException e)
+        {
             Assert.assertTrue(e.getHttpStatusCode() == HttpURLConnection.HTTP_CONFLICT);
 
         }
@@ -1387,7 +1652,9 @@ public class CloudQueueTests extends QueueTestBase {
         queue.downloadAttributes();
         OperationContext createQueueContext2 = new OperationContext();
         queue.create(null, createQueueContext2);
-        Assert.assertEquals(createQueueContext2.getLastResult().getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        Assert.assertEquals(
+                createQueueContext2.getLastResult().getStatusCode(),
+                HttpURLConnection.HTTP_NO_CONTENT);
 
         queue.delete();
     }

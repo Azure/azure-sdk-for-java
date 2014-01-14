@@ -17,38 +17,43 @@ package com.microsoft.windowsazure.services.queue.models;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
- * Represents the base class for options that may be set on Queue Service REST API operations invoked through the
- * {@link QueueContract} interface. This class defines a server request timeout, which can be applied to all operations.
+ * Represents the base class for options that may be set on Queue Service REST
+ * API operations invoked through the {@link QueueContract} interface. This
+ * class defines a server request timeout, which can be applied to all
+ * operations.
  */
-public class QueueServiceOptions {
+public class QueueServiceOptions
+{
     // Nullable because it is optional
     private Integer timeout;
 
     /**
-     * Gets the current server request timeout value associated with this {@link QueueServiceOptions} instance.
+     * Gets the current server request timeout value associated with this
+     * {@link QueueServiceOptions} instance.
      * <p>
-     * The timeout value only affects calls made on methods where this {@link QueueServiceOptions} instance is passed as
-     * a parameter.
+     * The timeout value only affects calls made on methods where this
+     * {@link QueueServiceOptions} instance is passed as a parameter.
      * 
-     * @return
-     *         The server request timeout value in milliseconds.
+     * @return The server request timeout value in milliseconds.
      */
-    public Integer getTimeout() {
+    public Integer getTimeout()
+    {
         return timeout;
     }
 
     /**
-     * Sets the server request timeout value associated with this {@link QueueServiceOptions} instance.
+     * Sets the server request timeout value associated with this
+     * {@link QueueServiceOptions} instance.
      * <p>
-     * The timeout value only affects calls made on methods where this {@link QueueServiceOptions} instance is passed as
-     * a parameter.
+     * The timeout value only affects calls made on methods where this
+     * {@link QueueServiceOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link QueueServiceOptions} instance.
+     * @return A reference to this {@link QueueServiceOptions} instance.
      */
-    public QueueServiceOptions setTimeout(Integer timeout) {
+    public QueueServiceOptions setTimeout(Integer timeout)
+    {
         this.timeout = timeout;
         return this;
     }

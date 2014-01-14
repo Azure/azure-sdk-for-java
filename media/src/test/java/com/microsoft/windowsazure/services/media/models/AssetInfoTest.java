@@ -22,15 +22,18 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
-public class AssetInfoTest {
+public class AssetInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setId(expectedId));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setId(expectedId));
 
-        // Act 
+        // Act
         String actualId = assetInfo.getId();
 
         // Assert
@@ -39,10 +42,12 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetState() {
+    public void testGetSetState()
+    {
         // Arrange
         AssetState expectedState = AssetState.Published;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setState(expectedState.getCode()));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setState(expectedState.getCode()));
 
         // Act
         AssetState actualState = assetInfo.getState();
@@ -52,13 +57,15 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() throws Exception {
+    public void testGetSetCreated() throws Exception
+    {
         // Arrange
         Date expectedCreated = new Date();
 
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setCreated(expectedCreated));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setCreated(expectedCreated));
 
-        // Act 
+        // Act
         Date actualCreated = assetInfo.getCreated();
 
         // Assert
@@ -67,10 +74,12 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() throws Exception {
+    public void testGetSetLastModified() throws Exception
+    {
         // Arrange
         Date expectedLastModified = new Date();
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setLastModified(expectedLastModified));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setLastModified(expectedLastModified));
 
         // Act
         Date actualLastModified = assetInfo.getLastModified();
@@ -80,10 +89,12 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetAlternateId() {
+    public void testGetSetAlternateId()
+    {
         // Arrange
         String expectedAlternateId = "testAlternateId";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setAlternateId(expectedAlternateId));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setAlternateId(expectedAlternateId));
 
         // Act
         String actualAlternateId = assetInfo.getAlternateId();
@@ -93,10 +104,12 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "testName";
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setName(expectedName));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setName(expectedName));
 
         // Act
         String actualName = assetInfo.getName();
@@ -106,11 +119,13 @@ public class AssetInfoTest {
     }
 
     @Test
-    public void testGetSetOptions() {
+    public void testGetSetOptions()
+    {
         // Arrange
 
         AssetOption expectedOptions = AssetOption.None;
-        AssetInfo assetInfo = new AssetInfo(null, new AssetType().setOptions(expectedOptions.getCode()));
+        AssetInfo assetInfo = new AssetInfo(null,
+                new AssetType().setOptions(expectedOptions.getCode()));
 
         // Act
         AssetOption actualOptions = assetInfo.getOptions();

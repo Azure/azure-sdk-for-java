@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Specifies the authentication scheme used to sign HTTP requests.
  */
-public enum AuthenticationScheme {
+public enum AuthenticationScheme
+{
     /**
      * Signs HTTP requests using the Shared Key Lite authentication scheme.
      */

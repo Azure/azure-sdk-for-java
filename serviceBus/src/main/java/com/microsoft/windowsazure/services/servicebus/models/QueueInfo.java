@@ -32,12 +32,14 @@ import com.microsoft.windowsazure.services.servicebus.implementation.QueueDescri
 /**
  * Represents a queue.
  */
-public class QueueInfo extends EntryModel<QueueDescription> {
+public class QueueInfo extends EntryModel<QueueDescription>
+{
 
     /**
      * Creates an instance of the <code>QueueInfo</code> class.
      */
-    public QueueInfo() {
+    public QueueInfo()
+    {
         super(new Entry(), new QueueDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -45,22 +47,27 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     }
 
     /**
-     * Creates an instance of the <code>QueueInfo</code> class using the specified entry.
+     * Creates an instance of the <code>QueueInfo</code> class using the
+     * specified entry.
      * 
      * @param entry
      *            An <code>Entry</code> object.
      */
-    public QueueInfo(Entry entry) {
+    public QueueInfo(Entry entry)
+    {
         super(entry, entry.getContent().getQueueDescription());
     }
 
     /**
-     * Creates an instance of the <code>QueueInfo</code> class using the specified name.
+     * Creates an instance of the <code>QueueInfo</code> class using the
+     * specified name.
      * 
      * @param path
-     *            A <code>String</code> object that represents the name of the queue.
+     *            A <code>String</code> object that represents the name of the
+     *            queue.
      */
-    public QueueInfo(String path) {
+    public QueueInfo(String path)
+    {
         this();
         setPath(path);
     }
@@ -68,9 +75,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Returns the name of the queue.
      * 
-     * @return A <code>String</code> object that represents the name of the queue.
+     * @return A <code>String</code> object that represents the name of the
+     *         queue.
      */
-    public String getPath() {
+    public String getPath()
+    {
         return getEntry().getTitle();
     }
 
@@ -80,9 +89,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            A <code>String</code> that represents the name of the queue.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setPath(String value) {
+    public QueueInfo setPath(String value)
+    {
         getEntry().setTitle(value);
         return this;
     }
@@ -90,9 +101,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Returns the duration of the lock.
      * 
-     * @return A <code>Duration</code> object that represents the duration of the lock.
+     * @return A <code>Duration</code> object that represents the duration of
+     *         the lock.
      */
-    public Duration getLockDuration() {
+    public Duration getLockDuration()
+    {
         return getModel().getLockDuration();
     }
 
@@ -102,9 +115,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            The duration, in seconds, of the lock.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setLockDuration(Duration value) {
+    public QueueInfo setLockDuration(Duration value)
+    {
         getModel().setLockDuration(value);
         return this;
     }
@@ -114,7 +129,8 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return The maximum size, in megabytes, of the queue.
      */
-    public Long getMaxSizeInMegabytes() {
+    public Long getMaxSizeInMegabytes()
+    {
         return getModel().getMaxSizeInMegabytes();
     }
 
@@ -124,9 +140,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            The maximum size, in megabytes, of the queue.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setMaxSizeInMegabytes(Long value) {
+    public QueueInfo setMaxSizeInMegabytes(Long value)
+    {
         getModel().setMaxSizeInMegabytes(value);
         return this;
     }
@@ -134,9 +152,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Indicates whether duplicate message detection is required.
      * 
-     * @return <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     * @return <code>true</code> if duplicate message detection is required;
+     *         otherwise, <code>false</code>.
      */
-    public Boolean isRequiresDuplicateDetection() {
+    public Boolean isRequiresDuplicateDetection()
+    {
         return getModel().isRequiresDuplicateDetection();
     }
 
@@ -144,11 +164,14 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Specifies whether duplicate message detection is required.
      * 
      * @param value
-     *            <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     *            <code>true</code> if duplicate message detection is required;
+     *            otherwise, <code>false</code>.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setRequiresDuplicateDetection(Boolean value) {
+    public QueueInfo setRequiresDuplicateDetection(Boolean value)
+    {
         getModel().setRequiresDuplicateDetection(value);
         return this;
     }
@@ -156,9 +179,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Indicates whether the queue is session-aware.
      * 
-     * @return <code>true</code> if the queue is session aware; otherwise, <code>false</code>.
+     * @return <code>true</code> if the queue is session aware; otherwise,
+     *         <code>false</code>.
      */
-    public Boolean isRequiresSession() {
+    public Boolean isRequiresSession()
+    {
         return getModel().isRequiresSession();
     }
 
@@ -166,11 +191,14 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Specifies whether the queue is session-aware.
      * 
      * @param value
-     *            <code>true</code> if the queue is session aware; otherwise, <code>false</code>.
+     *            <code>true</code> if the queue is session aware; otherwise,
+     *            <code>false</code>.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setRequiresSession(Boolean value) {
+    public QueueInfo setRequiresSession(Boolean value)
+    {
         getModel().setRequiresSession(value);
         return this;
     }
@@ -179,21 +207,27 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Returns the default message time-to-live (TTL). This applies when dead
      * lettering is in effect.
      * 
-     * @return A <code>Duration</code> object that represents the default message TTL.
+     * @return A <code>Duration</code> object that represents the default
+     *         message TTL.
      */
-    public Duration getDefaultMessageTimeToLive() {
+    public Duration getDefaultMessageTimeToLive()
+    {
         return getModel().getDefaultMessageTimeToLive();
     }
 
     /**
-     * Sets the default message time-to-live (TTL). This applies when dead lettering is in effect.
+     * Sets the default message time-to-live (TTL). This applies when dead
+     * lettering is in effect.
      * 
      * @param value
-     *            A <code>Duration</code> object that represents the default message TTL.
+     *            A <code>Duration</code> object that represents the default
+     *            message TTL.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setDefaultMessageTimeToLive(Duration value) {
+    public QueueInfo setDefaultMessageTimeToLive(Duration value)
+    {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
@@ -201,9 +235,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the time span before auto deletion starts.
      * 
-     * @return A <code>Duration</code> object that represents the time span before auto deletion.
+     * @return A <code>Duration</code> object that represents the time span
+     *         before auto deletion.
      */
-    public Duration getAutoDeleteOnIdle() {
+    public Duration getAutoDeleteOnIdle()
+    {
         return getModel().getAutoDeleteOnIdle();
     }
 
@@ -211,10 +247,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the time span before auto deletion starts.
      * 
      * @param autoDeleteOnIdle
-     *            A <code>Duration</code> object that represents the time span before auto deletion starts.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>Duration</code> object that represents the time span
+     *            before auto deletion starts.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+    public QueueInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle)
+    {
         getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
@@ -222,9 +261,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Indicates whether dead lettering is in effect upon message expiration.
      * 
-     * @return <code>true</code> if dead lettering is in effect; otherwise, <code>false</code>.
+     * @return <code>true</code> if dead lettering is in effect; otherwise,
+     *         <code>false</code>.
      */
-    public Boolean isDeadLetteringOnMessageExpiration() {
+    public Boolean isDeadLetteringOnMessageExpiration()
+    {
         return getModel().isDeadLetteringOnMessageExpiration();
     }
 
@@ -232,36 +273,43 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Specifies whether dead lettering is in effect upon message expiration.
      * 
      * @param value
-     *            <code>true</code> if dead lettering is in effect; otherwise, <code>false</code>.
+     *            <code>true</code> if dead lettering is in effect; otherwise,
+     *            <code>false</code>.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setDeadLetteringOnMessageExpiration(Boolean value) {
+    public QueueInfo setDeadLetteringOnMessageExpiration(Boolean value)
+    {
         getModel().setDeadLetteringOnMessageExpiration(value);
         return this;
     }
 
     /**
-     * Returns the time span during which the service bus will detect message duplication. This applies when duplicate
-     * message detection is in effect.
+     * Returns the time span during which the service bus will detect message
+     * duplication. This applies when duplicate message detection is in effect.
      * 
      * @return A <code>Duration</code> object that represents the time span for
      *         detecting message duplication.
      */
-    public Duration getDuplicateDetectionHistoryTimeWindow() {
+    public Duration getDuplicateDetectionHistoryTimeWindow()
+    {
         return getModel().getDuplicateDetectionHistoryTimeWindow();
     }
 
     /**
-     * Sets the time span during which the service bus will detect message duplication. This applies when duplicate
-     * message detection is in effect.
+     * Sets the time span during which the service bus will detect message
+     * duplication. This applies when duplicate message detection is in effect.
      * 
      * @param value
-     *            A <code>Duration</code> object that represents the time span for detecting message duplication.
+     *            A <code>Duration</code> object that represents the time span
+     *            for detecting message duplication.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setDuplicateDetectionHistoryTimeWindow(Duration value) {
+    public QueueInfo setDuplicateDetectionHistoryTimeWindow(Duration value)
+    {
         getModel().setDuplicateDetectionHistoryTimeWindow(value);
         return this;
     }
@@ -269,9 +317,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Returns the maximum delivery count for the queue.
      * 
-     * @return An <code>Integer</code> object that represents the maximum delivery count.
+     * @return An <code>Integer</code> object that represents the maximum
+     *         delivery count.
      */
-    public Integer getMaxDeliveryCount() {
+    public Integer getMaxDeliveryCount()
+    {
         return getModel().getMaxDeliveryCount();
     }
 
@@ -281,9 +331,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param value
      *            The maximum delivery count for the queue.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setMaxDeliveryCount(Integer value) {
+    public QueueInfo setMaxDeliveryCount(Integer value)
+    {
         getModel().setMaxDeliveryCount(value);
         return this;
     }
@@ -291,9 +343,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Indicates whether batch operations are enabled.
      * 
-     * @return <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     * @return <code>true</code> if batch operations are enabled; otherwise,
+     *         <code>false</code>.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean isEnableBatchedOperations()
+    {
         return getModel().isEnableBatchedOperations();
     }
 
@@ -301,11 +355,14 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Specifies whether batch operations are enabled.
      * 
      * @param value
-     *            <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     *            <code>true</code> if batch operations are enabled; otherwise,
+     *            <code>false</code>.
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setEnableBatchedOperations(Boolean value) {
+    public QueueInfo setEnableBatchedOperations(Boolean value)
+    {
         getModel().setEnableBatchedOperations(value);
         return this;
     }
@@ -313,9 +370,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Returns the size of the queue.
      * 
-     * @return A <code>Long</code> object that represents the size of the queue in bytes.
+     * @return A <code>Long</code> object that represents the size of the queue
+     *         in bytes.
      */
-    public Long getSizeInBytes() {
+    public Long getSizeInBytes()
+    {
         return getModel().getSizeInBytes();
     }
 
@@ -324,9 +383,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @param sizeInBytes
      *            the size in bytes
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setSizeInBytes(Long sizeInBytes) {
+    public QueueInfo setSizeInBytes(Long sizeInBytes)
+    {
         getModel().setSizeInBytes(sizeInBytes);
         return this;
     }
@@ -334,9 +395,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Returns the number of messages in the queue.
      * 
-     * @return A <code>Long</code> object that represents the number of messages in the queue.
+     * @return A <code>Long</code> object that represents the number of messages
+     *         in the queue.
      */
-    public Long getMessageCount() {
+    public Long getMessageCount()
+    {
         return getModel().getMessageCount();
     }
 
@@ -345,9 +408,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @param messageCount
      *            the message count
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setMessageCount(Long messageCount) {
+    public QueueInfo setMessageCount(Long messageCount)
+    {
         getModel().setMessageCount(messageCount);
         return this;
     }
@@ -355,9 +420,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Checks if is anonymous accessible.
      * 
-     * @return <code>true</code> if the queue can be accessed anonymously. Otherwise, <code>false</code>.
+     * @return <code>true</code> if the queue can be accessed anonymously.
+     *         Otherwise, <code>false</code>.
      */
-    public Boolean isAnonymousAccessible() {
+    public Boolean isAnonymousAccessible()
+    {
         return getModel().isIsAnonymousAccessible();
     }
 
@@ -366,9 +433,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @param isAnonymousAccessible
      *            the is anonymous accessible
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setIsAnonymousAccessible(Boolean isAnonymousAccessible) {
+    public QueueInfo setIsAnonymousAccessible(Boolean isAnonymousAccessible)
+    {
         getModel().setIsAnonymousAccessible(isAnonymousAccessible);
         return this;
     }
@@ -376,9 +445,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Checks if is support ordering.
      * 
-     * @return <code>true</code> if ordering is supported, otherwise, <code>false</code>.
+     * @return <code>true</code> if ordering is supported, otherwise,
+     *         <code>false</code>.
      */
-    public Boolean isSupportOrdering() {
+    public Boolean isSupportOrdering()
+    {
         return getModel().isSupportOrdering();
     }
 
@@ -386,10 +457,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the support ordering.
      * 
      * @param supportOrdering
-     *            A <code>Boolean</code> object represents whether the queue supports ordering.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>Boolean</code> object represents whether the queue
+     *            supports ordering.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setSupportOrdering(Boolean supportOrdering) {
+    public QueueInfo setSupportOrdering(Boolean supportOrdering)
+    {
         getModel().setSupportOrdering(supportOrdering);
         return this;
     }
@@ -399,7 +473,8 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return A <code>EntityStatus</code> object.
      */
-    public EntityStatus getStatus() {
+    public EntityStatus getStatus()
+    {
         return getModel().getStatus();
     }
 
@@ -408,9 +483,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @param entityStatus
      *            the entity status
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setStatus(EntityStatus entityStatus) {
+    public QueueInfo setStatus(EntityStatus entityStatus)
+    {
         getModel().setStatus(entityStatus);
         return this;
     }
@@ -418,9 +495,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the entity availability status.
      * 
-     * @return A <code>EntityAvailabilityStatus</code> object which represents the availability status of the entity.
+     * @return A <code>EntityAvailabilityStatus</code> object which represents
+     *         the availability status of the entity.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    public EntityAvailabilityStatus getEntityAvailabilityStatus()
+    {
         return getModel().getEntityAvailabilityStatus();
     }
 
@@ -429,9 +508,12 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @param entityAvailabilityStatus
      *            A <code>EntityAvailabilityStatus</code> object.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    public QueueInfo setEntityAvailabilityStatus(
+            EntityAvailabilityStatus entityAvailabilityStatus)
+    {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
         return this;
     }
@@ -439,9 +521,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the created at.
      * 
-     * @return A <code>Calendar</code> object which represents the time of the queue created at.
+     * @return A <code>Calendar</code> object which represents the time of the
+     *         queue created at.
      */
-    public Calendar getCreatedAt() {
+    public Calendar getCreatedAt()
+    {
         return getModel().getCreatedAt();
     }
 
@@ -449,10 +533,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the created at.
      * 
      * @param createdAt
-     *            A <code>Calendar</code> ojbect which represnets the time of the queue created at.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>Calendar</code> ojbect which represnets the time of
+     *            the queue created at.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setCreatedAt(Calendar createdAt) {
+    public QueueInfo setCreatedAt(Calendar createdAt)
+    {
         getModel().setCreatedAt(createdAt);
         return this;
     }
@@ -460,9 +547,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the updated at.
      * 
-     * @return A <code>Calendar</code> object which represents the time that the queue was updated at.
+     * @return A <code>Calendar</code> object which represents the time that the
+     *         queue was updated at.
      */
-    public Calendar getUpdatedAt() {
+    public Calendar getUpdatedAt()
+    {
         return getModel().getUpdatedAt();
     }
 
@@ -470,10 +559,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the updated at.
      * 
      * @param updatedAt
-     *            A <code>Calendar</code> object which represents the time that the queue was updated at.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>Calendar</code> object which represents the time that
+     *            the queue was updated at.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setUpdatedAt(Calendar updatedAt) {
+    public QueueInfo setUpdatedAt(Calendar updatedAt)
+    {
         getModel().setUpdatedAt(updatedAt);
         return this;
     }
@@ -481,9 +573,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the accessed at.
      * 
-     * @return A <code>Calendar</code> object which represents the time that the queue was accessed at.
+     * @return A <code>Calendar</code> object which represents the time that the
+     *         queue was accessed at.
      */
-    public Calendar getAccessedAt() {
+    public Calendar getAccessedAt()
+    {
         return getModel().getAccessedAt();
     }
 
@@ -491,10 +585,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the accessed at.
      * 
      * @param accessedAt
-     *            A <code>Calendar</code> object which represents the time that the queue was accessed at.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>Calendar</code> object which represents the time that
+     *            the queue was accessed at.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setAccessedAt(Calendar accessedAt) {
+    public QueueInfo setAccessedAt(Calendar accessedAt)
+    {
         getModel().setAccessedAt(accessedAt);
         return this;
     }
@@ -502,9 +599,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the partitioning policy.
      * 
-     * @return A <code>PartitioningPolicy</code> represents the partitioning policy.
+     * @return A <code>PartitioningPolicy</code> represents the partitioning
+     *         policy.
      */
-    public PartitioningPolicy getPartitioningPolicy() {
+    public PartitioningPolicy getPartitioningPolicy()
+    {
         return getModel().getPartitioningPolicy();
     }
 
@@ -512,10 +611,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the partitioning policy.
      * 
      * @param partitioningPolicy
-     *            A <code>PartitioningPolicy</code> represents the partitioning policy.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>PartitioningPolicy</code> represents the partitioning
+     *            policy.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy) {
+    public QueueInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy)
+    {
         getModel().setPartitioningPolicy(partitioningPolicy);
         return this;
     }
@@ -525,7 +627,8 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return A <code>String</code> objects which contains the user metadata.
      */
-    public String getUserMetadata() {
+    public String getUserMetadata()
+    {
         return getModel().getUserMetadata();
     }
 
@@ -533,10 +636,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the user metadata.
      * 
      * @param userMetadata
-     *            A <code>String</code> objects which contains the user metadata.
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     *            A <code>String</code> objects which contains the user
+     *            metadata.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setUserMetadata(String userMetadata) {
+    public QueueInfo setUserMetadata(String userMetadata)
+    {
         getModel().setUserMetadata(userMetadata);
         return this;
     }
@@ -544,9 +650,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets the message count details.
      * 
-     * @return A <code>MessageCountDetails</code> instance that represents the details of the message count.
+     * @return A <code>MessageCountDetails</code> instance that represents the
+     *         details of the message count.
      */
-    public MessageCountDetails getCountDetails() {
+    public MessageCountDetails getCountDetails()
+    {
         return getModel().getCountDetails();
     }
 
@@ -556,9 +664,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * @param uri
      *            the URI of the <code>QueueInfo</code>
      * 
-     * @return A <code>QueueInfo</code> object that represents the updated queue.
+     * @return A <code>QueueInfo</code> object that represents the updated
+     *         queue.
      */
-    public QueueInfo setUri(URI uri) {
+    public QueueInfo setUri(URI uri)
+    {
         getEntry().setId(uri.toString());
         return this;
     }
@@ -568,7 +678,8 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * 
      * @return A <code>URI</code> representing the <code>QueueInfo</code>.
      */
-    public URI getUri() {
+    public URI getUri()
+    {
         return URI.create(removeQueryString(getEntry().getId()));
     }
 
@@ -579,7 +690,8 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      *            A raw string representing the URI of queue.
      * @return the string
      */
-    private String removeQueryString(String uri) {
+    private String removeQueryString(String uri)
+    {
         String[] result = uri.split("\\?");
         return result[0];
     }
@@ -588,10 +700,13 @@ public class QueueInfo extends EntryModel<QueueDescription> {
      * Sets the URI of the entity to forward to.
      * 
      * @param forwardTo
-     *            A <code>String</code> instance representing the URI of the entity to forward message to.
-     * @return A <code>QueueInfo</code> instance representing the updated queue information.
+     *            A <code>String</code> instance representing the URI of the
+     *            entity to forward message to.
+     * @return A <code>QueueInfo</code> instance representing the updated queue
+     *         information.
      */
-    public QueueInfo setForwardTo(String forwardTo) {
+    public QueueInfo setForwardTo(String forwardTo)
+    {
         getModel().setForwardTo(forwardTo);
         return this;
     }
@@ -599,9 +714,11 @@ public class QueueInfo extends EntryModel<QueueDescription> {
     /**
      * Gets a <code>String</code> instance representing entity to forward to.
      * 
-     * @return A <code>String</code> instance representing the URI of the instance to forward to.
+     * @return A <code>String</code> instance representing the URI of the
+     *         instance to forward to.
      */
-    public String getForwardTo() {
+    public String getForwardTo()
+    {
         return getModel().getForwardTo();
     }
 }

@@ -30,11 +30,12 @@ import com.microsoft.windowsazure.services.media.implementation.content.MediaSer
 import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 
 /**
- * Class to plug into Jersey to properly serialize
- * raw Media Services DTO types.
+ * Class to plug into Jersey to properly serialize raw Media Services DTO types.
  * 
  */
-public class MediaContentProvider<T extends MediaServiceDTO> extends AbstractMessageReaderWriterProvider<T> {
+public class MediaContentProvider<T extends MediaServiceDTO> extends
+        AbstractMessageReaderWriterProvider<T>
+{
     private final ODataAtomMarshaller marshaller;
 
     /**
@@ -43,34 +44,47 @@ public class MediaContentProvider<T extends MediaServiceDTO> extends AbstractMes
      * @throws JAXBException
      * @throws ParserConfigurationException
      */
-    public MediaContentProvider() throws JAXBException, ParserConfigurationException {
+    public MediaContentProvider() throws JAXBException,
+            ParserConfigurationException
+    {
         marshaller = new ODataAtomMarshaller();
     }
 
     @Override
-    public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isReadable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         // This class only does marshalling, not unmarshalling.
         return false;
     }
 
     @Override
-    public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
+    public T readFrom(Class<T> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+            throws IOException
+    {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public boolean isWriteable(Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType)
+    {
         return MediaServiceDTO.class.isAssignableFrom(type);
     }
 
     @Override
-    public void writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-            MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
-        try {
+    public void writeTo(T t, Class<?> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, Object> httpHeaders,
+            OutputStream entityStream) throws IOException
+    {
+        try
+        {
             marshaller.marshalEntry(t, entityStream);
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
     }

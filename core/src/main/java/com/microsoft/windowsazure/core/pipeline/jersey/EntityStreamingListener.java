@@ -16,10 +16,12 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.sun.jersey.api.client.ClientRequest;
 
-public interface EntityStreamingListener {
+public interface EntityStreamingListener
+{
     /**
-     * This method is called just before the entity is streamed to the underlying connection. This is the last chance
-     * for filters to inspect and modify the headers of the client request if necessary.
+     * This method is called just before the entity is streamed to the
+     * underlying connection. This is the last chance for filters to inspect and
+     * modify the headers of the client request if necessary.
      * 
      * @param clientRequest
      *            The client request

@@ -26,9 +26,12 @@ import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to parse SharedAccessPolicies from an input stream.
+ * RESERVED FOR INTERNAL USE. A class used to parse SharedAccessPolicies from an
+ * input stream.
  */
-final class QueueAccessPolicyResponse extends AccessPolicyResponseBase<SharedAccessQueuePolicy> {
+final class QueueAccessPolicyResponse extends
+        AccessPolicyResponseBase<SharedAccessQueuePolicy>
+{
 
     /**
      * Initializes the AccessPolicyResponse object
@@ -36,12 +39,14 @@ final class QueueAccessPolicyResponse extends AccessPolicyResponseBase<SharedAcc
      * @param stream
      *            the input stream to read error details from.
      */
-    public QueueAccessPolicyResponse(final InputStream stream) {
+    public QueueAccessPolicyResponse(final InputStream stream)
+    {
         super(stream);
     }
 
     /**
-     * Populates the object from the XMLStreamReader, reader must be at Start element of AccessPolicy.
+     * Populates the object from the XMLStreamReader, reader must be at Start
+     * element of AccessPolicy.
      * 
      * @param xmlr
      *            the XMLStreamReader object
@@ -51,38 +56,56 @@ final class QueueAccessPolicyResponse extends AccessPolicyResponseBase<SharedAcc
      *             if a date value is not correctly encoded
      */
     @Override
-    protected SharedAccessQueuePolicy readPolicyFromXML(final XMLStreamReader xmlr) throws XMLStreamException,
-            ParseException {
+    protected SharedAccessQueuePolicy readPolicyFromXML(
+            final XMLStreamReader xmlr) throws XMLStreamException,
+            ParseException
+    {
         int eventType = xmlr.getEventType();
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.ACCESS_POLICY);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                Constants.ACCESS_POLICY);
         final SharedAccessQueuePolicy retPolicy = new SharedAccessQueuePolicy();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.PERMISSION)) {
-                    retPolicy.setPermissions(SharedAccessQueuePolicy.permissionsFromString(Utility
-                            .readElementFromXMLReader(xmlr, Constants.PERMISSION)));
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.START)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.START);
-                    retPolicy.setSharedAccessStartTime(Utility.parseISO8061LongDateFromString(tempString));
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.EXPIRY)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.EXPIRY);
-                    retPolicy.setSharedAccessExpiryTime(Utility.parseISO8061LongDateFromString(tempString));
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(Constants.ACCESS_POLICY)) {
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.PERMISSION))
+                {
+                    retPolicy.setPermissions(SharedAccessQueuePolicy
+                            .permissionsFromString(Utility
+                                    .readElementFromXMLReader(xmlr,
+                                            Constants.PERMISSION)));
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.START))
+                {
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, Constants.START);
+                    retPolicy.setSharedAccessStartTime(Utility
+                            .parseISO8061LongDateFromString(tempString));
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.EXPIRY))
+                {
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, Constants.EXPIRY);
+                    retPolicy.setSharedAccessExpiryTime(Utility
+                            .parseISO8061LongDateFromString(tempString));
+                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                        && name.equals(Constants.ACCESS_POLICY))
+                {
                     break;
                 }
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.ACCESS_POLICY);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                Constants.ACCESS_POLICY);
         return retPolicy;
     }
 }

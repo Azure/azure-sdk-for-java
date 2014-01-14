@@ -19,19 +19,21 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CurrentStatusEnum.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for CurrentStatusEnum.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="CurrentStatusEnum">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -46,29 +48,32 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "CurrentStatusEnum")
 @XmlEnum
-enum CurrentStatusEnum {
+enum CurrentStatusEnum
+{
 
     @XmlEnumValue("Started")
-    STARTED("Started"),
-    @XmlEnumValue("Busy")
-    BUSY("Busy"),
-    @XmlEnumValue("Recycle")
-    RECYCLE("Recycle"),
-    @XmlEnumValue("Stopped")
+    STARTED("Started"), @XmlEnumValue("Busy")
+    BUSY("Busy"), @XmlEnumValue("Recycle")
+    RECYCLE("Recycle"), @XmlEnumValue("Stopped")
     STOPPED("Stopped");
     private final String value;
 
-    CurrentStatusEnum(String v) {
+    CurrentStatusEnum(String v)
+    {
         value = v;
     }
 
-    public String value() {
+    public String value()
+    {
         return value;
     }
 
-    public static CurrentStatusEnum fromValue(String v) {
-        for (CurrentStatusEnum c: CurrentStatusEnum.values()) {
-            if (c.value.equals(v)) {
+    public static CurrentStatusEnum fromValue(String v)
+    {
+        for (CurrentStatusEnum c : CurrentStatusEnum.values())
+        {
+            if (c.value.equals(v))
+            {
                 return c;
             }
         }

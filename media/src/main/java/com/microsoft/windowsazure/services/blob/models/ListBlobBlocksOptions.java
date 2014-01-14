@@ -18,141 +18,155 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions) listBlobBlocks} request. These options
- * include an optional server timeout for the operation, the lease ID if the blob has an active lease, the snapshot
- * timestamp to get the committed blocks of a snapshot, whether to return the committed block list, and whether to
- * return the uncommitted block list.
+ * {@link BlobContract#listBlobBlocks(String, String, ListBlobBlocksOptions)
+ * listBlobBlocks} request. These options include an optional server timeout for
+ * the operation, the lease ID if the blob has an active lease, the snapshot
+ * timestamp to get the committed blocks of a snapshot, whether to return the
+ * committed block list, and whether to return the uncommitted block list.
  */
-public class ListBlobBlocksOptions extends BlobServiceOptions {
+public class ListBlobBlocksOptions extends BlobServiceOptions
+{
     private String leaseId;
     private String snapshot;
     private boolean committedList;
     private boolean uncommittedList;
 
     /**
-     * Sets the optional server request timeout value associated with this {@link ListBlobBlocksOptions} instance.
+     * Sets the optional server request timeout value associated with this
+     * {@link ListBlobBlocksOptions} instance.
      * <p>
-     * The <em>timeout</em> value only affects calls made on methods where this {@link ListBlobBlocksOptions} instance
-     * is passed as a parameter.
+     * The <em>timeout</em> value only affects calls made on methods where this
+     * {@link ListBlobBlocksOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link ListBlobBlocksOptions} instance.
+     * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
     @Override
-    public ListBlobBlocksOptions setTimeout(Integer timeout) {
+    public ListBlobBlocksOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
 
     /**
-     * Gets the lease ID to match for the blob set in this {@link ListBlobBlocksOptions} instance.
+     * Gets the lease ID to match for the blob set in this
+     * {@link ListBlobBlocksOptions} instance.
      * 
-     * @return
-     *         A {@link String} containing the lease ID set, if any.
+     * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
     /**
-     * Sets a lease ID value to match when listing the blocks of the blob. If set, the lease must be active and the
-     * value must match the lease ID set on the leased blob for the operation to succeed.
+     * Sets a lease ID value to match when listing the blocks of the blob. If
+     * set, the lease must be active and the value must match the lease ID set
+     * on the leased blob for the operation to succeed.
      * <p>
-     * Note that this value only affects calls made on methods where this {@link ListBlobBlocksOptions} instance is
-     * passed as a parameter.
+     * Note that this value only affects calls made on methods where this
+     * {@link ListBlobBlocksOptions} instance is passed as a parameter.
      * 
      * @param leaseId
      *            A {@link String} containing the lease ID to set.
-     * @return
-     *         A reference to this {@link ListBlobBlocksOptions} instance.
+     * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setLeaseId(String leaseId) {
+    public ListBlobBlocksOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
 
     /**
-     * Gets the snapshot timestamp value set in this {@link ListBlobBlocksOptions} instance.
+     * Gets the snapshot timestamp value set in this
+     * {@link ListBlobBlocksOptions} instance.
      * 
-     * @return
-     *         A {@link String} containing the snapshot timestamp value of the blob snapshot to list.
+     * @return A {@link String} containing the snapshot timestamp value of the
+     *         blob snapshot to list.
      */
-    public String getSnapshot() {
+    public String getSnapshot()
+    {
         return snapshot;
     }
 
     /**
-     * Sets the snapshot timestamp value used to identify the particular snapshot of the blob to list blocks for. The
-     * snapshot timestamp value is an opaque value returned by the server to identify a snapshot. When this option is
-     * set, only the list of committed blocks of the snapshot is returned.
+     * Sets the snapshot timestamp value used to identify the particular
+     * snapshot of the blob to list blocks for. The snapshot timestamp value is
+     * an opaque value returned by the server to identify a snapshot. When this
+     * option is set, only the list of committed blocks of the snapshot is
+     * returned.
      * <p>
-     * Note that this value only affects calls made on methods where this {@link ListBlobBlocksOptions} instance is
-     * passed as a parameter.
+     * Note that this value only affects calls made on methods where this
+     * {@link ListBlobBlocksOptions} instance is passed as a parameter.
      * 
      * @param snapshot
-     *            A {@link String} containing the snapshot timestamp value of the blob snapshot to list.
-     * @return
-     *         A reference to this {@link ListBlobBlocksOptions} instance.
+     *            A {@link String} containing the snapshot timestamp value of
+     *            the blob snapshot to list.
+     * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setSnapshot(String snapshot) {
+    public ListBlobBlocksOptions setSnapshot(String snapshot)
+    {
         this.snapshot = snapshot;
         return this;
     }
 
     /**
-     * Gets the flag value indicating whether to return the committed blocks of the blob set in this
-     * {@link ListBlobBlocksOptions} instance.
+     * Gets the flag value indicating whether to return the committed blocks of
+     * the blob set in this {@link ListBlobBlocksOptions} instance.
      * 
-     * @return
-     *         A <code>boolean</code> flag value indicating whether to return the committed blocks of the blob.
+     * @return A <code>boolean</code> flag value indicating whether to return
+     *         the committed blocks of the blob.
      */
-    public boolean isCommittedList() {
+    public boolean isCommittedList()
+    {
         return committedList;
     }
 
     /**
-     * Sets a flag indicating whether to return the committed blocks of the blob in the response to the list blob blocks
-     * request.
+     * Sets a flag indicating whether to return the committed blocks of the blob
+     * in the response to the list blob blocks request.
      * <p>
-     * Note that this value only affects calls made on methods where this {@link ListBlobBlocksOptions} instance is
-     * passed as a parameter.
+     * Note that this value only affects calls made on methods where this
+     * {@link ListBlobBlocksOptions} instance is passed as a parameter.
      * 
      * @param committedList
-     *            Set to <code>true</code> to return the committed blocks of the blob; otherwise, <code>false</code>.
-     * @return
-     *         A reference to this {@link ListBlobBlocksOptions} instance.
+     *            Set to <code>true</code> to return the committed blocks of the
+     *            blob; otherwise, <code>false</code>.
+     * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setCommittedList(boolean committedList) {
+    public ListBlobBlocksOptions setCommittedList(boolean committedList)
+    {
         this.committedList = committedList;
         return this;
     }
 
     /**
-     * Gets the flag value indicating whether to return the uncommitted blocks of the blob set in this
-     * {@link ListBlobBlocksOptions} instance.
+     * Gets the flag value indicating whether to return the uncommitted blocks
+     * of the blob set in this {@link ListBlobBlocksOptions} instance.
      * 
-     * @return
-     *         A <code>boolean</code> flag value indicating whether to return the uncommitted blocks of the blob.
+     * @return A <code>boolean</code> flag value indicating whether to return
+     *         the uncommitted blocks of the blob.
      */
-    public boolean isUncommittedList() {
+    public boolean isUncommittedList()
+    {
         return uncommittedList;
     }
 
     /**
-     * Sets a flag indicating whether to return the uncommitted blocks of the blob in the response to the list blob
-     * blocks request.
+     * Sets a flag indicating whether to return the uncommitted blocks of the
+     * blob in the response to the list blob blocks request.
      * <p>
-     * Note that this value only affects calls made on methods where this {@link ListBlobBlocksOptions} instance is
-     * passed as a parameter.
+     * Note that this value only affects calls made on methods where this
+     * {@link ListBlobBlocksOptions} instance is passed as a parameter.
      * 
      * @param uncommittedList
-     *            Set to <code>true</code> to return the uncommitted blocks of the blob; otherwise, <code>false</code>.
-     * @return
-     *         A reference to this {@link ListBlobBlocksOptions} instance.
+     *            Set to <code>true</code> to return the uncommitted blocks of
+     *            the blob; otherwise, <code>false</code>.
+     * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setUncommittedList(boolean uncommittedList) {
+    public ListBlobBlocksOptions setUncommittedList(boolean uncommittedList)
+    {
         this.uncommittedList = uncommittedList;
         return this;
     }

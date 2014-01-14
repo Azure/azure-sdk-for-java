@@ -17,72 +17,92 @@ package com.microsoft.windowsazure.services.queue;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- * A class for static factory methods that return instances implementing {@link QueueContract}.
+ * A class for static factory methods that return instances implementing
+ * {@link QueueContract}.
  */
-public class QueueService {
+public class QueueService
+{
     /**
      * Private default constructor.
      */
-    private QueueService() {
+    private QueueService()
+    {
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link QueueContract} using default values for
-     * initializing a {@link Configuration} instance. Note that the returned interface will not work unless storage
-     * account credentials have been added to the "META-INF/com.microsoft.windowsazure.properties" resource file.
+     * A static factory method that returns an instance implementing
+     * {@link QueueContract} using default values for initializing a
+     * {@link Configuration} instance. Note that the returned interface will not
+     * work unless storage account credentials have been added to the
+     * "META-INF/com.microsoft.windowsazure.properties" resource file.
      * 
-     * @return
-     *         An instance implementing {@link QueueContract} for interacting with the queue service.
+     * @return An instance implementing {@link QueueContract} for interacting
+     *         with the queue service.
      */
-    public static QueueContract create() {
+    public static QueueContract create()
+    {
         return create(null, Configuration.getInstance());
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link QueueContract} using the specified
-     * {@link Configuration} instance. The {@link Configuration} instance must have storage account information and
-     * credentials set before this method is called for the returned interface to work.
+     * A static factory method that returns an instance implementing
+     * {@link QueueContract} using the specified {@link Configuration} instance.
+     * The {@link Configuration} instance must have storage account information
+     * and credentials set before this method is called for the returned
+     * interface to work.
      * 
      * @param config
-     *            A {@link Configuration} instance configured with storage account information and credentials.
+     *            A {@link Configuration} instance configured with storage
+     *            account information and credentials.
      * 
-     * @return
-     *         An instance implementing {@link QueueContract} for interacting with the queue service.
+     * @return An instance implementing {@link QueueContract} for interacting
+     *         with the queue service.
      */
-    public static QueueContract create(Configuration config) {
+    public static QueueContract create(Configuration config)
+    {
         return create(null, config);
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link QueueContract} using default values for
-     * initializing a {@link Configuration} instance, and using the specified profile prefix for service settings. Note
-     * that the returned interface will not work unless storage account settings and credentials have been added to the
-     * "META-INF/com.microsoft.windowsazure.properties" resource file with the specified profile prefix.
+     * A static factory method that returns an instance implementing
+     * {@link QueueContract} using default values for initializing a
+     * {@link Configuration} instance, and using the specified profile prefix
+     * for service settings. Note that the returned interface will not work
+     * unless storage account settings and credentials have been added to the
+     * "META-INF/com.microsoft.windowsazure.properties" resource file with the
+     * specified profile prefix.
      * 
      * @param profile
-     *            A string prefix for the account name and credentials settings in the {@link Configuration} instance.
-     * @return
-     *         An instance implementing {@link QueueContract} for interacting with the queue service.
+     *            A string prefix for the account name and credentials settings
+     *            in the {@link Configuration} instance.
+     * @return An instance implementing {@link QueueContract} for interacting
+     *         with the queue service.
      */
-    public static QueueContract create(String profile) {
+    public static QueueContract create(String profile)
+    {
         return create(profile, Configuration.getInstance());
     }
 
     /**
-     * A static factory method that returns an instance implementing {@link QueueContract} using the specified
-     * {@link Configuration} instance and profile prefix for service settings. The {@link Configuration} instance must
-     * have storage account information and credentials set with the specified profile prefix before this method is
-     * called for the returned interface to work.
+     * A static factory method that returns an instance implementing
+     * {@link QueueContract} using the specified {@link Configuration} instance
+     * and profile prefix for service settings. The {@link Configuration}
+     * instance must have storage account information and credentials set with
+     * the specified profile prefix before this method is called for the
+     * returned interface to work.
      * 
      * @param profile
-     *            A string prefix for the account name and credentials settings in the {@link Configuration} instance.
+     *            A string prefix for the account name and credentials settings
+     *            in the {@link Configuration} instance.
      * @param config
-     *            A {@link Configuration} instance configured with storage account information and credentials.
+     *            A {@link Configuration} instance configured with storage
+     *            account information and credentials.
      * 
-     * @return
-     *         An instance implementing {@link QueueContract} for interacting with the queue service.
+     * @return An instance implementing {@link QueueContract} for interacting
+     *         with the queue service.
      */
-    public static QueueContract create(String profile, Configuration config) {
+    public static QueueContract create(String profile, Configuration config)
+    {
         return config.create(profile, QueueContract.class);
     }
 }

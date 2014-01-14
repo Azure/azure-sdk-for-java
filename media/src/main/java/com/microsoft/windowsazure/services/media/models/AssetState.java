@@ -20,7 +20,8 @@ import java.security.InvalidParameterException;
 /**
  * Specifies the states of the asset.
  */
-public enum AssetState {
+public enum AssetState
+{
 
     /** The Initialized. */
     Initialized(0),
@@ -38,7 +39,8 @@ public enum AssetState {
      * @param assetStateCode
      *            the asset state code
      */
-    private AssetState(int assetStateCode) {
+    private AssetState(int assetStateCode)
+    {
         this.assetStateCode = assetStateCode;
     }
 
@@ -47,7 +49,8 @@ public enum AssetState {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return assetStateCode;
     }
 
@@ -58,16 +61,18 @@ public enum AssetState {
      *            state as integer
      * @return new AssetState instance
      */
-    public static AssetState fromCode(int state) {
-        switch (state) {
-            case 0:
-                return AssetState.Initialized;
-            case 1:
-                return AssetState.Published;
-            case 2:
-                return AssetState.Deleted;
-            default:
-                throw new InvalidParameterException("state");
+    public static AssetState fromCode(int state)
+    {
+        switch (state)
+        {
+        case 0:
+            return AssetState.Initialized;
+        case 1:
+            return AssetState.Published;
+        case 2:
+            return AssetState.Deleted;
+        default:
+            throw new InvalidParameterException("state");
         }
     }
 }

@@ -21,9 +21,7 @@
     <artifactId>microsoft-azure-api-bom</artifactId>
   </parent>
 
-  <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-parent</artifactId>
-  <version>0.4.6</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Windows Azure Client API Parent</name>
@@ -193,12 +191,25 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <configLocation>src/config/checkstyle.xml</configLocation>
-        </configuration>
+        <version>2.11</version>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <configuration>
+              <configLocation>src/config/checkstyle.xml</configLocation>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <failsOnError>false</failsOnError>
+              <failOnViolation>false</failOnViolation>
+              <linkXRef>false</linkXRef>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-
     </plugins>
     <pluginManagement>
       <plugins>

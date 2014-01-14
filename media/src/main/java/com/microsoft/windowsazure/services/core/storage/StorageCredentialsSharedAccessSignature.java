@@ -20,9 +20,12 @@ import java.net.URISyntaxException;
 import com.microsoft.windowsazure.services.core.storage.utils.PathUtility;
 
 /**
- * Represents storage credentials for delegated access to Blob service resources via a shared access signature.
+ * Represents storage credentials for delegated access to Blob service resources
+ * via a shared access signature.
  */
-public final class StorageCredentialsSharedAccessSignature extends StorageCredentials {
+public final class StorageCredentialsSharedAccessSignature extends
+        StorageCredentials
+{
 
     /**
      * Stores the shared access signature token.
@@ -30,13 +33,16 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     private final String token;
 
     /**
-     * Creates an instance of the <code>StorageCredentialsSharedAccessSignature</code> class using the specified shared
-     * access signature token.
+     * Creates an instance of the
+     * <code>StorageCredentialsSharedAccessSignature</code> class using the
+     * specified shared access signature token.
      * 
      * @param token
-     *            A <code>String</code> that represents shared access signature token.
+     *            A <code>String</code> that represents shared access signature
+     *            token.
      */
-    public StorageCredentialsSharedAccessSignature(final String token) {
+    public StorageCredentialsSharedAccessSignature(final String token)
+    {
         this.token = token;
     }
 
@@ -49,7 +55,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public boolean canCredentialsComputeHmac() {
+    public boolean canCredentialsComputeHmac()
+    {
         return false;
     }
 
@@ -62,7 +69,8 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public boolean canCredentialsSignRequest() {
+    public boolean canCredentialsSignRequest()
+    {
         return false;
     }
 
@@ -75,76 +83,95 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public boolean canCredentialsSignRequestLite() {
+    public boolean canCredentialsSignRequestLite()
+    {
         return false;
     }
 
     /**
-     * Computes a signature for the specified string using the HMAC-SHA256 algorithm. This is not a valid operation for
-     * objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method merely returns
-     * <code>null</code>.
+     * Computes a signature for the specified string using the HMAC-SHA256
+     * algorithm. This is not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely
+     * returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
      * 
-     * @return <code>null</code> for objects of type <code>StorageCredentialsSharedAccessSignature</code>.
+     * @return <code>null</code> for objects of type
+     *         <code>StorageCredentialsSharedAccessSignature</code>.
      */
     @Override
-    public String computeHmac256(final String value) {
+    public String computeHmac256(final String value)
+    {
         return null;
     }
 
     /**
-     * Computes a signature for the specified string using the HMAC-SHA256 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
-     * so the method merely returns <code>null</code>.
+     * Computes a signature for the specified string using the HMAC-SHA256
+     * algorithm with the specified operation context. This is not a valid
+     * operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely
+     * returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return <code>null</code> for objects of type <code>StorageCredentialsSharedAccessSignature</code>.
+     * @return <code>null</code> for objects of type
+     *         <code>StorageCredentialsSharedAccessSignature</code>.
      */
     @Override
-    public String computeHmac256(final String value, final OperationContext opContext) {
+    public String computeHmac256(final String value,
+            final OperationContext opContext)
+    {
         return null;
     }
 
     /**
-     * Computes a signature for the specified string using the HMAC-SHA512 algorithm. This is not a valid operation for
-     * objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method merely returns
-     * <code>null</code>.
+     * Computes a signature for the specified string using the HMAC-SHA512
+     * algorithm. This is not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely
+     * returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
      * 
-     * @return <code>null</code> for objects of type <code>StorageCredentialsSharedAccessSignature</code>.
+     * @return <code>null</code> for objects of type
+     *         <code>StorageCredentialsSharedAccessSignature</code>.
      */
     @Override
-    public String computeHmac512(final String value) {
+    public String computeHmac512(final String value)
+    {
         return null;
     }
 
     /**
-     * Computes a signature for the specified string using the HMAC-SHA512 algorithm with the specified operation
-     * context. This is not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code>
-     * so the method merely returns <code>null</code>.
+     * Computes a signature for the specified string using the HMAC-SHA512
+     * algorithm with the specified operation context. This is not a valid
+     * operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely
+     * returns <code>null</code>.
      * 
      * @param value
      *            The UTF-8-encoded string to sign.
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return <code>null</code> for objects of type <code>StorageCredentialsSharedAccessSignature</code>.
+     * @return <code>null</code> for objects of type
+     *         <code>StorageCredentialsSharedAccessSignature</code>.
      */
     @Override
-    public String computeHmac512(final String value, final OperationContext opContext) {
+    public String computeHmac512(final String value,
+            final OperationContext opContext)
+    {
         return null;
     }
 
@@ -157,18 +184,23 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
     //
     /** Reserved. */
     @Override
-    public boolean doCredentialsNeedTransformUri() {
+    public boolean doCredentialsNeedTransformUri()
+    {
         return true;
     }
 
     /**
-     * Returns the associated account name for the credentials. This is not a valid operation for objects of type
-     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely returns <code>null</code>.
+     * Returns the associated account name for the credentials. This is not a
+     * valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method merely
+     * returns <code>null</code>.
      * 
-     * @return <code>null</code> for objects of type <code>StorageCredentialsSharedAccessSignature</code>.
+     * @return <code>null</code> for objects of type
+     *         <code>StorageCredentialsSharedAccessSignature</code>.
      */
     @Override
-    public String getAccountName() {
+    public String getAccountName()
+    {
         return null;
     }
 
@@ -177,245 +209,323 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      * 
      * @return A <code>String</code> that contains the token.
      */
-    public String getToken() {
+    public String getToken()
+    {
         return this.token;
     }
 
     /**
-     * Signs a request using the specified credentials under the Shared Key authentication scheme. This is not a valid
-     * operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * Signs a request using the specified credentials under the Shared Key
+     * authentication scheme. This is not a valid operation for objects of type
+     * <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
-     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either
+     *             {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your
+     *             desired shared key authentication scheme.
      * 
      * @param connection
-     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     *            the request, as an <code>HttpURLConnection</code> object, to
+     *            sign
      * @param contentLength
-     *            the length of the content written to the output stream. If unknown, specify -1.
+     *            the length of the content written to the output stream. If
+     *            unknown, specify -1.
      */
     @Override
     @Deprecated
-    public void signRequest(final java.net.HttpURLConnection connection, final long contentLength) {
+    public void signRequest(final java.net.HttpURLConnection connection,
+            final long contentLength)
+    {
         // No op
     }
 
     /**
-     * Signs a request using the specified credentials and operation context under the Shared Key authentication scheme.
-     * This is not a valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs
-     * a no-op.
+     * Signs a request using the specified credentials and operation context
+     * under the Shared Key authentication scheme. This is not a valid operation
+     * for objects of type <code>StorageCredentialsAnonymous</code> so the
+     * method performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use either {@link signBlobAndQueueRequest} or
-     *             {@link signBlobAndQueueRequestLite}, depending on your desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either
+     *             {@link signBlobAndQueueRequest} or
+     *             {@link signBlobAndQueueRequestLite}, depending on your
+     *             desired shared key authentication scheme.
      * 
      * @param request
-     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     *            the request, as an <code>HttpURLConnection</code> object, to
+     *            sign
      * @param contentLength
-     *            the length of the content written to the output stream. If unknown, specify -1.
+     *            the length of the content written to the output stream. If
+     *            unknown, specify -1.
      * @param opContext
-     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            an operation context, as a
+     *            {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
      *            object, that represents the current operation
      */
     @Override
     @Deprecated
-    public void signRequest(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
+    public void signRequest(final java.net.HttpURLConnection request,
+            final long contentLength, final OperationContext opContext)
+    {
         // No op
     }
 
     /**
-     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
-     * valid operation for objects of type <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
+     * Signs a request using the specified credentials under the Shared Key Lite
+     * authentication scheme. This is not a valid operation for objects of type
+     * <code>StorageCredentialsAnonymous</code> so the method performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
-     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either
+     *             {@link signTableRequest} or {@link signTableRequestLite},
+     *             depending on your desired shared key authentication scheme.
      * 
      * @param connection
-     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     *            the request, as an <code>HttpURLConnection</code> object, to
+     *            sign
      */
     @Override
     @Deprecated
-    public void signRequestLite(final java.net.HttpURLConnection connection, final long contentLength) {
+    public void signRequestLite(final java.net.HttpURLConnection connection,
+            final long contentLength)
+    {
         // No op
     }
 
     /**
-     * Signs a request using the specified credentials under the Shared Key Lite authentication scheme. This is not a
-     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
-     * no-op.
+     * Signs a request using the specified credentials under the Shared Key Lite
+     * authentication scheme. This is not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
      * 
-     * @deprecated This method has been deprecated. Please use either {@link signTableRequest} or
-     *             {@link signTableRequestLite}, depending on your desired shared key authentication scheme.
+     * @deprecated This method has been deprecated. Please use either
+     *             {@link signTableRequest} or {@link signTableRequestLite},
+     *             depending on your desired shared key authentication scheme.
      * 
      * @param request
-     *            the request, as an <code>HttpURLConnection</code> object, to sign
+     *            the request, as an <code>HttpURLConnection</code> object, to
+     *            sign
      * @param opContext
-     *            an operation context, as a {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
+     *            an operation context, as a
+     *            {@link com.microsoft.windowsazure.services.core.storage.OperationContext}
      *            object, that represents the current operation
      */
     @Override
     @Deprecated
-    public void signRequestLite(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
+    public void signRequestLite(final java.net.HttpURLConnection request,
+            final long contentLength, final OperationContext opContext)
+    {
         // No op
     }
 
     /**
-     * Signs a request under the Shared Key authentication scheme. This is not a valid operation for objects of type
-     * <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     */
-    @Override
-    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength) {
-        // No op
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key authentication scheme. This is not a
-     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
-     * no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     */
-    @Override
-    public void signBlobAndQueueRequest(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
-        // No op
-    }
-
-    /**
-     * Signs a request under the Shared Key Lite authentication scheme. This is not a valid operation for objects of
-     * type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     */
-    @Override
-    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength) {
-        // No op
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme. This is
-     * not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * Signs a request under the Shared Key authentication scheme. This is not a
+     * valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method
      * performs a no-op.
      * 
      * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
      * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
      */
     @Override
-    public void signBlobAndQueueRequestLite(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
+    public void signBlobAndQueueRequest(
+            final java.net.HttpURLConnection request, final long contentLength)
+    {
         // No op
     }
 
     /**
-     * Signs a request under the Shared Key authentication scheme. This is not a valid operation for objects of type
-     * <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     */
-    @Override
-    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength) {
-        // No op
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key authentication scheme. This is not a
-     * valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a
-     * no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     */
-    @Override
-    public void signTableRequest(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
-        // No op
-    }
-
-    /**
-     * Signs a request under the Shared Key Lite authentication scheme. This is not a valid operation for objects of
-     * type <code>StorageCredentialsSharedAccessSignature</code> so the method performs a no-op.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     */
-    @Override
-    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength) {
-        // No op
-    }
-
-    /**
-     * Signs a request using the specified operation context under the Shared Key Lite authentication scheme. This is
-     * not a valid operation for objects of type <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * Signs a request using the specified operation context under the Shared
+     * Key authentication scheme. This is not a valid operation for objects of
+     * type <code>StorageCredentialsSharedAccessSignature</code> so the method
      * performs a no-op.
      * 
      * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
      * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      */
     @Override
-    public void signTableRequestLite(final java.net.HttpURLConnection request, final long contentLength,
-            final OperationContext opContext) {
+    public void signBlobAndQueueRequest(
+            final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext)
+    {
         // No op
     }
 
     /**
-     * Returns a <code>String</code> that represents this instance, optionally including sensitive data.
+     * Signs a request under the Shared Key Lite authentication scheme. This is
+     * not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     */
+    @Override
+    public void signBlobAndQueueRequestLite(
+            final java.net.HttpURLConnection request, final long contentLength)
+    {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared
+     * Key Lite authentication scheme. This is not a valid operation for objects
+     * of type <code>StorageCredentialsSharedAccessSignature</code> so the
+     * method performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     */
+    @Override
+    public void signBlobAndQueueRequestLite(
+            final java.net.HttpURLConnection request, final long contentLength,
+            final OperationContext opContext)
+    {
+        // No op
+    }
+
+    /**
+     * Signs a request under the Shared Key authentication scheme. This is not a
+     * valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request,
+            final long contentLength)
+    {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared
+     * Key authentication scheme. This is not a valid operation for objects of
+     * type <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     */
+    @Override
+    public void signTableRequest(final java.net.HttpURLConnection request,
+            final long contentLength, final OperationContext opContext)
+    {
+        // No op
+    }
+
+    /**
+     * Signs a request under the Shared Key Lite authentication scheme. This is
+     * not a valid operation for objects of type
+     * <code>StorageCredentialsSharedAccessSignature</code> so the method
+     * performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request,
+            final long contentLength)
+    {
+        // No op
+    }
+
+    /**
+     * Signs a request using the specified operation context under the Shared
+     * Key Lite authentication scheme. This is not a valid operation for objects
+     * of type <code>StorageCredentialsSharedAccessSignature</code> so the
+     * method performs a no-op.
+     * 
+     * @param request
+     *            An <code>HttpURLConnection</code> object that represents the
+     *            request to sign.
+     * @param contentLength
+     *            The length of the content written to the output stream. If
+     *            unknown, specify -1.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     */
+    @Override
+    public void signTableRequestLite(final java.net.HttpURLConnection request,
+            final long contentLength, final OperationContext opContext)
+    {
+        // No op
+    }
+
+    /**
+     * Returns a <code>String</code> that represents this instance, optionally
+     * including sensitive data.
      * 
      * @param exportSecrets
-     *            <code>true</code> to include sensitive data in the return string; otherwise, <code>false</code>.
-     * @return A <code>String</code> that represents this object, optionally including sensitive data.
+     *            <code>true</code> to include sensitive data in the return
+     *            string; otherwise, <code>false</code>.
+     * @return A <code>String</code> that represents this object, optionally
+     *         including sensitive data.
      */
     @Override
-    public String toString(final boolean exportSecrets) {
-        return String.format("%s=%s", CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME, exportSecrets ? this.token
-                : "[signature hidden]");
+    public String toString(final boolean exportSecrets)
+    {
+        return String.format("%s=%s",
+                CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME,
+                exportSecrets ? this.token : "[signature hidden]");
     }
 
     /**
-     * Transforms a resource URI into a shared access signature URI, by appending a shared access token.
+     * Transforms a resource URI into a shared access signature URI, by
+     * appending a shared access token.
      * 
      * @param resourceUri
-     *            A <code>java.net.URI</code> object that represents the resource URI to be transformed.
+     *            A <code>java.net.URI</code> object that represents the
+     *            resource URI to be transformed.
      * 
-     * @return A <code>java.net.URI</code> object that represents the signature, including the resource URI and the
-     *         shared access token.
+     * @return A <code>java.net.URI</code> object that represents the signature,
+     *         including the resource URI and the shared access token.
      * 
      * @throws IllegalArgumentException
      *             If a parameter is invalid.
@@ -425,23 +535,28 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *             If the resource URI is not properly formatted.
      */
     @Override
-    public URI transformUri(final URI resourceUri) throws URISyntaxException, StorageException {
+    public URI transformUri(final URI resourceUri) throws URISyntaxException,
+            StorageException
+    {
         return this.transformUri(resourceUri, null);
     }
 
     /**
-     * Transforms a resource URI into a shared access signature URI, by appending a shared access token and using the
-     * specified operation context.
+     * Transforms a resource URI into a shared access signature URI, by
+     * appending a shared access token and using the specified operation
+     * context.
      * 
      * @param resourceUri
-     *            A <code>java.net.URI</code> object that represents the resource URI to be transformed.
+     *            A <code>java.net.URI</code> object that represents the
+     *            resource URI to be transformed.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return A <code>java.net.URI</code> object that represents the signature, including the resource URI and the
-     *         shared access token.
+     * @return A <code>java.net.URI</code> object that represents the signature,
+     *         including the resource URI and the shared access token.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -449,8 +564,10 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *             If the resource URI is not properly formatted.
      */
     @Override
-    public URI transformUri(final URI resourceUri, final OperationContext opContext) throws URISyntaxException,
-            StorageException {
+    public URI transformUri(final URI resourceUri,
+            final OperationContext opContext) throws URISyntaxException,
+            StorageException
+    {
         return PathUtility.addToQuery(resourceUri, this.token);
     }
 }

@@ -24,12 +24,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization
- * for Task entities.
+ * This type maps the XML returned in the odata ATOM serialization for Task
+ * entities.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TaskType implements MediaServiceDTO {
+public class TaskType implements MediaServiceDTO
+{
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
@@ -94,191 +95,234 @@ public class TaskType implements MediaServiceDTO {
 
     protected List<String> inputMediaAssets;
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public TaskType setId(String id) {
+    public TaskType setId(String id)
+    {
         this.id = id;
         return this;
     }
 
-    public String getConfiguration() {
+    public String getConfiguration()
+    {
         return configuration;
     }
 
-    public TaskType setConfiguration(String configuration) {
+    public TaskType setConfiguration(String configuration)
+    {
         this.configuration = configuration;
         return this;
     }
 
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return endTime;
     }
 
-    public TaskType setEndTime(Date endTime) {
+    public TaskType setEndTime(Date endTime)
+    {
         this.endTime = endTime;
         return this;
     }
 
-    public List<ErrorDetailType> getErrorDetails() {
+    public List<ErrorDetailType> getErrorDetails()
+    {
         return errorDetails;
     }
 
-    public TaskType setErrorDetails(List<ErrorDetailType> errorDetails) {
+    public TaskType setErrorDetails(List<ErrorDetailType> errorDetails)
+    {
         this.errorDetails = errorDetails;
         return this;
     }
 
-    public String getMediaProcessorId() {
+    public String getMediaProcessorId()
+    {
         return mediaProcessorId;
     }
 
-    public TaskType setMediaProcessorId(String mediaProcessorId) {
+    public TaskType setMediaProcessorId(String mediaProcessorId)
+    {
         this.mediaProcessorId = mediaProcessorId;
         return this;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public TaskType setName(String name) {
+    public TaskType setName(String name)
+    {
         this.name = name;
         return this;
     }
 
-    public String getPerfMessage() {
+    public String getPerfMessage()
+    {
         return perfMessage;
     }
 
-    public TaskType setPerfMessage(String perfMessage) {
+    public TaskType setPerfMessage(String perfMessage)
+    {
         this.perfMessage = perfMessage;
         return this;
     }
 
-    public Integer getPriority() {
+    public Integer getPriority()
+    {
         return priority;
     }
 
-    public TaskType setPriority(Integer priority) {
+    public TaskType setPriority(Integer priority)
+    {
         this.priority = priority;
         return this;
     }
 
-    public Double getProgress() {
+    public Double getProgress()
+    {
         return progress;
     }
 
-    public TaskType setProgress(Double progress) {
+    public TaskType setProgress(Double progress)
+    {
         this.progress = progress;
         return this;
     }
 
-    public Double getRunningDuration() {
+    public Double getRunningDuration()
+    {
         return runningDuration;
     }
 
-    public TaskType setRunningDuration(Double runningDuration) {
+    public TaskType setRunningDuration(Double runningDuration)
+    {
         this.runningDuration = runningDuration;
         return this;
     }
 
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return startTime;
     }
 
-    public TaskType setStartTime(Date startTime) {
+    public TaskType setStartTime(Date startTime)
+    {
         this.startTime = startTime;
         return this;
     }
 
-    public Integer getState() {
+    public Integer getState()
+    {
         return state;
     }
 
-    public TaskType setState(Integer state) {
+    public TaskType setState(Integer state)
+    {
         this.state = state;
         return this;
     }
 
-    public String getTaskBody() {
+    public String getTaskBody()
+    {
         return taskBody;
     }
 
-    public TaskType setTaskBody(String taskBody) {
+    public TaskType setTaskBody(String taskBody)
+    {
         this.taskBody = taskBody;
         return this;
     }
 
-    public Integer getOptions() {
+    public Integer getOptions()
+    {
         return options;
     }
 
-    public TaskType setOptions(Integer options) {
+    public TaskType setOptions(Integer options)
+    {
         this.options = options;
         return this;
     }
 
-    public String getEncryptionKeyId() {
+    public String getEncryptionKeyId()
+    {
         return encryptionKeyId;
     }
 
-    public TaskType setEncryptionKeyId(String encryptionKeyId) {
+    public TaskType setEncryptionKeyId(String encryptionKeyId)
+    {
         this.encryptionKeyId = encryptionKeyId;
         return this;
     }
 
-    public String getEncryptionScheme() {
+    public String getEncryptionScheme()
+    {
         return encryptionScheme;
     }
 
-    public TaskType setEncryptionScheme(String encryptionScheme) {
+    public TaskType setEncryptionScheme(String encryptionScheme)
+    {
         this.encryptionScheme = encryptionScheme;
         return this;
     }
 
-    public String getEncryptionVersion() {
+    public String getEncryptionVersion()
+    {
         return encryptionVersion;
     }
 
-    public TaskType setEncryptionVersion(String encryptionVersion) {
+    public TaskType setEncryptionVersion(String encryptionVersion)
+    {
         this.encryptionVersion = encryptionVersion;
         return this;
     }
 
-    public String getInitializationVector() {
+    public String getInitializationVector()
+    {
         return initializationVector;
     }
 
-    public TaskType setInitializationVector(String initializationVector) {
+    public TaskType setInitializationVector(String initializationVector)
+    {
         this.initializationVector = initializationVector;
         return this;
     }
 
-    public List<String> getOutputMediaAssets() {
+    public List<String> getOutputMediaAssets()
+    {
         return outputMediaAssets;
     }
 
-    public TaskType setOutputMediaAssets(List<String> outputMediaAssets) {
+    public TaskType setOutputMediaAssets(List<String> outputMediaAssets)
+    {
         this.outputMediaAssets = outputMediaAssets;
         return this;
     }
 
-    public List<String> getInputMediaAssets() {
+    public List<String> getInputMediaAssets()
+    {
         return inputMediaAssets;
     }
 
-    public TaskType setInputMediaAssets(List<String> inputMediaAssets) {
+    public TaskType setInputMediaAssets(List<String> inputMediaAssets)
+    {
         this.inputMediaAssets = inputMediaAssets;
         return this;
     }
 
-    public List<TaskHistoricalEventType> getHistoricalEventTypes() {
+    public List<TaskHistoricalEventType> getHistoricalEventTypes()
+    {
         return historicalEventTypes;
     }
 
-    public TaskType setHistoricalEventTypes(List<TaskHistoricalEventType> historicalEventTypes) {
+    public TaskType setHistoricalEventTypes(
+            List<TaskHistoricalEventType> historicalEventTypes)
+    {
         this.historicalEventTypes = historicalEventTypes;
         return this;
     }

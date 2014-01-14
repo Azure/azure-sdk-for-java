@@ -24,14 +24,15 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * Represents the current logical operation. A logical operation has potentially a one-to-many relationship with
- * individual physical requests.
+ * Represents the current logical operation. A logical operation has potentially
+ * a one-to-many relationship with individual physical requests.
  */
-public final class OperationContext {
+public final class OperationContext
+{
 
     /**
-     * Represents the operation latency, in milliseconds, from the client's perspective. This may include any potential
-     * retries.
+     * Represents the operation latency, in milliseconds, from the client's
+     * perspective. This may include any potential retries.
      */
     private long clientTimeInMs;
 
@@ -46,8 +47,9 @@ public final class OperationContext {
     private Logger logger;
 
     /**
-     * Represents request results, in the form of an <code>ArrayList</code> object that contains the
-     * {@link RequestResult} objects, for each physical request that is made.
+     * Represents request results, in the form of an <code>ArrayList</code>
+     * object that contains the {@link RequestResult} objects, for each physical
+     * request that is made.
      */
     private final ArrayList<RequestResult> requestResults;
 
@@ -61,8 +63,8 @@ public final class OperationContext {
     private StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler = new StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>>();
 
     /**
-     * Represents an event that is triggered when a response is received from the storage service while processing a
-     * request.
+     * Represents an event that is triggered when a response is received from
+     * the storage service while processing a request.
      * 
      * @see StorageEvent
      * @see StorageEventMultiCaster
@@ -73,11 +75,13 @@ public final class OperationContext {
     /**
      * Reserved for internal use.
      */
-    // Represents the intermediate MD5 value, which is used in resuming downloads.
+    // Represents the intermediate MD5 value, which is used in resuming
+    // downloads.
     private MessageDigest intermediateMD5;
 
     /**
-     * Reserved for internal use. Represents the current request object, which is used in continuation.
+     * Reserved for internal use. Represents the current request object, which
+     * is used in continuation.
      */
     private HttpURLConnection currentRequestObject;
 
@@ -95,7 +99,8 @@ public final class OperationContext {
     /**
      * Creates an instance of the <code>OperationContext</code> class.
      */
-    public OperationContext() {
+    public OperationContext()
+    {
         this.clientRequestID = UUID.randomUUID().toString();
         this.requestResults = new ArrayList<RequestResult>();
     }
@@ -103,48 +108,56 @@ public final class OperationContext {
     /**
      * @return the clientRequestID
      */
-    public String getClientRequestID() {
+    public String getClientRequestID()
+    {
         return this.clientRequestID;
     }
 
     /**
      * @return the clientTimeInMs
      */
-    public long getClientTimeInMs() {
+    public long getClientTimeInMs()
+    {
         return this.clientTimeInMs;
     }
 
     /**
      * @return the currentOperationByteCount
      */
-    public long getCurrentOperationByteCount() {
+    public long getCurrentOperationByteCount()
+    {
         return this.currentOperationByteCount;
     }
 
     /**
      * @return the currentRequestObject
      */
-    public HttpURLConnection getCurrentRequestObject() {
+    public HttpURLConnection getCurrentRequestObject()
+    {
         return this.currentRequestObject;
     }
 
     /**
      * @return the intermediateMD5
      */
-    public MessageDigest getIntermediateMD5() {
+    public MessageDigest getIntermediateMD5()
+    {
         return this.intermediateMD5;
     }
 
     /**
      * Returns the last request result encountered for the operation.
      * 
-     * @return A {@link RequestResult} object that represents the last request result.
+     * @return A {@link RequestResult} object that represents the last request
+     *         result.
      */
-    public synchronized RequestResult getLastResult() {
-        if (this.requestResults == null || this.requestResults.size() == 0) {
+    public synchronized RequestResult getLastResult()
+    {
+        if (this.requestResults == null || this.requestResults.size() == 0)
+        {
             return null;
-        }
-        else {
+        } else
+        {
             return this.requestResults.get(this.requestResults.size() - 1);
         }
     }
@@ -155,50 +168,58 @@ public final class OperationContext {
      * @return the <code>Logger</code> associated with this operation
      */
     @SuppressWarnings("unused")
-    private Logger getLogger() {
+    private Logger getLogger()
+    {
         // V2 throw on null logger reference , use default dummy logger.
         return this.logger;
     }
 
     /**
-     * Returns the set of request results that the current operation has created.
+     * Returns the set of request results that the current operation has
+     * created.
      * 
-     * @return An <code>ArrayList</code> object that contains {@link RequestResult} objects that represent the request
-     *         results created by the current operation.
+     * @return An <code>ArrayList</code> object that contains
+     *         {@link RequestResult} objects that represent the request results
+     *         created by the current operation.
      */
-    public ArrayList<RequestResult> getRequestResults() {
+    public ArrayList<RequestResult> getRequestResults()
+    {
         return this.requestResults;
     }
 
     /**
-     * Reserved for internal use. appends a {@link RequestResult} object to the internal collection in a synchronized
-     * manner.
+     * Reserved for internal use. appends a {@link RequestResult} object to the
+     * internal collection in a synchronized manner.
      * 
      * @param requestResult
      */
-    public synchronized void appendRequestResult(RequestResult requestResult) {
+    public synchronized void appendRequestResult(RequestResult requestResult)
+    {
         this.requestResults.add(requestResult);
     }
 
     /**
      * @return the SendingRequestEvent
      */
-    public StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getSendingRequestEventHandler() {
+    public StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getSendingRequestEventHandler()
+    {
         return this.sendingRequestEventHandler;
     }
 
     /**
      * @return the responseReceivedEventHandler
      */
-    public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
+    public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler()
+    {
         return this.responseReceivedEventHandler;
     }
 
     /**
-     * Initializes the OperationContext in order to begin processing a new operation. All operation specific information
-     * is erased.
+     * Initializes the OperationContext in order to begin processing a new
+     * operation. All operation specific information is erased.
      */
-    public void initialize() {
+    public void initialize()
+    {
         this.setClientTimeInMs(0);
         this.requestResults.clear();
         this.setIntermediateMD5(null);
@@ -210,7 +231,8 @@ public final class OperationContext {
      * @param clientRequestID
      *            the clientRequestID to set
      */
-    public void setClientRequestID(final String clientRequestID) {
+    public void setClientRequestID(final String clientRequestID)
+    {
         this.clientRequestID = clientRequestID;
     }
 
@@ -218,7 +240,8 @@ public final class OperationContext {
      * @param clientTimeInMs
      *            the clientTimeInMs to set
      */
-    public void setClientTimeInMs(final long clientTimeInMs) {
+    public void setClientTimeInMs(final long clientTimeInMs)
+    {
         this.clientTimeInMs = clientTimeInMs;
     }
 
@@ -226,7 +249,9 @@ public final class OperationContext {
      * @param currentOperationByteCount
      *            the currentOperationByteCount to set
      */
-    public void setCurrentOperationByteCount(final long currentOperationByteCount) {
+    public void setCurrentOperationByteCount(
+            final long currentOperationByteCount)
+    {
         this.currentOperationByteCount = currentOperationByteCount;
     }
 
@@ -234,7 +259,9 @@ public final class OperationContext {
      * @param currentRequestObject
      *            the currentRequestObject to set
      */
-    public void setCurrentRequestObject(final HttpURLConnection currentRequestObject) {
+    public void setCurrentRequestObject(
+            final HttpURLConnection currentRequestObject)
+    {
         this.currentRequestObject = currentRequestObject;
     }
 
@@ -242,7 +269,8 @@ public final class OperationContext {
      * @param intermediateMD5
      *            the intermediateMD5 to set
      */
-    public void setIntermediateMD5(final MessageDigest intermediateMD5) {
+    public void setIntermediateMD5(final MessageDigest intermediateMD5)
+    {
         this.intermediateMD5 = intermediateMD5;
     }
 
@@ -253,7 +281,8 @@ public final class OperationContext {
      *            the <code>Logger</code> to use for this operation
      */
     @SuppressWarnings("unused")
-    private void setLogger(final Logger logger) {
+    private void setLogger(final Logger logger)
+    {
         this.logger = logger;
     }
 
@@ -262,7 +291,8 @@ public final class OperationContext {
      *            the sendingRequestEventHandler to set
      */
     public void setSendingRequestEventHandler(
-            final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler) {
+            final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler)
+    {
         this.sendingRequestEventHandler = sendingRequestEventHandler;
     }
 
@@ -271,7 +301,8 @@ public final class OperationContext {
      *            the responseReceivedEventHandler to set
      */
     public void setResponseReceivedEventHandler(
-            final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler) {
+            final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler)
+    {
         this.responseReceivedEventHandler = responseReceivedEventHandler;
     }
 }

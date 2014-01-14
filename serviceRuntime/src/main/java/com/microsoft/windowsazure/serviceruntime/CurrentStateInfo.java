@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CurrentStateInfo complex type.
+ * <p>
+ * Java class for CurrentStateInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CurrentStateInfo">
@@ -48,10 +49,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "CurrentStateInfo", propOrder = {
-    "statusLease"
-})
-class CurrentStateInfo {
+@XmlType(name = "CurrentStateInfo", propOrder = { "statusLease" })
+class CurrentStateInfo
+{
 
     @XmlElement(name = "StatusLease")
     protected StatusLeaseInfo statusLease;
@@ -59,12 +59,11 @@ class CurrentStateInfo {
     /**
      * Gets the value of the statusLease property.
      * 
-     * @return
-     *     possible object is
-     *     {@link StatusLeaseInfo }
-     *     
+     * @return possible object is {@link StatusLeaseInfo }
+     * 
      */
-    public StatusLeaseInfo getStatusLease() {
+    public StatusLeaseInfo getStatusLease()
+    {
         return statusLease;
     }
 
@@ -72,11 +71,11 @@ class CurrentStateInfo {
      * Sets the value of the statusLease property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link StatusLeaseInfo }
-     *     
+     *            allowed object is {@link StatusLeaseInfo }
+     * 
      */
-    public void setStatusLease(StatusLeaseInfo value) {
+    public void setStatusLease(StatusLeaseInfo value)
+    {
         this.statusLease = value;
     }
 

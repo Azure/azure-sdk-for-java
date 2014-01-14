@@ -19,17 +19,19 @@ import java.util.List;
 /**
  * Represents the result of a <code>listQueues</code> operation.
  */
-public class ListQueuesResult {
+public class ListQueuesResult
+{
 
     private List<QueueInfo> items;
 
     /**
      * Returns the items in the result list.
      * 
-     * @return A <code>List</code> of {@link QueueInfo} objects that represent the
-     *         items in the result list.
+     * @return A <code>List</code> of {@link QueueInfo} objects that represent
+     *         the items in the result list.
      */
-    public List<QueueInfo> getItems() {
+    public List<QueueInfo> getItems()
+    {
         return items;
     }
 
@@ -37,10 +39,11 @@ public class ListQueuesResult {
      * Specfies the items in the result list.
      * 
      * @param items
-     *            A <code>List</code> object that contains the {@link QueueInfo} objects assigned as the value of the
-     *            result.
+     *            A <code>List</code> object that contains the {@link QueueInfo}
+     *            objects assigned as the value of the result.
      */
-    public void setItems(List<QueueInfo> items) {
+    public void setItems(List<QueueInfo> items)
+    {
         this.items = items;
     }
 }

@@ -30,18 +30,20 @@ import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
  * Represents a list of blocks that may be committed to a block blob.
  */
 @XmlRootElement(name = "BlockList")
-public class BlockList {
+public class BlockList
+{
     private List<Entry> entries = new ArrayList<Entry>();
 
     /**
      * Adds the committed block specified by the block ID to the block list.
      * 
      * @param blockId
-     *            A {@link String} containing the client-specified block ID for a committed block.
-     * @return
-     *         A reference to this {@link BlockList} instance.
+     *            A {@link String} containing the client-specified block ID for
+     *            a committed block.
+     * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addCommittedEntry(String blockId) {
+    public BlockList addCommittedEntry(String blockId)
+    {
         CommittedEntry entry = new CommittedEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -52,11 +54,12 @@ public class BlockList {
      * Adds the uncommitted block specified by the block ID to the block list.
      * 
      * @param blockId
-     *            A {@link String} containing the client-specified block ID for an uncommitted block.
-     * @return
-     *         A reference to this {@link BlockList} instance.
+     *            A {@link String} containing the client-specified block ID for
+     *            an uncommitted block.
+     * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addUncommittedEntry(String blockId) {
+    public BlockList addUncommittedEntry(String blockId)
+    {
         UncommittedEntry entry = new UncommittedEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -64,16 +67,18 @@ public class BlockList {
     }
 
     /**
-     * Adds the latest block specified by the block ID to the block list. An entry of this type will cause the server
-     * commit the most recent uncommitted block with the specified block ID, or the committed block with the specified
-     * block ID if no uncommitted block is found.
+     * Adds the latest block specified by the block ID to the block list. An
+     * entry of this type will cause the server commit the most recent
+     * uncommitted block with the specified block ID, or the committed block
+     * with the specified block ID if no uncommitted block is found.
      * 
      * @param blockId
-     *            A {@link String} containing the client-specified block ID for the latest matching block.
-     * @return
-     *         A reference to this {@link BlockList} instance.
+     *            A {@link String} containing the client-specified block ID for
+     *            the latest matching block.
+     * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addLatestEntry(String blockId) {
+    public BlockList addLatestEntry(String blockId)
+    {
         LatestEntry entry = new LatestEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -83,14 +88,16 @@ public class BlockList {
     /**
      * Gets the collection of entries for the block list.
      * 
-     * @return
-     *         A {@link List} of {@link Entry} instances specifying the blocks to commit.
+     * @return A {@link List} of {@link Entry} instances specifying the blocks
+     *         to commit.
      */
-    @XmlElementRefs({ @XmlElementRef(name = "Committed", type = CommittedEntry.class),
+    @XmlElementRefs({
+            @XmlElementRef(name = "Committed", type = CommittedEntry.class),
             @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
             @XmlElementRef(name = "Latest", type = LatestEntry.class) })
     @XmlMixed
-    public List<Entry> getEntries() {
+    public List<Entry> getEntries()
+    {
         return entries;
     }
 
@@ -98,30 +105,34 @@ public class BlockList {
      * Sets the block list to the specified collection of entries.
      * 
      * @param entries
-     *            A {@link List} of {@link Entry} instances specifying the blocks to commit.
-     * @return
-     *         A reference to this {@link BlockList} instance.
+     *            A {@link List} of {@link Entry} instances specifying the
+     *            blocks to commit.
+     * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList setEntries(List<Entry> entries) {
+    public BlockList setEntries(List<Entry> entries)
+    {
         this.entries = entries;
         return this;
     }
 
     /**
-     * The abstract base class for an entry in a {@link BlockList}, representing a committed or uncommitted block.
+     * The abstract base class for an entry in a {@link BlockList}, representing
+     * a committed or uncommitted block.
      */
-    public abstract static class Entry {
+    public abstract static class Entry
+    {
         private String blockId;
 
         /**
          * Gets the client-specified block ID for a {@link BlockList} entry.
          * 
-         * @return
-         *         A {@link String} containing the client-specified block ID for a block.
+         * @return A {@link String} containing the client-specified block ID for
+         *         a block.
          */
         @XmlJavaTypeAdapter(Base64StringAdapter.class)
         @XmlValue
-        public String getBlockId() {
+        public String getBlockId()
+        {
             return blockId;
         }
 
@@ -129,32 +140,39 @@ public class BlockList {
          * Sets the client-specified block ID for a {@link BlockList} entry.
          * 
          * @param blockId
-         *            A {@link String} containing the client-specified block ID for the block.
+         *            A {@link String} containing the client-specified block ID
+         *            for the block.
          */
-        public void setBlockId(String blockId) {
+        public void setBlockId(String blockId)
+        {
             this.blockId = blockId;
         }
     }
 
     /**
-     * Represents an entry in a {@link BlockList} for a previously committed block.
+     * Represents an entry in a {@link BlockList} for a previously committed
+     * block.
      */
     @XmlRootElement(name = "Committed")
-    public static class CommittedEntry extends Entry {
+    public static class CommittedEntry extends Entry
+    {
     }
 
     /**
      * Represents an entry in a {@link BlockList} for an uncommitted block.
      */
     @XmlRootElement(name = "Uncommitted")
-    public static class UncommittedEntry extends Entry {
+    public static class UncommittedEntry extends Entry
+    {
     }
 
     /**
-     * Represents an entry in a {@link BlockList} for the most recent uncommitted block with the specified block ID, or
-     * the committed block with the specified block ID if no uncommitted block is found.
+     * Represents an entry in a {@link BlockList} for the most recent
+     * uncommitted block with the specified block ID, or the committed block
+     * with the specified block ID if no uncommitted block is found.
      */
     @XmlRootElement(name = "Latest")
-    public static class LatestEntry extends Entry {
+    public static class LatestEntry extends Entry
+    {
     }
 }

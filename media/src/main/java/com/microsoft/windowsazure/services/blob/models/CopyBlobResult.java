@@ -19,37 +19,45 @@ import java.util.Date;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Copy Blob operation. This is returned by calls
- * to implementations of {@link BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)}.
+ * A wrapper class for the response returned from a Blob Service REST API Copy
+ * Blob operation. This is returned by calls to implementations of
+ * {@link BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)}
+ * .
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd894037.aspx">Copy Blob</a> documentation on
- * MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd894037.aspx"
+ * >Copy Blob</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
-public class CopyBlobResult {
+public class CopyBlobResult
+{
     private String etag;
     private Date lastModified;
 
     /**
      * Gets the ETag of the blob.
      * 
-     * @return
-     *         A {@link String} containing the server-assigned ETag value for the copy blob.
+     * @return A {@link String} containing the server-assigned ETag value for
+     *         the copy blob.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
     /**
-     * Sets the ETag of the blob from the <code>ETag</code> header returned in the
-     * response.
+     * Sets the ETag of the blob from the <code>ETag</code> header returned in
+     * the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param etag
-     *            A {@link String} containing the server-assigned ETag value for the blob.
+     *            A {@link String} containing the server-assigned ETag value for
+     *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
@@ -57,24 +65,27 @@ public class CopyBlobResult {
      * Gets the last modified time of the blob.
      * <p>
      * 
-     * @return
-     *         A {@link java.util.Date} containing the last modified time of the blob.
+     * @return A {@link java.util.Date} containing the last modified time of the
+     *         blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
     /**
-     * Sets the last modified time of the blob from the <code>Last-Modified</code> header
-     * returned in the response.
+     * Sets the last modified time of the blob from the
+     * <code>Last-Modified</code> header returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param lastModified
-     *            A {@link java.util.Date} containing the last modified time of the blob.
+     *            A {@link java.util.Date} containing the last modified time of
+     *            the blob.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 }
