@@ -26,50 +26,68 @@ package com.microsoft.windowsazure.scheduler.models;
 import java.util.Calendar;
 
 /**
-* Parameters supplied to the Create or Update Job operation.
-*/
+ * Parameters supplied to the Create or Update Job operation.
+ */
 public class JobCreateOrUpdateParameters
 {
     private JobAction action;
-    
+
     /**
-    * Action to invoke for the job.
-    */
-    public JobAction getAction() { return this.action; }
-    
+     * Action to invoke for the job.
+     */
+    public JobAction getAction()
+    {
+        return this.action;
+    }
+
     /**
-    * Action to invoke for the job.
-    */
-    public void setAction(JobAction action) { this.action = action; }
-    
+     * Action to invoke for the job.
+     */
+    public void setAction(JobAction action)
+    {
+        this.action = action;
+    }
+
     private JobRecurrence recurrence;
-    
+
     /**
-    * Recurrence schedule for the job.
-    */
-    public JobRecurrence getRecurrence() { return this.recurrence; }
-    
+     * Recurrence schedule for the job.
+     */
+    public JobRecurrence getRecurrence()
+    {
+        return this.recurrence;
+    }
+
     /**
-    * Recurrence schedule for the job.
-    */
-    public void setRecurrence(JobRecurrence recurrence) { this.recurrence = recurrence; }
-    
+     * Recurrence schedule for the job.
+     */
+    public void setRecurrence(JobRecurrence recurrence)
+    {
+        this.recurrence = recurrence;
+    }
+
     private Calendar startTime;
-    
+
     /**
-    * Start time for the job. Defined as ISO-8601.
-    */
-    public Calendar getStartTime() { return this.startTime; }
-    
+     * Start time for the job. Defined as ISO-8601.
+     */
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
+
     /**
-    * Start time for the job. Defined as ISO-8601.
-    */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
-    
+     * Start time for the job. Defined as ISO-8601.
+     */
+    public void setStartTime(Calendar startTime)
+    {
+        this.startTime = startTime;
+    }
+
     /**
-    * Initializes a new instance of the JobCreateOrUpdateParameters class.
-    *
-    */
+     * Initializes a new instance of the JobCreateOrUpdateParameters class.
+     * 
+     */
     public JobCreateOrUpdateParameters()
     {
     }

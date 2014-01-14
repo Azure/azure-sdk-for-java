@@ -49,17 +49,20 @@ import com.microsoft.windowsazure.services.media.implementation.content.ProgramT
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
 /**
- * A class to manage marshalling of request parameters into
- * ATOM entry elements for sending to the Media Services REST
- * endpoints.
+ * A class to manage marshalling of request parameters into ATOM entry elements
+ * for sending to the Media Services REST endpoints.
  * 
  */
-public class ODataAtomMarshaller {
+public class ODataAtomMarshaller
+{
     private final Marshaller marshaller;
     private final DocumentBuilder documentBuilder;
 
-    public ODataAtomMarshaller() throws JAXBException, ParserConfigurationException {
-        JAXBContext context = JAXBContext.newInstance(getMarshalledClasses(), null);
+    public ODataAtomMarshaller() throws JAXBException,
+            ParserConfigurationException
+    {
+        JAXBContext context = JAXBContext.newInstance(getMarshalledClasses(),
+                null);
         marshaller = context.createMarshaller();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -68,9 +71,8 @@ public class ODataAtomMarshaller {
     }
 
     /**
-     * Convert the given content object into an ATOM entry
-     * (represented as a DOM document) suitable for sending
-     * up to the Media Services service.
+     * Convert the given content object into an ATOM entry (represented as a DOM
+     * document) suitable for sending up to the Media Services service.
      * 
      * @param content
      *            The content object to send
@@ -78,7 +80,8 @@ public class ODataAtomMarshaller {
      * @throws JAXBException
      *             if content is malformed/not marshallable
      */
-    public Document marshalEntry(Object content) throws JAXBException {
+    public Document marshalEntry(Object content) throws JAXBException
+    {
         JAXBElement<EntryType> entryElement = createEntry(content);
 
         Document doc = documentBuilder.newDocument();
@@ -91,8 +94,8 @@ public class ODataAtomMarshaller {
     }
 
     /**
-     * Convert the given content into an ATOM entry
-     * and write it to the given stream.
+     * Convert the given content into an ATOM entry and write it to the given
+     * stream.
      * 
      * @param content
      *            Content object to send
@@ -101,34 +104,44 @@ public class ODataAtomMarshaller {
      * @throws JAXBException
      *             if content is malformed/not marshallable
      */
-    public void marshalEntry(Object content, OutputStream stream) throws JAXBException {
+    public void marshalEntry(Object content, OutputStream stream)
+            throws JAXBException
+    {
         marshaller.marshal(createEntry(content), stream);
     }
 
-    public void marshalEntryType(EntryType entryType, OutputStream stream) throws JAXBException {
-        marshaller.marshal(
-                new JAXBElement<EntryType>(new QName(Constants.ATOM_NS, "entry"), EntryType.class, entryType), stream);
+    public void marshalEntryType(EntryType entryType, OutputStream stream)
+            throws JAXBException
+    {
+        marshaller.marshal(new JAXBElement<EntryType>(new QName(
+                Constants.ATOM_NS, "entry"), EntryType.class, entryType),
+                stream);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private JAXBElement<EntryType> createEntry(Object content) {
+    private JAXBElement<EntryType> createEntry(Object content)
+    {
         ContentType atomContent = new ContentType();
         EntryType atomEntry = new EntryType();
 
         atomContent.setType("application/xml");
         atomContent.getContent().add(
-                new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), content.getClass(), content));
+                new JAXBElement(new QName(Constants.ODATA_METADATA_NS,
+                        "properties"), content.getClass(), content));
 
         atomEntry.getEntryChildren().add(
-                new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
+                new JAXBElement(new QName(Constants.ATOM_NS, "content"),
+                        ContentType.class, atomContent));
 
-        JAXBElement<EntryType> entryElement = new JAXBElement<EntryType>(new QName(Constants.ATOM_NS, "entry"),
-                EntryType.class, atomEntry);
+        JAXBElement<EntryType> entryElement = new JAXBElement<EntryType>(
+                new QName(Constants.ATOM_NS, "entry"), EntryType.class,
+                atomEntry);
 
         return entryElement;
     }
 
-    private static Class<?>[] getMarshalledClasses() {
+    private static Class<?>[] getMarshalledClasses()
+    {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(AccessPolicyType.class);
         classes.add(AssetType.class);

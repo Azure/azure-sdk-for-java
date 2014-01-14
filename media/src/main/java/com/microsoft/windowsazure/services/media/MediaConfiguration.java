@@ -20,9 +20,11 @@ import com.microsoft.windowsazure.Configuration;
  * Provides functionality to create a media services configuration.
  * 
  */
-public class MediaConfiguration {
+public class MediaConfiguration
+{
 
-    private MediaConfiguration() {
+    private MediaConfiguration()
+    {
     }
 
     /**
@@ -55,11 +57,12 @@ public class MediaConfiguration {
     public static final String OAUTH_SCOPE = "media.oauth.scope";
 
     /**
-     * Creates a media service configuration using the specified media service base URI, OAUTH URI,
-     * client ID, and client secret.
+     * Creates a media service configuration using the specified media service
+     * base URI, OAUTH URI, client ID, and client secret.
      * 
      * @param mediaServiceUri
-     *            A <code>String</code> object that represents the media service URI.
+     *            A <code>String</code> object that represents the media service
+     *            URI.
      * 
      * @param oAuthUri
      *            A <code>String</code> object that represents the OAUTH URI.
@@ -68,58 +71,66 @@ public class MediaConfiguration {
      *            A <code>String</code> object that represents the client ID.
      * 
      * @param clientSecret
-     *            A <code>String</code> object that represents the client secret.
+     *            A <code>String</code> object that represents the client
+     *            secret.
      * 
      * @param scope
      *            A <code>String</code> object that represents the scope.
      * 
-     * @return
-     *         A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>MediaService</code> class.
+     * @return A <code>Configuration</code> object that can be used when
+     *         creating an instance of the <code>MediaService</code> class.
      * 
      */
-    public static Configuration configureWithOAuthAuthentication(String mediaServiceUri, String oAuthUri,
-            String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, Configuration.getInstance(), mediaServiceUri, oAuthUri, clientId,
-                clientSecret, scope);
+    public static Configuration configureWithOAuthAuthentication(
+            String mediaServiceUri, String oAuthUri, String clientId,
+            String clientSecret, String scope)
+    {
+        return configureWithOAuthAuthentication(null,
+                Configuration.getInstance(), mediaServiceUri, oAuthUri,
+                clientId, clientSecret, scope);
     }
 
     /**
-     * Creates a media service configuration using the specified configuration, media service base URI, OAuth URI,
-     * client ID, and client secret.
+     * Creates a media service configuration using the specified configuration,
+     * media service base URI, OAuth URI, client ID, and client secret.
      * 
      * @param configuration
      *            A previously instantiated <code>Configuration</code> object.
      * 
      * @param mediaServiceUri
-     *            A <code>String</code> object that represents the URI of media service.
+     *            A <code>String</code> object that represents the URI of media
+     *            service.
      * 
      * @param oAuthUri
-     *            A <code>String</code> object that represents the URI of OAuth service.
+     *            A <code>String</code> object that represents the URI of OAuth
+     *            service.
      * 
      * @param clientId
      *            A <code>String</code> object that represents the client ID.
      * 
      * @param clientSecret
-     *            A <code>String</code> object that represents the client secret.
+     *            A <code>String</code> object that represents the client
+     *            secret.
      * 
      * @param scope
      *            A <code>String</code> object that represents the scope.
      * 
-     * @return
-     *         A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>MediaService</code> class.
+     * @return A <code>Configuration</code> object that can be used when
+     *         creating an instance of the <code>MediaService</code> class.
      * 
      */
-    public static Configuration configureWithOAuthAuthentication(Configuration configuration, String mediaServiceUri,
-            String oAuthUri, String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, configuration, mediaServiceUri, oAuthUri, clientId, clientSecret,
-                scope);
+    public static Configuration configureWithOAuthAuthentication(
+            Configuration configuration, String mediaServiceUri,
+            String oAuthUri, String clientId, String clientSecret, String scope)
+    {
+        return configureWithOAuthAuthentication(null, configuration,
+                mediaServiceUri, oAuthUri, clientId, clientSecret, scope);
     }
 
     /**
-     * Creates a media service configuration using the specified profile, configuration, media service base URI,
-     * OAuth URI, client ID, and client secret.
+     * Creates a media service configuration using the specified profile,
+     * configuration, media service base URI, OAuth URI, client ID, and client
+     * secret.
      * 
      * @param profile
      *            A <code>String</code> object that represents the profile.
@@ -128,32 +139,38 @@ public class MediaConfiguration {
      *            A previously instantiated <code>Configuration</code> object.
      * 
      * @param mediaServiceUri
-     *            A <code>String</code> object that represents the URI of media service.
+     *            A <code>String</code> object that represents the URI of media
+     *            service.
      * 
      * @param oAuthUri
-     *            A <code>String</code> object that represents the URI of OAUTH service.
+     *            A <code>String</code> object that represents the URI of OAUTH
+     *            service.
      * 
      * @param clientId
      *            A <code>String</code> object that represents the client ID.
      * 
      * @param clientSecret
-     *            A <code>String</code> object that represents the client secret.
+     *            A <code>String</code> object that represents the client
+     *            secret.
      * 
      * @param scope
      *            A <code>String</code> object that represents the scope.
      * 
-     * @return
-     *         A <code>Configuration</code> object that can be used when creating an instance of the
-     *         <code>MediaService</code> class.
+     * @return A <code>Configuration</code> object that can be used when
+     *         creating an instance of the <code>MediaService</code> class.
      * 
      */
-    public static Configuration configureWithOAuthAuthentication(String profile, Configuration configuration,
-            String mediaServiceUri, String oAuthUri, String clientId, String clientSecret, String scope) {
+    public static Configuration configureWithOAuthAuthentication(
+            String profile, Configuration configuration,
+            String mediaServiceUri, String oAuthUri, String clientId,
+            String clientSecret, String scope)
+    {
 
-        if (profile == null) {
+        if (profile == null)
+        {
             profile = "";
-        }
-        else if (profile.length() != 0 && !profile.endsWith(".")) {
+        } else if (profile.length() != 0 && !profile.endsWith("."))
+        {
             profile = profile + ".";
         }
 

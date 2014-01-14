@@ -29,181 +29,255 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The Get Job History operation response.
-*/
-public class JobGetHistoryResponse extends OperationResponse implements Iterable<JobGetHistoryResponse.JobHistoryEntry>
+ * The Get Job History operation response.
+ */
+public class JobGetHistoryResponse extends OperationResponse implements
+        Iterable<JobGetHistoryResponse.JobHistoryEntry>
 {
     private ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory;
-    
+
     /**
-    * The job history entries.
-    */
-    public ArrayList<JobGetHistoryResponse.JobHistoryEntry> getJobHistory() { return this.jobHistory; }
-    
+     * The job history entries.
+     */
+    public ArrayList<JobGetHistoryResponse.JobHistoryEntry> getJobHistory()
+    {
+        return this.jobHistory;
+    }
+
     /**
-    * The job history entries.
-    */
-    public void setJobHistory(ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory) { this.jobHistory = jobHistory; }
-    
+     * The job history entries.
+     */
+    public void setJobHistory(
+            ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory)
+    {
+        this.jobHistory = jobHistory;
+    }
+
     /**
-    * Initializes a new instance of the JobGetHistoryResponse class.
-    *
-    */
+     * Initializes a new instance of the JobGetHistoryResponse class.
+     * 
+     */
     public JobGetHistoryResponse()
     {
         this.jobHistory = new ArrayList<JobGetHistoryResponse.JobHistoryEntry>();
     }
-    
+
     /**
-    * Gets the sequence of JobHistory.
-    *
-    */
+     * Gets the sequence of JobHistory.
+     * 
+     */
     public Iterator<JobGetHistoryResponse.JobHistoryEntry> iterator()
     {
         return this.getJobHistory().iterator();
     }
-    
+
     /**
-    * A job history entry.
-    */
+     * A job history entry.
+     */
     public static class JobHistoryEntry
     {
         private JobHistoryActionName actionName;
-        
+
         /**
-        * The action of this execution, MainAction or ErrorAction.
-        */
-        public JobHistoryActionName getActionName() { return this.actionName; }
-        
+         * The action of this execution, MainAction or ErrorAction.
+         */
+        public JobHistoryActionName getActionName()
+        {
+            return this.actionName;
+        }
+
         /**
-        * The action of this execution, MainAction or ErrorAction.
-        */
-        public void setActionName(JobHistoryActionName actionName) { this.actionName = actionName; }
-        
+         * The action of this execution, MainAction or ErrorAction.
+         */
+        public void setActionName(JobHistoryActionName actionName)
+        {
+            this.actionName = actionName;
+        }
+
         private Calendar endTime;
-        
+
         /**
-        * The time the execution attempt concluded.
-        */
-        public Calendar getEndTime() { return this.endTime; }
-        
+         * The time the execution attempt concluded.
+         */
+        public Calendar getEndTime()
+        {
+            return this.endTime;
+        }
+
         /**
-        * The time the execution attempt concluded.
-        */
-        public void setEndTime(Calendar endTime) { this.endTime = endTime; }
-        
+         * The time the execution attempt concluded.
+         */
+        public void setEndTime(Calendar endTime)
+        {
+            this.endTime = endTime;
+        }
+
         private String id;
-        
+
         /**
-        * The job id that this history entry is for.
-        */
-        public String getId() { return this.id; }
-        
+         * The job id that this history entry is for.
+         */
+        public String getId()
+        {
+            return this.id;
+        }
+
         /**
-        * The job id that this history entry is for.
-        */
-        public void setId(String id) { this.id = id; }
-        
+         * The job id that this history entry is for.
+         */
+        public void setId(String id)
+        {
+            this.id = id;
+        }
+
         private String message;
-        
+
         /**
-        * A description of the result of the execution attempt.
-        */
-        public String getMessage() { return this.message; }
-        
+         * A description of the result of the execution attempt.
+         */
+        public String getMessage()
+        {
+            return this.message;
+        }
+
         /**
-        * A description of the result of the execution attempt.
-        */
-        public void setMessage(String message) { this.message = message; }
-        
+         * A description of the result of the execution attempt.
+         */
+        public void setMessage(String message)
+        {
+            this.message = message;
+        }
+
         private int recordNumber;
-        
+
         /**
-        * The zero-based index of the history entry.
-        */
-        public int getRecordNumber() { return this.recordNumber; }
-        
+         * The zero-based index of the history entry.
+         */
+        public int getRecordNumber()
+        {
+            return this.recordNumber;
+        }
+
         /**
-        * The zero-based index of the history entry.
-        */
-        public void setRecordNumber(int recordNumber) { this.recordNumber = recordNumber; }
-        
+         * The zero-based index of the history entry.
+         */
+        public void setRecordNumber(int recordNumber)
+        {
+            this.recordNumber = recordNumber;
+        }
+
         private int repeatCount;
-        
+
         /**
-        * The occurrence count of this execution.
-        */
-        public int getRepeatCount() { return this.repeatCount; }
-        
+         * The occurrence count of this execution.
+         */
+        public int getRepeatCount()
+        {
+            return this.repeatCount;
+        }
+
         /**
-        * The occurrence count of this execution.
-        */
-        public void setRepeatCount(int repeatCount) { this.repeatCount = repeatCount; }
-        
+         * The occurrence count of this execution.
+         */
+        public void setRepeatCount(int repeatCount)
+        {
+            this.repeatCount = repeatCount;
+        }
+
         private int retryCount;
-        
+
         /**
-        * The retry count of this occurrence.
-        */
-        public int getRetryCount() { return this.retryCount; }
-        
+         * The retry count of this occurrence.
+         */
+        public int getRetryCount()
+        {
+            return this.retryCount;
+        }
+
         /**
-        * The retry count of this occurrence.
-        */
-        public void setRetryCount(int retryCount) { this.retryCount = retryCount; }
-        
+         * The retry count of this occurrence.
+         */
+        public void setRetryCount(int retryCount)
+        {
+            this.retryCount = retryCount;
+        }
+
         private Calendar startTime;
-        
+
         /**
-        * The time the execution attempt began.
-        */
-        public Calendar getStartTime() { return this.startTime; }
-        
+         * The time the execution attempt began.
+         */
+        public Calendar getStartTime()
+        {
+            return this.startTime;
+        }
+
         /**
-        * The time the execution attempt began.
-        */
-        public void setStartTime(Calendar startTime) { this.startTime = startTime; }
-        
+         * The time the execution attempt began.
+         */
+        public void setStartTime(Calendar startTime)
+        {
+            this.startTime = startTime;
+        }
+
         private JobState state;
-        
+
         /**
-        * The state of the job: enabled, disabled, faulted, or completed.
-        */
-        public JobState getState() { return this.state; }
-        
+         * The state of the job: enabled, disabled, faulted, or completed.
+         */
+        public JobState getState()
+        {
+            return this.state;
+        }
+
         /**
-        * The state of the job: enabled, disabled, faulted, or completed.
-        */
-        public void setState(JobState state) { this.state = state; }
-        
+         * The state of the job: enabled, disabled, faulted, or completed.
+         */
+        public void setState(JobState state)
+        {
+            this.state = state;
+        }
+
         private JobHistoryStatus status;
-        
+
         /**
-        * The status of this execution attempt, completed or failed.
-        */
-        public JobHistoryStatus getStatus() { return this.status; }
-        
+         * The status of this execution attempt, completed or failed.
+         */
+        public JobHistoryStatus getStatus()
+        {
+            return this.status;
+        }
+
         /**
-        * The status of this execution attempt, completed or failed.
-        */
-        public void setStatus(JobHistoryStatus status) { this.status = status; }
-        
+         * The status of this execution attempt, completed or failed.
+         */
+        public void setStatus(JobHistoryStatus status)
+        {
+            this.status = status;
+        }
+
         private Calendar timestamp;
-        
+
         /**
-        * The time the execution attempt began.
-        */
-        public Calendar getTimestamp() { return this.timestamp; }
-        
+         * The time the execution attempt began.
+         */
+        public Calendar getTimestamp()
+        {
+            return this.timestamp;
+        }
+
         /**
-        * The time the execution attempt began.
-        */
-        public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
-        
+         * The time the execution attempt began.
+         */
+        public void setTimestamp(Calendar timestamp)
+        {
+            this.timestamp = timestamp;
+        }
+
         /**
-        * Initializes a new instance of the JobHistoryEntry class.
-        *
-        */
+         * Initializes a new instance of the JobHistoryEntry class.
+         * 
+         */
         public JobHistoryEntry()
         {
         }

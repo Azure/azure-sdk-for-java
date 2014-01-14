@@ -22,16 +22,18 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 
-public class NotificationEndPointInfoTest {
+public class NotificationEndPointInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
-        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
-                new NotificationEndPointType().setId(expectedId));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
+                null, new NotificationEndPointType().setId(expectedId));
 
-        // Act 
+        // Act
         String actualId = notificationEndPointInfo.getId();
 
         // Assert
@@ -40,11 +42,12 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "notificationEndPointName";
-        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
-                new NotificationEndPointType().setName(expectedName));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
+                null, new NotificationEndPointType().setName(expectedName));
 
         // Act
         String actualName = notificationEndPointInfo.getName();
@@ -54,14 +57,16 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() throws Exception {
+    public void testGetSetCreated() throws Exception
+    {
         // Arrange
         Date expectedCreated = new Date();
 
-        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
+                null,
                 new NotificationEndPointType().setCreated(expectedCreated));
 
-        // Act 
+        // Act
         Date actualCreated = notificationEndPointInfo.getCreated();
 
         // Assert
@@ -70,28 +75,36 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetEndPointType() throws Exception {
+    public void testGetSetEndPointType() throws Exception
+    {
         // Arrange
         EndPointType expectedEndPointType = EndPointType.AzureQueue;
-        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
-                new NotificationEndPointType().setEndPointType(expectedEndPointType.getCode()));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
+                null,
+                new NotificationEndPointType()
+                        .setEndPointType(expectedEndPointType.getCode()));
 
         // Act
-        EndPointType actualEndPointType = notificationEndPointInfo.getEndPointType();
+        EndPointType actualEndPointType = notificationEndPointInfo
+                .getEndPointType();
 
         // Assert
         assertEquals(expectedEndPointType, actualEndPointType);
     }
 
     @Test
-    public void testGetSetEndPointAddress() {
+    public void testGetSetEndPointAddress()
+    {
         // Arrange
         String expectedEndPointAddress = "testGetSetEndPointAddress";
-        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(null,
-                new NotificationEndPointType().setEndPointAddress(expectedEndPointAddress));
+        NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
+                null,
+                new NotificationEndPointType()
+                        .setEndPointAddress(expectedEndPointAddress));
 
         // Act
-        String actualEndPointAddress = notificationEndPointInfo.getEndPointAddress();
+        String actualEndPointAddress = notificationEndPointInfo
+                .getEndPointAddress();
 
         // Assert
         assertEquals(expectedEndPointAddress, actualEndPointAddress);

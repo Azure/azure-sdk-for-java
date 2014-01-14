@@ -39,77 +39,98 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
  * Testing uploading in various permutations.
  * 
  */
-public class UploadingIntegrationTest extends IntegrationTestBase {
+public class UploadingIntegrationTest extends IntegrationTestBase
+{
     private static WritableBlobContainerContract blobWriter;
-    private static byte[] firstPrimes = new byte[] { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+    private static byte[] firstPrimes = new byte[] { 2, 3, 5, 7, 11, 13, 17,
+            19, 23, 29 };
 
     @BeforeClass
-    public static void setup() throws Exception {
+    public static void setup() throws Exception
+    {
         IntegrationTestBase.setup();
 
-        AssetInfo asset = service.create(Asset.create().setName(testAssetPrefix + "uploadBlockBlobAsset"));
+        AssetInfo asset = service.create(Asset.create().setName(
+                testAssetPrefix + "uploadBlockBlobAsset"));
 
-        AccessPolicyInfo policy = service.create(AccessPolicy.create(testPolicyPrefix + "uploadWritePolicy", 10,
+        AccessPolicyInfo policy = service.create(AccessPolicy.create(
+                testPolicyPrefix + "uploadWritePolicy", 10,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
 
         LocatorInfo locator = createLocator(policy, asset, 5);
 
         blobWriter = service.createBlobWriter(locator);
 
-        ExponentialRetryPolicy retryPolicy = new ExponentialRetryPolicy(5000, 5, new int[] { 400, 404 });
+        ExponentialRetryPolicy retryPolicy = new ExponentialRetryPolicy(5000,
+                5, new int[] { 400, 404 });
         blobWriter = blobWriter.withFilter(new RetryPolicyFilter(retryPolicy));
     }
 
     @Test
-    public void canUploadBlockBlob() throws Exception {
+    public void canUploadBlockBlob() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlockBlob("uploadBlockBlobTest", blobContent);
     }
 
     @Test
-    public void canUploadBlockBlobWithOptions() throws Exception {
+    public void canUploadBlockBlobWithOptions() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
-        CreateBlobOptions options = new CreateBlobOptions().addMetadata("testMetadataKey", "testMetadataValue");
-        blobWriter.createBlockBlob("canUploadBlockBlobWithOptions", blobContent, options);
+        CreateBlobOptions options = new CreateBlobOptions().addMetadata(
+                "testMetadataKey", "testMetadataValue");
+        blobWriter.createBlockBlob("canUploadBlockBlobWithOptions",
+                blobContent, options);
     }
 
     @Test
-    public void canCreateBlobBlock() throws Exception {
+    public void canCreateBlobBlock() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlobBlock("canCreateBlobBlock", "123", blobContent);
     }
 
     @Test
-    public void canCreateBlobBlockWithOptions() throws Exception {
+    public void canCreateBlobBlockWithOptions() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
-        CreateBlobBlockOptions options = new CreateBlobBlockOptions().setTimeout(100);
-        blobWriter.createBlobBlock("canCreateBlobBlockWithOptions", "123", blobContent, options);
+        CreateBlobBlockOptions options = new CreateBlobBlockOptions()
+                .setTimeout(100);
+        blobWriter.createBlobBlock("canCreateBlobBlockWithOptions", "123",
+                blobContent, options);
     }
 
     @Test
-    public void canCommitBlobBlocks() throws Exception {
+    public void canCommitBlobBlocks() throws Exception
+    {
         BlockList blockList = new BlockList();
         blobWriter.commitBlobBlocks("canCommitBlobBlocks", blockList);
     }
 
     @Test
-    public void canCommitBlobBlocksWithOptions() throws Exception {
+    public void canCommitBlobBlocksWithOptions() throws Exception
+    {
         BlockList blockList = new BlockList();
         CommitBlobBlocksOptions options = new CommitBlobBlocksOptions()
                 .setBlobContentType("text/html;charset=ISO-8859-1");
-        blobWriter.commitBlobBlocks("canCommitBlobBlocksWithOptions", blockList, options);
+        blobWriter.commitBlobBlocks("canCommitBlobBlocksWithOptions",
+                blockList, options);
     }
 
     @Test
-    public void canUploadBlockBlobWithExplicitRetry() throws Exception {
+    public void canUploadBlockBlobWithExplicitRetry() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
-        blobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry1", blobContent);
+        blobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry1",
+                blobContent);
 
-        ExponentialRetryPolicy forceRetryPolicy = new ExponentialRetryPolicy(1, 1, new int[] { 201 });
-        WritableBlobContainerContract forceRetryBlobWriter = blobWriter.withFilter(new RetryPolicyFilter(
-                forceRetryPolicy));
+        ExponentialRetryPolicy forceRetryPolicy = new ExponentialRetryPolicy(1,
+                1, new int[] { 201 });
+        WritableBlobContainerContract forceRetryBlobWriter = blobWriter
+                .withFilter(new RetryPolicyFilter(forceRetryPolicy));
 
         blobContent.reset();
-        forceRetryBlobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry2", blobContent);
+        forceRetryBlobWriter.createBlockBlob(
+                "canUploadBlockBlobWithExplicitRetry2", blobContent);
     }
 }

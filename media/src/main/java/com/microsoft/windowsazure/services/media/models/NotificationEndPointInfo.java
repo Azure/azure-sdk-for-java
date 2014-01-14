@@ -25,7 +25,9 @@ import com.microsoft.windowsazure.services.media.implementation.content.Notifica
  * Type containing data about notification end points.
  * 
  */
-public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointType> {
+public class NotificationEndPointInfo extends
+        ODataEntity<NotificationEndPointType>
+{
 
     /**
      * Creates a new {@link NotificationEndPointInfo} wrapping the given ATOM
@@ -36,7 +38,9 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * @param content
      *            Content with the AccessPolicy data
      */
-    public NotificationEndPointInfo(EntryType entry, NotificationEndPointType content) {
+    public NotificationEndPointInfo(EntryType entry,
+            NotificationEndPointType content)
+    {
         super(entry, content);
     }
 
@@ -45,7 +49,8 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * 
      * @return the id.
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -54,7 +59,8 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * 
      * @return the name.
      */
-    public String getName() {
+    public String getName()
+    {
         return getContent().getName();
     }
 
@@ -63,7 +69,8 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * 
      * @return the date.
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return getContent().getCreated();
     }
 
@@ -72,7 +79,8 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * 
      * @return the end point type.
      */
-    public EndPointType getEndPointType() {
+    public EndPointType getEndPointType()
+    {
         return EndPointType.fromCode(getContent().getEndPointType());
     }
 
@@ -81,7 +89,8 @@ public class NotificationEndPointInfo extends ODataEntity<NotificationEndPointTy
      * 
      * @return the end point address
      */
-    public String getEndPointAddress() {
+    public String getEndPointAddress()
+    {
         return getContent().getEndPointAddress();
     }
 

@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlElement;
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AssetFileType implements MediaServiceDTO {
+public class AssetFileType implements MediaServiceDTO
+{
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
@@ -74,7 +75,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -82,7 +84,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param id
      *            the id to set
      */
-    public AssetFileType setId(String id) {
+    public AssetFileType setId(String id)
+    {
         this.id = id;
         return this;
     }
@@ -90,7 +93,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -98,7 +102,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param name
      *            the name to set
      */
-    public AssetFileType setName(String name) {
+    public AssetFileType setName(String name)
+    {
         this.name = name;
         return this;
     }
@@ -106,7 +111,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the contentFileSize
      */
-    public Long getContentFileSize() {
+    public Long getContentFileSize()
+    {
         return contentFileSize;
     }
 
@@ -114,7 +120,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param contentFileSize
      *            the contentFileSize to set
      */
-    public AssetFileType setContentFileSize(Long contentFileSize) {
+    public AssetFileType setContentFileSize(Long contentFileSize)
+    {
         this.contentFileSize = contentFileSize;
         return this;
     }
@@ -122,7 +129,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the parentAssetId
      */
-    public String getParentAssetId() {
+    public String getParentAssetId()
+    {
         return parentAssetId;
     }
 
@@ -130,7 +138,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param parentAssetId
      *            the parentAssetId to set
      */
-    public AssetFileType setParentAssetId(String parentAssetId) {
+    public AssetFileType setParentAssetId(String parentAssetId)
+    {
         this.parentAssetId = parentAssetId;
         return this;
     }
@@ -138,7 +147,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the encryptionVersion
      */
-    public String getEncryptionVersion() {
+    public String getEncryptionVersion()
+    {
         return encryptionVersion;
     }
 
@@ -146,7 +156,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param encryptionVersion
      *            the encryptionVersion to set
      */
-    public AssetFileType setEncryptionVersion(String encryptionVersion) {
+    public AssetFileType setEncryptionVersion(String encryptionVersion)
+    {
         this.encryptionVersion = encryptionVersion;
         return this;
     }
@@ -154,7 +165,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the encryptionScheme
      */
-    public String getEncryptionScheme() {
+    public String getEncryptionScheme()
+    {
         return encryptionScheme;
     }
 
@@ -162,7 +174,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param encryptionScheme
      *            the encryptionScheme to set
      */
-    public AssetFileType setEncryptionScheme(String encryptionScheme) {
+    public AssetFileType setEncryptionScheme(String encryptionScheme)
+    {
         this.encryptionScheme = encryptionScheme;
         return this;
     }
@@ -170,7 +183,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the isEncrypted
      */
-    public Boolean getIsEncrypted() {
+    public Boolean getIsEncrypted()
+    {
         return isEncrypted;
     }
 
@@ -178,7 +192,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param isEncrypted
      *            the isEncrypted to set
      */
-    public AssetFileType setIsEncrypted(Boolean isEncrypted) {
+    public AssetFileType setIsEncrypted(Boolean isEncrypted)
+    {
         this.isEncrypted = isEncrypted;
         return this;
     }
@@ -186,7 +201,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the encryptionKeyId
      */
-    public String getEncryptionKeyId() {
+    public String getEncryptionKeyId()
+    {
         return encryptionKeyId;
     }
 
@@ -194,7 +210,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param encryptionKeyId
      *            the encryptionKeyId to set
      */
-    public AssetFileType setEncryptionKeyId(String encryptionKeyId) {
+    public AssetFileType setEncryptionKeyId(String encryptionKeyId)
+    {
         this.encryptionKeyId = encryptionKeyId;
         return this;
     }
@@ -202,7 +219,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the initializationVector
      */
-    public String getInitializationVector() {
+    public String getInitializationVector()
+    {
         return initializationVector;
     }
 
@@ -210,7 +228,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param initializationVector
      *            the initializationVector to set
      */
-    public AssetFileType setInitializationVector(String initializationVector) {
+    public AssetFileType setInitializationVector(String initializationVector)
+    {
         this.initializationVector = initializationVector;
         return this;
     }
@@ -218,7 +237,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the isPrimary
      */
-    public Boolean getIsPrimary() {
+    public Boolean getIsPrimary()
+    {
         return isPrimary;
     }
 
@@ -226,7 +246,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param isPrimary
      *            the isPrimary to set
      */
-    public AssetFileType setIsPrimary(Boolean isPrimary) {
+    public AssetFileType setIsPrimary(Boolean isPrimary)
+    {
         this.isPrimary = isPrimary;
         return this;
     }
@@ -234,7 +255,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the lastModified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
@@ -242,7 +264,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param lastModified
      *            the lastModified to set
      */
-    public AssetFileType setLastModified(Date lastModified) {
+    public AssetFileType setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
         return this;
     }
@@ -250,7 +273,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return created;
     }
 
@@ -258,7 +282,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param created
      *            the created to set
      */
-    public AssetFileType setCreated(Date created) {
+    public AssetFileType setCreated(Date created)
+    {
         this.created = created;
         return this;
     }
@@ -266,7 +291,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the mimeType
      */
-    public String getMimeType() {
+    public String getMimeType()
+    {
         return mimeType;
     }
 
@@ -274,7 +300,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param mimeType
      *            the mimeType to set
      */
-    public AssetFileType setMimeType(String mimeType) {
+    public AssetFileType setMimeType(String mimeType)
+    {
         this.mimeType = mimeType;
         return this;
     }
@@ -282,7 +309,8 @@ public class AssetFileType implements MediaServiceDTO {
     /**
      * @return the contentChecksum
      */
-    public String getContentChecksum() {
+    public String getContentChecksum()
+    {
         return contentChecksum;
     }
 
@@ -290,7 +318,8 @@ public class AssetFileType implements MediaServiceDTO {
      * @param contentChecksum
      *            the contentChecksum to set
      */
-    public AssetFileType setContentChecksum(String contentChecksum) {
+    public AssetFileType setContentChecksum(String contentChecksum)
+    {
         this.contentChecksum = contentChecksum;
         return this;
     }

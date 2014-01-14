@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.services.media.models;
 /**
  * The Class JobNotificationSubscription.
  */
-public class JobNotificationSubscription {
+public class JobNotificationSubscription
+{
 
     /** The notification end point id. */
     private final String notificationEndPointId;
@@ -34,7 +35,9 @@ public class JobNotificationSubscription {
      * @param targetJobState
      *            the target job state
      */
-    public JobNotificationSubscription(String notificationEndPointId, TargetJobState targetJobState) {
+    public JobNotificationSubscription(String notificationEndPointId,
+            TargetJobState targetJobState)
+    {
         this.notificationEndPointId = notificationEndPointId;
         this.targetJobState = targetJobState;
     }
@@ -44,7 +47,8 @@ public class JobNotificationSubscription {
      * 
      * @return the code
      */
-    public String getNotificationEndPointId() {
+    public String getNotificationEndPointId()
+    {
         return this.notificationEndPointId;
     }
 
@@ -53,7 +57,8 @@ public class JobNotificationSubscription {
      * 
      * @return the message
      */
-    public TargetJobState getTargetJobState() {
+    public TargetJobState getTargetJobState()
+    {
         return this.targetJobState;
     }
 }

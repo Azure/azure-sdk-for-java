@@ -21,7 +21,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * The lease duration of a resource.
  */
-public enum LeaseDuration {
+public enum LeaseDuration
+{
     /**
      * The lease duration is not specified.
      */
@@ -43,19 +44,22 @@ public enum LeaseDuration {
      * @param typeString
      *            The string to parse.
      * 
-     * @return A <code>LeaseStatus</code> value that represents the lease status.
+     * @return A <code>LeaseStatus</code> value that represents the lease
+     *         status.
      */
-    public static LeaseDuration parse(final String typeString) {
-        if (Utility.isNullOrEmpty(typeString)) {
+    public static LeaseDuration parse(final String typeString)
+    {
+        if (Utility.isNullOrEmpty(typeString))
+        {
             return UNSPECIFIED;
-        }
-        else if ("fixed".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("fixed".equals(typeString.toLowerCase(Locale.US)))
+        {
             return FIXED;
-        }
-        else if ("infinite".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("infinite".equals(typeString.toLowerCase(Locale.US)))
+        {
             return INFINITE;
-        }
-        else {
+        } else
+        {
             return UNSPECIFIED;
         }
     }

@@ -23,38 +23,49 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class WrapFilter extends ClientFilter {
+public class WrapFilter extends ClientFilter
+{
     private final WrapTokenManager tokenManager;
 
-    public WrapFilter(WrapTokenManager tokenManager) {
+    public WrapFilter(WrapTokenManager tokenManager)
+    {
         this.tokenManager = tokenManager;
     }
 
     @Override
-    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr)
+            throws ClientHandlerException
+    {
         String accessToken = getWrapToken(cr.getURI());
         cr.getHeaders().add("Authorization", accessToken);
 
-        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst("ServiceBusSupplementaryAuthorization");
-        if ((secondaryAuthorizationUri != null) && (!secondaryAuthorizationUri.isEmpty())) {
-            String secondaryAccessToken = getWrapToken(URI.create(secondaryAuthorizationUri));
+        String secondaryAuthorizationUri = (String) cr.getHeaders().getFirst(
+                "ServiceBusSupplementaryAuthorization");
+        if ((secondaryAuthorizationUri != null)
+                && (!secondaryAuthorizationUri.isEmpty()))
+        {
+            String secondaryAccessToken = getWrapToken(URI
+                    .create(secondaryAuthorizationUri));
             cr.getHeaders().remove("ServiceBusSupplementaryAuthorization");
-            cr.getHeaders().add("ServiceBusSupplementaryAuthorization", secondaryAccessToken);
+            cr.getHeaders().add("ServiceBusSupplementaryAuthorization",
+                    secondaryAccessToken);
         }
 
         return this.getNext().handle(cr);
     }
 
-    private String getWrapToken(URI uri) {
+    private String getWrapToken(URI uri)
+    {
         String result;
-        try {
+        try
+        {
             result = tokenManager.getAccessToken(uri);
-        }
-        catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
         }

@@ -17,10 +17,11 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Specifies the mode when a message is received.
  */
-public enum ReceiveMode {
+public enum ReceiveMode
+{
     /**
-     * The message is retrieved and locked for processing, until either the receiver deletes the message, unlocks it, or
-     * the lock duration expires.
+     * The message is retrieved and locked for processing, until either the
+     * receiver deletes the message, unlocks it, or the lock duration expires.
      */
     PEEK_LOCK,
     /**

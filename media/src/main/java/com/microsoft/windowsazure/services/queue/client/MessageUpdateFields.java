@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.services.queue.client;
 /**
  * Flags for the values to set when updating messages.
  */
-public enum MessageUpdateFields {
+public enum MessageUpdateFields
+{
     /**
      * Set to update the message visibility timeout.
      */
@@ -40,7 +41,8 @@ public enum MessageUpdateFields {
      * @param val
      *            The value being assigned.
      */
-    MessageUpdateFields(final int val) {
+    MessageUpdateFields(final int val)
+    {
         this.value = val;
     }
 }

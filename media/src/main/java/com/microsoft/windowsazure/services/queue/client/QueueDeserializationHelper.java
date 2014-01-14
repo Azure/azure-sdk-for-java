@@ -35,7 +35,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Des
  * RESERVED FOR INTERNAL USE. Class to provide object deserialization for
  * queues.
  */
-final class QueueDeserializationHelper {
+final class QueueDeserializationHelper
+{
     /**
      * Populates the message from an XMLStreamReader.
      * 
@@ -55,54 +56,76 @@ final class QueueDeserializationHelper {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    protected static CloudQueueMessage readMessage(final XMLStreamReader xmlr, final boolean shouldEncodeMessage)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    protected static CloudQueueMessage readMessage(final XMLStreamReader xmlr,
+            final boolean shouldEncodeMessage) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, QueueConstants.QUEUE_MESSAGE_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                QueueConstants.QUEUE_MESSAGE_ELEMENT);
 
         final CloudQueueMessage message = new CloudQueueMessage();
-        message.messageType = shouldEncodeMessage ? QueueMessageType.BASE_64_ENCODED : QueueMessageType.RAW_STRING;
+        message.messageType = shouldEncodeMessage ? QueueMessageType.BASE_64_ENCODED
+                : QueueMessageType.RAW_STRING;
 
         int eventType = xmlr.getEventType();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(QueueConstants.MESSAGE_ID_ELEMENT)) {
-                    message.id = Utility.readElementFromXMLReader(xmlr, QueueConstants.MESSAGE_ID_ELEMENT);
-                }
-                else if (name.equals(QueueConstants.INSERTION_TIME_ELEMENT)) {
-                    message.insertionTime = Utility.parseRFC1123DateFromStringInGMT(Utility.readElementFromXMLReader(
-                            xmlr, QueueConstants.INSERTION_TIME_ELEMENT));
-                }
-                else if (name.equals(QueueConstants.EXPIRATION_TIME_ELEMENT)) {
-                    message.expirationTime = Utility.parseRFC1123DateFromStringInGMT(Utility.readElementFromXMLReader(
-                            xmlr, QueueConstants.EXPIRATION_TIME_ELEMENT));
-                }
-                else if (name.equals(QueueConstants.POP_RECEIPT_ELEMENT)) {
-                    message.popReceipt = Utility.readElementFromXMLReader(xmlr, QueueConstants.POP_RECEIPT_ELEMENT);
-                }
-                else if (name.equals(QueueConstants.TIME_NEXT_VISIBLE_ELEMENT)) {
-                    message.nextVisibleTime = Utility.parseRFC1123DateFromStringInGMT(Utility.readElementFromXMLReader(
-                            xmlr, QueueConstants.TIME_NEXT_VISIBLE_ELEMENT));
-                }
-                else if (name.equals(QueueConstants.DEQUEUE_COUNT_ELEMENT)) {
-                    message.dequeueCount = Integer.parseInt(Utility.readElementFromXMLReader(xmlr,
-                            QueueConstants.DEQUEUE_COUNT_ELEMENT));
-                }
-                else if (name.equals(QueueConstants.MESSAGE_TEXT_ELEMENT)) {
-                    message.messageContent = Utility
-                            .readElementFromXMLReader(xmlr, QueueConstants.MESSAGE_TEXT_ELEMENT);
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(QueueConstants.MESSAGE_ID_ELEMENT))
+                {
+                    message.id = Utility.readElementFromXMLReader(xmlr,
+                            QueueConstants.MESSAGE_ID_ELEMENT);
+                } else if (name.equals(QueueConstants.INSERTION_TIME_ELEMENT))
+                {
+                    message.insertionTime = Utility
+                            .parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            QueueConstants.INSERTION_TIME_ELEMENT));
+                } else if (name.equals(QueueConstants.EXPIRATION_TIME_ELEMENT))
+                {
+                    message.expirationTime = Utility
+                            .parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            QueueConstants.EXPIRATION_TIME_ELEMENT));
+                } else if (name.equals(QueueConstants.POP_RECEIPT_ELEMENT))
+                {
+                    message.popReceipt = Utility.readElementFromXMLReader(xmlr,
+                            QueueConstants.POP_RECEIPT_ELEMENT);
+                } else if (name
+                        .equals(QueueConstants.TIME_NEXT_VISIBLE_ELEMENT))
+                {
+                    message.nextVisibleTime = Utility
+                            .parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            QueueConstants.TIME_NEXT_VISIBLE_ELEMENT));
+                } else if (name.equals(QueueConstants.DEQUEUE_COUNT_ELEMENT))
+                {
+                    message.dequeueCount = Integer.parseInt(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    QueueConstants.DEQUEUE_COUNT_ELEMENT));
+                } else if (name.equals(QueueConstants.MESSAGE_TEXT_ELEMENT))
+                {
+                    message.messageContent = Utility.readElementFromXMLReader(
+                            xmlr, QueueConstants.MESSAGE_TEXT_ELEMENT);
                 }
 
-            }
-            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(QueueConstants.QUEUE_MESSAGE_ELEMENT)) {
+            } else if (eventType == XMLStreamConstants.END_ELEMENT
+                    && name.equals(QueueConstants.QUEUE_MESSAGE_ELEMENT))
+            {
                 break;
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, QueueConstants.QUEUE_MESSAGE_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                QueueConstants.QUEUE_MESSAGE_ELEMENT);
         return message;
     }
 
@@ -127,27 +150,37 @@ final class QueueDeserializationHelper {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static ArrayList<CloudQueueMessage> readMessages(final InputStream stream, final boolean shouldEncodeMessage)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(stream);
+    public static ArrayList<CloudQueueMessage> readMessages(
+            final InputStream stream, final boolean shouldEncodeMessage)
+            throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException
+    {
+        final XMLStreamReader xmlr = Utility
+                .createXMLStreamReaderFromStream(stream);
 
         // Start document
         int eventType = xmlr.getEventType();
         xmlr.require(XMLStreamConstants.START_DOCUMENT, null, null);
 
         eventType = xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, QueueConstants.QUEUE_MESSAGES_LIST_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                QueueConstants.QUEUE_MESSAGES_LIST_ELEMENT);
 
         final ArrayList<CloudQueueMessage> messages = new ArrayList<CloudQueueMessage>();
 
         eventType = xmlr.next();
-        while (eventType == XMLStreamConstants.START_ELEMENT && xmlr.hasName()
-                && QueueConstants.QUEUE_MESSAGE_ELEMENT.equals(xmlr.getName().toString())) {
-            messages.add(QueueDeserializationHelper.readMessage(xmlr, shouldEncodeMessage));
+        while (eventType == XMLStreamConstants.START_ELEMENT
+                && xmlr.hasName()
+                && QueueConstants.QUEUE_MESSAGE_ELEMENT.equals(xmlr.getName()
+                        .toString()))
+        {
+            messages.add(QueueDeserializationHelper.readMessage(xmlr,
+                    shouldEncodeMessage));
             eventType = xmlr.next();
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, QueueConstants.QUEUE_MESSAGES_LIST_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                QueueConstants.QUEUE_MESSAGES_LIST_ELEMENT);
         return messages;
     }
 
@@ -172,10 +205,13 @@ final class QueueDeserializationHelper {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    protected static CloudQueue readQueue(final XMLStreamReader xmlr, final CloudQueueClient serviceClient)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    protected static CloudQueue readQueue(final XMLStreamReader xmlr,
+            final CloudQueueClient serviceClient) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, QueueConstants.QUEUE_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                QueueConstants.QUEUE_ELEMENT);
 
         String queueName = null;
         URI queueUri = null;
@@ -183,23 +219,31 @@ final class QueueDeserializationHelper {
 
         int eventType = xmlr.getEventType();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(Constants.URL_ELEMENT)) {
-                    queueUri = new URI(Utility.readElementFromXMLReader(xmlr, Constants.URL_ELEMENT));
-                }
-                else if (name.equals(Constants.NAME_ELEMENT)) {
-                    queueName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
-                }
-                else if (name.equals(Constants.METADATA_ELEMENT)) {
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(Constants.URL_ELEMENT))
+                {
+                    queueUri = new URI(Utility.readElementFromXMLReader(xmlr,
+                            Constants.URL_ELEMENT));
+                } else if (name.equals(Constants.NAME_ELEMENT))
+                {
+                    queueName = Utility.readElementFromXMLReader(xmlr,
+                            Constants.NAME_ELEMENT);
+                } else if (name.equals(Constants.METADATA_ELEMENT))
+                {
                     // parse metadata
-                    queueMetadata = DeserializationHelper.parseMetadateFromXML(xmlr);
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
+                    queueMetadata = DeserializationHelper
+                            .parseMetadateFromXML(xmlr);
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            Constants.METADATA_ELEMENT);
                 }
-            }
-            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(QueueConstants.QUEUE_ELEMENT)) {
+            } else if (eventType == XMLStreamConstants.END_ELEMENT
+                    && name.equals(QueueConstants.QUEUE_ELEMENT))
+            {
                 break;
             }
         }
@@ -208,7 +252,8 @@ final class QueueDeserializationHelper {
         queue.setMetadata(queueMetadata);
         queue.setName(queueName);
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, QueueConstants.QUEUE_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                QueueConstants.QUEUE_ELEMENT);
         return queue;
     }
 
@@ -233,28 +278,36 @@ final class QueueDeserializationHelper {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static ArrayList<CloudQueue> readQueues(final XMLStreamReader xmlr, final CloudQueueClient serviceClient)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    public static ArrayList<CloudQueue> readQueues(final XMLStreamReader xmlr,
+            final CloudQueueClient serviceClient) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
         int eventType = xmlr.getEventType();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, QueueConstants.QUEUES_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                QueueConstants.QUEUES_ELEMENT);
 
         final ArrayList<CloudQueue> queues = new ArrayList<CloudQueue>();
 
         eventType = xmlr.next();
-        while (eventType == XMLStreamConstants.START_ELEMENT && xmlr.hasName()
-                && QueueConstants.QUEUE_ELEMENT.equals(xmlr.getName().toString())) {
+        while (eventType == XMLStreamConstants.START_ELEMENT
+                && xmlr.hasName()
+                && QueueConstants.QUEUE_ELEMENT.equals(xmlr.getName()
+                        .toString()))
+        {
             queues.add(readQueue(xmlr, serviceClient));
             eventType = xmlr.next();
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, QueueConstants.QUEUES_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                QueueConstants.QUEUES_ELEMENT);
         return queues;
     }
 
     /**
      * Private Default Ctor.
      */
-    private QueueDeserializationHelper() {
+    private QueueDeserializationHelper()
+    {
         // No op
     }
 

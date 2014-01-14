@@ -42,26 +42,32 @@ import com.microsoft.windowsazure.services.media.models.TaskOption;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 import com.sun.jersey.core.util.Base64;
 
-public class TaskIntegrationTest extends IntegrationTestBase {
+public class TaskIntegrationTest extends IntegrationTestBase
+{
     private static AssetInfo assetInfo;
     private Creator jobCreator;
 
     private static final String commonConfiguration = "H.264 256k DSL CBR";
 
     @BeforeClass
-    public static void setup() throws Exception {
+    public static void setup() throws Exception
+    {
         IntegrationTestBase.setup();
         assetInfo = setupAssetWithFile();
     }
 
     @Before
-    public void instanceSetup() {
-        this.jobCreator = Job.create().setName(testJobPrefix + UUID.randomUUID().toString()).setPriority(3)
-                .addInputMediaAsset(assetInfo.getId());
+    public void instanceSetup()
+    {
+        this.jobCreator = Job.create()
+                .setName(testJobPrefix + UUID.randomUUID().toString())
+                .setPriority(3).addInputMediaAsset(assetInfo.getId());
     }
 
     @Test
-    public void createTaskSuccess() throws ServiceException, UnsupportedEncodingException {
+    public void createTaskSuccess() throws ServiceException,
+            UnsupportedEncodingException
+    {
         // Arrange
 
         // Required
@@ -69,7 +75,8 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         String taskBody = constructTaskBody(0);
 
         // Optional parameters
-        String configuration = new String(Base64.encode(commonConfiguration), "UTF8");
+        String configuration = new String(Base64.encode(commonConfiguration),
+                "UTF8");
         String name = "My encoding Task " + UUID.randomUUID().toString();
         int jobPriority = 3;
         TaskOption options = TaskOption.ProtectedConfiguration;
@@ -78,11 +85,16 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         String encryptionScheme = "ConfigurationEncryption";
         String encryptionVersion = "1.0";
         // Use a trivial vector, 16 bytes of zeros, base-64 encoded.
-        String initializationVector = new String(Base64.encode(new byte[16]), "UTF8");
+        String initializationVector = new String(Base64.encode(new byte[16]),
+                "UTF8");
 
-        CreateBatchOperation taskCreator = Task.create(mediaProcessorId, taskBody).setConfiguration(configuration)
-                .setName(name).setPriority(jobPriority).setOptions(options).setEncryptionKeyId(encryptionKeyId)
-                .setEncryptionScheme(encryptionScheme).setEncryptionVersion(encryptionVersion)
+        CreateBatchOperation taskCreator = Task
+                .create(mediaProcessorId, taskBody)
+                .setConfiguration(configuration).setName(name)
+                .setPriority(jobPriority).setOptions(options)
+                .setEncryptionKeyId(encryptionKeyId)
+                .setEncryptionScheme(encryptionScheme)
+                .setEncryptionVersion(encryptionVersion)
                 .setInitializationVector(initializationVector);
         jobCreator.addTaskCreator(taskCreator);
 
@@ -92,18 +104,21 @@ public class TaskIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals("taskInfos count", 1, taskInfos.size());
-        verifyTaskPropertiesJustStarted("taskInfo", mediaProcessorId, options, taskBody, configuration, name,
-                jobPriority, encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector,
+        verifyTaskPropertiesJustStarted("taskInfo", mediaProcessorId, options,
+                taskBody, configuration, name, jobPriority, encryptionKeyId,
+                encryptionScheme, encryptionVersion, initializationVector,
                 taskInfos.get(0));
     }
 
     @Test
-    public void createTwoTasksSuccess() throws ServiceException {
+    public void createTwoTasksSuccess() throws ServiceException
+    {
         // Arrange
 
         // Required
         String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
-        String[] taskBodies = new String[] { constructTaskBody(0), constructTaskBody(1) };
+        String[] taskBodies = new String[] { constructTaskBody(0),
+                constructTaskBody(1) };
 
         // Optional parameters
         String configuration = commonConfiguration;
@@ -114,9 +129,12 @@ public class TaskIntegrationTest extends IntegrationTestBase {
 
         List<CreateBatchOperation> taskCreators = new ArrayList<CreateBatchOperation>();
 
-        for (int i = 0; i < taskBodies.length; i++) {
-            CreateBatchOperation taskCreator = Task.create(mediaProcessorId, taskBodies[i])
-                    .setConfiguration(configuration).setName(baseName + suffixes[i]);
+        for (int i = 0; i < taskBodies.length; i++)
+        {
+            CreateBatchOperation taskCreator = Task
+                    .create(mediaProcessorId, taskBodies[i])
+                    .setConfiguration(configuration)
+                    .setName(baseName + suffixes[i]);
             taskCreators.add(taskCreator);
             jobCreator.addTaskCreator(taskCreator);
         }
@@ -127,22 +145,27 @@ public class TaskIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals("taskInfos count", taskCreators.size(), taskInfos.size());
-        for (int i = 0; i < taskCreators.size(); i++) {
-            verifyTaskPropertiesJustStartedNoEncryption("taskInfo", mediaProcessorId, options, taskBodies[i],
-                    configuration, baseName + suffixes[i], jobPriority, taskInfos.get(i));
+        for (int i = 0; i < taskCreators.size(); i++)
+        {
+            verifyTaskPropertiesJustStartedNoEncryption("taskInfo",
+                    mediaProcessorId, options, taskBodies[i], configuration,
+                    baseName + suffixes[i], jobPriority, taskInfos.get(i));
         }
     }
 
     @Test
-    public void canListTasksWithOptions() throws ServiceException {
+    public void canListTasksWithOptions() throws ServiceException
+    {
         // Arrange
         String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String configuration = commonConfiguration;
         String[] taskNameSuffixes = new String[] { "A", "B", "C", "D" };
         String baseName = "My encoding Task " + UUID.randomUUID().toString();
         int taskCounter = 0;
-        for (String suffix : taskNameSuffixes) {
-            CreateBatchOperation taskCreator = Task.create(mediaProcessorId, constructTaskBody(taskCounter++))
+        for (String suffix : taskNameSuffixes)
+        {
+            CreateBatchOperation taskCreator = Task
+                    .create(mediaProcessorId, constructTaskBody(taskCounter++))
                     .setConfiguration(configuration).setName(baseName + suffix);
             jobCreator.addTaskCreator(taskCreator);
         }
@@ -150,10 +173,11 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         service.create(jobCreator);
 
         // Act
-        ListResult<TaskInfo> listTaskResult1 = service.list(Task.list().set("$filter",
-                "startswith(Name, '" + baseName + "') eq true"));
+        ListResult<TaskInfo> listTaskResult1 = service.list(Task.list().set(
+                "$filter", "startswith(Name, '" + baseName + "') eq true"));
         ListResult<TaskInfo> listTaskResult2 = service.list(Task.list()
-                .set("$filter", "startswith(Name, '" + baseName + "') eq true").setTop(2));
+                .set("$filter", "startswith(Name, '" + baseName + "') eq true")
+                .setTop(2));
 
         // Assert
         assertEquals("listTaskResult1.size", 4, listTaskResult1.size());
@@ -161,14 +185,17 @@ public class TaskIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void cancelTaskSuccess() throws ServiceException, InterruptedException {
+    public void cancelTaskSuccess() throws ServiceException,
+            InterruptedException
+    {
         // Arrange
         String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
         String taskBody = constructTaskBody(0);
         String configuration = commonConfiguration;
         String name = "My encoding Task " + UUID.randomUUID().toString();
-        CreateBatchOperation taskCreator = Task.create(mediaProcessorId, taskBody).setConfiguration(configuration)
-                .setName(name);
+        CreateBatchOperation taskCreator = Task
+                .create(mediaProcessorId, taskBody)
+                .setConfiguration(configuration).setName(name);
         jobCreator.addTaskCreator(taskCreator);
 
         JobInfo jobInfo = service.create(jobCreator);
@@ -176,71 +203,97 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         // Act
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
-        while (cancellingJobInfo.getState() == JobState.Canceling) {
+        while (cancellingJobInfo.getState() == JobState.Canceling)
+        {
             Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         }
 
-        //Assert
-        List<TaskInfo> taskInfos = service.list(Task.list(cancellingJobInfo.getTasksLink()));
-        for (TaskInfo taskInfo : taskInfos) {
-            verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId, TaskOption.None, taskBody,
-                    configuration, name, 3, new Date(), null, 0.0, 0.0, null, TaskState.Canceled, taskInfo);
+        // Assert
+        List<TaskInfo> taskInfos = service.list(Task.list(cancellingJobInfo
+                .getTasksLink()));
+        for (TaskInfo taskInfo : taskInfos)
+        {
+            verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId,
+                    TaskOption.None, taskBody, configuration, name, 3,
+                    new Date(), null, 0.0, 0.0, null, TaskState.Canceled,
+                    taskInfo);
         }
     }
 
-    private void verifyTaskProperties(String message, String mediaProcessorId, TaskOption options, String taskBody,
-            String configuration, String name, int priority, String encryptionKeyId, String encryptionScheme,
-            String encryptionVersion, String initializationVector, Date endTime, String errorDetails, double progress,
-            double runningDuration, Date startTime, TaskState state, TaskInfo actual) throws ServiceException {
+    private void verifyTaskProperties(String message, String mediaProcessorId,
+            TaskOption options, String taskBody, String configuration,
+            String name, int priority, String encryptionKeyId,
+            String encryptionScheme, String encryptionVersion,
+            String initializationVector, Date endTime, String errorDetails,
+            double progress, double runningDuration, Date startTime,
+            TaskState state, TaskInfo actual) throws ServiceException
+    {
         assertNotNull(message, actual);
         assertNotNull(message + " id", actual.getId());
 
         // Required fields
-        assertEquals(message + " getMediaProcessorId", mediaProcessorId, actual.getMediaProcessorId());
+        assertEquals(message + " getMediaProcessorId", mediaProcessorId,
+                actual.getMediaProcessorId());
         assertEquals(message + " getOptions", options, actual.getOptions());
         assertEquals(message + " getTaskBody", taskBody, actual.getTaskBody());
 
         // Optional fields
-        assertEquals(message + " getConfiguration", configuration, actual.getConfiguration());
+        assertEquals(message + " getConfiguration", configuration,
+                actual.getConfiguration());
         assertEquals(message + " getName", name, actual.getName());
         assertEquals(message + " getPriority", priority, actual.getPriority());
 
         // Optional encryption fields
-        assertEqualsNullEmpty(message + " getEncryptionKeyId", encryptionKeyId, actual.getEncryptionKeyId());
-        assertEqualsNullEmpty(message + " getEncryptionScheme", encryptionScheme, actual.getEncryptionScheme());
-        assertEqualsNullEmpty(message + " getEncryptionVersion", encryptionVersion, actual.getEncryptionVersion());
-        assertEqualsNullEmpty(message + " getInitializationVector", initializationVector,
-                actual.getInitializationVector());
+        assertEqualsNullEmpty(message + " getEncryptionKeyId", encryptionKeyId,
+                actual.getEncryptionKeyId());
+        assertEqualsNullEmpty(message + " getEncryptionScheme",
+                encryptionScheme, actual.getEncryptionScheme());
+        assertEqualsNullEmpty(message + " getEncryptionVersion",
+                encryptionVersion, actual.getEncryptionVersion());
+        assertEqualsNullEmpty(message + " getInitializationVector",
+                initializationVector, actual.getInitializationVector());
 
         // Read-only fields
-        assertDateApproxEquals(message + " getEndTime", endTime, actual.getEndTime());
+        assertDateApproxEquals(message + " getEndTime", endTime,
+                actual.getEndTime());
         assertNotNull(message + " getErrorDetails", actual.getErrorDetails());
-        assertEquals(message + " getErrorDetails.size", 0, actual.getErrorDetails().size());
+        assertEquals(message + " getErrorDetails.size", 0, actual
+                .getErrorDetails().size());
 
-        ListResult<AssetInfo> inputAssets = service.list(Asset.list(actual.getInputAssetsLink()));
-        ListResult<AssetInfo> outputAssets = service.list(Asset.list(actual.getOutputAssetsLink()));
+        ListResult<AssetInfo> inputAssets = service.list(Asset.list(actual
+                .getInputAssetsLink()));
+        ListResult<AssetInfo> outputAssets = service.list(Asset.list(actual
+                .getOutputAssetsLink()));
 
         assertEquals(message + " inputAssets.size", 1, inputAssets.size());
-        assertEquals(message + " inputAssets.get(0).getId", assetInfo.getId(), inputAssets.get(0).getId());
+        assertEquals(message + " inputAssets.get(0).getId", assetInfo.getId(),
+                inputAssets.get(0).getId());
 
         assertEquals(message + " outputAssets.size", 1, outputAssets.size());
         // Because this is a new asset, there is not much else to test
         assertTrue(message + " outputAssets.get(0).getId != assetInfo.getId",
                 !assetInfo.getId().equals(outputAssets.get(0).getId()));
 
-        assertEquals(message + " getProgress", progress, actual.getProgress(), 0.01);
-        assertEquals(message + " getRunningDuration", runningDuration, actual.getRunningDuration(), 0.01);
-        assertDateApproxEquals(message + " getStartTime", startTime, actual.getStartTime());
+        assertEquals(message + " getProgress", progress, actual.getProgress(),
+                0.01);
+        assertEquals(message + " getRunningDuration", runningDuration,
+                actual.getRunningDuration(), 0.01);
+        assertDateApproxEquals(message + " getStartTime", startTime,
+                actual.getStartTime());
         assertEquals(message + " getState", state, actual.getState());
 
-        // Note: The PerfMessage is not validated because it is server generated.
+        // Note: The PerfMessage is not validated because it is server
+        // generated.
     }
 
-    private void verifyTaskPropertiesJustStarted(String message, String mediaProcessorId, TaskOption options,
-            String taskBody, String configuration, String name, int priority, String encryptionKeyId,
-            String encryptionScheme, String encryptionVersion, String initializationVector, TaskInfo actual)
-            throws ServiceException {
+    private void verifyTaskPropertiesJustStarted(String message,
+            String mediaProcessorId, TaskOption options, String taskBody,
+            String configuration, String name, int priority,
+            String encryptionKeyId, String encryptionScheme,
+            String encryptionVersion, String initializationVector,
+            TaskInfo actual) throws ServiceException
+    {
 
         // Read-only
         Date endTime = null;
@@ -250,39 +303,52 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         Date startTime = null;
         TaskState state = TaskState.None;
 
-        verifyTaskProperties(message, mediaProcessorId, options, taskBody, configuration, name, priority,
-                encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector, endTime, errorDetails,
-                progress, runningDuration, startTime, state, actual);
+        verifyTaskProperties(message, mediaProcessorId, options, taskBody,
+                configuration, name, priority, encryptionKeyId,
+                encryptionScheme, encryptionVersion, initializationVector,
+                endTime, errorDetails, progress, runningDuration, startTime,
+                state, actual);
     }
 
-    private void verifyTaskPropertiesJustStartedNoEncryption(String message, String mediaProcessorId,
-            TaskOption options, String taskBody, String configuration, String name, int priority, TaskInfo actual)
-            throws ServiceException {
+    private void verifyTaskPropertiesJustStartedNoEncryption(String message,
+            String mediaProcessorId, TaskOption options, String taskBody,
+            String configuration, String name, int priority, TaskInfo actual)
+            throws ServiceException
+    {
         String encryptionKeyId = null;
         String encryptionScheme = null;
         String encryptionVersion = null;
         String initializationVector = null;
 
-        verifyTaskPropertiesJustStarted(message, mediaProcessorId, options, taskBody, configuration, name, priority,
-                encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector, actual);
+        verifyTaskPropertiesJustStarted(message, mediaProcessorId, options,
+                taskBody, configuration, name, priority, encryptionKeyId,
+                encryptionScheme, encryptionVersion, initializationVector,
+                actual);
     }
 
-    private void verifyTaskPropertiesNoEncryption(String message, String mediaProcessorId, TaskOption options,
-            String taskBody, String configuration, String name, int priority, Date endTime, String errorDetails,
-            double progress, double runningDuration, Date startTime, TaskState state, TaskInfo actual)
-            throws ServiceException {
+    private void verifyTaskPropertiesNoEncryption(String message,
+            String mediaProcessorId, TaskOption options, String taskBody,
+            String configuration, String name, int priority, Date endTime,
+            String errorDetails, double progress, double runningDuration,
+            Date startTime, TaskState state, TaskInfo actual)
+            throws ServiceException
+    {
         String encryptionKeyId = null;
         String encryptionScheme = null;
         String encryptionVersion = null;
         String initializationVector = null;
 
-        verifyTaskProperties(message, mediaProcessorId, options, taskBody, configuration, name, priority,
-                encryptionKeyId, encryptionScheme, encryptionVersion, initializationVector, endTime, errorDetails,
-                progress, runningDuration, startTime, state, actual);
+        verifyTaskProperties(message, mediaProcessorId, options, taskBody,
+                configuration, name, priority, encryptionKeyId,
+                encryptionScheme, encryptionVersion, initializationVector,
+                endTime, errorDetails, progress, runningDuration, startTime,
+                state, actual);
     }
 
-    private String constructTaskBody(int outputIndex) {
-        return "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>" + "<outputAsset>JobOutputAsset(" + outputIndex
+    private String constructTaskBody(int outputIndex)
+    {
+        return "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
+                + "<outputAsset>JobOutputAsset(" + outputIndex
                 + ")</outputAsset></taskBody>";
     }
 }

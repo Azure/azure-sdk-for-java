@@ -30,11 +30,14 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.queue.client.SharedAccessQueuePolicy;
 
 /**
- * RESERVED FOR INTERNAL USE. Contains helper methods for implementing shared access signatures.
+ * RESERVED FOR INTERNAL USE. Contains helper methods for implementing shared
+ * access signatures.
  */
-public class SharedAccessSignatureHelper {
+public class SharedAccessSignatureHelper
+{
     /**
-     * Get the complete query builder for creating the Shared Access Signature query.
+     * Get the complete query builder for creating the Shared Access Signature
+     * query.
      * 
      * @param policy
      *            The shared access policy to hash.
@@ -48,44 +51,59 @@ public class SharedAccessSignatureHelper {
      * @throws IllegalArgumentException
      * @throws StorageException
      */
-    public static UriQueryBuilder generateSharedAccessSignature(final SharedAccessBlobPolicy policy,
-            final String groupPolicyIdentifier, final String resourceType, final String signature)
-            throws StorageException {
+    public static UriQueryBuilder generateSharedAccessSignature(
+            final SharedAccessBlobPolicy policy,
+            final String groupPolicyIdentifier, final String resourceType,
+            final String signature) throws StorageException
+    {
         Utility.assertNotNullOrEmpty("resourceType", resourceType);
         Utility.assertNotNull("signature", signature);
 
         final UriQueryBuilder builder = new UriQueryBuilder();
-        builder.add(Constants.QueryConstants.SIGNED_VERSION, Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+        builder.add(Constants.QueryConstants.SIGNED_VERSION,
+                Constants.HeaderConstants.TARGET_STORAGE_VERSION);
 
-        if (policy != null) {
-            String permissions = SharedAccessBlobPolicy.permissionsToString(policy.getPermissions());
+        if (policy != null)
+        {
+            String permissions = SharedAccessBlobPolicy
+                    .permissionsToString(policy.getPermissions());
 
-            if (Utility.isNullOrEmpty(permissions)) {
+            if (Utility.isNullOrEmpty(permissions))
+            {
                 permissions = null;
             }
 
-            final String startString = Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime());
-            if (!Utility.isNullOrEmpty(startString)) {
+            final String startString = Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessStartTime());
+            if (!Utility.isNullOrEmpty(startString))
+            {
                 builder.add(Constants.QueryConstants.SIGNED_START, startString);
             }
 
-            final String stopString = Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime());
-            if (!Utility.isNullOrEmpty(stopString)) {
+            final String stopString = Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessExpiryTime());
+            if (!Utility.isNullOrEmpty(stopString))
+            {
                 builder.add(Constants.QueryConstants.SIGNED_EXPIRY, stopString);
             }
 
-            if (!Utility.isNullOrEmpty(permissions)) {
-                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS, permissions);
+            if (!Utility.isNullOrEmpty(permissions))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
+                        permissions);
             }
         }
 
         builder.add(Constants.QueryConstants.SIGNED_RESOURCE, resourceType);
 
-        if (!Utility.isNullOrEmpty(groupPolicyIdentifier)) {
-            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER, groupPolicyIdentifier);
+        if (!Utility.isNullOrEmpty(groupPolicyIdentifier))
+        {
+            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
+                    groupPolicyIdentifier);
         }
 
-        if (!Utility.isNullOrEmpty(signature)) {
+        if (!Utility.isNullOrEmpty(signature))
+        {
             builder.add(Constants.QueryConstants.SIGNATURE, signature);
         }
 
@@ -93,7 +111,8 @@ public class SharedAccessSignatureHelper {
     }
 
     /**
-     * Get the complete query builder for creating the Shared Access Signature query.
+     * Get the complete query builder for creating the Shared Access Signature
+     * query.
      * 
      * @param policy
      *            The shared access policy to hash.
@@ -105,40 +124,56 @@ public class SharedAccessSignatureHelper {
      * @throws IllegalArgumentException
      * @throws StorageException
      */
-    public static UriQueryBuilder generateSharedAccessSignature(final SharedAccessQueuePolicy policy,
-            final String groupPolicyIdentifier, final String signature) throws StorageException {
+    public static UriQueryBuilder generateSharedAccessSignature(
+            final SharedAccessQueuePolicy policy,
+            final String groupPolicyIdentifier, final String signature)
+            throws StorageException
+    {
         Utility.assertNotNull("signature", signature);
 
         final UriQueryBuilder builder = new UriQueryBuilder();
-        builder.add(Constants.QueryConstants.SIGNED_VERSION, Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+        builder.add(Constants.QueryConstants.SIGNED_VERSION,
+                Constants.HeaderConstants.TARGET_STORAGE_VERSION);
 
-        if (policy != null) {
-            String permissions = SharedAccessQueuePolicy.permissionsToString(policy.getPermissions());
+        if (policy != null)
+        {
+            String permissions = SharedAccessQueuePolicy
+                    .permissionsToString(policy.getPermissions());
 
-            if (Utility.isNullOrEmpty(permissions)) {
+            if (Utility.isNullOrEmpty(permissions))
+            {
                 permissions = null;
             }
 
-            final String startString = Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime());
-            if (!Utility.isNullOrEmpty(startString)) {
+            final String startString = Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessStartTime());
+            if (!Utility.isNullOrEmpty(startString))
+            {
                 builder.add(Constants.QueryConstants.SIGNED_START, startString);
             }
 
-            final String stopString = Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime());
-            if (!Utility.isNullOrEmpty(stopString)) {
+            final String stopString = Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessExpiryTime());
+            if (!Utility.isNullOrEmpty(stopString))
+            {
                 builder.add(Constants.QueryConstants.SIGNED_EXPIRY, stopString);
             }
 
-            if (!Utility.isNullOrEmpty(permissions)) {
-                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS, permissions);
+            if (!Utility.isNullOrEmpty(permissions))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
+                        permissions);
             }
         }
 
-        if (!Utility.isNullOrEmpty(groupPolicyIdentifier)) {
-            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER, groupPolicyIdentifier);
+        if (!Utility.isNullOrEmpty(groupPolicyIdentifier))
+        {
+            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
+                    groupPolicyIdentifier);
         }
 
-        if (!Utility.isNullOrEmpty(signature)) {
+        if (!Utility.isNullOrEmpty(signature))
+        {
             builder.add(Constants.QueryConstants.SIGNATURE, signature);
         }
 
@@ -146,7 +181,8 @@ public class SharedAccessSignatureHelper {
     }
 
     /**
-     * Get the complete query builder for creating the Shared Access Signature query.
+     * Get the complete query builder for creating the Shared Access Signature
+     * query.
      * 
      * @param signature
      *            The signature to use.
@@ -154,64 +190,85 @@ public class SharedAccessSignatureHelper {
      * @throws IllegalArgumentException
      * @throws StorageException
      */
-    public static UriQueryBuilder generateSharedAccessSignature(final String permissions, final Date startTime,
-            final Date expiryTime, final String startPatitionKey, final String startRowKey,
-            final String endPatitionKey, final String endRowKey, final String accessPolicyIdentifier,
-            final String resourceType, final String tableName, final String signature, final String accountKeyName)
-            throws StorageException {
+    public static UriQueryBuilder generateSharedAccessSignature(
+            final String permissions, final Date startTime,
+            final Date expiryTime, final String startPatitionKey,
+            final String startRowKey, final String endPatitionKey,
+            final String endRowKey, final String accessPolicyIdentifier,
+            final String resourceType, final String tableName,
+            final String signature, final String accountKeyName)
+            throws StorageException
+    {
         Utility.assertNotNull("signature", signature);
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
-        builder.add(Constants.QueryConstants.SIGNED_VERSION, Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+        builder.add(Constants.QueryConstants.SIGNED_VERSION,
+                Constants.HeaderConstants.TARGET_STORAGE_VERSION);
 
-        if (!Utility.isNullOrEmpty(permissions)) {
-            builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS, permissions);
+        if (!Utility.isNullOrEmpty(permissions))
+        {
+            builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
+                    permissions);
         }
 
         final String startString = Utility.getUTCTimeOrEmpty(startTime);
-        if (!Utility.isNullOrEmpty(startString)) {
+        if (!Utility.isNullOrEmpty(startString))
+        {
             builder.add(Constants.QueryConstants.SIGNED_START, startString);
         }
 
         final String stopString = Utility.getUTCTimeOrEmpty(expiryTime);
-        if (!Utility.isNullOrEmpty(stopString)) {
+        if (!Utility.isNullOrEmpty(stopString))
+        {
             builder.add(Constants.QueryConstants.SIGNED_EXPIRY, stopString);
         }
 
-        if (!Utility.isNullOrEmpty(startPatitionKey)) {
-            builder.add(Constants.QueryConstants.START_PARTITION_KEY, startPatitionKey);
+        if (!Utility.isNullOrEmpty(startPatitionKey))
+        {
+            builder.add(Constants.QueryConstants.START_PARTITION_KEY,
+                    startPatitionKey);
         }
 
-        if (!Utility.isNullOrEmpty(startRowKey)) {
+        if (!Utility.isNullOrEmpty(startRowKey))
+        {
             builder.add(Constants.QueryConstants.START_ROW_KEY, startRowKey);
         }
 
-        if (!Utility.isNullOrEmpty(endPatitionKey)) {
-            builder.add(Constants.QueryConstants.END_PARTITION_KEY, endPatitionKey);
+        if (!Utility.isNullOrEmpty(endPatitionKey))
+        {
+            builder.add(Constants.QueryConstants.END_PARTITION_KEY,
+                    endPatitionKey);
         }
 
-        if (!Utility.isNullOrEmpty(endRowKey)) {
+        if (!Utility.isNullOrEmpty(endRowKey))
+        {
             builder.add(Constants.QueryConstants.END_ROW_KEY, endRowKey);
         }
 
-        if (!Utility.isNullOrEmpty(accessPolicyIdentifier)) {
-            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER, accessPolicyIdentifier);
+        if (!Utility.isNullOrEmpty(accessPolicyIdentifier))
+        {
+            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
+                    accessPolicyIdentifier);
         }
 
-        if (!Utility.isNullOrEmpty(resourceType)) {
+        if (!Utility.isNullOrEmpty(resourceType))
+        {
             builder.add(Constants.QueryConstants.SIGNED_RESOURCE, resourceType);
         }
 
-        if (!Utility.isNullOrEmpty(tableName)) {
+        if (!Utility.isNullOrEmpty(tableName))
+        {
             builder.add(Constants.QueryConstants.SAS_TABLE_NAME, tableName);
         }
 
-        if (!Utility.isNullOrEmpty(signature)) {
+        if (!Utility.isNullOrEmpty(signature))
+        {
             builder.add(Constants.QueryConstants.SIGNATURE, signature);
         }
 
-        if (!Utility.isNullOrEmpty(accountKeyName)) {
+        if (!Utility.isNullOrEmpty(accountKeyName))
+        {
             builder.add(Constants.QueryConstants.SIGNED_KEY, accountKeyName);
         }
 
@@ -219,7 +276,8 @@ public class SharedAccessSignatureHelper {
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for blob service.
+     * Get the signature hash embedded inside the Shared Access Signature for
+     * blob service.
      * 
      * @param policy
      *            The shared access policy to hash.
@@ -235,26 +293,33 @@ public class SharedAccessSignatureHelper {
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    public static String generateSharedAccessSignatureHash(final SharedAccessBlobPolicy policy,
-            final String accessPolicyIdentifier, final String resourceName, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static String generateSharedAccessSignatureHash(
+            final SharedAccessBlobPolicy policy,
+            final String accessPolicyIdentifier, final String resourceName,
+            final ServiceClient client, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
         String permissionString = null;
         Date startTime = null;
         Date expiryTime = null;
 
-        if (policy != null) {
-            permissionString = SharedAccessBlobPolicy.permissionsToString(policy.getPermissions());
+        if (policy != null)
+        {
+            permissionString = SharedAccessBlobPolicy
+                    .permissionsToString(policy.getPermissions());
             startTime = policy.getSharedAccessStartTime();
             expiryTime = policy.getSharedAccessExpiryTime();
         }
 
-        return generateSharedAccessSignatureHash(permissionString, startTime, expiryTime, resourceName,
-                accessPolicyIdentifier, false, null, null, null, null, client, opContext);
+        return generateSharedAccessSignatureHash(permissionString, startTime,
+                expiryTime, resourceName, accessPolicyIdentifier, false, null,
+                null, null, null, client, opContext);
 
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for queue service.
+     * Get the signature hash embedded inside the Shared Access Signature for
+     * queue service.
      * 
      * @param policy
      *            The shared access policy to hash.
@@ -271,71 +336,94 @@ public class SharedAccessSignatureHelper {
      * @throws StorageException
      */
 
-    public static String generateSharedAccessSignatureHash(final SharedAccessQueuePolicy policy,
-            final String accessPolicyIdentifier, final String resourceName, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static String generateSharedAccessSignatureHash(
+            final SharedAccessQueuePolicy policy,
+            final String accessPolicyIdentifier, final String resourceName,
+            final ServiceClient client, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
 
         String permissionString = null;
         Date startTime = null;
         Date expiryTime = null;
 
-        if (policy != null) {
-            permissionString = SharedAccessQueuePolicy.permissionsToString(policy.getPermissions());
+        if (policy != null)
+        {
+            permissionString = SharedAccessQueuePolicy
+                    .permissionsToString(policy.getPermissions());
             startTime = policy.getSharedAccessStartTime();
             expiryTime = policy.getSharedAccessExpiryTime();
         }
 
-        return generateSharedAccessSignatureHash(permissionString, startTime, expiryTime, resourceName,
-                accessPolicyIdentifier, false, null, null, null, null, client, opContext);
+        return generateSharedAccessSignatureHash(permissionString, startTime,
+                expiryTime, resourceName, accessPolicyIdentifier, false, null,
+                null, null, null, client, opContext);
     }
 
     /**
-     * Get the signature hash embedded inside the Shared Access Signature for all storage service.
+     * Get the signature hash embedded inside the Shared Access Signature for
+     * all storage service.
      * 
      * @return the signature hash embedded inside the Shared Access Signature.
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    public static String generateSharedAccessSignatureHash(final String permissions, final Date startTime,
-            final Date expiryTime, final String resourceName, final String accessPolicyIdentifier,
-            final boolean useTableSas, final String startPatitionKey, final String startRowKey,
-            final String endPatitionKey, final String endRowKey, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    public static String generateSharedAccessSignatureHash(
+            final String permissions, final Date startTime,
+            final Date expiryTime, final String resourceName,
+            final String accessPolicyIdentifier, final boolean useTableSas,
+            final String startPatitionKey, final String startRowKey,
+            final String endPatitionKey, final String endRowKey,
+            final ServiceClient client, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
 
-        String stringToSign = String.format("%s\n%s\n%s\n%s\n%s\n%s", permissions == null ? Constants.EMPTY_STRING
-                : permissions, Utility.getUTCTimeOrEmpty(startTime), Utility.getUTCTimeOrEmpty(expiryTime),
-                resourceName, accessPolicyIdentifier == null ? Constants.EMPTY_STRING : accessPolicyIdentifier,
+        String stringToSign = String.format("%s\n%s\n%s\n%s\n%s\n%s",
+                permissions == null ? Constants.EMPTY_STRING : permissions,
+                Utility.getUTCTimeOrEmpty(startTime), Utility
+                        .getUTCTimeOrEmpty(expiryTime), resourceName,
+                accessPolicyIdentifier == null ? Constants.EMPTY_STRING
+                        : accessPolicyIdentifier,
                 Constants.HeaderConstants.TARGET_STORAGE_VERSION);
 
-        if (useTableSas) {
+        if (useTableSas)
+        {
             stringToSign = String.format("%s\n%s\n%s\n%s\n%s", stringToSign,
-                    startPatitionKey == null ? Constants.EMPTY_STRING : startPatitionKey,
+                    startPatitionKey == null ? Constants.EMPTY_STRING
+                            : startPatitionKey,
                     startRowKey == null ? Constants.EMPTY_STRING : startRowKey,
-                    endPatitionKey == null ? Constants.EMPTY_STRING : endPatitionKey,
+                    endPatitionKey == null ? Constants.EMPTY_STRING
+                            : endPatitionKey,
                     endRowKey == null ? Constants.EMPTY_STRING : endRowKey);
         }
 
         stringToSign = Utility.safeDecode(stringToSign);
-        final String signature = client.getCredentials().computeHmac256(stringToSign, opContext);
+        final String signature = client.getCredentials().computeHmac256(
+                stringToSign, opContext);
 
         // add logging
         return signature;
     }
 
     /**
-     * Parses the query parameters and populates a StorageCredentialsSharedAccessSignature object if one is present.
+     * Parses the query parameters and populates a
+     * StorageCredentialsSharedAccessSignature object if one is present.
      * 
      * @param queryParams
      *            the parameters to parse
-     * @return the StorageCredentialsSharedAccessSignature if one is present, otherwise null
+     * @return the StorageCredentialsSharedAccessSignature if one is present,
+     *         otherwise null
      * @throws IllegalArgumentException
      * @throws StorageException
-     *             an exception representing any error which occurred during the operation.
+     *             an exception representing any error which occurred during the
+     *             operation.
      */
-    public static StorageCredentialsSharedAccessSignature parseQuery(final HashMap<String, String[]> queryParams)
-            throws StorageException {
+    public static StorageCredentialsSharedAccessSignature parseQuery(
+            final HashMap<String, String[]> queryParams)
+            throws StorageException
+    {
         String signature = null;
         String signedStart = null;
         String signedExpiry = null;
@@ -348,72 +436,92 @@ public class SharedAccessSignatureHelper {
 
         StorageCredentialsSharedAccessSignature credentials = null;
 
-        for (final Entry<String, String[]> entry : queryParams.entrySet()) {
-            final String lowerKey = entry.getKey().toLowerCase(Utility.LOCALE_US);
+        for (final Entry<String, String[]> entry : queryParams.entrySet())
+        {
+            final String lowerKey = entry.getKey().toLowerCase(
+                    Utility.LOCALE_US);
 
-            if (lowerKey.equals(Constants.QueryConstants.SIGNED_START)) {
+            if (lowerKey.equals(Constants.QueryConstants.SIGNED_START))
+            {
                 signedStart = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_EXPIRY)) {
+            } else if (lowerKey.equals(Constants.QueryConstants.SIGNED_EXPIRY))
+            {
                 signedExpiry = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_PERMISSIONS)) {
+            } else if (lowerKey
+                    .equals(Constants.QueryConstants.SIGNED_PERMISSIONS))
+            {
                 sigendPermissions = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_RESOURCE)) {
+            } else if (lowerKey
+                    .equals(Constants.QueryConstants.SIGNED_RESOURCE))
+            {
                 signedResource = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_IDENTIFIER)) {
+            } else if (lowerKey
+                    .equals(Constants.QueryConstants.SIGNED_IDENTIFIER))
+            {
                 signedIdentifier = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNATURE)) {
+            } else if (lowerKey.equals(Constants.QueryConstants.SIGNATURE))
+            {
                 signature = entry.getValue()[0];
                 sasParameterFound = true;
-            }
-            else if (lowerKey.equals(Constants.QueryConstants.SIGNED_VERSION)) {
+            } else if (lowerKey.equals(Constants.QueryConstants.SIGNED_VERSION))
+            {
                 signedVersion = entry.getValue()[0];
                 sasParameterFound = true;
             }
         }
 
-        if (sasParameterFound) {
-            if (signature == null) {
+        if (sasParameterFound)
+        {
+            if (signature == null)
+            {
                 final String errorMessage = "Missing mandatory parameters for valid Shared Access Signature";
                 throw new IllegalArgumentException(errorMessage);
             }
 
             final UriQueryBuilder builder = new UriQueryBuilder();
 
-            if (!Utility.isNullOrEmpty(signedStart)) {
+            if (!Utility.isNullOrEmpty(signedStart))
+            {
                 builder.add(Constants.QueryConstants.SIGNED_START, signedStart);
             }
 
-            if (!Utility.isNullOrEmpty(signedExpiry)) {
-                builder.add(Constants.QueryConstants.SIGNED_EXPIRY, signedExpiry);
+            if (!Utility.isNullOrEmpty(signedExpiry))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_EXPIRY,
+                        signedExpiry);
             }
 
-            if (!Utility.isNullOrEmpty(sigendPermissions)) {
-                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS, sigendPermissions);
+            if (!Utility.isNullOrEmpty(sigendPermissions))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
+                        sigendPermissions);
             }
 
-            if (!Utility.isNullOrEmpty(signedResource)) {
-                builder.add(Constants.QueryConstants.SIGNED_RESOURCE, signedResource);
+            if (!Utility.isNullOrEmpty(signedResource))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_RESOURCE,
+                        signedResource);
             }
 
-            if (!Utility.isNullOrEmpty(signedIdentifier)) {
-                builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER, signedIdentifier);
+            if (!Utility.isNullOrEmpty(signedIdentifier))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
+                        signedIdentifier);
             }
 
-            if (!Utility.isNullOrEmpty(signedVersion)) {
-                builder.add(Constants.QueryConstants.SIGNED_VERSION, signedVersion);
+            if (!Utility.isNullOrEmpty(signedVersion))
+            {
+                builder.add(Constants.QueryConstants.SIGNED_VERSION,
+                        signedVersion);
             }
 
-            if (!Utility.isNullOrEmpty(signature)) {
+            if (!Utility.isNullOrEmpty(signature))
+            {
                 builder.add(Constants.QueryConstants.SIGNATURE, signature);
             }
 
@@ -427,7 +535,8 @@ public class SharedAccessSignatureHelper {
     /**
      * Private Default Ctor.
      */
-    private SharedAccessSignatureHelper() {
+    private SharedAccessSignatureHelper()
+    {
         // No op
     }
 }

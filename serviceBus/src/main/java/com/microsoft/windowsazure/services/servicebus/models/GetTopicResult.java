@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>getTopic</code> operation.
  */
-public class GetTopicResult {
+public class GetTopicResult
+{
 
     private TopicInfo value;
 
@@ -25,9 +26,11 @@ public class GetTopicResult {
      * Creates an instance of the <code>GetTopicResult</code> class.
      * 
      * @param value
-     *            A {@link TopicInfo} object assigned as the value of the result.
+     *            A {@link TopicInfo} object assigned as the value of the
+     *            result.
      */
-    public GetTopicResult(TopicInfo value) {
+    public GetTopicResult(TopicInfo value)
+    {
         this.setValue(value);
     }
 
@@ -35,18 +38,22 @@ public class GetTopicResult {
      * Specfies the value of the result.
      * 
      * @param value
-     *            A {@link TopicInfo} object assigned as the value of the result.
+     *            A {@link TopicInfo} object assigned as the value of the
+     *            result.
      */
-    public void setValue(TopicInfo value) {
+    public void setValue(TopicInfo value)
+    {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link TopicInfo} object that represents the value of the result.
+     * @return A {@link TopicInfo} object that represents the value of the
+     *         result.
      */
-    public TopicInfo getValue() {
+    public TopicInfo getValue()
+    {
         return value;
     }
 

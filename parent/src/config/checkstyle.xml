@@ -170,7 +170,10 @@
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
         <module name="EmptyBlock"/>
-        <module name="LeftCurly"/>
+        <module name="LeftCurly">
+            <property name="option" value="nl" />
+        </module>
+
         <module name="NeedBraces"/>
 
         <!-- Removed on 11/02/2012:
@@ -182,8 +185,12 @@
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
-        <module name="AvoidInlineConditionals"/>
-        <module name="DoubleCheckedLocking"/>    <!-- MY FAVOURITE -->
+        <!-- Removed on 14/1/2014:
+                Justification: The Azure SDK coding guidelines
+                are that inline conditionals can actually make the
+                code more readable.
+            <module name="AvoidInlineConditionals"/> -->
+
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
          <!-- Removed on 11/02/2012:

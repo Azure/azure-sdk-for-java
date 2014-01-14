@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.services.queue.client;
 /**
  * RESERVED FOR INTERNAL USE. Holds the Constants used for the Queue Service.
  */
-final class QueueConstants {
+final class QueueConstants
+{
     /**
      * Default client side timeout, in milliseconds, for queue service.
      */
@@ -40,7 +41,8 @@ final class QueueConstants {
     public static final int DEFAULT_VISIBILITY_MESSAGE_TIMEOUT_IN_SECONDS = 30;
 
     /**
-     * The maximum amount of time a message is kept inside the queue, in seconds.
+     * The maximum amount of time a message is kept inside the queue, in
+     * seconds.
      */
     public static final int MAX_TIME_TO_LIVE_IN_SECONDS = 7 * 24 * 60 * 60;
 
@@ -113,7 +115,8 @@ final class QueueConstants {
     /**
      * Private Default Ctor.
      */
-    private QueueConstants() {
+    private QueueConstants()
+    {
         // No op
     }
 }

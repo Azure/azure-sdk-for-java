@@ -26,13 +26,16 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Table Service
- * under the Shared Key Lite authentication scheme.
+ * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer
+ * class for requests against Table Service under the Shared Key Lite
+ * authentication scheme.
  */
-class TableLiteCanonicalizer extends Canonicalizer {
+class TableLiteCanonicalizer extends Canonicalizer
+{
 
     /**
-     * The expected length for the canonicalized string when SharedKeyLite is used to sign table requests.
+     * The expected length for the canonicalized string when SharedKeyLite is
+     * used to sign table requests.
      */
     private static final int ExpectedTableLiteCanonicalizedStringLength = 150;
 
@@ -44,27 +47,36 @@ class TableLiteCanonicalizer extends Canonicalizer {
      * @param accountName
      *            the account name associated with the request
      * @param contentLength
-     *            the length of the content written to the outputstream in bytes, -1 if unknown
+     *            the length of the content written to the outputstream in
+     *            bytes, -1 if unknown
      * @param opContext
      *            the OperationContext for the given request
      * @return a canonicalized string.
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength,
-            final OperationContext opContext) throws StorageException {
-        if (contentLength < -1) {
-            throw new InvalidParameterException("ContentLength must be set to -1 or positive Long value");
+    protected String canonicalize(final HttpURLConnection conn,
+            final String accountName, final Long contentLength,
+            final OperationContext opContext) throws StorageException
+    {
+        if (contentLength < -1)
+        {
+            throw new InvalidParameterException(
+                    "ContentLength must be set to -1 or positive Long value");
         }
 
-        final String dateString = Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.DATE);
-        if (Utility.isNullOrEmpty(dateString)) {
+        final String dateString = Utility.getStandardHeaderValue(conn,
+                Constants.HeaderConstants.DATE);
+        if (Utility.isNullOrEmpty(dateString))
+        {
             throw new IllegalArgumentException(
                     "Canonicalization did not find a non empty x-ms-date header in the request. Please use a request with a valid x-ms-date header in RFC 123 format.");
         }
-        final StringBuilder canonicalizedString = new StringBuilder(ExpectedTableLiteCanonicalizedStringLength);
+        final StringBuilder canonicalizedString = new StringBuilder(
+                ExpectedTableLiteCanonicalizedStringLength);
         canonicalizedString.append(dateString);
-        appendCanonicalizedElement(canonicalizedString, getCanonicalizedResourceLite(conn.getURL(), accountName));
+        appendCanonicalizedElement(canonicalizedString,
+                getCanonicalizedResourceLite(conn.getURL(), accountName));
 
         return canonicalizedString.toString();
     }

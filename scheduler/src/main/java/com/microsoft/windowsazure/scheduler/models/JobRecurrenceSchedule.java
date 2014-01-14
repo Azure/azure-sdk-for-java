@@ -26,88 +26,125 @@ package com.microsoft.windowsazure.scheduler.models;
 import java.util.ArrayList;
 
 /**
-* Recurrence schedule for the job.
-*/
+ * Recurrence schedule for the job.
+ */
 public class JobRecurrenceSchedule
 {
     private ArrayList<JobScheduleDay> days;
-    
+
     /**
-    * Days of the week that the job should execute on.
-    */
-    public ArrayList<JobScheduleDay> getDays() { return this.days; }
-    
+     * Days of the week that the job should execute on.
+     */
+    public ArrayList<JobScheduleDay> getDays()
+    {
+        return this.days;
+    }
+
     /**
-    * Days of the week that the job should execute on.
-    */
-    public void setDays(ArrayList<JobScheduleDay> days) { this.days = days; }
-    
+     * Days of the week that the job should execute on.
+     */
+    public void setDays(ArrayList<JobScheduleDay> days)
+    {
+        this.days = days;
+    }
+
     private ArrayList<Integer> hours;
-    
+
     /**
-    * Hours of the day that the job should execute at.
-    */
-    public ArrayList<Integer> getHours() { return this.hours; }
-    
+     * Hours of the day that the job should execute at.
+     */
+    public ArrayList<Integer> getHours()
+    {
+        return this.hours;
+    }
+
     /**
-    * Hours of the day that the job should execute at.
-    */
-    public void setHours(ArrayList<Integer> hours) { this.hours = hours; }
-    
+     * Hours of the day that the job should execute at.
+     */
+    public void setHours(ArrayList<Integer> hours)
+    {
+        this.hours = hours;
+    }
+
     private ArrayList<Integer> minutes;
-    
+
     /**
-    * Minutes of the hour that the job should execute at.
-    */
-    public ArrayList<Integer> getMinutes() { return this.minutes; }
-    
+     * Minutes of the hour that the job should execute at.
+     */
+    public ArrayList<Integer> getMinutes()
+    {
+        return this.minutes;
+    }
+
     /**
-    * Minutes of the hour that the job should execute at.
-    */
-    public void setMinutes(ArrayList<Integer> minutes) { this.minutes = minutes; }
-    
+     * Minutes of the hour that the job should execute at.
+     */
+    public void setMinutes(ArrayList<Integer> minutes)
+    {
+        this.minutes = minutes;
+    }
+
     private ArrayList<Integer> monthDays;
-    
+
     /**
-    * Days of the month that the job should execute on.  Must be between 1 and
-    * 31.
-    */
-    public ArrayList<Integer> getMonthDays() { return this.monthDays; }
-    
+     * Days of the month that the job should execute on. Must be between 1 and
+     * 31.
+     */
+    public ArrayList<Integer> getMonthDays()
+    {
+        return this.monthDays;
+    }
+
     /**
-    * Days of the month that the job should execute on.  Must be between 1 and
-    * 31.
-    */
-    public void setMonthDays(ArrayList<Integer> monthDays) { this.monthDays = monthDays; }
-    
+     * Days of the month that the job should execute on. Must be between 1 and
+     * 31.
+     */
+    public void setMonthDays(ArrayList<Integer> monthDays)
+    {
+        this.monthDays = monthDays;
+    }
+
     private ArrayList<JobScheduleMonthlyOccurrence> monthlyOccurrences;
-    
+
     /**
-    * Occurrences of days within a month.
-    */
-    public ArrayList<JobScheduleMonthlyOccurrence> getMonthlyOccurrences() { return this.monthlyOccurrences; }
-    
+     * Occurrences of days within a month.
+     */
+    public ArrayList<JobScheduleMonthlyOccurrence> getMonthlyOccurrences()
+    {
+        return this.monthlyOccurrences;
+    }
+
     /**
-    * Occurrences of days within a month.
-    */
-    public void setMonthlyOccurrences(ArrayList<JobScheduleMonthlyOccurrence> monthlyOccurrences) { this.monthlyOccurrences = monthlyOccurrences; }
-    
+     * Occurrences of days within a month.
+     */
+    public void setMonthlyOccurrences(
+            ArrayList<JobScheduleMonthlyOccurrence> monthlyOccurrences)
+    {
+        this.monthlyOccurrences = monthlyOccurrences;
+    }
+
     private ArrayList<Integer> months;
-    
+
     /**
-    * Months that the job should execute in.  Must be between 1 and 12.
-    */
-    public ArrayList<Integer> getMonths() { return this.months; }
-    
+     * Months that the job should execute in. Must be between 1 and 12.
+     */
+    public ArrayList<Integer> getMonths()
+    {
+        return this.months;
+    }
+
     /**
-    * Months that the job should execute in.  Must be between 1 and 12.
-    */
-    public void setMonths(ArrayList<Integer> months) { this.months = months; }
-    
+     * Months that the job should execute in. Must be between 1 and 12.
+     */
+    public void setMonths(ArrayList<Integer> months)
+    {
+        this.months = months;
+    }
+
     /**
-    * Initializes a new instance of the JobRecurrenceSchedule class.
-    *
-    */
+     * Initializes a new instance of the JobRecurrenceSchedule class.
+     * 
+     */
     public JobRecurrenceSchedule()
     {
         this.days = new ArrayList<JobScheduleDay>();

@@ -25,9 +25,11 @@ import javax.xml.stream.XMLStreamReader;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to parse SharedAccessPolicies from an input stream.
+ * RESERVED FOR INTERNAL USE. A class used to parse SharedAccessPolicies from an
+ * input stream.
  */
-public abstract class AccessPolicyResponseBase<T> {
+public abstract class AccessPolicyResponseBase<T>
+{
     /**
      * Holds a flag indicating if the response has been parsed or not.
      */
@@ -49,7 +51,8 @@ public abstract class AccessPolicyResponseBase<T> {
      * @param stream
      *            the input stream to read error details from.
      */
-    public AccessPolicyResponseBase(final InputStream stream) {
+    public AccessPolicyResponseBase(final InputStream stream)
+    {
         this.streamRef = stream;
     }
 
@@ -62,8 +65,11 @@ public abstract class AccessPolicyResponseBase<T> {
      * @throws ParseException
      *             if a date is incorrectly encoded in the stream
      */
-    public HashMap<String, T> getAccessIdentifiers() throws XMLStreamException, ParseException {
-        if (!this.isParsed) {
+    public HashMap<String, T> getAccessIdentifiers() throws XMLStreamException,
+            ParseException
+    {
+        if (!this.isParsed)
+        {
             this.parseResponse();
         }
 
@@ -78,21 +84,28 @@ public abstract class AccessPolicyResponseBase<T> {
      * @throws ParseException
      *             if a date is incorrectly encoded in the stream
      */
-    public void parseResponse() throws XMLStreamException, ParseException {
-        final XMLStreamReader xmlr = Utility.createXMLStreamReaderFromStream(this.streamRef);
+    public void parseResponse() throws XMLStreamException, ParseException
+    {
+        final XMLStreamReader xmlr = Utility
+                .createXMLStreamReaderFromStream(this.streamRef);
 
         // Start document
         int eventType = xmlr.getEventType();
         xmlr.require(XMLStreamConstants.START_DOCUMENT, null, null);
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT)) {
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT))
+                {
                     this.readPolicies(xmlr);
                     break;
                 }
@@ -112,28 +125,37 @@ public abstract class AccessPolicyResponseBase<T> {
      * @throws ParseException
      *             if a date is incorrectly encoded in the stream
      */
-    private void readPolicies(final XMLStreamReader xmlr) throws XMLStreamException, ParseException {
+    private void readPolicies(final XMLStreamReader xmlr)
+            throws XMLStreamException, ParseException
+    {
         int eventType = xmlr.getEventType();
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.SIGNED_IDENTIFIERS_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                Constants.SIGNED_IDENTIFIERS_ELEMENT);
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.SIGNED_IDENTIFIER_ELEMENT)) {
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.SIGNED_IDENTIFIER_ELEMENT))
+                {
                     this.readSignedIdentifier(xmlr);
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT
-                        && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT)) {
+                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                        && name.equals(Constants.SIGNED_IDENTIFIERS_ELEMENT))
+                {
                     break;
                 }
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.SIGNED_IDENTIFIERS_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                Constants.SIGNED_IDENTIFIERS_ELEMENT);
     }
 
     /**
@@ -146,37 +168,48 @@ public abstract class AccessPolicyResponseBase<T> {
      * @throws ParseException
      *             if a date is incorrectly encoded in the stream
      */
-    private void readSignedIdentifier(final XMLStreamReader xmlr) throws XMLStreamException, ParseException {
+    private void readSignedIdentifier(final XMLStreamReader xmlr)
+            throws XMLStreamException, ParseException
+    {
         int eventType = xmlr.getEventType();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.SIGNED_IDENTIFIER_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                Constants.SIGNED_IDENTIFIER_ELEMENT);
 
         String id = null;
         T policy = null;
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT || eventType == XMLStreamConstants.END_ELEMENT) {
+            if (eventType == XMLStreamConstants.START_ELEMENT
+                    || eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ID)) {
+                if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.ID))
+                {
                     id = Utility.readElementFromXMLReader(xmlr, Constants.ID);
-                }
-                else if (eventType == XMLStreamConstants.START_ELEMENT && name.equals(Constants.ACCESS_POLICY)) {
+                } else if (eventType == XMLStreamConstants.START_ELEMENT
+                        && name.equals(Constants.ACCESS_POLICY))
+                {
                     policy = this.readPolicyFromXML(xmlr);
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT
-                        && name.equals(Constants.SIGNED_IDENTIFIER_ELEMENT)) {
+                } else if (eventType == XMLStreamConstants.END_ELEMENT
+                        && name.equals(Constants.SIGNED_IDENTIFIER_ELEMENT))
+                {
                     this.policies.put(id, policy);
                     break;
                 }
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.SIGNED_IDENTIFIER_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                Constants.SIGNED_IDENTIFIER_ELEMENT);
     }
 
     /**
-     * Populates the object from the XMLStreamReader, reader must be at Start element of AccessPolicy.
+     * Populates the object from the XMLStreamReader, reader must be at Start
+     * element of AccessPolicy.
      * 
      * @param xmlr
      *            the XMLStreamReader object
@@ -185,5 +218,6 @@ public abstract class AccessPolicyResponseBase<T> {
      * @throws ParseException
      *             if a date value is not correctly encoded
      */
-    protected abstract T readPolicyFromXML(final XMLStreamReader xmlr) throws XMLStreamException, ParseException;
+    protected abstract T readPolicyFromXML(final XMLStreamReader xmlr)
+            throws XMLStreamException, ParseException;
 }

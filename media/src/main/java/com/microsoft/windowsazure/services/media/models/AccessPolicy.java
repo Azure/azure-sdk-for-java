@@ -31,11 +31,13 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Access Policy entities.
  * 
  */
-public class AccessPolicy {
+public class AccessPolicy
+{
 
     private static final String ENTITY_SET = "AccessPolicies";
 
-    private AccessPolicy() {
+    private AccessPolicy()
+    {
     }
 
     /**
@@ -49,18 +51,24 @@ public class AccessPolicy {
      *            permissions allowed by this access policy
      * @return The operation
      */
-    public static EntityCreateOperation<AccessPolicyInfo> create(String name, double durationInMinutes,
-            EnumSet<AccessPolicyPermission> permissions) {
+    public static EntityCreateOperation<AccessPolicyInfo> create(String name,
+            double durationInMinutes,
+            EnumSet<AccessPolicyPermission> permissions)
+    {
         return new Creator(name, durationInMinutes, permissions);
     }
 
-    private static class Creator extends EntityOperationSingleResultBase<AccessPolicyInfo> implements
-            EntityCreateOperation<AccessPolicyInfo> {
+    private static class Creator extends
+            EntityOperationSingleResultBase<AccessPolicyInfo> implements
+            EntityCreateOperation<AccessPolicyInfo>
+    {
         private final String policyName;
         private final double durationInMinutes;
         private final EnumSet<AccessPolicyPermission> permissions;
 
-        public Creator(String policyName, double durationInMinutes, EnumSet<AccessPolicyPermission> permissions) {
+        public Creator(String policyName, double durationInMinutes,
+                EnumSet<AccessPolicyPermission> permissions)
+        {
 
             super(ENTITY_SET, AccessPolicyInfo.class);
 
@@ -70,9 +78,14 @@ public class AccessPolicy {
         }
 
         @Override
-        public Object getRequestContents() {
-            return new AccessPolicyType().setName(policyName).setDurationInMinutes(durationInMinutes)
-                    .setPermissions(AccessPolicyPermission.bitsFromPermissions(permissions));
+        public Object getRequestContents()
+        {
+            return new AccessPolicyType()
+                    .setName(policyName)
+                    .setDurationInMinutes(durationInMinutes)
+                    .setPermissions(
+                            AccessPolicyPermission
+                                    .bitsFromPermissions(permissions));
         }
 
     }
@@ -84,19 +97,25 @@ public class AccessPolicy {
      *            id of access policy to retrieve
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(String accessPolicyId) {
-        return new DefaultGetOperation<AccessPolicyInfo>(ENTITY_SET, accessPolicyId, AccessPolicyInfo.class);
+    public static EntityGetOperation<AccessPolicyInfo> get(String accessPolicyId)
+    {
+        return new DefaultGetOperation<AccessPolicyInfo>(ENTITY_SET,
+                accessPolicyId, AccessPolicyInfo.class);
     }
 
     /**
-     * Create an operation that will retrieve the access policy at the given link
+     * Create an operation that will retrieve the access policy at the given
+     * link
      * 
      * @param link
      *            the link
      * @return the operation
      */
-    public static EntityGetOperation<AccessPolicyInfo> get(LinkInfo<AccessPolicyInfo> link) {
-        return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(), AccessPolicyInfo.class);
+    public static EntityGetOperation<AccessPolicyInfo> get(
+            LinkInfo<AccessPolicyInfo> link)
+    {
+        return new DefaultGetOperation<AccessPolicyInfo>(link.getHref(),
+                AccessPolicyInfo.class);
     }
 
     /**
@@ -104,9 +123,12 @@ public class AccessPolicy {
      * 
      * @return the operation
      */
-    public static DefaultListOperation<AccessPolicyInfo> list() {
-        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET, new GenericType<ListResult<AccessPolicyInfo>>() {
-        });
+    public static DefaultListOperation<AccessPolicyInfo> list()
+    {
+        return new DefaultListOperation<AccessPolicyInfo>(ENTITY_SET,
+                new GenericType<ListResult<AccessPolicyInfo>>()
+                {
+                });
     }
 
     /**
@@ -116,7 +138,8 @@ public class AccessPolicy {
      *            id of access policy to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String accessPolicyId) {
+    public static EntityDeleteOperation delete(String accessPolicyId)
+    {
         return new DefaultDeleteOperation(ENTITY_SET, accessPolicyId);
     }
 }

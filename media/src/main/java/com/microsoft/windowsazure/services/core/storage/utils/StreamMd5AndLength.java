@@ -17,9 +17,11 @@ package com.microsoft.windowsazure.services.core.storage.utils;
 import java.security.MessageDigest;
 
 /**
- * RESERVED FOR INTERNAL USE. Represents a stream descriptor that contains the stream size and MD5 hash.
+ * RESERVED FOR INTERNAL USE. Represents a stream descriptor that contains the
+ * stream size and MD5 hash.
  */
-public final class StreamMd5AndLength {
+public final class StreamMd5AndLength
+{
     /**
      * Contains the MD5 hash for the stream data.
      */
@@ -32,22 +34,26 @@ public final class StreamMd5AndLength {
 
     private MessageDigest intermediateMD5;
 
-    public void setDigest(MessageDigest digest) {
+    public void setDigest(MessageDigest digest)
+    {
         this.intermediateMD5 = digest;
     }
 
     /**
      * @return the length
      */
-    public long getLength() {
+    public long getLength()
+    {
         return this.streamLength;
     }
 
     /**
      * @return the md5
      */
-    public String getMd5() {
-        if (this.streamMd5 == null && this.intermediateMD5 != null) {
+    public String getMd5()
+    {
+        if (this.streamMd5 == null && this.intermediateMD5 != null)
+        {
             this.streamMd5 = Base64.encode(this.intermediateMD5.digest());
         }
 
@@ -58,7 +64,8 @@ public final class StreamMd5AndLength {
      * @param length
      *            the length to set
      */
-    public void setLength(final long length) {
+    public void setLength(final long length)
+    {
         this.streamLength = length;
     }
 
@@ -66,7 +73,8 @@ public final class StreamMd5AndLength {
      * @param md5
      *            the md5 to set
      */
-    public void setMd5(final String md5) {
+    public void setMd5(final String md5)
+    {
         this.streamMd5 = md5;
     }
 }

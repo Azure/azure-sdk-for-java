@@ -26,19 +26,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Tests around parsing dates - OData requires date
- * strings without timezones be treated as UTC.
- * ISO spec, and Java default, is to use local timezone.
- * So we need to plug in to tweak Jaxb to use OData
- * conventions.
+ * Tests around parsing dates - OData requires date strings without timezones be
+ * treated as UTC. ISO spec, and Java default, is to use local timezone. So we
+ * need to plug in to tweak Jaxb to use OData conventions.
  * 
  */
-public class ODataDateParsingTest {
+public class ODataDateParsingTest
+{
     private static TimeZone utc;
     private static TimeZone pst;
 
     @BeforeClass
-    public static void setupClass() {
+    public static void setupClass()
+    {
         utc = TimeZone.getDefault();
         utc.setRawOffset(0);
 
@@ -47,7 +47,8 @@ public class ODataDateParsingTest {
     }
 
     @Test
-    public void canConvertDateToString() throws Exception {
+    public void canConvertDateToString() throws Exception
+    {
 
         Calendar sampleTime = new GregorianCalendar(2012, 11, 28, 17, 43, 12);
         sampleTime.setTimeZone(utc);
@@ -61,7 +62,8 @@ public class ODataDateParsingTest {
     }
 
     @Test
-    public void stringWithTimezoneRoundTripsCorrectly() throws Exception {
+    public void stringWithTimezoneRoundTripsCorrectly() throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12-08:00";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
@@ -73,7 +75,8 @@ public class ODataDateParsingTest {
     }
 
     @Test
-    public void stringWithUTCTimezoneRoundTripsCorrectly() throws Exception {
+    public void stringWithUTCTimezoneRoundTripsCorrectly() throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12Z";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
@@ -85,7 +88,8 @@ public class ODataDateParsingTest {
     }
 
     @Test
-    public void stringWithNoTimezoneActsAsUTC() throws Exception {
+    public void stringWithNoTimezoneActsAsUTC() throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
@@ -97,7 +101,9 @@ public class ODataDateParsingTest {
     }
 
     @Test
-    public void stringWithFractionalTimeReturnsCorrectMillisecondsTo100nsBoundary() throws Exception {
+    public void stringWithFractionalTimeReturnsCorrectMillisecondsTo100nsBoundary()
+            throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12.1234567Z";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
@@ -107,13 +113,16 @@ public class ODataDateParsingTest {
         timeToNearestSecond.set(2012, 10, 28, 17, 43, 12);
         timeToNearestSecond.set(Calendar.MILLISECOND, 0);
 
-        long millis = parsedTime.getTime() - timeToNearestSecond.getTimeInMillis();
+        long millis = parsedTime.getTime()
+                - timeToNearestSecond.getTimeInMillis();
 
         assertEquals(123, millis);
     }
 
     @Test
-    public void stringWithFractionalTimeReturnsCorrectMillisecondsAsFractionNotCount() throws Exception {
+    public void stringWithFractionalTimeReturnsCorrectMillisecondsAsFractionNotCount()
+            throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12.1Z";
 
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
@@ -123,13 +132,16 @@ public class ODataDateParsingTest {
         timeToNearestSecond.set(2012, 10, 28, 17, 43, 12);
         timeToNearestSecond.set(Calendar.MILLISECOND, 0);
 
-        long millis = parsedTime.getTime() - timeToNearestSecond.getTimeInMillis();
+        long millis = parsedTime.getTime()
+                - timeToNearestSecond.getTimeInMillis();
         assertEquals(100, millis);
 
     }
 
     @Test
-    public void stringWithFractionalSecondsAndTimezoneOffsetParses() throws Exception {
+    public void stringWithFractionalSecondsAndTimezoneOffsetParses()
+            throws Exception
+    {
         String exampleDate = "2012-11-28T17:43:12.1-08:00";
         Date parsedTime = new ODataDateAdapter().unmarshal(exampleDate);
 

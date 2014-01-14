@@ -29,7 +29,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * Generic implementation of Delete operation usable by most entities.
  */
-public class DefaultEntityActionOperation implements EntityActionOperation {
+public class DefaultEntityActionOperation implements EntityActionOperation
+{
 
     /** The proxy data. */
     private EntityProxyData proxyData;
@@ -68,20 +69,29 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * @param actionName
      *            the action name
      */
-    public DefaultEntityActionOperation(String entityName, String entityId, String actionName) {
+    public DefaultEntityActionOperation(String entityName, String entityId,
+            String actionName)
+    {
         this.queryParameters = new MultivaluedMapImpl();
         this.bodyParameters = new HashMap<String, Object>();
         this.entityName = entityName;
         this.entityId = entityId;
         this.actionName = actionName;
-        this.uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityName, entityId).setActionName(actionName);
+        this.uriBuilder = new EntityOperationBase.EntityIdUriBuilder(
+                entityName, entityId).setActionName(actionName);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityOperation
+     * #setProxyData(com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData) {
+    public void setProxyData(EntityProxyData proxyData)
+    {
         this.proxyData = proxyData;
     }
 
@@ -90,7 +100,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the proxy data
      */
-    protected EntityProxyData getProxyData() {
+    protected EntityProxyData getProxyData()
+    {
         return proxyData;
     }
 
@@ -99,7 +110,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the entity name
      */
-    public String getEntityName() {
+    public String getEntityName()
+    {
         return this.entityName;
     }
 
@@ -108,7 +120,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the entity id
      */
-    public String getEntityId() {
+    public String getEntityId()
+    {
         return this.entityId;
     }
 
@@ -117,65 +130,99 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the action name
      */
-    public String getActionName() {
+    public String getActionName()
+    {
         return this.actionName;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getUri()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityOperation
+     * #getUri()
      */
     @Override
-    public String getUri() {
+    public String getUri()
+    {
         return uriBuilder.getUri();
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getQueryParameters()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#getQueryParameters()
      */
     @Override
-    public MultivaluedMap<String, String> getQueryParameters() {
+    public MultivaluedMap<String, String> getQueryParameters()
+    {
         return this.queryParameters;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addQueryParameter(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#addQueryParameter(java.lang.String,
+     * java.lang.String)
      */
     @Override
-    public DefaultEntityActionOperation addQueryParameter(String key, String value) {
+    public DefaultEntityActionOperation addQueryParameter(String key,
+            String value)
+    {
         this.queryParameters.add(key, value);
         return this;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getBodyParameters()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#getBodyParameters()
      */
     @Override
-    public Map<String, Object> getBodyParameters() {
+    public Map<String, Object> getBodyParameters()
+    {
         return this.bodyParameters;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getContentType()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityOperation
+     * #getContentType()
      */
     @Override
-    public MediaType getContentType() {
+    public MediaType getContentType()
+    {
         return this.contentType;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#setContentType(javax.ws.rs.core.MediaType)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#setContentType(javax.ws.rs.core.MediaType)
      */
     @Override
-    public DefaultEntityActionOperation setContentType(MediaType contentType) {
+    public DefaultEntityActionOperation setContentType(MediaType contentType)
+    {
         this.contentType = contentType;
         return this;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#getAcceptType()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityOperation
+     * #getAcceptType()
      */
     @Override
-    public MediaType getAcceptType() {
+    public MediaType getAcceptType()
+    {
         return this.acceptType;
     }
 
@@ -186,28 +233,38 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      *            the accept type
      * @return the default action operation
      */
-    public DefaultEntityActionOperation setAcceptType(MediaType acceptType) {
+    public DefaultEntityActionOperation setAcceptType(MediaType acceptType)
+    {
         this.acceptType = acceptType;
         return this;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getVerb()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#getVerb()
      */
     @Override
-    public String getVerb() {
+    public String getVerb()
+    {
         return "POST";
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#getRequestContents()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#getRequestContents()
      */
     @Override
-    public Object getRequestContents() {
-        if (this.bodyParameters.size() == 0) {
+    public Object getRequestContents()
+    {
+        if (this.bodyParameters.size() == 0)
+        {
             return "";
-        }
-        else {
+        } else
+        {
             String jsonString = "";
             EntityActionBodyParameterMapper mapper = new EntityActionBodyParameterMapper();
             jsonString = mapper.toString(this.bodyParameters);
@@ -215,20 +272,30 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityOperation#processResponse(java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entityoperations.EntityOperation
+     * #processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException {
+    public Object processResponse(Object rawResponse) throws ServiceException
+    {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityActionOperation#addBodyParameter(java.lang.String, java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityActionOperation#addBodyParameter(java.lang.String,
+     * java.lang.Object)
      */
     @Override
-    public EntityActionOperation addBodyParameter(String key, Object value) {
+    public EntityActionOperation addBodyParameter(String key, Object value)
+    {
         this.bodyParameters.put(key, value);
         return this;
     }

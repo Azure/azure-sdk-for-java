@@ -32,11 +32,13 @@ import com.microsoft.windowsazure.services.servicebus.implementation.TopicDescri
 /**
  * Represents a topic.
  */
-public class TopicInfo extends EntryModel<TopicDescription> {
+public class TopicInfo extends EntryModel<TopicDescription>
+{
     /**
      * Creates an instance of the <code>TopicInfo</code> class.
      */
-    public TopicInfo() {
+    public TopicInfo()
+    {
         super(new Entry(), new TopicDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -44,22 +46,28 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     }
 
     /**
-     * Creates an instance of the <code>TopicInfo</code> class using the specified entry.
+     * Creates an instance of the <code>TopicInfo</code> class using the
+     * specified entry.
      * 
      * @param entry
-     *            An <code>Entry</code> object that represents the entry for the topic.
+     *            An <code>Entry</code> object that represents the entry for the
+     *            topic.
      */
-    public TopicInfo(Entry entry) {
+    public TopicInfo(Entry entry)
+    {
         super(entry, entry.getContent().getTopicDescription());
     }
 
     /**
-     * Creates an instance of the <code>TopicInfo</code> class using the specified name.
+     * Creates an instance of the <code>TopicInfo</code> class using the
+     * specified name.
      * 
      * @param path
-     *            A <code>String</code> object that represents the name for the topic.
+     *            A <code>String</code> object that represents the name for the
+     *            topic.
      */
-    public TopicInfo(String path) {
+    public TopicInfo(String path)
+    {
         this();
         setPath(path);
     }
@@ -67,9 +75,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Returns the name of the topic.
      * 
-     * @return A <code>String</code> object that represents the name of the topic.
+     * @return A <code>String</code> object that represents the name of the
+     *         topic.
      */
-    public String getPath() {
+    public String getPath()
+    {
         return getEntry().getTitle();
     }
 
@@ -79,9 +89,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @param value
      *            A <code>String</code> that represents the name of the topic.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setPath(String value) {
+    public TopicInfo setPath(String value)
+    {
         getEntry().setTitle(value);
         return this;
     }
@@ -89,9 +101,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Returns the default message time-to-live (TTL).
      * 
-     * @return A <code>Duration</code> object that represents the default message TTL.
+     * @return A <code>Duration</code> object that represents the default
+     *         message TTL.
      */
-    public Duration getDefaultMessageTimeToLive() {
+    public Duration getDefaultMessageTimeToLive()
+    {
         return getModel().getDefaultMessageTimeToLive();
     }
 
@@ -99,11 +113,14 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the default message time-to-live (TTL).
      * 
      * @param value
-     *            A <code>Duration</code> object that represents the default message TTL.
+     *            A <code>Duration</code> object that represents the default
+     *            message TTL.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setDefaultMessageTimeToLive(Duration value) {
+    public TopicInfo setDefaultMessageTimeToLive(Duration value)
+    {
         getModel().setDefaultMessageTimeToLive(value);
         return this;
     }
@@ -113,7 +130,8 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return The maximum size, in megabytes, of the topic.
      */
-    public Long getMaxSizeInMegabytes() {
+    public Long getMaxSizeInMegabytes()
+    {
         return getModel().getMaxSizeInMegabytes();
     }
 
@@ -123,9 +141,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * @param value
      *            The maximum size, in megabytes, of the topic.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setMaxSizeInMegabytes(Long value) {
+    public TopicInfo setMaxSizeInMegabytes(Long value)
+    {
         getModel().setMaxSizeInMegabytes(value);
         return this;
     }
@@ -133,9 +153,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Indicates whether duplicate message detection is required.
      * 
-     * @return <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     * @return <code>true</code> if duplicate message detection is required;
+     *         otherwise, <code>false</code>.
      */
-    public Boolean isRequiresDuplicateDetection() {
+    public Boolean isRequiresDuplicateDetection()
+    {
         return getModel().isRequiresDuplicateDetection();
     }
 
@@ -143,34 +165,43 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Specifies whether duplicate message detection is required.
      * 
      * @param value
-     *            <code>true</code> if duplicate message detection is required; otherwise, <code>false</code>.
+     *            <code>true</code> if duplicate message detection is required;
+     *            otherwise, <code>false</code>.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setRequiresDuplicateDetection(Boolean value) {
+    public TopicInfo setRequiresDuplicateDetection(Boolean value)
+    {
         getModel().setRequiresDuplicateDetection(value);
         return this;
     }
 
     /**
-     * Returns the time span during which the service bus will detect message duplication.
+     * Returns the time span during which the service bus will detect message
+     * duplication.
      * 
      * @return A <code>Duration</code> object that represents the time span for
      *         detecting message duplication.
      */
-    public Duration getDuplicateDetectionHistoryTimeWindow() {
+    public Duration getDuplicateDetectionHistoryTimeWindow()
+    {
         return getModel().getDuplicateDetectionHistoryTimeWindow();
     }
 
     /**
-     * Sets the time span during which the service bus will detect message duplication.
+     * Sets the time span during which the service bus will detect message
+     * duplication.
      * 
      * @param value
-     *            A <code>Duration</code> object that represents the time span for detecting message duplication.
+     *            A <code>Duration</code> object that represents the time span
+     *            for detecting message duplication.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setDuplicateDetectionHistoryTimeWindow(Duration value) {
+    public TopicInfo setDuplicateDetectionHistoryTimeWindow(Duration value)
+    {
         getModel().setDuplicateDetectionHistoryTimeWindow(value);
         return this;
     }
@@ -178,9 +209,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Indicates whether batch operations are enabled.
      * 
-     * @return <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     * @return <code>true</code> if batch operations are enabled; otherwise,
+     *         <code>false</code>.
      */
-    public Boolean isEnableBatchedOperations() {
+    public Boolean isEnableBatchedOperations()
+    {
         return getModel().isEnableBatchedOperations();
     }
 
@@ -188,11 +221,14 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Specifies whether batch operations are enabled.
      * 
      * @param value
-     *            <code>true</code> if batch operations are enabled; otherwise, <code>false</code>.
+     *            <code>true</code> if batch operations are enabled; otherwise,
+     *            <code>false</code>.
      * 
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setEnableBatchedOperations(Boolean value) {
+    public TopicInfo setEnableBatchedOperations(Boolean value)
+    {
         getModel().setEnableBatchedOperations(value);
         return this;
     }
@@ -202,7 +238,8 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return The size, in bytes, of the topic.
      */
-    public Long getSizeInBytes() {
+    public Long getSizeInBytes()
+    {
         return getModel().getSizeInBytes();
     }
 
@@ -211,9 +248,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @param sizeInBytes
      *            A <code>Long</code> instance of the size in bytes.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setSizeInBytes(Long sizeInBytes) {
+    public TopicInfo setSizeInBytes(Long sizeInBytes)
+    {
         getModel().setSizeInBytes(sizeInBytes);
         return this;
     }
@@ -222,20 +261,27 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the filtering message before publishing.
      * 
      * @param filteringMessageBeforePublishing
-     *            <code>true</code> if filter message before publishing, otherwise false.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            <code>true</code> if filter message before publishing,
+     *            otherwise false.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setFilteringMessageBeforePublishing(Boolean filteringMessageBeforePublishing) {
-        getModel().setFilteringMessagesBeforePublishing(filteringMessageBeforePublishing);
+    public TopicInfo setFilteringMessageBeforePublishing(
+            Boolean filteringMessageBeforePublishing)
+    {
+        getModel().setFilteringMessagesBeforePublishing(
+                filteringMessageBeforePublishing);
         return this;
     }
 
     /**
      * Checks if is filtering message before publishing.
      * 
-     * @return <code>true</code> if filter message before publishing, otherwise false.
+     * @return <code>true</code> if filter message before publishing, otherwise
+     *         false.
      */
-    public Boolean isFilteringMessageBeforePublishing() {
+    public Boolean isFilteringMessageBeforePublishing()
+    {
         return getModel().isFilteringMessagesBeforePublishing();
     }
 
@@ -243,10 +289,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the anonymous accessible.
      * 
      * @param anonymousAccessible
-     *            <code>true</code> if is anonymous accessible, otherwise <code>false</code>.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            <code>true</code> if is anonymous accessible, otherwise
+     *            <code>false</code>.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setAnonymousAccessible(Boolean anonymousAccessible) {
+    public TopicInfo setAnonymousAccessible(Boolean anonymousAccessible)
+    {
         getModel().setIsAnonymousAccessible(anonymousAccessible);
         return this;
     }
@@ -254,9 +303,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Checks if is anonymous accessible.
      * 
-     * @return <code>true</code> if is anonymous accessible, otherwise <code>false</code>.
+     * @return <code>true</code> if is anonymous accessible, otherwise
+     *         <code>false</code>.
      */
-    public Boolean isAnonymousAccessible() {
+    public Boolean isAnonymousAccessible()
+    {
         return getModel().isIsAnonymousAccessible();
     }
 
@@ -265,9 +316,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @param status
      *            the status
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setStatus(EntityStatus status) {
+    public TopicInfo setStatus(EntityStatus status)
+    {
         getModel().setStatus(status);
         return this;
     }
@@ -275,9 +328,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the status.
      * 
-     * @return An <code>EntityStatus</code> object that represents the status of the object.
+     * @return An <code>EntityStatus</code> object that represents the status of
+     *         the object.
      */
-    public EntityStatus getStatus() {
+    public EntityStatus getStatus()
+    {
         return getModel().getStatus();
     }
 
@@ -286,9 +341,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @param createdAt
      *            the created at
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setCreatedAt(Calendar createdAt) {
+    public TopicInfo setCreatedAt(Calendar createdAt)
+    {
         getModel().setCreatedAt(createdAt);
         return this;
     }
@@ -296,9 +353,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the created at.
      * 
-     * @return A <code>Calendar</code> object which represents when the topic was created.
+     * @return A <code>Calendar</code> object which represents when the topic
+     *         was created.
      */
-    public Calendar getCreatedAt() {
+    public Calendar getCreatedAt()
+    {
         return getModel().getCreatedAt();
     }
 
@@ -306,10 +365,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the updated at.
      * 
      * @param updatedAt
-     *            A <code>Calendar</code> object which represents when the topic was updated.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            A <code>Calendar</code> object which represents when the topic
+     *            was updated.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setUpdatedAt(Calendar updatedAt) {
+    public TopicInfo setUpdatedAt(Calendar updatedAt)
+    {
         getModel().setUpdatedAt(updatedAt);
         return this;
     }
@@ -317,9 +379,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the updated at.
      * 
-     * @return A <code>Calendar</code> object which represents when the topic was updated.
+     * @return A <code>Calendar</code> object which represents when the topic
+     *         was updated.
      */
-    public Calendar getUpdatedAt() {
+    public Calendar getUpdatedAt()
+    {
         return getModel().getUpdatedAt();
     }
 
@@ -327,10 +391,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the accessed at.
      * 
      * @param accessedAt
-     *            A <code>Calendar</code> instance representing when topic was last accessed at.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            A <code>Calendar</code> instance representing when topic was
+     *            last accessed at.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setAccessedAt(Calendar accessedAt) {
+    public TopicInfo setAccessedAt(Calendar accessedAt)
+    {
         getModel().setAccessedAt(accessedAt);
         return this;
     }
@@ -338,9 +405,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the accessed at.
      * 
-     * @return A <code>Calendar</code> instance representing when topic was last accessed at.
+     * @return A <code>Calendar</code> instance representing when topic was last
+     *         accessed at.
      */
-    public Calendar getAccessedAt() {
+    public Calendar getAccessedAt()
+    {
         return getModel().getAccessedAt();
     }
 
@@ -349,9 +418,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @param userMetadata
      *            A <code>String</code> represents the user metadata.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setUserMetadata(String userMetadata) {
+    public TopicInfo setUserMetadata(String userMetadata)
+    {
         getModel().setUserMetadata(userMetadata);
         return this;
     }
@@ -361,7 +432,8 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return A <code>String</code> represents the user metadata.
      */
-    public String getUserMetadata() {
+    public String getUserMetadata()
+    {
         return getModel().getUserMetadata();
     }
 
@@ -369,10 +441,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the support ordering.
      * 
      * @param supportOrdering
-     *            <code>true</code> if supports ordering, otherwise <code>false</code>.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            <code>true</code> if supports ordering, otherwise
+     *            <code>false</code>.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setSupportOrdering(Boolean supportOrdering) {
+    public TopicInfo setSupportOrdering(Boolean supportOrdering)
+    {
         getModel().setSupportOrdering(supportOrdering);
         return this;
     }
@@ -380,9 +455,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Checks if is support ordering.
      * 
-     * @return <code>true</code> if supports ordering, otherwise <code>false</code>.
+     * @return <code>true</code> if supports ordering, otherwise
+     *         <code>false</code>.
      */
-    public Boolean isSupportOrdering() {
+    public Boolean isSupportOrdering()
+    {
         return getModel().isSupportOrdering();
     }
 
@@ -391,9 +468,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @param subscriptionCount
      *            The count of the subscription.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setSubscriptionCount(Integer subscriptionCount) {
+    public TopicInfo setSubscriptionCount(Integer subscriptionCount)
+    {
         getModel().setSubscriptionCount(subscriptionCount);
         return this;
     }
@@ -403,16 +482,19 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return the count of the subscription.
      */
-    public Integer getSubscriptionCount() {
+    public Integer getSubscriptionCount()
+    {
         return getModel().getSubscriptionCount();
     }
 
     /**
      * Gets the message count details.
      * 
-     * @return A <code>MessageCountDetails</code> instance representing the details of the message count.
+     * @return A <code>MessageCountDetails</code> instance representing the
+     *         details of the message count.
      */
-    public MessageCountDetails getCountDetails() {
+    public MessageCountDetails getCountDetails()
+    {
         return getModel().getCountDetails();
     }
 
@@ -420,10 +502,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the auto delete on idle.
      * 
      * @param autoDeleteOnIdle
-     *            A <code>Duration</code> object which represents the time span of auto delete on idle.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            A <code>Duration</code> object which represents the time span
+     *            of auto delete on idle.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+    public TopicInfo setAutoDeleteOnIdle(Duration autoDeleteOnIdle)
+    {
         getModel().setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
@@ -431,9 +516,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the auto delete on idle.
      * 
-     * @return A <code>Duration</code> object which represents the time span of auto delete on idle.
+     * @return A <code>Duration</code> object which represents the time span of
+     *         auto delete on idle.
      */
-    public Duration getAutoDeleteOnIdle() {
+    public Duration getAutoDeleteOnIdle()
+    {
         return getModel().getAutoDeleteOnIdle();
     }
 
@@ -441,10 +528,13 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the partitioning policy.
      * 
      * @param partitioningPolicy
-     *            A <code>PartitioningPolicy</code> object which represents the partitioning policy.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            A <code>PartitioningPolicy</code> object which represents the
+     *            partitioning policy.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy) {
+    public TopicInfo setPartitioningPolicy(PartitioningPolicy partitioningPolicy)
+    {
         getModel().setPartitioningPolicy(partitioningPolicy);
         return this;
     }
@@ -452,9 +542,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the partitioning policy.
      * 
-     * @return A <code>PartitioningPolicy</code> object which represents the partitioning policy.
+     * @return A <code>PartitioningPolicy</code> object which represents the
+     *         partitioning policy.
      */
-    public PartitioningPolicy getPartitioningPolicy() {
+    public PartitioningPolicy getPartitioningPolicy()
+    {
         return getModel().getPartitioningPolicy();
     }
 
@@ -462,10 +554,14 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * Sets the entity availability status.
      * 
      * @param entityAvailabilityStatus
-     *            An <code>EntityAvailabilityStatus</code> instance which represents the entity availability status.
-     * @return A <code>TopicInfo</code> object that represents the updated topic.
+     *            An <code>EntityAvailabilityStatus</code> instance which
+     *            represents the entity availability status.
+     * @return A <code>TopicInfo</code> object that represents the updated
+     *         topic.
      */
-    public TopicInfo setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    public TopicInfo setEntityAvailabilityStatus(
+            EntityAvailabilityStatus entityAvailabilityStatus)
+    {
         getModel().setEntityAvailabilityStatus(entityAvailabilityStatus);
         return this;
     }
@@ -473,9 +569,11 @@ public class TopicInfo extends EntryModel<TopicDescription> {
     /**
      * Gets the entity availability status.
      * 
-     * @return An <code>EntityAvailabilityStatus</code> instance which represents the entity availability status.
+     * @return An <code>EntityAvailabilityStatus</code> instance which
+     *         represents the entity availability status.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    public EntityAvailabilityStatus getEntityAvailabilityStatus()
+    {
         return getModel().getEntityAvailabilityStatus();
     }
 
@@ -484,7 +582,8 @@ public class TopicInfo extends EntryModel<TopicDescription> {
      * 
      * @return the uri
      */
-    public URI getUri() {
+    public URI getUri()
+    {
         return URI.create(getEntry().getId());
     }
 }

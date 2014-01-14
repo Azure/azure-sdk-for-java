@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * Specifies the type of a blob.
  */
-public enum BlobType {
+public enum BlobType
+{
     /**
      * Specifies the blob type is not specified.
      */
@@ -41,24 +42,29 @@ public enum BlobType {
     PAGE_BLOB;
 
     /**
-     * Returns the enum value representing the blob type for the specified string.
+     * Returns the enum value representing the blob type for the specified
+     * string.
      * 
      * @param typeString
-     *            A <code>String</code> that represents a blob type, such as "blockblob" or "pageblob".
+     *            A <code>String</code> that represents a blob type, such as
+     *            "blockblob" or "pageblob".
      * 
-     * @return A <code>BlobType</code> value corresponding to the string specified by <code>typeString</code>.
+     * @return A <code>BlobType</code> value corresponding to the string
+     *         specified by <code>typeString</code>.
      */
-    public static BlobType parse(final String typeString) {
-        if (Utility.isNullOrEmpty(typeString)) {
+    public static BlobType parse(final String typeString)
+    {
+        if (Utility.isNullOrEmpty(typeString))
+        {
             return UNSPECIFIED;
-        }
-        else if ("blockblob".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("blockblob".equals(typeString.toLowerCase(Locale.US)))
+        {
             return BLOCK_BLOB;
-        }
-        else if ("pageblob".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("pageblob".equals(typeString.toLowerCase(Locale.US)))
+        {
             return PAGE_BLOB;
-        }
-        else {
+        } else
+        {
             return UNSPECIFIED;
         }
     }

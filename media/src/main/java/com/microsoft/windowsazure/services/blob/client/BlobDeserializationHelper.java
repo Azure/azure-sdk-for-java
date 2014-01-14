@@ -34,11 +34,14 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.DeserializationHelper;
 
 /**
- * RESERVED FOR INTERNAL USE. Class to provide object deserialization for blobs and containers.
+ * RESERVED FOR INTERNAL USE. Class to provide object deserialization for blobs
+ * and containers.
  */
-final class BlobDeserializationHelper {
+final class BlobDeserializationHelper
+{
     /**
-     * Reserved for internal use. Populates the blob from an XMLStreamReader, reader must be at Start element of Blob
+     * Reserved for internal use. Populates the blob from an XMLStreamReader,
+     * reader must be at Start element of Blob
      * 
      * @param xmlr
      *            the XMLStreamReader to read from
@@ -52,10 +55,13 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    protected static CloudBlob readBlob(final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
-            final CloudBlobContainer container) throws XMLStreamException, ParseException, URISyntaxException,
-            StorageException {
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOB_ELEMENT);
+    protected static CloudBlob readBlob(final XMLStreamReader xmlr,
+            final CloudBlobClient serviceClient,
+            final CloudBlobContainer container) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.BLOB_ELEMENT);
 
         String blobName = Constants.EMPTY_STRING;
 
@@ -67,102 +73,140 @@ final class BlobDeserializationHelper {
 
         int eventType = xmlr.getEventType();
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(Constants.URL_ELEMENT)) {
-                    urlString = Utility.readElementFromXMLReader(xmlr, Constants.URL_ELEMENT);
-                }
-                else if (name.equals(BlobConstants.SNAPSHOT_ELEMENT)) {
-                    snapshotID = Utility.readElementFromXMLReader(xmlr, BlobConstants.SNAPSHOT_ELEMENT);
-                }
-                else if (name.equals(Constants.NAME_ELEMENT)) {
-                    blobName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
-                }
-                else if (name.equals(BlobConstants.PROPERTIES)) {
-                    properties = BlobDeserializationHelper.readBlobProperties(xmlr);
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
-                }
-                else if (name.equals(Constants.METADATA_ELEMENT)) {
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(Constants.URL_ELEMENT))
+                {
+                    urlString = Utility.readElementFromXMLReader(xmlr,
+                            Constants.URL_ELEMENT);
+                } else if (name.equals(BlobConstants.SNAPSHOT_ELEMENT))
+                {
+                    snapshotID = Utility.readElementFromXMLReader(xmlr,
+                            BlobConstants.SNAPSHOT_ELEMENT);
+                } else if (name.equals(Constants.NAME_ELEMENT))
+                {
+                    blobName = Utility.readElementFromXMLReader(xmlr,
+                            Constants.NAME_ELEMENT);
+                } else if (name.equals(BlobConstants.PROPERTIES))
+                {
+                    properties = BlobDeserializationHelper
+                            .readBlobProperties(xmlr);
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            BlobConstants.PROPERTIES);
+                } else if (name.equals(Constants.METADATA_ELEMENT))
+                {
                     metadata = DeserializationHelper.parseMetadateFromXML(xmlr);
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
-                }
-                else if (name.equals(Constants.COPY_ID_ELEMENT)) {
-                    if (copyState == null) {
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            Constants.METADATA_ELEMENT);
+                } else if (name.equals(Constants.COPY_ID_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
-                    copyState.setCopyId(Utility.readElementFromXMLReader(xmlr, Constants.COPY_ID_ELEMENT));
-                }
-                else if (name.equals(Constants.COPY_COMPLETION_TIME_ELEMENT)) {
-                    if (copyState == null) {
+                    copyState.setCopyId(Utility.readElementFromXMLReader(xmlr,
+                            Constants.COPY_ID_ELEMENT));
+                } else if (name.equals(Constants.COPY_COMPLETION_TIME_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
-                    copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(Utility
-                            .readElementFromXMLReader(xmlr, Constants.COPY_COMPLETION_TIME_ELEMENT)));
-                }
-                else if (name.equals(Constants.COPY_STATUS_ELEMENT)) {
-                    if (copyState == null) {
+                    copyState
+                            .setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            Constants.COPY_COMPLETION_TIME_ELEMENT)));
+                } else if (name.equals(Constants.COPY_STATUS_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
-                    copyState.setStatus(CopyStatus.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.COPY_STATUS_ELEMENT)));
-                }
-                else if (name.equals(Constants.COPY_SOURCE_ELEMENT)) {
-                    if (copyState == null) {
+                    copyState.setStatus(CopyStatus.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.COPY_STATUS_ELEMENT)));
+                } else if (name.equals(Constants.COPY_SOURCE_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
-                    copyState.setSource(new URI(Utility.readElementFromXMLReader(xmlr, Constants.COPY_SOURCE_ELEMENT)));
-                }
-                else if (name.equals(Constants.COPY_PROGRESS_ELEMENT)) {
-                    if (copyState == null) {
+                    copyState.setSource(new URI(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.COPY_SOURCE_ELEMENT)));
+                } else if (name.equals(Constants.COPY_PROGRESS_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
 
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.COPY_PROGRESS_ELEMENT);
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, Constants.COPY_PROGRESS_ELEMENT);
                     String[] progressSequence = tempString.split("/");
-                    copyState.setBytesCopied(Long.parseLong(progressSequence[0]));
-                    copyState.setTotalBytes(Long.parseLong(progressSequence[1]));
-                }
-                else if (name.equals(Constants.COPY_STATUS_DESCRIPTION_ELEMENT)) {
-                    if (copyState == null) {
+                    copyState.setBytesCopied(Long
+                            .parseLong(progressSequence[0]));
+                    copyState
+                            .setTotalBytes(Long.parseLong(progressSequence[1]));
+                } else if (name
+                        .equals(Constants.COPY_STATUS_DESCRIPTION_ELEMENT))
+                {
+                    if (copyState == null)
+                    {
                         copyState = new CopyState();
                     }
-                    copyState.setStatusDescription(Utility.readElementFromXMLReader(xmlr,
-                            Constants.COPY_STATUS_DESCRIPTION_ELEMENT));
+                    copyState.setStatusDescription(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.COPY_STATUS_DESCRIPTION_ELEMENT));
                 }
-            }
-            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.BLOB_ELEMENT)) {
+            } else if (eventType == XMLStreamConstants.END_ELEMENT
+                    && name.equals(BlobConstants.BLOB_ELEMENT))
+            {
                 break;
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.BLOB_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                BlobConstants.BLOB_ELEMENT);
 
         // Assemble and return
-        if (properties != null) {
+        if (properties != null)
+        {
             CloudBlob retBlob = null;
-            final int blobNameSectionIndex = urlString.lastIndexOf("/".concat(blobName));
-            final URI baseUri = new URI(urlString.substring(0, blobNameSectionIndex + 1));
+            final int blobNameSectionIndex = urlString.lastIndexOf("/"
+                    .concat(blobName));
+            final URI baseUri = new URI(urlString.substring(0,
+                    blobNameSectionIndex + 1));
             String query = null;
-            if (blobNameSectionIndex + 1 + blobName.length() < urlString.length()) {
+            if (blobNameSectionIndex + 1 + blobName.length() < urlString
+                    .length())
+            {
                 // Snapshot blob URI
                 // example:http://<yourstorageaccount>.blob.core.windows.net/<yourcontainer>/<yourblobname>?snapshot=2009-12-03T15%3a26%3a19.4466877Z
-                query = urlString.substring(blobNameSectionIndex + blobName.length() + 1);
+                query = urlString.substring(blobNameSectionIndex
+                        + blobName.length() + 1);
             }
 
-            final URI blobURI = new URI(baseUri.getScheme(), baseUri.getAuthority(), baseUri.getRawPath().concat(
-                    blobName), query, null);
+            final URI blobURI = new URI(baseUri.getScheme(),
+                    baseUri.getAuthority(), baseUri.getRawPath().concat(
+                            blobName), query, null);
 
-            if (properties.getBlobType() == BlobType.BLOCK_BLOB) {
+            if (properties.getBlobType() == BlobType.BLOCK_BLOB)
+            {
                 retBlob = new CloudBlockBlob(blobURI, serviceClient, container);
-            }
-            else if (properties.getBlobType() == BlobType.PAGE_BLOB) {
+            } else if (properties.getBlobType() == BlobType.PAGE_BLOB)
+            {
                 retBlob = new CloudPageBlob(blobURI, serviceClient, container);
-            }
-            else {
-                throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+            } else
+            {
+                throw new StorageException(
+                        StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                         "The response received is invalid or improperly formatted.",
                         Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
             }
@@ -173,16 +217,18 @@ final class BlobDeserializationHelper {
             retBlob.metadata = metadata;
             retBlob.copyState = copyState;
             return retBlob;
-        }
-        else {
-            throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+        } else
+        {
+            throw new StorageException(
+                    StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                     "The response received is invalid or improperly formatted.",
                     Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
         }
     }
 
     /**
-     * Reads BlobItems from the XMLStreamReader, reader must be at Start element of BlobsElement
+     * Reads BlobItems from the XMLStreamReader, reader must be at Start element
+     * of BlobsElement
      * 
      * @param xmlr
      *            the XMLStreamReader to read from
@@ -197,39 +243,54 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    public static ArrayList<BlockEntry> readBlobBlocks(final XMLStreamReader xmlr, final BlockSearchMode searchMode)
-            throws XMLStreamException, StorageException {
+    public static ArrayList<BlockEntry> readBlobBlocks(
+            final XMLStreamReader xmlr, final BlockSearchMode searchMode)
+            throws XMLStreamException, StorageException
+    {
         int eventType = xmlr.getEventType();
         final ArrayList<BlockEntry> retBlocks = new ArrayList<BlockEntry>();
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOCK_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.BLOCK_ELEMENT);
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext() && BlobConstants.BLOCK_ELEMENT.equals(xmlr.getName().toString())) {
+        while (xmlr.hasNext()
+                && BlobConstants.BLOCK_ELEMENT
+                        .equals(xmlr.getName().toString()))
+        {
             String blockName = null;
             long blockSize = -1;
 
             // Read a block
-            while (xmlr.hasNext()) {
+            while (xmlr.hasNext())
+            {
                 eventType = xmlr.next();
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT) {
-                    if (name.equals(Constants.NAME_ELEMENT)) {
-                        blockName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
-                    }
-                    else if (name.equals(BlobConstants.SIZE_ELEMENT)) {
-                        final String sizeString = Utility.readElementFromXMLReader(xmlr, BlobConstants.SIZE_ELEMENT);
+                if (eventType == XMLStreamConstants.START_ELEMENT)
+                {
+                    if (name.equals(Constants.NAME_ELEMENT))
+                    {
+                        blockName = Utility.readElementFromXMLReader(xmlr,
+                                Constants.NAME_ELEMENT);
+                    } else if (name.equals(BlobConstants.SIZE_ELEMENT))
+                    {
+                        final String sizeString = Utility
+                                .readElementFromXMLReader(xmlr,
+                                        BlobConstants.SIZE_ELEMENT);
                         blockSize = Long.parseLong(sizeString);
-                    }
-                    else {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                    } else
+                    {
+                        throw new StorageException(
+                                StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response received is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                                Constants.HeaderConstants.HTTP_UNUSED_306,
+                                null, null);
                     }
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT) {
-                    final BlockEntry newBlock = new BlockEntry(blockName, searchMode);
+                } else if (eventType == XMLStreamConstants.END_ELEMENT)
+                {
+                    final BlockEntry newBlock = new BlockEntry(blockName,
+                            searchMode);
                     newBlock.setSize(blockSize);
                     retBlocks.add(newBlock);
                     break;
@@ -254,33 +315,45 @@ final class BlobDeserializationHelper {
      * @throws URISyntaxException
      *             if the uri is invalid
      */
-    protected static BlobContainerAttributes readBlobContainerAttributes(final XMLStreamReader xmlr)
-            throws XMLStreamException, ParseException, URISyntaxException {
+    protected static BlobContainerAttributes readBlobContainerAttributes(
+            final XMLStreamReader xmlr) throws XMLStreamException,
+            ParseException, URISyntaxException
+    {
         int eventType = xmlr.getEventType();
 
         final BlobContainerAttributes attributes = new BlobContainerAttributes();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(BlobConstants.PROPERTIES)) {
-                    attributes.setProperties(BlobDeserializationHelper.readBlobContainerProperties(xmlr));
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
-                }
-                else if (name.equals(Constants.URL_ELEMENT)) {
-                    attributes.setUri(new URI(Utility.readElementFromXMLReader(xmlr, Constants.URL_ELEMENT)));
-                }
-                else if (name.equals(Constants.NAME_ELEMENT)) {
-                    attributes.setName(Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT));
-                }
-                else if (name.equals(Constants.METADATA_ELEMENT)) {
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(BlobConstants.PROPERTIES))
+                {
+                    attributes.setProperties(BlobDeserializationHelper
+                            .readBlobContainerProperties(xmlr));
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            BlobConstants.PROPERTIES);
+                } else if (name.equals(Constants.URL_ELEMENT))
+                {
+                    attributes.setUri(new URI(Utility.readElementFromXMLReader(
+                            xmlr, Constants.URL_ELEMENT)));
+                } else if (name.equals(Constants.NAME_ELEMENT))
+                {
+                    attributes.setName(Utility.readElementFromXMLReader(xmlr,
+                            Constants.NAME_ELEMENT));
+                } else if (name.equals(Constants.METADATA_ELEMENT))
+                {
                     // parse metadata
-                    attributes.setMetadata(DeserializationHelper.parseMetadateFromXML(xmlr));
-                    xmlr.require(XMLStreamConstants.END_ELEMENT, null, Constants.METADATA_ELEMENT);
+                    attributes.setMetadata(DeserializationHelper
+                            .parseMetadateFromXML(xmlr));
+                    xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                            Constants.METADATA_ELEMENT);
                 }
-            }
-            else if (eventType == XMLStreamConstants.END_ELEMENT && name.equals(BlobConstants.CONTAINER_ELEMENT)) {
+            } else if (eventType == XMLStreamConstants.END_ELEMENT
+                    && name.equals(BlobConstants.CONTAINER_ELEMENT))
+            {
                 break;
             }
         }
@@ -289,7 +362,8 @@ final class BlobDeserializationHelper {
     }
 
     /**
-     * Populates the object from the XMLStreamReader, reader must be at Start element of Properties
+     * Populates the object from the XMLStreamReader, reader must be at Start
+     * element of Properties
      * 
      * @param xmlr
      *            the XMLStreamReader object
@@ -298,39 +372,52 @@ final class BlobDeserializationHelper {
      * @throws ParseException
      *             if a date value is not correctly encoded
      */
-    protected static BlobContainerProperties readBlobContainerProperties(final XMLStreamReader xmlr)
-            throws XMLStreamException, ParseException {
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.PROPERTIES);
+    protected static BlobContainerProperties readBlobContainerProperties(
+            final XMLStreamReader xmlr) throws XMLStreamException,
+            ParseException
+    {
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.PROPERTIES);
         int eventType = xmlr.getEventType();
         final BlobContainerProperties properties = new BlobContainerProperties();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(Constants.LAST_MODIFIED_ELEMENT)) {
-                    properties.setLastModified(Utility.parseRFC1123DateFromStringInGMT(Utility
-                            .readElementFromXMLReader(xmlr, Constants.LAST_MODIFIED_ELEMENT)));
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(Constants.LAST_MODIFIED_ELEMENT))
+                {
+                    properties.setLastModified(Utility
+                            .parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(xmlr,
+                                            Constants.LAST_MODIFIED_ELEMENT)));
+                } else if (name.equals(Constants.ETAG_ELEMENT))
+                {
+                    properties.setEtag(Utility.readElementFromXMLReader(xmlr,
+                            Constants.ETAG_ELEMENT));
+                } else if (name.equals(Constants.LEASE_STATUS_ELEMENT))
+                {
+                    properties.setLeaseStatus(LeaseStatus.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.LEASE_STATUS_ELEMENT)));
+                } else if (name.equals(Constants.LEASE_STATE_ELEMENT))
+                {
+                    properties.setLeaseState(LeaseState.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.LEASE_STATE_ELEMENT)));
+                } else if (name.equals(Constants.LEASE_DURATION_ELEMENT))
+                {
+                    properties.setLeaseDuration(LeaseDuration.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.LEASE_DURATION_ELEMENT)));
                 }
-                else if (name.equals(Constants.ETAG_ELEMENT)) {
-                    properties.setEtag(Utility.readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT));
-                }
-                else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
-                    properties.setLeaseStatus(LeaseStatus.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.LEASE_STATUS_ELEMENT)));
-                }
-                else if (name.equals(Constants.LEASE_STATE_ELEMENT)) {
-                    properties.setLeaseState(LeaseState.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.LEASE_STATE_ELEMENT)));
-                }
-                else if (name.equals(Constants.LEASE_DURATION_ELEMENT)) {
-                    properties.setLeaseDuration(LeaseDuration.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.LEASE_DURATION_ELEMENT)));
-                }
-            }
-            else {
+            } else
+            {
                 // expect end of properties
-                xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
+                xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                        BlobConstants.PROPERTIES);
                 break;
             }
         }
@@ -339,7 +426,8 @@ final class BlobDeserializationHelper {
     }
 
     /**
-     * Reads BlobItems from the XMLStreamReader, reader must be at Start element of BlobsElement
+     * Reads BlobItems from the XMLStreamReader, reader must be at Start element
+     * of BlobsElement
      * 
      * @param xmlr
      *            the XMLStreamReader to read from
@@ -356,43 +444,55 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    public static ArrayList<ListBlobItem> readBlobItems(final XMLStreamReader xmlr,
-            final CloudBlobClient serviceClient, final CloudBlobContainer container) throws XMLStreamException,
-            ParseException, URISyntaxException, StorageException {
+    public static ArrayList<ListBlobItem> readBlobItems(
+            final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
+            final CloudBlobContainer container) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
         int eventType = xmlr.getEventType();
         final ArrayList<ListBlobItem> retBlobs = new ArrayList<ListBlobItem>();
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOBS_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.BLOBS_ELEMENT);
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(BlobConstants.BLOB_ELEMENT)) {
-                    retBlobs.add(BlobDeserializationHelper.readBlob(xmlr, serviceClient, container));
-                }
-                else if (name.equals(BlobConstants.BLOB_PREFIX_ELEMENT)) {
-                    retBlobs.add(BlobDeserializationHelper.readDirectory(xmlr, serviceClient, container));
-                }
-                else {
-                    throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(BlobConstants.BLOB_ELEMENT))
+                {
+                    retBlobs.add(BlobDeserializationHelper.readBlob(xmlr,
+                            serviceClient, container));
+                } else if (name.equals(BlobConstants.BLOB_PREFIX_ELEMENT))
+                {
+                    retBlobs.add(BlobDeserializationHelper.readDirectory(xmlr,
+                            serviceClient, container));
+                } else
+                {
+                    throw new StorageException(
+                            StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                             "The response received is invalid or improperly formatted.",
-                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                            Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                            null);
                 }
-            }
-            else {
+            } else
+            {
                 break;
             }
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.BLOBS_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                BlobConstants.BLOBS_ELEMENT);
         return retBlobs;
     }
 
     /**
-     * Populates the object from the XMLStreamReader, reader must be at Start element of Properties
+     * Populates the object from the XMLStreamReader, reader must be at Start
+     * element of Properties
      * 
      * @param xmlr
      *            the XMLStreamReader object
@@ -404,96 +504,129 @@ final class BlobDeserializationHelper {
      * @throws StorageException
      * @throws URISyntaxException
      */
-    protected static BlobProperties readBlobProperties(final XMLStreamReader xmlr) throws XMLStreamException,
-            ParseException, StorageException, URISyntaxException {
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.PROPERTIES);
+    protected static BlobProperties readBlobProperties(
+            final XMLStreamReader xmlr) throws XMLStreamException,
+            ParseException, StorageException, URISyntaxException
+    {
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.PROPERTIES);
         int eventType = xmlr.getEventType();
         final BlobProperties properties = new BlobProperties();
 
-        while (xmlr.hasNext()) {
+        while (xmlr.hasNext())
+        {
             eventType = xmlr.next();
             final String name = xmlr.getName().toString();
 
-            if (eventType == XMLStreamConstants.START_ELEMENT) {
-                if (name.equals(Constants.LAST_MODIFIED_ELEMENT)) {
-                    properties.setLastModified(Utility.parseRFC1123DateFromStringInGMT(Utility
-                            .readElementFromXMLReader(xmlr, Constants.LAST_MODIFIED_ELEMENT)));
-                }
-                else if (name.equals(Constants.ETAG_ELEMENT)) {
-                    properties.setEtag(Utility.readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT));
-                }
-                else if (name.equals(Constants.HeaderConstants.CONTENT_LENGTH)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CONTENT_LENGTH);
+            if (eventType == XMLStreamConstants.START_ELEMENT)
+            {
+                if (name.equals(Constants.LAST_MODIFIED_ELEMENT))
+                {
+                    properties.setLastModified(Utility
+                            .parseRFC1123DateFromStringInGMT(Utility
+                                    .readElementFromXMLReader(xmlr,
+                                            Constants.LAST_MODIFIED_ELEMENT)));
+                } else if (name.equals(Constants.ETAG_ELEMENT))
+                {
+                    properties.setEtag(Utility.readElementFromXMLReader(xmlr,
+                            Constants.ETAG_ELEMENT));
+                } else if (name
+                        .equals(Constants.HeaderConstants.CONTENT_LENGTH))
+                {
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, Constants.HeaderConstants.CONTENT_LENGTH);
                     properties.setLength(Long.parseLong(tempString));
-                }
-                else if (name.equals(Constants.HeaderConstants.CONTENT_TYPE)) {
-                    properties.setContentType(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CONTENT_TYPE));
-                }
-                else if (name.equals(Constants.HeaderConstants.CONTENT_ENCODING)) {
-                    properties.setContentEncoding(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CONTENT_ENCODING));
-                }
-                else if (name.equals(Constants.HeaderConstants.CONTENT_LANGUAGE)) {
-                    properties.setContentLanguage(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CONTENT_LANGUAGE));
-                }
-                else if (name.equals(Constants.HeaderConstants.CONTENT_MD5)) {
-                    properties.setContentMD5(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CONTENT_MD5));
-                }
-                else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
-                    properties.setCacheControl(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CACHE_CONTROL));
-                }
-                else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL)) {
-                    properties.setCacheControl(Utility.readElementFromXMLReader(xmlr,
-                            Constants.HeaderConstants.CACHE_CONTROL));
-                }
-                else if (name.equals(BlobConstants.SEQUENCE_NUMBER)) {
-                    Utility.readElementFromXMLReader(xmlr, BlobConstants.SEQUENCE_NUMBER);
-                }
-                else if (name.equals(BlobConstants.BLOB_TYPE_ELEMENT)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, BlobConstants.BLOB_TYPE_ELEMENT);
-                    if (tempString.equals(BlobConstants.BLOCK_BLOB_VALUE)) {
+                } else if (name.equals(Constants.HeaderConstants.CONTENT_TYPE))
+                {
+                    properties.setContentType(Utility.readElementFromXMLReader(
+                            xmlr, Constants.HeaderConstants.CONTENT_TYPE));
+                } else if (name
+                        .equals(Constants.HeaderConstants.CONTENT_ENCODING))
+                {
+                    properties
+                            .setContentEncoding(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            Constants.HeaderConstants.CONTENT_ENCODING));
+                } else if (name
+                        .equals(Constants.HeaderConstants.CONTENT_LANGUAGE))
+                {
+                    properties
+                            .setContentLanguage(Utility
+                                    .readElementFromXMLReader(
+                                            xmlr,
+                                            Constants.HeaderConstants.CONTENT_LANGUAGE));
+                } else if (name.equals(Constants.HeaderConstants.CONTENT_MD5))
+                {
+                    properties.setContentMD5(Utility.readElementFromXMLReader(
+                            xmlr, Constants.HeaderConstants.CONTENT_MD5));
+                } else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL))
+                {
+                    properties.setCacheControl(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.HeaderConstants.CACHE_CONTROL));
+                } else if (name.equals(Constants.HeaderConstants.CACHE_CONTROL))
+                {
+                    properties.setCacheControl(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.HeaderConstants.CACHE_CONTROL));
+                } else if (name.equals(BlobConstants.SEQUENCE_NUMBER))
+                {
+                    Utility.readElementFromXMLReader(xmlr,
+                            BlobConstants.SEQUENCE_NUMBER);
+                } else if (name.equals(BlobConstants.BLOB_TYPE_ELEMENT))
+                {
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, BlobConstants.BLOB_TYPE_ELEMENT);
+                    if (tempString.equals(BlobConstants.BLOCK_BLOB_VALUE))
+                    {
                         properties.setBlobType(BlobType.BLOCK_BLOB);
-                    }
-                    else if (tempString.equals(BlobConstants.PAGE_BLOB_VALUE)) {
+                    } else if (tempString.equals(BlobConstants.PAGE_BLOB_VALUE))
+                    {
                         properties.setBlobType(BlobType.PAGE_BLOB);
-                    }
-                    else {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                    } else
+                    {
+                        throw new StorageException(
+                                StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response received is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                                Constants.HeaderConstants.HTTP_UNUSED_306,
+                                null, null);
                     }
-                }
-                else if (name.equals(Constants.LEASE_STATUS_ELEMENT)) {
-                    final String tempString = Utility.readElementFromXMLReader(xmlr, Constants.LEASE_STATUS_ELEMENT);
-                    if (tempString.equals(Constants.LOCKED_VALUE.toLowerCase())) {
+                } else if (name.equals(Constants.LEASE_STATUS_ELEMENT))
+                {
+                    final String tempString = Utility.readElementFromXMLReader(
+                            xmlr, Constants.LEASE_STATUS_ELEMENT);
+                    if (tempString.equals(Constants.LOCKED_VALUE.toLowerCase()))
+                    {
                         properties.setLeaseStatus(LeaseStatus.LOCKED);
-                    }
-                    else if (tempString.equals(Constants.UNLOCKED_VALUE.toLowerCase())) {
+                    } else if (tempString.equals(Constants.UNLOCKED_VALUE
+                            .toLowerCase()))
+                    {
                         properties.setLeaseStatus(LeaseStatus.UNLOCKED);
-                    }
-                    else {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                    } else
+                    {
+                        throw new StorageException(
+                                StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response received is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                                Constants.HeaderConstants.HTTP_UNUSED_306,
+                                null, null);
                     }
+                } else if (name.equals(Constants.LEASE_STATE_ELEMENT))
+                {
+                    properties.setLeaseState(LeaseState.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.LEASE_STATE_ELEMENT)));
+                } else if (name.equals(Constants.LEASE_DURATION_ELEMENT))
+                {
+                    properties.setLeaseDuration(LeaseDuration.parse(Utility
+                            .readElementFromXMLReader(xmlr,
+                                    Constants.LEASE_DURATION_ELEMENT)));
                 }
-                else if (name.equals(Constants.LEASE_STATE_ELEMENT)) {
-                    properties.setLeaseState(LeaseState.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.LEASE_STATE_ELEMENT)));
-                }
-                else if (name.equals(Constants.LEASE_DURATION_ELEMENT)) {
-                    properties.setLeaseDuration(LeaseDuration.parse(Utility.readElementFromXMLReader(xmlr,
-                            Constants.LEASE_DURATION_ELEMENT)));
-                }
-            }
-            else if (eventType == XMLStreamConstants.END_ELEMENT) {
+            } else if (eventType == XMLStreamConstants.END_ELEMENT)
+            {
                 // expect end of properties
-                xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.PROPERTIES);
+                xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                        BlobConstants.PROPERTIES);
                 break;
             }
         }
@@ -514,26 +647,33 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    protected static CloudBlobContainer readContainer(final XMLStreamReader xmlr, final CloudBlobClient serviceClient)
-            throws XMLStreamException, ParseException, URISyntaxException, StorageException {
+    protected static CloudBlobContainer readContainer(
+            final XMLStreamReader xmlr, final CloudBlobClient serviceClient)
+            throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException
+    {
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.CONTAINER_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.CONTAINER_ELEMENT);
 
-        final BlobContainerAttributes attributes = BlobDeserializationHelper.readBlobContainerAttributes(xmlr);
+        final BlobContainerAttributes attributes = BlobDeserializationHelper
+                .readBlobContainerAttributes(xmlr);
 
-        final CloudBlobContainer retContainer = new CloudBlobContainer(attributes.getUri(), serviceClient);
+        final CloudBlobContainer retContainer = new CloudBlobContainer(
+                attributes.getUri(), serviceClient);
         retContainer.setMetadata(attributes.getMetadata());
         retContainer.setName(attributes.getName());
         retContainer.setProperties(attributes.getProperties());
         retContainer.setUri(attributes.getUri());
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.CONTAINER_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                BlobConstants.CONTAINER_ELEMENT);
         return retContainer;
     }
 
     /**
-     * Populates CloudBlobContainer objects from the XMLStreamReader, reader must be at Start element of
-     * ContainersElement
+     * Populates CloudBlobContainer objects from the XMLStreamReader, reader
+     * must be at Start element of ContainersElement
      * 
      * @param xmlr
      *            the XMLStreamReader object
@@ -547,27 +687,36 @@ final class BlobDeserializationHelper {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static ArrayList<CloudBlobContainer> readContainers(final XMLStreamReader xmlr,
-            final CloudBlobClient serviceClient) throws XMLStreamException, ParseException, URISyntaxException,
-            StorageException {
+    public static ArrayList<CloudBlobContainer> readContainers(
+            final XMLStreamReader xmlr, final CloudBlobClient serviceClient)
+            throws XMLStreamException, ParseException, URISyntaxException,
+            StorageException
+    {
         int eventType = xmlr.getEventType();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.CONTAINERS_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.CONTAINERS_ELEMENT);
 
         final ArrayList<CloudBlobContainer> containers = new ArrayList<CloudBlobContainer>();
 
         eventType = xmlr.next();
-        while (eventType == XMLStreamConstants.START_ELEMENT && xmlr.hasName()
-                && BlobConstants.CONTAINER_ELEMENT.equals(xmlr.getName().toString())) {
-            containers.add(BlobDeserializationHelper.readContainer(xmlr, serviceClient));
+        while (eventType == XMLStreamConstants.START_ELEMENT
+                && xmlr.hasName()
+                && BlobConstants.CONTAINER_ELEMENT.equals(xmlr.getName()
+                        .toString()))
+        {
+            containers.add(BlobDeserializationHelper.readContainer(xmlr,
+                    serviceClient));
             eventType = xmlr.next();
         }
 
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.CONTAINERS_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                BlobConstants.CONTAINERS_ELEMENT);
         return containers;
     }
 
     /**
-     * Populates the CloudBlobDirectory from an XMLStreamReader, reader must be at Start element of BlobPrefix
+     * Populates the CloudBlobDirectory from an XMLStreamReader, reader must be
+     * at Start element of BlobPrefix
      * 
      * @param xmlr
      *            the XMLStreamReader to read from
@@ -584,26 +733,33 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    protected static CloudBlobDirectory readDirectory(final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
-            final CloudBlobContainer container) throws XMLStreamException, ParseException, URISyntaxException,
-            StorageException {
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.BLOB_PREFIX_ELEMENT);
+    protected static CloudBlobDirectory readDirectory(
+            final XMLStreamReader xmlr, final CloudBlobClient serviceClient,
+            final CloudBlobContainer container) throws XMLStreamException,
+            ParseException, URISyntaxException, StorageException
+    {
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.BLOB_PREFIX_ELEMENT);
 
         // Move to Name element
         xmlr.next();
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, Constants.NAME_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                Constants.NAME_ELEMENT);
 
-        final String prefixName = Utility.readElementFromXMLReader(xmlr, Constants.NAME_ELEMENT);
+        final String prefixName = Utility.readElementFromXMLReader(xmlr,
+                Constants.NAME_ELEMENT);
 
         // Move from End name element to end prefix element
         xmlr.next();
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, BlobConstants.BLOB_PREFIX_ELEMENT);
+        xmlr.require(XMLStreamConstants.END_ELEMENT, null,
+                BlobConstants.BLOB_PREFIX_ELEMENT);
 
         return container.getDirectoryReference(prefixName);
     }
 
     /**
-     * Reads PageRanges from the XMLStreamReader, reader must be at Start element of PageRangeElement
+     * Reads PageRanges from the XMLStreamReader, reader must be at Start
+     * element of PageRangeElement
      * 
      * @param xmlr
      *            the XMLStreamReader to read from
@@ -616,46 +772,64 @@ final class BlobDeserializationHelper {
      *             if the uri is invalid
      * @throws StorageException
      */
-    public static ArrayList<PageRange> readPageRanges(final XMLStreamReader xmlr) throws XMLStreamException,
-            StorageException {
+    public static ArrayList<PageRange> readPageRanges(final XMLStreamReader xmlr)
+            throws XMLStreamException, StorageException
+    {
         int eventType = xmlr.getEventType();
         final ArrayList<PageRange> retRanges = new ArrayList<PageRange>();
 
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, BlobConstants.PAGE_RANGE_ELEMENT);
+        xmlr.require(XMLStreamConstants.START_ELEMENT, null,
+                BlobConstants.PAGE_RANGE_ELEMENT);
 
         // check if there are more events in the input stream
-        while (xmlr.hasNext() && BlobConstants.PAGE_RANGE_ELEMENT.equals(xmlr.getName().toString())) {
+        while (xmlr.hasNext()
+                && BlobConstants.PAGE_RANGE_ELEMENT.equals(xmlr.getName()
+                        .toString()))
+        {
             long startOffset = -1;
             long endOffset = -1;
 
             // Read a Page Range
-            while (xmlr.hasNext()) {
+            while (xmlr.hasNext())
+            {
                 eventType = xmlr.next();
                 final String name = xmlr.getName().toString();
 
-                if (eventType == XMLStreamConstants.START_ELEMENT) {
-                    if (name.equals(BlobConstants.START_ELEMENT)) {
-                        final String sizeString = Utility.readElementFromXMLReader(xmlr, BlobConstants.START_ELEMENT);
+                if (eventType == XMLStreamConstants.START_ELEMENT)
+                {
+                    if (name.equals(BlobConstants.START_ELEMENT))
+                    {
+                        final String sizeString = Utility
+                                .readElementFromXMLReader(xmlr,
+                                        BlobConstants.START_ELEMENT);
                         startOffset = Long.parseLong(sizeString);
-                    }
-                    else if (name.equals(Constants.END_ELEMENT)) {
-                        final String sizeString = Utility.readElementFromXMLReader(xmlr, Constants.END_ELEMENT);
+                    } else if (name.equals(Constants.END_ELEMENT))
+                    {
+                        final String sizeString = Utility
+                                .readElementFromXMLReader(xmlr,
+                                        Constants.END_ELEMENT);
                         endOffset = Long.parseLong(sizeString);
-                    }
-                    else {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                    } else
+                    {
+                        throw new StorageException(
+                                StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response received is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                                Constants.HeaderConstants.HTTP_UNUSED_306,
+                                null, null);
                     }
-                }
-                else if (eventType == XMLStreamConstants.END_ELEMENT) {
-                    if (startOffset == -1 || endOffset == -1) {
-                        throw new StorageException(StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
+                } else if (eventType == XMLStreamConstants.END_ELEMENT)
+                {
+                    if (startOffset == -1 || endOffset == -1)
+                    {
+                        throw new StorageException(
+                                StorageErrorCodeStrings.INVALID_XML_DOCUMENT,
                                 "The response received is invalid or improperly formatted.",
-                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                                Constants.HeaderConstants.HTTP_UNUSED_306,
+                                null, null);
                     }
 
-                    final PageRange pageRef = new PageRange(startOffset, endOffset);
+                    final PageRange pageRef = new PageRange(startOffset,
+                            endOffset);
                     retRanges.add(pageRef);
                     break;
                 }
@@ -670,7 +844,8 @@ final class BlobDeserializationHelper {
     /**
      * Private Default Ctor
      */
-    private BlobDeserializationHelper() {
+    private BlobDeserializationHelper()
+    {
         // No op
     }
 }
