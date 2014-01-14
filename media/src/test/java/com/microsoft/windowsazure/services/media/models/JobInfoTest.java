@@ -23,15 +23,17 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
-public class JobInfoTest {
+public class JobInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
         JobInfo JobInfo = new JobInfo(null, new JobType().setId(expectedId));
 
-        // Act 
+        // Act
         String actualId = JobInfo.getId();
 
         // Assert
@@ -40,7 +42,8 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "testGetSetName";
         JobInfo JobInfo = new JobInfo(null, new JobType().setName(expectedName));
@@ -53,13 +56,15 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() throws Exception {
+    public void testGetSetCreated() throws Exception
+    {
         // Arrange
         Date expectedCreated = new Date();
 
-        JobInfo JobInfo = new JobInfo(null, new JobType().setCreated(expectedCreated));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setCreated(expectedCreated));
 
-        // Act 
+        // Act
         Date actualCreated = JobInfo.getCreated();
 
         // Assert
@@ -68,10 +73,12 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() throws Exception {
+    public void testGetSetLastModified() throws Exception
+    {
         // Arrange
         Date expectedLastModified = new Date();
-        JobInfo JobInfo = new JobInfo(null, new JobType().setLastModified(expectedLastModified));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setLastModified(expectedLastModified));
 
         // Act
         Date actualLastModified = JobInfo.getLastModified();
@@ -81,10 +88,12 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetPriority() {
+    public void testGetSetPriority()
+    {
         // Arrange
         int expectedPriority = 3;
-        JobInfo JobInfo = new JobInfo(null, new JobType().setPriority(expectedPriority));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setPriority(expectedPriority));
 
         // Act
         int actualPriority = JobInfo.getPriority();
@@ -94,10 +103,12 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetRunningDuration() {
+    public void testGetSetRunningDuration()
+    {
         // Arrange
         Double expectedRunningDuration = 1234.5;
-        JobInfo JobInfo = new JobInfo(null, new JobType().setRunningDuration(expectedRunningDuration));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setRunningDuration(expectedRunningDuration));
 
         // Act
         Double actualRunningDuration = JobInfo.getRunningDuration();
@@ -107,10 +118,12 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetStartTime() {
+    public void testGetSetStartTime()
+    {
         // Arrange
         Date expectedStartTime = new Date();
-        JobInfo JobInfo = new JobInfo(null, new JobType().setLastModified(expectedStartTime));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setLastModified(expectedStartTime));
 
         // Act
         Date actualStartTime = JobInfo.getLastModified();
@@ -120,10 +133,12 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetState() {
+    public void testGetSetState()
+    {
         // Arrange
         JobState expectedJobState = JobState.Finished;
-        JobInfo JobInfo = new JobInfo(null, new JobType().setState(expectedJobState.getCode()));
+        JobInfo JobInfo = new JobInfo(null,
+                new JobType().setState(expectedJobState.getCode()));
 
         // Act
         JobState actualJobState = JobInfo.getState();
@@ -133,24 +148,28 @@ public class JobInfoTest {
     }
 
     @Test
-    public void testGetSetNotificationEndPoint() {
-        // Arrange 
+    public void testGetSetNotificationEndPoint()
+    {
+        // Arrange
         String expectedNotificationEndPointId = "testNotificationEndPointId";
         JobNotificationSubscription expectedJobNotificationSubscription = new JobNotificationSubscription(
                 expectedNotificationEndPointId, TargetJobState.All);
         JobNotificationSubscriptionType expectedJobNotificationSubscriptionType = new JobNotificationSubscriptionType();
         JobType expectedJobType = new JobType();
-        expectedJobType.addJobNotificationSubscriptionType(expectedJobNotificationSubscriptionType
-                .setNotificationEndPointId(expectedNotificationEndPointId).setTargetJobState(
-                        TargetJobState.All.getCode()));
+        expectedJobType
+                .addJobNotificationSubscriptionType(expectedJobNotificationSubscriptionType
+                        .setNotificationEndPointId(
+                                expectedNotificationEndPointId)
+                        .setTargetJobState(TargetJobState.All.getCode()));
         JobInfo jobInfo = new JobInfo(null, expectedJobType);
 
-        // Act 
-        JobNotificationSubscription actualJobNotificationSubscription = jobInfo.getJobNotificationSubscriptions()
-                .get(0);
+        // Act
+        JobNotificationSubscription actualJobNotificationSubscription = jobInfo
+                .getJobNotificationSubscriptions().get(0);
 
-        // Assert 
-        assertEquals(expectedJobNotificationSubscription.getNotificationEndPointId(),
+        // Assert
+        assertEquals(
+                expectedJobNotificationSubscription.getNotificationEndPointId(),
                 actualJobNotificationSubscription.getNotificationEndPointId());
         assertEquals(expectedJobNotificationSubscription.getTargetJobState(),
                 actualJobNotificationSubscription.getTargetJobState());

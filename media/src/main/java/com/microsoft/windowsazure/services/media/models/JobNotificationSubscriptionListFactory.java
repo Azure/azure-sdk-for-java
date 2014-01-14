@@ -23,18 +23,27 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobNotif
 /**
  * The Class JobNotificationSubscription factory.
  */
-public class JobNotificationSubscriptionListFactory {
+public class JobNotificationSubscriptionListFactory
+{
 
     public static List<JobNotificationSubscription> create(
-            List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypeList) {
-        if (jobNotificationSubscriptionTypeList == null) {
-            throw new IllegalArgumentException("The jobNotificationSubscriptionTypeList cannot be null.");
+            List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypeList)
+    {
+        if (jobNotificationSubscriptionTypeList == null)
+        {
+            throw new IllegalArgumentException(
+                    "The jobNotificationSubscriptionTypeList cannot be null.");
         }
         List<JobNotificationSubscription> jobNotificationSubscriptionList = new ArrayList<JobNotificationSubscription>();
-        for (JobNotificationSubscriptionType jobNotificationSubscriptionType : jobNotificationSubscriptionTypeList) {
-            jobNotificationSubscriptionList.add(new JobNotificationSubscription(jobNotificationSubscriptionType
-                    .getNotificationEndPointId(), TargetJobState.fromCode(jobNotificationSubscriptionType
-                    .getTargetJobState())));
+        for (JobNotificationSubscriptionType jobNotificationSubscriptionType : jobNotificationSubscriptionTypeList)
+        {
+            jobNotificationSubscriptionList
+                    .add(new JobNotificationSubscription(
+                            jobNotificationSubscriptionType
+                                    .getNotificationEndPointId(),
+                            TargetJobState
+                                    .fromCode(jobNotificationSubscriptionType
+                                            .getTargetJobState())));
         }
         return jobNotificationSubscriptionList;
 

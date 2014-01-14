@@ -19,54 +19,62 @@ import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**
- * Represents the options that may be set on an {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)
- * acquireLease} request.
- * These options include an optional server timeout for the operation and any access conditions for the operation.
+ * Represents the options that may be set on an
+ * {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)
+ * acquireLease} request. These options include an optional server timeout for
+ * the operation and any access conditions for the operation.
  */
-public class AcquireLeaseOptions extends BlobServiceOptions {
+public class AcquireLeaseOptions extends BlobServiceOptions
+{
     private AccessConditionHeader accessCondition;
 
     /**
-     * Sets the optional server request timeout value associated with this {@link AcquireLeaseOptions} instance.
+     * Sets the optional server request timeout value associated with this
+     * {@link AcquireLeaseOptions} instance.
      * <p>
-     * The <em>timeout</em> value only affects calls made on methods where this {@link AcquireLeaseOptions} instance is
-     * passed as a parameter.
+     * The <em>timeout</em> value only affects calls made on methods where this
+     * {@link AcquireLeaseOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link AcquireLeaseOptions} instance.
+     * @return A reference to this {@link AcquireLeaseOptions} instance.
      */
     @Override
-    public AcquireLeaseOptions setTimeout(Integer timeout) {
+    public AcquireLeaseOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
 
     /**
-     * Gets the access conditions set in this {@link AcquireLeaseOptions} instance.
+     * Gets the access conditions set in this {@link AcquireLeaseOptions}
+     * instance.
      * 
-     * @return
-     *         An {@link AccessCondition} containing the access conditions set, if any.
+     * @return An {@link AccessCondition} containing the access conditions set,
+     *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
     /**
-     * Sets the access conditions for acquiring a lease on a blob. By default, the operation will acquire the lease
-     * unconditionally. Use this method to specify conditions on the ETag or last modified time value for performing the
-     * operation.
+     * Sets the access conditions for acquiring a lease on a blob. By default,
+     * the operation will acquire the lease unconditionally. Use this method to
+     * specify conditions on the ETag or last modified time value for performing
+     * the operation.
      * <p>
-     * The <em>accessCondition</em> value only affects calls made on methods where this {@link AcquireLeaseOptions}
-     * instance is passed as a parameter.
+     * The <em>accessCondition</em> value only affects calls made on methods
+     * where this {@link AcquireLeaseOptions} instance is passed as a parameter.
      * 
      * @param accessCondition
-     *            An {@link AccessCondition} containing the access conditions to set.
-     * @return
-     *         A reference to this {@link AcquireLeaseOptions} instance.
+     *            An {@link AccessCondition} containing the access conditions to
+     *            set.
+     * @return A reference to this {@link AcquireLeaseOptions} instance.
      */
-    public AcquireLeaseOptions setAccessCondition(AccessConditionHeader accessCondition) {
+    public AcquireLeaseOptions setAccessCondition(
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.services.media.models;
 /**
  * The Class ErrorDetail.
  */
-public class ErrorDetail {
+public class ErrorDetail
+{
 
     /** The code. */
     private final String code;
@@ -34,7 +35,8 @@ public class ErrorDetail {
      * @param message
      *            the message
      */
-    public ErrorDetail(String code, String message) {
+    public ErrorDetail(String code, String message)
+    {
         this.code = code;
         this.message = message;
     }
@@ -44,7 +46,8 @@ public class ErrorDetail {
      * 
      * @return the code
      */
-    public String getCode() {
+    public String getCode()
+    {
         return this.code;
     }
 
@@ -53,7 +56,8 @@ public class ErrorDetail {
      * 
      * @return the message
      */
-    public String getMessage() {
+    public String getMessage()
+    {
         return this.message;
     }
 }

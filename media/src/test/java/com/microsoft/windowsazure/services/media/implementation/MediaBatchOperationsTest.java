@@ -31,15 +31,20 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.Task;
 
-public class MediaBatchOperationsTest {
+public class MediaBatchOperationsTest
+{
 
     @Test
-    public void createMediaBatchOperationSuccess() throws JAXBException, ParserConfigurationException {
-        // Arrange 
-        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
+    public void createMediaBatchOperationSuccess() throws JAXBException,
+            ParserConfigurationException
+    {
+        // Arrange
+        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
+                .build();
 
-        // Act 
-        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
+        // Act
+        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(
+                serviceUri);
 
         // Assert
         assertNotNull(mediaBatchOperations);
@@ -47,13 +52,16 @@ public class MediaBatchOperationsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createMediaBatchOperationFailedWithNullUri() throws JAXBException, ParserConfigurationException {
-        // Arrange 
+    public void createMediaBatchOperationFailedWithNullUri()
+            throws JAXBException, ParserConfigurationException
+    {
+        // Arrange
         URI serviceUri = null;
 
-        // Act 
+        // Act
         @SuppressWarnings("unused")
-        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
+        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(
+                serviceUri);
 
         // Assert
         assertTrue(false);
@@ -61,13 +69,18 @@ public class MediaBatchOperationsTest {
     }
 
     @Test
-    public void addCreateJobOperationToMediaBatchOperationsSuccess() throws JAXBException, ParserConfigurationException {
+    public void addCreateJobOperationToMediaBatchOperationsSuccess()
+            throws JAXBException, ParserConfigurationException
+    {
         // Arrange
-        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        Job.CreateBatchOperation createJobOperation = new Job.CreateBatchOperation(serviceUri);
+        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
+                .build();
+        Job.CreateBatchOperation createJobOperation = new Job.CreateBatchOperation(
+                serviceUri);
 
         // Act
-        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
+        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(
+                serviceUri);
         mediaBatchOperations.addOperation(createJobOperation);
 
         // Assert
@@ -77,17 +90,21 @@ public class MediaBatchOperationsTest {
     }
 
     @Test
-    public void addCreateTaskOperationToMediaBatchOperationsSuccess() throws JAXBException,
-            ParserConfigurationException {
+    public void addCreateTaskOperationToMediaBatchOperationsSuccess()
+            throws JAXBException, ParserConfigurationException
+    {
         // Arrange
-        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
+        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
+                .build();
         String mediaProcessorId = "testMediaProcessorId";
         String taskBody = "testTaskBody";
 
-        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(mediaProcessorId, taskBody);
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(
+                mediaProcessorId, taskBody);
 
         // Act
-        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
+        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(
+                serviceUri);
         mediaBatchOperations.addOperation(taskCreateBatchOperation);
 
         // Assert
@@ -96,17 +113,22 @@ public class MediaBatchOperationsTest {
     }
 
     @Test
-    public void getMimeMultipartSuccess() throws JAXBException, ParserConfigurationException, MessagingException,
-            IOException {
+    public void getMimeMultipartSuccess() throws JAXBException,
+            ParserConfigurationException, MessagingException, IOException
+    {
         // Arrange
         String mediaProcessorId = "testMediaProcessorId";
         String taskBody = "testTaskBody";
-        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media").build();
-        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(mediaProcessorId, taskBody);
-        Job.CreateBatchOperation jobCreateBatchOperation = new Job.CreateBatchOperation(serviceUri);
+        URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
+                .build();
+        Task.CreateBatchOperation taskCreateBatchOperation = new Task.CreateBatchOperation(
+                mediaProcessorId, taskBody);
+        Job.CreateBatchOperation jobCreateBatchOperation = new Job.CreateBatchOperation(
+                serviceUri);
 
         // Act
-        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(serviceUri);
+        MediaBatchOperations mediaBatchOperations = new MediaBatchOperations(
+                serviceUri);
         mediaBatchOperations.addOperation(jobCreateBatchOperation);
         mediaBatchOperations.addOperation(taskCreateBatchOperation);
         MimeMultipart mimeMultipart = mediaBatchOperations.getMimeMultipart();

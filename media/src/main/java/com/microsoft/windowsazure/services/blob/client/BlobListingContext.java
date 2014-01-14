@@ -19,21 +19,25 @@ import java.util.EnumSet;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.ListingContext;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides the listing context for blobs including the delimiter and listingdetails
+ * RESERVED FOR INTERNAL USE. Provides the listing context for blobs including
+ * the delimiter and listingdetails
  */
-final class BlobListingContext extends ListingContext {
+final class BlobListingContext extends ListingContext
+{
 
     /**
-     * Gets or sets the delimiter for a blob listing operation. The delimiter parameter enables the caller to traverse
-     * the blob namespace by using a user-configured delimiter. Using this parameter, it is possible to traverse a
-     * virtual hierarchy of blobs as though it were a file system.
+     * Gets or sets the delimiter for a blob listing operation. The delimiter
+     * parameter enables the caller to traverse the blob namespace by using a
+     * user-configured delimiter. Using this parameter, it is possible to
+     * traverse a virtual hierarchy of blobs as though it were a file system.
      */
     private String delimiter;
 
     /**
-     * Gets or sets the details for the listing operation, which indicates the types of data to include in the response.
-     * The include parameter specifies that the response should include one or more of the following subsets: snapshots,
-     * metadata, uncommitted blobs.
+     * Gets or sets the details for the listing operation, which indicates the
+     * types of data to include in the response. The include parameter specifies
+     * that the response should include one or more of the following subsets:
+     * snapshots, metadata, uncommitted blobs.
      */
     private EnumSet<BlobListingDetails> listingDetails;
 
@@ -45,7 +49,8 @@ final class BlobListingContext extends ListingContext {
      * @param maxResults
      *            the maximum results to download.
      */
-    public BlobListingContext(final String prefix, final Integer maxResults) {
+    public BlobListingContext(final String prefix, final Integer maxResults)
+    {
         super(prefix, maxResults);
     }
 
@@ -61,8 +66,10 @@ final class BlobListingContext extends ListingContext {
      * @param listingDetails
      *            the BlobListingDetails to use.
      */
-    public BlobListingContext(final String prefix, final Integer maxResults, final String delimiter,
-            final EnumSet<BlobListingDetails> listingDetails) {
+    public BlobListingContext(final String prefix, final Integer maxResults,
+            final String delimiter,
+            final EnumSet<BlobListingDetails> listingDetails)
+    {
         super(prefix, maxResults);
         this.setDelimiter(delimiter);
         this.setListingDetails(listingDetails);
@@ -71,14 +78,16 @@ final class BlobListingContext extends ListingContext {
     /**
      * @return the delimiter
      */
-    protected String getDelimiter() {
+    protected String getDelimiter()
+    {
         return this.delimiter;
     }
 
     /**
      * @return the listingDetails
      */
-    protected EnumSet<BlobListingDetails> getListingDetails() {
+    protected EnumSet<BlobListingDetails> getListingDetails()
+    {
         return this.listingDetails;
     }
 
@@ -86,7 +95,8 @@ final class BlobListingContext extends ListingContext {
      * @param delimiter
      *            the delimiter to set
      */
-    protected void setDelimiter(final String delimiter) {
+    protected void setDelimiter(final String delimiter)
+    {
         this.delimiter = delimiter;
     }
 
@@ -94,7 +104,9 @@ final class BlobListingContext extends ListingContext {
      * @param listingDetails
      *            the listingDetails to set
      */
-    protected void setListingDetails(final EnumSet<BlobListingDetails> listingDetails) {
+    protected void setListingDetails(
+            final EnumSet<BlobListingDetails> listingDetails)
+    {
         this.listingDetails = listingDetails;
     }
 }

@@ -52,8 +52,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class QueueRestProxy implements QueueContract {
-    //private static Log log = LogFactory.getLog(QueueRestProxy.class);
+public class QueueRestProxy implements QueueContract
+{
+    // private static Log log = LogFactory.getLog(QueueRestProxy.class);
 
     private static final String API_VERSION = "2011-08-18";
     private final HttpURLConnectionClient channel;
@@ -64,8 +65,11 @@ public class QueueRestProxy implements QueueContract {
     private final SharedKeyFilter sharedKeyFilter;
 
     @Inject
-    public QueueRestProxy(HttpURLConnectionClient channel, @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(QueueConfiguration.URI) String url, SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter) {
+    public QueueRestProxy(HttpURLConnectionClient channel,
+            @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
+            @Named(QueueConfiguration.URI) String url,
+            SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter)
+    {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -77,8 +81,10 @@ public class QueueRestProxy implements QueueContract {
         channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
-    public QueueRestProxy(HttpURLConnectionClient channel, ClientFilter[] filters, String accountName, String url,
-            SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
+    public QueueRestProxy(HttpURLConnectionClient channel,
+            ClientFilter[] filters, String accountName, String url,
+            SharedKeyFilter filter, RFC1123DateConverter dateMapper)
+    {
 
         this.channel = channel;
         this.filters = filters;
@@ -89,76 +95,105 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public QueueContract withFilter(ServiceFilter filter) {
+    public QueueContract withFilter(ServiceFilter filter)
+    {
         ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
+                currentFilters.length + 1);
         newFilters[currentFilters.length] = new ClientFilterAdapter(filter);
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
-                this.dateMapper);
-    }
-    
-    @Override
-    public QueueContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
-        ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
-        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
-        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
-                this.dateMapper);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName,
+                this.url, this.sharedKeyFilter, this.dateMapper);
     }
 
     @Override
-    public QueueContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
-        ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
-        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
-                this.dateMapper);
-    }
-    
-    @Override
-    public QueueContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+    public QueueContract withRequestFilterFirst(
+            ServiceRequestFilter serviceRequestFilter)
+    {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
-        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
-        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
-                this.dateMapper);
+        System.arraycopy(currentFilters, 0, newFilters, 1,
+                currentFilters.length);
+        newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName,
+                this.url, this.sharedKeyFilter, this.dateMapper);
     }
-    
+
     @Override
-    public QueueContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+    public QueueContract withRequestFilterLast(
+            ServiceRequestFilter serviceRequestFilter)
+    {
         ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
-        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
-        return new QueueRestProxy(this.channel, newFilters, this.accountName, this.url, this.sharedKeyFilter,
-                this.dateMapper);
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
+                currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(
+                serviceRequestFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName,
+                this.url, this.sharedKeyFilter, this.dateMapper);
     }
-    
-    private void ThrowIfError(ClientResponse r) {
+
+    @Override
+    public QueueContract withResponseFilterFirst(
+            ServiceResponseFilter serviceResponseFilter)
+    {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
+        System.arraycopy(currentFilters, 0, newFilters, 1,
+                currentFilters.length);
+        newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName,
+                this.url, this.sharedKeyFilter, this.dateMapper);
+    }
+
+    @Override
+    public QueueContract withResponseFilterLast(
+            ServiceResponseFilter serviceResponseFilter)
+    {
+        ClientFilter[] currentFilters = filters;
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
+                currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(
+                serviceResponseFilter);
+        return new QueueRestProxy(this.channel, newFilters, this.accountName,
+                this.url, this.sharedKeyFilter, this.dateMapper);
+    }
+
+    private void ThrowIfError(ClientResponse r)
+    {
         PipelineHelpers.ThrowIfError(r);
     }
 
-    private WebResource addOptionalQueryParam(WebResource webResource, String key, Object value) {
+    private WebResource addOptionalQueryParam(WebResource webResource,
+            String key, Object value)
+    {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
-    private WebResource addOptionalQueryParam(WebResource webResource, String key, int value, int defaultValue) {
-        return PipelineHelpers.addOptionalQueryParam(webResource, key, value, defaultValue);
+    private WebResource addOptionalQueryParam(WebResource webResource,
+            String key, int value, int defaultValue)
+    {
+        return PipelineHelpers.addOptionalQueryParam(webResource, key, value,
+                defaultValue);
     }
 
-    private Builder addOptionalMetadataHeader(Builder builder, Map<String, String> metadata) {
+    private Builder addOptionalMetadataHeader(Builder builder,
+            Map<String, String> metadata)
+    {
         return PipelineHelpers.addOptionalMetadataHeader(builder, metadata);
     }
 
-    private HashMap<String, String> getMetadataFromHeaders(ClientResponse response) {
+    private HashMap<String, String> getMetadataFromHeaders(
+            ClientResponse response)
+    {
         return PipelineHelpers.getMetadataFromHeaders(response);
     }
 
-    private WebResource getResource(QueueServiceOptions options) {
+    private WebResource getResource(QueueServiceOptions options)
+    {
         WebResource webResource = channel.resource(url).path("/");
-        webResource = addOptionalQueryParam(webResource, "timeout", options.getTimeout());
-        for (ClientFilter filter : filters) {
+        webResource = addOptionalQueryParam(webResource, "timeout",
+                options.getTimeout());
+        for (ClientFilter filter : filters)
+        {
             webResource.addFilter(filter);
         }
 
@@ -166,16 +201,22 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public GetServicePropertiesResult getServiceProperties() throws ServiceException {
+    public GetServicePropertiesResult getServiceProperties()
+            throws ServiceException
+    {
         return getServiceProperties(new QueueServiceOptions());
     }
 
     @Override
-    public GetServicePropertiesResult getServiceProperties(QueueServiceOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
+    public GetServicePropertiesResult getServiceProperties(
+            QueueServiceOptions options) throws ServiceException
+    {
+        WebResource webResource = getResource(options).path("/")
+                .queryParam("resType", "service")
                 .queryParam("comp", "properties");
 
-        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version",
+                API_VERSION);
 
         GetServicePropertiesResult result = new GetServicePropertiesResult();
         result.setValue(builder.get(ServiceProperties.class));
@@ -183,69 +224,90 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public void setServiceProperties(ServiceProperties serviceProperties) throws ServiceException {
+    public void setServiceProperties(ServiceProperties serviceProperties)
+            throws ServiceException
+    {
         setServiceProperties(serviceProperties, new QueueServiceOptions());
     }
 
     @Override
-    public void setServiceProperties(ServiceProperties serviceProperties, QueueServiceOptions options)
-            throws ServiceException {
-        WebResource webResource = getResource(options).path("/").queryParam("resType", "service")
+    public void setServiceProperties(ServiceProperties serviceProperties,
+            QueueServiceOptions options) throws ServiceException
+    {
+        WebResource webResource = getResource(options).path("/")
+                .queryParam("resType", "service")
                 .queryParam("comp", "properties");
 
-        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version",
+                API_VERSION);
 
         builder.put(serviceProperties);
     }
 
     @Override
-    public void createQueue(String queue) throws ServiceException {
+    public void createQueue(String queue) throws ServiceException
+    {
         createQueue(queue, new CreateQueueOptions());
 
     }
 
     @Override
-    public void createQueue(String queue, CreateQueueOptions options) throws ServiceException {
+    public void createQueue(String queue, CreateQueueOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
         WebResource webResource = getResource(options).path(queue);
 
-        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version",
+                API_VERSION);
         builder = addOptionalMetadataHeader(builder, options.getMetadata());
 
         builder.put();
     }
 
     @Override
-    public void deleteQueue(String queue) throws ServiceException {
+    public void deleteQueue(String queue) throws ServiceException
+    {
         deleteQueue(queue, new QueueServiceOptions());
     }
 
     @Override
-    public void deleteQueue(String queue, QueueServiceOptions options) throws ServiceException {
+    public void deleteQueue(String queue, QueueServiceOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
         WebResource webResource = getResource(options).path(queue);
 
-        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version",
+                API_VERSION);
 
         builder.delete();
     }
 
     @Override
-    public ListQueuesResult listQueues() throws ServiceException {
+    public ListQueuesResult listQueues() throws ServiceException
+    {
         return listQueues(new ListQueuesOptions());
     }
 
     @Override
-    public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
-        WebResource webResource = getResource(options).path("/").queryParam("comp", "list");
-        webResource = addOptionalQueryParam(webResource, "prefix", options.getPrefix());
-        webResource = addOptionalQueryParam(webResource, "marker", options.getMarker());
-        webResource = addOptionalQueryParam(webResource, "maxresults", options.getMaxResults(), 0);
-        if (options.isIncludeMetadata()) {
+    public ListQueuesResult listQueues(ListQueuesOptions options)
+            throws ServiceException
+    {
+        WebResource webResource = getResource(options).path("/").queryParam(
+                "comp", "list");
+        webResource = addOptionalQueryParam(webResource, "prefix",
+                options.getPrefix());
+        webResource = addOptionalQueryParam(webResource, "marker",
+                options.getMarker());
+        webResource = addOptionalQueryParam(webResource, "maxresults",
+                options.getMaxResults(), 0);
+        if (options.isIncludeMetadata())
+        {
             webResource = webResource.queryParam("include", "metadata");
         }
 
@@ -255,16 +317,21 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public GetQueueMetadataResult getQueueMetadata(String queue) throws ServiceException {
+    public GetQueueMetadataResult getQueueMetadata(String queue)
+            throws ServiceException
+    {
         return getQueueMetadata(queue, new QueueServiceOptions());
     }
 
     @Override
-    public GetQueueMetadataResult getQueueMetadata(String queue, QueueServiceOptions options) throws ServiceException {
+    public GetQueueMetadataResult getQueueMetadata(String queue,
+            QueueServiceOptions options) throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
+        WebResource webResource = getResource(options).path(queue).queryParam(
+                "comp", "metadata");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -272,48 +339,62 @@ public class QueueRestProxy implements QueueContract {
         ThrowIfError(response);
 
         GetQueueMetadataResult result = new GetQueueMetadataResult();
-        result.setApproximateMessageCount(Integer.parseInt(response.getHeaders().getFirst(
-                "x-ms-approximate-messages-count")));
+        result.setApproximateMessageCount(Integer.parseInt(response
+                .getHeaders().getFirst("x-ms-approximate-messages-count")));
         result.setMetadata(getMetadataFromHeaders(response));
 
         return result;
     }
 
     @Override
-    public void setQueueMetadata(String queue, HashMap<String, String> metadata) throws ServiceException {
+    public void setQueueMetadata(String queue, HashMap<String, String> metadata)
+            throws ServiceException
+    {
         setQueueMetadata(queue, metadata, new QueueServiceOptions());
     }
 
     @Override
-    public void setQueueMetadata(String queue, HashMap<String, String> metadata, QueueServiceOptions options)
-            throws ServiceException {
+    public void setQueueMetadata(String queue,
+            HashMap<String, String> metadata, QueueServiceOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).queryParam("comp", "metadata");
+        WebResource webResource = getResource(options).path(queue).queryParam(
+                "comp", "metadata");
 
-        WebResource.Builder builder = webResource.header("x-ms-version", API_VERSION);
+        WebResource.Builder builder = webResource.header("x-ms-version",
+                API_VERSION);
         builder = addOptionalMetadataHeader(builder, metadata);
 
         builder.put();
     }
 
     @Override
-    public void createMessage(String queue, String messageText) throws ServiceException {
+    public void createMessage(String queue, String messageText)
+            throws ServiceException
+    {
         createMessage(queue, messageText, new CreateMessageOptions());
     }
 
     @Override
-    public void createMessage(String queue, String messageText, CreateMessageOptions options) throws ServiceException {
+    public void createMessage(String queue, String messageText,
+            CreateMessageOptions options) throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException("queue");
-        if (messageText == null) {
+        if (messageText == null)
+        {
             throw new NullPointerException("messageText");
         }
 
-        WebResource webResource = getResource(options).path(queue).path("messages");
-        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
-        webResource = addOptionalQueryParam(webResource, "messagettl", options.getTimeToLiveInSeconds());
+        WebResource webResource = getResource(options).path(queue).path(
+                "messages");
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout",
+                options.getVisibilityTimeoutInSeconds());
+        webResource = addOptionalQueryParam(webResource, "messagettl",
+                options.getTimeToLiveInSeconds());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -324,15 +405,20 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
-            int visibilityTimeoutInSeconds) throws ServiceException {
-        return updateMessage(queue, messageId, popReceipt, messageText, visibilityTimeoutInSeconds,
-                new QueueServiceOptions());
+    public UpdateMessageResult updateMessage(String queue, String messageId,
+            String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds) throws ServiceException
+    {
+        return updateMessage(queue, messageId, popReceipt, messageText,
+                visibilityTimeoutInSeconds, new QueueServiceOptions());
     }
 
     @Override
-    public UpdateMessageResult updateMessage(String queue, String messageId, String popReceipt, String messageText,
-            int visibilityTimeoutInSeconds, QueueServiceOptions options) throws ServiceException {
+    public UpdateMessageResult updateMessage(String queue, String messageId,
+            String popReceipt, String messageText,
+            int visibilityTimeoutInSeconds, QueueServiceOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException("queue");
         if (messageId == null)
@@ -340,37 +426,49 @@ public class QueueRestProxy implements QueueContract {
         if (messageText == null)
             throw new NullPointerException("messageText");
 
-        WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
-        webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
-        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", visibilityTimeoutInSeconds);
+        WebResource webResource = getResource(options).path(queue)
+                .path("messages").path(messageId);
+        webResource = addOptionalQueryParam(webResource, "popreceipt",
+                popReceipt);
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout",
+                visibilityTimeoutInSeconds);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         QueueMessage queueMessage = new QueueMessage();
         queueMessage.setMessageText(messageText);
 
-        ClientResponse response = builder.put(ClientResponse.class, queueMessage);
+        ClientResponse response = builder.put(ClientResponse.class,
+                queueMessage);
         ThrowIfError(response);
 
         UpdateMessageResult result = new UpdateMessageResult();
         result.setPopReceipt(response.getHeaders().getFirst("x-ms-popreceipt"));
-        result.setTimeNextVisible(dateMapper.parse(response.getHeaders().getFirst("x-ms-time-next-visible")));
+        result.setTimeNextVisible(dateMapper.parse(response.getHeaders()
+                .getFirst("x-ms-time-next-visible")));
         return result;
     }
 
     @Override
-    public ListMessagesResult listMessages(String queue) throws ServiceException {
+    public ListMessagesResult listMessages(String queue)
+            throws ServiceException
+    {
         return listMessages(queue, new ListMessagesOptions());
     }
 
     @Override
-    public ListMessagesResult listMessages(String queue, ListMessagesOptions options) throws ServiceException {
+    public ListMessagesResult listMessages(String queue,
+            ListMessagesOptions options) throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).path("messages");
-        webResource = addOptionalQueryParam(webResource, "visibilitytimeout", options.getVisibilityTimeoutInSeconds());
-        webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
+        WebResource webResource = getResource(options).path(queue).path(
+                "messages");
+        webResource = addOptionalQueryParam(webResource, "visibilitytimeout",
+                options.getVisibilityTimeoutInSeconds());
+        webResource = addOptionalQueryParam(webResource, "numofmessages",
+                options.getNumberOfMessages());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -378,17 +476,23 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public PeekMessagesResult peekMessages(String queue) throws ServiceException {
+    public PeekMessagesResult peekMessages(String queue)
+            throws ServiceException
+    {
         return peekMessages(queue, new PeekMessagesOptions());
     }
 
     @Override
-    public PeekMessagesResult peekMessages(String queue, PeekMessagesOptions options) throws ServiceException {
+    public PeekMessagesResult peekMessages(String queue,
+            PeekMessagesOptions options) throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).path("messages").queryParam("peekonly", "true");
-        webResource = addOptionalQueryParam(webResource, "numofmessages", options.getNumberOfMessages());
+        WebResource webResource = getResource(options).path(queue)
+                .path("messages").queryParam("peekonly", "true");
+        webResource = addOptionalQueryParam(webResource, "numofmessages",
+                options.getNumberOfMessages());
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -396,20 +500,26 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public void deleteMessage(String queue, String messageId, String popReceipt) throws ServiceException {
+    public void deleteMessage(String queue, String messageId, String popReceipt)
+            throws ServiceException
+    {
         deleteMessage(queue, messageId, popReceipt, new QueueServiceOptions());
     }
 
     @Override
-    public void deleteMessage(String queue, String messageId, String popReceipt, QueueServiceOptions options)
-            throws ServiceException {
+    public void deleteMessage(String queue, String messageId,
+            String popReceipt, QueueServiceOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
         if (messageId == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).path("messages").path(messageId);
-        webResource = addOptionalQueryParam(webResource, "popreceipt", popReceipt);
+        WebResource webResource = getResource(options).path(queue)
+                .path("messages").path(messageId);
+        webResource = addOptionalQueryParam(webResource, "popreceipt",
+                popReceipt);
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
@@ -417,16 +527,20 @@ public class QueueRestProxy implements QueueContract {
     }
 
     @Override
-    public void clearMessages(String queue) throws ServiceException {
+    public void clearMessages(String queue) throws ServiceException
+    {
         clearMessages(queue, new QueueServiceOptions());
     }
 
     @Override
-    public void clearMessages(String queue, QueueServiceOptions options) throws ServiceException {
+    public void clearMessages(String queue, QueueServiceOptions options)
+            throws ServiceException
+    {
         if (queue == null)
             throw new NullPointerException();
 
-        WebResource webResource = getResource(options).path(queue).path("messages");
+        WebResource webResource = getResource(options).path(queue).path(
+                "messages");
 
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 

@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import java.math.BigInteger;
@@ -31,11 +30,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for GoalStateInfo complex type.
+ * <p>
+ * Java class for GoalStateInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="GoalStateInfo">
@@ -59,7 +60,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "GoalStateInfo", propOrder = {
 
 })
-class GoalStateInfo {
+class GoalStateInfo
+{
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
@@ -71,19 +73,18 @@ class GoalStateInfo {
     @XmlElement(name = "CurrentStateEndpoint", required = true)
     protected String currentStateEndpoint;
     @XmlElement(name = "Deadline", required = true, type = String.class)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "dateTime")
     protected Calendar deadline;
 
     /**
      * Gets the value of the incarnation property.
      * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     * @return possible object is {@link BigInteger }
+     * 
      */
-    public BigInteger getIncarnation() {
+    public BigInteger getIncarnation()
+    {
         return incarnation;
     }
 
@@ -91,23 +92,22 @@ class GoalStateInfo {
      * Sets the value of the incarnation property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *            allowed object is {@link BigInteger }
+     * 
      */
-    public void setIncarnation(BigInteger value) {
+    public void setIncarnation(BigInteger value)
+    {
         this.incarnation = value;
     }
 
     /**
      * Gets the value of the expectedState property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ExpectedStateEnum }
-     *     
+     * @return possible object is {@link ExpectedStateEnum }
+     * 
      */
-    public ExpectedStateEnum getExpectedState() {
+    public ExpectedStateEnum getExpectedState()
+    {
         return expectedState;
     }
 
@@ -115,23 +115,22 @@ class GoalStateInfo {
      * Sets the value of the expectedState property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link ExpectedStateEnum }
-     *     
+     *            allowed object is {@link ExpectedStateEnum }
+     * 
      */
-    public void setExpectedState(ExpectedStateEnum value) {
+    public void setExpectedState(ExpectedStateEnum value)
+    {
         this.expectedState = value;
     }
 
     /**
      * Gets the value of the roleEnvironmentPath property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getRoleEnvironmentPath() {
+    public String getRoleEnvironmentPath()
+    {
         return roleEnvironmentPath;
     }
 
@@ -139,23 +138,22 @@ class GoalStateInfo {
      * Sets the value of the roleEnvironmentPath property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setRoleEnvironmentPath(String value) {
+    public void setRoleEnvironmentPath(String value)
+    {
         this.roleEnvironmentPath = value;
     }
 
     /**
      * Gets the value of the currentStateEndpoint property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getCurrentStateEndpoint() {
+    public String getCurrentStateEndpoint()
+    {
         return currentStateEndpoint;
     }
 
@@ -163,23 +161,22 @@ class GoalStateInfo {
      * Sets the value of the currentStateEndpoint property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setCurrentStateEndpoint(String value) {
+    public void setCurrentStateEndpoint(String value)
+    {
         this.currentStateEndpoint = value;
     }
 
     /**
      * Gets the value of the deadline property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public Calendar getDeadline() {
+    public Calendar getDeadline()
+    {
         return deadline;
     }
 
@@ -187,11 +184,11 @@ class GoalStateInfo {
      * Sets the value of the deadline property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setDeadline(Calendar value) {
+    public void setDeadline(Calendar value)
+    {
         this.deadline = value;
     }
 

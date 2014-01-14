@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Represents the metrics properties for the analytics service.
  */
-public final class MetricsProperties {
+public final class MetricsProperties
+{
     /**
      * The analytics version to use.
      */
@@ -36,21 +37,24 @@ public final class MetricsProperties {
     /**
      * @return the metricsLevel
      */
-    public MetricsLevel getMetricsLevel() {
+    public MetricsLevel getMetricsLevel()
+    {
         return this.metricsLevel;
     }
 
     /**
      * @return the retentionIntervalInDays
      */
-    public Integer getRetentionIntervalInDays() {
+    public Integer getRetentionIntervalInDays()
+    {
         return this.retentionIntervalInDays;
     }
 
     /**
      * @return the version
      */
-    public String getVersion() {
+    public String getVersion()
+    {
         return this.version;
     }
 
@@ -58,7 +62,8 @@ public final class MetricsProperties {
      * @param metricsLevel
      *            the metricsLevel to set
      */
-    public void setMetricsLevel(final MetricsLevel metricsLevel) {
+    public void setMetricsLevel(final MetricsLevel metricsLevel)
+    {
         this.metricsLevel = metricsLevel;
     }
 
@@ -66,7 +71,8 @@ public final class MetricsProperties {
      * @param retentionIntervalInDays
      *            the retentionIntervalInDays to set
      */
-    public void setRetentionIntervalInDays(final Integer retentionIntervalInDays) {
+    public void setRetentionIntervalInDays(final Integer retentionIntervalInDays)
+    {
         this.retentionIntervalInDays = retentionIntervalInDays;
     }
 
@@ -74,7 +80,8 @@ public final class MetricsProperties {
      * @param version
      *            the version to set
      */
-    public void setVersion(final String version) {
+    public void setVersion(final String version)
+    {
         this.version = version;
     }
 }

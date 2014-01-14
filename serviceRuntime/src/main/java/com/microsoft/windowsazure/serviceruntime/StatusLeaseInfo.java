@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,11 +27,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for StatusLeaseInfo complex type.
+ * <p>
+ * Java class for StatusLeaseInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="StatusLeaseInfo">
@@ -58,11 +59,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "StatusLeaseInfo", propOrder = {
-    "acquire",
-    "release"
-})
-class StatusLeaseInfo {
+@XmlType(name = "StatusLeaseInfo", propOrder = { "acquire", "release" })
+class StatusLeaseInfo
+{
 
     @XmlElement(name = "Acquire")
     protected AcquireLeaseInfo acquire;
@@ -74,12 +73,11 @@ class StatusLeaseInfo {
     /**
      * Gets the value of the acquire property.
      * 
-     * @return
-     *     possible object is
-     *     {@link AcquireLeaseInfo }
-     *     
+     * @return possible object is {@link AcquireLeaseInfo }
+     * 
      */
-    public AcquireLeaseInfo getAcquire() {
+    public AcquireLeaseInfo getAcquire()
+    {
         return acquire;
     }
 
@@ -87,23 +85,22 @@ class StatusLeaseInfo {
      * Sets the value of the acquire property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link AcquireLeaseInfo }
-     *     
+     *            allowed object is {@link AcquireLeaseInfo }
+     * 
      */
-    public void setAcquire(AcquireLeaseInfo value) {
+    public void setAcquire(AcquireLeaseInfo value)
+    {
         this.acquire = value;
     }
 
     /**
      * Gets the value of the release property.
      * 
-     * @return
-     *     possible object is
-     *     {@link StatusLeaseInfo.Release }
-     *     
+     * @return possible object is {@link StatusLeaseInfo.Release }
+     * 
      */
-    public StatusLeaseInfo.Release getRelease() {
+    public StatusLeaseInfo.Release getRelease()
+    {
         return release;
     }
 
@@ -111,23 +108,22 @@ class StatusLeaseInfo {
      * Sets the value of the release property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link StatusLeaseInfo.Release }
-     *     
+     *            allowed object is {@link StatusLeaseInfo.Release }
+     * 
      */
-    public void setRelease(StatusLeaseInfo.Release value) {
+    public void setRelease(StatusLeaseInfo.Release value)
+    {
         this.release = value;
     }
 
     /**
      * Gets the value of the clientId property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getClientId() {
+    public String getClientId()
+    {
         return clientId;
     }
 
@@ -135,19 +131,21 @@ class StatusLeaseInfo {
      * Sets the value of the clientId property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setClientId(String value) {
+    public void setClientId(String value)
+    {
         this.clientId = value;
     }
 
-
     /**
-     * <p>Java class for anonymous complex type.
+     * <p>
+     * Java class for anonymous complex type.
      * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
+     * <p>
+     * The following schema fragment specifies the expected content contained
+     * within this class.
      * 
      * <pre>
      * &lt;complexType>
@@ -162,8 +160,8 @@ class StatusLeaseInfo {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
-    public static class Release {
-
+    public static class Release
+    {
 
     }
 

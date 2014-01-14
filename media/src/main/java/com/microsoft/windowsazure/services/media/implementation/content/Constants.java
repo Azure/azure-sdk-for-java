@@ -18,14 +18,15 @@ package com.microsoft.windowsazure.services.media.implementation.content;
 import javax.xml.namespace.QName;
 
 /**
- * This class provides a set of constants for element names
- * and namespaces used throughout the serialization of
- * media services entities.
+ * This class provides a set of constants for element names and namespaces used
+ * throughout the serialization of media services entities.
  */
 
-public final class Constants {
+public final class Constants
+{
 
-    private Constants() {
+    private Constants()
+    {
     }
 
     /**
@@ -34,32 +35,38 @@ public final class Constants {
     public static final String ATOM_NS = "http://www.w3.org/2005/Atom";
 
     /**
-     * XML Namespace for OData data as serialized inside Atom syndication format.
+     * XML Namespace for OData data as serialized inside Atom syndication
+     * format.
      */
     public static final String ODATA_DATA_NS = "http://schemas.microsoft.com/ado/2007/08/dataservices";
 
     /**
-     * XML Namespace for OData metadata as serialized inside Atom syndication format.
+     * XML Namespace for OData metadata as serialized inside Atom syndication
+     * format.
      */
     public static final String ODATA_METADATA_NS = "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata";
 
     /**
-     * EDM namespace for Azure Media Services entities, as defined in Media Services EDMX file.
+     * EDM namespace for Azure Media Services entities, as defined in Media
+     * Services EDMX file.
      */
     public static final String MEDIA_SERVICES_EDM_NAMESPACE = "Microsoft.Cloud.Media.Vod.Rest.Data.Models";
 
     /**
      * Element name for Atom content element, including namespace
      */
-    public static final QName ATOM_CONTENT_ELEMENT_NAME = new QName("content", ATOM_NS);
+    public static final QName ATOM_CONTENT_ELEMENT_NAME = new QName("content",
+            ATOM_NS);
 
     /**
      * Element name for OData action elements, including namespace
      */
-    public static final QName ODATA_ACTION_ELEMENT_NAME = new QName("action", ODATA_METADATA_NS);
+    public static final QName ODATA_ACTION_ELEMENT_NAME = new QName("action",
+            ODATA_METADATA_NS);
 
     /**
      * Element name for the metadata properties element, including namespace.
      */
-    public static final QName ODATA_PROPERTIES_ELEMENT_NAME = new QName("properties", ODATA_METADATA_NS);
+    public static final QName ODATA_PROPERTIES_ELEMENT_NAME = new QName(
+            "properties", ODATA_METADATA_NS);
 }

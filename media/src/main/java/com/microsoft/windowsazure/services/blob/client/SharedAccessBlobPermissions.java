@@ -19,7 +19,8 @@ import java.util.EnumSet;
 /**
  * Specifies the set of possible permissions for a shared access policy.
  */
-public enum SharedAccessBlobPermissions {
+public enum SharedAccessBlobPermissions
+{
     /**
      * Specifies Read access granted.
      */
@@ -41,27 +42,36 @@ public enum SharedAccessBlobPermissions {
     LIST((byte) 0x8);
 
     /**
-     * Returns the enum set representing the shared access permissions for the specified byte value.
+     * Returns the enum set representing the shared access permissions for the
+     * specified byte value.
      * 
      * @param value
      *            The byte value to convert to the corresponding enum set.
-     * @return A <code>java.util.EnumSet</code> object that contains the <code>SharedAccessBlobPermissions</code> values
-     *         corresponding to the specified byte value.
+     * @return A <code>java.util.EnumSet</code> object that contains the
+     *         <code>SharedAccessBlobPermissions</code> values corresponding to
+     *         the specified byte value.
      */
-    protected static EnumSet<SharedAccessBlobPermissions> fromByte(final byte value) {
-        final EnumSet<SharedAccessBlobPermissions> retSet = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+    protected static EnumSet<SharedAccessBlobPermissions> fromByte(
+            final byte value)
+    {
+        final EnumSet<SharedAccessBlobPermissions> retSet = EnumSet
+                .noneOf(SharedAccessBlobPermissions.class);
 
-        if (value == READ.value) {
+        if (value == READ.value)
+        {
             retSet.add(READ);
         }
 
-        if (value == WRITE.value) {
+        if (value == WRITE.value)
+        {
             retSet.add(WRITE);
         }
-        if (value == DELETE.value) {
+        if (value == DELETE.value)
+        {
             retSet.add(DELETE);
         }
-        if (value == LIST.value) {
+        if (value == LIST.value)
+        {
             retSet.add(LIST);
         }
 
@@ -79,7 +89,8 @@ public enum SharedAccessBlobPermissions {
      * @param val
      *            The value being assigned.
      */
-    SharedAccessBlobPermissions(final byte val) {
+    SharedAccessBlobPermissions(final byte val)
+    {
         this.value = val;
     }
 }

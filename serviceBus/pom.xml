@@ -228,26 +228,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <xmlOutput>true</xmlOutput>
-          <findbugsXmlOutput>true</findbugsXmlOutput>
-          <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <configLocation>src/config/checkstyle.xml</configLocation>
-        </configuration>
-      </plugin>
-
     </plugins>
     <pluginManagement>
       <plugins>

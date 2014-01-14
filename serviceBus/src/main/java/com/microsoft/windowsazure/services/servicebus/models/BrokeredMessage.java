@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.servicebus.implementation.BrokerPrope
 /**
  * Represents a service bus message.
  */
-public class BrokeredMessage {
+public class BrokeredMessage
+{
     BrokerProperties brokerProperties;
     InputStream body;
     String contentType;
@@ -36,28 +37,34 @@ public class BrokeredMessage {
     /**
      * Creates an instance of the <code>Message</code> class.
      */
-    public BrokeredMessage() {
+    public BrokeredMessage()
+    {
         this(new BrokerProperties());
     }
 
     /**
-     * Creates an instance of the <code>Message</code> class using the specified <code>InputStream</code>.
+     * Creates an instance of the <code>Message</code> class using the specified
+     * <code>InputStream</code>.
      * 
      * @param body
-     *            An <code>InputStream</code> object that represents the body of the message.
+     *            An <code>InputStream</code> object that represents the body of
+     *            the message.
      */
-    public BrokeredMessage(InputStream body) {
+    public BrokeredMessage(InputStream body)
+    {
         this(new BrokerProperties());
         this.body = body;
     }
 
     /**
-     * Creates an instance of the <code>Message</code> class using the specified byte array.
+     * Creates an instance of the <code>Message</code> class using the specified
+     * byte array.
      * 
      * @param body
      *            A byte array that represents the body of the message.
      */
-    public BrokeredMessage(byte[] body) {
+    public BrokeredMessage(byte[] body)
+    {
         this(new BrokerProperties());
         this.body = (body == null) ? null : new ByteArrayInputStream(body);
     }
@@ -67,14 +74,18 @@ public class BrokeredMessage {
      * string.
      * 
      * @param body
-     *            A <code>String</code> object that represents the body of the message.
+     *            A <code>String</code> object that represents the body of the
+     *            message.
      */
-    public BrokeredMessage(String body) {
+    public BrokeredMessage(String body)
+    {
         this(new BrokerProperties());
-        try {
-            this.body = (body == null) ? null : new ByteArrayInputStream(body.getBytes("UTF-8"));
-        }
-        catch (UnsupportedEncodingException e) {
+        try
+        {
+            this.body = (body == null) ? null : new ByteArrayInputStream(
+                    body.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -84,7 +95,8 @@ public class BrokeredMessage {
      * 
      * @param properties
      */
-    public BrokeredMessage(BrokerProperties properties) {
+    public BrokeredMessage(BrokerProperties properties)
+    {
         this.brokerProperties = properties;
         this.customProperties = new HashMap<String, Object>();
     }
@@ -92,18 +104,22 @@ public class BrokeredMessage {
     /**
      * Returns the properties of the message.
      * 
-     * @return A {@link BrokerProperties} object that represents the properties of the message.
+     * @return A {@link BrokerProperties} object that represents the properties
+     *         of the message.
      */
-    public BrokerProperties getBrokerProperties() {
+    public BrokerProperties getBrokerProperties()
+    {
         return brokerProperties;
     }
 
     /**
      * Returns the body of the message.
      * 
-     * @return An <code>InputStream</code> object that represents the body of the message.
+     * @return An <code>InputStream</code> object that represents the body of
+     *         the message.
      */
-    public InputStream getBody() {
+    public InputStream getBody()
+    {
         return body;
     }
 
@@ -111,11 +127,14 @@ public class BrokeredMessage {
      * Specifies the body of the message.
      * 
      * @param body
-     *            An <code>InputStream</code> object that represents the body of the message.
+     *            An <code>InputStream</code> object that represents the body of
+     *            the message.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setBody(InputStream body) {
+    public BrokeredMessage setBody(InputStream body)
+    {
         this.body = body;
         return this;
     }
@@ -125,7 +144,8 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the content type.
      */
-    public String getContentType() {
+    public String getContentType()
+    {
         return contentType;
     }
 
@@ -135,9 +155,11 @@ public class BrokeredMessage {
      * @param contentType
      *            A <code>String</code> object that represents the content type.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setContentType(String contentType) {
+    public BrokeredMessage setContentType(String contentType)
+    {
         this.contentType = contentType;
         return this;
     }
@@ -145,9 +167,11 @@ public class BrokeredMessage {
     /**
      * Returns the date/time of the message.
      * 
-     * @return A <code>Date</code> object that represents the date/time of the object.
+     * @return A <code>Date</code> object that represents the date/time of the
+     *         object.
      */
-    public Date getDate() {
+    public Date getDate()
+    {
         return date;
     }
 
@@ -155,11 +179,14 @@ public class BrokeredMessage {
      * Sets the date/time of the message.
      * 
      * @param date
-     *            A <code>Date</code> object that represents the date/time of the object.
+     *            A <code>Date</code> object that represents the date/time of
+     *            the object.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setDate(Date date) {
+    public BrokeredMessage setDate(Date date)
+    {
         this.date = date;
         return this;
     }
@@ -168,10 +195,13 @@ public class BrokeredMessage {
      * Returns a user defined property of the message.
      * 
      * @param name
-     *            A <code>String</code> object that represents the name of the property.
-     * @return An <code>Object</code> object that represents the value of the property.
+     *            A <code>String</code> object that represents the name of the
+     *            property.
+     * @return An <code>Object</code> object that represents the value of the
+     *         property.
      */
-    public Object getProperty(String name) {
+    public Object getProperty(String name)
+    {
         return customProperties.get(name);
     }
 
@@ -179,12 +209,16 @@ public class BrokeredMessage {
      * Sets a user defined property of the message.
      * 
      * @param name
-     *            A <code>String</code> object that represents the name of the property.
+     *            A <code>String</code> object that represents the name of the
+     *            property.
      * @param value
-     *            An <code>Object</code> object that represents the value of the property.
-     * @return A <code>Message</code> object that represents the updated message.
+     *            An <code>Object</code> object that represents the value of the
+     *            property.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setProperty(String name, Object value) {
+    public BrokeredMessage setProperty(String name, Object value)
+    {
         customProperties.put(name, value);
         return this;
     }
@@ -192,9 +226,11 @@ public class BrokeredMessage {
     /**
      * Returns the user defined properties of the message.
      * 
-     * @return A <code>Map</code> object that represents the user defined properties.
+     * @return A <code>Map</code> object that represents the user defined
+     *         properties.
      */
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties()
+    {
         return customProperties;
     }
 
@@ -203,7 +239,8 @@ public class BrokeredMessage {
      * 
      * @return The delivery count.
      */
-    public Integer getDeliveryCount() {
+    public Integer getDeliveryCount()
+    {
         return brokerProperties.getDeliveryCount();
     }
 
@@ -212,7 +249,8 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the message ID.
      */
-    public String getMessageId() {
+    public String getMessageId()
+    {
         return brokerProperties.getMessageId();
     }
 
@@ -222,9 +260,11 @@ public class BrokeredMessage {
      * @param messageId
      *            A <code>String</code> object that represents the message ID.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setMessageId(String messageId) {
+    public BrokeredMessage setMessageId(String messageId)
+    {
         brokerProperties.setMessageId(messageId);
         return this;
     }
@@ -235,7 +275,8 @@ public class BrokeredMessage {
      * @return The message sequence number.
      * 
      */
-    public Long getSequenceNumber() {
+    public Long getSequenceNumber()
+    {
         return brokerProperties.getSequenceNumber();
     }
 
@@ -244,7 +285,8 @@ public class BrokeredMessage {
      * 
      * @return The time, in seconds, for the message to live.
      */
-    public Double getTimeToLive() {
+    public Double getTimeToLive()
+    {
         return brokerProperties.getTimeToLive();
     }
 
@@ -254,9 +296,11 @@ public class BrokeredMessage {
      * @param timeToLive
      *            The time, in seconds, for the message to live.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setTimeToLive(Double timeToLive) {
+    public BrokeredMessage setTimeToLive(Double timeToLive)
+    {
         brokerProperties.setTimeToLive(timeToLive);
         return this;
     }
@@ -266,16 +310,19 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the lock token.
      */
-    public String getLockToken() {
+    public String getLockToken()
+    {
         return brokerProperties.getLockToken();
     }
 
     /**
      * Returns the locked-until date/time.
      * 
-     * @return A <code>Date</code> object that represents the locked-until date/time, in UTC format.
+     * @return A <code>Date</code> object that represents the locked-until
+     *         date/time, in UTC format.
      */
-    public Date getLockedUntilUtc() {
+    public Date getLockedUntilUtc()
+    {
         return brokerProperties.getLockedUntilUtc();
     }
 
@@ -285,7 +332,8 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the correlation ID.
      * 
      */
-    public String getCorrelationId() {
+    public String getCorrelationId()
+    {
         return brokerProperties.getCorrelationId();
     }
 
@@ -293,11 +341,14 @@ public class BrokeredMessage {
      * Sets the correlation ID.
      * 
      * @param correlationId
-     *            A <code>String</code> object that represents the correlation ID.
+     *            A <code>String</code> object that represents the correlation
+     *            ID.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setCorrelationId(String correlationId) {
+    public BrokeredMessage setCorrelationId(String correlationId)
+    {
         brokerProperties.setCorrelationId(correlationId);
         return this;
     }
@@ -308,7 +359,8 @@ public class BrokeredMessage {
      * @return A <code>String</code> object that represents the session ID.
      * 
      */
-    public String getSessionId() {
+    public String getSessionId()
+    {
         return brokerProperties.getSessionId();
     }
 
@@ -318,9 +370,11 @@ public class BrokeredMessage {
      * @param sessionId
      *            A <code>String</code> object that represents the session ID.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setSessionId(String sessionId) {
+    public BrokeredMessage setSessionId(String sessionId)
+    {
         brokerProperties.setSessionId(sessionId);
         return this;
     }
@@ -330,7 +384,8 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the label.
      */
-    public String getLabel() {
+    public String getLabel()
+    {
         return brokerProperties.getLabel();
     }
 
@@ -340,9 +395,11 @@ public class BrokeredMessage {
      * @param label
      *            A <code>String</code> object that represents the label.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setLabel(String label) {
+    public BrokeredMessage setLabel(String label)
+    {
         brokerProperties.setLabel(label);
         return this;
     }
@@ -350,9 +407,11 @@ public class BrokeredMessage {
     /**
      * Returns the Reply-To recipient of the message.
      * 
-     * @return A <code>String</code> object that represents the Reply-To recipient.
+     * @return A <code>String</code> object that represents the Reply-To
+     *         recipient.
      */
-    public String getReplyTo() {
+    public String getReplyTo()
+    {
         return brokerProperties.getReplyTo();
     }
 
@@ -360,11 +419,14 @@ public class BrokeredMessage {
      * Sets the Reply-To recipient for the message.
      * 
      * @param replyTo
-     *            A <code>String</code> object that represents the Reply-To recipient.
+     *            A <code>String</code> object that represents the Reply-To
+     *            recipient.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setReplyTo(String replyTo) {
+    public BrokeredMessage setReplyTo(String replyTo)
+    {
         brokerProperties.setReplyTo(replyTo);
         return this;
     }
@@ -374,7 +436,8 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the To recipient.
      */
-    public String getTo() {
+    public String getTo()
+    {
         return brokerProperties.getTo();
     }
 
@@ -384,9 +447,11 @@ public class BrokeredMessage {
      * @param to
      *            A <code>String</code> object that represents the To recipient.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setTo(String to) {
+    public BrokeredMessage setTo(String to)
+    {
         brokerProperties.setTo(to);
         return this;
     }
@@ -394,9 +459,11 @@ public class BrokeredMessage {
     /**
      * Returns the scheduled enqueue date/time.
      * 
-     * @return A <code>Date</code> object that represents the date/time of the message in UTC format.
+     * @return A <code>Date</code> object that represents the date/time of the
+     *         message in UTC format.
      */
-    public Date getScheduledEnqueueTimeUtc() {
+    public Date getScheduledEnqueueTimeUtc()
+    {
         return brokerProperties.getScheduledEnqueueTimeUtc();
     }
 
@@ -404,11 +471,15 @@ public class BrokeredMessage {
      * Sets the scheduled enqueue time.
      * 
      * @param scheduledEnqueueTimeUtc
-     *            A <code>Date</code> object that represents the date/time of the message in UTC format.
+     *            A <code>Date</code> object that represents the date/time of
+     *            the message in UTC format.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setScheduledEnqueueTimeUtc(Date scheduledEnqueueTimeUtc) {
+    public BrokeredMessage setScheduledEnqueueTimeUtc(
+            Date scheduledEnqueueTimeUtc)
+    {
         brokerProperties.setScheduledEnqueueTimeUtc(scheduledEnqueueTimeUtc);
         return this;
     }
@@ -416,9 +487,11 @@ public class BrokeredMessage {
     /**
      * Returns the session ID of the Reply To recipient.
      * 
-     * @return A <code>String</code> object that represents the session ID of the Reply To recipient.
+     * @return A <code>String</code> object that represents the session ID of
+     *         the Reply To recipient.
      */
-    public String getReplyToSessionId() {
+    public String getReplyToSessionId()
+    {
         return brokerProperties.getReplyToSessionId();
     }
 
@@ -426,11 +499,14 @@ public class BrokeredMessage {
      * Sets the session ID of the Reply To recipient.
      * 
      * @param replyToSessionId
-     *            A <code>String</code> object that represents the session ID of the Reply To recipient.
+     *            A <code>String</code> object that represents the session ID of
+     *            the Reply To recipient.
      * 
-     * @return A <code>Message</code> object that represents the updated message.
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
      */
-    public BrokeredMessage setReplyToSessionId(String replyToSessionId) {
+    public BrokeredMessage setReplyToSessionId(String replyToSessionId)
+    {
         brokerProperties.setReplyToSessionId(replyToSessionId);
         return this;
     }
@@ -438,9 +514,11 @@ public class BrokeredMessage {
     /**
      * Returns the message location.
      * 
-     * @return A <code>String</code> object that represents the message location.
+     * @return A <code>String</code> object that represents the message
+     *         location.
      */
-    public String getMessageLocation() {
+    public String getMessageLocation()
+    {
         return brokerProperties.getMessageLocation();
     }
 
@@ -449,7 +527,8 @@ public class BrokeredMessage {
      * 
      * @return A <code>String</code> object that represents the lock location.
      */
-    public String getLockLocation() {
+    public String getLockLocation()
+    {
         return brokerProperties.getLockLocation();
     }
 }

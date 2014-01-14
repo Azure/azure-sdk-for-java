@@ -16,13 +16,16 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 
-public abstract class RetryPolicy {
+public abstract class RetryPolicy
+{
     public static final int DEFAULT_CLIENT_BACKOFF = 1000 * 30;
     public static final int DEFAULT_CLIENT_RETRY_COUNT = 3;
     public static final int DEFAULT_MAX_BACKOFF = 1000 * 90;
     public static final int DEFAULT_MIN_BACKOFF = 100 * 3;
 
-    public abstract boolean shouldRetry(int retryCount, ServiceResponseContext response, Exception error);
+    public abstract boolean shouldRetry(int retryCount,
+            ServiceResponseContext response, Exception error);
 
-    public abstract int calculateBackoff(int retryCount, ServiceResponseContext response, Exception error);
+    public abstract int calculateBackoff(int retryCount,
+            ServiceResponseContext response, Exception error);
 }

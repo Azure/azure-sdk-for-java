@@ -30,26 +30,34 @@ import static org.hamcrest.Matchers.*;
 /**
  *
  */
-public class RuntimeVersionManagerTests {
+public class RuntimeVersionManagerTests
+{
     @Test
-    public void getRuntimeClientForV1CanParseGoalState() {
-        RuntimeVersionManager manager = createVersionManagerWithGoalState("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<GoalState>" + "<Incarnation>1</Incarnation>" + "<ExpectedState>Started</ExpectedState>"
-                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>", "2011-03-08");
+    public void getRuntimeClientForV1CanParseGoalState()
+    {
+        RuntimeVersionManager manager = createVersionManagerWithGoalState(
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                        + "<GoalState>"
+                        + "<Incarnation>1</Incarnation>"
+                        + "<ExpectedState>Started</ExpectedState>"
+                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                        + "</GoalState>", "2011-03-08");
 
         RuntimeClient runtimeClient = manager.getRuntimeClient("");
         GoalState goalState = null;
 
-        try {
+        try
+        {
             goalState = runtimeClient.getCurrentGoalState();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        Calendar expectedDeadline = GregorianCalendar.getInstance(TimeZone.getTimeZone("GMT+00:00"));
+        Calendar expectedDeadline = GregorianCalendar.getInstance(TimeZone
+                .getTimeZone("GMT+00:00"));
 
         expectedDeadline.clear();
         expectedDeadline.set(2011, 2, 8, 3, 27, 44);
@@ -58,55 +66,73 @@ public class RuntimeVersionManagerTests {
         assertThat(goalState.getExpectedState(), equalTo(ExpectedState.STARTED));
         assertThat(goalState.getEnvironmentPath(), equalTo("envpath"));
         assertThat(goalState.getCurrentStateEndpoint(), equalTo("statepath"));
-        assertThat(goalState.getDeadline().getTimeInMillis(), equalTo(expectedDeadline.getTimeInMillis()));
+        assertThat(goalState.getDeadline().getTimeInMillis(),
+                equalTo(expectedDeadline.getTimeInMillis()));
     }
 
     @Test
-    public void getRuntimeClientThrowsWhenNoSupportedVersionsFound() {
-        RuntimeVersionManager manager = createVersionManagerWithGoalState("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<GoalState>" + "<Incarnation>1</Incarnation>" + "<ExpectedState>Started</ExpectedState>"
-                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>", "notSupported");
+    public void getRuntimeClientThrowsWhenNoSupportedVersionsFound()
+    {
+        RuntimeVersionManager manager = createVersionManagerWithGoalState(
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                        + "<GoalState>"
+                        + "<Incarnation>1</Incarnation>"
+                        + "<ExpectedState>Started</ExpectedState>"
+                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                        + "</GoalState>", "notSupported");
 
-        try {
+        try
+        {
             manager.getRuntimeClient("");
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex)
+        {
             return;
         }
 
         fail();
     }
 
-    private RuntimeVersionManager createVersionManagerWithGoalState(String goalStateXml, String version) {
+    private RuntimeVersionManager createVersionManagerWithGoalState(
+            String goalStateXml, String version)
+    {
         File tempGoalState;
 
-        try {
+        try
+        {
             tempGoalState = File.createTempFile("tempGoalState", null);
             FileOutputStream output = new FileOutputStream(tempGoalState);
 
-            InputChannel goalStateChannel = new MockInputChannel(new String[] { goalStateXml });
-            BufferedInputStream input = new BufferedInputStream(goalStateChannel.getInputStream(""));
+            InputChannel goalStateChannel = new MockInputChannel(
+                    new String[] { goalStateXml });
+            BufferedInputStream input = new BufferedInputStream(
+                    goalStateChannel.getInputStream(""));
 
             byte buffer[] = new byte[1024];
             int length = 0;
 
-            while ((length = input.read(buffer)) > 0) {
+            while ((length = input.read(buffer)) > 0)
+            {
                 output.write(buffer, 0, length);
             }
 
             input.close();
             output.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
 
-        InputChannel inputChannel = new MockInputChannel("<?xml version=\"1.0\"?>" + "<RuntimeServerDiscovery>"
-                + "<RuntimeServerEndpoints>" + "<RuntimeServerEndpoint version=\"" + version + "\" path=\""
-                + tempGoalState.getAbsolutePath() + "\" />" + "</RuntimeServerEndpoints>" + "</RuntimeServerDiscovery>");
-        RuntimeVersionProtocolClient protocolClient = new RuntimeVersionProtocolClient(inputChannel);
+        InputChannel inputChannel = new MockInputChannel(
+                "<?xml version=\"1.0\"?>" + "<RuntimeServerDiscovery>"
+                        + "<RuntimeServerEndpoints>"
+                        + "<RuntimeServerEndpoint version=\"" + version
+                        + "\" path=\"" + tempGoalState.getAbsolutePath()
+                        + "\" />" + "</RuntimeServerEndpoints>"
+                        + "</RuntimeServerDiscovery>");
+        RuntimeVersionProtocolClient protocolClient = new RuntimeVersionProtocolClient(
+                inputChannel);
         return new RuntimeVersionManager(protocolClient);
     }
 }

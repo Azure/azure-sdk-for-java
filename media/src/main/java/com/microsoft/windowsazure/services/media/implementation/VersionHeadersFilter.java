@@ -22,17 +22,23 @@ import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 
 /**
- * A small filter that adds the required Media services/OData 3
- * version headers to the request as it goes through.
+ * A small filter that adds the required Media services/OData 3 version headers
+ * to the request as it goes through.
  * 
  */
-public class VersionHeadersFilter extends IdempotentClientFilter {
+public class VersionHeadersFilter extends IdempotentClientFilter
+{
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
+     * (com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest cr) {
+    public ClientResponse doHandle(ClientRequest cr)
+    {
         MultivaluedMap<String, Object> headers = cr.getHeaders();
         headers.add("DataServiceVersion", "3.0");
         headers.add("MaxDataServiceVersion", "3.0");

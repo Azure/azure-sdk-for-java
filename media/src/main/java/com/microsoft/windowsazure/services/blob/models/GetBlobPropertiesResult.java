@@ -19,64 +19,76 @@ import java.util.HashMap;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Get Blob Properties operation. This is
- * returned by calls to implementations of {@link BlobContract#getBlobProperties(String, String)} and
- * {@link BlobContract#getBlobProperties(String, String, GetBlobPropertiesOptions)}.
+ * A wrapper class for the response returned from a Blob Service REST API Get
+ * Blob Properties operation. This is returned by calls to implementations of
+ * {@link BlobContract#getBlobProperties(String, String)} and
+ * {@link BlobContract#getBlobProperties(String, String, GetBlobPropertiesOptions)}
+ * .
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179394.aspx">Get Blob Properties</a>
- * documentation on MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179394.aspx">Get
+ * Blob Properties</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
-public class GetBlobPropertiesResult {
+public class GetBlobPropertiesResult
+{
     private BlobProperties properties;
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
     /**
      * Gets the standard HTTP properties and system properties of the blob.
      * 
-     * @return
-     *         A {@link BlobProperties} instance containing the properties of the blob.
+     * @return A {@link BlobProperties} instance containing the properties of
+     *         the blob.
      */
-    public BlobProperties getProperties() {
+    public BlobProperties getProperties()
+    {
         return properties;
     }
 
     /**
-     * Reserved for internal use. Sets the blob properties from the headers returned in the response.
+     * Reserved for internal use. Sets the blob properties from the headers
+     * returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param properties
-     *            A {@link BlobProperties} instance containing the properties of the blob.
+     *            A {@link BlobProperties} instance containing the properties of
+     *            the blob.
      */
-    public void setProperties(BlobProperties properties) {
+    public void setProperties(BlobProperties properties)
+    {
         this.properties = properties;
     }
 
     /**
-     * Gets the user-defined blob metadata as a map of name and value pairs. The metadata is for client use and is
-     * opaque to the server.
+     * Gets the user-defined blob metadata as a map of name and value pairs. The
+     * metadata is for client use and is opaque to the server.
      * 
-     * @return
-     *         A {@link java.util.HashMap} of key-value pairs of {@link String} containing the names and values of
-     *         the blob metadata.
+     * @return A {@link java.util.HashMap} of key-value pairs of {@link String}
+     *         containing the names and values of the blob metadata.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
     /**
-     * Reserved for internal use. Sets the blob metadata from the <code>x-ms-meta-<em>name:value</em></code> headers
-     * returned in the response.
+     * Reserved for internal use. Sets the blob metadata from the
+     * <code>x-ms-meta-<em>name:value</em></code> headers returned in the
+     * response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param metadata
-     *            A {@link java.util.HashMap} of key-value pairs of {@link String} containing the names and values
-     *            of the blob metadata.
+     *            A {@link java.util.HashMap} of key-value pairs of
+     *            {@link String} containing the names and values of the blob
+     *            metadata.
      */
-    public void setMetadata(HashMap<String, String> metadata) {
+    public void setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 }

@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.credentials;
 
 import java.util.Map;
 
-public abstract class CloudCredentials {
-    public abstract <T> void applyConfig(String profile, Map<String, Object> properties);
+public abstract class CloudCredentials
+{
+    public abstract <T> void applyConfig(String profile,
+            Map<String, Object> properties);
 }

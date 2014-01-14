@@ -25,73 +25,92 @@ import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.core.pipeline.ConnectionStringField;
 
-public class ParsedConnectionStringTest {
+public class ParsedConnectionStringTest
+{
 
-    private static class OneField extends ParsedConnectionString {
+    private static class OneField extends ParsedConnectionString
+    {
         private String aField;
 
-        public OneField(String connectionString) throws ConnectionStringSyntaxException {
+        public OneField(String connectionString)
+                throws ConnectionStringSyntaxException
+        {
             super(connectionString);
         }
 
-        public String getAField() {
+        public String getAField()
+        {
             return aField;
         }
 
         @SuppressWarnings("unused")
-        protected void setAField(String aField) {
+        protected void setAField(String aField)
+        {
             this.aField = aField;
         }
     }
 
     @Test
-    public void shouldSuccessfullyParseValidStringWithOneField() throws Exception {
+    public void shouldSuccessfullyParseValidStringWithOneField()
+            throws Exception
+    {
         OneField cs = new OneField("AField=avalue");
 
         assertEquals("avalue", cs.getAField());
     }
 
-    private static class ThreeFields extends ParsedConnectionString {
+    private static class ThreeFields extends ParsedConnectionString
+    {
         private String fieldOne;
         private String fieldTwo;
         private int fieldThree;
 
-        public ThreeFields(String connectionString) throws ConnectionStringSyntaxException {
+        public ThreeFields(String connectionString)
+                throws ConnectionStringSyntaxException
+        {
             super(connectionString);
         }
 
-        public String getFieldOne() {
+        public String getFieldOne()
+        {
             return fieldOne;
         }
 
         @SuppressWarnings("unused")
-        protected void setFieldOne(String fieldOne) {
+        protected void setFieldOne(String fieldOne)
+        {
             this.fieldOne = fieldOne;
         }
 
-        public String getFieldTwo() {
+        public String getFieldTwo()
+        {
             return fieldTwo;
         }
 
         @SuppressWarnings("unused")
-        protected void setFieldTwo(String fieldTwo) {
+        protected void setFieldTwo(String fieldTwo)
+        {
             this.fieldTwo = fieldTwo;
         }
 
-        public int getFieldThree() {
+        public int getFieldThree()
+        {
             return fieldThree;
         }
 
-        @SuppressWarnings("unused")
         @ConnectionStringField(name = "fieldthree")
-        protected void setNumericField(String fieldThree) {
+        protected void setNumericField(String fieldThree)
+        {
             this.fieldThree = Integer.parseInt(fieldThree);
         }
     }
 
     @Test
-    public void shouldSuccessfullyParseValidStringWithMultipleFields() throws Exception {
-        ThreeFields cs = new ThreeFields("FieldOne=hello;FieldTwo=world;FieldThree=27");
+    public void shouldSuccessfullyParseValidStringWithMultipleFields()
+            throws Exception
+    {
+        ThreeFields cs = new ThreeFields(
+                "FieldOne=hello;FieldTwo=world;FieldThree=27");
 
         assertEquals("hello", cs.getFieldOne());
         assertEquals("world", cs.getFieldTwo());
@@ -99,8 +118,11 @@ public class ParsedConnectionStringTest {
     }
 
     @Test
-    public void shouldSuccessFullyParseValisStringWithQuotedKeysAndValues() throws Exception {
-        ThreeFields cs = new ThreeFields("FieldOne=hello;'FieldTwo'=world;FieldThree='27'");
+    public void shouldSuccessFullyParseValisStringWithQuotedKeysAndValues()
+            throws Exception
+    {
+        ThreeFields cs = new ThreeFields(
+                "FieldOne=hello;'FieldTwo'=world;FieldThree='27'");
 
         assertEquals("hello", cs.getFieldOne());
         assertEquals("world", cs.getFieldTwo());
@@ -111,20 +133,25 @@ public class ParsedConnectionStringTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void shouldThrowForFieldThatDoesntExist() throws Exception {
+    public void shouldThrowForFieldThatDoesntExist() throws Exception
+    {
         exception.expect(ConnectionStringSyntaxException.class);
         new OneField("nosuchfield=nothing");
     }
 
     @Test
-    public void shouldNotThrowIfValueMissing() throws Exception {
-        ThreeFields cs = new ThreeFields("  FieldOne=  hello; FieldTwo  =;FieldThree=19 ");
+    public void shouldNotThrowIfValueMissing() throws Exception
+    {
+        ThreeFields cs = new ThreeFields(
+                "  FieldOne=  hello; FieldTwo  =;FieldThree=19 ");
         assertEquals("", cs.getFieldTwo());
     }
 
     @Test
-    public void shouldIgnoreEmptyPairsAndExtraSemicolons() throws Exception {
-        ThreeFields cs = new ThreeFields("FieldOne=hello;;  ; 'FieldTwo'=world;FieldThree='27';");
+    public void shouldIgnoreEmptyPairsAndExtraSemicolons() throws Exception
+    {
+        ThreeFields cs = new ThreeFields(
+                "FieldOne=hello;;  ; 'FieldTwo'=world;FieldThree='27';");
 
         assertEquals("hello", cs.getFieldOne());
         assertEquals("world", cs.getFieldTwo());

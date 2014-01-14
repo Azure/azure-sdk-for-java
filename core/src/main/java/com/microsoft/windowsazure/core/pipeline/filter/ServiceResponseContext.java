@@ -16,20 +16,19 @@
 package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.io.InputStream;
-import java.util.Map;
-import javax.ws.rs.core.MultivaluedMap;
 
-public interface ServiceResponseContext {
+public interface ServiceResponseContext
+{
     int getStatus();
 
     void setStatus(int status);
 
     public String getHeader(String name);
-    
+
     public void setHeader(String name, String value);
 
     public void removeHeader(String name);
-    
+
     boolean hasEntity();
 
     InputStream getEntityInputStream();

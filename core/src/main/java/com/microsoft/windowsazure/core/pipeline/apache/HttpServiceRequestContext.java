@@ -22,79 +22,89 @@ import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.protocol.HttpContext;
 
-public class HttpServiceRequestContext implements ServiceRequestContext {
-    HttpRequest clientRequest;
-    HttpContext httpContext;
+public class HttpServiceRequestContext implements ServiceRequestContext
+{
+    private final HttpRequest clientRequest;
+    private final HttpContext httpContext;
 
-    public HttpServiceRequestContext(HttpRequest clientRequest, HttpContext httpContext) {
+    public HttpServiceRequestContext(HttpRequest clientRequest,
+            HttpContext httpContext)
+    {
         this.clientRequest = clientRequest;
         this.httpContext = httpContext;
     }
 
     @Override
-    public Object getProperty(String name) {
+    public Object getProperty(final String name)
+    {
         return httpContext.getAttribute(name);
     }
 
     @Override
-    public void setProperty(String name, Object value) {
+    public void setProperty(final String name, final Object value)
+    {
         httpContext.setAttribute(name, value);
     }
 
     @Override
-    public URI getURI() {
-        try {
+    public URI getURI()
+    {
+        try
+        {
             return new URI(clientRequest.getRequestLine().getUri());
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             return null;
         }
     }
 
     @Override
-    public void setURI(URI uri) {
+    public void setURI(final URI uri)
+    {
         // Do nothing. not supported
     }
 
     @Override
-    public String getMethod() {
+    public String getMethod()
+    {
         return clientRequest.getRequestLine().getMethod();
     }
 
     @Override
-    public void setMethod(String method) {
+    public void setMethod(String method)
+    {
         // Do nothing. not supported
     }
 
     @Override
-    public Object getEntity() {
+    public Object getEntity()
+    {
         // Do nothing. not supported
         return null;
     }
 
     @Override
-    public void setEntity(Object entity) {
+    public void setEntity(final Object entity)
+    {
         // Do nothing. not supported
     }
 
     @Override
-    public String getHeader(String name) {
-        Header first = clientRequest.getFirstHeader(name);
-        if (first != null)
-        {
-            return first.getValue();
-        }
-        
-        return null;
+    public String getHeader(final String name)
+    {
+        final Header first = clientRequest.getFirstHeader(name);
+        return first != null ? first.getValue() : null;
     }
-    
+
     @Override
-    public void setHeader(String name, String value) {
+    public void setHeader(final String name, final String value)
+    {
         clientRequest.setHeader(name, value);
     }
-    
+
     @Override
-    public void removeHeader(String name) {
+    public void removeHeader(final String name)
+    {
         clientRequest.removeHeaders(name);
     }
 }

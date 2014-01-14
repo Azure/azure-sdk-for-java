@@ -20,7 +20,8 @@ import java.io.IOException;
 /**
  * The Class KeyStoreCredential.
  */
-public class KeyStoreCredential {
+public class KeyStoreCredential
+{
 
     /** The password of the keystore. */
     private final String keystorePassword;
@@ -43,32 +44,39 @@ public class KeyStoreCredential {
      * @throws IOException
      *             when a I/O exception has occurred.
      */
-    public KeyStoreCredential(String keyStorePath, String keyStorePassword, KeyStoreType keyStoreType)
-            throws IOException {
+    public KeyStoreCredential(String keyStorePath, String keyStorePassword,
+            KeyStoreType keyStoreType) throws IOException
+    {
         this.keystorePassword = keyStorePassword;
         this.keyStorePath = keyStorePath;
         this.keyStoreType = keyStoreType;
     }
 
-    public KeyStoreCredential(String keyStorePath, String keyStorePassword) throws IOException {
+    public KeyStoreCredential(String keyStorePath, String keyStorePassword)
+            throws IOException
+    {
         this(keyStorePath, keyStorePassword, KeyStoreType.jks);
     }
-    
+
     /**
      * Gets the type of the key store.
      * 
-     * @return A <code>KeyStoreType</code> representing the type of the key store.
+     * @return A <code>KeyStoreType</code> representing the type of the key
+     *         store.
      */
-    public KeyStoreType getKeyStoreType() {
+    public KeyStoreType getKeyStoreType()
+    {
         return keyStoreType;
     }
 
     /**
      * Gets the keystore password.
      * 
-     * @return A <code>String</code> instance representing the password of the keystore.
+     * @return A <code>String</code> instance representing the password of the
+     *         keystore.
      */
-    public String getKeystorePassword() {
+    public String getKeystorePassword()
+    {
         return keystorePassword;
     }
 
@@ -77,7 +85,8 @@ public class KeyStoreCredential {
      * 
      * @return the key store path
      */
-    public String getKeyStorePath() {
+    public String getKeyStorePath()
+    {
         return this.keyStorePath;
     }
 }

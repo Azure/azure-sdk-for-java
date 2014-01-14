@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>createRule</code> operation.
  */
-public class CreateRuleResult {
+public class CreateRuleResult
+{
 
     private RuleInfo value;
 
@@ -27,7 +28,8 @@ public class CreateRuleResult {
      * @param value
      *            A {@link RuleInfo} object assigned as the value of the result.
      */
-    public CreateRuleResult(RuleInfo value) {
+    public CreateRuleResult(RuleInfo value)
+    {
         this.setValue(value);
     }
 
@@ -37,16 +39,19 @@ public class CreateRuleResult {
      * @param value
      *            A {@link RuleInfo} object assigned as the value of the result.
      */
-    public void setValue(RuleInfo value) {
+    public void setValue(RuleInfo value)
+    {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link RuleInfo} object that represents the value of the result.
+     * @return A {@link RuleInfo} object that represents the value of the
+     *         result.
      */
-    public RuleInfo getValue() {
+    public RuleInfo getValue()
+    {
         return value;
     }
 

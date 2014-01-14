@@ -16,7 +16,8 @@ package com.microsoft.windowsazure.services.servicebus.implementation;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public interface WrapContract {
-    WrapAccessTokenResult wrapAccessToken(String uri, String name, String password, String scope)
-            throws ServiceException;
+public interface WrapContract
+{
+    WrapAccessTokenResult wrapAccessToken(String uri, String name,
+            String password, String scope) throws ServiceException;
 }

@@ -40,7 +40,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Lis
  * RESERVED FOR INTERNAL USE. Provides a set of methods for constructing web
  * requests for queue operations.
  */
-final class QueueRequest {
+final class QueueRequest
+{
     /**
      * Adds user-defined metadata to the web request as one or more name-value
      * pairs.
@@ -57,8 +58,10 @@ final class QueueRequest {
      *            requests to the storage service, and to provide additional
      *            runtime information about the operation.
      */
-    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
-            final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request,
+            final HashMap<String, String> metadata,
+            final OperationContext opContext)
+    {
         BaseRequest.addMetadata(request, metadata, opContext);
     }
 
@@ -89,10 +92,13 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection clearMessages(final URI uri, final int timeout, final OperationContext opContext)
-            throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection clearMessages(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws URISyntaxException, IOException, StorageException
+    {
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, null, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, null, opContext);
 
         request.setRequestMethod("DELETE");
 
@@ -126,8 +132,10 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection create(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection create(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         return BaseRequest.create(uri, timeout, null, opContext);
     }
 
@@ -158,8 +166,10 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection delete(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection delete(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         return BaseRequest.delete(uri, timeout, null, opContext);
     }
 
@@ -177,7 +187,8 @@ final class QueueRequest {
      *            timeout value is 0, the maximum timeout of 30 seconds is used.
      * @param popReceipt
      *            A <code>String</code> that contains the pop receipt value
-     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            returned from an earlier call to
+     *            {@link CloudQueueMessage#getPopReceipt} for the message to
      *            delete.
      * @param opContext
      *            An {@link OperationContext} object that represents the context
@@ -194,13 +205,17 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection deleteMessage(final URI uri, final int timeout, final String popReceipt,
-            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection deleteMessage(final URI uri,
+            final int timeout, final String popReceipt,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("popreceipt", popReceipt);
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setRequestMethod("DELETE");
 
@@ -235,8 +250,10 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection downloadAttributes(final URI uri, final int timeout,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection downloadAttributes(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
         return BaseRequest.getMetadata(uri, timeout, null, opContext);
     }
 
@@ -247,7 +264,8 @@ final class QueueRequest {
      * request.
      * 
      * @param message
-     *            A <code>String<code> containing the message to wrap in a message request body.
+     *            A
+     *            <code>String<code> containing the message to wrap in a message request body.
      * 
      * @return An array of <code>byte</code> containing the message request body
      *         encoded as UTF-8.
@@ -256,10 +274,14 @@ final class QueueRequest {
      * @throws StorageException
      *             If the message cannot be encoded as UTF-8.
      */
-    public static byte[] generateMessageRequestBody(final String message) throws XMLStreamException, StorageException {
+    public static byte[] generateMessageRequestBody(final String message)
+            throws XMLStreamException, StorageException
+    {
         final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory
+                .newInstance();
+        final XMLStreamWriter xmlw = xmlOutFactoryInst
+                .createXMLStreamWriter(outWriter);
 
         // default is UTF8
         xmlw.writeStartDocument();
@@ -274,10 +296,11 @@ final class QueueRequest {
 
         // end doc
         xmlw.writeEndDocument();
-        try {
+        try
+        {
             return outWriter.toString().getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e)
+        {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
@@ -299,7 +322,8 @@ final class QueueRequest {
      *            the listing operation, if any. May be <code>null</code>.
      * @param detailsIncluded
      *            A {@link QueueListingDetails} object that specifies additional
-     *            details to return with the listing, if any. May be <code>null</code>.
+     *            details to return with the listing, if any. May be
+     *            <code>null</code>.
      * @param opContext
      *            An {@link OperationContext} object that represents the context
      *            for the current operation. This object is used to track
@@ -315,32 +339,44 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection list(final URI uri, final int timeout, final ListingContext listingContext,
-            final QueueListingDetails detailsIncluded, final OperationContext opContext) throws URISyntaxException,
-            IOException, StorageException {
+    public static HttpURLConnection list(final URI uri, final int timeout,
+            final ListingContext listingContext,
+            final QueueListingDetails detailsIncluded,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "list");
 
-        if (listingContext != null) {
-            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
+        if (listingContext != null)
+        {
+            if (!Utility.isNullOrEmpty(listingContext.getPrefix()))
+            {
                 builder.add("prefix", listingContext.getPrefix());
             }
 
-            if (!Utility.isNullOrEmpty(listingContext.getMarker())) {
+            if (!Utility.isNullOrEmpty(listingContext.getMarker()))
+            {
                 builder.add("marker", listingContext.getMarker());
             }
 
-            if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
-                builder.add("maxresults", listingContext.getMaxResults().toString());
+            if (listingContext.getMaxResults() != null
+                    && listingContext.getMaxResults() > 0)
+            {
+                builder.add("maxresults", listingContext.getMaxResults()
+                        .toString());
             }
         }
 
-        if (detailsIncluded == QueueListingDetails.ALL || detailsIncluded == QueueListingDetails.METADATA) {
+        if (detailsIncluded == QueueListingDetails.ALL
+                || detailsIncluded == QueueListingDetails.METADATA)
+        {
             builder.add("include", "metadata");
         }
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -378,17 +414,22 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection peekMessages(final URI uri, final int timeout, final int numberOfMessages,
-            final OperationContext opContext) throws URISyntaxException, IOException, StorageException {
+    public static HttpURLConnection peekMessages(final URI uri,
+            final int timeout, final int numberOfMessages,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("peekonly", "true");
 
-        if (numberOfMessages != 0) {
+        if (numberOfMessages != 0)
+        {
             builder.add("numofmessages", Integer.toString(numberOfMessages));
         }
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -397,8 +438,8 @@ final class QueueRequest {
 
     /**
      * Constructs a web request to add a message to the back of the queue. Write
-     * the encoded message request body generated with a call to {@link #generateMessageRequestBody(String)} to the
-     * output stream of the
+     * the encoded message request body generated with a call to
+     * {@link #generateMessageRequestBody(String)} to the output stream of the
      * request. Sign the web request with the length of the encoded message
      * request body.
      * 
@@ -436,21 +477,27 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection putMessage(final URI uri, final int timeout, final int visibilityTimeoutInSeconds,
-            final int timeToLiveInSeconds, final OperationContext opContext) throws IOException, URISyntaxException,
-            StorageException {
+    public static HttpURLConnection putMessage(final URI uri,
+            final int timeout, final int visibilityTimeoutInSeconds,
+            final int timeToLiveInSeconds, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
-        if (visibilityTimeoutInSeconds != 0) {
-            builder.add("visibilitytimeout", Integer.toString(visibilityTimeoutInSeconds));
+        if (visibilityTimeoutInSeconds != 0)
+        {
+            builder.add("visibilitytimeout",
+                    Integer.toString(visibilityTimeoutInSeconds));
         }
 
-        if (timeToLiveInSeconds != 0) {
+        if (timeToLiveInSeconds != 0)
+        {
             builder.add("messagettl", Integer.toString(timeToLiveInSeconds));
         }
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("POST");
@@ -496,19 +543,25 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection retrieveMessages(final URI uri, final int timeout, final int numberOfMessages,
-            final int visibilityTimeoutInSeconds, final OperationContext opContext) throws URISyntaxException,
-            IOException, StorageException {
+    public static HttpURLConnection retrieveMessages(final URI uri,
+            final int timeout, final int numberOfMessages,
+            final int visibilityTimeoutInSeconds,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
-        if (numberOfMessages != 0) {
+        if (numberOfMessages != 0)
+        {
             builder.add("numofmessages", Integer.toString(numberOfMessages));
         }
 
-        builder.add("visibilitytimeout", Integer.toString(visibilityTimeoutInSeconds));
+        builder.add("visibilitytimeout",
+                Integer.toString(visibilityTimeoutInSeconds));
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -545,8 +598,10 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection setMetadata(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setMetadata(final URI uri,
+            final int timeout, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
         return BaseRequest.setMetadata(uri, timeout, null, opContext);
     }
 
@@ -567,7 +622,8 @@ final class QueueRequest {
      *            timeout value is 0, the maximum timeout of 30 seconds is used.
      * @param popReceipt
      *            A <code>String</code> that contains the pop receipt value
-     *            returned from an earlier call to {@link CloudQueueMessage#getPopReceipt} for the message to
+     *            returned from an earlier call to
+     *            {@link CloudQueueMessage#getPopReceipt} for the message to
      *            update.
      * @param visibilityTimeoutInSeconds
      *            Specifies the new visibility timeout value in seconds,
@@ -593,19 +649,25 @@ final class QueueRequest {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public static HttpURLConnection updateMessage(final URI uri, final int timeout, final String popReceipt,
-            final int visibilityTimeoutInSeconds, final OperationContext opContext) throws URISyntaxException,
-            IOException, StorageException {
+    public static HttpURLConnection updateMessage(final URI uri,
+            final int timeout, final String popReceipt,
+            final int visibilityTimeoutInSeconds,
+            final OperationContext opContext) throws URISyntaxException,
+            IOException, StorageException
+    {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
         builder.add("popreceipt", popReceipt);
 
-        builder.add("visibilitytimeout", Integer.toString(visibilityTimeoutInSeconds));
+        builder.add("visibilitytimeout",
+                Integer.toString(visibilityTimeoutInSeconds));
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
-        request.setRequestProperty(Constants.HeaderConstants.STORAGE_VERSION_HEADER, "2011-08-18");
+        request.setRequestProperty(
+                Constants.HeaderConstants.STORAGE_VERSION_HEADER, "2011-08-18");
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -625,12 +687,15 @@ final class QueueRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
-    public static HttpURLConnection setAcl(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setAcl(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "acl");
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setDoOutput(true);
         request.setRequestMethod("PUT");
@@ -639,7 +704,8 @@ final class QueueRequest {
     }
 
     /**
-     * Writes a collection of shared access policies to the specified stream in XML format.
+     * Writes a collection of shared access policies to the specified stream in
+     * XML format.
      * 
      * @param sharedAccessPolicies
      *            A collection of shared access policies
@@ -648,18 +714,23 @@ final class QueueRequest {
      * @throws XMLStreamException
      */
     public static void writeSharedAccessIdentifiersToStream(
-            final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies, final StringWriter outWriter)
-            throws XMLStreamException {
+            final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies,
+            final StringWriter outWriter) throws XMLStreamException
+    {
         Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
         Utility.assertNotNull("outWriter", outWriter);
 
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
+        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory
+                .newInstance();
+        final XMLStreamWriter xmlw = xmlOutFactoryInst
+                .createXMLStreamWriter(outWriter);
 
-        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
+        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS)
+        {
             final String errorMessage = String
                     .format("Too many %d shared access policy identifiers provided. Server does not support setting more than %d on a single queue.",
-                            sharedAccessPolicies.keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
+                            sharedAccessPolicies.keySet().size(),
+                            Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
 
             throw new IllegalArgumentException(errorMessage);
         }
@@ -668,7 +739,9 @@ final class QueueRequest {
         xmlw.writeStartDocument();
         xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
 
-        for (final Entry<String, SharedAccessQueuePolicy> entry : sharedAccessPolicies.entrySet()) {
+        for (final Entry<String, SharedAccessQueuePolicy> entry : sharedAccessPolicies
+                .entrySet())
+        {
             final SharedAccessQueuePolicy policy = entry.getValue();
             xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
 
@@ -681,19 +754,22 @@ final class QueueRequest {
 
             // Set the Start Time
             xmlw.writeStartElement(Constants.START);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessStartTime()));
             // end Start
             xmlw.writeEndElement();
 
             // Set the Expiry Time
             xmlw.writeStartElement(Constants.EXPIRY);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
+            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy
+                    .getSharedAccessExpiryTime()));
             // end Expiry
             xmlw.writeEndElement();
 
             // Set the Permissions
             xmlw.writeStartElement(Constants.PERMISSION);
-            xmlw.writeCharacters(SharedAccessQueuePolicy.permissionsToString(policy.getPermissions()));
+            xmlw.writeCharacters(SharedAccessQueuePolicy
+                    .permissionsToString(policy.getPermissions()));
             // end Permission
             xmlw.writeEndElement();
 
@@ -710,7 +786,8 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to return the ACL for this queue. Sign with no length specified.
+     * Constructs a web request to return the ACL for this queue. Sign with no
+     * length specified.
      * 
      * @param uri
      *            The absolute URI to the container.
@@ -719,12 +796,15 @@ final class QueueRequest {
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      */
-    public static HttpURLConnection getAcl(final URI uri, final int timeout, final OperationContext opContext)
-            throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection getAcl(final URI uri, final int timeout,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add("comp", "acl");
 
-        final HttpURLConnection request = BaseRequest.createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection request = BaseRequest.createURLConnection(uri,
+                timeout, builder, opContext);
 
         request.setRequestMethod("GET");
 
@@ -734,7 +814,8 @@ final class QueueRequest {
     /**
      * Private Default Ctor.
      */
-    private QueueRequest() {
+    private QueueRequest()
+    {
         // No op
     }
 }

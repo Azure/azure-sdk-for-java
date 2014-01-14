@@ -16,9 +16,6 @@ package com.microsoft.windowsazure.services.core.storage.utils.implementation;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +35,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * RESERVED FOR INTERNAL USE. The base response class for the protocol layer
  */
-public class BaseResponse {
+public class BaseResponse
+{
     /**
      * Gets the ContentMD5
      * 
@@ -46,7 +44,8 @@ public class BaseResponse {
      *            The response from server.
      * @return The ContentMD5.
      */
-    public static String getContentMD5(final HttpURLConnection request) {
+    public static String getContentMD5(final HttpURLConnection request)
+    {
         return request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
     }
 
@@ -57,9 +56,11 @@ public class BaseResponse {
      *            The response from server.
      * @return The Date.
      */
-    public static String getDate(final HttpURLConnection request) {
+    public static String getDate(final HttpURLConnection request)
+    {
         final String retString = request.getHeaderField("Date");
-        return retString == null ? request.getHeaderField(Constants.HeaderConstants.DATE) : retString;
+        return retString == null ? request
+                .getHeaderField(Constants.HeaderConstants.DATE) : retString;
     }
 
     /**
@@ -69,7 +70,8 @@ public class BaseResponse {
      *            The response from server.
      * @return The Etag.
      */
-    public static String getEtag(final HttpURLConnection request) {
+    public static String getEtag(final HttpURLConnection request)
+    {
         return request.getHeaderField(Constants.ETAG_ELEMENT);
     }
 
@@ -78,8 +80,11 @@ public class BaseResponse {
      * 
      * @return the metadata from the request
      */
-    public static HashMap<String, String> getMetadata(final HttpURLConnection request) {
-        return getValuesByHeaderPrefix(request, Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA);
+    public static HashMap<String, String> getMetadata(
+            final HttpURLConnection request)
+    {
+        return getValuesByHeaderPrefix(request,
+                Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA);
     }
 
     /**
@@ -89,9 +94,12 @@ public class BaseResponse {
      *            The response from server.
      * @return The Etag.
      */
-    public static LeaseStatus getLeaseStatus(final HttpURLConnection request) {
-        final String leaseStatus = request.getHeaderField(Constants.HeaderConstants.LEASE_STATUS);
-        if (!Utility.isNullOrEmpty(leaseStatus)) {
+    public static LeaseStatus getLeaseStatus(final HttpURLConnection request)
+    {
+        final String leaseStatus = request
+                .getHeaderField(Constants.HeaderConstants.LEASE_STATUS);
+        if (!Utility.isNullOrEmpty(leaseStatus))
+        {
             return LeaseStatus.parse(leaseStatus);
         }
 
@@ -105,9 +113,12 @@ public class BaseResponse {
      *            The response from server.
      * @return The LeaseState.
      */
-    public static LeaseState getLeaseState(final HttpURLConnection request) {
-        final String leaseState = request.getHeaderField(Constants.HeaderConstants.LEASE_STATE);
-        if (!Utility.isNullOrEmpty(leaseState)) {
+    public static LeaseState getLeaseState(final HttpURLConnection request)
+    {
+        final String leaseState = request
+                .getHeaderField(Constants.HeaderConstants.LEASE_STATE);
+        if (!Utility.isNullOrEmpty(leaseState))
+        {
             return LeaseState.parse(leaseState);
         }
 
@@ -121,9 +132,12 @@ public class BaseResponse {
      *            The response from server.
      * @return The LeaseDuration.
      */
-    public static LeaseDuration getLeaseDuration(final HttpURLConnection request) {
-        final String leaseDuration = request.getHeaderField(Constants.HeaderConstants.LEASE_DURATION);
-        if (!Utility.isNullOrEmpty(leaseDuration)) {
+    public static LeaseDuration getLeaseDuration(final HttpURLConnection request)
+    {
+        final String leaseDuration = request
+                .getHeaderField(Constants.HeaderConstants.LEASE_DURATION);
+        if (!Utility.isNullOrEmpty(leaseDuration))
+        {
             return LeaseDuration.parse(leaseDuration);
         }
 
@@ -137,8 +151,10 @@ public class BaseResponse {
      *            The response from server.
      * @return The request ID.
      */
-    public static String getRequestId(final HttpURLConnection request) {
-        return request.getHeaderField(Constants.HeaderConstants.REQUEST_ID_HEADER);
+    public static String getRequestId(final HttpURLConnection request)
+    {
+        return request
+                .getHeaderField(Constants.HeaderConstants.REQUEST_ID_HEADER);
     }
 
     /**
@@ -150,15 +166,20 @@ public class BaseResponse {
      *            the prefix for headers to be returned.
      * @return all the header/value pairs with the given prefix.
      */
-    private static HashMap<String, String> getValuesByHeaderPrefix(final HttpURLConnection request, final String prefix) {
+    private static HashMap<String, String> getValuesByHeaderPrefix(
+            final HttpURLConnection request, final String prefix)
+    {
         final HashMap<String, String> retVals = new HashMap<String, String>();
         final Map<String, List<String>> headerMap = request.getHeaderFields();
         final int prefixLength = prefix.length();
 
-        for (final Entry<String, List<String>> entry : headerMap.entrySet()) {
-            if (entry.getKey() != null && entry.getKey().startsWith(prefix)) {
+        for (final Entry<String, List<String>> entry : headerMap.entrySet())
+        {
+            if (entry.getKey() != null && entry.getKey().startsWith(prefix))
+            {
                 final List<String> currHeaderValues = entry.getValue();
-                retVals.put(entry.getKey().substring(prefixLength), currHeaderValues.get(0));
+                retVals.put(entry.getKey().substring(prefixLength),
+                        currHeaderValues.get(0));
             }
         }
 
@@ -172,21 +193,26 @@ public class BaseResponse {
      *            the stream to read from.
      * @param opContext
      *            an object used to track the execution of the operation
-     * @return a ServiceProperties object representing the Analytics configuration for the client.
+     * @return a ServiceProperties object representing the Analytics
+     *         configuration for the client.
      * @throws XMLStreamException
      *             if the xml is invalid.
      * @throws StorageException
      *             if unexpected xml is found.
      */
-    public static ServiceProperties readServicePropertiesFromStream(final InputStream inStream,
-            final OperationContext opContext) throws XMLStreamException, StorageException {
-        return ServiceProperties.readServicePropertiesFromStream(inStream, opContext);
+    public static ServiceProperties readServicePropertiesFromStream(
+            final InputStream inStream, final OperationContext opContext)
+            throws XMLStreamException, StorageException
+    {
+        return ServiceProperties.readServicePropertiesFromStream(inStream,
+                opContext);
     }
 
     /**
      * Private Default Ctor
      */
-    protected BaseResponse() {
+    protected BaseResponse()
+    {
         // No op
     }
 }

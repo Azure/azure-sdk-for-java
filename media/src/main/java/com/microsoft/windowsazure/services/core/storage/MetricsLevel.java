@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Enumeration representing the state of metrics collection in a service.
  */
-public enum MetricsLevel {
+public enum MetricsLevel
+{
     /**
      * Metrics collection is disabled.
      */

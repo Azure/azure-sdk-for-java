@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.LocatorR
 /**
  * The Class LocatorInfo.
  */
-public class LocatorInfo extends ODataEntity<LocatorRestType> {
+public class LocatorInfo extends ODataEntity<LocatorRestType>
+{
 
     /**
      * Instantiates a new locator info.
@@ -34,7 +35,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * @param content
      *            the content
      */
-    public LocatorInfo(EntryType entry, LocatorRestType content) {
+    public LocatorInfo(EntryType entry, LocatorRestType content)
+    {
         super(entry, content);
     }
 
@@ -43,7 +45,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -52,7 +55,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the expiration date time
      */
-    public Date getExpirationDateTime() {
+    public Date getExpirationDateTime()
+    {
         return getContent().getExpirationDateTime();
     }
 
@@ -61,7 +65,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the locator type
      */
-    public LocatorType getLocatorType() {
+    public LocatorType getLocatorType()
+    {
         return LocatorType.fromCode(getContent().getType());
     }
 
@@ -70,7 +75,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the path
      */
-    public String getPath() {
+    public String getPath()
+    {
         return getContent().getPath();
     }
 
@@ -79,7 +85,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the access policy id
      */
-    public String getAccessPolicyId() {
+    public String getAccessPolicyId()
+    {
         return getContent().getAccessPolicyId();
     }
 
@@ -88,7 +95,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the asset id
      */
-    public String getAssetId() {
+    public String getAssetId()
+    {
         return getContent().getAssetId();
     }
 
@@ -97,7 +105,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the start time
      */
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return getContent().getStartTime();
     }
 
@@ -106,7 +115,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the base uri
      */
-    public String getBaseUri() {
+    public String getBaseUri()
+    {
         return getContent().getBaseUri();
     }
 
@@ -115,7 +125,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the content access token
      */
-    public String getContentAccessToken() {
+    public String getContentAccessToken()
+    {
         return this.getContent().getContentAccessComponent();
     }
 
@@ -124,7 +135,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the link
      */
-    public LinkInfo<AccessPolicyInfo> getAccessPolicyLink() {
+    public LinkInfo<AccessPolicyInfo> getAccessPolicyLink()
+    {
         return this.<AccessPolicyInfo> getRelationLink("AccessPolicy");
     }
 
@@ -133,7 +145,8 @@ public class LocatorInfo extends ODataEntity<LocatorRestType> {
      * 
      * @return the link
      */
-    public LinkInfo<AssetInfo> getAssetLink() {
+    public LinkInfo<AssetInfo> getAssetLink()
+    {
         return this.<AssetInfo> getRelationLink("Asset");
     }
 }

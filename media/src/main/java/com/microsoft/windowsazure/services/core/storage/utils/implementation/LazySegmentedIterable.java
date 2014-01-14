@@ -21,24 +21,28 @@ import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.core.storage.RetryPolicyFactory;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides a lazy iterator which will retrieve the next segment of a result as the iterator
- * is consumed
+ * RESERVED FOR INTERNAL USE. Provides a lazy iterator which will retrieve the
+ * next segment of a result as the iterator is consumed
  * 
  * @param <CLIENT_TYPE>
  *            The service client type
  * @param <PARENT_TYPE>
- *            The type of the parent object, i.e. CloudBlobClient for ListContainers etc.
+ *            The type of the parent object, i.e. CloudBlobClient for
+ *            ListContainers etc.
  * @param <ENTITY_TYPE>
  *            The type of the objects the resulting iterable objects
  */
-public final class LazySegmentedIterable<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> implements Iterable<ENTITY_TYPE> {
+public final class LazySegmentedIterable<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE>
+        implements Iterable<ENTITY_TYPE>
+{
     /**
      * Holds the service client associated with the operations.
      */
     private final CLIENT_TYPE client;
 
     /**
-     * Holds a reference to the parent object, i.e. CloudBlobContainer for list blobs.
+     * Holds a reference to the parent object, i.e. CloudBlobContainer for list
+     * blobs.
      */
     private final PARENT_TYPE parentObject;
 
@@ -48,7 +52,8 @@ public final class LazySegmentedIterable<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     private final RetryPolicyFactory policyFactory;
 
     /**
-     * Holds the SegmentedStorageOperation which is used to retrieve the next segment of results.
+     * Holds the SegmentedStorageOperation which is used to retrieve the next
+     * segment of results.
      */
     private final SegmentedStorageOperation<CLIENT_TYPE, PARENT_TYPE, ResultSegment<ENTITY_TYPE>> segmentGenerator;
 
@@ -59,8 +64,10 @@ public final class LazySegmentedIterable<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
 
     public LazySegmentedIterable(
             final SegmentedStorageOperation<CLIENT_TYPE, PARENT_TYPE, ResultSegment<ENTITY_TYPE>> segmentGenerator,
-            final CLIENT_TYPE client, final PARENT_TYPE parent, final RetryPolicyFactory policyFactory,
-            final OperationContext opContext) {
+            final CLIENT_TYPE client, final PARENT_TYPE parent,
+            final RetryPolicyFactory policyFactory,
+            final OperationContext opContext)
+    {
         this.segmentGenerator = segmentGenerator;
         this.parentObject = parent;
         this.opContext = opContext;
@@ -69,8 +76,10 @@ public final class LazySegmentedIterable<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE> 
     }
 
     @Override
-    public Iterator<ENTITY_TYPE> iterator() {
-        return new LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE>(this.segmentGenerator, this.client,
-                this.parentObject, this.policyFactory, this.opContext);
+    public Iterator<ENTITY_TYPE> iterator()
+    {
+        return new LazySegmentedIterator<CLIENT_TYPE, PARENT_TYPE, ENTITY_TYPE>(
+                this.segmentGenerator, this.client, this.parentObject,
+                this.policyFactory, this.opContext);
     }
 }

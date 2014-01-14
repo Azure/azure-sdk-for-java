@@ -26,9 +26,11 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Exe
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.StorageOperation;
 
 /**
- * Reserved for internal use. Provides a client for accessing the Windows Azure Storage service.
+ * Reserved for internal use. Provides a client for accessing the Windows Azure
+ * Storage service.
  */
-public abstract class ServiceClient {
+public abstract class ServiceClient
+{
 
     /**
      * Holds the base URI for the Service Client.
@@ -41,17 +43,20 @@ public abstract class ServiceClient {
     protected StorageCredentials credentials;
 
     /**
-     * Reserved for internal use. An internal flag which indicates if path style uris should be used.
+     * Reserved for internal use. An internal flag which indicates if path style
+     * uris should be used.
      */
     private boolean usePathStyleUris;
 
     /**
-     * Holds the default retry policy for requests made via the service client to set.
+     * Holds the default retry policy for requests made via the service client
+     * to set.
      */
     protected RetryPolicyFactory retryPolicyFactory = new RetryExponentialRetry();
 
     /**
-     * Holds the default server and client timeout for requests made by the service client.
+     * Holds the default server and client timeout for requests made by the
+     * service client.
      */
     protected int timeoutInMs = Constants.DEFAULT_TIMEOUT_IN_MS;
 
@@ -61,76 +66,97 @@ public abstract class ServiceClient {
     protected AuthenticationScheme authenticationScheme = AuthenticationScheme.SHAREDKEYFULL;
 
     /**
-     * Creates an instance of the <code>ServiceClient</code> class using the specified service endpoint.
+     * Creates an instance of the <code>ServiceClient</code> class using the
+     * specified service endpoint.
      * 
      * @param baseUri
-     *            A <code>java.net.URI</code> object that represents the service endpoint used to create the client.
+     *            A <code>java.net.URI</code> object that represents the service
+     *            endpoint used to create the client.
      */
-    public ServiceClient(final URI baseUri) {
+    public ServiceClient(final URI baseUri)
+    {
         this(baseUri, null);
     }
 
     /**
-     * Creates an instance of the <code>ServiceClient</code> class using the specified service endpoint and account
-     * credentials.
+     * Creates an instance of the <code>ServiceClient</code> class using the
+     * specified service endpoint and account credentials.
      * 
      * @param baseUri
-     *            A <code>java.net.URI</code> object that represents the service endpoint used to create the client.
+     *            A <code>java.net.URI</code> object that represents the service
+     *            endpoint used to create the client.
      * 
      * @param credentials
-     *            A {@link StorageCredentials} object that represents the account credentials.
+     *            A {@link StorageCredentials} object that represents the
+     *            account credentials.
      */
-    public ServiceClient(final URI baseUri, final StorageCredentials credentials) {
+    public ServiceClient(final URI baseUri, final StorageCredentials credentials)
+    {
         Utility.assertNotNull("baseUri", baseUri);
-        if (!baseUri.isAbsolute()) {
-            throw new IllegalArgumentException(String.format(
-                    "Address '%s' is not an absolute address. Relative addresses are not permitted in here.", baseUri));
+        if (!baseUri.isAbsolute())
+        {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Address '%s' is not an absolute address. Relative addresses are not permitted in here.",
+                            baseUri));
         }
 
-        this.credentials = credentials == null ? StorageCredentialsAnonymous.ANONYMOUS : credentials;
+        this.credentials = credentials == null ? StorageCredentialsAnonymous.ANONYMOUS
+                : credentials;
 
         this.retryPolicyFactory = new RetryExponentialRetry();
         this.timeoutInMs = Constants.DEFAULT_TIMEOUT_IN_MS;
 
-        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri, this.credentials.getAccountName());
+        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri,
+                this.credentials.getAccountName());
         this.endpoint = baseUri;
     }
 
     /**
-     * Retrieves the current ServiceProperties for the given storage service. This includes Metrics and Logging
-     * Configurations.
+     * Retrieves the current ServiceProperties for the given storage service.
+     * This includes Metrics and Logging Configurations.
      * 
-     * @return the ServiceProperties object representing the current configuration of the service.
+     * @return the ServiceProperties object representing the current
+     *         configuration of the service.
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final ServiceProperties downloadServiceProperties() throws StorageException {
+    public final ServiceProperties downloadServiceProperties()
+            throws StorageException
+    {
         return this.downloadServiceProperties(null, null);
     }
 
     /**
-     * Retrieves the current ServiceProperties for the given storage service. This includes Metrics and Logging
-     * Configurations.
+     * Retrieves the current ServiceProperties for the given storage service.
+     * This includes Metrics and Logging Configurations.
      * 
      * @param options
-     *            A {@link RequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}{@link CloudQueueClient}).
+     *            A {@link RequestOptions} object that specifies any additional
+     *            options for the request. Specifying <code>null</code> will use
+     *            the default request options from the associated service client
+     *            ( {@link CloudBlobClient}{@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * @return the ServiceProperties object representing the current configuration of the service.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
+     * @return the ServiceProperties object representing the current
+     *         configuration of the service.
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public final ServiceProperties downloadServiceProperties(RequestOptions options, OperationContext opContext)
-            throws StorageException {
-        if (opContext == null) {
+    public final ServiceProperties downloadServiceProperties(
+            RequestOptions options, OperationContext opContext)
+            throws StorageException
+    {
+        if (opContext == null)
+        {
             opContext = new OperationContext();
         }
 
-        if (options == null) {
+        if (options == null)
+        {
             options = new RequestOptions();
         }
 
@@ -138,87 +164,107 @@ public abstract class ServiceClient {
         options.applyBaseDefaults(this);
 
         final StorageOperation<ServiceClient, Void, ServiceProperties> impl = new StorageOperation<ServiceClient, Void, ServiceProperties>(
-                options) {
+                options)
+        {
             @Override
-            public ServiceProperties execute(final ServiceClient client, final Void v, final OperationContext opContext)
-                    throws Exception {
+            public ServiceProperties execute(final ServiceClient client,
+                    final Void v, final OperationContext opContext)
+                    throws Exception
+            {
 
-                final HttpURLConnection request = BaseRequest.getServiceProperties(client.getEndpoint(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
+                final HttpURLConnection request = BaseRequest
+                        .getServiceProperties(client.getEndpoint(), this
+                                .getRequestOptions().getTimeoutIntervalInMs(),
+                                null, opContext);
                 this.setConnection(request);
 
                 this.signRequest(client, request, -1, null);
 
-                ExecutionEngine.processRequest(request, opContext, this.getResult());
+                ExecutionEngine.processRequest(request, opContext,
+                        this.getResult());
 
-                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK)
+                {
                     this.setNonExceptionedRetryableFailure(true);
                     return null;
                 }
 
-                return BaseResponse.readServicePropertiesFromStream(request.getInputStream(), opContext);
+                return BaseResponse.readServicePropertiesFromStream(
+                        request.getInputStream(), opContext);
             }
         };
 
-        return ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
+        return ExecutionEngine.executeWithRetry(this, null, impl,
+                options.getRetryPolicyFactory(), opContext);
     }
 
     /**
      * Returns the storage credentials associated with this service client.
      * 
-     * @return A {@link StorageCredentials} object that represents the storage credentials associated with this client.
+     * @return A {@link StorageCredentials} object that represents the storage
+     *         credentials associated with this client.
      */
-    public final StorageCredentials getCredentials() {
+    public final StorageCredentials getCredentials()
+    {
         return this.credentials;
     }
 
     /**
      * Returns the AuthenticationScheme associated with this service client.
      * 
-     * @return An {@link AuthenticationScheme} object that represents the authentication scheme associated with this
-     *         client.
+     * @return An {@link AuthenticationScheme} object that represents the
+     *         authentication scheme associated with this client.
      */
-    public final AuthenticationScheme getAuthenticationScheme() {
+    public final AuthenticationScheme getAuthenticationScheme()
+    {
         return this.authenticationScheme;
     }
 
     /**
      * Returns the base URI for this service client.
      * 
-     * @return A <code>java.net.URI</code> object that represents the base URI for the service client.
+     * @return A <code>java.net.URI</code> object that represents the base URI
+     *         for the service client.
      */
-    public final URI getEndpoint() {
+    public final URI getEndpoint()
+    {
         return this.endpoint;
     }
 
     /**
-     * Returns the retry policy currently in effect for this Blob service client.
+     * Returns the retry policy currently in effect for this Blob service
+     * client.
      * 
-     * @return An {@link RetryPolicyFactory} object that represents the current retry policy.
+     * @return An {@link RetryPolicyFactory} object that represents the current
+     *         retry policy.
      * 
      * @see RetryPolicy
      * @see RetryExponentialRetry
      * @see RetryLinearRetry
      * @see RetryNoRetry
      */
-    public final RetryPolicyFactory getRetryPolicyFactory() {
+    public final RetryPolicyFactory getRetryPolicyFactory()
+    {
         return this.retryPolicyFactory;
     }
 
     /**
-     * Returns the timeout value for requests made to the service. For more information about the timeout, see
-     * {@link #setTimeoutInMs}.
+     * Returns the timeout value for requests made to the service. For more
+     * information about the timeout, see {@link #setTimeoutInMs}.
      * 
-     * @return The current timeout value, in milliseconds, for requests made to the storage service.
+     * @return The current timeout value, in milliseconds, for requests made to
+     *         the storage service.
      */
-    public final int getTimeoutInMs() {
+    public final int getTimeoutInMs()
+    {
         return this.timeoutInMs;
     }
 
     /**
      * @return the usePathStyleUris
      */
-    public final boolean isUsePathStyleUris() {
+    public final boolean isUsePathStyleUris()
+    {
         return this.usePathStyleUris;
     }
 
@@ -226,10 +272,13 @@ public abstract class ServiceClient {
      * Sets the base URI for the service client.
      * 
      * @param baseUri
-     *            A <code>java.net.URI</code> object that represents the base URI being assigned to the service client.
+     *            A <code>java.net.URI</code> object that represents the base
+     *            URI being assigned to the service client.
      */
-    protected final void setBaseURI(final URI baseUri) {
-        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri, this.credentials.getAccountName());
+    protected final void setBaseURI(final URI baseUri)
+    {
+        this.usePathStyleUris = Utility.determinePathStyleFromUri(baseUri,
+                this.credentials.getAccountName());
         this.endpoint = baseUri;
     }
 
@@ -237,10 +286,11 @@ public abstract class ServiceClient {
      * Sets the credentials to use with this service client.
      * 
      * @param credentials
-     *            A <code>Credentials</code> object that represents the credentials being assigned for the service
-     *            client.
+     *            A <code>Credentials</code> object that represents the
+     *            credentials being assigned for the service client.
      */
-    protected final void setCredentials(final StorageCredentials credentials) {
+    protected final void setCredentials(final StorageCredentials credentials)
+    {
         this.credentials = credentials;
     }
 
@@ -248,11 +298,12 @@ public abstract class ServiceClient {
      * Sets the Authentication Scheme to use with this service client.
      * 
      * @param scheme
-     *            An <code>AuthenticationScheme</code> object that represents the authentication scheme being assigned
-     *            for the service
+     *            An <code>AuthenticationScheme</code> object that represents
+     *            the authentication scheme being assigned for the service
      *            client.
      */
-    public final void setAuthenticationScheme(final AuthenticationScheme scheme) {
+    public final void setAuthenticationScheme(final AuthenticationScheme scheme)
+    {
         this.authenticationScheme = scheme;
     }
 
@@ -260,35 +311,46 @@ public abstract class ServiceClient {
      * Sets the RetryPolicyFactory object to use when making service requests.
      * 
      * @param retryPolicyFactory
-     *            the RetryPolicyFactory object to use when making service requests.
+     *            the RetryPolicyFactory object to use when making service
+     *            requests.
      */
-    public void setRetryPolicyFactory(final RetryPolicyFactory retryPolicyFactory) {
+    public void setRetryPolicyFactory(
+            final RetryPolicyFactory retryPolicyFactory)
+    {
         this.retryPolicyFactory = retryPolicyFactory;
     }
 
     /**
      * Sets the timeout to use when making requests to the storage service.
      * <p>
-     * The server timeout interval begins at the time that the complete request has been received by the service, and
-     * the server begins processing the response. If the timeout interval elapses before the response is returned to the
-     * client, the operation times out. The timeout interval resets with each retry, if the request is retried.
+     * The server timeout interval begins at the time that the complete request
+     * has been received by the service, and the server begins processing the
+     * response. If the timeout interval elapses before the response is returned
+     * to the client, the operation times out. The timeout interval resets with
+     * each retry, if the request is retried.
      * 
-     * The default timeout interval for a request made via the service client is 90 seconds. You can change this value
-     * on the service client by setting this property, so that all subsequent requests made via the service client will
-     * use the new timeout interval. You can also change this value for an individual request, by setting the
+     * The default timeout interval for a request made via the service client is
+     * 90 seconds. You can change this value on the service client by setting
+     * this property, so that all subsequent requests made via the service
+     * client will use the new timeout interval. You can also change this value
+     * for an individual request, by setting the
      * {@link RequestOptions#timeoutIntervalInMs} property.
      * 
-     * If you are downloading a large blob, you should increase the value of the timeout beyond the default value.
+     * If you are downloading a large blob, you should increase the value of the
+     * timeout beyond the default value.
      * 
      * @param timeoutInMs
-     *            The timeout, in milliseconds, to use when making requests to the storage service.
+     *            The timeout, in milliseconds, to use when making requests to
+     *            the storage service.
      */
-    public final void setTimeoutInMs(final int timeoutInMs) {
+    public final void setTimeoutInMs(final int timeoutInMs)
+    {
         this.timeoutInMs = timeoutInMs;
     }
 
     /**
-     * Uploads a new configuration to the storage service. This includes Metrics and Logging Configuration.
+     * Uploads a new configuration to the storage service. This includes Metrics
+     * and Logging Configuration.
      * 
      * @param properties
      *            The ServiceProperties to upload.
@@ -296,34 +358,43 @@ public abstract class ServiceClient {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void uploadServiceProperties(final ServiceProperties properties) throws StorageException {
+    public void uploadServiceProperties(final ServiceProperties properties)
+            throws StorageException
+    {
         this.uploadServiceProperties(properties, null, null);
     }
 
     /**
-     * Uploads a new configuration to the storage service. This includes Metrics and Logging Configuration.
+     * Uploads a new configuration to the storage service. This includes Metrics
+     * and Logging Configuration.
      * 
      * @param properties
      *            The ServiceProperties to upload.
      * @param options
-     *            A {@link RequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}{@link CloudQueueClient}).
+     *            A {@link RequestOptions} object that specifies any additional
+     *            options for the request. Specifying <code>null</code> will use
+     *            the default request options from the associated service client
+     *            ( {@link CloudBlobClient}{@link CloudQueueClient}).
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * @throws StorageException
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public void uploadServiceProperties(final ServiceProperties properties, RequestOptions options,
-            OperationContext opContext) throws StorageException {
-        if (opContext == null) {
+    public void uploadServiceProperties(final ServiceProperties properties,
+            RequestOptions options, OperationContext opContext)
+            throws StorageException
+    {
+        if (opContext == null)
+        {
             opContext = new OperationContext();
         }
 
-        if (options == null) {
+        if (options == null)
+        {
             options = new RequestOptions();
         }
 
@@ -332,36 +403,52 @@ public abstract class ServiceClient {
 
         Utility.assertNotNull("properties", properties);
         Utility.assertNotNull("properties.Logging", properties.getLogging());
-        Utility.assertNotNull("properties.Logging.LogOperationTypes", properties.getLogging().getLogOperationTypes());
+        Utility.assertNotNull("properties.Logging.LogOperationTypes",
+                properties.getLogging().getLogOperationTypes());
         Utility.assertNotNull("properties.Merics", properties.getMetrics());
-        Utility.assertNotNull("properties.Merics.Configuration", properties.getMetrics().getMetricsLevel());
+        Utility.assertNotNull("properties.Merics.Configuration", properties
+                .getMetrics().getMetricsLevel());
 
         final StorageOperation<ServiceClient, Void, Void> impl = new StorageOperation<ServiceClient, Void, Void>(
-                options) {
+                options)
+        {
             @Override
-            public Void execute(final ServiceClient client, final Void v, final OperationContext opContext)
-                    throws Exception {
+            public Void execute(final ServiceClient client, final Void v,
+                    final OperationContext opContext) throws Exception
+            {
 
-                final HttpURLConnection request = BaseRequest.setServiceProperties(client.getEndpoint(), this
-                        .getRequestOptions().getTimeoutIntervalInMs(), null, opContext);
+                final HttpURLConnection request = BaseRequest
+                        .setServiceProperties(client.getEndpoint(), this
+                                .getRequestOptions().getTimeoutIntervalInMs(),
+                                null, opContext);
                 this.setConnection(request);
 
-                final byte[] propertiesBytes = BaseRequest.serializeServicePropertiesToByteArray(properties, opContext);
+                final byte[] propertiesBytes = BaseRequest
+                        .serializeServicePropertiesToByteArray(properties,
+                                opContext);
 
-                final ByteArrayInputStream dataInputStream = new ByteArrayInputStream(propertiesBytes);
+                final ByteArrayInputStream dataInputStream = new ByteArrayInputStream(
+                        propertiesBytes);
 
-                final StreamMd5AndLength descriptor = Utility.analyzeStream(dataInputStream, -1L, -1L,
+                final StreamMd5AndLength descriptor = Utility.analyzeStream(
+                        dataInputStream, -1L, -1L,
                         true /* rewindSourceStream */, true /* calculateMD5 */);
-                request.setRequestProperty(Constants.HeaderConstants.CONTENT_MD5, descriptor.getMd5());
+                request.setRequestProperty(
+                        Constants.HeaderConstants.CONTENT_MD5,
+                        descriptor.getMd5());
 
                 this.signRequest(client, request, descriptor.getLength(), null);
 
-                Utility.writeToOutputStream(dataInputStream, request.getOutputStream(), descriptor.getLength(),
-                        false /* rewindSourceStream */, false /* calculateMD5 */, null, opContext);
+                Utility.writeToOutputStream(dataInputStream,
+                        request.getOutputStream(), descriptor.getLength(),
+                        false /* rewindSourceStream */,
+                        false /* calculateMD5 */, null, opContext);
 
-                ExecutionEngine.processRequest(request, opContext, this.getResult());
+                ExecutionEngine.processRequest(request, opContext,
+                        this.getResult());
 
-                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED)
+                {
                     this.setNonExceptionedRetryableFailure(true);
                     return null;
                 }
@@ -370,6 +457,7 @@ public abstract class ServiceClient {
             }
         };
 
-        ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
+        ExecutionEngine.executeWithRetry(this, null, impl,
+                options.getRetryPolicyFactory(), opContext);
     }
 }

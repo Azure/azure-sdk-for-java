@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>receiveQueueMessage</code> operation.
  */
-public class ReceiveQueueMessageResult {
+public class ReceiveQueueMessageResult
+{
 
     private BrokeredMessage value;
 
@@ -25,9 +26,11 @@ public class ReceiveQueueMessageResult {
      * Creates an instance of the <code>ReceiveQueueMessageResult</code> class.
      * 
      * @param value
-     *            A {@link BrokeredMessage} object assigned as the value of the result.
+     *            A {@link BrokeredMessage} object assigned as the value of the
+     *            result.
      */
-    public ReceiveQueueMessageResult(BrokeredMessage value) {
+    public ReceiveQueueMessageResult(BrokeredMessage value)
+    {
         this.setValue(value);
     }
 
@@ -35,18 +38,22 @@ public class ReceiveQueueMessageResult {
      * Specifies the value of the result.
      * 
      * @param value
-     *            A {@link BrokeredMessage} object assigned as the value of the result.
+     *            A {@link BrokeredMessage} object assigned as the value of the
+     *            result.
      */
-    public void setValue(BrokeredMessage value) {
+    public void setValue(BrokeredMessage value)
+    {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link BrokeredMessage} object that represents the value of the result.
+     * @return A {@link BrokeredMessage} object that represents the value of the
+     *         result.
      */
-    public BrokeredMessage getValue() {
+    public BrokeredMessage getValue()
+    {
         return value;
     }
 

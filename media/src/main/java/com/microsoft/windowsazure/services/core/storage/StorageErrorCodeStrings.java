@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Represents error code strings that are common to all storage services.
  */
-public final class StorageErrorCodeStrings {
+public final class StorageErrorCodeStrings
+{
     /**
      * Authentication failed.
      */
@@ -231,7 +232,8 @@ public final class StorageErrorCodeStrings {
     /**
      * Private Default Ctor.
      */
-    private StorageErrorCodeStrings() {
+    private StorageErrorCodeStrings()
+    {
         // No op
     }
 }

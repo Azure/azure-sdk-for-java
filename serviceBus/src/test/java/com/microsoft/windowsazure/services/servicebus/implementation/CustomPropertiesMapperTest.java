@@ -25,16 +25,19 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CustomPropertiesMapperTest {
+public class CustomPropertiesMapperTest
+{
     private CustomPropertiesMapper mapper;
 
     @Before
-    public void init() {
+    public void init()
+    {
         mapper = new CustomPropertiesMapper();
     }
 
     @Test
-    public void stringValuesShouldComeThroughInQuotes() {
+    public void stringValuesShouldComeThroughInQuotes()
+    {
         // Arrange
 
         // Act
@@ -45,7 +48,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void nonStringValuesShouldNotHaveQuotes() {
+    public void nonStringValuesShouldNotHaveQuotes()
+    {
         // Arrange
 
         // Act
@@ -56,7 +60,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void supportedJavaTypesHaveExpectedRepresentations() {
+    public void supportedJavaTypesHaveExpectedRepresentations()
+    {
         // Arrange
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.set(1971, Calendar.OCTOBER, 14, 12, 34, 56);
@@ -64,29 +69,32 @@ public class CustomPropertiesMapperTest {
         // Act
 
         // Assert
-        //        assertEquals("78;byte", mapper.toString((byte) 78));
+        // assertEquals("78;byte", mapper.toString((byte) 78));
         assertEquals("78", mapper.toString((byte) 78));
         assertEquals("\"a\"", mapper.toString('a'));
         assertEquals("-78", mapper.toString((short) -78));
-        //      assertEquals("78;ushort", mapper.toString((unsigned short)78);
+        // assertEquals("78;ushort", mapper.toString((unsigned short)78);
         assertEquals("-78", mapper.toString(-78));
-        //     assertEquals("78;uint", mapper.toString(78));
+        // assertEquals("78;uint", mapper.toString(78));
         assertEquals("-78", mapper.toString((long) -78));
-        //     assertEquals("78;ulong", mapper.toString(78));
+        // assertEquals("78;ulong", mapper.toString(78));
         assertEquals("78.5", mapper.toString((float) 78.5));
         assertEquals("78.5", mapper.toString(78.5));
-        //assertEquals("78;decimal", mapper.toString(78));
+        // assertEquals("78;decimal", mapper.toString(78));
         assertEquals("true", mapper.toString(true));
         assertEquals("false", mapper.toString(false));
         assertEquals("\"12345678-9abc-def0-9abc-def012345678\"",
-                mapper.toString(new UUID(0x123456789abcdef0L, 0x9abcdef012345678L)));
+                mapper.toString(new UUID(0x123456789abcdef0L,
+                        0x9abcdef012345678L)));
         assertEquals("\"Thu, 14 Oct 1971 12:34:56 GMT\"", mapper.toString(cal));
-        assertEquals("\"Thu, 14 Oct 1971 12:34:56 GMT\"", mapper.toString(cal.getTime()));
-        //assertEquals("78;date-seconds", mapper.toString(78));
+        assertEquals("\"Thu, 14 Oct 1971 12:34:56 GMT\"",
+                mapper.toString(cal.getTime()));
+        // assertEquals("78;date-seconds", mapper.toString(78));
     }
 
     @Test
-    public void valuesComeBackAsStringsWhenInQuotes() throws ParseException {
+    public void valuesComeBackAsStringsWhenInQuotes() throws ParseException
+    {
         // Arrange
 
         // Act
@@ -98,7 +106,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void nonStringTypesWillBeParsedAsNumeric() throws ParseException {
+    public void nonStringTypesWillBeParsedAsNumeric() throws ParseException
+    {
         // Arrange
 
         // Act
@@ -110,7 +119,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void supportedFormatsHaveExpectedJavaTypes() throws ParseException {
+    public void supportedFormatsHaveExpectedJavaTypes() throws ParseException
+    {
         // Arrange
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.set(1971, Calendar.OCTOBER, 14, 12, 34, 56);
@@ -119,24 +129,24 @@ public class CustomPropertiesMapperTest {
         Date dt = (Date) mapper.fromString("\"Thu, 14 Oct 1971 12:34:56 GMT\"");
 
         // Assert
-        //        assertEquals("78;byte", mapper.toString((byte) 78));
+        // assertEquals("78;byte", mapper.toString((byte) 78));
         // assertEquals((byte) 78, mapper.fromString("78"));
-        //  assertEquals('a', mapper.fromString("a;char"));
-        //  assertEquals((short) -78, mapper.fromString("-78;short"));
-        //      assertEquals("78;ushort", mapper.toString((unsigned short)78);
+        // assertEquals('a', mapper.fromString("a;char"));
+        // assertEquals((short) -78, mapper.fromString("-78;short"));
+        // assertEquals("78;ushort", mapper.toString((unsigned short)78);
         assertEquals(-78, mapper.fromString("-78"));
-        //     assertEquals("78;uint", mapper.toString(78));
-        //    assertEquals((long) -78, mapper.fromString("-78;long"));
-        //     assertEquals("78;ulong", mapper.toString(78));
-        //   assertEquals((float) 78.5, mapper.fromString("78.5;float"));
+        // assertEquals("78;uint", mapper.toString(78));
+        // assertEquals((long) -78, mapper.fromString("-78;long"));
+        // assertEquals("78;ulong", mapper.toString(78));
+        // assertEquals((float) 78.5, mapper.fromString("78.5;float"));
         assertEquals(78.5, mapper.fromString("78.5"));
-        //assertEquals("78;decimal", mapper.toString(78));
+        // assertEquals("78;decimal", mapper.toString(78));
         assertEquals(true, mapper.fromString("true"));
         assertEquals(false, mapper.fromString("false"));
-        //    assertEquals(new UUID(0x123456789abcdef0L, 0x9abcdef012345678L),
-        //          mapper.fromString("12345678-9abc-def0-9abc-def012345678;uuid"));
+        // assertEquals(new UUID(0x123456789abcdef0L, 0x9abcdef012345678L),
+        // mapper.fromString("12345678-9abc-def0-9abc-def012345678;uuid"));
 
         assertEquals(cal.getTime().getTime(), dt.getTime(), 1000);
-        //assertEquals("78;date-seconds", mapper.toString(78));
+        // assertEquals("78;date-seconds", mapper.toString(78));
     }
 }

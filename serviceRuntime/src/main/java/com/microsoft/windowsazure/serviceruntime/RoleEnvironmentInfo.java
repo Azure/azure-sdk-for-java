@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for RoleEnvironmentInfo complex type.
+ * <p>
+ * Java class for RoleEnvironmentInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="RoleEnvironmentInfo">
@@ -53,7 +54,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleEnvironmentInfo", propOrder = {
 
 })
-class RoleEnvironmentInfo {
+class RoleEnvironmentInfo
+{
 
     @XmlElement(name = "Deployment", required = true)
     protected DeploymentInfo deployment;
@@ -65,12 +67,11 @@ class RoleEnvironmentInfo {
     /**
      * Gets the value of the deployment property.
      * 
-     * @return
-     *     possible object is
-     *     {@link DeploymentInfo }
-     *     
+     * @return possible object is {@link DeploymentInfo }
+     * 
      */
-    public DeploymentInfo getDeployment() {
+    public DeploymentInfo getDeployment()
+    {
         return deployment;
     }
 
@@ -78,23 +79,22 @@ class RoleEnvironmentInfo {
      * Sets the value of the deployment property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link DeploymentInfo }
-     *     
+     *            allowed object is {@link DeploymentInfo }
+     * 
      */
-    public void setDeployment(DeploymentInfo value) {
+    public void setDeployment(DeploymentInfo value)
+    {
         this.deployment = value;
     }
 
     /**
      * Gets the value of the currentInstance property.
      * 
-     * @return
-     *     possible object is
-     *     {@link CurrentRoleInstanceInfo }
-     *     
+     * @return possible object is {@link CurrentRoleInstanceInfo }
+     * 
      */
-    public CurrentRoleInstanceInfo getCurrentInstance() {
+    public CurrentRoleInstanceInfo getCurrentInstance()
+    {
         return currentInstance;
     }
 
@@ -102,23 +102,22 @@ class RoleEnvironmentInfo {
      * Sets the value of the currentInstance property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link CurrentRoleInstanceInfo }
-     *     
+     *            allowed object is {@link CurrentRoleInstanceInfo }
+     * 
      */
-    public void setCurrentInstance(CurrentRoleInstanceInfo value) {
+    public void setCurrentInstance(CurrentRoleInstanceInfo value)
+    {
         this.currentInstance = value;
     }
 
     /**
      * Gets the value of the roles property.
      * 
-     * @return
-     *     possible object is
-     *     {@link RolesInfo }
-     *     
+     * @return possible object is {@link RolesInfo }
+     * 
      */
-    public RolesInfo getRoles() {
+    public RolesInfo getRoles()
+    {
         return roles;
     }
 
@@ -126,11 +125,11 @@ class RoleEnvironmentInfo {
      * Sets the value of the roles property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link RolesInfo }
-     *     
+     *            allowed object is {@link RolesInfo }
+     * 
      */
-    public void setRoles(RolesInfo value) {
+    public void setRoles(RolesInfo value)
+    {
         this.roles = value;
     }
 

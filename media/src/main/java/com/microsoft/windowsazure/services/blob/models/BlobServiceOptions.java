@@ -17,38 +17,42 @@ package com.microsoft.windowsazure.services.blob.models;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * Represents the base class for options that may be set on Blob Service REST API operations invoked through the
- * {@link BlobContract} interface. This class defines a server request timeout, which can be applied to all operations.
+ * Represents the base class for options that may be set on Blob Service REST
+ * API operations invoked through the {@link BlobContract} interface. This class
+ * defines a server request timeout, which can be applied to all operations.
  */
-public class BlobServiceOptions {
+public class BlobServiceOptions
+{
     // Nullable because it is optional
     private Integer timeout;
 
     /**
-     * Gets the server request timeout value associated with this {@link BlobServiceOptions} instance.
+     * Gets the server request timeout value associated with this
+     * {@link BlobServiceOptions} instance.
      * <p>
-     * The timeout value only affects calls made on methods where this {@link BlobServiceOptions} instance is passed as
-     * a parameter.
+     * The timeout value only affects calls made on methods where this
+     * {@link BlobServiceOptions} instance is passed as a parameter.
      * 
-     * @return
-     *         The server request timeout value in milliseconds.
+     * @return The server request timeout value in milliseconds.
      */
-    public Integer getTimeout() {
+    public Integer getTimeout()
+    {
         return timeout;
     }
 
     /**
-     * Sets the server request timeout value associated with this {@link BlobServiceOptions} instance.
+     * Sets the server request timeout value associated with this
+     * {@link BlobServiceOptions} instance.
      * <p>
-     * The timeout value only affects calls made on methods where this {@link BlobServiceOptions} instance is passed as
-     * a parameter.
+     * The timeout value only affects calls made on methods where this
+     * {@link BlobServiceOptions} instance is passed as a parameter.
      * 
      * @param timeout
      *            The server request timeout value to set in milliseconds.
-     * @return
-     *         A reference to this {@link BlobServiceOptions} instance.
+     * @return A reference to this {@link BlobServiceOptions} instance.
      */
-    public BlobServiceOptions setTimeout(Integer timeout) {
+    public BlobServiceOptions setTimeout(Integer timeout)
+    {
         this.timeout = timeout;
         return this;
     }

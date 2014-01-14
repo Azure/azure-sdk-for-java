@@ -30,7 +30,8 @@ import com.microsoft.windowsazure.services.media.MediaConfiguration;
  * An OAuth token manager class.
  * 
  */
-public class OAuthTokenManager {
+public class OAuthTokenManager
+{
     private final DateFactory dateFactory;
     private final URI acsBaseUri;
     private final String clientId;
@@ -40,23 +41,28 @@ public class OAuthTokenManager {
     private final String scope;
 
     /**
-     * Creates an OAuth token manager instance with specified contract, date factory, ACS base URI, client ID,
-     * and client secret.
+     * Creates an OAuth token manager instance with specified contract, date
+     * factory, ACS base URI, client ID, and client secret.
      * 
      * @param contract
-     *            A <code>OAuthContract</code> object instance that represents the OAUTH contract.
+     *            A <code>OAuthContract</code> object instance that represents
+     *            the OAUTH contract.
      * 
      * @param dateFactory
-     *            A <code>DateFactory</code> object instance that represents the date factory.
+     *            A <code>DateFactory</code> object instance that represents the
+     *            date factory.
      * 
      * @param oAuthUri
-     *            A <code>String</code> object instance that represents the ACS base URI.
+     *            A <code>String</code> object instance that represents the ACS
+     *            base URI.
      * 
      * @param clientId
-     *            A <code>String</code> object instance that represents the client ID.
+     *            A <code>String</code> object instance that represents the
+     *            client ID.
      * 
      * @param clientSecret
-     *            A <code>String</code> object instance that represents the client secret.
+     *            A <code>String</code> object instance that represents the
+     *            client secret.
      * @throws URISyntaxException
      * 
      */
@@ -64,7 +70,9 @@ public class OAuthTokenManager {
             @Named(MediaConfiguration.OAUTH_URI) String oAuthUri,
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
-            @Named(MediaConfiguration.OAUTH_SCOPE) String scope) throws URISyntaxException {
+            @Named(MediaConfiguration.OAUTH_SCOPE) String scope)
+            throws URISyntaxException
+    {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.acsBaseUri = new URI(oAuthUri);
@@ -78,18 +86,24 @@ public class OAuthTokenManager {
      * Gets an OAuth access token with specified media service scope.
      * 
      * @param mediaServiceScope
-     *            A <code>String</code> instance that represents the media service scope.
+     *            A <code>String</code> instance that represents the media
+     *            service scope.
      * 
      * @return String
      * 
      * @throws ServiceException
      * @throws URISyntaxException
      */
-    public String getAccessToken() throws ServiceException, URISyntaxException {
+    public String getAccessToken() throws ServiceException, URISyntaxException
+    {
         Date now = dateFactory.getDate();
-        if (this.activeToken == null || now.after(this.activeToken.getExpiresUtc())) {
-            OAuthTokenResponse oAuth2TokenResponse = contract.getAccessToken(acsBaseUri, clientId, clientSecret, scope);
-            Date expiresUtc = new Date(now.getTime() + oAuth2TokenResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
+        if (this.activeToken == null
+                || now.after(this.activeToken.getExpiresUtc()))
+        {
+            OAuthTokenResponse oAuth2TokenResponse = contract.getAccessToken(
+                    acsBaseUri, clientId, clientSecret, scope);
+            Date expiresUtc = new Date(now.getTime()
+                    + oAuth2TokenResponse.getExpiresIn() * Timer.ONE_SECOND / 2);
 
             ActiveToken newToken = new ActiveToken();
             newToken.setAccessToken(oAuth2TokenResponse.getAccessToken());

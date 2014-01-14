@@ -22,7 +22,8 @@ import java.security.InvalidParameterException;
  * Specifies the type of a content key.
  * 
  */
-public enum ContentKeyType {
+public enum ContentKeyType
+{
 
     /** The Common encryption. */
     CommonEncryption(0),
@@ -40,7 +41,8 @@ public enum ContentKeyType {
      * @param contentKeyTypeCode
      *            the content key type code
      */
-    private ContentKeyType(int contentKeyTypeCode) {
+    private ContentKeyType(int contentKeyTypeCode)
+    {
         this.contentKeyTypeCode = contentKeyTypeCode;
     }
 
@@ -49,7 +51,8 @@ public enum ContentKeyType {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return contentKeyTypeCode;
     }
 
@@ -60,16 +63,18 @@ public enum ContentKeyType {
      *            the code
      * @return the content key type
      */
-    public static ContentKeyType fromCode(int code) {
-        switch (code) {
-            case 0:
-                return ContentKeyType.CommonEncryption;
-            case 1:
-                return ContentKeyType.StorageEncryption;
-            case 2:
-                return ContentKeyType.ConfigurationEncryption;
-            default:
-                throw new InvalidParameterException("code");
+    public static ContentKeyType fromCode(int code)
+    {
+        switch (code)
+        {
+        case 0:
+            return ContentKeyType.CommonEncryption;
+        case 1:
+            return ContentKeyType.StorageEncryption;
+        case 2:
+            return ContentKeyType.ConfigurationEncryption;
+        default:
+            throw new InvalidParameterException("code");
         }
     }
 }

@@ -33,8 +33,10 @@ import javax.net.ssl.X509TrustManager;
 /**
  * A factory for creating SSLContext instance.
  */
-public final class SSLContextFactory {
-    private SSLContextFactory() {
+public final class SSLContextFactory
+{
+    private SSLContextFactory()
+    {
     }
 
     /**
@@ -48,12 +50,16 @@ public final class SSLContextFactory {
      * @throws IOException
      *             when an I/O exception has occurred.
      */
-    public static SSLContext create(KeyStoreCredential keyStoreCredential) throws GeneralSecurityException,
-            IOException {
-        if (keyStoreCredential == null) {
-            throw new IllegalArgumentException("KeyStoreCredential cannot be null.");
+    public static SSLContext create(KeyStoreCredential keyStoreCredential)
+            throws GeneralSecurityException, IOException
+    {
+        if (keyStoreCredential == null)
+        {
+            throw new IllegalArgumentException(
+                    "KeyStoreCredential cannot be null.");
         }
-        return create(keyStoreCredential.getKeyStorePath(), keyStoreCredential.getKeystorePassword(),
+        return create(keyStoreCredential.getKeyStorePath(),
+                keyStoreCredential.getKeystorePassword(),
                 keyStoreCredential.getKeyStoreType());
     }
 
@@ -72,37 +78,50 @@ public final class SSLContextFactory {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static SSLContext create(String keyStorePath, String keyStorePassword, KeyStoreType keyStoreType)
-            throws GeneralSecurityException, IOException {
+    public static SSLContext create(String keyStorePath,
+            String keyStorePassword, KeyStoreType keyStoreType)
+            throws GeneralSecurityException, IOException
+    {
 
-        if ((keyStorePath == null) || (keyStorePath.isEmpty())) {
-            throw new IllegalArgumentException("The keystore path cannot be null or empty.");
+        if ((keyStorePath == null) || (keyStorePath.isEmpty()))
+        {
+            throw new IllegalArgumentException(
+                    "The keystore path cannot be null or empty.");
         }
 
-        if (keyStoreType == null) {
-            throw new IllegalArgumentException("The type of the keystore cannot be null");
+        if (keyStoreType == null)
+        {
+            throw new IllegalArgumentException(
+                    "The type of the keystore cannot be null");
         }
 
-        InputStream keyStoreInputStream = new FileInputStream(new File(keyStorePath));
-        KeyManager[] keyManagers = getKeyManagers(keyStoreInputStream, keyStorePassword, keyStoreType);
+        InputStream keyStoreInputStream = new FileInputStream(new File(
+                keyStorePath));
+        KeyManager[] keyManagers = getKeyManagers(keyStoreInputStream,
+                keyStorePassword, keyStoreType);
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(keyManagers, new TrustManager[] { new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() {
-                            System.out.println("getAcceptedIssuers =============");
-                            return null;
+        sslContext.init(keyManagers,
+                new TrustManager[] { new X509TrustManager()
+                {
+                    public X509Certificate[] getAcceptedIssuers()
+                    {
+                        System.out.println("getAcceptedIssuers =============");
+                        return null;
                     }
 
                     public void checkClientTrusted(X509Certificate[] certs,
-                                    String authType) {
-                            System.out.println("checkClientTrusted =============");
+                            String authType)
+                    {
+                        System.out.println("checkClientTrusted =============");
                     }
 
                     public void checkServerTrusted(X509Certificate[] certs,
-                                    String authType) {
-                            System.out.println("checkServerTrusted =============");
+                            String authType)
+                    {
+                        System.out.println("checkServerTrusted =============");
                     }
-        } }, new SecureRandom());
-        
+                } }, new SecureRandom());
+
         keyStoreInputStream.close();
         return sslContext;
     }
@@ -122,13 +141,16 @@ public final class SSLContextFactory {
      * @throws GeneralSecurityException
      *             the general security exception
      */
-    private static KeyManager[] getKeyManagers(InputStream keyStoreInputStream, String keyStorePassword,
-            KeyStoreType keyStoreType) throws IOException, GeneralSecurityException {
+    private static KeyManager[] getKeyManagers(InputStream keyStoreInputStream,
+            String keyStorePassword, KeyStoreType keyStoreType)
+            throws IOException, GeneralSecurityException
+    {
 
         KeyStore keyStore = KeyStore.getInstance(keyStoreType.name());
         keyStore.load(keyStoreInputStream, keyStorePassword.toCharArray());
         String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
-        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory
+                .getInstance(defaultAlgorithm);
         keyManagerFactory.init(keyStore, keyStorePassword.toCharArray());
 
         return keyManagerFactory.getKeyManagers();

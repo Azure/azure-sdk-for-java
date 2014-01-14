@@ -21,31 +21,42 @@ import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-public class Exports implements Builder.Exports {
+public class Exports implements Builder.Exports
+{
 
     @Override
-    public void register(Builder.Registry registry) {
+    public void register(Builder.Registry registry)
+    {
         registry.add(WrapContract.class, WrapRestProxy.class);
         registry.add(WrapTokenManager.class);
         registry.add(WrapFilter.class);
 
-        registry.add(new Builder.Factory<ServiceBusConnectionSettings>() {
+        registry.add(new Builder.Factory<ServiceBusConnectionSettings>()
+        {
 
             @Override
-            public <S> ServiceBusConnectionSettings create(String profile, Class<S> service, Builder builder,
-                    Map<String, Object> properties) {
-                try {
-                    return new ServiceBusConnectionSettings((String) getPropertyIfExists(profile, properties,
-                            ServiceBusConfiguration.CONNECTION_STRING), (String) getPropertyIfExists(profile,
-                            properties, ServiceBusConfiguration.URI), (String) getPropertyIfExists(profile, properties,
-                            ServiceBusConfiguration.WRAP_URI), (String) getPropertyIfExists(profile, properties,
-                            ServiceBusConfiguration.WRAP_NAME), (String) getPropertyIfExists(profile, properties,
-                            ServiceBusConfiguration.WRAP_PASSWORD));
-                }
-                catch (ConnectionStringSyntaxException e) {
+            public <S> ServiceBusConnectionSettings create(String profile,
+                    Class<S> service, Builder builder,
+                    Map<String, Object> properties)
+            {
+                try
+                {
+                    return new ServiceBusConnectionSettings(
+                            (String) getPropertyIfExists(profile, properties,
+                                    ServiceBusConfiguration.CONNECTION_STRING),
+                            (String) getPropertyIfExists(profile, properties,
+                                    ServiceBusConfiguration.URI),
+                            (String) getPropertyIfExists(profile, properties,
+                                    ServiceBusConfiguration.WRAP_URI),
+                            (String) getPropertyIfExists(profile, properties,
+                                    ServiceBusConfiguration.WRAP_NAME),
+                            (String) getPropertyIfExists(profile, properties,
+                                    ServiceBusConfiguration.WRAP_PASSWORD));
+                } catch (ConnectionStringSyntaxException e)
+                {
                     throw new RuntimeException(e.getMessage(), e);
-                }
-                catch (URISyntaxException e) {
+                } catch (URISyntaxException e)
+                {
                     throw new RuntimeException(e.getMessage(), e);
                 }
             }

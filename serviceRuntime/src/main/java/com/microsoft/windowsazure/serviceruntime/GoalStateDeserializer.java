@@ -19,7 +19,8 @@ import java.io.InputStream;
 /**
  * 
  */
-interface GoalStateDeserializer {
+interface GoalStateDeserializer
+{
     public void initialize(InputStream inputStream);
 
     public GoalState deserialize();

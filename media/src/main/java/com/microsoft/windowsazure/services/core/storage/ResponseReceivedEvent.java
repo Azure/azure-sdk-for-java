@@ -17,17 +17,20 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Represents an event that is fired when a response is received.
  */
-public final class ResponseReceivedEvent {
+public final class ResponseReceivedEvent
+{
 
     /**
-     * Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as a
-     * connection object.
+     * Represents a connection object. Currently only
+     * <code>java.net.HttpURLConnection</code> is supported as a connection
+     * object.
      */
     private final Object connectionObject;
 
     /**
-     * Represents a context for the current operation. This object is used to track requests to the storage service, and
-     * to provide additional runtime information about the operation.
+     * Represents a context for the current operation. This object is used to
+     * track requests to the storage service, and to provide additional runtime
+     * information about the operation.
      */
     private final OperationContext opContext;
 
@@ -40,17 +43,21 @@ public final class ResponseReceivedEvent {
      * Creates an instance of the <code>ResponseReceivedEvent</code> class.
      * 
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * @param connectionObject
-     *            Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as
-     *            a connection object.
+     *            Represents a connection object. Currently only
+     *            <code>java.net.HttpURLConnection</code> is supported as a
+     *            connection object.
      * @param requestResult
-     *            A {@link RequestResult} object that represents the current request result.
+     *            A {@link RequestResult} object that represents the current
+     *            request result.
      */
-    public ResponseReceivedEvent(final OperationContext opContext, final Object connectionObject,
-            final RequestResult requestResult) {
+    public ResponseReceivedEvent(final OperationContext opContext,
+            final Object connectionObject, final RequestResult requestResult)
+    {
         this.opContext = opContext;
         this.connectionObject = connectionObject;
         this.requestResult = requestResult;
@@ -59,21 +66,25 @@ public final class ResponseReceivedEvent {
     /**
      * @return the connectionObject
      */
-    public Object getConnectionObject() {
+    public Object getConnectionObject()
+    {
         return this.connectionObject;
     }
 
     /**
      * @return the opContext
      */
-    public OperationContext getOpContext() {
+    public OperationContext getOpContext()
+    {
         return this.opContext;
     }
 
     /**
-     * @return A {@link RequestResult} object that represents the current request result.
+     * @return A {@link RequestResult} object that represents the current
+     *         request result.
      */
-    public RequestResult getRequestResult() {
+    public RequestResult getRequestResult()
+    {
         return this.requestResult;
     }
 }

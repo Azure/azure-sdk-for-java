@@ -23,55 +23,67 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 
-public class EntityBatchOperation {
+public class EntityBatchOperation
+{
 
     protected String verb;
     protected EntryType entryType;
 
-    public EntityBatchOperation() {
+    public EntityBatchOperation()
+    {
         this.entryType = new EntryType();
     }
 
-    public EntryType getEntryType() {
+    public EntryType getEntryType()
+    {
         return entryType;
     }
 
-    public EntityBatchOperation setEntityType(EntryType entryType) {
+    public EntityBatchOperation setEntityType(EntryType entryType)
+    {
         this.entryType = entryType;
         return this;
     }
 
-    protected EntityBatchOperation setVerb(String verb) {
+    protected EntityBatchOperation setVerb(String verb)
+    {
         this.verb = verb;
         return this;
     }
 
-    public String getVerb() {
+    public String getVerb()
+    {
         return this.verb;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public EntityBatchOperation addContentObject(Object contentObject) {
+    public EntityBatchOperation addContentObject(Object contentObject)
+    {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
-        atomContent.getContent().add(
-                new JAXBElement(new QName(Constants.ODATA_METADATA_NS, "properties"), contentObject.getClass(),
-                        contentObject));
+        atomContent
+                .getContent()
+                .add(new JAXBElement(new QName(Constants.ODATA_METADATA_NS,
+                        "properties"), contentObject.getClass(), contentObject));
 
         this.entryType.getEntryChildren().add(
-                new JAXBElement(new QName(Constants.ATOM_NS, "content"), ContentType.class, atomContent));
+                new JAXBElement(new QName(Constants.ATOM_NS, "content"),
+                        ContentType.class, atomContent));
         return this;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected EntityBatchOperation addLink(String title, String href, String type, String rel) {
+    protected EntityBatchOperation addLink(String title, String href,
+            String type, String rel)
+    {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);
         linkType.setHref(href);
         linkType.setType(type);
         linkType.setRel(rel);
         this.entryType.getEntryChildren().add(
-                new JAXBElement(new QName(Constants.ATOM_NS, "link"), LinkType.class, linkType));
+                new JAXBElement(new QName(Constants.ATOM_NS, "link"),
+                        LinkType.class, linkType));
         return this;
 
     }

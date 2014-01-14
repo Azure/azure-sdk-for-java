@@ -16,36 +16,45 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
-import com.microsoft.windowsazure.core.pipeline.apache.HttpServiceRequestContext;
-import com.microsoft.windowsazure.core.pipeline.apache.HttpServiceResponseContext;
 
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class ClientFilterAdapter extends ClientFilter {
+public class ClientFilterAdapter extends ClientFilter
+{
     ServiceFilter filter;
 
-    public ClientFilterAdapter(ServiceFilter filter) {
+    public ClientFilterAdapter(ServiceFilter filter)
+    {
         this.filter = filter;
     }
 
     @Override
-    public ClientResponse handle(ClientRequest clientRequest) throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest clientRequest)
+            throws ClientHandlerException
+    {
 
         final ClientRequest cr = clientRequest;
-        try {
-            ServiceResponseContext resp = filter.handle(new JerseyServiceRequestContext(clientRequest), new ServiceFilter.Next() {
-                @Override
-                public ServiceResponseContext handle(ServiceRequestContext request) {
-                    return new JerseyServiceResponseContext(getNext().handle(cr));
-                }
-            });
+        try
+        {
+            ServiceResponseContext resp = filter.handle(
+                    new JerseyServiceRequestContext(clientRequest),
+                    new ServiceFilter.Next()
+                    {
+                        @Override
+                        public ServiceResponseContext handle(
+                                ServiceRequestContext request)
+                        {
+                            return new JerseyServiceResponseContext(getNext()
+                                    .handle(cr));
+                        }
+                    });
 
             return ((JerseyServiceResponseContext) resp).getClientResponse();
-        }
-        catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ClientHandlerException(e);
         }
     }
